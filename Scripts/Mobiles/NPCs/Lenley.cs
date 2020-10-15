@@ -95,7 +95,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override void RevealingAction()
+        public override void RevealingAction(bool msg=true)
         {
             if (_Region != null)
                 _Region.Unregister();

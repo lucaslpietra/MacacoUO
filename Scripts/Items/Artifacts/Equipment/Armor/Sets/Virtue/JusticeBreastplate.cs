@@ -10,18 +10,20 @@ namespace Server.Items
         public JusticeBreastplate()
             : base(0x2B08)
         {
+            Name = "Peitoral da Justica";
             this.LootType = LootType.Blessed;
             this.Weight = 7.0;
             this.SetHue = 0;
             this.Hue = 0x226;
-			
+
+            /*
             this.SetSelfRepair = 5;
-			
             this.SetPhysicalBonus = 5;
             this.SetFireBonus = 5;
             this.SetColdBonus = 5;
             this.SetPoisonBonus = 5;
             this.SetEnergyBonus = 5;
+            */
         }
 
         public JusticeBreastplate(Serial serial)

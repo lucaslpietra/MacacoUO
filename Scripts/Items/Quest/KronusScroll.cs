@@ -13,8 +13,8 @@ namespace Server.Engines.Quests.Necro
         public KronusScroll()
             : base(0x227A)
         {
-            Weight = 1.0;
-            Hue = 0x44E;
+            this.Weight = 1.0;
+            this.Hue = 0x44E;
         }
 
         public KronusScroll(Serial serial)
@@ -35,7 +35,11 @@ namespace Server.Engines.Quests.Necro
 
             if (qs == null)
                 return true;
-            
+
+            /*return !( qs.IsObjectiveInProgress( typeof( FindCallingScrollObjective ) )
+            || qs.IsObjectiveInProgress( typeof( FindMardothAboutKronusObjective ) )
+            || qs.IsObjectiveInProgress( typeof( FindWellOfTearsObjective ) )
+            || qs.IsObjectiveInProgress( typeof( UseCallingScrollObjective ) ) );*/
             return false;
         }
 
@@ -88,12 +92,14 @@ namespace Server.Engines.Quests.Necro
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
         }
 

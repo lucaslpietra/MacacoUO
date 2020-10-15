@@ -235,14 +235,14 @@ namespace Server.Engines.VoidPool
             {
                 if (User.Backpack == null || !User.Backpack.TryDropItem(User, item, false))
                 {
-                    User.SendLocalizedMessage(1074361); // The reward could not be given.  Make sure you have room in your pack.
+                    User.SendMessage("Sem espaco na mochila"); // The reward could not be given.  Make sure you have room in your pack.
                     item.Delete();
                 }
                 else
                 {
                     PointsSystem.VoidPool.DeductPoints(User, citem.Points);
 
-                    User.SendLocalizedMessage(1073621); // Your reward has been placed in your backpack.
+                    User.SendMessage("Pegou a recompensa"); // Your reward has been placed in your backpack.
                     User.PlaySound(0x5A7);
                 }
             }

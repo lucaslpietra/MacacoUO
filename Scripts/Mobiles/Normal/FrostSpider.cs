@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public FrostSpider()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a frost spider";
+            Name = "aranha de gelo";
             Body = 20;
             BaseSoundID = 0x388;
 
@@ -76,6 +76,50 @@ namespace Server.Mobiles
             AddLoot(LootPack.Poor);
         }
 
+        public override void OnThink()
+        {
+            if (!this.IsCooldown("teia"))
+            {
+                this.SetCooldown("teia", TimeSpan.FromSeconds(3));
+            }
+            else
+            {
+                return;
+            }
+            if (this.Combatant != null && this.Combatant.InRange2D(this.Location, 9))
+            {
+                if (!this.IsCooldown("teiab"))
+                {
+                    this.SetCooldown("teiab", TimeSpan.FromSeconds(30));
+                }
+                else
+                {
+                    return;
+                }
+
+                if (!this.InLOS(this.Combatant))
+                {
+                    return;
+                }
+                this.PlayAngerSound();
+                this.MovingParticles(this.Combatant, 0x10D3, 15, 0, false, false, 9502, 4019, 0x160);
+                var m = this.Combatant as Mobile;
+                Timer.DelayCall(TimeSpan.FromMilliseconds(400), () =>
+                {
+                    m.SendMessage("Voce foi preso por uma teia e nao consegue se soltar");
+                    m.OverheadMessage("* Preso em uma teia *");
+                    var teia = new Teia(m);
+                    teia.MoveToWorld(m.Location, m.Map);
+                    m.Freeze(TimeSpan.FromSeconds(6));
+                    Timer.DelayCall(TimeSpan.FromSeconds(5), () =>
+                    {
+                        teia.Delete();
+                        m.Frozen = false;
+                    });
+                });
+            }
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -86,6 +130,9 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (BaseSoundID == 387)
+                BaseSoundID = 0x388;
         }
     }
 }

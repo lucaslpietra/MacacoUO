@@ -1,4 +1,7 @@
 using System;
+using Server.Mobiles;
+using Server.Network;
+using Server.Spells;
 using Server.Targeting;
 
 namespace Server.Items
@@ -54,14 +57,22 @@ namespace Server.Items
         {
             if (IsChildOf(from.Backpack))
             {
-                from.SendLocalizedMessage(500366); // Select a loom to use that on.
+                from.SendMessage("Selecione um loom para isto"); // Select a loom to use that on.
                 from.Target = new PickLoomTarget(this);
             }
             else
             {
-                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+                from.SendMessage("Precisa estar em sua mochila"); // That must be in your pack for you to use it.
             }
         }
+
+        private static string[] phases = new string[] {
+            "Voce comeca a criar tecido",
+            "O tecido esta ganhando forma",
+            "O tecido esta na metade",
+            "O tecido parece estar quase pronto",
+            "O tecido esta quase pronto"
+        };
 
         private class PickLoomTarget : Target
         {
@@ -84,27 +95,42 @@ namespace Server.Items
 
                 if (loom != null)
                 {
+                    ((PlayerMobile)from).LastTarget = targeted;
+                    SpellHelper.Turn(from, loom);
                     if (!m_Material.IsChildOf(from.Backpack))
                     {
-                        from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+                        from.SendMessage("O item precisa estar em sua mochila"); // That must be in your pack for you to use it.
+                        return;
                     }
                     else if (loom.Phase < 4)
                     {
+                        from.PlayAttackAnimation();
                         m_Material.Consume();
-
+                        var phase = loom.Phase++;
                         if (targeted is Item)
-                            ((Item)targeted).SendLocalizedMessageTo(from, 1010001 + loom.Phase++);
+                            ((Item)targeted).PrivateMessage(phases[phase], from);
                     }
                     else
                     {
+                        from.PlayAttackAnimation();
                         Item create = new BoltOfCloth();
+                        create.Amount = 1;
                         create.Hue = m_Material.Hue;
 
-                        m_Material.Consume();
+                        m_Material.Consume(1);
                         loom.Phase = 0;
-                        from.SendLocalizedMessage(500368); // You create some cloth and put it in your backpack.
+                        from.SendMessage("Voce criou tecido e colocou " + create.Amount + " rolos de tecido em sua mochila"); // You create some cloth and put it in your backpack.
                         from.AddToBackpack(create);
                     }
+
+                    Timer.DelayCall(TimeSpan.FromSeconds(2), () =>
+                    {
+                        if (m_Material != null && m_Material.Amount > 0)
+                        {
+                            new PickLoomTarget(m_Material).Invoke(from, ((PlayerMobile)from).LastTarget);
+                        }
+                    });
+
                 }
                 else
                 {
@@ -228,6 +254,7 @@ namespace Server.Items
         public SpoolOfThread(int amount)
             : base(0xFA0, amount)
         {
+            this.Name = "Fios de coser";
         }
 
         public SpoolOfThread(Serial serial)

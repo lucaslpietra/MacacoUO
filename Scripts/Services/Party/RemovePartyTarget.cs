@@ -21,7 +21,7 @@ namespace Server.Engines.PartySystem
                     return;
 
                 if (from == m)
-                    from.SendLocalizedMessage(1005446); // You may only remove yourself from a party if you are not the leader.
+                    from.SendMessage("So pode remover a si mesmo se nao for o lider"); // You may only remove yourself from a party if you are not the leader.
                 else
                     p.Remove(m);
             }

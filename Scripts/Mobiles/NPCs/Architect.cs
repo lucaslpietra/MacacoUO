@@ -8,7 +8,7 @@ namespace Server.Mobiles
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         [Constructable]
         public Architect()
-            : base("the architect")
+            : base("o arquiteto")
         {
         }
 
@@ -33,8 +33,8 @@ namespace Server.Mobiles
         }
         public override void InitSBInfo()
         {
-            if (!Core.AOS)
-                this.m_SBInfos.Add(new SBHouseDeed());
+            //if (!Core.AOS)
+           //     this.m_SBInfos.Add(new SBHouseDeed());
 
             this.m_SBInfos.Add(new SBArchitect());
         }

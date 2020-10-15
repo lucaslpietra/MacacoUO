@@ -10,7 +10,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public CuSidhe()
-            : this("a cu sidhe")
+            : this("cusidhe")
         {
         }
 
@@ -58,7 +58,14 @@ namespace Server.Mobiles
             ControlSlots = 4;
             MinTameSkill = 101.1;
 
+            if (Utility.RandomDouble() < 0.2)
+                PackItem(new TreasureMap(5, Map.Trammel));
+
+            //if ( Utility.RandomDouble() < 0.1 )
+            //PackItem( new ParrotItem() );
+
             PackGold(500, 800);
+            // TODO 0-2 spellweaving scroll
 
             SetWeaponAbility(WeaponAbility.BleedAttack);
         }
@@ -68,11 +75,13 @@ namespace Server.Mobiles
         {
         }
 
-        public override int TreasureMapLevel
+        public override bool CanHealOwner
         {
-            get { return 5; }
+            get
+            {
+                return true;
+            }
         }
-
         public override FoodType FavoriteFood
         {
             get
@@ -115,19 +124,16 @@ namespace Server.Mobiles
 
         public override void OnAfterTame(Mobile tamer)
         {
-            if (Owners.Count == 0 && PetTrainingHelper.Enabled)
+            if (PetTrainingHelper.Enabled)
             {
-                if (RawStr > 0)
-                    RawStr = (int)Math.Max(1, RawStr * 0.5);
+                RawStr = (int)Math.Max(1, RawStr * 0.5);
+                RawDex = (int)Math.Max(1, RawDex * 0.5);
 
-                if (RawDex > 0)
-                    RawDex = (int)Math.Max(1, RawDex * 0.5);
+                HitsMaxSeed = RawStr;
+                Hits = RawStr;
 
-                if (HitsMaxSeed > 0)
-                    HitsMaxSeed = (int)Math.Max(1, HitsMaxSeed * 0.5);
-
-                Hits = Math.Min(HitsMaxSeed, Hits);
-                Stam = Math.Min(RawDex, Stam);
+                StamMaxSeed = RawDex;
+                Stam = RawDex;
             }
             else
             {
@@ -143,11 +149,6 @@ namespace Server.Mobiles
 
                 if (pads is PadsOfTheCuSidhe)
                     from.SendLocalizedMessage(1071981); // Your boots allow you to mount the Cu Sidhe.
-                else
-                {
-                    from.SendLocalizedMessage(1072203); // Only Elves may use 
-                    return;
-                }
             }
 
             base.OnDoubleClick(from);

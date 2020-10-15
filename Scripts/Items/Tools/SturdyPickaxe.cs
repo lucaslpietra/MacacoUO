@@ -7,7 +7,7 @@ namespace Server.Items
     {
         [Constructable]
         public SturdyPickaxe()
-            : this(180)
+            : this(1000)
         {
         }
 
@@ -15,10 +15,11 @@ namespace Server.Items
         public SturdyPickaxe(int uses)
             : base(0xE86)
         {
-            Weight = 11.0;
-            Hue = 0x973;
-            UsesRemaining = uses;
-            ShowUsesRemaining = true;
+            Name = "Picareta Duravel";
+            this.Weight = 11.0;
+            this.Hue = 0x973;
+            this.UsesRemaining = uses;
+            this.ShowUsesRemaining = true;
         }
 
         public SturdyPickaxe(Serial serial)
@@ -26,13 +27,6 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1045126;
-            }
-        }// sturdy pickaxe
         public override HarvestSystem HarvestSystem
         {
             get

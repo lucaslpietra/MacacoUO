@@ -79,7 +79,7 @@ namespace Server.Items
 
         public static void AddProperty(EtherealMount mount, ObjectPropertyList list)
         {
-            list.Add(1113818, mount.Transparent ? "#1078520" : "#1153298");
+            //list.Add(1113818, mount.Transparent ? "#1078520" : "#1153298");
         }
 
         public override void Serialize(GenericWriter writer)

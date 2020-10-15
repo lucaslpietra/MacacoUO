@@ -9,7 +9,7 @@ namespace Server
 		private readonly Mobile m_Mobile;
 		private readonly IPoint3D m_Target;
 		private bool m_Running;
-
+        public string Name;
 		public Mobile Mobile { get { return m_Mobile; } }
 
 		public IPoint3D Target { get { return m_Target; } }

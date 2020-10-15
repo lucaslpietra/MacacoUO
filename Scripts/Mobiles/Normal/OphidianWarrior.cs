@@ -5,16 +5,11 @@ namespace Server.Mobiles
     [CorpseName("an ophidian corpse")]
     public class OphidianWarrior : BaseCreature
     {
-        private static readonly string[] m_Names = new string[]
-        {
-            "an ophidian warrior",
-            "an ophidian enforcer"
-        };
         [Constructable]
         public OphidianWarrior()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = m_Names[Utility.Random(m_Names.Length)];
+            this.Name = "guerreiro ophidiano";
             this.Body = 86;
             this.BaseSoundID = 634;
 

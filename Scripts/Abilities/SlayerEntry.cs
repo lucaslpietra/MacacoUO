@@ -66,7 +66,10 @@ namespace Server.Items
             1017407, // Blood Drinking
             1017408, // Summer Wind
             1017409, // Elemental Ban
-            1070855  // fey slayer
+            1070855,  // fey slayer
+            123,
+            321,
+            125,
         };
         private readonly SlayerName m_Name;
         private readonly Type[] m_Types;
@@ -106,7 +109,7 @@ namespace Server.Items
         {
             get
             {
-                int[] titles = (Core.AOS ? m_AosTitles : m_OldTitles);
+                int[] titles = (m_AosTitles);
 
                 return titles[(int)this.m_Name - 1];
             }

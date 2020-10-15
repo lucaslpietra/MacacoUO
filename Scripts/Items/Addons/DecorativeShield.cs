@@ -96,7 +96,7 @@ namespace Server.Items
                     from.SendLocalizedMessage(1049784); // You can only re-deed this decoration if you are the house owner or originally placed the decoration.
             }
             else
-                from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
+                from.LocalOverheadMessage(MessageType.Regular, 0x7B2, 1019045); // I can't reach that.
         }
 
         public override void Serialize(GenericWriter writer)

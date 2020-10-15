@@ -24,6 +24,7 @@ namespace Server.Engines.VvV
 		[Constructable]
 		public VvVTrapKit(VvVTrapType type) : base(7866)
 		{
+            Name = "Armadilha de Guerra de " + type.ToString();
 			TrapType = type;
             DeploymentType = DeploymentType.Proximaty;
 		}

@@ -4,9 +4,14 @@ namespace Server.Items
 {
     public class GreaterAgilityPotion : BaseAgilityPotion
     {
+        public override string DefaultName
+        {
+            get { return "Poção de Agilidade Maior"; }            
+        }
+
         [Constructable]
         public GreaterAgilityPotion()
-            : base(PotionEffect.AgilityGreater)
+            : base(PotionEffect.AgilidadeMaior)
         {
         }
 
@@ -19,7 +24,7 @@ namespace Server.Items
         {
             get
             {
-                return 20;
+                return 30;
             }
         }
         public override TimeSpan Duration

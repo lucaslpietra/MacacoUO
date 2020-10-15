@@ -643,7 +643,7 @@ namespace Server.Items
 				}
 				else if (HasSpell(scroll.SpellID))
 				{
-					from.SendLocalizedMessage(500179); // That spell is already present in that spellbook.
+					from.SendMessage("Este livro ja tem esta magia"); // That spell is already present in that spellbook.
 					return false;
 				}
 				else
@@ -803,7 +803,7 @@ namespace Server.Items
 				to.Send(new DisplaySpellbook(this));
 			}
 
-			if (ObjectPropertyList.Enabled)
+			if (true)
 			{
 				if (ns.NewSpellbook)
 				{
@@ -850,7 +850,7 @@ namespace Server.Items
 
 			if (m_Crafter != null)
 			{
-				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+				list.Add("Criado por "+ m_Crafter.TitleName); // crafted by ~1_NAME~
 			}
 
             #region Factions
@@ -879,8 +879,9 @@ namespace Server.Items
 				SlayerEntry entry = SlayerGroup.GetEntryByName(m_Slayer);
 				if (entry != null)
 				{
-					list.Add(entry.Title);
-				}
+                    list.AddTwoValues("Matador de", entry.Name.ToString());
+                    //list.Add(entry.Title);
+                }
 			}
 
 			if (m_Slayer2 != SlayerName.None)
@@ -888,8 +889,9 @@ namespace Server.Items
 				SlayerEntry entry = SlayerGroup.GetEntryByName(m_Slayer2);
 				if (entry != null)
 				{
-					list.Add(entry.Title);
-				}
+                    list.AddTwoValues("Matador de", entry.Name.ToString());
+                    //list.Add(entry.Title);
+                }
 			}
 
             if (HasSocket<Caddellite>())
@@ -1021,7 +1023,7 @@ namespace Server.Items
 
             AddProperty(list);
 
-			list.Add(1042886, m_Count.ToString()); // ~1_NUMBERS_OF_SPELLS~ Spells
+			list.Add(m_Count.ToString()+" Magias"); // ~1_NUMBERS_OF_SPELLS~ Spells
 
             if (this.m_MaxHitPoints > 0)
                 list.Add(1060639, "{0}\t{1}", this.m_HitPoints, this.m_MaxHitPoints); // durability ~1_val~ / ~2_val~

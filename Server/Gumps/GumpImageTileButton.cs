@@ -38,8 +38,9 @@ namespace Server.Gumps
 		private int m_Height;
 
 		private int m_LocalizedTooltip;
+        private string m_LocalizedTooltipStr;
 
-		public GumpImageTileButton( int x, int y, int normalID, int pressedID, int buttonID, GumpButtonType type, int param, int itemID, int hue, int width, int height ) : this(x, y, normalID, pressedID, buttonID, type, param, itemID, hue, width, height, -1 )
+        public GumpImageTileButton( int x, int y, int normalID, int pressedID, int buttonID, GumpButtonType type, int param, int itemID, int hue, int width, int height ) : this(x, y, normalID, pressedID, buttonID, type, param, itemID, hue, width, height, -1 )
 		{
 		}
 
@@ -61,7 +62,25 @@ namespace Server.Gumps
 			m_LocalizedTooltip = localizedTooltip;
 		}
 
-		public int X
+        public GumpImageTileButton(int x, int y, int normalID, int pressedID, int buttonID, GumpButtonType type, int param, int itemID, int hue, int width, int height, string localizedTooltip)
+        {
+            m_X = x;
+            m_Y = y;
+            m_ID1 = normalID;
+            m_ID2 = pressedID;
+            m_ButtonID = buttonID;
+            m_Type = type;
+            m_Param = param;
+
+            m_ItemID = itemID;
+            m_Hue = hue;
+            m_Width = width;
+            m_Height = height;
+
+            m_LocalizedTooltipStr = localizedTooltip;
+        }
+
+        public int X
 		{
 			get
 			{
@@ -217,9 +236,11 @@ namespace Server.Gumps
 
 		public override string Compile()
 		{
-			if( m_LocalizedTooltip > 0 )
+            if( m_LocalizedTooltipStr != null)
+                return String.Format("{{ buttontileart {0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} }}{{ tooltip {11} }}", m_X, m_Y, m_ID1, m_ID2, (int)m_Type, m_Param, m_ButtonID, m_ItemID, m_Hue, m_Width, m_Height, m_LocalizedTooltipStr);
+            if ( m_LocalizedTooltip > 0 )
 				return String.Format( "{{ buttontileart {0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} }}{{ tooltip {11} }}", m_X, m_Y, m_ID1, m_ID2, (int)m_Type, m_Param, m_ButtonID, m_ItemID, m_Hue, m_Width, m_Height, m_LocalizedTooltip );
-			else
+            else
 				return String.Format( "{{ buttontileart {0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} }}", m_X, m_Y, m_ID1, m_ID2, (int)m_Type, m_Param, m_ButtonID, m_ItemID, m_Hue, m_Width, m_Height );
 		}
 

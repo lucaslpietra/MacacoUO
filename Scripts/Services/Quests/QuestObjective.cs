@@ -250,17 +250,17 @@ namespace Server.Engines.Quests
             this.AddImage(20, 87, 1231);
             this.AddImage(75, 62, 9307);
 
-            this.AddHtmlLocalized(117, 35, 230, 20, 1046026, Blue, false, false); // Quest Log
+            this.AddHtml(117, 35, 230, 20, "Registro de Missoes", Blue, false, false); // Quest Log
 
             this.AddImage(77, 33, 9781);
             this.AddImage(65, 110, 2104);
 
-            this.AddHtmlLocalized(79, 106, 230, 20, 1049073, Blue, false, false); // Objective:
+            this.AddHtml(79, 106, 230, 20, "Objetivo:", Blue, false, false); // Objective:
 
             this.AddImageTiled(68, 125, 120, 1, 9101);
             this.AddImage(65, 240, 2104);
 
-            this.AddHtmlLocalized(79, 237, 230, 20, 1049076, Blue, false, false); // Progress details:
+            this.AddHtml(79, 237, 230, 20, "Progresso:", Blue, false, false); // Progress details:
 
             this.AddImageTiled(68, 255, 120, 1, 9101);
             this.AddButton(175, 355, 2313, 2312, 1, GumpButtonType.Reply, 0);
@@ -279,7 +279,7 @@ namespace Server.Engines.Quests
                 if (i > 0)
                 {
                     this.AddButton(55, 346, 9909, 9911, 0, GumpButtonType.Page, 1 + i);
-                    this.AddHtmlLocalized(82, 347, 50, 20, 1043354, White, false, false); // Previous
+                    this.AddHtml(82, 347, 50, 20, "Anterior", White, false, false); // Previous
 
                     this.AddPage(1 + i);
                 }
@@ -290,7 +290,7 @@ namespace Server.Engines.Quests
                 if (i > 0)
                 {
                     this.AddButton(317, 346, 9903, 9905, 0, GumpButtonType.Page, i);
-                    this.AddHtmlLocalized(278, 347, 50, 20, 1043353, White, false, false); // Next
+                    this.AddHtml(278, 347, 50, 20, "Proximo", White, false, false); // Next
                 }
             }
         }

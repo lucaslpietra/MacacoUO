@@ -65,16 +65,13 @@ namespace Server.Spells.Bushido
         }
         public static bool CheckExpansion(Mobile from)
         {
-            if (!Core.SE)
-                return false;
+            //if (!(from is PlayerMobile))
+            //    return true;
 
-            if (!(from is PlayerMobile))
-                return true;
-
-            if (from.NetState == null)
-                return false;
-
-            return from.NetState.SupportsExpansion(Expansion.SE);
+            //if (from.NetState == null)
+            //    return false;
+            return true;
+            //return from.NetState.SupportsExpansion(Expansion.SE);
         }
 
         public static void OnEffectEnd(Mobile caster, Type type)
@@ -87,7 +84,7 @@ namespace Server.Spells.Bushido
 
         public override bool CheckCast()
         {
-            int mana = this.ScaleMana(this.RequiredMana);
+            int mana = this.AjustaMana(this.RequiredMana);
 
             if (!base.CheckCast())
                 return false;
@@ -115,7 +112,7 @@ namespace Server.Spells.Bushido
 
         public override bool CheckFizzle()
         {
-            int mana = this.ScaleMana(this.RequiredMana);
+            int mana = this.AjustaMana(this.RequiredMana);
 
             if (this.Caster.Skills[this.CastSkill].Value < this.RequiredSkill)
             {

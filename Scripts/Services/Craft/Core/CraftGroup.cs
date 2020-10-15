@@ -9,7 +9,8 @@ namespace Server.Engines.Craft
         private readonly int m_NameNumber;
         public CraftGroup(TextDefinition groupName)
         {
-            this.m_NameNumber = groupName;
+            if(groupName.Number > 0)
+                this.m_NameNumber = groupName;
             this.m_NameString = groupName;
             this.m_arCraftItem = new CraftItemCol();
         }

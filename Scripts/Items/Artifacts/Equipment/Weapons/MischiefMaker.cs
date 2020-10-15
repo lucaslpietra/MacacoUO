@@ -19,7 +19,7 @@ namespace Server.Items
         {
             Hue = 0x8AB;
             Balanced = true;			
-            Slayer = SlayerName.Silver;			
+            Slayer = SlayerName.Undeads;			
             Attributes.WeaponSpeed = 35;
             Attributes.WeaponDamage = 45;
         }

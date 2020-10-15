@@ -44,8 +44,18 @@ namespace Server.Items
                 Weight = 1.0;
         }
 
+        public void Acende()
+        {
+
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
+            if (from.IsCooldown("fogueira"))
+                return;
+            from.SetCooldown("fogueira", TimeSpan.FromSeconds(5));
+
+            Shard.Debug("Fogueira", from);
             if (!VerifyMove(from))
                 return;
 
@@ -55,47 +65,62 @@ namespace Server.Items
                 return;
             }
 
+            if(this.Parent != null)
+            {
+                from.SendMessage("Voce precisa colocar a fogueira no chao");
+                return;
+            }
+
+            bool f = false;
+            var items = this.Map.GetItemsInRange(this.Location);
+            foreach(var item in items)
+            {
+                if(item is Campfire)
+                {
+                    item.Consume();
+                    f = true;
+                }
+            }
+            items.Free();
+
             Point3D fireLocation = GetFireLocation(from);
 
             if (fireLocation == Point3D.Zero)
             {
-                from.SendLocalizedMessage(501695); // There is not a spot nearby to place your campfire.
+                from.SendMessage("Nao a local para uma fogueira aqui"); // There is not a spot nearby to place your campfire.
             }
-            else if (!from.CheckSkill(SkillName.Camping, 0.0, 100.0))
+            else if (!from.CheckSkillMult(SkillName.Camping, 0.0, 100.0))
             {
-                from.SendLocalizedMessage(501696); // You fail to ignite the campfire.
+                from.SendMessage("Voce nao conseguir ascender a fogueira"); // You fail to ignite the campfire.
             }
             else
             {
-                Consume();
+                Consume(1);
 
-                if (!Deleted && Parent == null)
-                    from.PlaceInBackpack(this);
+                //if (!Deleted && Parent == null)
+                //    from.PlaceInBackpack(this);
+                fireLocation.Z = fireLocation.Z + 1;
+                var campfire = new Campfire();
+                campfire.nomeDeQUemAscendeu = from.Name;
+                campfire.MoveToWorld(fireLocation, from.Map);
 
-                new Campfire().MoveToWorld(fireLocation, from.Map);
+                if (from.Skills[SkillName.Camping].Value >= 80)
+                {
+                    campfire.regenera = true;
+                    from.SendMessage("Voce ascende a fogueira com perfeicao. Esta fogueira regenerara HP e Stamina de jogadores proximos."); 
+                }
             }
         }
 
         private Point3D GetFireLocation(Mobile from)
         {
-            if (from.Region.IsPartOf<DungeonRegion>())
-                return Point3D.Zero;
+            //if (from.Region.IsPartOf<DungeonRegion>())
+            //    return Point3D.Zero;
 
             if (Parent == null)
                 return Location;
-
-            ArrayList list = new ArrayList(4);
-
-            AddOffsetLocation(from, 0, -1, list);
-            AddOffsetLocation(from, -1, 0, list);
-            AddOffsetLocation(from, 0, 1, list);
-            AddOffsetLocation(from, 1, 0, list);
-
-            if (list.Count == 0)
+            else
                 return Point3D.Zero;
-
-            int idx = Utility.Random(list.Count);
-            return (Point3D)list[idx];
         }
 
         private void AddOffsetLocation(Mobile from, int offsetX, int offsetY, ArrayList list)

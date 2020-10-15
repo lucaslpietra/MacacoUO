@@ -17,7 +17,7 @@ namespace Server.Items
             WeaponAttributes.HitLeechStam = 50;
             WeaponAttributes.HitLightning = 40;	
             WeaponAttributes.HitLowerDefend = 30;
-            Slayer = SlayerName.Exorcism;
+            Slayer = SlayerName.Exorcismo;
         }
 
         public DemonHuntersStandard(Serial serial)

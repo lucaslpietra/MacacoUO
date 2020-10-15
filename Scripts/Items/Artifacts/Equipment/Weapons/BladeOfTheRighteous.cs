@@ -9,7 +9,7 @@ namespace Server.Items
         public BladeOfTheRighteous()
         {
             Hue = 0x47E;
-            Slayer = SlayerName.Exorcism;
+            Slayer = SlayerName.Exorcismo;
             WeaponAttributes.HitLeechHits = 87;
             WeaponAttributes.UseBestSkill = 1;
             Attributes.BonusHits = 10;

@@ -35,7 +35,7 @@ namespace Server.Items
 
 		public override void OnTrigger( Mobile from )
 		{
-            if (from.AccessLevel > AccessLevel.Player || !from.Alive)
+            if (from.AccessLevel > AccessLevel.VIP || !from.Alive)
                 return;
             
 			if( m_Owner != null )
@@ -48,7 +48,7 @@ namespace Server.Items
 			}
 
 			from.SendSound(0x22B);
-            from.SendLocalizedMessage(1095157); // You stepped onto a goblin trap!
+            from.SendMessage("Voce pisou em uma armadilha"); // You stepped onto a goblin trap!
 
             Spells.SpellHelper.Damage(TimeSpan.FromSeconds(0.30), from, from, Utility.RandomMinMax(50, 75), 100, 0, 0, 0, 0);
 				
@@ -58,14 +58,14 @@ namespace Server.Items
 			Visible = true;
 			Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerCallback(Rehide_Callback));
 
-            PublicOverheadMessage(Server.Network.MessageType.Regular, 0x65, 500813); // [Trapped]
+            PublicOverheadMessage(Server.Network.MessageType.Regular, 0x65, false, "* ativou uma armadilha *"); // [Trapped]
 
             new Blood().MoveToWorld(from.Location, from.Map);
 		}
 
         public virtual bool CheckReveal(Mobile m)
         {
-            return m.CheckTargetSkill(SkillName.DetectHidden, this, 50.0, 100.0);
+            return m.CheckTargetSkillMinMax(SkillName.DetectHidden, this, 50.0, 100.0);
         }
 
         public virtual void OnRevealed(Mobile m)
@@ -129,6 +129,7 @@ namespace Server.Items
 		[Constructable]
 		public GoblinFloorTrapKit() : base (16704)
 		{
+            Name = "Armadilha";
 		}
 		
 		public override void OnDoubleClick(Mobile from)
@@ -137,19 +138,19 @@ namespace Server.Items
 
 			if(!IsChildOf(from.Backpack))
 			{
-                from.SendLocalizedMessage(1054107); // This item must be in your backpack.
+                from.SendMessage("O item precisa estar em sua mochila"); // This item must be in your backpack.
 			}
             else if (from.Skills[SkillName.Tinkering].Value < 80)
             {
-                from.SendLocalizedMessage(1113318); // You do not have enough skill to set the trap.
+                from.SendMessage("Voce nao tem habilidade suficiente para armar a armadilha (Tinker > 80)"); // You do not have enough skill to set the trap.
             }
             else if (from.Mounted || from.Flying)
             {
-                from.SendLocalizedMessage(1113319); // You cannot set the trap while riding or flying.
+                from.SendMessage("Nao pode estar montado"); // You cannot set the trap while riding or flying.
             }
             else if (r is GuardedRegion && !((GuardedRegion)r).IsDisabled())
             {
-                from.SendMessage("You cannot place a trap in a guard region.");
+                from.SendMessage("Se voce colocar uma armadilha aqui os guardas nao vao ter piedade de voce.");
             }
             else
             {
@@ -175,28 +176,27 @@ namespace Server.Items
 
                     if (from.Skills[SkillName.Tinkering].Value < 80)
                     {
-                        from.SendLocalizedMessage(1113318); // You do not have enough skill to set the trap.
+                        from.SendMessage("Voce nao tem habilidade suficiente para colocar a armadilha"); // You do not have enough skill to set the trap.
                     }
                     else if (from.Mounted || from.Flying)
                     {
-                        from.SendLocalizedMessage(1113319); // You cannot set the trap while riding or flying.
+                        from.SendMessage("Nao pode estar montado"); // You cannot set the trap while riding or flying.
                     }
                     else if (r is GuardedRegion && !((GuardedRegion)r).IsDisabled())
                     {
-                        from.SendMessage("You cannot place a trap in a guard region.");
+                        from.SendMessage("Aqui nao.");
                     }
                     if (from.InRange(p, 2))
                     {
                         GoblinFloorTrap trap = new GoblinFloorTrap(from);
 
                         trap.MoveToWorld(p, from.Map);
-                        from.SendLocalizedMessage(1113294);  // You carefully arm the goblin trap.
-                        from.SendLocalizedMessage(1113297);  // You hide the trap to the best of your ability.            
+                        from.SendMessage("Voce colocou a armadilha cuidadosamente");  // You carefully arm the goblin trap.
 
                         m_Kit.Consume();
                     }
                     else
-                        from.SendLocalizedMessage(500446); // That is too far away.
+                        from.SendMessage("Muito longe"); // That is too far away.
 				}
 			}
 		}

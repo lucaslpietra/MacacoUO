@@ -27,6 +27,13 @@ namespace Server.Items
                 return 30;
             }
         }
+        public override double DamageScalar
+        {
+            get
+            {
+                return 0.8;
+            }
+        }
         public static bool IsWounded(Mobile m)
         {
             return m_Table.ContainsKey(m);
@@ -56,10 +63,10 @@ namespace Server.Items
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.MortalStrike, 1075810, 1075811, duration, m));
         }
 
-        public static void EndWound(Mobile m, bool natural = false)
+        public static bool EndWound(Mobile m, bool natural = false)
         {
             if (!IsWounded(m))
-                return;
+                return false;
 
             Timer t = m_Table[m];
 
@@ -71,7 +78,7 @@ namespace Server.Items
             BuffInfo.RemoveBuff(m, BuffIcon.MortalStrike);
 
             m.YellowHealthbar = false;
-            m.SendLocalizedMessage(1060208); // You are no longer mortally wounded.
+            m.SendLocalizedMessage("Voce nao esta mais sentindo a ferida mortal"); // You are no longer mortally wounded.
 
             if (Core.HS && natural && !m_EffectReduction.Contains(m))
             {
@@ -83,6 +90,7 @@ namespace Server.Items
                             m_EffectReduction.Remove(m);
                     });
             }
+            return true;
         }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
@@ -92,8 +100,8 @@ namespace Server.Items
 
             ClearCurrentAbility(attacker);
 
-            attacker.SendLocalizedMessage(1060086); // You deliver a mortal wound!
-            defender.SendLocalizedMessage(1060087); // You have been mortally wounded!
+            attacker.SendLocalizedMessage("Voce deu um golpe mortal"); // You deliver a mortal wound!
+            defender.SendLocalizedMessage("Voce recebeu um golpe mortal e nao podera se curar por um tempo"); // You have been mortally wounded!
 
             defender.PlaySound(0x1E1);
             defender.FixedParticles(0x37B9, 244, 25, 9944, 31, 0, EffectLayer.Waist);

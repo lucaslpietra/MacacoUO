@@ -941,7 +941,7 @@ namespace Server.Engines.XmlSpawner2
 		{
 
 			// do not register creature vs creature kills, nor any kills involving staff
-			//            if (m_killer == null || m_killed == null || !(m_killer.Player || m_killed.Player) /*|| (m_killer.AccessLevel > AccessLevel.Player) || (m_killed.AccessLevel > AccessLevel.Player) */)
+			//            if (m_killer == null || m_killed == null || !(m_killer.Player || m_killed.Player) /*|| (m_killer.AccessLevel > AccessLevel.VIP) || (m_killed.AccessLevel > AccessLevel.VIP) */)
 			//				return;
 
 			if (m_killer != null)
@@ -1003,7 +1003,7 @@ namespace Server.Engines.XmlSpawner2
 		{
 
 			// do not register creature vs creature kills, nor any kills involving staff
-			//            if (m_killer == null || m_killed == null || !(m_killer.Player || m_killed.Player) /*|| (m_killer.AccessLevel > AccessLevel.Player) || (m_killed.AccessLevel > AccessLevel.Player) */)
+			//            if (m_killer == null || m_killed == null || !(m_killer.Player || m_killed.Player) /*|| (m_killer.AccessLevel > AccessLevel.VIP) || (m_killed.AccessLevel > AccessLevel.VIP) */)
 			//				return;
 
 			if (m_killer != null)
@@ -1064,7 +1064,7 @@ namespace Server.Engines.XmlSpawner2
 		{
 			Mobile from = args.Mobile;
 
-			if (!from.Player /* || from.AccessLevel > AccessLevel.Player */)
+			if (!from.Player /* || from.AccessLevel > AccessLevel.VIP */)
 				return;
 
 			// check for any items in the same sector
@@ -1123,7 +1123,7 @@ namespace Server.Engines.XmlSpawner2
 		{
 			Mobile from = args.Mobile;
 
-			if (from == null || from.Map == null /*|| from.AccessLevel > AccessLevel.Player */) return;
+			if (from == null || from.Map == null /*|| from.AccessLevel > AccessLevel.VIP */) return;
 
 			// check the mob for any attachments that might handle speech
 			List<XmlAttachment> alist = XmlAttach.FindAttachments(from);

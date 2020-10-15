@@ -4,6 +4,11 @@ namespace Server.Items
 {
     public class LesserCurePotion : BaseCurePotion
     {
+		public override string DefaultName
+        {
+            get { return "Poção de Cura Menor"; }            
+        }
+		
         private static readonly CureLevelInfo[] m_OldLevelInfo = new CureLevelInfo[]
         {
             new CureLevelInfo(Poison.Lesser, 0.75), // 75% chance to cure lesser poison
@@ -20,7 +25,7 @@ namespace Server.Items
         };
         [Constructable]
         public LesserCurePotion()
-            : base(PotionEffect.CureLesser)
+            : base(PotionEffect.CuraMenor)
         {
         }
 

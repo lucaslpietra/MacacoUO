@@ -74,8 +74,8 @@ namespace Server.Items
 
                 foreach(var m in list)
                 {
-                    attacker.SendLocalizedMessage(1060161); // The whirling attack strikes a target!
-                    m.SendLocalizedMessage(1060162); // You are struck by the whirling attack and take damage!
+                    attacker.SendLocalizedMessage("O ataque atinge um alvo"); // The whirling attack strikes a target!
+                    m.SendLocalizedMessage("Voce foi atingido por um ataque redemoinho"); // You are struck by the whirling attack and take damage!
 
                     weapon.OnHit(attacker, m, damageBonus);
                 }

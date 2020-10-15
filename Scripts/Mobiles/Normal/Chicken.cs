@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public Chicken()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            Name = "a chicken";
+            Name = "galinha";
             Body = 0xD0;
             BaseSoundID = 0x6E;
 

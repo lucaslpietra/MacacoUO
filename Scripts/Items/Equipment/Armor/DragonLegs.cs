@@ -10,6 +10,7 @@ namespace Server.Items
             : base(0x2647)
         {
             this.Weight = 6.0;
+            this.Name = "Pernas do Dragao";
         }
 
         public DragonLegs(Serial serial)
@@ -91,7 +92,7 @@ namespace Server.Items
         {
             get
             {
-                return 40;
+                return 45;
             }
         }
         public override ArmorMaterialType MaterialType
@@ -105,7 +106,7 @@ namespace Server.Items
         {
             get
             {
-                return CraftResource.RedScales;
+                return CraftResource.EscamasVermelhas;
             }
         }
         public override void Serialize(GenericWriter writer)

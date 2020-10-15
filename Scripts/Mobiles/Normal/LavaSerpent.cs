@@ -43,9 +43,7 @@ namespace Server.Mobiles
 
             PackItem(new SulfurousAsh(3));
             PackItem(new Bone());
-            PackBodyPart();
-
-            SetSpecialAbility(SpecialAbility.DragonBreath);
+            // TODO: body parts, armour
         }
 
         public LavaSerpent(Serial serial)
@@ -60,6 +58,13 @@ namespace Server.Mobiles
                 return true;
             }
         }
+        public override bool HasBreath
+        {
+            get
+            {
+                return true;
+            }
+        }// fire breath enabled
         public override int Meat
         {
             get
@@ -82,7 +87,10 @@ namespace Server.Mobiles
             }
         }
 
-        public void AuraEffect(Mobile m)
+        public override bool HasAura { get { return true; } }
+        public override int AuraRange { get { return 2; } }
+
+        public override void AuraEffect(Mobile m)
         {
             m.SendMessage("The radiating heat scorches your skin!");
         }
@@ -104,6 +112,9 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (BaseSoundID == -1)
+                BaseSoundID = 219;
         }
     }
 }

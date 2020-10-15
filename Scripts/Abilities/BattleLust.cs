@@ -48,7 +48,7 @@ namespace Server
                 BattleLustTimer blt = new BattleLustTimer(m, 1);
                 blt.Start();
                 m_Table.Add(m, blt);
-                m.SendLocalizedMessage(1113748); // The damage you received fuels your battle fury.
+                m.SendLocalizedMessage("O dano que voce recebe eh combustivel para sua furia"); // The damage you received fuels your battle fury.
             }
         }
 

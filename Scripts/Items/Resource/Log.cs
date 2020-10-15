@@ -2,164 +2,166 @@ using System;
 
 namespace Server.Items
 {
-	[FlipableAttribute( 0x1bdd, 0x1be0 )]
-	public class BaseLog : Item, ICommodity, IAxe, IResource
-	{
-		private CraftResource m_Resource;
+    [FlipableAttribute(0x1bdd, 0x1be0)]
+    public class BaseLog : Item, ICommodity, IAxe
+    {
+        private CraftResource m_Resource;
 
-		[CommandProperty( AccessLevel.GameMaster )]
-		public CraftResource Resource
-		{
-			get { return m_Resource; }
-			set { m_Resource = value; InvalidateProperties(); }
-		}
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CraftResource Resource
+        {
+            get { return m_Resource; }
+            set { m_Resource = value; InvalidateProperties(); }
+        }
 
-		TextDefinition ICommodity.Description { get { return CraftResources.IsStandard( m_Resource ) ? LabelNumber : 1075062 + ( (int)m_Resource - (int)CraftResource.RegularWood ); } }
-		bool ICommodity.IsDeedable { get { return true; } }
-		[Constructable]
-		public BaseLog() : this( 1 )
-		{
-		}
+        TextDefinition ICommodity.Description { get { return CraftResources.IsStandard(m_Resource) ? LabelNumber : 1075062 + ((int)m_Resource - (int)CraftResource.Cedro); } }
+        bool ICommodity.IsDeedable { get { return true; } }
+        [Constructable]
+        public BaseLog() : this(1)
+        {
+        }
 
-		[Constructable]
-		public BaseLog( int amount ) : this( CraftResource.RegularWood, amount )
-		{
-		}
+        [Constructable]
+        public BaseLog(int amount) : this(CraftResource.Cedro, amount)
+        {
+        }
 
-		[Constructable]
-		public BaseLog( CraftResource resource )
-			: this( resource, 1 )
-		{
-		}
-		[Constructable]
-		public BaseLog( CraftResource resource, int amount )
-			: base( 0x1BDD )
-		{
-			Stackable = true;
-			Weight = 2.0;
-			Amount = amount;
+        [Constructable]
+        public BaseLog(CraftResource resource)
+            : this(resource, 1)
+        {
+        }
+        [Constructable]
+        public BaseLog(CraftResource resource, int amount)
+            : base(0x1BDD)
+        {
+            Stackable = true;
+            Weight = 2.0;
+            Amount = amount;
 
-			m_Resource = resource;
-			Hue = CraftResources.GetHue( resource );
-		}
+            m_Resource = resource;
+            Hue = CraftResources.GetHue(resource);
+        }
 
-		public override void GetProperties( ObjectPropertyList list )
-		{
-			base.GetProperties( list );
+        public override void OnDoubleClick(Mobile from)
+        {
+            from.SendMessage("Talvez voce possa transformar toras em tabuas usando um machado... Tabuas podem ser mais leves.");
+            base.OnDoubleClick(from);
+        }
 
-			if ( !CraftResources.IsStandard( m_Resource ) )
-			{
-				int num = CraftResources.GetLocalizationNumber( m_Resource );
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            if (this.Amount == 1)
+                list.Add("Tora de " + m_Resource);
+            else
+                list.Add(this.Amount+" Toras de " + m_Resource);
+        }
 
-				if ( num > 0 )
-					list.Add( num );
-				else
-					list.Add( CraftResources.GetName( m_Resource ) );
-			}
-		}
-		public BaseLog( Serial serial ) : base( serial )
-		{
-		}
+        public BaseLog(Serial serial) : base(serial)
+        {
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.Write( (int) 2 ); // version
+            writer.Write((int)2); // version
 
-			writer.Write( (int)m_Resource );
-		}
+            writer.Write((int)m_Resource);
+        }
 
-		public static bool UpdatingBaseLogClass;
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize( reader );
+        public static bool UpdatingBaseLogClass;
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadInt();
+            int version = reader.ReadInt();
 
-			if (version == 1)
-				UpdatingBaseLogClass = true;
-			m_Resource = (CraftResource)reader.ReadInt();
+            if (version == 1)
+                UpdatingBaseLogClass = true;
+            m_Resource = (CraftResource)reader.ReadInt();
 
-			if ( version == 0 )
-				m_Resource = CraftResource.RegularWood;
-		}
+            if (version == 0)
+                m_Resource = CraftResource.Cedro;
+        }
 
-		public virtual bool TryCreateBoards( Mobile from, double skill, Item item )
-		{
+        public virtual bool TryCreateBoards(Mobile from, double skill, Item item)
+        {
             if (Deleted || !from.CanSee(this))
             {
                 item.Delete();
                 return false;
             }
-            if (from.Skills.Carpentry.Value < skill && from.Skills.Lumberjacking.Value < skill)
+            /*
+            if (from.Skills.Lumberjacking.Value < skill)
             {
                 item.Delete();
-                from.SendLocalizedMessage(1072652); // You cannot work this strange and unusual wood.
+                from.SendMessage("Voce nao sabe trabalhar com esta madeira"); // You cannot work this strange and unusual wood.
                 return false;
             }
+            */
 
             if (HasSocket<Caddellite>())
             {
                 item.AttachSocket(new Caddellite());
             }
 
-			base.ScissorHelper( from, item, 1, false );
-			return true;
-		}
+            base.ScissorHelper(from, item, 1, false);
+            return true;
+        }
 
-		public virtual bool Axe( Mobile from, BaseAxe axe )
-		{
-			if ( !TryCreateBoards( from , 0, new Board() ) )
-				return false;
-			
-			return true;
-		}
-	}
+        public virtual bool Axe(Mobile from, BaseAxe axe)
+        {
+            if (!TryCreateBoards(from, 0, new Board()))
+                return false;
 
-	public class Log : BaseLog
-	{
-		[Constructable]
-		public Log()
-			: this(1)
-		{
-		}
+            return true;
+        }
+    }
 
-		[Constructable]
-		public Log(int amount)
-			: base(CraftResource.RegularWood, amount)
-		{
-		}
+    public class Log : BaseLog
+    {
+        [Constructable]
+        public Log()
+            : this(1)
+        {
+        }
 
-		public Log(Serial serial)
-			: base(serial)
-		{
-		}
+        [Constructable]
+        public Log(int amount)
+            : base(CraftResource.Cedro, amount)
+        {
+        }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write((int)0); // version
-		}
+        public Log(Serial serial)
+            : base(serial)
+        {
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			//don't deserialize anything on update
-			if (BaseLog.UpdatingBaseLogClass)
-				return;
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
 
-			int version = reader.ReadInt();
-		}
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            //don't deserialize anything on update
+            if (BaseLog.UpdatingBaseLogClass)
+                return;
 
-		public override bool Axe(Mobile from, BaseAxe axe)
-		{
-			if (!TryCreateBoards(from, 0, new Board()))
-				return false;
+            int version = reader.ReadInt();
+        }
 
-			return true;
-		}
-	}
+        public override bool Axe(Mobile from, BaseAxe axe)
+        {
+            if (!TryCreateBoards(from, 0, new Board()))
+                return false;
+
+            return true;
+        }
+    }
 
     public class HeartwoodLog : BaseLog
     {
@@ -171,7 +173,7 @@ namespace Server.Items
 
         [Constructable]
         public HeartwoodLog(int amount)
-            : base(CraftResource.Heartwood, amount)
+            : base(CraftResource.Eucalipto, amount)
         {
         }
 
@@ -213,7 +215,7 @@ namespace Server.Items
 
         [Constructable]
         public BloodwoodLog(int amount)
-            : base(CraftResource.Bloodwood, amount)
+            : base(CraftResource.Carmesim, amount)
         {
         }
 
@@ -255,7 +257,7 @@ namespace Server.Items
 
         [Constructable]
         public FrostwoodLog(int amount)
-            : base(CraftResource.Frostwood, amount)
+            : base(CraftResource.Gelo, amount)
         {
         }
 
@@ -297,7 +299,7 @@ namespace Server.Items
 
         [Constructable]
         public OakLog(int amount)
-            : base(CraftResource.OakWood, amount)
+            : base(CraftResource.Carvalho, amount)
         {
         }
 
@@ -339,7 +341,7 @@ namespace Server.Items
 
         [Constructable]
         public AshLog(int amount)
-            : base(CraftResource.AshWood, amount)
+            : base(CraftResource.Pinho, amount)
         {
         }
 
@@ -381,7 +383,7 @@ namespace Server.Items
 
         [Constructable]
         public YewLog(int amount)
-            : base(CraftResource.YewWood, amount)
+            : base(CraftResource.Mogno, amount)
         {
         }
 

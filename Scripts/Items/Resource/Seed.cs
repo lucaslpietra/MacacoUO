@@ -58,7 +58,13 @@ namespace Server.Engines.Plants
 			return new Seed( PlantTypeInfo.RandomBonsai( increaseRatio ), PlantHue.Plain, false );
 		}
 
-		public static Seed RandomPeculiarSeed( int group )
+        public static Seed RandomPeculiarSeed()
+        {
+            return RandomPeculiarSeed();
+        }
+
+
+        public static Seed RandomPeculiarSeed( int group )
 		{
 			switch ( group )
 			{
@@ -78,7 +84,7 @@ namespace Server.Engines.Plants
 		public Seed( PlantType plantType, PlantHue plantHue, bool showType ) : base( 0xDCF )
 		{
 			Weight = 1.0;
-			Stackable = Core.SA;
+			Stackable = true;
 
 			m_PlantType = plantType;
 			m_PlantHue = plantHue;
@@ -149,12 +155,18 @@ namespace Server.Engines.Plants
 		{
 			if ( !IsChildOf( from.Backpack ) )
 			{
-				from.SendLocalizedMessage( 1042664 ); // You must have the object in your backpack to use it.
+				from.SendMessage( "Precisa estar em sua mochila" ); // You must have the object in your backpack to use it.
 				return;
 			}
 
+            if(from.Skills.Herding.Base < 50)
+            {
+                from.SendMessage("Voce nao tem conhecimentos suficientes para usar isto (Herding > 50)");
+                return;
+            }
+
 			from.Target = new InternalTarget( this );
-			LabelTo( from, 1061916 ); // Choose a bowl of dirt to plant this seed in.
+			LabelTo( from, "Escolha um vaso com terra" ); // Choose a bowl of dirt to plant this seed in.
 		}
 
         public override bool WillStack(Mobile from, Item dropped)
@@ -216,7 +228,7 @@ namespace Server.Engines.Plants
                     Server.Items.GardenAddonComponent addon = (Server.Items.GardenAddonComponent)targeted;
 
                     if (addon.Plant != null)
-                        from.SendLocalizedMessage(1150367); // This plot already has a plant!
+                        from.SendMessage("Ja tem uma planta ali"); // This plot already has a plant!
                     else
                     {
                         Server.Multis.BaseHouse house = Server.Multis.BaseHouse.FindHouseAt(addon);
@@ -241,11 +253,11 @@ namespace Server.Engines.Plants
                 }
                 else if (targeted is Item)
                 {
-                    ((Item)targeted).LabelTo(from, 1061919); // You must use a seed on a bowl of dirt!
+                    ((Item)targeted).LabelTo(from, "Voce precisa usar isto em um vaso com terra"); // You must use a seed on a bowl of dirt!
                 }
                 else
                 {
-                    from.SendLocalizedMessage(1061919); // You must use a seed on a bowl of dirt!
+                    from.SendMessage("Precisa usar isto em um vaso com terra"); // You must use a seed on a bowl of dirt!
                 }
 			}
 		}

@@ -1,4 +1,4 @@
-﻿#region References
+#region References
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -177,7 +177,7 @@ namespace Server
 
 				foreach (var e in _Entries.Values)
 				{
-					Console.WriteLine(e);
+					//Console.WriteLine(e);
 				}
 
 				Console.WriteLine();
@@ -488,7 +488,7 @@ namespace Server
 			}
 
 			Utility.PushColor(ConsoleColor.Yellow);
-			Console.WriteLine("Config: Warning, using default value for {0}", key);
+			//Console.WriteLine("Config: Warning, using default value for {0}", key);
 			Utility.PopColor();
 
 			return null;

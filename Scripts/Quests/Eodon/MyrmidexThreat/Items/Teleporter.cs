@@ -19,7 +19,7 @@ namespace Server.Items
 
         public override bool OnMoveOver(Mobile m)
         {
-            if (MyrmidexInvasionSystem.IsAlliedWith(m, Allegiance) || m.AccessLevel > AccessLevel.Player)
+            if (MyrmidexInvasionSystem.IsAlliedWith(m, Allegiance) || m.AccessLevel > AccessLevel.VIP)
                 return base.OnMoveOver(m);
 
             m.SendLocalizedMessage(Allegiance == Allegiance.Myrmidex ? 1156838 : 1156839); // You must ally yourself to the Eodonians to enter.
@@ -59,7 +59,7 @@ namespace Server.Items
 
         public override bool OnMoveOver(Mobile from)
         {
-            if ((from is PlayerMobile && QuestHelper.GetQuest((PlayerMobile)from, typeof(InsecticideAndRegicideQuest)) != null) || from.AccessLevel > AccessLevel.Player)
+            if ((from is PlayerMobile && QuestHelper.GetQuest((PlayerMobile)from, typeof(InsecticideAndRegicideQuest)) != null) || from.AccessLevel > AccessLevel.VIP)
                 return base.OnMoveOver(from);
 
             from.SendLocalizedMessage(1156840); // You must be on the "Insecticide & Regicide" quest to enter.  Visit Professor Rafkin in Sir Geoffrey's camp to the East.

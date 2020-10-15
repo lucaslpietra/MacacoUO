@@ -5,12 +5,12 @@ namespace Server.Items
 {
     public class ClockworkAssembly : Item, ICommodity
     {
-        public override int LabelNumber { get { return 1073426; } } // Clockwork Assembly
 
         [Constructable]
         public ClockworkAssembly()
             : base(0x1EA8)
         {
+            Name = "Engenhoca Goblin";
             Weight = 5.0;
             Hue = 1102;
         }
@@ -33,7 +33,7 @@ namespace Server.Items
 
             if (from.Skills[SkillName.Tinkering].Value < 60.0)
             {
-                from.SendLocalizedMessage(1071943); // You must be a Journeyman or higher Tinker to construct a golem.
+                from.SendMessage("Voce precisa de pelo menos 60 tinker para isto"); // You must be a Journeyman or higher Tinker to construct a golem.
                 return;
             }
             else if ((from.Followers + 4) > from.FollowersMax)

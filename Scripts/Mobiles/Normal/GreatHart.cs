@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public GreatHart()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            Name = "a great hart";
+            Name = "gazela";
             Body = 0xEA;
 
             SetStr(41, 71);

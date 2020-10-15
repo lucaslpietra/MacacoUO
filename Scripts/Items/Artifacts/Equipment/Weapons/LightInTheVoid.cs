@@ -10,7 +10,7 @@ namespace Server.Items
         [Constructable]
         public LightInTheVoid()
         {
-			Slayer = SlayerName.Silver;
+			Slayer = SlayerName.Undeads;
 			WeaponAttributes.HitLightning = 45;
 			WeaponAttributes.HitLowerDefend = 30;
 			Attributes.BonusStr = 8;

@@ -499,7 +499,7 @@ namespace Server.Gumps
                 SkillName.ArmsLore,
                 SkillName.Forensics,
                 SkillName.ItemID,
-                SkillName.TasteID
+                SkillName.Jewelcrafting
             })
         };
         private readonly string m_Name;

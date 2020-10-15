@@ -6,6 +6,11 @@ namespace Server.Engines.Quests
 { 
     public class BaseQuest
     { 
+        public virtual bool CanAccept(PlayerMobile player)
+        {
+            return true;
+        }
+
         public virtual bool AllObjectives
         {
             get
@@ -222,6 +227,7 @@ namespace Server.Engines.Quests
                     }
                     else
                     {
+                        Shard.Debug("Objetivo nao completado: " + m_Objectives[i].GetType());
                         if (AllObjectives)
                             return false;
                     }
@@ -296,6 +302,7 @@ namespace Server.Engines.Quests
 		
         public virtual void UpdateChain()
         {
+            Shard.Debug("Update Chain", m_Owner);
             if (ChainID != QuestChain.None && StartingMobile != null)
             {
                 if (m_Owner.Chains.ContainsKey(ChainID))
@@ -315,7 +322,7 @@ namespace Server.Engines.Quests
         public virtual void OnAccept()
         {
             m_Owner.PlaySound(AcceptSound);
-            m_Owner.SendLocalizedMessage(1049019); // You have accepted the Quest.
+            m_Owner.SendMessage("Voce aceitou a missao"); // You have accepted the Quest.
             m_Owner.Quests.Add(this);
 			
             // give items if any		
@@ -340,9 +347,9 @@ namespace Server.Engines.Quests
                     Region region = escort.GetDestination();
 
                     if (region != null)
-                        escort.Say(1042806, region.Name); // Lead on! Payment will be made when we arrive at ~1_DESTINATION~!
+                        escort.Say("Vamos la, pagarei quando chegarmos em "+region.Name); // Lead on! Payment will be made when we arrive at ~1_DESTINATION~!
                     else
-                        escort.Say(1042806, "destination"); // Lead on! Payment will be made when we arrive at ~1_DESTINATION~!
+                        escort.Say("Vamos la, pagarei quando chegarmos no destino !"); // Lead on! Payment will be made when we arrive at ~1_DESTINATION~!
 
                     m_Owner.LastEscortTime = DateTime.UtcNow;
                 }
@@ -353,15 +360,18 @@ namespace Server.Engines.Quests
         }
 		
         public virtual void OnRefuse()
-        { 
+        {
+            Shard.Debug("Refuse");
             if (!QuestHelper.FirstChainQuest(this, Quester))
                 UpdateChain();			
         }
 		
         public virtual void OnResign(bool resignChain)
         { 
-            m_Owner.PlaySound(ResignSound);	
-			
+            m_Owner.PlaySound(ResignSound);
+
+            Shard.Debug("Resign");
+
             // update chain
             if (!resignChain && !QuestHelper.FirstChainQuest(this, Quester))
                 UpdateChain();	
@@ -402,7 +412,7 @@ namespace Server.Engines.Quests
 		
         public virtual void OnCompleted()
         { 
-            m_Owner.SendLocalizedMessage(CompleteMessage, null, 0x23); // You've completed a quest!  Don't forget to collect your reward.							
+            m_Owner.SendMessage("Voce completou a missao !"); // You've completed a quest!  Don't forget to collect your reward.							
             m_Owner.PlaySound(CompleteSound);
         }
 		
@@ -436,24 +446,23 @@ namespace Server.Engines.Quests
                         reward.Amount = m_Rewards[i].Amount;
                         m_Rewards[i].Amount = 1;
                     }
-					
+
+                    m_Owner.SendMessage("Voce ganhou uma recompensa !");
+
                     for (int j = 0; j < m_Rewards[i].Amount; j ++)
                     {
                         if (!m_Owner.PlaceInBackpack(reward))
                         {
                             reward.MoveToWorld(m_Owner.Location, m_Owner.Map);
                         }
-						
-                        if (m_Rewards[i].Name is int)
-                            m_Owner.SendLocalizedMessage(1074360, "#" + (int)m_Rewards[i].Name); // You receive a reward: ~1_REWARD~
-                        else if (m_Rewards[i].Name is string)
-                            m_Owner.SendLocalizedMessage(1074360, (string)m_Rewards[i].Name); // You receive a reward: ~1_REWARD~
 
-                        // already marked, we need to see if this gives progress to another quest.
-                        if (reward.QuestItem)
-                        {
-                            QuestHelper.CheckRewardItem(Owner, reward);
-                        }
+                      
+                        /*
+                        if (m_Rewards[i].Name is int)
+                            m_Owner.SendMessage("Ganhou " + (int)m_Rewards[i].Name); // You receive a reward: ~1_REWARD~
+                        else if (m_Rewards[i].Name is string)
+                            m_Owner.SendMessage("Ganhou "+ (string)m_Rewards[i].Name); // You receive a reward: ~1_REWARD~
+                        */
                     }
                 }
             }
@@ -471,11 +480,6 @@ namespace Server.Engines.Quests
 					
                 if (quest != null && quest.ChainID == ChainID)
                     m_Owner.SendGump(new MondainQuestGump(quest));
-            }
-
-            if (this is ITierQuest)
-            {
-                TierQuestInfo.CompleteQuest(Owner, (ITierQuest)this);
             }
 
             EventSink.InvokeQuestComplete(new QuestCompleteEventArgs(Owner, GetType()));
@@ -535,21 +539,26 @@ namespace Server.Engines.Quests
             if (removeChain)
                 m_Owner.Chains.Remove(ChainID);
 			
-            if (Completed && (RestartDelay > TimeSpan.Zero || ForceRemember || DoneOnce) && NextQuest == null && Owner.AccessLevel == AccessLevel.Player)
+            if (Completed && (RestartDelay > TimeSpan.Zero || ForceRemember || DoneOnce) && NextQuest == null)
             {
                 Type type = GetType();	
 				
                 if (ChainID != QuestChain.None)
                     type = QuestHelper.FindFirstChainQuest(this);
 
-                QuestHelper.Delay(Owner, type, RestartDelay);
+                QuestHelper.DoneQuest(Owner, type, RestartDelay);
             }
 			
             QuestHelper.RemoveAcceleratedSkillgain(Owner);
-
-            if (m_Owner.Quests.Contains(this))
+				
+            for (int i = m_Owner.Quests.Count - 1; i >= 0; i --)
             {
-                m_Owner.Quests.Remove(this);
+                if (m_Owner.Quests[i] == this)
+                {
+                    m_Owner.Quests.RemoveAt(i);
+					
+                    break;
+                }
             }
         }
 

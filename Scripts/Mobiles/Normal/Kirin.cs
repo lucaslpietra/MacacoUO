@@ -23,9 +23,9 @@ namespace Server.Mobiles
             this.SetDex(86, 105);
             this.SetInt(186, 225);
 
-            this.SetHits(191, 210);
+            this.SetHits(100, 100);
 
-            this.SetDamage(16, 22);
+            this.SetDamage(1, 3);
 
             this.SetDamageType(ResistanceType.Physical, 70);
             this.SetDamageType(ResistanceType.Fire, 10);
@@ -39,7 +39,7 @@ namespace Server.Mobiles
             this.SetResistance(ResistanceType.Energy, 25, 35);
 
             this.SetSkill(SkillName.EvalInt, 80.1, 90.0);
-            this.SetSkill(SkillName.Magery, 60.4, 100.0);
+         
             this.SetSkill(SkillName.Meditation, 90.1, 100.0);
             this.SetSkill(SkillName.MagicResist, 85.3, 100.0);
             this.SetSkill(SkillName.Tactics, 20.1, 22.5);
@@ -56,14 +56,6 @@ namespace Server.Mobiles
         public Kirin(Serial serial)
             : base(serial)
         {
-        }
-
-        public override bool AllowFemaleRider
-        {
-            get
-            {
-                return false;
-            }
         }
         public override bool AllowFemaleTamer
         {
@@ -160,7 +152,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (!Controlled && Utility.RandomDouble() < 0.3)
+            if (Utility.RandomDouble() < 0.3)
                 c.DropItem(new KirinBrains());
         }
 

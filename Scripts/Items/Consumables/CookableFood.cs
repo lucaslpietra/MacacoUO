@@ -41,8 +41,10 @@ namespace Server.Items
         TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
 
-        public override void AddCraftedProperties(ObjectPropertyList list)
+        public override void GetProperties(ObjectPropertyList list)
         {
+            base.GetProperties(list);
+
             if (_Quality == ItemQuality.Exceptional)
             {
                 list.Add(1060636); // Exceptional
@@ -189,7 +191,7 @@ namespace Server.Items
                         return;
                     }
 
-                    if (m_From.CheckSkill(SkillName.Cooking, m_CookableFood.CookingLevel, 100))
+                    if (m_From.CheckSkillMult(SkillName.Cooking, m_CookableFood.CookingLevel, 100))
                     {
                         Food cookedFood = m_CookableFood.Cook();
 

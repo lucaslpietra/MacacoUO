@@ -8,9 +8,9 @@ namespace Server.Mobiles
     {
         [Constructable]
         public GrizzlyBear()
-            : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a grizzly bear";
+            this.Name = "urso cinzento";
             this.Body = 212;
             this.BaseSoundID = 0xA3;
 
@@ -21,7 +21,7 @@ namespace Server.Mobiles
             this.SetHits(76, 93);
             this.SetMana(0);
 
-            this.SetDamage(8, 13);
+            this.SetDamage(3, 30);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
@@ -40,8 +40,10 @@ namespace Server.Mobiles
             this.VirtualArmor = 24;
 
             this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = 59.1;
+            this.ControlSlots = 2;
+            this.MinTameSkill = 50.1;
+
+            SetSpecialAbility(SpecialAbility.Rage);
         }
 
         public GrizzlyBear(Serial serial)
@@ -60,7 +62,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return 16;
+                return 26;
             }
         }
         public override FoodType FavoriteFood

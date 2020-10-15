@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server.Targeting;
 
 namespace Server.Items
@@ -66,13 +66,7 @@ namespace Server.Items
 
             if (info != null)
             {
-                if (info.Rarity == DawnsMusicRarity.Common)
-                    list.Add(1075204); // Gear for Dawn's Music Box (Common)
-                else if (info.Rarity == DawnsMusicRarity.Uncommon)
-                    list.Add(1075205); // Gear for Dawn's Music Box (Uncommon)
-                else if (info.Rarity == DawnsMusicRarity.Rare)
-                    list.Add(1075206); // Gear for Dawn's Music Box (Rare)
-
+                list.Add("Disco para caixa de musicas: " + info.Rarity.ToString());
                 list.Add(info.Name);
             }
             else
@@ -149,13 +143,13 @@ namespace Server.Items
 
                         this.m_Gear.Delete();
 
-                        from.SendLocalizedMessage(1071961); // This song has been added to the musicbox.
+                        from.SendLocalizedMessage("Musica adicionada na caixa"); // This song has been added to the musicbox.
                     }
                     else
-                        from.SendLocalizedMessage(1071962); // This song track is already in the musicbox.
+                        from.SendLocalizedMessage("Esta caixa ja tem essa musica"); // This song track is already in the musicbox.
                 }
                 else
-                    from.SendLocalizedMessage(1071964); // Gears can only be put into a musicbox.
+                    from.SendLocalizedMessage("Apenas musicas podem ser colocadas na caixa"); // Gears can only be put into a musicbox.
             }
         }
     }

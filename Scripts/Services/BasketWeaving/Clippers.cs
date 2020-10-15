@@ -201,7 +201,7 @@ namespace Server.Items
 
                 PlantItem plant = targeted as PlantItem;
 
-                if (null == plant || PlantStatus.DecorativePlant != plant.PlantStatus)
+                if (null == plant || PlantStatus.PlantaDecorativa != plant.PlantStatus)
                 {
                     from.SendLocalizedMessage(1112119); // You may only use these clippers on decorative plants.
                     return;

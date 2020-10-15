@@ -8,7 +8,8 @@ namespace Server.Items
         public PlateHelm()
             : base(0x1412)
         {
-            Weight = 5.0;
+            this.Weight = 5.0;
+            this.Name = "Elmo de Metal";
         }
 
         public PlateHelm(Serial serial)
@@ -51,6 +52,13 @@ namespace Server.Items
                 return 2;
             }
         }
+        public override int OldDexBonus
+        {
+            get
+            {
+                return -1;
+            }
+        }
         public override int InitMinHits
         {
             get
@@ -76,14 +84,7 @@ namespace Server.Items
         {
             get
             {
-                return 40;
-            }
-        }
-        public override int OldDexBonus
-        {
-            get
-            {
-                return -1;
+                return 80;
             }
         }
         public override int ArmorBase
@@ -110,6 +111,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (this.Weight == 1.0)
+                this.Weight = 5.0;
         }
     }
 }

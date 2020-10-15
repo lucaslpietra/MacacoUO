@@ -31,8 +31,8 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
-                Add(new GenericBuyInfo(typeof(JarHoney), 3, 20, 0x9EC, 0));
-                Add(new GenericBuyInfo(typeof(Beeswax), 2, 20, 0x1422, 0));
+                Add(new GenericBuyInfo(typeof(JarHoney), 500, 20, 0x9EC, 0));
+                Add(new GenericBuyInfo(typeof(Beeswax), 500, 20, 0x1422, 0));
             }
         }
 
@@ -40,8 +40,8 @@ namespace Server.Mobiles
         {
             public InternalSellInfo()
             {
-                Add(typeof(JarHoney), 1);
-                Add(typeof(Beeswax), 1);
+                //Add(typeof(JarHoney), 1);
+                //Add(typeof(Beeswax), 1);
             }
         }
     }

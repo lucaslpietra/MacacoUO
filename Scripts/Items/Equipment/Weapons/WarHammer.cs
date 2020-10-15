@@ -13,6 +13,7 @@ namespace Server.Items
         {
             this.Weight = 10.0;
             this.Layer = Layer.TwoHanded;
+            Name = "Martelo de Guerra";
         }
 
         public WarHammer(Serial serial)

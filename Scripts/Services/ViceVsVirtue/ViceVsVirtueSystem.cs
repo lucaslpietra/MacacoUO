@@ -19,12 +19,13 @@ namespace Server.Engines.VvV
 {
     public enum VvVType
     {
-        Virtue, 
+        Virtue,
         Vice
     }
 
     public enum VvVCity
     {
+        /*
         Britain,
         Jhelom,
         Minoc,
@@ -33,6 +34,8 @@ namespace Server.Engines.VvV
         SkaraBrae,
         Trinsic,
         Yew
+        */
+        Tretonia
     }
 
     public class ViceVsVirtueSystem : PointsSystem
@@ -41,12 +44,12 @@ namespace Server.Engines.VvV
         public static int ViceHue = 2118;
 
         public static bool Enabled = Config.Get("VvV.Enabled", true);
-        public static int StartSilver = Config.Get("VvV.StartSilver", 2000);
-        public static bool EnhancedRules = Config.Get("VvV.EnhancedRules", false);
+        public static int StartSilver = 0;//Config.Get("VvV.StartSilver", 1000);
+        public static bool EnhancedRules = false; //  Config.Get("VvV.EnhancedRules", false);
 
         public static ViceVsVirtueSystem Instance { get; set; }
 
-        public override TextDefinition Name { get { return new TextDefinition("Vice Vs Virtue"); } }
+        public override TextDefinition Name { get { return new TextDefinition("Guerra Infinita"); } }
         public override PointsType Loyalty { get { return PointsType.ViceVsVirtue; } }
         public override bool AutoAdd { get { return false; } }
         public override double MaxPoints { get { return 10000; } }
@@ -93,7 +96,7 @@ namespace Server.Engines.VvV
                 List<Mobile> handled = new List<Mobile>();
                 bool statloss = false;
 
-                for(int i = 0; i < list.Count; i++)
+                for (int i = 0; i < list.Count; i++)
                 {
                     Mobile dam = list[i].Damager;
 
@@ -139,8 +142,8 @@ namespace Server.Engines.VvV
                         statloss = true;
                 }
 
-                if (statloss)
-                    Faction.ApplySkillLoss(victim);
+                //if (statloss)
+                //    Faction.ApplySkillLoss(victim);
 
                 ColUtility.Free(list);
                 ColUtility.Free(handled);
@@ -158,8 +161,8 @@ namespace Server.Engines.VvV
             if (!entry.Active)
                 entry.Active = true;
 
-            pm.SendLocalizedMessage(1155564); // You have joined Vice vs Virtue!
-            pm.SendLocalizedMessage(1063156, g.Name); // The guild information for ~1_val~ has been updated.
+            pm.SendLocalizedMessage("Voce entrou na guerra infinita"); // You have joined Vice vs Virtue!
+            //pm.SendLocalizedMessage(1063156, g.Name); // The guild information for ~1_val~ has been updated.
 
             pm.Delta(MobileDelta.Noto);
             pm.ProcessDelta();
@@ -180,13 +183,13 @@ namespace Server.Engines.VvV
 
             if (entry != null && entry.Active && !entry.Resigning)
             {
-                if (m.AccessLevel == AccessLevel.Player)
+                if (m.AccessLevel <= AccessLevel.VIP)
                     entry.ResignExpiration = DateTime.UtcNow + TimeSpan.FromDays(3);
                 else
                     entry.ResignExpiration = DateTime.UtcNow + TimeSpan.FromMinutes(1);
 
                 if (quitguild)
-                    m.SendLocalizedMessage(1155580); // You have quit a guild while participating in Vice vs Virtue.  You will be freely attackable by members of Vice vs Virtue until your resignation period has ended!
+                    m.SendLocalizedMessage("Voce saiu da guerra infinita, mas podera ser atacado ainda por um tempo."); // You have quit a guild while participating in Vice vs Virtue.  You will be freely attackable by members of Vice vs Virtue until your resignation period has ended!
             }
         }
 
@@ -196,7 +199,7 @@ namespace Server.Engines.VvV
 
             if (entry != null && entry.Resigning && entry.ResignExpiration < DateTime.UtcNow)
             {
-                pm.PrivateOverheadMessage(MessageType.Regular, 1154, 1155561, pm.NetState); // You are no longer in Vice vs Virtue!
+                pm.PrivateOverheadMessage(MessageType.Regular, 1154, false, "Voce nao faz mais parte da guerra infinita", pm.NetState); // You are no longer in Vice vs Virtue!
 
                 entry.Active = false;
                 entry.ResignExpiration = DateTime.MinValue;
@@ -207,6 +210,7 @@ namespace Server.Engines.VvV
 
         public void CheckBattleStatus()
         {
+            Shard.Debug("Check Status Global");
             if (Battle.OnGoing)
                 return;
 
@@ -220,12 +224,17 @@ namespace Server.Engines.VvV
 
         public void CheckBattleStatus(PlayerMobile pm)
         {
+            Shard.Debug("Battle Status Check");
+
             if (!IsVvV(pm) || !Enabled)
+            {
+                Shard.Debug("Batalha Inativa " + Enabled + " - " + IsVvV(pm));
                 return;
+            }
 
             if (Battle.OnGoing)
             {
-                SendVvVMessageTo(pm, 1154721, String.Format("#{0}", GetCityLocalization(Battle.City).ToString()));
+                SendVvVMessageTo(pm, "A batalha se inicia em " + GetCityLocalization(Battle.City).ToString());
                 // A Battle between Vice and Virtue is active! To Arms! The City of ~1_CITY~ is besieged!
 
                 if (Battle != null && Battle.IsInActiveBattle(pm))
@@ -240,11 +249,11 @@ namespace Server.Engines.VvV
 
                 if (count < 1)
                 {
-                    SendVvVMessageTo(pm, 1154936); // More players are needed before a VvV battle can begin! 
+                    SendVvVMessageTo(pm, "Para iniciar a guerra infinita precisa-se de mais jogadores"); // More players are needed before a VvV battle can begin! 
                 }
                 else if (Battle.InCooldown)
                 {
-                    SendVvVMessageTo(pm, 1154722); // A VvV battle has just concluded. The next battle will begin in less than five minutes!
+                    SendVvVMessageTo(pm, "A guerra infinita acontecera as 21:00h"); // A VvV battle has just concluded. The next battle will begin in less than five minutes!
                 }
                 else
                 {
@@ -279,7 +288,7 @@ namespace Server.Engines.VvV
                             }
                         }
 
-                        if(!hasally)
+                        if (!hasally)
                             guilds.Add(g);
                     }
                 }
@@ -300,18 +309,18 @@ namespace Server.Engines.VvV
 
                 if (m != null)
                 {
-                    m.SendMessage("[Guild][VvV] {0}", message);
+                    m.SendMessage("[Guild][GI] {0}", message);
                 }
             }
         }
 
         public void SendVvVMessage(int cliloc, string args = "")
         {
-            foreach(NetState state in NetState.Instances.Where(st => st.Mobile != null && IsVvV(st.Mobile)))
+            foreach (NetState state in NetState.Instances.Where(st => st.Mobile != null && IsVvV(st.Mobile)))
             {
                 Mobile m = state.Mobile;
 
-                if(m != null)
+                if (m != null)
                 {
                     SendVvVMessageTo(m, cliloc, args);
                 }
@@ -320,7 +329,12 @@ namespace Server.Engines.VvV
 
         public void SendVvVMessageTo(Mobile m, int cliloc, string args = "")
         {
-            m.SendLocalizedMessage(cliloc, false, "[Guild][VvV] ", args, m is PlayerMobile ? ((PlayerMobile)m).GuildMessageHue : 0x34);
+            m.SendLocalizedMessage(cliloc, false, "[Guild][GI] ", args, m is PlayerMobile ? ((PlayerMobile)m).GuildMessageHue : 0x34);
+        }
+
+        public void SendVvVMessageTo(Mobile m, string cliloc, string args = "")
+        {
+            m.SendMessage(m is PlayerMobile ? ((PlayerMobile)m).GuildMessageHue : 0x34, "[Guild][GI] " + cliloc);
         }
 
         private List<Item> VvVItems = new List<Item>();
@@ -353,7 +367,7 @@ namespace Server.Engines.VvV
 
             Server.Commands.CommandSystem.Register("BattleProps", AccessLevel.GameMaster, e =>
                 {
-                    if(Instance.Battle != null)
+                    if (Instance.Battle != null)
                         e.Mobile.SendGump(new PropertiesGump(e.Mobile, Instance.Battle));
                 });
 
@@ -388,7 +402,7 @@ namespace Server.Engines.VvV
                                 pm.ValidateEquipment();
 
                                 from.SendMessage("{0} has been removed from VvV.", pm.Name);
-                                pm.SendMessage("You have been removed from VvV.");
+                                pm.SendMessage("Voce foi removido da guerra infinita.");
                             }
                             else
                             {
@@ -496,6 +510,9 @@ namespace Server.Engines.VvV
 
         public static bool IsEnemy(Mobile from, Mobile to)
         {
+            if (!to.Region.IsPartOf("Tretonia"))
+                return false;
+
             if (!Enabled || from == to)
                 return false;
 
@@ -700,20 +717,9 @@ namespace Server.Engines.VvV
             return Instance.Battle.OnGoing && r.IsPartOf(Instance.Battle.Region);
         }
 
-        public static int GetCityLocalization(VvVCity city)
+        public static string GetCityLocalization(VvVCity city)
         {
-            switch (city)
-            {
-                default: return 0;
-                case VvVCity.Moonglow: return 1011344;
-                case VvVCity.Britain: return 1011028;
-                case VvVCity.Jhelom: return 1011343;
-                case VvVCity.Yew: return 1011032;
-                case VvVCity.Minoc: return 1011031;
-                case VvVCity.Trinsic: return 1011029;
-                case VvVCity.SkaraBrae: return 1011347;
-                case VvVCity.Ocllo: return 1076027;
-            }
+            return city.ToString();
         }
 
         public override void Serialize(GenericWriter writer)
@@ -976,9 +982,9 @@ namespace Server.Engines.VvV
 
         public bool Active
         {
-            get 
-            { 
-                return _Active; 
+            get
+            {
+                return _Active;
             }
             set
             {
@@ -1043,7 +1049,7 @@ namespace Server.Engines.VvV
 
             if (silver > 0)
             {
-                Player.SendLocalizedMessage(1042736, String.Format("{0:N0} silver\t{1}", silver, victim.Name)); 
+                Player.SendLocalizedMessage(1042736, String.Format("{0:N0} silver\t{1}", silver, victim.Name));
                 // You have earned ~1_SILVER_AMOUNT~ pieces for vanquishing ~2_PLAYER_NAME~!
 
                 Points += silver;
@@ -1096,7 +1102,7 @@ namespace Server.Engines.VvV
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-            
+
             switch (version)
             {
                 case 4:
@@ -1108,13 +1114,13 @@ namespace Server.Engines.VvV
                     goto case 2;
                 case 2:
                     Active = reader.ReadBool();
-                    
-                    if(version == 0)
+
+                    if (version == 0)
                         reader.ReadBool();
-                        
-                    if(version < 2)
+
+                    if (version < 2)
                         reader.ReadGuild();
-                    
+
                     Score = reader.ReadInt();
                     Kills = reader.ReadInt();
                     Deaths = reader.ReadInt();

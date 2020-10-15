@@ -12,20 +12,16 @@ namespace Server.Items
         {
             this.Weight = 1.0;
             //LootType = LootType.Blessed;
+            Name = "Contrato de Vendedor";
         }
 
         public ContractOfEmployment(Serial serial)
             : base(serial)
         {
+             Name = "Contrato de Vendedor";
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041243;
-            }
-        }// a contract of employment
+    
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -48,7 +44,7 @@ namespace Server.Items
             }
             else if (from.AccessLevel >= AccessLevel.GameMaster)
             {
-                from.SendLocalizedMessage(503248); // Your godly powers allow you to place this vendor whereever you wish.
+                from.SendMessage("Vc eh GM e pode botar isso onde c quiser meu rei"); // Your godly powers allow you to place this vendor whereever you wish.
 
                 Mobile v = new PlayerVendor(from, BaseHouse.FindHouseAt(from));
 
@@ -56,8 +52,6 @@ namespace Server.Items
                 v.MoveToWorld(from.Location, from.Map);
 
                 v.SayTo(from, 503246); // Ah! it feels good to be working again.
-
-                EventSink.InvokePlacePlayerVendor(new PlacePlayerVendorEventArgs(from, v));
 
                 this.Delete();
             }
@@ -67,19 +61,19 @@ namespace Server.Items
 
                 if (house == null)
                 {
-                    from.SendLocalizedMessage(503240); // Vendors can only be placed in houses.	
+                    from.SendMessage("Voce so pode colocar isto em sua casa"); // Vendors can only be placed in houses.	
                 }
                 else if (!BaseHouse.NewVendorSystem && !house.IsFriend(from))
                 {
-                    from.SendLocalizedMessage(503242); // You must ask the owner of this building to name you a friend of the household in order to place a vendor here.
+                    from.SendMessage("Voce precisa ser amigo da casa para fazer isto"); // You must ask the owner of this building to name you a friend of the household in order to place a vendor here.
                 }
                 else if (BaseHouse.NewVendorSystem && !house.IsOwner(from))
                 {
-                    from.SendLocalizedMessage(1062423); // Only the house owner can directly place vendors.  Please ask the house owner to offer you a vendor contract so that you may place a vendor in this house.
+                    from.SendMessage("Apenas o dono da casa pode fazer isto"); // Only the house owner can directly place vendors.  Please ask the house owner to offer you a vendor contract so that you may place a vendor in this house.
                 }
                 else if (!house.Public || !house.CanPlaceNewVendor()) 
                 {
-                    from.SendLocalizedMessage(503241); // You cannot place this vendor or barkeep.  Make sure the house is public and has sufficient storage available.
+                    from.SendMessage("Voce nao pode por vendedores ou taverneiros aqui"); // You cannot place this vendor or barkeep.  Make sure the house is public and has sufficient storage available.
                 }
                 else
                 {
@@ -88,11 +82,11 @@ namespace Server.Items
 
                     if (vendor)
                     {
-                        from.SendLocalizedMessage(1062677); // You cannot place a vendor or barkeep at this location.
+                        from.SendMessage("Voce nao pode por um vendedor ou taverneiro aqui"); // You cannot place a vendor or barkeep at this location.
                     }
                     else if (contract)
                     {
-                        from.SendLocalizedMessage(1062678); // You cannot place a vendor or barkeep on top of a rental contract!
+                        from.SendMessage("Voce nao pode colocar um vendedor ou taverneiro aqui"); // You cannot place a vendor or barkeep on top of a rental contract!
                     }
                     else
                     {
@@ -102,8 +96,6 @@ namespace Server.Items
                         v.MoveToWorld(from.Location, from.Map);
 
                         v.SayTo(from, 503246); // Ah! it feels good to be working again.
-
-                        EventSink.InvokePlacePlayerVendor(new PlacePlayerVendorEventArgs(from, v));
 
                         this.Delete();
                     }

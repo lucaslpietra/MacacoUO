@@ -6,7 +6,7 @@ namespace Server.Items
     {
         [Constructable]
         public RefreshPotion()
-            : base(PotionEffect.Refresh)
+            : base(PotionEffect.Stamina)
         {
         }
 

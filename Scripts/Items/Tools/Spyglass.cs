@@ -8,7 +8,7 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Flipable(0x14F5, 0x14F6)]
-    public class Spyglass : Item, IResource, IQuality
+    public class Spyglass : Item, IResource
     {
         private CraftResource _Resource;
         private Mobile _Crafter;
@@ -74,8 +74,10 @@ namespace Server.Items
             }
         }
 
-        public override void AddCraftedProperties(ObjectPropertyList list)
+        public override void GetProperties(ObjectPropertyList list)
         {
+            base.GetProperties(list);
+
             if (_Crafter != null)
             {
                 list.Add(1050043, _Crafter.TitleName); // crafted by ~1_NAME~
@@ -89,7 +91,7 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            if (_Resource > CraftResource.Iron)
+            if (_Resource > CraftResource.Ferro)
             {
                 list.Add(1053099, "#{0}\t{1}", CraftResources.GetLocalizationNumber(_Resource), String.Format("#{0}", LabelNumber.ToString())); // ~1_oretype~ ~2_armortype~
             }

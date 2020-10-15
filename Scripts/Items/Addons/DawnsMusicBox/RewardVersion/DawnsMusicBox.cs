@@ -41,7 +41,7 @@ namespace Server.Items.MusicBox
             {
                 return 1075198;
             }
-        }// Dawn’s Music Box
+        }// Dawnâ€™s Music Box
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Developer)]
         public bool IsPlaying
         {

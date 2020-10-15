@@ -37,7 +37,7 @@ namespace Server.Engines.Blackthorn
 
         public void OnTick()
         {
-            foreach (Mobile m in this.GetEnumeratedMobiles().Where(m => m is PlayerMobile && m.AccessLevel == AccessLevel.Player))
+            foreach (Mobile m in this.GetEnumeratedMobiles().Where(m => m is PlayerMobile && m.AccessLevel <= AccessLevel.VIP))
             {
                 if (m.Hidden)
                     m.RevealingAction();
@@ -85,7 +85,7 @@ namespace Server.Engines.Blackthorn
 
         public override bool CheckTravel(Mobile traveller, Point3D p, TravelCheckType type)
         {
-            if (traveller.AccessLevel > AccessLevel.Player)
+            if (traveller.AccessLevel > AccessLevel.VIP)
                 return true;
 
             return type > TravelCheckType.Mark;
@@ -113,7 +113,7 @@ namespace Server.Engines.Blackthorn
 
         public override bool OnBeginSpellCast(Mobile m, ISpell s)
         {
-            if (m.AccessLevel > AccessLevel.Player)
+            if (m.AccessLevel > AccessLevel.VIP)
                 return base.OnBeginSpellCast(m, s);
 
             int loc;
@@ -138,7 +138,7 @@ namespace Server.Engines.Blackthorn
                 Server.Engines.Quests.AVisitToCastleBlackthornQuest.CheckLocation((PlayerMobile)m, oldLocation);
             }
 
-            if (m.AccessLevel > AccessLevel.Player)
+            if (m.AccessLevel > AccessLevel.VIP)
                 return;
 
             if (m.Mount != null)
@@ -222,7 +222,7 @@ namespace Server.Engines.Blackthorn
 
         public override bool CheckTravel(Mobile traveller, Point3D p, TravelCheckType type)
         {
-            if (traveller.AccessLevel > AccessLevel.Player)
+            if (traveller.AccessLevel > AccessLevel.VIP)
                 return true;
 
             return type > TravelCheckType.Mark;

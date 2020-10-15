@@ -184,7 +184,7 @@ namespace Server.Engines.Despise
             if (o is BallOfSummoning || o is BraceletOfBinding)
                 return false;
 
-            if (o is Corpse && m.AccessLevel == AccessLevel.Player)
+            if (o is Corpse && m.AccessLevel <= AccessLevel.VIP)
             {
                 Corpse c = o as Corpse;
 
@@ -215,7 +215,7 @@ namespace Server.Engines.Despise
 
         public override bool CheckTravel(Mobile from, Point3D p, TravelCheckType type)
         {
-            if (from.AccessLevel > AccessLevel.Player)
+            if (from.AccessLevel > AccessLevel.VIP)
                 return true;
 
             switch (type)
@@ -234,7 +234,7 @@ namespace Server.Engines.Despise
 
         public override void OnEnter(Mobile m)
         {
-            if (m.AccessLevel > AccessLevel.Player)
+            if (m.AccessLevel > AccessLevel.VIP)
                 return;
 
             if (!IsInStartRegion(m.Location) && m is BaseCreature && !(m is DespiseCreature) && !(m is CorruptedWisp) && !(m is EnsorcledWisp) && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned))

@@ -27,7 +27,7 @@ namespace Server.SkillHandlers
         {
             if (m.Spell != null)
             {
-                m.SendLocalizedMessage(501238); // You are busy doing something else and cannot hide.
+                m.SendMessage("Voce esta ocupado fazendo outra coisa"); // You are busy doing something else and cannot hide.
                 return TimeSpan.FromSeconds(1.0);
             }
 
@@ -36,7 +36,7 @@ namespace Server.SkillHandlers
                 return TimeSpan.FromSeconds(1.0);
             }
 
-            if (Core.ML && m.Target != null)
+            if (m.Target != null)
             {
                 Targeting.Target.Cancel(m);
             }
@@ -49,7 +49,8 @@ namespace Server.SkillHandlers
             {
                 bonus = 100.0;
             }
-            else if (!Core.AOS)
+            /*
+            else
             {
                 if (house == null)
                     house = BaseHouse.FindHouseAt(new Point3D(m.X - 1, m.Y, 127), m.Map, 16);
@@ -67,9 +68,11 @@ namespace Server.SkillHandlers
                     bonus = 50.0;
             }
 
+            */
+
             //int range = 18 - (int)(m.Skills[SkillName.Hiding].Value / 10);
             int skill = Math.Min(100, (int)m.Skills[SkillName.Hiding].Value);
-            int range = Math.Min((int)((100 - skill) / 2) + 8, 18);	//Cap of 18 not OSI-exact, intentional difference
+            int range = Math.Min((int)((100 - skill) / 2) + 12, 18);	//Cap of 18 not OSI-exact, intentional difference
 
             bool badCombat = (!m_CombatOverride && m.Combatant is Mobile && m.InRange(m.Combatant.Location, range) && ((Mobile)m.Combatant).InLOS(m.Combatant));
             bool ok = (!badCombat /*&& m.CheckSkill( SkillName.Hiding, 0.0 - bonus, 100.0 - bonus )*/);
@@ -82,18 +85,22 @@ namespace Server.SkillHandlers
 
                     foreach (Mobile check in eable)
                     {
-                        if (check.InLOS(m) && check.Combatant == m)
+                        if (check.Combatant == m)
                         {
-                            badCombat = true;
-                            ok = false;
-                            break;
+                            if(check.GetDistanceToSqrt(m) <= 5 || check.InLOS(m))
+                            {
+                                badCombat = true;
+                                ok = false;
+                                break;
+                            }
+                           
                         }
                     }
 
                     eable.Free();
                 }
 
-                ok = (!badCombat && m.CheckSkill(SkillName.Hiding, 0.0 - bonus, 100.0 - bonus));
+                ok = (!badCombat && m.CheckSkillMult(SkillName.Hiding, 0.0 - bonus, 100.0 - bonus));
             }
 
             if (badCombat)
@@ -102,8 +109,8 @@ namespace Server.SkillHandlers
 
                 m.LocalOverheadMessage(MessageType.Regular, 0x22, 501237); // You can't seem to hide right now.
 
-                return TimeSpan.Zero;
-                //return TimeSpan.FromSeconds(1.0);
+                //return TimeSpan.Zero;
+                return TimeSpan.FromSeconds(10.0);
             }
             else 
             {
@@ -113,13 +120,13 @@ namespace Server.SkillHandlers
                     m.Warmode = false;
 					Server.Spells.Sixth.InvisibilitySpell.RemoveTimer(m);
                     Server.Items.InvisibilityPotion.RemoveTimer(m);
-                    m.LocalOverheadMessage(MessageType.Regular, 0x1F4, 501240); // You have hidden yourself well.
+                    m.LocalOverheadMessage(MessageType.Regular, 0, true, "* Voce se escondeu *"); // You have hidden yourself well.
                 }
                 else
                 {
                     m.RevealingAction();
 
-                    m.LocalOverheadMessage(MessageType.Regular, 0x22, 501241); // You can't seem to hide here.
+                    m.LocalOverheadMessage(MessageType.Regular, 0x22, false, "Voce nao consegue se esconder aqui"); // You can't seem to hide here.
                 }
 
                 return TimeSpan.FromSeconds(10.0);

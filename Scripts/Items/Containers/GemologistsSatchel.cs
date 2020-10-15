@@ -11,16 +11,17 @@ namespace Server.Items
 		{
             Hue = 1177;
 
-            DropItem(new Amber(Utility.RandomMinMax(10, 25)));
-            DropItem(new Citrine(Utility.RandomMinMax(10, 25)));
-            DropItem(new Ruby(Utility.RandomMinMax(10, 25)));
-            DropItem(new Tourmaline(Utility.RandomMinMax(10, 25)));
-            DropItem(new Amethyst(Utility.RandomMinMax(10, 25)));
-            DropItem(new Emerald(Utility.RandomMinMax(10, 25)));
-            DropItem(new Sapphire(Utility.RandomMinMax(10, 25)));
-            DropItem(new StarSapphire(Utility.RandomMinMax(10, 25)));
-            DropItem(new Diamond(Utility.RandomMinMax(10, 25)));
+            DropItem(new Amber(Utility.RandomMinMax(2, 25)));
+            DropItem(new Citrine(Utility.RandomMinMax(2, 25)));
+            DropItem(new Ruby(Utility.RandomMinMax(2, 25)));
+            DropItem(new Tourmaline(Utility.RandomMinMax(2, 25)));
+            DropItem(new Amethyst(Utility.RandomMinMax(2, 25)));
+            DropItem(new Emerald(Utility.RandomMinMax(2, 25)));
+            DropItem(new Sapphire(Utility.RandomMinMax(2, 25)));
+            DropItem(new StarSapphire(Utility.RandomMinMax(2, 25)));
+            DropItem(new Diamond(Utility.RandomMinMax(2, 25)));
 
+            /*
             for (int i = 0; i < 5; i++)
             {
                 Type type = Server.SkillHandlers.Imbuing.IngredTypes[Utility.Random(Server.SkillHandlers.Imbuing.IngredTypes.Length)];
@@ -36,6 +37,7 @@ namespace Server.Items
                     }
                 }
             }
+            */
 		}
 
         public GemologistsSatchel(Serial serial)

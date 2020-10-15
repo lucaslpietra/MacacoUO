@@ -32,7 +32,8 @@ namespace Server
 		Linelle,
 		Magincia,
 		Minoc,
-		Ocllo,
+        Minoc1,
+        Ocllo,
 		Samlethe,
 		Serpents,
 		Skarabra,
@@ -117,8 +118,9 @@ namespace Server
 		NujelmWaltz,
 		SherrysSong,
 		StarlightInBritain,
-		TheVesperMist
-	}
+		TheVesperMist,
+        Floresta
+    }
 
 	[PropertyObject]
 	public class Region : IComparable
@@ -238,7 +240,7 @@ namespace Server
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual double InsuranceMultiplier { get { return 1.0; } }
 
-        public Region(string name, Map map, int priority, params Rectangle2D[] area)
+		public Region(string name, Map map, int priority, params Rectangle2D[] area)
 			: this(name, map, priority, ConvertTo3D(area))
 		{ }
 
@@ -252,14 +254,18 @@ namespace Server
 			: this(name, map, parent, ConvertTo3D(area))
 		{ }
 
-		public Region(string name, Map map, Region parent, params Rectangle3D[] area)
+        public static MusicName FLORESTA = MusicName.DupresNightInTrinsic;
+        public static MusicName CAVERNA = MusicName.Medieval;
+        public static MusicName DEFAULT = MusicName.Serpents;
+
+        public Region(string name, Map map, Region parent, params Rectangle3D[] area)
 		{
 			m_Name = name;
 			m_Map = map;
-			m_Parent = parent;
+			m_Parent = parent;       
 			m_Area = area;
 			m_Dynamic = true;
-			Music = DefaultMusic;
+			//Music = FLORESTA;
 
 			if (m_Parent == null)
 			{
@@ -909,7 +915,7 @@ namespace Server
 			}
 			else if (message)
 			{
-				m.SendLocalizedMessage(1005040); // You've committed a criminal act!!
+				m.SendLocalizedMessage("Voce cometeu um ato criminoso !"); // You've committed a criminal act!!
 			}
 		}
 
@@ -970,12 +976,7 @@ namespace Server
 			return true;
 		}
 
-        public virtual double SkillGain(Mobile from)
-        {
-            return 0.1;
-        }
-
-        public virtual bool OnBeginSpellCast(Mobile m, ISpell s)
+		public virtual bool OnBeginSpellCast(Mobile m, ISpell s)
 		{
 			if (m_Parent != null)
 			{
@@ -1061,10 +1062,6 @@ namespace Server
 			return true;
 		}
 
-        public virtual void OnDelete(Item item)
-        {
-        }
-
         public virtual void GetContextMenuEntries(Mobile from, List<Server.ContextMenus.ContextMenuEntry> list, Item item)
         {
         }
@@ -1137,6 +1134,8 @@ namespace Server
 					m.Send(PlayMusic.GetInstance(newRegion.Music));
 				}
 			}
+
+            m.DecideMusic(oldRegion, newRegion);
 
 			Region oldR = oldRegion;
 			Region newR = newRegion;
@@ -1325,7 +1324,7 @@ namespace Server
 				m_GoLocation = new Point3D(x, y, m_Map.GetAverageZ(x, y));
 			}
 
-			MusicName music = DefaultMusic;
+            MusicName music = DEFAULT;
 
 			ReadEnum(xml["music"], "name", ref music, false);
 

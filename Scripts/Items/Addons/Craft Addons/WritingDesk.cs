@@ -11,6 +11,13 @@ namespace Server.Items
         public override CraftSystem CraftSystem { get { return DefInscription.CraftSystem; } }
 
         [Constructable]
+        public WritingDesk()
+        {
+            AddCraftComponent(new AddonToolComponent(CraftSystem, 40945, 40946, 1124962, 10, this), 0, 0, 0);
+            AddComponent(new ToolDropComponent(40952, 1124962), 0, -1, 0);
+        }
+
+        [Constructable]
         public WritingDesk(bool south, int uses)
         {
             if (south)

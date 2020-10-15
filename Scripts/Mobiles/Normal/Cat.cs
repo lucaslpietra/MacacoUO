@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Cat()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a cat";
+            this.Name = "um gato";
             this.Body = 0xC9;
             this.Hue = Utility.RandomAnimalHue();
             this.BaseSoundID = 0x69;

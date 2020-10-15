@@ -5,29 +5,36 @@ namespace Server.Items
 {
     public class BasketWeavingBook : Item
     {
-		public override int LabelNumber {get {return 1153529;} } // Making valuables with Basket Weaving
-		
         [Constructable]
         public BasketWeavingBook()
             : base(0xFBE)
         {
-            Weight = 1.0;
+            this.Weight = 1.0;
         }
 
         public BasketWeavingBook(Serial serial)
             : base(serial)
         {
         }
-       
+
+        public override string DefaultName
+        {
+            get
+            {
+                return "Fazendo Valiosos Cestos";
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
         }
 
@@ -44,18 +51,18 @@ namespace Server.Items
             {
                 pm.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
-            else if (pm.Skills[SkillName.Tinkering].Base < 100.0)
+            else if (pm.Skills[SkillName.Tinkering].Base < 80)
             {
-                pm.SendLocalizedMessage(1112255); // Only a Grandmaster Tinker can learn from this book.
+                pm.SendMessage("Voce precisa de pelo menos 80 tinker para aprender isto.");
             }
             else if (pm.BasketWeaving)
             {
-                pm.SendLocalizedMessage(1080066); // You have already learned this information.
+                pm.SendMessage("Voce ja aprendeu isto.");
             }
             else
             {
                 pm.BasketWeaving = true;
-                pm.SendLocalizedMessage(1112254); // You have learned to make baskets. You will need gardeners to make reeds out of plants for you to make these items.
+                pm.SendMessage("Voce aprendeu a fazer cestos. Voce vai precisar de jardineiros para cultivar plantas.");
                 
                 Delete();
             }

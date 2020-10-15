@@ -62,7 +62,7 @@ namespace Server.Gumps
         public PlayerMobile User { get; set; }
 
         public Dictionary<GumpButton, Action<GumpButton>> ButtonCallbacks { get; set; }
-
+         
         public TitlesGump(PlayerMobile pm, TitleType type = TitleType.None, TitleCategory cat = TitleCategory.None, bool description = false)
             : base(50, 50)
         {
@@ -274,7 +274,11 @@ namespace Server.Gumps
                                 title = fameKarma[TitleSelected];
 
                             if (title != null)
+                            {
                                 User.FameKarmaTitle = title;
+
+                            }
+                                
                             else
                                 User.FameKarmaTitle = null;
 
@@ -378,7 +382,7 @@ namespace Server.Gumps
 
                     if (info.Harrower > 0)
                     {
-                        AddHtml(260, y, 245, 16, Color("#FFFFFF", String.Format(": {0} of Evil", Titles.HarrowerTitles[Math.Min(Titles.HarrowerTitles.Length, info.Harrower) - 1])), false, false);
+                        AddHtml(260, y, 245, 16, Color("#FFFFFF", String.Format(": {0} do Mal", Titles.HarrowerTitles[Math.Min(Titles.HarrowerTitles.Length, info.Harrower) - 1])), false, false);
                         AddCallbackButton(225, y, 4005, 4007, 295, GumpButtonType.Reply, 0, b =>
                         {
                             TitleSelected = 295;
@@ -407,7 +411,7 @@ namespace Server.Gumps
 
                         ChampionSpawnInfo champInfo = ChampionSpawnInfo.GetInfo((ChampionSpawnType)i);
 
-                        AddHtml(260, y + (index * 22), 245, 16, Color("#FFFFFF", String.Format(": {0} of the {1}", champInfo.LevelNames[Math.Min(offset, champInfo.LevelNames.Length) - 1], champInfo.Name)), false, false);
+                        AddHtml(260, y + (index * 22), 245, 16, Color("#FFFFFF", String.Format(": {0} do {1}", champInfo.LevelNames[Math.Min(offset, champInfo.LevelNames.Length) - 1], champInfo.Name)), false, false);
                         AddCallbackButton(225, y + (index * 22), 4005, 4007, i + 251, GumpButtonType.Reply, 0, b =>
                         {
                             TitleSelected = b.ButtonID - 251;
@@ -506,7 +510,7 @@ namespace Server.Gumps
                         if (sk.Base < 30)
                             continue;
 
-                        AddHtml(260, 70 + (index * 22), 245, 16, Color("#FFFFFF", "the " + sk.Info.Title), false, false);
+                        AddHtml(260, 70 + (index * 22), 245, 16, Color("#FFFFFF", "o " + sk.Info.Title), false, false);
                         AddCallbackButton(225, 70 + (index * 22), 4005, 4007, sk.Info.SkillID + 45000, GumpButtonType.Reply, 0, b =>
                         {
                             TitleSelected = b.ButtonID - 45000;
@@ -545,7 +549,7 @@ namespace Server.Gumps
                     }
                     else
                     {
-                        title = "the " + User.Skills[(SkillName)TitleSelected].Info.Title;
+                        title = "o " + User.Skills[(SkillName)TitleSelected].Info.Title;
                         desc = 1115056 + TitleSelected;
                     }
 
@@ -558,9 +562,17 @@ namespace Server.Gumps
                     AddHtmlLocalized(480, 275, 80, 16, 1011046, 0xFFFF, false, false); // APPLY
                     AddCallbackButton(445, 275, 4005, 4007, 399, GumpButtonType.Reply, 0, b =>
                     {
+                        if(User.Skills[(SkillName)TitleSelected].Value < 99)
+                        {
+                            User.SendMessage("Voce precisa ter 100 na skill para usar o titulo");
+                            Refresh(false);
+                            return;
+                        }
                         AddHtmlLocalized(225, 315, 200, 16, 1115036, 0xFFFF, false, false); // TITLE APPLIED
-
-                        User.OverheadTitle = TitleSelected == 999999 ? MasteryInfo.GetTitle(User) : "the " + User.Skills[(SkillName)TitleSelected].Info.Title;
+                        var ltr = "o";
+                        if (User.Female)
+                            ltr = "a";
+                        User.OverheadTitle = TitleSelected == 999999 ? MasteryInfo.GetTitle(User) : ltr+" " + User.Skills[(SkillName)TitleSelected].Info.Title; ;
 
                         Refresh(false);
                     });
@@ -1130,7 +1142,6 @@ namespace Server.Gumps
                     case 1158278: return 1158279; // This title is obtained by completing the "A Forced Sacrifice" quest.
                     case 1158303: return 1158324; // This title is obtained by completing the "Whispering with Wisps" quest.
                     case 1154505: return 1154506; // This is a reward title given for completing the Exploring the Deep Quest.
-                    case 1158523: return 1158537; // This title is obtained by discovering a constellation using the telescope.
                 }
             }
 

@@ -82,7 +82,7 @@ namespace Server.Gumps
                 bool valid = Sextant.Format(sel.Location, map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth);
 
                 if (valid)
-                    location = String.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
+                    location = String.Format("{0}Â° {1}'{2}, {3}Â° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
                 else
                     location = "unknown";
 
@@ -125,10 +125,10 @@ namespace Server.Gumps
                 AddHtml(50, 265, 120, 20, Color("Open house menu", White), false, false);
 
                 AddButton(15, 285, 4005, 4007, 3, GumpButtonType.Reply, 0);
-                AddHtml(50, 285, 120, 20, Color("Demolish house", White), false, false);
+                AddHtml(50, 285, 120, 20, Color("Demolir Casa", White), false, false);
 
                 AddButton(15, 305, 4005, 4007, 4, GumpButtonType.Reply, 0);
-                AddHtml(50, 305, 120, 20, Color("Refresh house", White), false, false);
+                AddHtml(50, 305, 120, 20, Color("Refresh na Casa", White), false, false);
             }
         }
 

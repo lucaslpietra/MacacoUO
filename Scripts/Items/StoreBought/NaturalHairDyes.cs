@@ -124,20 +124,20 @@ namespace Server.Items
         private static HairDyeInfo[] m_Table =
         {
             // Hue, Label
-            new HairDyeInfo( HairDyeType.None, 0, -1 ),
-            new HairDyeInfo( HairDyeType.LemonLime, 1167, 1071439 ), // NOT Confirmed
-            new HairDyeInfo( HairDyeType.YewBrown, 1192, 1071470 ), // Confirmed
-            new HairDyeInfo( HairDyeType.BloodwoodRed, 1194, 1071471 ), // NOT Confirmed
-            new HairDyeInfo( HairDyeType.VividBlue, 1152, 1071438 ), // NOT Confirmed
-            new HairDyeInfo( HairDyeType.AshBlonde, 1191, 1071469 ), // Confirmed
-            new HairDyeInfo( HairDyeType.HeartwoodGreen, 1193, 1071472 ), // NOT Confirmed
-            new HairDyeInfo( HairDyeType.OakBlonde, 2010, 1071468 ), // Confirmed
-            new HairDyeInfo( HairDyeType.SacredWhite, 1153, 1071474 ), // NOT Confirmed
-            new HairDyeInfo( HairDyeType.FrostwoodIceGreen, 1151, 1071473 ), // NOT Confirmed
-            new HairDyeInfo( HairDyeType.FieryBlonde, 1174, 1071440 ), // NOT Confirmed
-            new HairDyeInfo( HairDyeType.BitterBrown, 1149, 1071437 ), // NOT Confirmed
-            new HairDyeInfo( HairDyeType.GnawsTwistedBlue, 1195, 1071442 ), // Confirmed
-            new HairDyeInfo( HairDyeType.DuskBlack, 1175, 1071441 ), // NOT Confirmed
+            new HairDyeInfo( HairDyeType.None, 0, -1, 0 ),
+            new HairDyeInfo( HairDyeType.LemonLime, 1167, 1071439,0x9C78), // NOT Confirmed
+            new HairDyeInfo( HairDyeType.YewBrown, 1192, 1071470, 0x9C6D ), // Confirmed
+            new HairDyeInfo( HairDyeType.BloodwoodRed, 1194, 1071471, 0x9C6E ), // NOT Confirmed
+            new HairDyeInfo( HairDyeType.VividBlue, 1152, 1071438, 0x9C6F ), // NOT Confirmed
+            new HairDyeInfo( HairDyeType.AshBlonde, 1191, 1071469, 0x9C71 ), // Confirmed
+            new HairDyeInfo( HairDyeType.HeartwoodGreen, 1193, 1071472, 0x9C72 ), // NOT Confirmed
+            new HairDyeInfo( HairDyeType.OakBlonde, 2010, 1071468, 0x9C85 ), // Confirmed
+            new HairDyeInfo( HairDyeType.SacredWhite, 1153, 1071474, 0x9C70 ), // NOT Confirmed
+            new HairDyeInfo( HairDyeType.FrostwoodIceGreen, 1151, 1071473, 0x9C73 ), // NOT Confirmed
+            new HairDyeInfo( HairDyeType.FieryBlonde, 1174, 1071440, 0x9C76 ), // NOT Confirmed
+            new HairDyeInfo( HairDyeType.BitterBrown, 1149, 1071437, 0x9C77 ), // NOT Confirmed
+            new HairDyeInfo( HairDyeType.GnawsTwistedBlue, 1195, 1071442, 0x9C74 ), // Confirmed
+            new HairDyeInfo( HairDyeType.DuskBlack, 1175, 1071441, 0x9C75 ), // NOT Confirmed
         };
 
         public class HairDyeInfo
@@ -145,12 +145,14 @@ namespace Server.Items
             public HairDyeType Type { get; private set; }
             public int Hue { get; private set; }
             public int Localization { get; private set; }
+            public int GumpID { get; private set; }
 
-            public HairDyeInfo(HairDyeType type, int hue, int loc)
+            public HairDyeInfo(HairDyeType type, int hue, int loc, int gumpID)
             {
                 Type = type;
                 Hue = hue;
                 Localization = loc;
+                this.GumpID = gumpID;
             }
         }
     }

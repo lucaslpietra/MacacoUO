@@ -12,7 +12,7 @@ namespace Server.Mobiles
         public ShadowFiend()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a shadow fiend";
+            Name = "elemental das sombras";
             Body = 0x10;
             Hue = 2051;
 
@@ -48,6 +48,11 @@ namespace Server.Mobiles
 
             Fame = 1000;
             Karma = -1000;
+
+            switch (Utility.Random(100))
+            {
+                case 5: PackItem(new TintaPreta()); break;
+            }
 
             m_Timer = new UnhideTimer(this);
             m_Timer.Start();

@@ -94,13 +94,13 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.AccessLevel > AccessLevel.Player)
+            if (from.AccessLevel > AccessLevel.VIP)
                 base.OnDoubleClick(from);
         }
 
         public override bool CheckLift(Mobile from, Item item, ref LRReason reject)
         {
-            if (from.AccessLevel > AccessLevel.Player)
+            if (from.AccessLevel > AccessLevel.VIP)
                 return base.CheckLift(from, item, ref reject);
             else
                 reject = LRReason.CannotLift;
@@ -375,6 +375,17 @@ namespace Server.Items
         public virtual void BeginSequence(Mobile from)
         {
             SpawnBoss();
+
+            // teleport fighters
+            /*Fighters.ForEach(x =>
+            {
+                int counter = 0;
+
+                if (x.InRange(from.Location, 15) && CanEnter(x))
+                {
+                    Timer.DelayCall(TimeSpan.FromSeconds(counter++), () => { Enter(x); });
+                }
+            });*/
         }
 
         public virtual void SpawnBoss()
@@ -454,18 +465,16 @@ namespace Server.Items
             }
 
             // teleport party to exit if not already there
-            if (Fighters != null)
-            {
-                Fighters.ForEach(x => Exit(x));
-                Fighters.Clear();
-            }
+            Fighters.ForEach(x => Exit(x));
 
             // delete master keys
+            MasterKeys.ForEach(x => x.Delete());
+
             if (MasterKeys != null)
-            {
-                MasterKeys.ForEach(x => x.Delete());
                 MasterKeys.Clear();
-            }
+
+            if (Fighters != null)
+                Fighters.Clear();
 
             // delete any remaining helpers
             CleanupHelpers();
@@ -478,9 +487,6 @@ namespace Server.Items
 
         public virtual void Exit(Mobile fighter)
         {
-            if (fighter == null)
-                return;
-
             // teleport fighter
             if (fighter.NetState == null && MobileIsInBossArea(fighter.LogoutLocation))
             {
@@ -501,8 +507,7 @@ namespace Server.Items
             // teleport his pets
             if (fighter is PlayerMobile)
             {
-                foreach (var pet in ((PlayerMobile)fighter).AllFollowers.OfType<BaseCreature>().Where(pet => pet != null &&
-                                                                                                             (pet.Alive || pet.IsBonded) &&
+                foreach (var pet in ((PlayerMobile)fighter).AllFollowers.OfType<BaseCreature>().Where(pet => (pet.Alive || pet.IsBonded) &&
                                                                                                              pet.Map != Map.Internal &&
                                                                                                              MobileIsInBossArea(pet)))
                 {
@@ -569,10 +574,11 @@ namespace Server.Items
 
             StopSlayTimer();
 
-            // delete master keys
-            ColUtility.SafeDelete(MasterKeys);
+            // delete master keys				
+            MasterKeys.ForEach(x => x.Delete());
 
-            ColUtility.Free(MasterKeys);
+            MasterKeys.Clear();
+
             m_DeadlineTimer = Timer.DelayCall(DelayAfterBossSlain, new TimerCallback(FinishSequence));
         }
 

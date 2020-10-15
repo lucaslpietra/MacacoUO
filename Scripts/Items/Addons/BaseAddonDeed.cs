@@ -17,7 +17,7 @@ namespace Server.Items
             Weight = 1.0;
 
             if (!Core.AOS)
-                LootType = LootType.Newbied;
+                LootType = LootType.Blessed;
         }
 
         public BaseAddonDeed(Serial serial)
@@ -28,8 +28,6 @@ namespace Server.Items
         public abstract BaseAddon Addon { get; }
 
         public virtual bool UseCraftResource { get { return true; } }
-
-        public virtual bool ExcludeDeedHue { get { return false; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CraftResource Resource
@@ -185,11 +183,8 @@ namespace Server.Items
                     {
                         addon.Resource = m_Deed.Resource;
 
-                        if (!m_Deed.ExcludeDeedHue)
-                        {
-                            if (addon.RetainDeedHue || (m_Deed.Hue != 0 && CraftResources.GetHue(m_Deed.Resource) != m_Deed.Hue))
-                                addon.Hue = m_Deed.Hue;
-                        }
+                        if (addon.RetainDeedHue || (m_Deed.Hue != 0 && CraftResources.GetHue(m_Deed.Resource) != m_Deed.Hue))
+                            addon.Hue = m_Deed.Hue;
 
                         addon.MoveToWorld(new Point3D(p), map);
 
@@ -201,13 +196,13 @@ namespace Server.Items
                         m_Deed.DeleteDeed();
                     }
                     else if (res == AddonFitResult.Blocked)
-                        from.SendLocalizedMessage(500269); // You cannot build that there.
+                        from.SendLocalizedMessage("Voce nao pode construir ali pois existe algo ali"); // You cannot build that there.
                     else if (res == AddonFitResult.NotInHouse)
-                        from.SendLocalizedMessage(500274); // You can only place this in a house that you own!
+                        from.SendLocalizedMessage("Voce so pode colocar isto em sua casa"); // You can only place this in a house that you own!
                     else if (res == AddonFitResult.DoorTooClose)
-                        from.SendLocalizedMessage(500271); // You cannot build near the door.
+                        from.SendLocalizedMessage("Muito perto da porta"); // You cannot build near the door.
                     else if (res == AddonFitResult.NoWall)
-                        from.SendLocalizedMessage(500268); // This object needs to be mounted on something.
+                        from.SendLocalizedMessage("O objeto precisa estar na parede"); // This object needs to be mounted on something.
 					
                     if (res != AddonFitResult.Valid)
                     {

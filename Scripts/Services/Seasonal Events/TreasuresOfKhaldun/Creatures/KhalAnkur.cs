@@ -303,7 +303,7 @@ namespace Server.Mobiles
 
                 foreach (Mobile from in eable)
                 {
-                    if (!from.Alive || from == this || from.AccessLevel > AccessLevel.Player)
+                    if (!from.Alive || from == this || from.AccessLevel > AccessLevel.VIP)
                         continue;
 
                     if (from is PlayerMobile || (from is BaseCreature && (((BaseCreature)from).Controlled) || ((BaseCreature)from).Summoned))

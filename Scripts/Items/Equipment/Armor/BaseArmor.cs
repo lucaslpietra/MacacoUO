@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace Server.Items
 {
-    public abstract class BaseArmor : Item, IScissorable, IFactionItem, ICraftable, IWearableDurability, IResource, ISetItem, IVvVItem, IOwnerRestricted, ITalismanProtection, IEngravable, IArtifact, ICombatEquipment, IQuality
+    public abstract class BaseArmor : Item, IScissorable, IFactionItem, ICraftable, IWearableDurability, IResource, ISetItem, IVvVItem, IOwnerRestricted, ITalismanProtection, IEngravable, IArtifact, ICombatEquipment
     {
         #region Factions
         private FactionItem m_FactionState;
@@ -118,7 +118,6 @@ namespace Server.Items
         private AosSkillBonuses m_AosSkillBonuses;
         private SAAbsorptionAttributes m_SAAbsorptionAttributes;
         private NegativeAttributes m_NegativeAttributes;
-        private AosWeaponAttributes m_AosWeaponAttributes;
 
         private TalismanAttribute m_TalismanProtection;
 
@@ -284,7 +283,7 @@ namespace Server.Items
             }
         }
 
-		public virtual bool CanAlter { get { return true; } }
+        public virtual bool CanAlter { get { return true; } }
 
         public virtual bool UseIntOrDexProperty
         {
@@ -313,7 +312,6 @@ namespace Server.Items
             armor.m_AosSkillBonuses = new AosSkillBonuses(newItem, m_AosSkillBonuses);
             armor.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(newItem, m_SAAbsorptionAttributes);
             armor.m_NegativeAttributes = new NegativeAttributes(newItem, m_NegativeAttributes);
-            armor.m_AosWeaponAttributes = new AosWeaponAttributes(newItem, m_AosWeaponAttributes);
             armor.m_TalismanProtection = new TalismanAttribute(m_TalismanProtection);
 
             armor.m_SetAttributes = new AosAttributes(newItem, m_SetAttributes);
@@ -401,9 +399,9 @@ namespace Server.Items
                     return m_ArmorBase;
             }
             set
-            { 
+            {
                 m_ArmorBase = value;
-                Invalidate(); 
+                Invalidate();
             }
         }
 
@@ -422,45 +420,65 @@ namespace Server.Items
                 int ar = BaseArmorRating;
 
                 if (m_Protection != ArmorProtectionLevel.Regular)
-                    ar += 10 + (5 * (int)m_Protection);
+                    ar += 1 + (4 * (int)m_Protection);
 
-                switch ( m_Resource )
+                switch (m_Resource)
                 {
-                    case CraftResource.DullCopper:
-                        ar += 2;
-                        break;
-                    case CraftResource.ShadowIron:
-                        ar += 4;
-                        break;
-                    case CraftResource.Copper:
-                        ar += 6;
+                    case CraftResource.Cobre:
+                        ar += 3;
                         break;
                     case CraftResource.Bronze:
+                        ar += 4;
+                        break;
+                    case CraftResource.Dourado:
                         ar += 8;
                         break;
-                    case CraftResource.Gold:
+                    case CraftResource.Adamantium:
+                    case CraftResource.Niobio:
                         ar += 10;
                         break;
-                    case CraftResource.Agapite:
+                    case CraftResource.Lazurita:
                         ar += 12;
                         break;
-                    case CraftResource.Verite:
-                        ar += 14;
-                        break;
-                    case CraftResource.Valorite:
+                    case CraftResource.Quartzo:
                         ar += 16;
                         break;
-                    case CraftResource.SpinedLeather:
+                    case CraftResource.Berilo:
                         ar += 10;
                         break;
-                    case CraftResource.HornedLeather:
+                    case CraftResource.Vibranium:
+                        ar += 20;
+                        break;
+
+                    case CraftResource.EscamasNegras:
+                        ar += 15;
+                        break;
+                    case CraftResource.EscamasBrancas:
                         ar += 13;
                         break;
-                    case CraftResource.BarbedLeather:
-                        ar += 16;
+                    case CraftResource.EscamasAmarelas:
+                        ar += 10;
+                        break;
+                    case CraftResource.EscamasAzuis:
+                        ar += 8;
+                        break;
+                    case CraftResource.EscamasVermelhas:
+                        ar += 5;
+                        break;
+                    case CraftResource.EscamasVerdes:
+                        ar += 3;
+                        break;
+
+                    case CraftResource.CouroSpinned:
+                        ar += 7;
+                        break;
+                    case CraftResource.CouroHorned:
+                        ar += 12;
+                        break;
+                    case CraftResource.CouroBarbed:
+                        ar += 18;
                         break;
                 }
-
                 ar += -8 + (8 * (int)m_Quality);
                 return ScaleArmorByDurability(ar);
             }
@@ -538,7 +556,7 @@ namespace Server.Items
                                                                armor.m_RefinedPoison > 0 ||
                                                                armor.m_RefinedEnergy > 0);
         }
-        
+
         public override void AddResistanceProperties(ObjectPropertyList list)
         {
             if (PhysicalResistance != 0 || m_RefinedPhysical != 0)
@@ -761,9 +779,9 @@ namespace Server.Items
 
         #region Runic Reforging
         [CommandProperty(AccessLevel.GameMaster)]
-        public ReforgedPrefix ReforgedPrefix 
-        { 
-            get { return m_ReforgedPrefix; } 
+        public ReforgedPrefix ReforgedPrefix
+        {
+            get { return m_ReforgedPrefix; }
             set { m_ReforgedPrefix = value; InvalidateProperties(); }
         }
 
@@ -776,9 +794,9 @@ namespace Server.Items
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemPower ItemPower
-        { 
-            get { return m_ItemPower; } 
-            set { m_ItemPower = value; InvalidateProperties(); } 
+        {
+            get { return m_ItemPower; }
+            set { m_ItemPower = value; InvalidateProperties(); }
         }
         #endregion
 
@@ -876,7 +894,7 @@ namespace Server.Items
         {
             get
             {
-                return m_Identified;
+                return true;
             }
             set
             {
@@ -963,11 +981,11 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int HitPoints
         {
-            get 
+            get
             {
                 return m_HitPoints;
             }
-            set 
+            set
             {
                 if (value != m_HitPoints && MaxHitPoints > 0)
                 {
@@ -1072,23 +1090,64 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosAttributes Attributes { get { return m_AosAttributes; } set { } }
+        public AosAttributes Attributes
+        {
+            get
+            {
+                return m_AosAttributes;
+            }
+            set
+            {
+            }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosArmorAttributes ArmorAttributes { get { return m_AosArmorAttributes; } set { } }
+        public AosArmorAttributes ArmorAttributes
+        {
+            get
+            {
+                return m_AosArmorAttributes;
+            }
+            set
+            {
+            }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosSkillBonuses SkillBonuses { get { return m_AosSkillBonuses; } set { } }
-
+        public AosSkillBonuses SkillBonuses
+        {
+            get
+            {
+                return m_AosSkillBonuses;
+            }
+            set
+            {
+            }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public SAAbsorptionAttributes AbsorptionAttributes { get { return m_SAAbsorptionAttributes; } set { } }
+        public SAAbsorptionAttributes AbsorptionAttributes
+        {
+            get
+            {
+                return m_SAAbsorptionAttributes;
+            }
+            set
+            {
+            }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public NegativeAttributes NegativeAttributes { get { return m_NegativeAttributes; } set { } }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public AosWeaponAttributes WeaponAttributes { get { return m_AosWeaponAttributes; } set { } }
+        public NegativeAttributes NegativeAttributes
+        {
+            get
+            {
+                return m_NegativeAttributes;
+            }
+            set
+            {
+            }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public TalismanAttribute Protection
@@ -1298,7 +1357,7 @@ namespace Server.Items
         {
             get
             {
-                switch ( Layer )
+                switch (Layer)
                 {
                     default:
                     case Layer.Neck:
@@ -1327,7 +1386,7 @@ namespace Server.Items
 
         public int GetProtOffset()
         {
-            switch ( m_Protection )
+            switch (m_Protection)
             {
                 case ArmorProtectionLevel.Guarding:
                     return 1;
@@ -1352,6 +1411,8 @@ namespace Server.Items
             InvalidateProperties();
         }
 
+        public virtual int MaxMageryCircle { get { return 8; } }
+
         public void ScaleDurability()
         {
             int scale = 100 + GetDurabilityBonus();
@@ -1372,10 +1433,10 @@ namespace Server.Items
         {
             int bonus = 0;
 
-            if (m_Quality == ItemQuality.Exceptional &&!(this is GargishLeatherWingArmor))
+            if (m_Quality == ItemQuality.Exceptional && !(this is GargishLeatherWingArmor))
                 bonus += 20;
 
-            switch ( m_Durability )
+            switch (m_Durability)
             {
                 case ArmorDurabilityLevel.Durable:
                     bonus += 20;
@@ -1398,7 +1459,7 @@ namespace Server.Items
             {
                 bonus += m_AosArmorAttributes.DurabilityBonus;
 
-                if (m_Resource == CraftResource.Heartwood)
+                if (m_Resource == CraftResource.Eucalipto)
                     return bonus;
 
                 CraftResourceInfo resInfo = CraftResources.GetInfo(m_Resource);
@@ -1482,11 +1543,9 @@ namespace Server.Items
                         m.SendLocalizedMessage(1111708); // Gargoyles can't wear 
                         m.AddToBackpack(armor);
                     }
-                    if (armor.RequiredRace != null && m.Race != armor.RequiredRace)
+                    if (armor.RequiredRace != null && m.Race != armor.RequiredRace && armor.RequiredRace != Race.Elf)
                     {
-                        if (armor.RequiredRace == Race.Elf)
-                            m.SendLocalizedMessage(1072203); // Only Elves may use 
-                        else if (armor.RequiredRace == Race.Gargoyle)
+                        if (armor.RequiredRace == Race.Gargoyle)
                             m.SendLocalizedMessage(1111707); // Only gargoyles can wear 
                         else
                             m.SendMessage("Only {0} may use this.", armor.RequiredRace.PluralName);
@@ -1522,7 +1581,7 @@ namespace Server.Items
 
             int v = m_AosArmorAttributes.LowerStatReq;
 
-            if (m_Resource == CraftResource.Heartwood)
+            if (m_Resource == CraftResource.Eucalipto)
                 return v;
 
             CraftResourceInfo info = CraftResources.GetInfo(m_Resource);
@@ -1547,8 +1606,8 @@ namespace Server.Items
             {
                 Mobile from = (Mobile)parent;
 
-                if (Core.AOS)
-                    m_AosSkillBonuses.AddTo(from);
+                //if (Core.AOS)
+                m_AosSkillBonuses.AddTo(from);
 
                 #region Mondain's Legacy Sets
                 if (IsSetItem)
@@ -1629,11 +1688,11 @@ namespace Server.Items
             SkillBonuses = 0x00800000,
             PlayerConstructed = 0x01000000,
             xAbsorptionAttributes = 0x02000000,
-            xWeaponAttributes = 0x04000000,
-            NegativeAttributes  = 0x08000000,
-            Altered = 0x10000000, 
+            //TimesImbued = 0x04000000,
+            NegativeAttributes = 0x08000000,
+            Altered = 0x10000000,
             TalismanProtection = 0x20000000,
-            EngravedText = 0x40000000         
+            EngravedText = 0x40000000
         }
 
         #region Mondain's Legacy Sets
@@ -1667,24 +1726,11 @@ namespace Server.Items
         }
         #endregion
 
-        public void xWeaponAttributesDeserializeHelper(GenericReader reader, BaseArmor item)
-        {
-            SaveFlag flags = (SaveFlag)reader.ReadInt();
-
-            if (flags != SaveFlag.None)
-                flags = SaveFlag.xWeaponAttributes;
-
-            if (GetSaveFlag(flags, SaveFlag.xWeaponAttributes))
-                m_AosWeaponAttributes = new AosWeaponAttributes(item, reader);
-            else
-                m_AosWeaponAttributes = new AosWeaponAttributes(item);
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)15); // version
+            writer.Write((int)14); // version
 
             // Version 14 - removed VvV Item (handled in VvV System) and BlockRepair (Handled as negative attribute)
 
@@ -1720,7 +1766,7 @@ namespace Server.Items
 
             // Version 8
             writer.Write((int)m_TimesImbued);
-           
+
             #endregion
 
             writer.Write((Mobile)m_BlessedBy);
@@ -1777,7 +1823,6 @@ namespace Server.Items
             // Version 7
             SaveFlag flags = SaveFlag.None;
 
-            SetSaveFlag(ref flags, SaveFlag.xWeaponAttributes, !m_AosWeaponAttributes.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.EngravedText, !String.IsNullOrEmpty(_EngravedText));
             SetSaveFlag(ref flags, SaveFlag.TalismanProtection, !m_TalismanProtection.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.NegativeAttributes, !m_NegativeAttributes.IsEmpty);
@@ -1811,9 +1856,6 @@ namespace Server.Items
             SetSaveFlag(ref flags, SaveFlag.Altered, m_Altered);
 
             writer.WriteEncodedInt((int)flags);
-
-            if (GetSaveFlag(flags, SaveFlag.xWeaponAttributes))
-                m_AosWeaponAttributes.Serialize(writer);
 
             if (GetSaveFlag(flags, SaveFlag.EngravedText))
                 writer.Write(_EngravedText);
@@ -1903,9 +1945,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
-                case 15:
                 case 14:
                 case 13:
                 case 12:
@@ -1961,12 +2002,12 @@ namespace Server.Items
                 case 8:
                     {
                         m_TimesImbued = reader.ReadInt();
-                        
+
                         #endregion
 
                         m_BlessedBy = reader.ReadMobile();
 
-                        SetFlag sflags = (SetFlag)reader.ReadEncodedInt();                        
+                        SetFlag sflags = (SetFlag)reader.ReadEncodedInt();
 
                         if (GetSaveFlag(sflags, SetFlag.Attributes))
                             m_SetAttributes = new AosAttributes(this, reader);
@@ -2015,14 +2056,6 @@ namespace Server.Items
                 case 5:
                     {
                         SaveFlag flags = (SaveFlag)reader.ReadEncodedInt();
-
-                        if (version > 14)
-                        {
-                            if (GetSaveFlag(flags, SaveFlag.xWeaponAttributes))
-                                m_AosWeaponAttributes = new AosWeaponAttributes(this, reader);
-                            else
-                                m_AosWeaponAttributes = new AosWeaponAttributes(this);
-                        }
 
                         if (GetSaveFlag(flags, SaveFlag.EngravedText))
                             _EngravedText = reader.ReadString();
@@ -2198,7 +2231,8 @@ namespace Server.Items
                         if (m_ArmorBase == RevertArmorBase)
                             m_ArmorBase = -1;
 
-                        /*m_BodyPos = (ArmorBodyType)*/reader.ReadInt();
+                        /*m_BodyPos = (ArmorBodyType)*/
+                        reader.ReadInt();
 
                         if (version < 4)
                         {
@@ -2217,7 +2251,7 @@ namespace Server.Items
                         {
                             OreInfo info;
 
-                            switch ( reader.ReadInt() )
+                            switch (reader.ReadInt())
                             {
                                 default:
                                 case 0:
@@ -2287,13 +2321,13 @@ namespace Server.Items
                             if (mat == ArmorMaterialType.Studded || mat == ArmorMaterialType.Leather)
                                 m_Resource = CraftResource.RegularLeather;
                             else if (mat == ArmorMaterialType.Spined)
-                                m_Resource = CraftResource.SpinedLeather;
+                                m_Resource = CraftResource.CouroSpinned;
                             else if (mat == ArmorMaterialType.Horned)
-                                m_Resource = CraftResource.HornedLeather;
+                                m_Resource = CraftResource.CouroHorned;
                             else if (mat == ArmorMaterialType.Barbed)
-                                m_Resource = CraftResource.BarbedLeather;
+                                m_Resource = CraftResource.CouroBarbed;
                             else
-                                m_Resource = CraftResource.Iron;
+                                m_Resource = CraftResource.Ferro;
                         }
 
                         if (m_MaxHitPoints == 0 && m_HitPoints == 0)
@@ -2314,10 +2348,7 @@ namespace Server.Items
             if (m_AosSkillBonuses == null)
                 m_AosSkillBonuses = new AosSkillBonuses(this);
 
-            if (m_AosWeaponAttributes == null)
-                m_AosWeaponAttributes = new AosWeaponAttributes(this);
-
-            if (Core.AOS && Parent is Mobile)
+            if (Parent is Mobile)
                 m_AosSkillBonuses.AddTo((Mobile)Parent);
 
             int strBonus = ComputeStatBonus(StatType.Str);
@@ -2354,7 +2385,7 @@ namespace Server.Items
         {
             get
             {
-                return CraftResource.Iron;
+                return CraftResource.Ferro;
             }
         }
 
@@ -2385,7 +2416,6 @@ namespace Server.Items
 
             m_AosSkillBonuses = new AosSkillBonuses(this);
             m_NegativeAttributes = new NegativeAttributes(this);
-            m_AosWeaponAttributes = new AosWeaponAttributes(this);
             m_TalismanProtection = new TalismanAttribute();
         }
 
@@ -2450,11 +2480,9 @@ namespace Server.Items
                     from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1111708); // Gargoyles can't wear this.
                     return false;
                 }
-                if (RequiredRace != null && from.Race != RequiredRace && !morph)
+                if (RequiredRace != null && from.Race != RequiredRace && !morph && RequiredRace != Race.Elf)
                 {
-                    if (RequiredRace == Race.Elf)
-                        from.SendLocalizedMessage(1072203); // Only Elves may use this.
-                    else if (RequiredRace == Race.Gargoyle)
+                    if (RequiredRace == Race.Gargoyle)
                         from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1111707); // Only gargoyles can wear this.
                     else
                         from.SendMessage("Only {0} may use this.", RequiredRace.PluralName);
@@ -2466,7 +2494,7 @@ namespace Server.Items
                     if (AllowFemaleWearer)
                         from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1010388); // Only females can wear this.
                     else
-                        from.SendLocalizedMessage(1071936); // You cannot equip that.
+                        from.SendMessage("You may not wear this.");
 
                     return false;
                 }
@@ -2475,7 +2503,7 @@ namespace Server.Items
                     if (AllowMaleWearer)
                         from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1063343); // Only males can wear this.
                     else
-                        from.SendLocalizedMessage(1071936); // You cannot equip that.
+                        from.SendMessage("You may not wear this.");
 
                     return false;
                 }
@@ -2505,7 +2533,7 @@ namespace Server.Items
                     }
                     else if (from.Int < intReq || (from.Int + intBonus) < 1)
                     {
-                        from.SendLocalizedMessage(1071936); // You cannot equip that.
+                        from.SendMessage("You are not smart enough to equip that.");
                         return false;
                     }
                 }
@@ -2569,8 +2597,7 @@ namespace Server.Items
                 m.RemoveStatMod(modName + "Dex");
                 m.RemoveStatMod(modName + "Int");
 
-                if (Core.AOS)
-                    m_AosSkillBonuses.Remove();
+                m_AosSkillBonuses.Remove();
 
                 ((Mobile)parent).Delta(MobileDelta.Armor); // Tell them armor rating has changed
                 m.CheckStatTimers();
@@ -2589,17 +2616,22 @@ namespace Server.Items
         public DateTime NextSelfRepair { get; set; }
 
         public virtual int OnHit(BaseWeapon weapon, int damageTaken)
-        {
-            double HalfAr = ArmorRating / 2.0;
-            int Absorbed = (int)(HalfAr + HalfAr * Utility.RandomDouble());
+        { 
+            var random = Utility.RandomDouble();
+            int Absorbed = (int)(ArmorRating / 3);
+
+            /*
+            Shard.Debug("Random: " + random, weapon.Owner);
+            Shard.Debug("Armor Rating: " + ArmorRating, weapon.Owner);
+            Shard.Debug("Armor Absorb: " + Absorbed, weapon.Owner);
 
             damageTaken -= Absorbed;
 
-            if (damageTaken < 0) 
+            if (damageTaken < 0)
                 damageTaken = 0;
-
-            if (Absorbed < 2)
-                Absorbed = 2;
+             */
+            if (Absorbed < 1)
+                Absorbed = 1;
 
             double chance = NegativeAttributes.Antique > 0 ? 80 : 25;
 
@@ -2640,7 +2672,7 @@ namespace Server.Items
                                 MaxHitPoints -= wear;
 
                                 if (Parent is Mobile)
-                                    ((Mobile)Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                                    ((Mobile)Parent).SendMessage("Sua armadura esta muito danificada"); // Your equipment is severely damaged.
                             }
                             else
                             {
@@ -2682,31 +2714,32 @@ namespace Server.Items
         {
             int oreType;
 
-            switch ( m_Resource )
+            switch (m_Resource)
             {
-                case CraftResource.DullCopper: oreType = 1053108; break; // dull copper
-                case CraftResource.ShadowIron: oreType = 1053107; break; // shadow iron
-                case CraftResource.Copper: oreType = 1053106; break; // copper
-                case CraftResource.Bronze: oreType = 1053105; break; // bronze
-                case CraftResource.Gold: oreType = 1053104; break; // golden
-                case CraftResource.Agapite: oreType = 1053103; break; // agapite
-                case CraftResource.Verite: oreType = 1053102; break; // verite
-                case CraftResource.Valorite: oreType = 1053101; break; // valorite
-                case CraftResource.SpinedLeather: oreType = 1061118; break; // spined
-                case CraftResource.HornedLeather: oreType = 1061117; break; // horned
-                case CraftResource.BarbedLeather: oreType = 1061116; break; // barbed
-                case CraftResource.RedScales: oreType = 1060814; break; // red
-                case CraftResource.YellowScales: oreType = 1060818; break; // yellow
-                case CraftResource.BlackScales: oreType = 1060820; break; // black
-                case CraftResource.GreenScales: oreType = 1060819; break; // green
-                case CraftResource.WhiteScales: oreType = 1060821; break; // white
-                case CraftResource.BlueScales: oreType = 1060815; break; // blue
-                case CraftResource.OakWood: oreType = 1072533;  break; // oak
-                case CraftResource.AshWood: oreType = 1072534; break; // ash
-                case CraftResource.YewWood: oreType = 1072535; break; // yew
-                case CraftResource.Heartwood: oreType = 1072536; break; // heartwood
-                case CraftResource.Bloodwood: oreType = 1072538; break; // bloodwood
-                case CraftResource.Frostwood: oreType = 1072539; break; // frostwood
+
+                case CraftResource.Cobre: oreType = 1053108; break; // copper
+                case CraftResource.Bronze: oreType = 1053107; break; // bronze
+                case CraftResource.Dourado: oreType = 1053106; break; // golden
+                case CraftResource.Niobio: oreType = 1053105; break; // agapite
+                case CraftResource.Lazurita: oreType = 1053104; break; // verite
+                case CraftResource.Quartzo: oreType = 1053103; break; // valorite
+                case CraftResource.Berilo: oreType = 1053102; break; // dull copper
+                case CraftResource.Vibranium: oreType = 1053101; break; // shadow iron
+                case CraftResource.CouroSpinned: oreType = 1061118; break; // spined
+                case CraftResource.CouroHorned: oreType = 1061117; break; // horned
+                case CraftResource.CouroBarbed: oreType = 1061116; break; // barbed
+                case CraftResource.EscamasVermelhas: oreType = 1060814; break; // red
+                case CraftResource.EscamasAmarelas: oreType = 1060818; break; // yellow
+                case CraftResource.EscamasNegras: oreType = 1060820; break; // black
+                case CraftResource.EscamasVerdes: oreType = 1060819; break; // green
+                case CraftResource.EscamasBrancas: oreType = 1060821; break; // white
+                case CraftResource.EscamasAzuis: oreType = 1060815; break; // blue
+                case CraftResource.Carvalho: oreType = 1072533; break; // oak
+                case CraftResource.Pinho: oreType = 1072534; break; // ash
+                case CraftResource.Mogno: oreType = 1072535; break; // yew
+                case CraftResource.Eucalipto: oreType = 1072536; break; // heartwood
+                case CraftResource.Carmesim: oreType = 1072538; break; // bloodwood
+                case CraftResource.Gelo: oreType = 1072539; break; // frostwood
                 default: oreType = 0; break;
             }
 
@@ -2728,12 +2761,22 @@ namespace Server.Items
             }
             else
             {
-                if (oreType != 0)
-                    list.Add(1053099, "#{0}\t{1}", oreType, GetNameString()); // ~1_oretype~ ~2_armortype~
-                else if (Name == null)
+                var nome = Name;
+                if (Name != null)
+                {
+                    if (this.Quality == ItemQuality.Exceptional)
+                        nome += " excepcional";
+                    if (this.Quality == ItemQuality.Low)
+                        nome += " meia boca";
+                    if (m_Resource != CraftResource.Ferro && m_Resource != CraftResource.RegularLeather && m_Resource != CraftResource.Cedro)
+                        nome += " de " + m_Resource;
+
+                }
+
+                if (Name == null)
                     list.Add(LabelNumber);
                 else
-                    list.Add(Name);
+                    list.Add(nome);
             }
 
             if (!String.IsNullOrEmpty(_EngravedText))
@@ -2754,28 +2797,10 @@ namespace Server.Items
         {
             CraftAttributeInfo attrInfo = GetResourceAttrs(Resource);
 
-            if (attrInfo == null || Resource == CraftResource.Heartwood)
+            if (attrInfo == null || Resource == CraftResource.Eucalipto)
                 return 0;
 
             return attrInfo.ArmorLuck;
-        }
-
-        public override void AddCraftedProperties(ObjectPropertyList list)
-        {
-            if (OwnerName != null)
-                list.Add(1153213, OwnerName);
-
-            if (m_Crafter != null)
-                list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
-
-            if (m_Quality == ItemQuality.Exceptional)
-                list.Add(1060636); // Exceptional
-
-            if (IsImbued)
-                list.Add(1080418); // (Imbued)
-
-            if (m_Altered)
-                list.Add(1111880); // Altered
         }
 
         public override void AddWeightProperty(ObjectPropertyList list)
@@ -2794,12 +2819,87 @@ namespace Server.Items
         {
             base.AddNameProperties(list);
 
+            if (!Identified)
+            {
+                if (m_Durability != ArmorDurabilityLevel.Regular || (m_Protection > ArmorProtectionLevel.Regular && m_Protection <= ArmorProtectionLevel.Invulnerability))
+                    list.Add("[ Nao Identificado ]");
+            }
+            else
+            {
+                if (ProtectionLevel > 0)
+                {
+                    list.Add("Fortificado +" + (int)ProtectionLevel);
+                }
+                if (Durability > 0)
+                {
+                    list.Add("Durabilidade +" + (int)Durability);
+                }
+            }
+
+            var ar = ArmorRatingScaled;
+            if(ar > 0)
+                list.AddTwoValues("Armadura", ar.ToString("0.0"));
+
+            if (m_Crafter != null)
+                list.AddTwoValues("Feito por ", m_Crafter.TitleName); // crafted by ~1_NAME~
+
+            if (StrRequirement > 0)
+                list.Add("Forca necessaria: " + StrRequirement);
+
+            if(MaxHitPoints > 0)
+            {
+                double durabPct = HitPoints / (double)MaxHitPoints;
+                if (durabPct < 0.2)
+                {
+                    list.Add("Pessimo estado");
+                }
+                else if (durabPct < 0.5)
+                {
+                    list.Add("Mau estado");
+                }
+                else if (durabPct < 0.75)
+                {
+                    list.Add("Bom estado");
+                }
+                else if (durabPct < 0.99)
+                {
+                    list.Add("Quase novo");
+                }
+                else if (durabPct >= 1)
+                {
+                    list.Add("Novo");
+                }
+            }
+
+            if (m_GorgonLenseCharges > 0)
+                list.AddTwoValues("Cargas Gorgon", m_GorgonLenseCharges); //Gorgon Lens Charges: ~1_val~         
+
+            if(!Core.AOS)
+                return;
+
+            if (OwnerName != null)
+            {
+                list.Add(1153213, OwnerName);
+            }
+
+            //if (m_Crafter != null)
+            //    list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+
+            //if (m_Quality == ItemQuality.Exceptional)
+            //    list.Add(1060636); // Exceptional
+
+            if (IsImbued)
+                list.Add(1080418); // (Imbued)
+
+            if (m_Altered)
+                list.Add(1111880); // Altered
+
             #region Factions
             FactionEquipment.AddFactionProperties(this, list);
             #endregion
 
-            if (m_GorgonLenseCharges > 0)
-                list.Add(1112590, m_GorgonLenseCharges.ToString()); //Gorgon Lens Charges: ~1_val~         
+            //if (m_GorgonLenseCharges > 0)
+            //    list.Add(1112590, m_GorgonLenseCharges.ToString()); //Gorgon Lens Charges: ~1_val~         
 
             #region Mondain's Legacy Sets
             if (IsSetItem)
@@ -2845,64 +2945,16 @@ namespace Server.Items
             if ((prop = ArtifactRarity) > 0)
                 list.Add(1061078, prop.ToString()); // artifact rarity ~1_val~
 
-            if ((prop = m_AosWeaponAttributes.HitColdArea) != 0)
-                list.Add(1060416, prop.ToString()); // hit cold area ~1_val~%
-
-            if ((prop = m_AosWeaponAttributes.HitDispel) != 0)
-                list.Add(1060417, prop.ToString()); // hit dispel ~1_val~%
-
-            if ((prop = m_AosWeaponAttributes.HitEnergyArea) != 0)
-                list.Add(1060418, prop.ToString()); // hit energy area ~1_val~%
-
-            if ((prop = m_AosWeaponAttributes.HitFireArea) != 0)
-                list.Add(1060419, prop.ToString()); // hit fire area ~1_val~%
-
-            if ((prop = m_AosWeaponAttributes.HitFireball) != 0)
-                list.Add(1060420, prop.ToString()); // hit fireball ~1_val~%
-
-            if ((prop = m_AosWeaponAttributes.HitHarm) != 0)
-                list.Add(1060421, prop.ToString()); // hit harm ~1_val~%
-
-            if ((prop = m_AosWeaponAttributes.HitLeechHits) != 0)
-                list.Add(1060422, prop.ToString()); // hit life leech ~1_val~%
-
-            if ((prop = m_AosWeaponAttributes.HitLightning) != 0)
-                list.Add(1060423, prop.ToString()); // hit lightning ~1_val~%
-
-            if ((prop = m_AosWeaponAttributes.HitLowerAttack) != 0)
-                list.Add(1060424, prop.ToString()); // hit lower attack ~1_val~%
-
-            if ((prop = m_AosWeaponAttributes.HitLowerDefend) != 0)
-                list.Add(1060425, prop.ToString()); // hit lower defense ~1_val~%
-
-            if ((prop = m_AosWeaponAttributes.HitMagicArrow) != 0)
-                list.Add(1060426, prop.ToString()); // hit magic arrow ~1_val~%
-
-            if ((prop = m_AosWeaponAttributes.HitLeechMana) != 0)
-                list.Add(1060427, prop.ToString()); // hit mana leech ~1_val~%
-
-            if ((prop = m_AosWeaponAttributes.HitPhysicalArea) != 0)
-                list.Add(1060428, prop.ToString()); // hit physical area ~1_val~%
-
-            if ((prop = m_AosWeaponAttributes.HitPoisonArea) != 0)
-                list.Add(1060429, prop.ToString()); // hit poison area ~1_val~%
-
-            if ((prop = m_AosWeaponAttributes.HitLeechStam) != 0)
-                list.Add(1060430, prop.ToString()); // hit stamina leech ~1_val~%
-
-            if ((prop = m_AosArmorAttributes.DurabilityBonus) != 0)
-                list.Add(1151780, prop.ToString()); // durability +~1_VAL~%
-
             if (m_TalismanProtection != null && !m_TalismanProtection.IsEmpty && m_TalismanProtection.Amount > 0)
                 list.Add(1072387, "{0}\t{1}", m_TalismanProtection.Name != null ? m_TalismanProtection.Name.ToString() : "Unknown", m_TalismanProtection.Amount); // ~1_NAME~ Protection: +~2_val~%
-			
-			if ((prop = m_AosArmorAttributes.SoulCharge) != 0)
+
+            if ((prop = m_AosArmorAttributes.SoulCharge) != 0)
                 list.Add(1113630, prop.ToString()); // Soul Charge ~1_val~%
-			
-			if((prop = m_AosArmorAttributes.ReactiveParalyze) != 0)
+
+            if ((prop = m_AosArmorAttributes.ReactiveParalyze) != 0)
                 list.Add(1112364); // reactive paralyze
-			
-			if ((prop = m_SAAbsorptionAttributes.EaterFire) != 0)
+
+            if ((prop = m_SAAbsorptionAttributes.EaterFire) != 0)
                 list.Add(1113593, prop.ToString()); // Fire Eater ~1_Val~%
 
             if ((prop = m_SAAbsorptionAttributes.EaterCold) != 0)
@@ -2919,8 +2971,8 @@ namespace Server.Items
 
             if ((prop = m_SAAbsorptionAttributes.EaterDamage) != 0)
                 list.Add(1113598, prop.ToString()); // Damage Eater ~1_Val~%
-			
-			if ((prop = m_SAAbsorptionAttributes.ResonanceFire) != 0)
+
+            if ((prop = m_SAAbsorptionAttributes.ResonanceFire) != 0)
                 list.Add(1113691, prop.ToString()); // Fire Resonance ~1_val~%
 
             if ((prop = m_SAAbsorptionAttributes.ResonanceCold) != 0)
@@ -2934,41 +2986,41 @@ namespace Server.Items
 
             if ((prop = m_SAAbsorptionAttributes.ResonanceKinetic) != 0)
                 list.Add(1113695, prop.ToString()); // Kinetic Resonance ~1_val~%
-			
-			if ((prop = m_SAAbsorptionAttributes.CastingFocus) != 0)
+
+            if ((prop = m_SAAbsorptionAttributes.CastingFocus) != 0)
                 list.Add(1113696, prop.ToString()); // Casting Focus ~1_val~%
-			
-			if ((prop = m_AosAttributes.SpellChanneling) != 0)
+
+            if ((prop = m_AosAttributes.SpellChanneling) != 0)
                 list.Add(1060482); // spell channeling
-			
-			if ((prop = m_AosArmorAttributes.SelfRepair) != 0)
+
+            if ((prop = m_AosArmorAttributes.SelfRepair) != 0)
                 list.Add(1060450, prop.ToString()); // self repair ~1_val~
-			
-			if ((prop = m_AosAttributes.NightSight) != 0)
+
+            if ((prop = m_AosAttributes.NightSight) != 0)
                 list.Add(1060441); // night sight
-			
-			if ((prop = m_AosAttributes.BonusStr) != 0)
+
+            if ((prop = m_AosAttributes.BonusStr) != 0)
                 list.Add(1060485, prop.ToString()); // strength bonus ~1_val~
-			
-			if ((prop = m_AosAttributes.BonusDex) != 0)
+
+            if ((prop = m_AosAttributes.BonusDex) != 0)
                 list.Add(1060409, prop.ToString()); // dexterity bonus ~1_val~
 
             if ((prop = m_AosAttributes.BonusInt) != 0)
                 list.Add(1060432, prop.ToString()); // intelligence bonus ~1_val~
-			
-			if ((prop = m_AosAttributes.BonusHits) != 0)
+
+            if ((prop = m_AosAttributes.BonusHits) != 0)
                 list.Add(1060431, prop.ToString()); // hit point increase ~1_val~
-			
-			if ((prop = m_AosAttributes.BonusStam) != 0)
+
+            if ((prop = m_AosAttributes.BonusStam) != 0)
                 list.Add(1060484, prop.ToString()); // stamina increase ~1_val~
-			
-			if ((prop = m_AosAttributes.BonusMana) != 0)
+
+            if ((prop = m_AosAttributes.BonusMana) != 0)
                 list.Add(1060439, prop.ToString()); // mana increase ~1_val~
-			
-			if ((prop = m_AosAttributes.RegenHits) != 0)
+
+            if ((prop = m_AosAttributes.RegenHits) != 0)
                 list.Add(1060444, prop.ToString()); // hit point regeneration ~1_val~
-			
-			if ((prop = m_AosAttributes.RegenStam) != 0)
+
+            if ((prop = m_AosAttributes.RegenStam) != 0)
                 list.Add(1060443, prop.ToString()); // stamina regeneration ~1_val~
 
             if ((prop = m_AosAttributes.RegenMana) != 0)
@@ -2976,8 +3028,8 @@ namespace Server.Items
 
             if ((prop = (GetLuckBonus() + m_AosAttributes.Luck)) != 0)
                 list.Add(1060436, prop.ToString()); // luck ~1_val~
-			
-			if ((prop = m_AosAttributes.EnhancePotions) != 0)
+
+            if ((prop = m_AosAttributes.EnhancePotions) != 0)
                 list.Add(1060411, prop.ToString()); // enhance potions ~1_val~%
 
             if ((prop = m_AosAttributes.ReflectPhysical) != 0)
@@ -2985,45 +3037,45 @@ namespace Server.Items
 
             if (this is SurgeShield && ((SurgeShield)this).Surge > SurgeType.None)
                 list.Add(1153098, ((SurgeShield)this).Charges.ToString());
-			
-			if ((prop = m_AosAttributes.AttackChance) != 0)
+
+            if ((prop = m_AosAttributes.AttackChance) != 0)
                 list.Add(1060415, prop.ToString()); // hit chance increase ~1_val~%
-			
-			if ((prop = m_AosAttributes.WeaponSpeed) != 0)
+
+            if ((prop = m_AosAttributes.WeaponSpeed) != 0)
                 list.Add(1060486, prop.ToString()); // swing speed increase ~1_val~%
-			
-			if ((prop = m_AosAttributes.WeaponDamage) != 0)
+
+            if ((prop = m_AosAttributes.WeaponDamage) != 0)
                 list.Add(1060401, prop.ToString()); // damage increase ~1_val~%
 
             if ((prop = m_AosAttributes.DefendChance) != 0)
                 list.Add(1060408, prop.ToString()); // defense chance increase ~1_val~%
-			
-			if ((prop = m_AosAttributes.CastRecovery) != 0)
+
+            if ((prop = m_AosAttributes.CastRecovery) != 0)
                 list.Add(1060412, prop.ToString()); // faster cast recovery ~1_val~
-			
-			if ((prop = m_AosAttributes.CastSpeed) != 0)
+
+            if ((prop = m_AosAttributes.CastSpeed) != 0)
                 list.Add(1060413, prop.ToString()); // faster casting ~1_val~
-			
-			if ((prop = m_AosAttributes.SpellDamage) != 0)
+
+            if ((prop = m_AosAttributes.SpellDamage) != 0)
                 list.Add(1060483, prop.ToString()); // spell damage increase ~1_val~%
-			
-			if ((prop = m_AosAttributes.LowerManaCost) != 0)
+
+            if ((prop = m_AosAttributes.LowerManaCost) != 0)
                 list.Add(1060433, prop.ToString()); // lower mana cost ~1_val~%
 
             if ((prop = m_AosAttributes.LowerRegCost) != 0)
                 list.Add(1060434, prop.ToString()); // lower reagent cost ~1_val~%
-			
-			if (Core.ML && (prop = m_AosAttributes.IncreasedKarmaLoss) != 0)
+
+            if (Core.ML && (prop = m_AosAttributes.IncreasedKarmaLoss) != 0)
                 list.Add(1075210, prop.ToString()); // Increased Karma Loss ~1val~%
 
             AddResistanceProperties(list);
-			
-			if ((prop = m_AosArmorAttributes.MageArmor) != 0)
+
+            if ((prop = m_AosArmorAttributes.MageArmor) != 0)
                 list.Add(1060437); // mage armor
-			
-			if ((prop = GetLowerStatReq()) != 0)
+
+            if ((prop = GetLowerStatReq()) != 0)
                 list.Add(1060435, prop.ToString()); // lower requirements ~1_val~%
-            
+
             if ((prop = ComputeStatReq(StatType.Str)) > 0)
                 list.Add(1061170, prop.ToString()); // strength requirement ~1_val~
 
@@ -3122,15 +3174,15 @@ namespace Server.Items
             #region Mondain's Legacy
             if (!Core.ML || !craftItem.ForceNonExceptional)
             {
-				if (typeRes == null)
-					typeRes = craftItem.Resources.GetAt(0).ItemType;
+                if (typeRes == null)
+                    typeRes = craftItem.Resources.GetAt(0).ItemType;
 
-				Resource = CraftResources.GetFromType(typeRes);
+                Resource = CraftResources.GetFromType(typeRes);
             }
             #endregion
 
             if (typeRes == null || craftItem.ForceNonExceptional)
-				typeRes = craftItem.Resources.GetAt(0).ItemType;
+                typeRes = craftItem.Resources.GetAt(0).ItemType;
 
             PlayerConstructed = true;
 
@@ -3195,7 +3247,7 @@ namespace Server.Items
                     }
                 }
 
-                from.CheckSkill(SkillName.ArmsLore, 0, 100);
+                from.CheckSkillMult(SkillName.ArmsLore, 0, 100);
             }
 
             // Imbuing needs to keep track of what is natrual, what is imbued bonuses
@@ -3239,7 +3291,7 @@ namespace Server.Items
             }
 
             info = GetResourceAttrs(m_Resource);
-            
+
             // add new bonus
             m_PhysicalBonus += info.ArmorPhysicalResist;
             m_FireBonus += info.ArmorFireResist;
@@ -3256,7 +3308,7 @@ namespace Server.Items
 
         public virtual void DistributeMaterialBonus(CraftAttributeInfo attrInfo)
         {
-            if (m_Resource != CraftResource.Heartwood)
+            if (m_Resource != CraftResource.Eucalipto)
             {
                 m_AosAttributes.WeaponDamage += attrInfo.ArmorDamage;
                 m_AosAttributes.AttackChance += attrInfo.ArmorHitChance;

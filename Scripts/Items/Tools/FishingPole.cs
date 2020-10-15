@@ -10,7 +10,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class FishingPole : Item, ICraftable, IUsesRemaining, IResource, IQuality
+    public class FishingPole : Item, ICraftable, IUsesRemaining, IResource
     {
         private Type m_BaitType;
         private bool m_EnhancedBait;
@@ -192,7 +192,7 @@ namespace Server.Items
         {
             Layer = Layer.OneHanded;
             Weight = 8.0;
-            Resource = CraftResource.RegularWood;
+            Resource = CraftResource.Cedro;
 
             m_BaitType = null;
             m_HookType = HookType.None;
@@ -251,7 +251,7 @@ namespace Server.Items
 
         public virtual int GetLuckBonus()
         {
-            if (m_Resource == CraftResource.Heartwood)
+            if (m_Resource == CraftResource.Eucalipto)
                 return 0;
 
             CraftResourceInfo resInfo = CraftResources.GetInfo(m_Resource);
@@ -347,23 +347,6 @@ namespace Server.Items
             }
         }
 
-        public override void AddCraftedProperties(ObjectPropertyList list)
-        {
-            if (m_Crafter != null)
-                list.Add(1050043, m_Crafter.Name); // crafted by ~1_NAME~
-
-            if (m_Quality == ItemQuality.Exceptional)
-                list.Add(1060636); // exceptional
-        }
-
-        public override void AddUsesRemainingProperties(ObjectPropertyList list)
-        {
-            if (Siege.SiegeShard && m_ShowUsesRemaining)
-            {
-                list.Add(1060584, UsesRemaining.ToString()); // uses remaining: ~1_val~
-            }
-        }
-
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
@@ -371,9 +354,20 @@ namespace Server.Items
             if (m_AosAttributes.Brittle != 0)
                 list.Add(1116209); // Brittle
 
+            if (m_Crafter != null)
+                list.Add(1050043, m_Crafter.Name); // crafted by ~1_NAME~
+
+            if (m_Quality == ItemQuality.Exceptional)
+                list.Add(1060636); // exceptional
+
             if (m_AosSkillBonuses != null)
                 m_AosSkillBonuses.GetProperties(list);
 
+            if(Siege.SiegeShard && m_ShowUsesRemaining)
+            {
+                list.Add(1060584, ((IUsesRemaining)this).UsesRemaining.ToString()); // uses remaining: ~1_val~
+            }
+            
             base.AddResistanceProperties(list);
 
             int prop = 0;
@@ -605,7 +599,7 @@ namespace Server.Items
                 m_PlayerConstructed = true;
 
                 if (m_Resource == CraftResource.None)
-                    Resource = CraftResource.RegularWood;
+                    Resource = CraftResource.Cedro;
                 else
                 {
                     DistributeMaterialBonus();
@@ -655,7 +649,7 @@ namespace Server.Items
 
         public void DistributeMaterialBonus(CraftAttributeInfo attrInfo)
         {
-            if (m_Resource != CraftResource.Heartwood)
+            if (m_Resource != CraftResource.Eucalipto)
             {
                 Attributes.SpellChanneling = attrInfo.OtherSpellChanneling;
                 Attributes.Luck = attrInfo.OtherLuck;

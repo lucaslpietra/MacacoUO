@@ -4,7 +4,6 @@ using System;
 using Server.Engines.VeteranRewards;
 using Server.Items;
 using Server.Multis;
-using Server.Network;
 using Server.Spells;
 #endregion
 
@@ -332,15 +331,9 @@ namespace Server.Mobiles
                 return false;
             }
 
-            if (from.Mount is BaseBoat)
-            {
-                PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1042146, from.NetState); // You cannot use this while mounted.
-                return false;
-            }
-
             if (from.Mounted)
             {
-                from.SendLocalizedMessage(1005583); // Please dismount first.
+                from.SendMessage("Por favor desmonte primeiro"); // Please dismount first.
                 return false;
             }
 
@@ -625,13 +618,17 @@ namespace Server.Mobiles
         [Constructable]
         public EtherealHorse()
             : base(0x20DD, 0x3EAA, 0x3EA0)
-        { }
+        {
+            this.Transparent = false;
+        }
+        public override string DefaultName { get { return "Cavalo Mágico"; } }
 
         public EtherealHorse(Serial serial)
             : base(serial)
-        { }
+        {
+            this.Transparent = false;
+        }
 
-        public override int LabelNumber { get { return 1041298; } } // Ethereal Horse Statuette
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -662,9 +659,11 @@ namespace Server.Mobiles
 
         public EtherealLlama(Serial serial)
             : base(serial)
-        { }
+        {
+            this.Transparent = false;
+        }
 
-        public override int LabelNumber { get { return 1041300; } } // Ethereal Llama Statuette
+        public override string DefaultName { get { return "Lhama Mágica"; } }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -695,7 +694,9 @@ namespace Server.Mobiles
 
         public EtherealOstard(Serial serial)
             : base(serial)
-        { }
+        {
+            this.Transparent = false;
+        }
 
         public override int LabelNumber { get { return 1041299; } } // Ethereal Ostard Statuette
         public override void Serialize(GenericWriter writer)
@@ -904,6 +905,7 @@ namespace Server.Mobiles
             }
         }
     }
+
 
     public class RideablePolarBear : EtherealMount
     {

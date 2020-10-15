@@ -1,24 +1,26 @@
-using System;
+﻿using System;
 using Server;
 using System.Collections.Generic;
 using Server.Engines.Quests;
+using Server.Gumps;
 using Server.Network;
 
 namespace Server.Items
 {
     public class ShippingCrate : SmallCrate
     {
-        public ProfessionalFisherQuest Quest { get; set; }
+        private ProfessionalFisherQuest m_Quest;
+        public ProfessionalFisherQuest Quest { get { return m_Quest; } set { m_Quest = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool QuestComplete
         {
             get
             {
-                if (Quest == null)
+                if (m_Quest == null)
                     return false;
 
-                return Quest.Completed;
+                return m_Quest.Completed;
             }
         }
 
@@ -27,10 +29,10 @@ namespace Server.Items
         {
             get
             {
-                if (Quest == null)
+                if (m_Quest == null)
                     return null;
 
-                return Quest.TurnIn;
+                return m_Quest.TurnIn;
             }
         }
 
@@ -39,31 +41,41 @@ namespace Server.Items
         {
             get
             {
-                if (Quest == null || !(Quest.Quester is Mobile))
+                if (m_Quest == null || !(m_Quest.Quester is Mobile))
                     return null;
 
-                return Quest.Quester as Mobile;
+                return m_Quest.Quester as Mobile;
             }
         }
 
-        public override int DefaultMaxWeight { get { return 1200; } }
-        public override bool DisplaysContent { get { return false; } }
+        public override int DefaultMaxWeight { get { return 2500; } }
+        public override bool DisplaysContent { get { return true; } }
 
         public ShippingCrate(ProfessionalFisherQuest quest)
         {
-            Weight = 1.0;
-            Quest = quest;
+            m_Quest = quest;
+            Movable = false;
+
+            LootType = LootType.Blessed;
+        }
+
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            if (m_Quest != null && m_Quest.Owner != null)
+                list.Add(1116515, m_Quest.Owner.Name);
+            else
+                list.Add("a shipping crate");
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            if (Quest == null)
+            if (m_Quest == null)
                 return;
 
             int loc = 1116453; //~1_val~: ~2_val~/~3_val~
-            FishQuestObjective obj = Quest.GetObjective();
+            FishQuestObjective obj = m_Quest.GetObjective();
 
             if (obj == null)
                 Delete();
@@ -76,24 +88,22 @@ namespace Server.Items
             }
 
             object delivery = GetDeliveryInfo();
-
             if (delivery is string)
                 list.Add((string)delivery);
             else
                 list.Add((int)delivery);
 
             list.Add(1076255); //NO-TRADE
-
-            list.Add(1072241, "{0}\t{1}\t{2}\t{3}", TotalItems, MaxItems, TotalWeight, MaxWeight);
         }
 
         public override bool OnDragLift(Mobile from)
         {
-            if (Quest == null)
+            if (m_Quest == null)
                 return base.OnDragLift(from);
 
-            if (Quest.Owner != from)
+            if (m_Quest.Owner != from)
             {
+                from.SendMessage("You cannot lift someone else's quest item.");
                 return false;
             }
 
@@ -107,30 +117,29 @@ namespace Server.Items
 
         public override bool OnDroppedToMobile(Mobile from, Mobile target)
         {
-            from.SendLocalizedMessage(1076256); // That item cannot be traded.
+            from.SendMessage("You cannot trade this item.");
 
             return false;
         }
 
         public override bool DropToItem(Mobile from, Item target, Point3D p)
         {
-            from.SendLocalizedMessage(1076254); // That item cannot be dropped.
+            if (target is GalleonHold || target is Hold)
+                return base.DropToItem(from, target, p);
 
             return false;
         }
 
         public override bool OnDroppedToWorld(Mobile from, Point3D p)
         {
-            from.SendLocalizedMessage(1076254); // That item cannot be dropped.
-
             return false;
         }
 
         public override bool OnStackAttempt(Mobile from, Item stack, Item dropped)
         {
-            if (dropped is BaseHighseasFish && Quest != null)
+            if (dropped is BaseHighseasFish && m_Quest != null)
             {
-                FishQuestObjective obj = Quest.GetObjective();
+                FishQuestObjective obj = m_Quest.GetObjective();
 
                 if (obj != null)
                 {
@@ -143,15 +152,15 @@ namespace Server.Items
                 }
             }
 
-            from.SendLocalizedMessage(1116461); // This is not needed to fill the order.
+            from.SendLocalizedMessage(1072355, null, 0x23); // That item does not match any of your quest criteria
             return false;
         }
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            if (dropped is BaseHighseasFish && Quest != null)
+            if (dropped is BaseHighseasFish && m_Quest != null)
             {
-                FishQuestObjective obj = Quest.GetObjective();
+                FishQuestObjective obj = m_Quest.GetObjective();
 
                 if (obj != null && obj.CheckLift(dropped) && base.OnDragDrop(from, dropped))
                 {
@@ -161,15 +170,16 @@ namespace Server.Items
                 }
             }
 
-            from.SendLocalizedMessage(1116461); // This is not needed to fill the order.
+            from.SendLocalizedMessage(1072355, null, 0x23); // That item does not match any of your quest criteria
             return false;
         }
 
         public override bool OnDragDropInto(Mobile from, Item dropped, Point3D p)
         {
-            if (dropped is BaseHighseasFish && Quest != null)
+            Console.WriteLine("1");
+            if (dropped is BaseHighseasFish && m_Quest != null)
             {
-                FishQuestObjective obj = Quest.GetObjective();
+                FishQuestObjective obj = m_Quest.GetObjective();
 
                 if (obj != null && obj.CheckLift(dropped) && base.OnDragDropInto(from, dropped, p))
                 {
@@ -179,16 +189,16 @@ namespace Server.Items
                 }
             }
 
-            from.SendLocalizedMessage(1116461); // This is not needed to fill the order.
+            from.SendLocalizedMessage(1072355, null, 0x23); // That item does not match any of your quest criteria
             return false;
         }
 
         public override bool CheckLift(Mobile from, Item item, ref LRReason reject)
         {
-            if (Quest == null)
+            if (m_Quest == null)
                 return base.CheckLift(from, item, ref reject);
 
-            FishQuestObjective obj = Quest.GetObjective();
+            FishQuestObjective obj = m_Quest.GetObjective();
 
             if (obj != null && obj.CheckLift(item))
             {
@@ -201,10 +211,10 @@ namespace Server.Items
 
         public bool CheckCarve(Item item)
         {
-            if (Quest == null)
+            if (m_Quest == null)
                 return true;
 
-            FishQuestObjective obj = Quest.GetObjective();
+            FishQuestObjective obj = m_Quest.GetObjective();
 
             if (obj.CheckLift(item))
                 return false;
@@ -214,9 +224,9 @@ namespace Server.Items
 
         public object GetDeliveryInfo()
         {
-            if (Quest != null && Quest is ProfessionalFisherQuest && Quest.TurnIn != null)
+            if (m_Quest != null && m_Quest is ProfessionalFisherQuest && ((ProfessionalFisherQuest)m_Quest).TurnIn != null)
             {
-                Region reg = Quest.TurnIn.Region;
+                Region reg = ((ProfessionalFisherQuest)m_Quest).TurnIn.Region;
 
                 if (reg == null || reg.Name == null)
                     return "Unknown Delivery";
@@ -243,13 +253,13 @@ namespace Server.Items
 
         public void AddQuest(ProfessionalFisherQuest quest)
         {
-            Quest = quest;
+            m_Quest = quest;
         }
 
         public override void Delete()
         {
-            if (Quest != null && !Quest.Completed)
-                Quest.OnResign(false);
+            if (m_Quest != null && !m_Quest.Completed)
+                m_Quest.OnResign(false);
 
             base.Delete();
         }
@@ -269,6 +279,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (Movable)
+                Movable = false;
         }
     }
 }

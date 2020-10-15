@@ -56,11 +56,11 @@ namespace Server.Items
         {
             BaseHouse house = BaseHouse.FindHouseAt(this);
 
-            if (m is PlayerMobile && m.InRange(GetWorldLocation(), 2) /*&& (house == null || house.HasSecureAccess(m, this))*/)
+            if (m is PlayerMobile && m.InRange(GetWorldLocation(), 2) && (house == null || house.HasSecureAccess(m, Level)))
             {
                 BaseGump.SendGump(new SpecialScrollBookGump((PlayerMobile)m, this));
             }
-            else if (m.AccessLevel > AccessLevel.Player)
+            else if (m.AccessLevel > AccessLevel.VIP)
             {
                 base.OnDoubleClick(m);
             }
@@ -94,7 +94,7 @@ namespace Server.Items
                 {
                     m.SendLocalizedMessage(1151765); // You must lock this book down in a house to add scrolls to it.
                 }
-                else if (!house.CheckAccessibility(this, m))
+                else if (!house.HasSecureAccess(m, Level))
                 {
                     m.SendLocalizedMessage(1155693); // This item is impermissible and can not be added to the book.
                 }

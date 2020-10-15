@@ -31,7 +31,8 @@ namespace Server.Mobiles
         { 
             public InternalBuyInfo() 
             {
-                this.Add(new GenericBuyInfo(typeof(IronIngot), 5, 16, 0x1BF2, 0, true));
+                //this.Add(new GenericBuyInfo(typeof(IronIngot), 5, 16, 0x1BF2, 0, true));
+                
                 this.Add(new GenericBuyInfo(typeof(Tongs), 13, 14, 0xFBB, 0)); 
  
                 this.Add(new GenericBuyInfo(typeof(BronzeShield), 66, 20, 0x1B72, 0));
@@ -49,24 +50,26 @@ namespace Server.Mobiles
                 this.Add(new GenericBuyInfo(typeof(PlateArms), 188, 20, 0x1410, 0));
                 this.Add(new GenericBuyInfo(typeof(PlateGloves), 155, 20, 0x1414, 0));
 
-                this.Add(new GenericBuyInfo(typeof(PlateHelm), 21, 20, 0x1412, 0));
-                this.Add(new GenericBuyInfo(typeof(CloseHelm), 18, 20, 0x1408, 0));
-                this.Add(new GenericBuyInfo(typeof(CloseHelm), 18, 20, 0x1409, 0));
-                this.Add(new GenericBuyInfo(typeof(Helmet), 31, 20, 0x140A, 0));
-                this.Add(new GenericBuyInfo(typeof(Helmet), 18, 20, 0x140B, 0));
-                this.Add(new GenericBuyInfo(typeof(NorseHelm), 18, 20, 0x140E, 0));
-                this.Add(new GenericBuyInfo(typeof(NorseHelm), 18, 20, 0x140F, 0));
+                //this.Add(new GenericBuyInfo(typeof(PlateHelm), 21, 20, 0x1412, 0));
+                //this.Add(new GenericBuyInfo(typeof(CloseHelm), 18, 20, 0x1408, 0));
+                //this.Add(new GenericBuyInfo(typeof(CloseHelm), 18, 20, 0x1409, 0));
+                //this.Add(new GenericBuyInfo(typeof(Helmet), 31, 20, 0x140A, 0));
+                //this.Add(new GenericBuyInfo(typeof(Helmet), 18, 20, 0x140B, 0));
+                //this.Add(new GenericBuyInfo(typeof(NorseHelm), 18, 20, 0x140E, 0));
+                //this.Add(new GenericBuyInfo(typeof(NorseHelm), 18, 20, 0x140F, 0));
                 this.Add(new GenericBuyInfo(typeof(Bascinet), 18, 20, 0x140C, 0));
-                this.Add(new GenericBuyInfo(typeof(PlateHelm), 21, 20, 0x1419, 0));
+                //this.Add(new GenericBuyInfo(typeof(PlateHelm), 21, 20, 0x1419, 0));
 
-                this.Add(new GenericBuyInfo(typeof(ChainCoif), 17, 20, 0x13BB, 0));
+                this.Add(new GenericBuyInfo(typeof(ChainCoif), 80, 20, 0x13BB, 0));
                 this.Add(new GenericBuyInfo(typeof(ChainChest), 143, 20, 0x13BF, 0));
                 this.Add(new GenericBuyInfo(typeof(ChainLegs), 149, 20, 0x13BE, 0));
+                this.Add(new GenericBuyInfo(typeof(ChainGloves), 79, 20, 0x13EB, 980));
 
-                this.Add(new GenericBuyInfo(typeof(RingmailChest), 121, 20, 0x13ec, 0));
+                this.Add(new GenericBuyInfo(typeof(RingmailChest), 70, 20, 0x13ec, 0));
                 this.Add(new GenericBuyInfo(typeof(RingmailLegs), 90, 20, 0x13F0, 0));
                 this.Add(new GenericBuyInfo(typeof(RingmailArms), 85, 20, 0x13EE, 0));
                 this.Add(new GenericBuyInfo(typeof(RingmailGloves), 93, 20, 0x13eb, 0));
+                this.Add(new GenericBuyInfo(typeof(RingmailCoif), 95, 20, 0x13BB, 642));
 
                 this.Add(new GenericBuyInfo(typeof(ExecutionersAxe), 30, 20, 0xF45, 0));
                 this.Add(new GenericBuyInfo(typeof(Bardiche), 60, 20, 0xF4D, 0));
@@ -95,6 +98,8 @@ namespace Server.Mobiles
                 this.Add(new GenericBuyInfo(typeof(SkinningKnife), 14, 20, 0xEC4, 0));
                 this.Add(new GenericBuyInfo(typeof(LargeBattleAxe), 33, 20, 0x13FB, 0));
                 this.Add(new GenericBuyInfo(typeof(WarAxe), 29, 20, 0x13B0, 0));
+                this.Add(new GenericBuyInfo(typeof(WarFork), 29, 20, 0x1405, 0));
+                this.Add(new GenericBuyInfo(typeof(Hatchet), 29, 20, 0xF43, 0));
 
                 if (Core.AOS)
                 {
@@ -127,7 +132,10 @@ namespace Server.Mobiles
                     this.Add(new GenericBuyInfo(typeof(BladedStaff), 40, 20, 0x26BD, 0));
                 }
 
-                Add(new GenericBuyInfo("1154005", typeof(MalleableAlloy), 50, 500, 7139, 2949, true));
+                //Add(new GenericBuyInfo("Manual de Craft Vidros (Alchemy)", typeof(GlassblowingBook), 20000, 30, 0xFF4, 0));
+                Add(new GenericBuyInfo("Manual Minerar Areia (Mining)", typeof(SandMiningBook), 20000, 30, 0xFF4, 0));
+
+                //Add(new GenericBuyInfo("1154005", typeof(MalleableAlloy), 50, 500, 7139, 2949, true));
             }
         }
 
@@ -136,7 +144,7 @@ namespace Server.Mobiles
             public InternalSellInfo() 
             { 
                 this.Add(typeof(Tongs), 7); 
-                this.Add(typeof(IronIngot), 4); 
+               // this.Add(typeof(IronIngot), 4); 
 
                 this.Add(typeof(Buckler), 25);
                 this.Add(typeof(BronzeShield), 33);
@@ -167,6 +175,7 @@ namespace Server.Mobiles
                 this.Add(typeof(NorseHelm), 9);
                 this.Add(typeof(PlateHelm), 10);
 
+                this.Add(typeof(ChainGloves), 30);
                 this.Add(typeof(ChainCoif), 6);
                 this.Add(typeof(ChainChest), 71);
                 this.Add(typeof(ChainLegs), 74);
@@ -183,6 +192,8 @@ namespace Server.Mobiles
                 this.Add(typeof(Pickaxe), 11);
                 this.Add(typeof(TwoHandedAxe), 16);
                 this.Add(typeof(WarAxe), 14);
+                this.Add(typeof(WarFork), 14);
+                this.Add(typeof(Hatchet), 14);
                 this.Add(typeof(Axe), 20);
 
                 this.Add(typeof(Bardiche), 30);
@@ -204,8 +215,8 @@ namespace Server.Mobiles
                 this.Add(typeof(Bow), 17);
                 this.Add(typeof(Crossbow), 23); 
 
-                if (Core.AOS)
-                {
+                //if (Core.AOS)
+                //{
                     this.Add(typeof(CompositeBow), 25);
                     this.Add(typeof(RepeatingCrossbow), 28);
                     this.Add(typeof(Scepter), 20);
@@ -218,7 +229,7 @@ namespace Server.Mobiles
                     this.Add(typeof(DoubleBladedStaff), 17);
                     this.Add(typeof(Lance), 17);
                     this.Add(typeof(CrescentBlade), 18);
-                }
+                //}
 
                 this.Add(typeof(Spear), 15);
                 this.Add(typeof(Pitchfork), 9);

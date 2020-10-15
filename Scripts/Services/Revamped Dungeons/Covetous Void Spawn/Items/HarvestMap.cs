@@ -58,7 +58,7 @@ namespace Server.Items
         public Map TargetMap { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsMinerMap { get { return _Resource >= CraftResource.Iron && _Resource <= CraftResource.Valorite; } }
+        public bool IsMinerMap { get { return _Resource >= CraftResource.Ferro && _Resource <= CraftResource.Quartzo; } }
 
         [Constructable]
         public HarvestMap(CraftResource resource)
@@ -121,11 +121,6 @@ namespace Server.Items
             list.Add(1152598, String.Format("#{0}\t#{1}", CraftResources.GetLocalizationNumber(Resource), IsMinerMap ? "1152604" : "1152605")); // ~1_RES~ ~2_TYPE~ Map
         }
 
-        public override void AddUsesRemainingProperties(ObjectPropertyList list)
-        {
-            list.Add(1060584, UsesRemaining.ToString()); // uses remaining: ~1_val~
-        }
-
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
@@ -134,6 +129,7 @@ namespace Server.Items
             if (DateTime.UtcNow < Expires)
                 left = (int)(Expires - DateTime.UtcNow).TotalSeconds;
 
+            list.Add(1060584, UsesRemaining.ToString()); // uses remaining: ~1_val~
             list.Add(1072517, left.ToString()); // Lifespan: ~1_val~ seconds
             list.Add(1061114, GetSextantLocation()); // Location: ~1_val~
 
@@ -163,8 +159,26 @@ namespace Server.Items
             return "Unknown";
         }
 
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            from.SendMessage("Este mapa esta com problemas, iremos atualiza-lo em breve.");
+            /*
+            if(from.QuestArrow == null)
+            {
+                from.OverheadMessage("* olhando um mapa *");
+                from.QuestArrow = new QuestArrow(from, this.Target.ToPoint3D());
+                from.QuestArrow.Update();
+            } else
+            {
+                from.QuestArrow = null;
+            }
+            */
+        }
+
         public void GetRandomLocation()
         {
+            /*
             Map map;
 
             switch (Utility.Random(6))
@@ -177,6 +191,8 @@ namespace Server.Items
                 case 4: map = Map.Tokuno; break;
                 case 5: map = Map.TerMur; break;
             }
+            */
+            var map = Map.Felucca;
 
             TargetMap = map;
             Dictionary<Map, List<Point2D>> table;

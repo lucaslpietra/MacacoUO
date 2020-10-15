@@ -86,7 +86,7 @@ namespace Server.Items
             if (!IsSkeletonKey && Utility.Random(4) == 0)
             {
                 // You broke the lockpick.
-                SendLocalizedMessageTo(from, 502074);
+                from.SendMessage("Voce quebrou o lockpick");
 
                 from.PlaySound(0x3A4);
                 Consume();
@@ -108,7 +108,7 @@ namespace Server.Items
             {
                 // LockLevel of 0 means that the door can't be picklocked
                 // LockLevel of -255 means it's magic locked
-                item.SendLocalizedMessageTo(from, 502073); // This lock cannot be picked by normal means
+                from.SendMessage("Estra tranca... parece ter algo diferente nela..."); // This lock cannot be picked by normal means
                 return;
             }
 
@@ -118,7 +118,7 @@ namespace Server.Items
                 // Do some training to gain skills
                 from.CheckSkill( SkillName.Lockpicking, 0, lockpickable.LockLevel );*/
                 // The LockLevel is higher thant the LockPicking of the player
-                item.SendLocalizedMessageTo(from, 502072); // You don't see how that lock can be manipulated.
+                from.SendMessage("Voce precisa de pelo menos "+ lockpickable.RequiredSkill+" lockpicking para conseguir abrir isto"); // You don't see how that lock can be manipulated.
                 return;
             }
 
@@ -131,12 +131,12 @@ namespace Server.Items
                 maxlevel -= SkillBonus; //regulars subtract the bonus from the max level
             }
 
-            if (this is MasterSkeletonKey || from.CheckTargetSkill(SkillName.Lockpicking, lockpickable, minLevel, maxlevel))
+            if (this is MasterSkeletonKey || from.CheckTargetSkillMinMax(SkillName.Lockpicking, lockpickable, minLevel, maxlevel))
             {
                 // Success! Pick the lock!
                 OnUse();
 
-                item.SendLocalizedMessageTo(from, 502076); // The lock quickly yields to your skill.
+                from.SendMessage("Voce conseguiu destrancar o item"); // The lock quickly yields to your skill.
                 from.PlaySound(0x4A);
                 lockpickable.LockPick(from);
             }
@@ -144,7 +144,7 @@ namespace Server.Items
             {
                 // The player failed to pick the lock
                 BrokeLockPickTest(from);
-                item.SendLocalizedMessageTo(from, 502075); // You are unable to pick the lock.
+                from.SendMessage("Voce nao conseguiu destrancar o item");
 
                 if (item is TreasureMapChest && ((Container)item).Items.Count > 0 && 0.25 > Utility.RandomDouble())
                 {
@@ -156,7 +156,7 @@ namespace Server.Items
                     {
                         toBreak.Delete();
                         Effects.PlaySound(item.Location, item.Map, 0x1DE);
-                        from.SendMessage(0x20, "The sound of gas escaping is heard from the chest.");
+                        from.SendMessage(0x20, "Voce escuta algo quebrando dentro do bau.");
                     }
                 }
             }
@@ -183,7 +183,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    from.SendLocalizedMessage(501666); // You can't unlock that!
+                    from.SendLocalizedMessage("Voce nao pode destrancar isto"); // You can't unlock that!
                 }
             }
         }

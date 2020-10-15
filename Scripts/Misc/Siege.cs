@@ -132,7 +132,7 @@ namespace Server
 		{
 			var pm = e.Mobile as PlayerMobile;
 
-			if (pm != null && pm.Map == Map.Trammel && pm.AccessLevel == AccessLevel.Player)
+			if (pm != null && pm.Map == Map.Trammel && pm.AccessLevel <= AccessLevel.VIP)
 			{
 				pm.MoveToWorld(new Point3D(989, 519, -50), Map.Malas);
 				pm.SendMessage("You have been removed from Trammel.");
@@ -221,31 +221,8 @@ namespace Server
 				Utility.PopColor();
 
 				ColUtility.Free(toReset);
-
-                EventSink.ContainerDroppedTo += OnDropped;
-            }
+			}
 		}
-
-        public static void OnDropped(ContainerDroppedToEventArgs e)
-        {
-            if (!SiegeShard)
-                return;
-
-            var item = e.Dropped;
-            var from = e.Mobile;
-            var cont = e.Container;
-
-            if (item != null)
-            {
-                if (cont != from.Backpack && from is PlayerMobile && ((PlayerMobile)from).BlessedItem != null && ((PlayerMobile)from).BlessedItem == item)
-                {
-                    ((PlayerMobile)from).BlessedItem = null;
-                    item.LootType = LootType.Regular;
-
-                    from.SendLocalizedMessage(1075292, item.Name != null ? item.Name : "#" + item.LabelNumber.ToString()); // ~1_NAME~ has been unblessed.
-                }
-            }
-        }
 
         /// <summary>
         ///     Called in SpellHelper.cs CheckTravel method
@@ -257,7 +234,7 @@ namespace Server
         /// <returns>False fails travel check. True must pass other travel checks in SpellHelper.cs</returns>
         public static bool CheckTravel(Mobile m, Point3D p, Map map, TravelCheckType type)
 		{
-			if (m.AccessLevel > AccessLevel.Player)
+			if (m.AccessLevel > AccessLevel.VIP)
 				return true;
 
 			switch (type)

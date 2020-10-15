@@ -13,7 +13,8 @@ namespace Server.Spells.Necromancy
             203,
             9031,
             Reagent.BatWing,
-            Reagent.NoxCrystal);
+            Reagent.NoxCrystal
+        );
 
         private static readonly Dictionary<Mobile, double> m_Table = new Dictionary<Mobile, double>();
 
@@ -26,9 +27,10 @@ namespace Server.Spells.Necromancy
         {
             get
             {
-                return TimeSpan.FromSeconds(1.0);
+                return TimeSpan.FromSeconds(0.75);
             }
         }
+
         public override double RequiredSkill
         {
             get
@@ -97,6 +99,7 @@ namespace Server.Spells.Necromancy
             {
                 SpellHelper.Turn(Caster, m);
 
+
                 ApplyEffects(m);
                 ConduitSpell.CheckAffected(Caster, m, ApplyEffects);
             }
@@ -123,13 +126,19 @@ namespace Server.Spells.Necromancy
 
             HarmfulSpell(m);
             double resistMalas = 0;
-            
-            if(m.Skills[SkillName.MagicResist].Base > 50.0)
+
+            if (m.Skills[SkillName.MagicResist].Base > 50.0)
                 resistMalas = m.Skills[SkillName.MagicResist].Base / 2.0;
-            
+
+            if (CheckResisted(m, 7))
+            {
+                m.SendMessage("Voce sente seu corpo resistindo a magia");
+                return;
+            }
+
             m_Table[m] = resistMalas;
 
-            TimeSpan duration = TimeSpan.FromSeconds(((Caster.Skills[SkillName.SpiritSpeak].Value / 12) + 1.0) * strength);
+            TimeSpan duration = TimeSpan.FromSeconds(((Caster.Skills[SkillName.SpiritSpeak].Value / 10) + 1.0) * strength);
 
             Timer.DelayCall(duration, new TimerStateCallback(EffectExpire_Callback), m);
 

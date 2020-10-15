@@ -118,13 +118,18 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
+
+            if (Weight == 2.0)
+                Weight = 4.0;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -232,7 +237,7 @@ namespace Server.Items
                         if (max <= from.Skills[SkillName.Herding].Value)
                             m_Creature.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 502471, from.NetState); // That wasn't even challenging.
 
-                        if (from.CheckTargetSkill(SkillName.Herding, m_Creature, min, max))
+                        if (from.Skills[SkillName.Herding].Value > 80)
                         {
                             IPoint2D p = (IPoint2D)targ;
 
@@ -249,7 +254,7 @@ namespace Server.Items
                         }
                         else
                         {
-                            from.SendLocalizedMessage(502472); // You don't seem to be able to persuade that to move.
+                            from.SendMessage("Voce nao tem herding suficiente para isto"); // You don't seem to be able to persuade that to move.
                         }
                     }
                 }

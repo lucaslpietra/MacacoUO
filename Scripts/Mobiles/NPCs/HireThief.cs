@@ -32,7 +32,9 @@ namespace Server.Mobiles
                 this.Name = NameList.RandomName("male");
                 this.AddItem(new ShortPants(Utility.RandomNeutralHue()));
             }
-            this.Title = "the thief";
+            this.Title = "o ladino ";
+            if (Female)
+                this.Title = "a ladina ";
             this.HairItemID = this.Race.RandomHair(this.Female);
             this.HairHue = this.Race.RandomHairHue();
             this.Race.RandomFacialHair(this);
@@ -69,6 +71,12 @@ namespace Server.Mobiles
             }
 		
             this.PackGold(0, 25);
+        }
+
+        public override void OnSingleClick(Mobile from)
+        {
+            base.OnSingleClick(from);
+
         }
 
         public HireThief(Serial serial)

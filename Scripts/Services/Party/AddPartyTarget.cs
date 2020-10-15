@@ -8,7 +8,7 @@ namespace Server.Engines.PartySystem
         public AddPartyTarget(Mobile from)
             : base(8, false, TargetFlags.None)
         {
-            from.SendLocalizedMessage(1005454); // Who would you like to add to your party?
+            from.SendMessage("Quem voce quer adicionar ao grupo?"); // Who would you like to add to your party?
         }
 
         protected override void OnTarget(Mobile from, object o)
@@ -20,27 +20,27 @@ namespace Server.Engines.PartySystem
                 Party mp = Party.Get(m);
 
                 if (from == m)
-                    from.SendLocalizedMessage(1005439); // You cannot add yourself to a party.
+                    from.SendMessage("Voce nao pode adicionar a si mesmo no grupo"); // You cannot add yourself to a party.
                 else if (p != null && p.Leader != from)
-                    from.SendLocalizedMessage(1005453); // You may only add members to the party if you are the leader.
+                    from.SendMessage("Voce so pode adicionar membros se for o lider"); // You may only add members to the party if you are the leader.
                 else if (m.Party is Mobile)
                     return;
                 else if (p != null && (p.Members.Count + p.Candidates.Count) >= Party.Capacity)
-                    from.SendLocalizedMessage(1008095); // You may only have 10 in your party (this includes candidates).
+                    from.SendMessage("So pode ter 10 num grupo"); // You may only have 10 in your party (this includes candidates).
                 else if (!m.Player && m.Body.IsHuman)
-                    m.SayTo(from, 1005443); // Nay, I would rather stay here and watch a nail rust.
+                    m.SayTo(from, "Nah obrigado"); // Nay, I would rather stay here and watch a nail rust.
                 else if (!m.Player)
-                    from.SendLocalizedMessage(1005444); // The creature ignores your offer.
+                    from.SendMessage("A criatura te ignora... oxente..."); // The creature ignores your offer.
                 else if (mp != null && mp == p)
-                    from.SendLocalizedMessage(1005440); // This person is already in your party!
+                    from.SendMessage("Esta pessoa ja esta em seu grupo"); // This person is already in your party!
                 else if (mp != null)
-                    from.SendLocalizedMessage(1005441); // This person is already in a party!
+                    from.SendMessage("Pessoa ja esta em um grupo"); // This person is already in a party!
                 else
                     Party.Invite(from, m);
             }
             else
             {
-                from.SendLocalizedMessage(1005442); // You may only add living things to your party!
+                from.SendMessage("Vai sair com isso em um grupo para uma aventura ?"); // You may only add living things to your party!
             }
         }
     }

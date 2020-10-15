@@ -10,6 +10,8 @@ namespace Server.Items
         public SmithHammer()
             : base(0x13E3)
         {
+            this.Weight = 8.0;
+            this.Layer = Layer.OneHanded;
         }
 
         [Constructable]

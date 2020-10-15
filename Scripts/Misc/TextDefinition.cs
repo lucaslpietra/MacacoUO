@@ -7,8 +7,9 @@ namespace Server
     [Parsable]
     public class TextDefinition
     {
-        private readonly int m_Number;
-        private readonly string m_String;
+        public int m_Number;
+        public string m_String;
+
         public TextDefinition()
             : this(0, null)
         {
@@ -26,8 +27,24 @@ namespace Server
 
         public TextDefinition(int number, string text)
         {
-            this.m_Number = number;
-            this.m_String = text;
+            if(text == null)
+            {
+                var trad = Lang.Trans(number);
+                if (trad != null)
+                {
+                    this.m_String = trad;
+                    this.m_Number = 0;
+                } else
+                {
+                    this.m_String = text;
+                    this.m_Number = number;
+                }
+                return;
+            }
+            else if(text!=null)
+            {
+                this.m_String = text;
+            } 
         }
 
         public int Number

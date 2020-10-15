@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.IO;
 using System.Collections.Generic;
@@ -3023,7 +3023,7 @@ namespace Server.Mobiles
 									IPooledEnumerable ie = ((Item)refobject).GetMobilesInRange(range);
 									foreach (Mobile p in ie )
 									{
-										if (p.Player && p.AccessLevel == AccessLevel.Player) nplayers++;
+										if (p.Player && p.AccessLevel <= AccessLevel.VIP) nplayers++;
 									}
 									ie.Free();
 								}
@@ -3032,7 +3032,7 @@ namespace Server.Mobiles
 									IPooledEnumerable ie = ((Mobile)refobject).GetMobilesInRange(range);
 									foreach (Mobile p in ie)
 									{
-										if (p.Player && p.AccessLevel == AccessLevel.Player) nplayers++;
+										if (p.Player && p.AccessLevel <= AccessLevel.VIP) nplayers++;
 									}
 									ie.Free();
 								}
@@ -4684,7 +4684,7 @@ namespace Server.Mobiles
 								IPooledEnumerable ie = ((Item)o).GetMobilesInRange(range);
 								foreach (Mobile p in ie)
 								{
-									if (p.Player && p.AccessLevel == AccessLevel.Player) nplayers++;
+									if (p.Player && p.AccessLevel <= AccessLevel.VIP) nplayers++;
 								}
 								ie.Free();
 							}
@@ -4693,7 +4693,7 @@ namespace Server.Mobiles
 								IPooledEnumerable ie = ((Mobile)o).GetMobilesInRange(range);
 								foreach (Mobile p in ie)
 								{
-									if (p.Player && p.AccessLevel == AccessLevel.Player) nplayers++;
+									if (p.Player && p.AccessLevel <= AccessLevel.VIP) nplayers++;
 								}
 								ie.Free();
 							}
@@ -7964,7 +7964,7 @@ namespace Server.Mobiles
 				return null;
 
 			if (0.05 > Utility.RandomDouble())
-				weapon.Slayer = SlayerName.Silver;
+				weapon.Slayer = SlayerName.Undeads;
 
 			weapon.DamageLevel = (WeaponDamageLevel)BaseCreature.RandomMinMaxScaled(minLevel, maxLevel);
 			weapon.AccuracyLevel = (WeaponAccuracyLevel)BaseCreature.RandomMinMaxScaled(minLevel, maxLevel);

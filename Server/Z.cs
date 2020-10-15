@@ -1,0 +1,57 @@
+using System;
+
+namespace Server
+{
+    public class Shard
+    {
+        public static int MaxOnline = 200;
+        public static bool SohNossoClient = false;
+        public static bool DebugGritando = false;
+
+        public static bool WARSHARD { get { return Config.Get("General.Warshard", false); } }
+        public static bool RP { get { return Config.Get("General.RP", false); } }
+
+        public static bool MAPA_CUSTOM = true;
+        public static bool TROCA_ARMA_RAPIDA = true;
+
+        public static bool TEMPLATES = false;
+
+        public static bool DebugEnabled { get { return Config.Get("General.Debug", false); } }
+
+        public static bool POL_STYLE = true;
+        public static bool SPHERE_STYLE = false; //{ get { return Config.Get("General.Sphere", false); } } 
+
+        public static void Erro(string str, Mobile from = null)
+        {
+            if(from != null)
+                Console.WriteLine(from.Name+" [Error]: "+str);
+            else
+                Console.WriteLine("[Error]: " + str);
+        }
+
+        public static void Info(string str)
+        {
+            Console.WriteLine("[Info]: " + str);
+        }
+
+        public static void Debug(string str, Mobile from = null)
+        {
+            if (!DebugEnabled)
+                return;
+
+            if(DebugGritando)
+            {
+                if (from == null)
+                    World.Broadcast(78, false, AccessLevel.GameMaster, str);
+                else
+                    from.SendMessage(78, "[Debug]" + str);
+            }
+
+            if (from != null)
+            {
+                str += "[" + from.Name + "]";
+            }
+            Console.WriteLine(str);
+        }
+    }
+}

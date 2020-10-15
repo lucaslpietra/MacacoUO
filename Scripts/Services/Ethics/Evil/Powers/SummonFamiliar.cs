@@ -16,13 +16,15 @@ namespace Server.Ethics.Evil
 
         public override void BeginInvoke(Player from)
         {
-            if (from.Familiar != null && from.Familiar.Deleted)
-                from.Familiar = null;
-
             if (from.Familiar != null)
             {
-                from.Mobile.LocalOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, false, "You already have an unholy familiar.");
-                return;
+                if (from.Familiar.Deleted)
+                    from.Familiar = null;
+                else
+                {
+                    from.Familiar.Delete();
+                    from.Mobile.LocalOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, false, "Seu capetinha antigo se foi");
+                }
             }
 
             if ((from.Mobile.Followers + 1) > from.Mobile.FollowersMax)

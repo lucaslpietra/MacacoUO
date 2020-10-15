@@ -20,11 +20,11 @@ namespace Server.Engines.Help
 
             this.AddPage(0);
 
-            this.AddHtmlLocalized(150, 40, 360, 40, 1062610, false, false); // <CENTER><U>Ultima Online Help Response</U></CENTER>
+            this.AddHtml(150, 40, 360, 40, "Sistema de Ajuda", false, false); // <CENTER><U>Ultima Online Help Response</U></CENTER>
 
-            this.AddHtml(80, 90, 480, 290, String.Format("{0} tells {1}: {2}", name, from.Name, text), true, true);
+            this.AddHtml(80, 90, 480, 290, String.Format("{0} diz a {1}: {2}", name, from.Name, text), true, true);
 
-            this.AddHtmlLocalized(80, 390, 480, 40, 1062611, false, false); // Clicking the OKAY button will remove the reponse you have received.
+            this.AddHtml(80, 390, 480, 40, "Clicando em okay removera a resposta", false, false); // Clicking the OKAY button will remove the reponse you have received.
             this.AddButton(400, 417, 2074, 2075, 1, GumpButtonType.Reply, 0); // OKAY
 
             this.AddButton(475, 417, 2073, 2072, 0, GumpButtonType.Reply, 0); // CANCEL

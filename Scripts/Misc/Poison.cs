@@ -32,7 +32,7 @@ namespace Server
 				Register(new PoisonImpl("Regular", 1, 5, 26, 3.125, 3.5, 3.0, 10, 2));
 				Register(new PoisonImpl("Greater", 2, 6, 26, 6.250, 3.5, 3.0, 10, 2));
 				Register(new PoisonImpl("Deadly", 3, 7, 26, 12.500, 3.5, 4.0, 10, 2));
-				Register(new PoisonImpl("Lethal", 4, 9, 26, 25.000, 3.5, 5.0, 10, 2));
+				Register(new PoisonImpl("Lethal", 4, 9, 26, 20.000, 3.5, 5.0, 10, 2));
 			}
 
 			#region Mondain's Legacy
@@ -181,7 +181,7 @@ namespace Server
                     OrangePetals.RemoveContext(m_Mobile);
                     usingPetals = false;
 
-                    m_Mobile.LocalOverheadMessage(MessageType.Regular, 0x3F, 1053093); // * The strength of the poison overcomes your resistance! *
+                    m_Mobile.LocalOverheadMessage(MessageType.Regular, 0x3F, false, "A forca do veneno eh mais forte que sua resistencia"); // * The strength of the poison overcomes your resistance! *
                 }
 
                 if ((Core.AOS && m_Poison.RealLevel < 4 && TransformationSpellHelper.UnderTransformation(m_Mobile, typeof(VampiricEmbraceSpell))) ||
@@ -190,9 +190,9 @@ namespace Server
                 {
                     if (m_Mobile.CurePoison(m_Mobile))
                     {
-                        m_Mobile.LocalOverheadMessage(MessageType.Emote, 0x3F, 1053092); // * You feel yourself resisting the effects of the poison *
+                        m_Mobile.LocalOverheadMessage(MessageType.Emote, 0, false, "* Resistiu ao veneno *"); // * You feel yourself resisting the effects of the poison *
 
-                        m_Mobile.NonlocalOverheadMessage(MessageType.Emote, 0x3F, 1114442, m_Mobile.Name); // * ~1_NAME~ seems resistant to the poison *
+                        m_Mobile.NonlocalOverheadMessage(MessageType.Emote, 0x3F, false, m_Mobile.Name+" resistiu ao veneno"); // * ~1_NAME~ seems resistant to the poison *
 
                         Stop();
                         return;
@@ -242,7 +242,6 @@ namespace Server
                 }
 
                 IHonorTarget honorTarget = m_Mobile as IHonorTarget;
-
                 if (honorTarget != null && honorTarget.ReceivedHonorContext != null)
                     honorTarget.ReceivedHonorContext.OnTargetPoisoned();
 
@@ -269,11 +268,6 @@ namespace Server
                 #endregion
 
                 AOS.Damage(m_Mobile, m_From, damage, 0, 0, 0, 100, 0);
-
-                if (damage > 0)
-                {
-                    m_Mobile.RevealingAction();
-                }
 
                 if ((m_Index % m_Poison.m_MessageInterval) == 0)
                     m_Mobile.OnPoisoned(m_From, m_Poison, m_Poison);

@@ -67,7 +67,7 @@ namespace Server.SkillHandlers
                     {
                         from.RevealingAction();
                         m_Instrument.PlayInstrumentWell(from);
-                        from.SendLocalizedMessage(1008085);
+                        from.SendLocalizedMessage("Quem deseja atacar com a criatura?");
                         // You play your music and your target becomes angered.  Whom do you wish them to attack?
                         from.Target = new InternalSecondTarget(from, m_Instrument, creature);
                     }
@@ -95,12 +95,45 @@ namespace Server.SkillHandlers
             {
                 from.RevealingAction();
 
+                if (targeted is PlayerMobile)
+                {
+                    if (targeted != from)
+                    {
+                        from.SendMessage("Voce nao pode fazer criaturas atacar outros jogadores. (mas pode a si)");
+                        return;
+                    }
+
+                    if (!from.CanBeHarmful(m_Creature, true))
+                    {
+                        from.SendMessage("Voce nao pode fazer mau a esta criatura");
+                        return;
+                    }
+
+                    if (!from.CheckTargetSkillMinMax(SkillName.Provocation, (Mobile)targeted, 0, 100))
+                    {
+                        from.NextSkillTime = Core.TickCount + 5000;
+                        from.SendLocalizedMessage(501599); // Your music fails to incite enough anger.
+                        m_Instrument.PlayInstrumentBadly(from);
+                        m_Instrument.ConsumeUse(from);
+                    }
+                    else
+                    {
+                        from.OverheadMessage("* chamando atencao *");
+                        m_Creature.OverheadMessage("* ! *");
+                        from.SendLocalizedMessage("Voce inicia uma briga"); // Your music succeeds, as you start a fight.
+                        m_Instrument.PlayInstrumentWell(from);
+                        m_Instrument.ConsumeUse(from);
+
+                        from.MovingParticles(m_Creature, m_Instrument.ItemID, 7, 0, false, false, 38, 9502, 0x374A, 0x204, 1, 1);
+
+                        m_Creature.Provoke(from, (Mobile)targeted, true);
+                    }
+                }
+
                 if (targeted is BaseCreature || (from is BaseCreature && ((BaseCreature)from).CanProvoke))
                 {
-                    BaseCreature creature = targeted as BaseCreature;
+                    var creature = targeted as BaseCreature;
                     Mobile target = targeted as Mobile;
-
-                    bool questTargets = QuestTargets(creature, from);
 
                     if (!m_Instrument.IsChildOf(from.Backpack))
                     {
@@ -110,7 +143,7 @@ namespace Server.SkillHandlers
                     {
                         from.SendLocalizedMessage(1049446); // You have no chance of provoking those creatures.
                     }
-                    else if (creature != null && creature.Unprovokable && !(creature is DemonKnight) && !questTargets)
+                    else if (creature != null && creature.Unprovokable)
                     {
                         from.SendLocalizedMessage(1049446); // You have no chance of provoking those creatures.
                     }
@@ -139,7 +172,7 @@ namespace Server.SkillHandlers
                             diff -= (music - 100.0) * 0.5;
                         }
 
-                        if (questTargets || (from.CanBeHarmful(m_Creature, true) && from.CanBeHarmful(target, true)))
+                        if (from.CanBeHarmful(m_Creature, true) && from.CanBeHarmful(target, true))
                         {
                             if (from.Player && !BaseInstrument.CheckMusicianship(from))
                             {
@@ -152,7 +185,7 @@ namespace Server.SkillHandlers
                             {
                                 //from.DoHarmful( m_Creature );
                                 //from.DoHarmful( creature );
-                                if (!from.CheckTargetSkill(SkillName.Provocation, target, diff - 25.0, diff + 25.0))
+                                if (!from.CheckTargetSkillMinMax(SkillName.Provocation, target, diff - 25.0, diff + 25.0))
                                 {
                                     from.NextSkillTime = Core.TickCount + (10000 - ((masteryBonus / 5) * 1000));
                                     from.SendLocalizedMessage(501599); // Your music fails to incite enough anger.
@@ -164,20 +197,9 @@ namespace Server.SkillHandlers
                                     from.SendLocalizedMessage(501602); // Your music succeeds, as you start a fight.
                                     m_Instrument.PlayInstrumentWell(from);
                                     m_Instrument.ConsumeUse(from);
+                                    from.MovingParticles(m_Creature, m_Instrument.ItemID, 7, 0, false, false, 38, 9502, 0x374A, 0x204, 1, 1);
+
                                     m_Creature.Provoke(from, target, true);
-
-                                    #region Bard Mastery Quest
-                                    if (questTargets)
-                                    {
-                                        BaseQuest quest = QuestHelper.GetQuest((PlayerMobile)from, typeof(IndoctrinationOfABattleRouserQuest));
-
-                                        if (quest != null)
-                                        {
-                                            foreach (BaseObjective objective in quest.Objectives)
-                                                objective.Update(creature);
-                                        }
-                                    }
-                                    #endregion
                                 }
                             }
                         }
@@ -193,28 +215,6 @@ namespace Server.SkillHandlers
                 }
             }
 
-            public bool QuestTargets(BaseCreature creature, Mobile from)
-            {
-                if (creature != null)
-                {
-                    Mobile getmaster = creature.GetMaster();
-
-                    if (getmaster != null)
-                    {
-                        if (getmaster is PlayerMobile)
-                            return false;
-                    }
-
-                    if (from is PlayerMobile && (m_Creature.GetType() == typeof(Rabbit) || m_Creature.GetType() == typeof(JackRabbit)) && ((creature is WanderingHealer) || (creature is EvilWanderingHealer)))
-                        return true;
-
-                    return false;
-                }
-                else
-                {
-                    return false;
-                }
-            }
         }
     }
 }

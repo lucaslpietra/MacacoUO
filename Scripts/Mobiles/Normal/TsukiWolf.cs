@@ -74,12 +74,30 @@ namespace Server.Mobiles
 
         public override bool CanAngerOnTame { get { return true; } }
 
-		public override int TreasureMapLevel { get { return 3; } }
         public override int Meat { get { return 4; } }
         public override int Hides { get { return 25; } }
         public override FoodType FavoriteFood { get { return FoodType.Meat; } }
-		
-		public override int GetAngerSound()
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.FilthyRich);
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+
+        public override int GetAngerSound()
         {
             return 0x52D;
         }
@@ -102,25 +120,6 @@ namespace Server.Mobiles
         public override int GetDeathSound()
         {
             return 0x52A;
-        }
-
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.FilthyRich);
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0);
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
         }
     }
 }

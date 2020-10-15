@@ -22,7 +22,7 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            EventSink.Speech += new SpeechEventHandler(EventSink_Speech);
+            // EventSink.Speech += new SpeechEventHandler(EventSink_Speech);
         }
 
         public override int LabelNumber { get { return 1079525; } } // Ankh Pendant
@@ -31,6 +31,7 @@ namespace Server.Items
         public AnkhPendant()
             : base(0x3BB5)
         {
+            Name = "Colar de Ankh";
             Hue = Utility.RandomBool() ? 2213 : 0;
         }
 

@@ -60,11 +60,12 @@ namespace Server.Gumps
             AddImage(420, 250, 1417);
             AddImage(440, 270, 2642);
 
-            AddHtmlLocalized(220, 90, 210, 16, 1153747, false, false); // <center>GENERATOR CONTROL PANEL</center>
-            AddHtmlLocalized(220, 115, 210, 16, 1153748, false, false); // <center>Use the Directional Controls to</center>
-            AddHtmlLocalized(220, 131, 210, 16, 1153749, false, false); // <center>Close the Grid Circuit</center>
+            AddHtml(220, 90, 210, 16, "<center>Painel do Gerador</center>", false, false); // <center>GENERATOR CONTROL PANEL</center>
+            AddHtml(220, 115, 210, 16, "<center>Use as direcoes para</center>", false, false); // <center>Use the Directional Controls to</center>
+            AddHtml(220, 131, 210, 16, "<center>fechar o circuito !</center>", false, false); // <center>Close the Grid Circuit</center>
 
-			if(m_Path == null)
+
+            if (m_Path == null)
 			{
 				m_Path = GetRandomPath();
 				m_Item.Path = m_Path;

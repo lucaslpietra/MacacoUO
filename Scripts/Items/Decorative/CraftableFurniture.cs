@@ -1,10 +1,10 @@
-using System;
+﻿using System;
 using Server.Engines.Craft;
 using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class CraftableFurniture : Item, IResource, IQuality
+    public class CraftableFurniture : Item, IResource
     {
         public virtual bool ShowCrafterName
         {
@@ -87,15 +87,16 @@ namespace Server.Items
             if (this.m_Quality == ItemQuality.Exceptional)
                 list.Add(1060636); // exceptional
         }
-
-        public override void AddCraftedProperties(ObjectPropertyList list)
+		
+        public override void GetProperties(ObjectPropertyList list)
         {
+            base.GetProperties(list);
+
             CraftResourceInfo info = CraftResources.IsStandard(this.m_Resource) ? null : CraftResources.GetInfo(this.m_Resource);
 
             if (info != null && info.Number > 0)
                 list.Add(info.Number);
         }
-
 		public override void OnSingleClick(Mobile from)
 		{
 			base.OnSingleClick(from);

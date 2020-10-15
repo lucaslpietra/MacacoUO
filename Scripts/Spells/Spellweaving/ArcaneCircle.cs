@@ -95,7 +95,7 @@ namespace Server.Spells.Spellweaving
 
         private static int GetStrength(Mobile m)
         {
-            return m.Skills.CurrentMastery == SkillName.Spellweaving ? MasteryInfo.GetMasteryLevel(m, SkillName.Spellweaving) : 1;
+            return Math.Max(1, MasteryInfo.GetMasteryLevel(m, SkillName.Spellweaving));
         }
 
         private static bool IsValidLocation(Point3D location, Map map)

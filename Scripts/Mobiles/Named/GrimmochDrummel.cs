@@ -9,11 +9,11 @@ namespace Server.Mobiles
         public GrimmochDrummel()
             : base(AIType.AI_Archer, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Title = "the Cursed";
+            this.Title = "o amaldicoado";
 
             this.Hue = 0x8596;
             this.Body = 0x190;
-            this.Name = "Grimmoch Drummel";
+            this.Name = "Marte Nebroso";
 
             this.HairItemID = 0x204A;	//Krisna
 

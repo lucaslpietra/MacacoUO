@@ -8,7 +8,7 @@ namespace Server.Mobiles
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         [Constructable]
         public Mage()
-            : base("the mage")
+            : base("o mago")
         {
             this.SetSkill(SkillName.EvalInt, 65.0, 88.0);
             this.SetSkill(SkillName.Inscribe, 60.0, 83.0);

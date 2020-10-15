@@ -1,4 +1,4 @@
-using Server;
+﻿using Server;
 using System;
 using Server.Items;
 using Server.Multis;
@@ -131,20 +131,15 @@ namespace Server.Mobiles
             else
                 gal = new GargishGalleon(Direction.North);
 
-            var p = Location;
-            Map map = Map;
-
-            // Move this sucka out of the way!
-            Internalize();
-
-            if (gal.CanFit(p, map, gal.ItemID))
+            if (gal.CanFit(this.Location, this.Map, gal.ItemID))
             {
                 gal.Owner = this;
-                gal.MoveToWorld(p, map);
+                gal.MoveToWorld(this.Location, this.Map);
                 m_Galleon = gal;
 
                 Server.Engines.Quests.BountyQuestSpawner.FillHold(m_Galleon);
-                MoveToWorld(new Point3D(p.X, p.Y - 1, gal.Z + gal.ZSurface), map);
+
+                this.MoveToWorld(new Point3D(gal.X, gal.Y - 1, gal.ZSurface), this.Map);
 
                 int crewCount = Utility.RandomMinMax(3, 5);
 
@@ -156,7 +151,7 @@ namespace Server.Mobiles
                         crew.Title = "the orc captain";
 
                     AddToCrew(crew);
-                    crew.MoveToWorld(new Point3D(gal.X + Utility.RandomList(-1, 1), gal.Y + Utility.RandomList(-1, 0, 1), gal.ZSurface), map);
+                    crew.MoveToWorld(new Point3D(gal.X + Utility.RandomList(-1, 1), gal.Y + Utility.RandomList(-1, 0, 1), gal.ZSurface), this.Map);
                 }
 
                 gal.AutoAddCannons(this);
@@ -190,10 +185,7 @@ namespace Server.Mobiles
                 BountyQuestSpawner.Instance.HandleDeath(this);
 
             if (m_Galleon != null && !m_Galleon.Deleted)
-            {
-                m_Galleon.TimeOfDecay = DateTime.UtcNow + TimeSpan.FromMinutes(30);
                 Timer.DelayCall(DeleteAfterDeath, new TimerStateCallback(TryDecayGalleon), m_Galleon);
-            }
 
             base.Delete();
         }
@@ -386,13 +378,13 @@ namespace Server.Mobiles
             m_Galleon.StartMove(dir, true);
         }
 
-        private Dictionary<IShipCannon, DateTime> m_ShootTable = new Dictionary<IShipCannon, DateTime>();
+        private Dictionary<BaseCannon, DateTime> m_ShootTable = new Dictionary<BaseCannon, DateTime>();
 
         public void ShootCannons(Mobile focus, bool shootAtBoat)
         {
             List<Item> cannons = new List<Item>(m_Galleon.Cannons.Where(i => !i.Deleted));
 
-            foreach (var cannon in cannons.OfType<IShipCannon>())
+            foreach (BaseCannon cannon in cannons.OfType<BaseCannon>())
             {
                 if (cannon != null)
                 {
@@ -403,18 +395,16 @@ namespace Server.Mobiles
 
                     if (shootAtBoat && HasTarget(focus, cannon, true))
                     {
-                        cannon.AmmoType = AmmunitionType.Cannonball;
-                        //cannon.LoadedAmmo = cannon.LoadTypes[0];
+                        cannon.AmmoType = AmmoType.Cannonball;
+                        cannon.LoadedAmmo = cannon.LoadTypes[0];
                     }
                     else if (!shootAtBoat && HasTarget(focus, cannon, false))
                     {
-                        cannon.AmmoType = AmmunitionType.Grapeshot;
-                        //cannon.LoadedAmmo = cannon.LoadTypes[1];
+                        cannon.AmmoType = AmmoType.Grapeshot;
+                        cannon.LoadedAmmo = cannon.LoadTypes[1];
                     }
                     else
-                    {
                         continue;
-                    }
 
                     cannon.Shoot(this);
                     m_ShootTable[cannon] = DateTime.UtcNow + ShootFrequency + TimeSpan.FromSeconds(Utility.RandomMinMax(0, 3));
@@ -422,7 +412,7 @@ namespace Server.Mobiles
             }
         }
 
-        private bool HasTarget(Mobile focus, IShipCannon cannon, bool shootatboat)
+        private bool HasTarget(Mobile focus, BaseCannon cannon, bool shootatboat)
         {
             if (cannon == null || cannon.Deleted || cannon.Map == null || cannon.Map == Map.Internal || m_Galleon == null || m_Galleon.Deleted)
                 return false;

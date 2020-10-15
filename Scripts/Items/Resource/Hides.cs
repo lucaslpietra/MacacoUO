@@ -45,8 +45,8 @@ namespace Server.Items
         {
             get
             {
-                if (this.m_Resource >= CraftResource.SpinedLeather && this.m_Resource <= CraftResource.BarbedLeather)
-                    return 1049687 + (int)(this.m_Resource - CraftResource.SpinedLeather);
+                if (this.m_Resource >= CraftResource.CouroSpinned && this.m_Resource <= CraftResource.CouroBarbed)
+                    return 1049687 + (int)(this.m_Resource - CraftResource.CouroSpinned);
 
                 return 1047023;
             }
@@ -178,7 +178,7 @@ namespace Server.Items
     [FlipableAttribute(0x1079, 0x1078)]
     public class SpinedHides : BaseHides, IScissorable
     {
-        protected override CraftResource DefaultResource { get { return CraftResource.SpinedLeather; } }
+        protected override CraftResource DefaultResource { get { return CraftResource.CouroSpinned; } }
 
         [Constructable]
         public SpinedHides()
@@ -188,8 +188,9 @@ namespace Server.Items
 
         [Constructable]
         public SpinedHides(int amount)
-            : base(CraftResource.SpinedLeather, amount)
+            : base(CraftResource.CouroSpinned, amount)
         {
+            this.Name = "Peles Spined";
         }
 
         public SpinedHides(Serial serial)
@@ -231,7 +232,7 @@ namespace Server.Items
     [FlipableAttribute(0x1079, 0x1078)]
     public class HornedHides : BaseHides, IScissorable
     {
-        protected override CraftResource DefaultResource { get { return CraftResource.HornedLeather; } }
+        protected override CraftResource DefaultResource { get { return CraftResource.CouroHorned; } }
 
         [Constructable]
         public HornedHides()
@@ -241,8 +242,9 @@ namespace Server.Items
 
         [Constructable]
         public HornedHides(int amount)
-            : base(CraftResource.HornedLeather, amount)
+            : base(CraftResource.CouroHorned, amount)
         {
+            this.Name = "Peles Horned";
         }
 
         public HornedHides(Serial serial)
@@ -284,7 +286,7 @@ namespace Server.Items
     [FlipableAttribute(0x1079, 0x1078)]
     public class BarbedHides : BaseHides, IScissorable
     {
-        protected override CraftResource DefaultResource { get { return CraftResource.BarbedLeather; } }
+        protected override CraftResource DefaultResource { get { return CraftResource.CouroBarbed; } }
 
         [Constructable]
         public BarbedHides()
@@ -294,8 +296,9 @@ namespace Server.Items
 
         [Constructable]
         public BarbedHides(int amount)
-            : base(CraftResource.BarbedLeather, amount)
+            : base(CraftResource.CouroBarbed, amount)
         {
+            this.Name = "Peles Barbed";
         }
 
         public BarbedHides(Serial serial)

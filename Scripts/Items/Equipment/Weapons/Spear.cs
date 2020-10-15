@@ -12,6 +12,7 @@ namespace Server.Items
             : base(0xF62)
         {
             this.Weight = 7.0;
+            Name = "Lanca";
         }
 
         public Spear(Serial serial)
@@ -31,6 +32,13 @@ namespace Server.Items
             get
             {
                 return WeaponAbility.ParalyzingBlow;
+            }
+        }
+        public override int DefMaxRange
+        {
+            get
+            {
+                return 2;
             }
         }
         public override int AosStrengthReq
@@ -54,6 +62,7 @@ namespace Server.Items
                 return 16;
             }
         }
+
         public override int AosSpeed
         {
             get
@@ -61,6 +70,7 @@ namespace Server.Items
                 return 42;
             }
         }
+
         public override float MlSpeed
         {
             get
@@ -68,6 +78,7 @@ namespace Server.Items
                 return 2.75f;
             }
         }
+
         public override int OldStrengthReq
         {
             get
@@ -75,27 +86,31 @@ namespace Server.Items
                 return 30;
             }
         }
+
         public override int OldMinDamage
         {
             get
             {
-                return 2;
+                return 10;
             }
         }
+
         public override int OldMaxDamage
+        {
+            get
+            {
+                return 39;
+            }
+        }
+
+        public override int OldSpeed
         {
             get
             {
                 return 36;
             }
         }
-        public override int OldSpeed
-        {
-            get
-            {
-                return 46;
-            }
-        }
+
         public override int InitMinHits
         {
             get
@@ -103,6 +118,7 @@ namespace Server.Items
                 return 31;
             }
         }
+
         public override int InitMaxHits
         {
             get

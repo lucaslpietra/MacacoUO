@@ -11,12 +11,14 @@ namespace Server.Items
         public Kryss()
             : base(0x1401)
         {
-            Weight = 2.0;
+            Name = "Kris";
+            this.Weight = 2.0;
         }
 
         public Kryss(Serial serial)
             : base(serial)
         {
+            Name = "Kris";
         }
 
         public override WeaponAbility PrimaryAbility
@@ -79,14 +81,14 @@ namespace Server.Items
         {
             get
             {
-                return 3;
+                return 8;
             }
         }
         public override int OldMaxDamage
         {
             get
             {
-                return 28;
+                return 24;
             }
         }
         public override int OldSpeed
@@ -148,13 +150,18 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
+
+            if (this.Weight == 1.0)
+                this.Weight = 2.0;
         }
     }
 }

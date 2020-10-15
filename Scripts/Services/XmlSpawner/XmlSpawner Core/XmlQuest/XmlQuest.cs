@@ -129,12 +129,7 @@ namespace Server.Items
 
 	public abstract class XmlQuest
 	{
-        public static void Initialize()
-        {
-            EventSink.OnKilledBy += OnKilledBy;
-        }
-
-        public const PlayerFlag CarriedXmlQuestFlag = (PlayerFlag)0x00100000;
+		public const PlayerFlag CarriedXmlQuestFlag = (PlayerFlag)0x00100000;
 
 		public const bool QuestPointsEnabled = true;
 
@@ -1066,10 +1061,8 @@ namespace Server.Items
 			}
 		}
 
-        public static void OnKilledBy(OnKilledByEventArgs e)
-        {
-            RegisterKill(e.Killed, e.KilledBy);
-        }
+
+
 
 		public static void RegisterKill(Mobile m_killed, Mobile m_killer)
 		{

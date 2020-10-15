@@ -9,8 +9,8 @@ namespace Server.Items
         public GwennosHarp()
         {
             Hue = 0x47E;
-            Slayer = SlayerName.Repond;
-            Slayer2 = SlayerName.ReptilianDeath;
+            Slayer = SlayerName.Humanoides;
+            Slayer2 = SlayerName.Repteis;
         }
 
         public GwennosHarp(Serial serial)

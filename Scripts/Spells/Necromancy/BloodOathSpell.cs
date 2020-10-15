@@ -24,7 +24,7 @@ namespace Server.Spells.Necromancy
         {
             get
             {
-                return TimeSpan.FromSeconds(1.75);
+                return TimeSpan.FromSeconds(1.5);
             }
         }
         public override double RequiredSkill
@@ -115,6 +115,11 @@ namespace Server.Spells.Necromancy
             m_OathTable[Caster] = Caster;
             m_OathTable[m] = Caster;
 
+            if(CheckResisted(m, 7)) {
+                m.SendMessage("Voce sente seu corpo resistindo a magia");
+                return;
+            }
+
             if (m.Spell != null)
                 m.Spell.OnCasterHurt();
 
@@ -127,7 +132,7 @@ namespace Server.Spells.Necromancy
             m.FixedParticles(0x3728, 1, 13, 9502, 33, 7, (EffectLayer)255);
 
             TimeSpan duration = TimeSpan.FromSeconds((((GetDamageSkill(Caster) - GetResistSkill(m)) / 8) + 8) * strength);
-            m.CheckSkill(SkillName.MagicResist, 0.0, 120.0);	//Skill check for gain
+            m.CheckSkillMult(SkillName.MagicResist, 0.0, 120.0);	//Skill check for gain
 
             timer = new ExpireTimer(Caster, m, duration);
             timer.Start();

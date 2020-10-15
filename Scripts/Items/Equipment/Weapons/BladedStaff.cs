@@ -12,6 +12,7 @@ namespace Server.Items
             : base(0x26BD)
         {
             this.Weight = 4.0;
+            Name = "Bastao Laminado";
         }
 
         public BladedStaff(Serial serial)

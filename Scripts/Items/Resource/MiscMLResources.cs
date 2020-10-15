@@ -14,8 +14,8 @@ namespace Server.Items
         public Blight(int amount)
             : base(0x3183)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public Blight(Serial serial)
@@ -53,8 +53,8 @@ namespace Server.Items
         public LuminescentFungi(int amount)
             : base(0x3191)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public LuminescentFungi(Serial serial)
@@ -92,8 +92,8 @@ namespace Server.Items
         public CapturedEssence(int amount)
             : base(0x318E)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public CapturedEssence(Serial serial)
@@ -137,8 +137,8 @@ namespace Server.Items
         public EyeOfTheTravesty(int amount)
             : base(0x318D)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public EyeOfTheTravesty(Serial serial)
@@ -182,8 +182,8 @@ namespace Server.Items
         public Corruption(int amount)
             : base(0x3184)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public Corruption(Serial serial)
@@ -227,8 +227,8 @@ namespace Server.Items
         public DreadHornMane(int amount)
             : base(0x318A)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public DreadHornMane(Serial serial)
@@ -272,8 +272,8 @@ namespace Server.Items
         public ParasiticPlant(int amount)
             : base(0x3190)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public ParasiticPlant(Serial serial)
@@ -317,8 +317,8 @@ namespace Server.Items
         public Muculent(int amount)
             : base(0x3188)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public Muculent(Serial serial)
@@ -362,8 +362,8 @@ namespace Server.Items
         public DiseasedBark(int amount)
             : base(0x318B)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public DiseasedBark(Serial serial)
@@ -407,8 +407,8 @@ namespace Server.Items
         public BarkFragment(int amount)
             : base(0x318F)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public BarkFragment(Serial serial)
@@ -452,8 +452,8 @@ namespace Server.Items
         public GrizzledBones(int amount)
             : base(0x318C)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public GrizzledBones(Serial serial)
@@ -477,8 +477,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version <= 0 && ItemID == 0x318F)
-                ItemID = 0x318C;
+            if (version <= 0 && this.ItemID == 0x318F)
+                this.ItemID = 0x318C;
         }
     }
 
@@ -500,8 +500,8 @@ namespace Server.Items
         public LardOfParoxysmus(int amount)
             : base(0x3189)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public LardOfParoxysmus(Serial serial)
@@ -545,8 +545,8 @@ namespace Server.Items
         public PerfectEmerald(int amount)
             : base(0x3194)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public PerfectEmerald(Serial serial)
@@ -590,8 +590,8 @@ namespace Server.Items
         public DarkSapphire(int amount)
             : base(0x3192)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public DarkSapphire(Serial serial)
@@ -635,8 +635,8 @@ namespace Server.Items
         public Turquoise(int amount)
             : base(0x3193)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public Turquoise(Serial serial)
@@ -680,8 +680,8 @@ namespace Server.Items
         public EcruCitrine(int amount)
             : base(0x3195)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public EcruCitrine(Serial serial)
@@ -725,8 +725,8 @@ namespace Server.Items
         public WhitePearl(int amount)
             : base(0x3196)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public WhitePearl(Serial serial)
@@ -770,8 +770,8 @@ namespace Server.Items
         public FireRuby(int amount)
             : base(0x3197)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public FireRuby(Serial serial)
@@ -815,8 +815,8 @@ namespace Server.Items
         public BlueDiamond(int amount)
             : base(0x3198)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public BlueDiamond(Serial serial)
@@ -860,8 +860,8 @@ namespace Server.Items
         public BrilliantAmber(int amount)
             : base(0x3199)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public BrilliantAmber(Serial serial)
@@ -905,9 +905,9 @@ namespace Server.Items
         public Scourge(int amount)
             : base(0x3185)
         {
-            Stackable = true;
-            Amount = amount;
-            Hue = 150;
+            this.Stackable = true;
+            this.Amount = amount;
+            this.Hue = 150;
         }
 
         public Scourge(Serial serial)
@@ -933,31 +933,30 @@ namespace Server.Items
         }
     }
 
-    [TypeAlias("Server.Items.Putrefication")]
-    public class Putrefaction : Item, ICommodity
+    public class Putrefication : Item, ICommodity
     {
         [Constructable]
-        public Putrefaction()
+        public Putrefication()
             : this(1)
         {
         }
 
         [Constructable]
-        public Putrefaction(int amountFrom, int amountTo)
+        public Putrefication(int amountFrom, int amountTo)
             : this(Utility.RandomMinMax(amountFrom, amountTo))
         {
         }
 
         [Constructable]
-        public Putrefaction(int amount)
+        public Putrefication(int amount)
             : base(0x3186)
         {
-            Stackable = true;
-            Amount = amount;
-            Hue = 883;
+            this.Stackable = true;
+            this.Amount = amount;
+            this.Hue = 883;
         }
 
-        public Putrefaction(Serial serial)
+        public Putrefication(Serial serial)
             : base(serial)
         {
         }
@@ -998,9 +997,9 @@ namespace Server.Items
         public Taint(int amount)
             : base(0x3187)
         {
-            Stackable = true;
-            Amount = amount;
-            Hue = 731;
+            this.Stackable = true;
+            this.Amount = amount;
+            this.Hue = 731;
         }
 
         public Taint(Serial serial)
@@ -1076,8 +1075,8 @@ namespace Server.Items
         public SwitchItem(int amount)
             : base(0x2F5F)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public SwitchItem(Serial serial)

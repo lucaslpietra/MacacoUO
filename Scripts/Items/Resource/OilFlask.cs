@@ -15,6 +15,7 @@ namespace Server.Items
         public OilFlask(int amount)
             : base(0x1C18)
         {
+            Name = "Garrafa de Oleo";
             Stackable = true;
             Amount = amount;
         }

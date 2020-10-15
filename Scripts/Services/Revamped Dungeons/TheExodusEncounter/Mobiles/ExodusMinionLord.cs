@@ -11,41 +11,41 @@ namespace Server.Mobiles
         [Constructable]
         public ExodusMinionLord() : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "Exodus Minion Lord";
-            Body = 0x2FB;
-            Hue = 0xA92;
-            SetStr(1501, 1571);
-            SetDex(74, 78);
-            SetInt(66, 89);
+            this.Name = "Exodus Minion Lord";
+            this.Body = 0x2FB;
+            this.Hue = 0xA92;
+            this.SetStr(1501, 1571);
+            this.SetDex(74, 78);
+            this.SetInt(66, 89);
 
-            SetHits(903, 957);
+            this.SetHits(903, 957);
 
-            SetDamage(19, 25);
+            this.SetDamage(19, 25);
 
-            SetResistance(ResistanceType.Physical, 65, 80);
-            SetResistance(ResistanceType.Fire, 65, 80);
-            SetResistance(ResistanceType.Cold, 20, 30);
-            SetResistance(ResistanceType.Poison, 30, 40);
-            SetResistance(ResistanceType.Energy, 40, 50);
+            this.SetResistance(ResistanceType.Physical, 65, 80);
+            this.SetResistance(ResistanceType.Fire, 65, 80);
+            this.SetResistance(ResistanceType.Cold, 20, 30);
+            this.SetResistance(ResistanceType.Poison, 30, 40);
+            this.SetResistance(ResistanceType.Energy, 40, 50);
 
-            SetSkill(SkillName.MagicResist, 99.3, 99.8);
-            SetSkill(SkillName.Tactics, 99.4, 100.0);
-            SetSkill(SkillName.Wrestling, 99.2, 99.7);
+            this.SetSkill(SkillName.MagicResist, 99.3, 99.8);
+            this.SetSkill(SkillName.Tactics, 99.4, 100.0);
+            this.SetSkill(SkillName.Wrestling, 99.2, 99.7);
 
-            Fame = 18000;
-            Karma = -18000;
-            VirtualArmor = 65;
+            this.Fame = 18000;
+            this.Karma = -18000;
+            this.VirtualArmor = 65;
 
-            PackItem(new PowerCrystal());
-            PackItem(new ArcaneGem());
-            PackItem(new ClockworkAssembly());
+            this.PackItem(new PowerCrystal());
+            this.PackItem(new ArcaneGem());
+            this.PackItem(new ClockworkAssembly());
 
 		}
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.Average);
-            AddLoot(LootPack.Rich);
+            this.AddLoot(LootPack.Average);
+            this.AddLoot(LootPack.Rich);
 
             if (Utility.RandomDouble() < 0.1)
             {
@@ -66,7 +66,7 @@ namespace Server.Mobiles
                 }
             }
 
-            m_FieldActive = CanUseField;
+            this.m_FieldActive = this.CanUseField;
         }
 
         public ExodusMinionLord(Serial serial)
@@ -78,14 +78,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return m_FieldActive;
+                return this.m_FieldActive;
             }
         }
         public bool CanUseField
         {
             get
             {
-                return Hits >= HitsMax * 9 / 10;
+                return this.Hits >= this.HitsMax * 9 / 10;
             }
         }// TODO: an OSI bug prevents to verify this
         public override bool IsScaredOfScaryThings
@@ -151,13 +151,13 @@ namespace Server.Mobiles
 
         public override void AlterMeleeDamageFrom(Mobile from, ref int damage)
         {
-            if (m_FieldActive)
+            if (this.m_FieldActive)
                 damage = 0; // no melee damage when the field is up
         }
 
         public override void AlterSpellDamageFrom(Mobile from, ref int damage)
         {
-            if (!m_FieldActive)
+            if (!this.m_FieldActive)
                 damage = 0; // no spell damage when the field is down
         }
 
@@ -165,20 +165,20 @@ namespace Server.Mobiles
         {
             if (from != null && from.Alive && 0.4 > Utility.RandomDouble())
             {
-                SendEBolt(from);
+                this.SendEBolt(from);
             }
 
-            if (!m_FieldActive)
+            if (!this.m_FieldActive)
             {
                 // should there be an effect when spells nullifying is on?
-                FixedParticles(0, 10, 0, 0x2522, EffectLayer.Waist);
+                this.FixedParticles(0, 10, 0, 0x2522, EffectLayer.Waist);
             }
-            else if (m_FieldActive && !CanUseField)
+            else if (this.m_FieldActive && !this.CanUseField)
             {
-                m_FieldActive = false;
+                this.m_FieldActive = false;
 
                 // TODO: message and effect when field turns down; cannot be verified on OSI due to a bug
-                FixedParticles(0x3735, 1, 30, 0x251F, EffectLayer.Waist);
+                this.FixedParticles(0x3735, 1, 30, 0x251F, EffectLayer.Waist);
             }
         }
 
@@ -186,18 +186,18 @@ namespace Server.Mobiles
         {
             base.OnGotMeleeAttack(attacker);
 
-            if (m_FieldActive)
+            if (this.m_FieldActive)
             {
-                FixedParticles(0x376A, 20, 10, 0x2530, EffectLayer.Waist);
+                this.FixedParticles(0x376A, 20, 10, 0x2530, EffectLayer.Waist);
 
-                PlaySound(0x2F4);
+                this.PlaySound(0x2F4);
 
                 attacker.SendAsciiMessage("Your weapon cannot penetrate the creature's magical barrier");
             }
 
             if (attacker != null && attacker.Alive && attacker.Weapon is BaseRanged && 0.4 > Utility.RandomDouble())
             {
-                SendEBolt(attacker);
+                this.SendEBolt(attacker);
             }
         }
 
@@ -206,25 +206,25 @@ namespace Server.Mobiles
             base.OnThink();
 
             // TODO: an OSI bug prevents to verify if the field can regenerate or not
-            if (!m_FieldActive && !IsHurt())
-                m_FieldActive = true;
+            if (!this.m_FieldActive && !this.IsHurt())
+                this.m_FieldActive = true;
         }
 
         public override bool Move(Direction d)
         {
             bool move = base.Move(d);
 
-            if (move && m_FieldActive && Combatant != null)
-                FixedParticles(0, 10, 0, 0x2530, EffectLayer.Waist);
+            if (move && this.m_FieldActive && this.Combatant != null)
+                this.FixedParticles(0, 10, 0, 0x2530, EffectLayer.Waist);
 
             return move;
         }
 
         public void SendEBolt(Mobile to)
         {
-            MovingParticles(to, 0x379F, 7, 0, false, true, 0xBE3, 0xFCB, 0x211);
+            this.MovingParticles(to, 0x379F, 7, 0, false, true, 0xBE3, 0xFCB, 0x211);
             to.PlaySound(0x229);
-            DoHarmful(to);
+            this.DoHarmful(to);
             AOS.Damage(to, this, 50, 0, 0, 0, 0, 100);
         }
 
@@ -239,10 +239,10 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            m_FieldActive = CanUseField;
+            this.m_FieldActive = this.CanUseField;
 
-            if (Name == "Exodus Minion Lord")
-                Name = "exodus minion lord";
+            if (this.Name == "Exodus Minion Lord")
+                this.Name = "exodus minion lord";
         }
     }
 }

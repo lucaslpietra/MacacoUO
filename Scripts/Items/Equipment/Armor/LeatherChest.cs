@@ -11,7 +11,8 @@ namespace Server.Items
         public LeatherChest()
             : base(0x13CC)
         {
-            Weight = 6.0;
+            this.Weight = 6.0;
+            this.Name = "Peitoral de Couro";
         }
 
         public LeatherChest(Serial serial)
@@ -120,6 +121,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (this.Weight == 1.0)
+                this.Weight = 6.0;
         }
     }
 }

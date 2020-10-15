@@ -20,7 +20,7 @@ namespace Server.Mobiles
         {
             this.m_Harrower = harrower;
 
-            this.Name = "tentacles of the harrower";
+            this.Name = "Tentaculos Tenebrosos";
             this.Body = 129;
 
             this.SetStr(901, 1000);

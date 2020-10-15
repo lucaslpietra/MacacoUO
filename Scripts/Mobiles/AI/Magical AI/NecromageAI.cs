@@ -138,7 +138,7 @@ namespace Server.Mobiles
 			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
 			{
 				if (m_Mobile.Debug)
-					m_Mobile.DebugSay("I am going to attack {0}", m_Mobile.FocusMob.Name);
+					m_Mobile.DebugSay("Vo bater em {0}", m_Mobile.FocusMob.Name);
 
 				m_Mobile.Combatant = m_Mobile.FocusMob;
 				Action = ActionType.Combat;

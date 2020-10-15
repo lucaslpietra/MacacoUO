@@ -17,6 +17,26 @@ namespace Server.Items
         private bool m_Redyable;
         private int m_DyedHue;
         private SecureLevel m_SecureLevel;
+        private int m_Charges;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int charges
+        {
+            get
+            {
+                return this.m_Charges;
+            }
+            set
+            {
+                this.m_Charges = value;
+                if (this.m_Charges <= 0)
+                {
+                    this.Hue = 0;
+                    this.DyedHue = 0;
+                }
+                this.InvalidateProperties();
+            }
+        }
 
         [Constructable] 
         public DyeTub()
@@ -24,6 +44,8 @@ namespace Server.Items
         {
             Weight = 10.0;
             m_Redyable = true;
+            this.Name = "Tubo de Tintas";
+            this.m_Charges = 6;
         }
 
         public DyeTub(Serial serial)
@@ -67,14 +89,25 @@ namespace Server.Items
             set { m_SecureLevel = value; }
         }
 
+        public override void AddNameProperties(ObjectPropertyList list)
+        {
+            base.AddNameProperties(list);
+            list.Add("Cargas: " + charges);
+        }
+
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            list.Add("Tubo de Tintas");
+        }
+
         public virtual int TargetMessage { get { return 500859; } } // Select the clothing to dye.        
         public virtual int FailMessage { get { return 1042083; } } // You can not dye that.
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); // version
-			
+            writer.Write((int)2); // version
+            writer.Write((int)charges);
             writer.Write((int)m_SecureLevel);
             writer.Write((bool)m_Redyable);
             writer.Write((int)m_DyedHue);
@@ -84,9 +117,13 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
             switch ( version )
             {
+                case 2:
+                    {
+                        charges = reader.ReadInt();
+                        goto case 1;
+                    }
                 case 1:
                     {
                         m_SecureLevel = (SecureLevel)reader.ReadInt();
@@ -110,6 +147,12 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
+            if(charges <= 0)
+            {
+                from.SendMessage("Este tudo de tintas esta vaziu. Coloque tintas nele.");
+                return;
+            }
+
             if (from.InRange(GetWorldLocation(), 1))
             {
                 from.SendLocalizedMessage(TargetMessage);
@@ -117,7 +160,7 @@ namespace Server.Items
             }
             else
             {
-                from.SendLocalizedMessage(500446); // That is too far away.
+                from.SendMessage("Esta muito longe"); // That is too far away.
             }
         }
 
@@ -140,11 +183,12 @@ namespace Server.Items
                     if (item is IDyable && m_Tub.AllowDyables)
                     {
                         if (!from.InRange(m_Tub.GetWorldLocation(), 1) || !from.InRange(item.GetWorldLocation(), 1))
-                            from.SendLocalizedMessage(500446); // That is too far away.
-                        else if (item.Parent is Mobile)
-                            from.SendLocalizedMessage(500861); // Can't Dye clothing that is being worn.
+                            from.SendMessage("Muito Longe"); // That is too far away.
                         else if (((IDyable)item).Dye(from, m_Tub))
+                        {
                             from.PlaySound(0x23E);
+                            m_Tub.charges -= 1;
+                        }
                     }
                     else if ((FurnitureAttribute.Check(item) || (item is PotionKeg)) && m_Tub.AllowFurniture)
                     {
@@ -179,6 +223,8 @@ namespace Server.Items
                             {
                                 item.Hue = m_Tub.DyedHue;
                                 from.PlaySound(0x23E);
+                                m_Tub.charges -= 1;
+                               
                             }
                         }
                     }
@@ -194,6 +240,8 @@ namespace Server.Items
                         }
                         else
                         {
+                            m_Tub.charges -= 1;
+                          
                             item.Hue = m_Tub.DyedHue;
                             from.PlaySound(0x23E);
                         }
@@ -210,6 +258,8 @@ namespace Server.Items
                         }
                         else
                         {
+                            m_Tub.charges -= 1;
+                          
                             item.Hue = m_Tub.DyedHue;
                             from.PlaySound(0x23E);
                         }
@@ -217,8 +267,7 @@ namespace Server.Items
                     else if (m_Tub.AllowLeather)
                     {
                         if ((item is BaseArmor && (((BaseArmor)item).MaterialType == ArmorMaterialType.Leather || ((BaseArmor)item).MaterialType == ArmorMaterialType.Studded)) ||
-                            (item is BaseClothing && (((BaseClothing)item).DefaultResource == CraftResource.RegularLeather) || item is WoodlandBelt || item is BarbedWhip 
-							|| item is BladedWhip || item is SpikedWhip))
+                            (item is BaseClothing && (((BaseClothing)item).DefaultResource == CraftResource.RegularLeather || item is WoodlandBelt)))
                         {
                             if (!from.InRange(m_Tub.GetWorldLocation(), 1) || !from.InRange(item.GetWorldLocation(), 1))
                             {
@@ -234,6 +283,8 @@ namespace Server.Items
                             }
                             else
                             {
+                                m_Tub.charges -= 1;
+                              
                                 item.Hue = m_Tub.DyedHue;
                                 from.PlaySound(0x23E);
                             }
@@ -259,6 +310,8 @@ namespace Server.Items
                         }
                         else
                         {
+                            m_Tub.charges -= 1;
+                          
                             item.Hue = m_Tub.DyedHue;
                             from.PlaySound(0x23E);
                         }

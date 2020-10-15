@@ -12,6 +12,7 @@ namespace Server.Items
             : base(0xF61)
         {
             this.Weight = 7.0;
+            Name = "Espada Longa";
         }
 
         public Longsword(Serial serial)

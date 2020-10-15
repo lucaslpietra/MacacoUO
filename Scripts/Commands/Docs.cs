@@ -651,7 +651,7 @@ namespace Server.Commands
 				WriteSmithBODHeader(html, "(Small) Armor: Normal");
 
 				sbod.RequireExceptional = false;
-				for (var mat = BulkMaterialType.None; mat <= BulkMaterialType.Valorite; ++mat)
+				for (var mat = BulkMaterialType.None; mat <= BulkMaterialType.Vibranium; ++mat)
 				{
 					sbod.Material = mat;
 					sbod.AmountMax = 10;
@@ -665,7 +665,7 @@ namespace Server.Commands
 				WriteSmithBODHeader(html, "(Small) Armor: Exceptional");
 
 				sbod.RequireExceptional = true;
-				for (var mat = BulkMaterialType.None; mat <= BulkMaterialType.Valorite; ++mat)
+				for (var mat = BulkMaterialType.None; mat <= BulkMaterialType.Vibranium; ++mat)
 				{
 					sbod.Material = mat;
 
@@ -724,7 +724,7 @@ namespace Server.Commands
 				sbod.Type = typeof(LeatherCap);
 				for (var mat = BulkMaterialType.None; mat <= BulkMaterialType.Barbed; ++mat)
 				{
-					if (mat >= BulkMaterialType.DullCopper && mat <= BulkMaterialType.Valorite)
+					if (mat >= BulkMaterialType.Cobre && mat <= BulkMaterialType.Vibranium)
 					{
 						continue;
 					}
@@ -747,7 +747,7 @@ namespace Server.Commands
 				sbod.Type = typeof(LeatherCap);
 				for (var mat = BulkMaterialType.None; mat <= BulkMaterialType.Barbed; ++mat)
 				{
-					if (mat >= BulkMaterialType.DullCopper && mat <= BulkMaterialType.Valorite)
+					if (mat >= BulkMaterialType.Cobre && mat <= BulkMaterialType.Vibranium)
 					{
 						continue;
 					}
@@ -771,7 +771,7 @@ namespace Server.Commands
 				sbod.Type = typeof(LeatherCap);
 				for (var mat = BulkMaterialType.None; mat <= BulkMaterialType.Barbed; ++mat)
 				{
-					if (mat >= BulkMaterialType.DullCopper && mat <= BulkMaterialType.Valorite)
+					if (mat >= BulkMaterialType.Cobre && mat <= BulkMaterialType.Vibranium)
 					{
 						continue;
 					}
@@ -794,7 +794,7 @@ namespace Server.Commands
 				sbod.Type = typeof(LeatherCap);
 				for (var mat = BulkMaterialType.None; mat <= BulkMaterialType.Barbed; ++mat)
 				{
-					if (mat >= BulkMaterialType.DullCopper && mat <= BulkMaterialType.Valorite)
+					if (mat >= BulkMaterialType.Cobre && mat <= BulkMaterialType.Vibranium)
 					{
 						continue;
 					}
@@ -1227,7 +1227,7 @@ namespace Server.Commands
 			WriteSmithBODHeader(html, String.Format("(Large) {0}: Normal", name));
 
 			lbod.RequireExceptional = false;
-			for (var mat = BulkMaterialType.None; mat <= BulkMaterialType.Valorite; ++mat)
+			for (var mat = BulkMaterialType.None; mat <= BulkMaterialType.Vibranium; ++mat)
 			{
 				lbod.Material = mat;
 				lbod.AmountMax = 10;
@@ -1241,7 +1241,7 @@ namespace Server.Commands
 			WriteSmithBODHeader(html, String.Format("(Large) {0}: Exceptional", name));
 
 			lbod.RequireExceptional = true;
-			for (var mat = BulkMaterialType.None; mat <= BulkMaterialType.Valorite; ++mat)
+			for (var mat = BulkMaterialType.None; mat <= BulkMaterialType.Vibranium; ++mat)
 			{
 				lbod.Material = mat;
 
@@ -1460,35 +1460,35 @@ namespace Server.Commands
 					style = "ir";
 					name = "Iron";
 					break;
-				case BulkMaterialType.DullCopper:
+				case BulkMaterialType.Cobre:
 					style = "du";
 					name = "Dull Copper";
 					break;
-				case BulkMaterialType.ShadowIron:
+				case BulkMaterialType.Bronze:
 					style = "sh";
 					name = "Shadow Iron";
 					break;
-				case BulkMaterialType.Copper:
+				case BulkMaterialType.Dourado:
 					style = "co";
 					name = "Copper";
 					break;
-				case BulkMaterialType.Bronze:
+				case BulkMaterialType.Niobio:
 					style = "br";
 					name = "Bronze";
 					break;
-				case BulkMaterialType.Gold:
+				case BulkMaterialType.Lazurita:
 					style = "go";
 					name = "Gold";
 					break;
-				case BulkMaterialType.Agapite:
+				case BulkMaterialType.Quartzo:
 					style = "ag";
 					name = "Agapite";
 					break;
-				case BulkMaterialType.Verite:
+				case BulkMaterialType.Berilo:
 					style = "ve";
 					name = "Verite";
 					break;
-				case BulkMaterialType.Valorite:
+				case BulkMaterialType.Vibranium:
 					style = "va";
 					name = "Valorite";
 					break;
@@ -1918,7 +1918,7 @@ namespace Server.Commands
 				html.WriteLine("<!DOCTYPE html>");
 				html.WriteLine("<html>");
 				html.WriteLine("   <head>");
-				html.WriteLine("      <title>RunUO Documentation - Commands</title>");
+				html.WriteLine("      <title>Comandos</title>");
 				html.WriteLine("      <style type=\"text/css\">");
 				html.WriteLine("      body { background-color: white; font-family: Tahoma; color: #000000; }");
 				html.WriteLine("      a, a:visited { color: #000000; }");

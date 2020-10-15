@@ -4,9 +4,14 @@ namespace Server.Items
 {
     public class LesserPoisonPotion : BasePoisonPotion
     {
+		public override string DefaultName
+        {
+            get { return "Poção de Veneno Fraco"; }            
+        }
+		
         [Constructable]
         public LesserPoisonPotion()
-            : base(PotionEffect.PoisonLesser)
+            : base(PotionEffect.VenenoFraco)
         {
         }
 

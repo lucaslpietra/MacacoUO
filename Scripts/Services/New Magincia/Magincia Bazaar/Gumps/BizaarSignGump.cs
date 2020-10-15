@@ -1310,7 +1310,7 @@ namespace Server.Engines.NewMagincia
 				{
 					if(!Banker.Withdraw(from, PlotSign.RuneCost))
 					{
-						from.SendMessage("You must have {0} gold in your bankbox to purchase a recall rune to this plot.", PlotSign.RuneCost);
+						from.SendMessage("Voce precisa ter {0} gold in your bankbox to purchase a recall rune to this plot.", PlotSign.RuneCost);
 						return;
 					}
 					

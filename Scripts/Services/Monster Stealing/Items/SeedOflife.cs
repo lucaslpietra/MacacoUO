@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Server;
 using Server.Mobiles;
@@ -31,6 +31,7 @@ namespace Server.Items
         {
             DoCleanup();
             ManaDraught.DoCleanup();
+            GemOfSalvation.DoCleanup();
         }
 
         public static void DoCleanup()
@@ -39,9 +40,12 @@ namespace Server.Items
 
             foreach (PlayerMobile pm in SeedUsageList.Keys)
             {
-               if (SeedUsageList[pm] < DateTime.Now + Cooldown)
+                if (SeedUsageList[pm] != null)
                 {
-                    toRemove.Add(pm);
+                    if (SeedUsageList[pm] < DateTime.Now + Cooldown)
+                    {
+                        toRemove.Add(pm);
+                    }
                 }
             }
 
@@ -77,7 +81,10 @@ namespace Server.Items
             }
             else
             {
-                by.SendLocalizedMessage(1079263,((int)(((SeedUsageList[by] + Cooldown)-DateTime.Now).TotalSeconds)).ToString());
+                if (SeedUsageList[by] != null)
+                {
+                    by.SendLocalizedMessage(1079263,((int)(((SeedUsageList[by] + Cooldown)-DateTime.Now).TotalSeconds)).ToString()); 
+                }
             }
         }
 

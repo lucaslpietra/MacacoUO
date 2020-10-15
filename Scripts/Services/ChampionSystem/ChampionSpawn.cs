@@ -590,10 +590,12 @@ namespace Server.Engines.CannedEvil
                     {
                         m_Altar.Hue = 0x455;
 
+                        /*
                         if (!Core.ML || Map == Map.Felucca)
                         {
                             new StarRoomGate(true, m_Altar.Location, m_Altar.Map);
                         }
+                        */
                     }
 
                     m_Champion = null;
@@ -1583,7 +1585,7 @@ namespace Server.Engines.CannedEvil
         {
             Mobile m = e.Mobile;
 
-            if (m is PlayerMobile && m.Region.IsPartOf<ChampionSpawnRegion>() && m.AccessLevel == AccessLevel.Player && m.Map == Map.Felucca)
+            if (m is PlayerMobile && m.Region.IsPartOf<ChampionSpawnRegion>() && m.AccessLevel <= AccessLevel.VIP && m.Map == Map.Felucca)
             {
                 if (m.Alive && m.Backpack != null)
                 {

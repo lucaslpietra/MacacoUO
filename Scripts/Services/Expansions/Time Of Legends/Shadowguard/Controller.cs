@@ -17,17 +17,16 @@ namespace Server.Engines.Shadowguard
     [Flags]
     public enum EncounterType
     {
-        Bar         = 0x00000001,
-        Orchard     = 0x00000002,
-        Armory      = 0x00000004,
-        Fountain    = 0x00000008,
-        Belfry      = 0x00000010,
-        Roof        = 0x00000020,
+        Bar = 0x00000001,
+        Orchard = 0x00000002,
+        Armory = 0x00000004,
+        Fountain = 0x00000008,
+        Belfry = 0x00000010,
+        Roof = 0x00000020,
 
         Required = Bar | Orchard | Armory | Fountain | Belfry
     }
 
-    [DeleteConfirm("Are you sure you want to delete this? Deleting this will delete any saved encounter data your players have.")]
     public class ShadowguardController : Item
     {
         public static readonly TimeSpan ReadyDuration = TimeSpan.FromSeconds(Config.Get("Shadowguard.ReadyDuration", 30));
@@ -55,21 +54,6 @@ namespace Server.Engines.Shadowguard
         {
             EventSink.Login += new LoginEventHandler(OnLogin);
             EventSink.Disconnected += new DisconnectedEventHandler(OnDisconnected);
-
-            CommandSystem.Register("AddController", AccessLevel.Administrator, e =>
-                {
-                    if (Instance == null)
-                    {
-                        var controller = new ShadowguardController();
-                        controller.MoveToWorld(new Point3D(501, 2192, 50), Map.TerMur);
-
-                        e.Mobile.SendMessage("Shadowguard controller setup!");
-                    }
-                    else
-                    {
-                        e.Mobile.SendMessage("A Shadowguard controller already exists!");
-                    }
-                });
 
             CommandSystem.Register("CompleteAllRooms", AccessLevel.GameMaster, e =>
                 {
@@ -156,7 +140,19 @@ namespace Server.Engines.Shadowguard
             if(Table == null)
                 return;
 
-            if (Table.ContainsKey(m))
+            Party p = Party.Get(m);
+
+            if (p != null)
+            {
+                foreach (PartyMemberInfo info in p.Members)
+                {
+                    Mobile mobile = info.Mobile;
+
+                    if (Table.ContainsKey(mobile))
+                        Table.Remove(mobile);
+                }
+            }
+            else if (Table.ContainsKey(m))
             {
                 Table.Remove(m);
             }
@@ -172,9 +168,23 @@ namespace Server.Engines.Shadowguard
 
             if (!expired)
             {
-                foreach (var pm in encounter.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                Mobile m = encounter.PartyLeader;
+
+                if (m == null)
+                    return;
+
+                Party p = Party.Get(m);
+
+                if (p != null)
                 {
-                    AddToTable(pm, encounter.Encounter);
+                    foreach (PartyMemberInfo info in p.Members)
+                    {
+                        AddToTable(info.Mobile, encounter.Encounter);
+                    }
+                }
+                else
+                {
+                    AddToTable(m, encounter.Encounter);
                 }
             }
         }
@@ -516,42 +526,16 @@ namespace Server.Engines.Shadowguard
 
             EndTimer();
 
-            if (Encounters != null)
-            {
-                Encounters.ForEach(e =>
-                    {
-                        e.Reset();
-                    });
-
-                ColUtility.Free(Encounters);
-                Encounters = null;
-            }
-
-            if (Addons != null)
-            {
-                Addons.IterateReverse(addon =>
+            Encounters.ForEach(e =>
                 {
-                    addon.Delete();
+                    e.Reset();
+
+                    if (e.Instance.Region != null)
+                        e.Instance.Region.Unregister();
                 });
 
-                ColUtility.Free(Addons);
-                Addons = null;
-            }
-
-            if (Instances != null)
-            {
-                Instances.ForEach(inst =>
-                {
-                    if (inst.Region != null)
-                    {
-                        inst.ClearRegion();
-                        inst.Region.Unregister();
-                    }
-                });
-
-                ColUtility.Free(Instances);
-                Instances = null;
-            }
+            ColUtility.Free(Encounters);
+            Encounters = null;
 
             if (Queue != null)
             {
@@ -564,8 +548,6 @@ namespace Server.Engines.Shadowguard
                 Table.Clear();
                 Table = null;
             }
-
-            Instance = null;
         }
 
         public ShadowguardController(Serial serial)
@@ -674,27 +656,19 @@ namespace Server.Engines.Shadowguard
 
                 if (encounter == null)
                 {
-                    Timer.DelayCall(TimeSpan.FromSeconds(1), mob =>
-                    {
-                        ShadowguardEncounter.MovePlayer(mob, Instance.KickLocation, true);
-                        /*StormLevelGump menu = new StormLevelGump(mob);
-                        menu.BeginClose();
-                        mob.SendGump(menu);*/
-                    }, m);
+                    StormLevelGump menu = new StormLevelGump(m);
+                    menu.BeginClose();
+                    m.SendGump(menu);
                 }
                 else if (m != encounter.PartyLeader)
                 {
                     Party p = Party.Get(encounter.PartyLeader);
 
-                    if (m is PlayerMobile && !encounter.Participants.Contains((PlayerMobile)m))
+                    if (p == null || !p.Contains(m))
                     {
-                        Timer.DelayCall(TimeSpan.FromSeconds(1), mob =>
-                        {
-                            ShadowguardEncounter.MovePlayer(mob, Instance.KickLocation, true);
-                            /*StormLevelGump menu = new StormLevelGump(mob);
-                            menu.BeginClose();
-                            mob.SendGump(menu);*/
-                        }, m);
+                        StormLevelGump menu = new StormLevelGump(m);
+                        menu.BeginClose();
+                        m.SendGump(menu);
                     }
                 }
             }

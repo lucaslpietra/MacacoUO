@@ -1,4 +1,3 @@
-#if false
 using System;
 using Server.Network;
 using Server.Commands;
@@ -53,4 +52,3 @@ namespace Server.Items
 		}
 	}
 }
-#endif

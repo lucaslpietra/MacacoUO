@@ -67,21 +67,28 @@ namespace Server.Items
         {
             base.OnHit(attacker, defender, damageBonus);
 
+            // Desabilitado powerblow
+            /*
             if (!Core.AOS && defender is Mobile && this.Layer == Layer.TwoHanded && (attacker.Skills[SkillName.Anatomy].Value / 400.0) >= Utility.RandomDouble())
             {
-                ((Mobile)defender).SendMessage("You receive a paralyzing blow!"); // Is this not localized?
+                ((Mobile)defender).SendMessage("Voce recebe um golpe paralizante!"); // Is this not localized?
                 ((Mobile)defender).Freeze(TimeSpan.FromSeconds(2.0));
 
-                attacker.SendMessage("You deliver a paralyzing blow!"); // Is this not localized?
+                attacker.SendMessage("Voce causa um golpe paralizante!"); // Is this not localized?
                 attacker.PlaySound(0x11C);
             }
+            */
+
+            if (WeaponAbility.GetCurrentAbility(attacker) is InfectiousStrike)
+                return;
 
             if (!Core.AOS && defender is Mobile && this.Poison != null && this.PoisonCharges > 0)
             {
-                --this.PoisonCharges;
-
-                if (Utility.RandomDouble() >= 0.5) // 50% chance to poison
+                if (Utility.RandomDouble() >= 0.1)
+                {
+                    --this.PoisonCharges;
                     ((Mobile)defender).ApplyPoison(attacker, this.Poison);
+                }
             }
         }
     }

@@ -13,6 +13,7 @@ namespace Server.Items
             : base(0x13B0)
         {
             this.Weight = 8.0;
+            Name = "Maca de Guerra";
         }
 
         public WarAxe(Serial serial)

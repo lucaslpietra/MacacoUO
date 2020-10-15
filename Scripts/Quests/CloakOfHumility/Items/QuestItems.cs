@@ -97,12 +97,12 @@ namespace Server.Engines.Quests
 
     public class VillageCauldron : Item
     {
-        public override int LabelNumber { get { return 1075775; } } // Village Cauldron
 
         [Constructable]
         public VillageCauldron()
             : base(Utility.RandomMinMax(0x0974, 0x0975))
         {
+            Name = "Caldeirao";
         }
 
         public VillageCauldron(Serial serial)

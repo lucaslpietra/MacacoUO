@@ -4,9 +4,14 @@ namespace Server.Items
 {
     public class LesserHealPotion : BaseHealPotion
     {
+		public override string DefaultName
+        {
+            get { return "Poção de Vida Fraca"; }            
+        }
+		
         [Constructable]
         public LesserHealPotion()
-            : base(PotionEffect.HealLesser)
+            : base(PotionEffect.VidaFraca)
         {
         }
 

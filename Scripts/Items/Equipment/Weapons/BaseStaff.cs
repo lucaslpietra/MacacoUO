@@ -14,11 +14,16 @@ namespace Server.Items
         {
         }
 
+        public override bool AllowEquipedCast(Mobile from)
+        {
+            return true;
+        }
+
         public override int DefHitSound
         {
             get
             {
-                return 0x233;
+                return 0x13C;
             }
         }
         public override int DefMissSound
@@ -67,8 +72,8 @@ namespace Server.Items
         {
             base.OnHit(attacker, defender, damageBonus);
 
-            if(defender is Mobile)
-                ((Mobile)defender).Stam -= Utility.Random(3, 3); // 3-5 points of stamina loss
+            //if(defender is Mobile)
+            //    ((Mobile)defender).Stam -= Utility.Random(3, 3); // 3-5 points of stamina loss
         }
     }
 }

@@ -10,8 +10,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             this.Body = 0x190;
-            this.Name = "Zealot of Khaldun";
-            this.Title = "the Summoner";
+            this.Name = "Mago das Sombras";
 
             this.SetStr(351, 400);
             this.SetDex(101, 150);

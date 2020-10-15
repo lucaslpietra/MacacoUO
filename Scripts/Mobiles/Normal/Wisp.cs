@@ -20,9 +20,9 @@ namespace Server.Mobiles
             this.SetDex(196, 225);
             this.SetInt(196, 225);
 
-            this.SetHits(118, 135);
+            this.SetHits(75, 150);
 
-            this.SetDamage(17, 18);
+            this.SetDamage(20, 35);
 
             this.SetDamageType(ResistanceType.Physical, 50);
             this.SetDamageType(ResistanceType.Energy, 50);
@@ -44,7 +44,7 @@ namespace Server.Mobiles
 
             this.VirtualArmor = 40;
 
-            if (Core.ML && Utility.RandomDouble() < .33)
+            if (Utility.RandomDouble() < .33)
                 this.PackItem(Engines.Plants.Seed.RandomPeculiarSeed(4));
 
             this.AddItem(new LightSource());

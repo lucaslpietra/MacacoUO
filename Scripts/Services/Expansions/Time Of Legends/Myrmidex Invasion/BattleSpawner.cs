@@ -480,7 +480,7 @@ namespace Server.Engines.MyrmidexInvasion
             if (BattleRegion == null)
                 return false;
 
-            return BattleRegion.GetEnumeratedMobiles().Any(m => m is PlayerMobile && (!ignorestaff || m.AccessLevel == AccessLevel.Player));
+            return BattleRegion.GetEnumeratedMobiles().Any(m => m is PlayerMobile && (!ignorestaff || m.AccessLevel <= AccessLevel.VIP));
         }
 
         public bool IsInMyrmidexObjective(Point3D p)

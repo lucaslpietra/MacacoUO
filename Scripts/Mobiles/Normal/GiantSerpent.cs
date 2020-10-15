@@ -12,7 +12,7 @@ namespace Server.Mobiles
         public GiantSerpent()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a giant serpent";
+            this.Name = "serpente gigante";
             this.Body = 0x15;
             this.Hue = Utility.RandomSnakeHue();
             this.BaseSoundID = 219;
@@ -28,6 +28,9 @@ namespace Server.Mobiles
 
             this.SetDamageType(ResistanceType.Physical, 40);
             this.SetDamageType(ResistanceType.Poison, 60);
+
+            SetSkill(SkillName.Hiding, 100, 100);
+            SetSkill(SkillName.Stealth, 100, 100);
 
             this.SetResistance(ResistanceType.Physical, 30, 35);
             this.SetResistance(ResistanceType.Fire, 5, 10);
@@ -46,6 +49,10 @@ namespace Server.Mobiles
             this.VirtualArmor = 32;
 
             this.PackItem(new Bone());
+
+            Tamable = true;
+            ControlSlots = 3;
+            MinTameSkill = 65.3;
             // TODO: Body parts
         }
 
@@ -53,6 +60,28 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
+
+        public override void OnAfterSpawn()
+        {
+            base.OnAfterSpawn();
+            this.Hidden = true;
+            this.IsStealthing = true;
+            this.AllowedStealthSteps = 999;
+        }
+
+        public override bool CanStealth { get { return true; } }
+
+        public override void OnThink()
+        {
+            base.OnThink();
+            if (!this.Hidden && this.Combatant == null)
+            {
+                this.AllowedStealthSteps = 999;
+                this.Hidden = true;
+                this.IsStealthing = true;
+            }
+        }
+
 
         public override Poison PoisonImmune
         {
@@ -113,6 +142,9 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (this.BaseSoundID == -1)
+                this.BaseSoundID = 219;
 
             if (version == 0 && !_FixedSpawners)
             {

@@ -19,12 +19,14 @@ namespace Server.Items
         public ScouringToxin()
             : this(10)
         {
+           
         }
 
         [Constructable]
         public ScouringToxin(int amount)
             : base(0x1848)
         {
+            Name = "Toxina Goblin";
             m_UsesRemaining = amount;
         }
 
@@ -40,126 +42,96 @@ namespace Server.Items
         {
             if (IsChildOf(from.Backpack))
             {
-                from.SendLocalizedMessage(1112348); // Which item do you wish to scour?
+                from.SendMessage("What would you like to scour?");
                 from.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, new TargetCallback(OnTarget));
             }
         }
 
         public void OnTarget(Mobile from, object targeted)
         {
-            if (targeted is Item)
+            if (!(from is PlayerMobile) || !((PlayerMobile)from).BasketWeaving)
+                from.SendLocalizedMessage(1112253); //You haven't learned basket weaving. Perhaps studying a book would help!
+            else if (targeted is DryReeds)
             {
-                var item = (Item)targeted;
+                DryReeds reed1 = (DryReeds)targeted;
+                Container cont = from.Backpack;
 
-                if (item.Parent is Mobile)
+                Server.Engines.Plants.PlantHue hue = reed1.PlantHue;
+
+                if (!reed1.IsChildOf(from.Backpack))
+                    from.SendLocalizedMessage(1116249); //That must be in your backpack for you to use it.
+                else if (cont != null)
                 {
-                    from.SendLocalizedMessage(1112350); // You cannot scour items that are being worn!
-                }
-                else if (item.IsLockedDown || item.IsSecure)
-                {
-                    from.SendLocalizedMessage(1112351); // You may not scour items which are locked down.
-                }
-                else if (item.QuestItem)
-                {
-                    from.SendLocalizedMessage(1151837); // You may not scour toggled quest items.
-                }
-                else if (item is DryReeds)
-                {
-                    if (!(from is PlayerMobile) || !((PlayerMobile)from).BasketWeaving)
+                    Item[] items = cont.FindItemsByType(typeof(DryReeds));
+                    List<Item> list = new List<Item>();
+                    int total = 0;
+
+                    foreach (Item item in items)
                     {
-                        from.SendLocalizedMessage(1112253); //You haven't learned basket weaving. Perhaps studying a book would help!
-                    }
-                    else
-                    {
-                        DryReeds reed1 = (DryReeds)targeted;
-                        Container cont = from.Backpack;
-
-                        Server.Engines.Plants.PlantHue hue = reed1.PlantHue;
-
-                        if (!reed1.IsChildOf(from.Backpack))
-                            from.SendLocalizedMessage(1116249); //That must be in your backpack for you to use it.
-                        else if (cont != null)
+                        if (item is DryReeds)
                         {
-                            Item[] items = cont.FindItemsByType(typeof(DryReeds));
-                            List<Item> list = new List<Item>();
-                            int total = 0;
+                            DryReeds check = (DryReeds)item;
 
-                            foreach (Item it in items)
+                            if (reed1.PlantHue == check.PlantHue)
                             {
-                                if (it is DryReeds)
-                                {
-                                    DryReeds check = (DryReeds)it;
-
-                                    if (reed1.PlantHue == check.PlantHue)
-                                    {
-                                        total += it.Amount;
-                                        list.Add(it);
-                                    }
-                                }
+                                total += item.Amount;
+                                list.Add(item);
                             }
-
-                            int toConsume = 2;
-
-                            if (list.Count > 0 && total > 1)
-                            {
-                                foreach (Item it in list)
-                                {
-                                    if (it.Amount >= toConsume)
-                                    {
-                                        it.Consume(toConsume);
-                                        toConsume = 0;
-                                    }
-                                    else if (it.Amount < toConsume)
-                                    {
-                                        it.Delete();
-                                        toConsume -= it.Amount;
-                                    }
-
-                                    if (toConsume <= 0)
-                                        break;
-                                }
-
-                                SoftenedReeds sReed = new SoftenedReeds(hue);
-
-                                if (!from.Backpack.TryDropItem(from, sReed, false))
-                                    sReed.MoveToWorld(from.Location, from.Map);
-
-                                m_UsesRemaining--;
-
-                                if (m_UsesRemaining <= 0)
-                                    Delete();
-                                else
-                                    InvalidateProperties();
-
-                                from.PlaySound(0x23E);
-                            }
-                            else
-                                from.SendLocalizedMessage(1112250); //You don't have enough of this type of dry reeds to make that.
                         }
                     }
-                }
-                else if (BasePigmentsOfTokuno.IsValidItem(item))
-                {
-                    from.PlaySound(0x23E);
 
-                    ((Item)targeted).Hue = 0;
+                    int toConsume = 2;
 
-                    m_UsesRemaining--;
+                    if (list.Count > 0 && total > 1)
+                    {
+                        foreach (Item item in list)
+                        {
+                            if (item.Amount >= toConsume)
+                            {
+                                item.Consume(toConsume);
+                                toConsume = 0;
+                            }
+                            else if (item.Amount < toConsume)
+                            {
+                                item.Delete();
+                                toConsume -= item.Amount;
+                            }
 
-                    if (m_UsesRemaining <= 0)
-                        Delete();
+                            if (toConsume <= 0)
+                                break;
+                        }
+
+                        SoftenedReeds sReed = new SoftenedReeds(hue);
+
+                        if (!from.Backpack.TryDropItem(from, sReed, false))
+                            sReed.MoveToWorld(from.Location, from.Map);
+
+                        m_UsesRemaining--;
+
+                        if (m_UsesRemaining <= 0)
+                            Delete();
+                        else
+                            InvalidateProperties();
+
+                        from.PlaySound(0x23E);
+                    }
                     else
-                        InvalidateProperties();
+                        from.SendLocalizedMessage(1112250); //You don't have enough of this type of dry reeds to make that.
                 }
-                else
-                {
-                    from.SendLocalizedMessage(1112349); // You cannot scour that!
-                }
+
+                return;
+            }
+
+            if (targeted is Item && BasePigmentsOfTokuno.IsValidItem((Item)targeted))
+            {
+                from.PlaySound(0x23E);
+                from.SendMessage("Voce remove a cor do item.");
+
+                ((Item)targeted).Hue = 0;
+                this.Consume();
             }
             else
-            {
-                from.SendLocalizedMessage(1112349); // You cannot scour that!
-            }
+                from.SendMessage("Voce nao pode remover a cor disto !");
         }
 
         private static bool IsInTypeList(Type t, Type[] list)

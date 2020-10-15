@@ -7,30 +7,18 @@ namespace Server.Items
         public static readonly BookContent Content = new BookContent(
             "Instructions", "Sir Wilber",
             new BookPageInfo(
-                "Greetings Traveler!",
-                "I would like to invite",
-                "you to a little game.",
-                "See the magic key? It "),
+                "Viajante!",
+                "Gostaria de convida-lo",
+                "para um pequeno jogo :)"),
             new BookPageInfo(
-                "will grant you access to",
-                "the Puzzle Room. Be advised",
-                "that once you take the key,",
-                "you will have no more than",
-                "30 minutes to enter the room."),
+                "Ve aquela chave ali ?",
+                "Te dara accesso a sala do puzzle",
+                "Apos pegar a chave, voce tera 30 minutos"),
             new BookPageInfo(
-                "and solve the puzzles. If",
-                "you fail, you will be",
-                "expelled and all your",
-                "progress will be lost! ",
-                "There are 3 puzzle chests.",
-                "Two of them must be completed",
-                "first to unlock the third."),
+                "Se voce falhar, seu progresso se perdera !",
+                "Voce precisa completar 2 dos 3 puzzles !"),
             new BookPageInfo(
-                "If successful, you will get a",
-                "special item required to enter",
-                "my other playground should you",
-                "discover its location within",
-                "the underworld!!"));
+                "Se conseguir, voce estara mais proximo dos tesouros perdidos"));
 				
         [Constructable]
         public PuzzleBook() : base(false)

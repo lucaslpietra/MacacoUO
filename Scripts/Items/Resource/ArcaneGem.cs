@@ -7,21 +7,12 @@ namespace Server.Items
     public class ArcaneGem : Item, ICommodity
     {
         public const int DefaultArcaneHue = 2117;
-        public override int LabelNumber {get {return 1114115;} } // Arcane Gem
-
         [Constructable]
         public ArcaneGem()
-            : this(1)
-        {
-        }
-
-        [Constructable]
-        public ArcaneGem(int amount)
             : base(0x1EA7)
         {
-            Stackable = true;
-            Amount = amount;
-            Weight = 1.0;
+            this.Stackable = Core.ML;
+            this.Weight = 1.0;
         }
 
         public ArcaneGem(Serial serial)
@@ -31,7 +22,14 @@ namespace Server.Items
 
         TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
-       
+
+        public override string DefaultName
+        {
+            get
+            {
+                return "gema arcana";
+            }
+        }
         public static bool ConsumeCharges(Mobile from, int amount)
         {
             List<Item> items = from.Items;
@@ -82,13 +80,14 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!IsChildOf(from.Backpack))
+            if (!this.IsChildOf(from.Backpack))
             {
-                from.SendLocalizedMessage(1042010); // You must have the object in your backpack to use it.
+                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
             else
             {
                 from.BeginTarget(2, false, TargetFlags.None, new TargetCallback(OnTarget));
+                from.SendMessage("Onde deseja usar a gema?");
             }
         }
 
@@ -106,9 +105,9 @@ namespace Server.Items
 
         public void OnTarget(Mobile from, object obj)
         {
-            if (!IsChildOf(from.Backpack))
+            if (!this.IsChildOf(from.Backpack))
             {
-                from.SendLocalizedMessage(1042010); // You must have the object in your backpack to use it.
+                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                 return;
             }
 
@@ -128,117 +127,112 @@ namespace Server.Items
 
                 if (!item.IsChildOf(from.Backpack))
                 {
-                    from.SendMessage("You may only target items in your backpack.");
+                    from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                     return;
-                }             
+                }
+                /*else if (item.LootType == LootType.Blessed)
+                {
+                    from.SendMessage("You can only use this on exceptionally crafted robes, thigh boots, cloaks, or leather gloves.");
+                    return;
+                }
+                else if (resource != CraftResource.None && resource != CraftResource.RegularLeather)
+                {
+                    from.SendLocalizedMessage(1049690); // Arcane gems can not be used on that type of leather.
+                    return;
+                }*/
 
-                int charges = GetChargesFor(from);
+                int charges = this.GetChargesFor(from);
 
                 if (eq.IsArcane)
                 {
-                    if (eq.CurArcaneCharges > 0)
+                    if (eq.CurArcaneCharges >= eq.MaxArcaneCharges)
                     {
-                        from.SendMessage("This item still has charges left.");
+                        from.SendMessage("O item ja esta carregado.");
                     }
                     else
                     {
-                        item.Hue = eq.TempHue;
+                        if (eq.CurArcaneCharges <= 0)
+                            item.Hue = DefaultArcaneHue;
 
-                        if (charges >= eq.MaxArcaneCharges)
-                        {
+                        if ((eq.CurArcaneCharges + charges) > eq.MaxArcaneCharges)
                             eq.CurArcaneCharges = eq.MaxArcaneCharges;
-                            from.SendMessage("Your skill in tailoring allows you to fully recharge the item.");
-                        }
                         else
-                        {
                             eq.CurArcaneCharges += charges;
-                            from.SendMessage("You are only able to restore some of the charges.");
 
-                        }
-
-                        Consume();
+                        from.SendMessage("Voce recarregou o item.");
+                        if (this.Amount <= 1)
+                            this.Delete();
+                        else
+                            this.Amount--;
                     }
                 }
-                else if (from.Skills[SkillName.Tailoring].Value >= 60.0)
+                else if (from.Skills[SkillName.Tailoring].Value >= 80.0)
                 {
                     bool isExceptional = false;
 
                     if (item is BaseClothing)
-                        isExceptional = ((BaseClothing)item).Quality == ItemQuality.Exceptional;
+                        isExceptional = (((BaseClothing)item).Quality == ItemQuality.Exceptional);
                     else if (item is BaseArmor)
-                        isExceptional = ((BaseArmor)item).Quality == ItemQuality.Exceptional;
+                        isExceptional = (((BaseArmor)item).Quality == ItemQuality.Exceptional);
                     else if (item is BaseWeapon)
-                        isExceptional = ((BaseWeapon)item).Quality == ItemQuality.Exceptional;
+                        isExceptional = (((BaseWeapon)item).Quality == ItemQuality.Exceptional);
 
                     if (isExceptional)
                     {
                         if (item is BaseClothing)
                         {
-                            BaseClothing cloth = item as BaseClothing;
-
-                            cloth.Quality = ItemQuality.Normal;
-                            cloth.Crafter = from;
+                            ((BaseClothing)item).Quality = ItemQuality.Normal;
+                            ((BaseClothing)item).Crafter = from;
                         }
                         else if (item is BaseArmor)
                         {
-                            BaseArmor armor = item as BaseArmor;
-
-                            if (armor.IsImbued || armor.IsArtifact || RunicReforging.GetArtifactRarity(armor) > 0)
-                            {
-                                from.SendLocalizedMessage(1049690); // Arcane gems cannot be used on that type of leather.
-                                return;
-                            }
-
-                            armor.Quality = ItemQuality.Normal;
-                            armor.Crafter = from;
-                            armor.PhysicalBonus = 0;
-                            armor.FireBonus = 0;
-                            armor.ColdBonus = 0;
-                            armor.PoisonBonus = 0;
-                            armor.EnergyBonus = 0;
+                            ((BaseArmor)item).Quality = ItemQuality.Normal;
+                            ((BaseArmor)item).Crafter = from;
+                            ((BaseArmor)item).PhysicalBonus = ((BaseArmor)item).FireBonus = ((BaseArmor)item).ColdBonus = ((BaseArmor)item).PoisonBonus = ((BaseArmor)item).EnergyBonus = 0; // Is there a method to remove bonuses?
                         }
                         else if (item is BaseWeapon) // Sanity, weapons cannot recieve gems...
                         {
-                            BaseWeapon weapon = item as BaseWeapon;
-
-                            weapon.Quality = ItemQuality.Normal;
-                            weapon.Crafter = from;
+                            ((BaseWeapon)item).Quality = ItemQuality.Normal;
+                            ((BaseWeapon)item).Crafter = from;
                         }
 
                         eq.CurArcaneCharges = eq.MaxArcaneCharges = charges;
 
                         item.Hue = DefaultArcaneHue;
 
-                        if (item.LootType == LootType.Blessed)
-                            item.LootType = LootType.Regular;
-
-                        Consume();
+                        from.SendMessage("You enhance the item with your gem.");
+                        if (this.Amount <= 1)
+                            this.Delete();
+                        else
+                            this.Amount--;
                     }
                     else
                     {
-                        from.SendMessage("You can only use this on exceptionally crafted robes, thigh boots, cloaks, or leather gloves.");
+                        from.SendMessage("Voce pode usar isto apenas em items excepcionais.");
                     }
                 }
                 else
                 {
-                    from.SendMessage("You do not have enough skill in tailoring to use this.");
+                    from.SendMessage("Voce nao tem skill em tailoring suficiente.");
                 }
             }
             else
             {
-                from.SendMessage("You can only use this on exceptionally crafted robes, thigh boots, cloaks, or leather gloves.");
+                from.SendMessage("Voce so pode usar isto em sobretudos, botas, capas ou luvas de couro excepcionais.");
             }
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
         }
     }

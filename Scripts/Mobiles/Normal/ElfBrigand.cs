@@ -1,10 +1,11 @@
 using System;
+using Server.Engines.Quests;
 using Server.Items;
 
 namespace Server.Mobiles 
 { 
     [CorpseName("an elf corpse")]
-    public class ElfBrigand : BaseCreature
+    public class ElfBrigand : BaseBrigand
     {
         [Constructable]
         public ElfBrigand()
@@ -15,21 +16,21 @@ namespace Server.Mobiles
             if (Female = Utility.RandomBool())
             {
                 Body = 606;
-                Name = NameList.RandomName("Elf female");
+                Name = NameList.RandomName("Elf female")+" o elfo anarquista";
             }
             else
             {
                 Body = 605;
-                Name = NameList.RandomName("Elf male");
+                Name = NameList.RandomName("Elf male")+" a elfa anarquista";
             }
 
-            Title = "the brigand";
             Hue = Race.RandomSkinHue();
 
-            SetStr(86, 100);
+            SetStr(150, 200);
             SetDex(81, 95);
             SetInt(61, 75);
 
+            SetHits(150, 250);
             SetDamage(10, 23);
 
             SetDamageType(ResistanceType.Physical, 100);
@@ -41,8 +42,12 @@ namespace Server.Mobiles
 
             SetSkill(SkillName.MagicResist, 25.0, 47.5);
             SetSkill(SkillName.Tactics, 65.0, 87.5);
-            SetSkill(SkillName.Wrestling, 15.0, 37.5);
+            SetSkill(SkillName.Wrestling, 80, 90);
+            SetSkill(SkillName.Swords, 80, 90);
+            SetSkill(SkillName.Fencing, 80, 90);
+            SetSkill(SkillName.Macing, 80, 90);
             SetSkill(SkillName.Spellweaving, 50.0, 75.0);
+            SetSkill(SkillName.Magery, 50, 75);
             SetSkill(SkillName.Focus, 50.0, 75.0);
 
             Fame = 1000;
@@ -50,6 +55,9 @@ namespace Server.Mobiles
 
             // outfit
             AddItem(new Shirt(Utility.RandomNeutralHue()));
+
+            if (Utility.RandomDouble() < 0.02)
+                AddItem(new VillageCauldron());
 
             switch (Utility.Random(4))
             {
@@ -88,6 +96,15 @@ namespace Server.Mobiles
 
             if (weapon.Layer == Layer.OneHanded && Utility.RandomBool())
                 AddItem(Loot.RandomShield());
+
+            if(Utility.Random(20)==1)
+            {
+                PackItem(Decos.RandomDeco());
+            }
+            if (Utility.Random(3) == 1)
+            {
+                PackItem(Loot.RandomGem());
+            }
 
             PackGold(50, 150);
         }

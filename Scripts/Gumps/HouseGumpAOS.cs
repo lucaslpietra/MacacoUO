@@ -151,7 +151,7 @@ namespace Server.Gumps
                     AddButton(10 + xoffset, 150 + yoffset, 4005, 4007, GetButtonID(button, i), GumpButtonType.Reply, 0);
 
                 if (accountOf && m.Player && m.Account != null)
-                    name = "Account of " + name;
+                    name = "Conta de " + name;
 
                 if (leadingStar)
                     name = "* " + name;
@@ -174,7 +174,7 @@ namespace Server.Gumps
 
         private static readonly int[] m_FoundationNumbers = (Core.ML ? new int[]
         {
-            20, 189, 765, 65, 101, 11767, 11771, 11207, 11715, 11181, 13938, 13942, 16806, 16732, 19208, 39614, 39888 
+            20, 189, 765, 65, 101, 0x2DF7, 0x2DFB, 0x3672, 0x3676
         } : new int[]
             {
                 20, 189, 765, 65, 101
@@ -182,12 +182,12 @@ namespace Server.Gumps
 
         private static readonly int[] m_PostNumbers = new int[]
         {
-            9, 29, 54, 90, 147, 169, 177, 204, 251, 257,
-            263, 298, 347, 353, 424, 441, 466, 514, 553,
-            600, 601, 602, 603, 660, 666, 672, 898, 970,
-            974, 982, 11212, 11720, 11186, 13788, 13849,
-            17190, 16796, 16733, 16663, 20758, 19214,
-            39603, 39809
+            9, 29, 54, 90, 147, 169,
+            177, 204, 251, 257, 263,
+            298, 347, 424, 441, 466,
+            514, 600, 601, 602, 603,
+            660, 666, 672, 898, 970,
+            974, 982
         };
 
         private static readonly List<int> _HouseSigns = new List<int>();
@@ -260,6 +260,7 @@ namespace Server.Gumps
             if (!isFriend)
                 return;
 
+            /*
             if (house.Public)
             {
                 AddButtonLabeled(10, 390, GetButtonID(0, 0), 1060674); // Banish
@@ -270,6 +271,7 @@ namespace Server.Gumps
                 AddButtonLabeled(10, 390, GetButtonID(0, 2), 1060676); // Grant Access
                 AddButtonLabeled(10, 410, GetButtonID(0, 3), 1060677); // Revoke Access
             }
+            */
 
             AddPageButton(Core.TOL ? 10 : 150, 10, GetButtonID(1, 0), 1060668, HouseGumpPageAOS.Information);
             AddPageButton(Core.TOL ? 10 : 150, 30, GetButtonID(1, 1), 1060669, HouseGumpPageAOS.Security);
@@ -286,8 +288,8 @@ namespace Server.Gumps
 
                         AddHtmlLocalized(20, 170, 380, 20, 1018032, SelectedColor, false, false); // This house is properly placed.
                         AddHtmlLocalized(20, 190, 380, 20, 1018035, SelectedColor, false, false); // This house is of modern design.
-                        AddHtmlLocalized(20, 210, 380, 20, (house is HouseFoundation) ? 1060681 : 1060680, SelectedColor, false, false); // This is a (pre | custom)-built house.
-                        AddHtmlLocalized(20, 230, 380, 20, house.Public ? 1060678 : 1060679, SelectedColor, false, false); // This house is (private | open to the public).
+                        //AddHtmlLocalized(20, 210, 380, 20, (house is HouseFoundation) ? 1060681 : 1060680, SelectedColor, false, false); // This is a (pre | custom)-built house.
+                        //AddHtmlLocalized(20, 230, 380, 20, house.Public ? 1060678 : 1060679, SelectedColor, false, false); // This house is (private | open to the public).
 
                         switch ( house.DecayType )
                         {
@@ -335,6 +337,8 @@ namespace Server.Gumps
                         AddButtonLabeled(10, 260, GetButtonID(3, 6), 1018037, isCoOwner); // Remove a Friend
                         AddButtonLabeled(10, 280, GetButtonID(3, 7), 1011245, isCoOwner); // Clear Friend List
 
+                        AddButtonLabeled(10, 300, GetButtonID(3, 13), 1060694, isOwner); // Change to Public
+                        /*
                         if (house.Public)
                         {
                             AddButtonLabeled(10, 310, GetButtonID(3, 8), 1011260); // View Ban List
@@ -353,6 +357,7 @@ namespace Server.Gumps
 
                             AddButtonLabeled(210, 150, GetButtonID(3, 13), 1060694, isOwner); // Change to Public
                         }
+                        */
 
                         break;
                     }
@@ -391,7 +396,7 @@ namespace Server.Gumps
                         }
 
                         AddHtmlLocalized(10, 170, 300, 20, 1060683, LabelColor, false, false); // Maximum Secure Storage
-                        AddLabel(310, 170, LabelHue, maxSecures.ToString());
+                        AddLabel(310, 170, LabelHue, house.SecureCount.ToString());
 
                         AddHtmlLocalized(10, 190, 300, 20, 1060685, LabelColor, false, false); // Used by Moving Crate
                         AddLabel(310, 190, LabelHue, fromMovingCrate.ToString());
@@ -478,25 +483,13 @@ namespace Server.Gumps
                     }
                 case HouseGumpPageAOS.ChangeFoundation:
                     {
-                        int index = 0;
-
-                        for (int i = 0; i < 2; ++i)
+                        for (int i = 0; i < m_FoundationNumbers.Length; ++i)
                         {
-                            AddPage(i + 1);
+                            int x = 15 + ((i % 5) * 80);
+                            int y = 180 + ((i / 5) * 100);
 
-                            if (i == 0)
-                                AddButton(10, 360, 4005, 4007, 0, GumpButtonType.Page, ((i + 1) % 2) + 1);
-                            else
-                                AddButton(10, 360, 4014, 4016, 0, GumpButtonType.Page, ((i + 1) % 2) + 1);
-
-                            for (int j = 0; j < 15 && index < m_FoundationNumbers.Length; ++j)
-                            {
-                                int x = 15 + ((j % 5) * 80);
-                                int y = 150 + ((j / 5) * 80);
-
-                                AddButton(x, y, 4005, 4007, GetButtonID(8, index), GumpButtonType.Reply, 0);
-                                AddItem(x + 25, y, m_FoundationNumbers[index++]);
-                            }
+                            AddButton(x, y, 4005, 4007, GetButtonID(8, i), GumpButtonType.Reply, 0);
+                            AddItem(x + 25, y, m_FoundationNumbers[i]);
                         }
 
                         break;
@@ -592,11 +585,11 @@ namespace Server.Gumps
                     {
                         int index = 0;
 
-                        for (int i = 0; i < 3; ++i)
+                        for (int i = 0; i < 2; ++i)
                         {
                             AddPage(i + 1);
 
-                            AddButton(10, 360, 4005, 4007, 0, GumpButtonType.Page, ((i + 1) % 3) + 1);
+                            AddButton(10, 360, 4005, 4007, 0, GumpButtonType.Page, ((i + 1) % 2) + 1);
 
                             for (int j = 0; j < 16 && index < m_PostNumbers.Length; ++j)
                             {
@@ -762,7 +755,7 @@ namespace Server.Gumps
                     else if (cost < 0)
                     {
                         if (Banker.Deposit(from, -cost))
-                            from.SendLocalizedMessage(1060397, (-cost).ToString()); // ~1_AMOUNT~ gold has been deposited into your bank box.
+                            from.SendMessage("Depositado no banco: "+ (-cost).ToString()); // ~1_AMOUNT~ gold has been deposited into your bank box.
                         else
                             return;
                     }
@@ -834,7 +827,7 @@ namespace Server.Gumps
                         * These containers can be used to re-create the vendor in a new location.
                         * Any barkeepers have been converted into deeds.
                         */
-                        from.SendGump(new NoticeGump(1060637, 30720, 1060012, 32512, 420, 280, null, null));
+                        from.SendGump(new NoticeGump(1060637, 30720, "Voce substituiu sua casa e o dinheiro restante foi modificado no seu banco. Tudo se converteu a escrituras.", 32512, 420, 280, null, null));
                         return;
                     }
                 }
@@ -1146,9 +1139,19 @@ namespace Server.Gumps
                                     {
                                         m_House.Public = true;
 
-                                        m_House.RemoveKeys(from);
-                                        m_House.RemoveLocks();
+                                        //m_House.RemoveKeys(from);
+                                        //m_House.RemoveLocks();
 
+                                        if(Banker.Withdraw(from, 500, true))
+                                        {
+                                            m_House.ChangeLocks(from);
+                                            from.SendMessage("Chaves trocadas !");
+                                            from.PlaySound(0x23D);
+                                        } else
+                                        {
+                                            from.SendMessage("Voce precisa de 500 moedas para pagar o funileiro para trocar as chaves de sua casa.");
+                                        }
+                                        /*
                                         if (BaseHouse.NewVendorSystem)
                                         {
                                             // This house is now public. The owner may now place vendors and vendor rental contracts.
@@ -1169,6 +1172,7 @@ namespace Server.Gumps
                                             if (m_House.IsBanned(m) && m_House.IsInside(m))
                                                 m.Location = m_House.BanLocation;
                                         }
+                                        */
                                     }
 
                                     break;
@@ -1196,10 +1200,6 @@ namespace Server.Gumps
                                             // are present in the house.  Please re-deed the add-on containers before customizing the house.
                                             from.SendGump(new NoticeGump(1060637, 30720, 1074863, 32512, 320, 180, new NoticeGumpCallback(CustomizeNotice_Callback), m_House));
                                         }
-                                        else if (m_House.Map == Map.TerMur && !Server.Engines.Points.PointsSystem.QueensLoyalty.IsNoble(from))
-                                        {
-                                            from.SendLocalizedMessage(1113714, "2000"); //You can't resize a house in Ter Mur unless you have at least ~1_MIN~ loyalty to the Gargoyle Queen.
-                                        }
                                         else
                                         {
                                             HousePlacementEntry e = m_House.ConvertEntry;
@@ -1214,7 +1214,13 @@ namespace Server.Gumps
                                                 * Your house will be leveled to its foundation, and you will be able to build new walls, windows, doors, and stairs.
                                                 * Are you sure you wish to continue?
                                                 */
-                                                from.SendGump(new WarningGump(1060635, 30720, 1060013, 32512, 420, 280, new WarningGumpCallback(ConvertHouse_Callback), m_House));
+                                                from.SendGump(new WarningGump("AVISO", 30720, @"Você está prestes a transformar sua casa em uma casa personalizável.
+Será devolvido o valor desta casa, sendo cobrado o valor do lote de sujeira customizável equivalente.
+Todos os seus pertences na casa serão transportados para uma caixa de mudança.
+Os add-ons baseados em escrituras serão convertidos novamente em escrituras.
+Vendedores e taverneiros também serão armazenados na Caixa de Movimentação.
+Sua casa será nivelada até o alicerce e você poderá construir novas paredes, janelas, portas e escadas.
+Tem certeza que deseja continuar?", 32512, 420, 280, new WarningGumpCallback(ConvertHouse_Callback), m_House));
                                             }
                                         }
                                     }
@@ -1426,35 +1432,11 @@ namespace Server.Gumps
                                         newType = FoundationType.ElvenNatural;
                                         break;
                                     case 7:
-                                        newType = FoundationType.SimpleMarble;
-                                        break;
-                                    case 8:
-                                        newType = FoundationType.PlainMarble;
-                                        break;
-                                    case 9:
-                                        newType = FoundationType.OrnateMarble;
-                                        break;
-                                    case 10:
                                         newType = FoundationType.Crystal;
                                         break;
-                                    case 11:
+                                    case 8:
                                         newType = FoundationType.Shadow;
-                                        break;
-                                    case 12:
-                                        newType = FoundationType.GargishGreenMarble;
-                                        break;
-                                    case 13:
-                                        newType = FoundationType.GargishTwoToneStone;
-                                        break;
-                                    case 14:
-                                        newType = FoundationType.Gothic;
-                                        break;
-                                    case 15:
-                                        newType = FoundationType.Brick1;
-                                        break;
-                                    case 16:
-                                        newType = FoundationType.Brick2;
-                                        break;
+                                        break; 
                                     default:
                                         return;
                                 }

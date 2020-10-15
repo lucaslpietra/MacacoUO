@@ -9,6 +9,7 @@ namespace Server.Items
             : base(0x13C7)
         {
             this.Weight = 1.0;
+            this.Name = "Gorgel de Couro";
         }
 
         public LeatherGorget(Serial serial)

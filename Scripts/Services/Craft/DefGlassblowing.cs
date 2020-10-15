@@ -52,19 +52,21 @@ namespace Server.Engines.Craft
                 return 1044038; // You have worn out your tool!
             else if (tool is Item && !BaseTool.CheckTool((Item)tool, from))
                 return 1048146; // If you have a tool equipped, you must use that tool.
-            else if (!(from is PlayerMobile && ((PlayerMobile)from).Glassblowing && from.Skills[SkillName.Alchemy].Base >= 100.0))
+            else if (!(from is PlayerMobile && ((PlayerMobile)from).Glassblowing && from.Skills[SkillName.Alchemy].Base >= 60))
                 return 1044634; // You havent learned glassblowing.
             else if (!tool.CheckAccessible(from, ref num))
                 return num; // The tool must be on your person to use.
 
             bool anvil, forge;
-
+            /*
             DefBlacksmithy.CheckAnvilAndForge(from, 2, out anvil, out forge);
 
-            if (forge)
+            if (forge || anvil)
                 return 0;
 
             return 1044628; // You must be near a forge to blow glass.
+            */
+            return 0;
         }
 
         public override void PlayCraftEffect(Mobile from)
@@ -104,20 +106,20 @@ namespace Server.Engines.Craft
 
         public override void InitCraftList()
         {
-            int index = AddCraft(typeof(Bottle), 1044050, 1023854, 52.5, 102.5, typeof(Sand), 1044625, 1, 1044627);
+            int index = AddCraft(typeof(Bottle), 1044050, 1023854, 52.5, 70, typeof(Sand), 1044625, 1, 1044627);
             this.SetUseAllRes(index, true);
 
-            AddCraft(typeof(SmallFlask), 1044050, 1044610, 52.5, 102.5, typeof(Sand), 1044625, 2, 1044627);
-            AddCraft(typeof(MediumFlask), 1044050, 1044611, 52.5, 102.5, typeof(Sand), 1044625, 3, 1044627);
-            AddCraft(typeof(CurvedFlask), 1044050, 1044612, 55.0, 105.0, typeof(Sand), 1044625, 2, 1044627);
-            AddCraft(typeof(LongFlask), 1044050, 1044613, 57.5, 107.5, typeof(Sand), 1044625, 4, 1044627);
-            AddCraft(typeof(LargeFlask), 1044050, 1044623, 60.0, 110.0, typeof(Sand), 1044625, 5, 1044627);
-            AddCraft(typeof(AniSmallBlueFlask), 1044050, 1044614, 60.0, 110.0, typeof(Sand), 1044625, 5, 1044627);
-            AddCraft(typeof(AniLargeVioletFlask), 1044050, 1044615, 60.0, 110.0, typeof(Sand), 1044625, 5, 1044627);
-            AddCraft(typeof(AniRedRibbedFlask), 1044050, 1044624, 60.0, 110.0, typeof(Sand), 1044625, 7, 1044627);
-            AddCraft(typeof(EmptyVialsWRack), 1044050, 1044616, 65.0, 115.0, typeof(Sand), 1044625, 8, 1044627);
-            AddCraft(typeof(FullVialsWRack), 1044050, 1044617, 65.0, 115.0, typeof(Sand), 1044625, 9, 1044627);
-            AddCraft(typeof(SpinningHourglass), 1044050, 1044618, 75.0, 125.0, typeof(Sand), 1044625, 10, 1044627);
+            AddCraft(typeof(SmallFlask), 1044050, 1044610, 52.5, 70, typeof(Sand), 1044625, 2, 1044627);
+            AddCraft(typeof(MediumFlask), 1044050, 1044611, 52.5, 70, typeof(Sand), 1044625, 3, 1044627);
+            AddCraft(typeof(CurvedFlask), 1044050, 1044612, 55.0, 70, typeof(Sand), 1044625, 2, 1044627);
+            AddCraft(typeof(LongFlask), 1044050, 1044613, 57.5, 70, typeof(Sand), 1044625, 4, 1044627);
+            AddCraft(typeof(LargeFlask), 1044050, 1044623, 60.0, 70, typeof(Sand), 1044625, 5, 1044627);
+            AddCraft(typeof(AniSmallBlueFlask), 1044050, 1044614, 60.0, 70, typeof(Sand), 1044625, 5, 1044627);
+            AddCraft(typeof(AniLargeVioletFlask), 1044050, 1044615, 60.0, 70, typeof(Sand), 1044625, 5, 1044627);
+            AddCraft(typeof(AniRedRibbedFlask), 1044050, 1044624, 60.0, 17010.0, typeof(Sand), 1044625, 7, 1044627);
+            AddCraft(typeof(EmptyVialsWRack), 1044050, 1044616, 65.0, 70, typeof(Sand), 1044625, 8, 1044627);
+            AddCraft(typeof(FullVialsWRack), 1044050, 1044617, 65.0, 70, typeof(Sand), 1044625, 9, 1044627);
+            AddCraft(typeof(SpinningHourglass), 1044050, 1044618, 75.0, 80, typeof(Sand), 1044625, 10, 1044627);
 
             if (Core.SA)
             {

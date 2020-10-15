@@ -53,12 +53,10 @@ namespace Server.Mobiles
 
 			Tamable = !isFriend;
 			MinTameSkill = 107.1;
-			ControlSlots = 2;
+			ControlSlots = 3;
 
             SetWeaponAbility(WeaponAbility.BleedAttack);
 		}
-		
-		public override int TreasureMapLevel { get { return 3; } }
 
 		public override int Meat
 		{
@@ -141,10 +139,10 @@ namespace Server.Mobiles
 						count++;
 				}
 
+                PublicOverheadMessage(Network.MessageType.Emote, 0, false, "* Raptores espreitando avancam *");
+
 				for (int i = count; i < MaxFriends; i++)
 				{
-					// spawn new friends
-
 					BaseCreature friend = new Raptor(true);
 					var loc = Location;
 					var validLocation = false;

@@ -10,12 +10,14 @@ namespace Server.Items
         public Gold()
             : this(1)
         {
+            this.Name = "Moedas de Ouro";
         }
 
         [Constructable]
         public Gold(int amountFrom, int amountTo)
             : this(Utility.RandomMinMax(amountFrom, amountTo))
         {
+            this.Name = "Moedas de Ouro";
         }
 
         [Constructable]
@@ -24,18 +26,21 @@ namespace Server.Items
         {
             this.Stackable = true;
             this.Amount = amount;
+            this.Name = "Moedas de Ouro";
+
         }
 
         public Gold(Serial serial)
             : base(serial)
         {
+            this.Name = "Moedas de Ouro";
         }
 
         public override double DefaultWeight
         {
             get
             {
-                return (Core.ML ? (0.02 / 3) : 0.02);
+                return (0.01 / 3);
             }
         }
         public override int GetDropSound()

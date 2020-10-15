@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Bogling()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a bogling";
+            Name = "pantanoso";
             Body = 779;
             BaseSoundID = 422;
 
@@ -20,7 +20,7 @@ namespace Server.Mobiles
 
             SetHits(58, 72);
 
-            SetDamage(5, 7);
+            SetDamage(5, 15);
 
             SetDamageType(ResistanceType.Physical, 100);
 
@@ -39,8 +39,10 @@ namespace Server.Mobiles
 
             VirtualArmor = 28;
 
+            PackReg(5);
             PackItem(new Log(4));
-            PackItem(new Engines.Plants.Seed());
+            if(Utility.Random(20)==1)
+                PackItem(new Engines.Plants.Seed());
         }
 
         public Bogling(Serial serial)
@@ -64,7 +66,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.Meager);
+            AddLoot(LootPack.Poor);
         }
 
         public override void Serialize(GenericWriter writer)

@@ -11,8 +11,9 @@ namespace Server
 		public const int Enemy = 5;
 		public const int Murderer = 6;
 		public const int Invulnerable = 7;
+        public const int Thief = 8;
 
-		public static NotorietyHandler Handler { get; set; }
+        public static NotorietyHandler Handler { get; set; }
 
 		private static int[] m_Hues = {0x000, 0x059, 0x03F, 0x3B2, 0x3B2, 0x090, 0x022, 0x035};
 

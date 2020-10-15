@@ -20,7 +20,7 @@ namespace Server.Multis
              m_Gate = gate;
 
              gate.KeyValue = Key.RandomValue();
-             gate.Locked = true;
+             // gate.Locked = true;
 
              AddItem( gate, -2, 1, 0 );
 			 AddCampChests();
@@ -36,7 +36,6 @@ namespace Server.Multis
                          AddMobile(new Orc(),  0, -1, 0);
                          AddMobile(new OrcChopper(), 0, -2, 0);
                      } break;
-
                  case 1:
                      {
                          AddMobile(new Ratman(), 0, -2, 0);
@@ -71,7 +70,7 @@ namespace Server.Multis
              switch ( Utility.Random( 2 ) )
              {
                  case 0: Prisoner = new Noble(); break;
-                 case 1: Prisoner = new SeekerOfAdventure(); break;
+                 case 1: Prisoner = new Noble(); break;//new SeekerOfAdventure(); break;
              }
 
              Prisoner.IsPrisoner = true;

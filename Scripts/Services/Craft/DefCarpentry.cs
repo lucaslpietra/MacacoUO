@@ -84,7 +84,8 @@ namespace Server.Engines.Craft
         }
 
         private DefCarpentry()
-            : base(1, 1, 1.25)// base( 1, 1, 3.0 )
+            //: base(1, 1, 1.25)// base( 1, 1, 3.0 )
+            : base(DefBlacksmithy.MIN_ANIM, DefBlacksmithy.MAX_ANIM, DefBlacksmithy.DELAY)
         {
         }
 
@@ -105,6 +106,7 @@ namespace Server.Engines.Craft
             // no animation
             //if ( from.Body.Type == BodyType.Human && !from.Mounted )
             //	from.Animate( 9, 5, 1, true, false, 0 );
+            from.Animate(AnimationType.Attack, 3); //Adicionada animação
             from.PlaySound(0x23D);
         }
 
@@ -161,22 +163,20 @@ namespace Server.Engines.Craft
             AddCraft(typeof(EasleEast), 1044294, 1044318, 86.8, 111.8, typeof(Board), 1044041, 20, 1044351);
             AddCraft(typeof(EasleNorth), 1044294, 1044319, 86.8, 111.8, typeof(Board), 1044041, 20, 1044351);
 
-            if (Core.SE)
-            {
-                index = AddCraft(typeof(RedHangingLantern), 1044294, 1029412, 65.0, 90.0, typeof(Board), 1044041, 5, 1044351);
-                AddRes(index, typeof(BlankScroll), 1044377, 10, 1044378);
+            index = AddCraft(typeof(RedHangingLantern), 1044294, 1029412, 65.0, 90.0, typeof(Board), 1044041, 5, 1044351);
+            AddRes(index, typeof(BlankScroll), 1044377, 10, 1044378);
 
-                index = AddCraft(typeof(WhiteHangingLantern), 1044294, 1029416, 65.0, 90.0, typeof(Board), 1044041, 5, 1044351);
-                AddRes(index, typeof(BlankScroll), 1044377, 10, 1044378);
+            index = AddCraft(typeof(WhiteHangingLantern), 1044294, 1029416, 65.0, 90.0, typeof(Board), 1044041, 5, 1044351);
+            AddRes(index, typeof(BlankScroll), 1044377, 10, 1044378);
 
-                index = AddCraft(typeof(ShojiScreen), 1044294, 1029423, 80.0, 105.0, typeof(Board), 1044041, 75, 1044351);
-                AddSkill(index, SkillName.Tailoring, 50.0, 55.0);
-                AddRes(index, typeof(Cloth), 1044286, 60, 1044287);
+            index = AddCraft(typeof(ShojiScreen), 1044294, 1029423, 80.0, 105.0, typeof(Board), 1044041, 75, 1044351);
+            AddSkill(index, SkillName.Tailoring, 50.0, 55.0);
+            AddRes(index, typeof(Cloth), 1044286, 60, 1044287);
 
-                index = AddCraft(typeof(BambooScreen), 1044294, 1029428, 80.0, 105.0, typeof(Board), 1044041, 75, 1044351);
-                AddSkill(index, SkillName.Tailoring, 50.0, 55.0);
-                AddRes(index, typeof(Cloth), 1044286, 60, 1044287);
-            }
+            index = AddCraft(typeof(BambooScreen), 1044294, 1029428, 80.0, 105.0, typeof(Board), 1044041, 75, 1044351);
+            AddSkill(index, SkillName.Tailoring, 50.0, 55.0);
+            AddRes(index, typeof(Cloth), 1044286, 60, 1044287);
+
 
             if (Core.AOS)	//Duplicate Entries to preserve ordering depending on era
             {
@@ -247,21 +247,19 @@ namespace Server.Engines.Craft
                 AddSkill(index, SkillName.Magery, 75.0, 120.0);
                 AddRes(index, typeof(Granite), 1044607, 10, 1044253);
                 AddRes(index, typeof(SmallPieceofBlackrock), 1150016, 10, 1044253);
-                AddRes(index, typeof(NexusCore), 1153501, 1, 1044253);                
+                AddRes(index, typeof(NexusCore), 1153501, 1, 1044253);
             }
             #endregion
 
             #region TOL
-            if (Core.TOL)
-            {
-                index = AddCraft(typeof(CraftableHouseItem), 1044294, 1155849, 42.1, 77.7, typeof(Board), 1044041, 5, 1044351);
-                SetData(index, CraftableItemType.DarkWoodenSignHanger);
-                SetDisplayID(index, 2967);
+            index = AddCraft(typeof(CraftableHouseItem), 1044294, 1155849, 42.1, 77.7, typeof(Board), 1044041, 5, 1044351);
+            SetData(index, CraftableItemType.DarkWoodenSignHanger);
+            SetDisplayID(index, 2967);
 
-                index = AddCraft(typeof(CraftableHouseItem), 1044294, 1155850, 42.1, 77.7, typeof(Board), 1044041, 5, 1044351);
-                SetData(index, CraftableItemType.LightWoodenSignHanger);
-                SetDisplayID(index, 2969);
-            }            
+            index = AddCraft(typeof(CraftableHouseItem), 1044294, 1155850, 42.1, 77.7, typeof(Board), 1044041, 5, 1044351);
+            SetData(index, CraftableItemType.LightWoodenSignHanger);
+            SetDisplayID(index, 2969);
+
             #endregion
 
             // Furniture
@@ -277,14 +275,12 @@ namespace Server.Engines.Craft
             AddCraft(typeof(Nightstand), 1044291, 1044306, 42.1, 67.1, typeof(Board), 1044041, 17, 1044351);
             AddCraft(typeof(WritingTable), 1044291, 1022890, 63.1, 88.1, typeof(Board), 1044041, 17, 1044351);
             AddCraft(typeof(LargeTable), 1044291, 1044308, 84.2, 109.2, typeof(Board), 1044041, 27, 1044351);
-            AddCraft(typeof(YewWoodTable), 1044291, 1044307, 63.1, 88.1, typeof(Board), 1044041, 23, 1044351);            
+            AddCraft(typeof(YewWoodTable), 1044291, 1044307, 63.1, 88.1, typeof(Board), 1044041, 23, 1044351);
 
-            if (Core.SE)
-            {
-                index = AddCraft(typeof(ElegantLowTable), 1044291, 1030265, 80.0, 105.0, typeof(Board), 1044041, 35, 1044351);
 
-                index = AddCraft(typeof(PlainLowTable), 1044291, 1030266, 80.0, 105.0, typeof(Board), 1044041, 35, 1044351);
-            }
+            index = AddCraft(typeof(ElegantLowTable), 1044291, 1030265, 80.0, 105.0, typeof(Board), 1044041, 35, 1044351);
+            index = AddCraft(typeof(PlainLowTable), 1044291, 1030266, 80.0, 105.0, typeof(Board), 1044041, 35, 1044351);
+
 
             #region Mondain's Legacy
             if (Core.ML)
@@ -334,81 +330,78 @@ namespace Server.Engines.Craft
             AddCraft(typeof(FancyArmoire), 1044292, 1044312, 84.2, 109.2, typeof(Board), 1044041, 35, 1044351);
             AddCraft(typeof(Armoire), 1044292, 1022643, 84.2, 109.2, typeof(Board), 1044041, 35, 1044351);
 
-            if (Core.SE)
-            {
-                index = AddCraft(typeof(PlainWoodenChest), 1044292, 1030251, 90.0, 115.0, typeof(Board), 1044041, 30, 1044351);
 
-                index = AddCraft(typeof(OrnateWoodenChest), 1044292, 1030253, 90.0, 115.0, typeof(Board), 1044041, 30, 1044351);
+            index = AddCraft(typeof(PlainWoodenChest), 1044292, 1030251, 90.0, 115.0, typeof(Board), 1044041, 30, 1044351);
 
-                index = AddCraft(typeof(GildedWoodenChest), 1044292, 1030255, 90.0, 115.0, typeof(Board), 1044041, 30, 1044351);
+            index = AddCraft(typeof(OrnateWoodenChest), 1044292, 1030253, 90.0, 115.0, typeof(Board), 1044041, 30, 1044351);
 
-                index = AddCraft(typeof(WoodenFootLocker), 1044292, 1030257, 90.0, 115.0, typeof(Board), 1044041, 30, 1044351);
+            index = AddCraft(typeof(GildedWoodenChest), 1044292, 1030255, 90.0, 115.0, typeof(Board), 1044041, 30, 1044351);
 
-                index = AddCraft(typeof(FinishedWoodenChest), 1044292, 1030259, 90.0, 115.0, typeof(Board), 1044041, 30, 1044351);
+            index = AddCraft(typeof(WoodenFootLocker), 1044292, 1030257, 90.0, 115.0, typeof(Board), 1044041, 30, 1044351);
 
-                index = AddCraft(typeof(TallCabinet), 1044292, 1030261, 90.0, 115.0, typeof(Board), 1044041, 35, 1044351);
+            index = AddCraft(typeof(FinishedWoodenChest), 1044292, 1030259, 90.0, 115.0, typeof(Board), 1044041, 30, 1044351);
 
-                index = AddCraft(typeof(ShortCabinet), 1044292, 1030263, 90.0, 115.0, typeof(Board), 1044041, 35, 1044351);
+            index = AddCraft(typeof(TallCabinet), 1044292, 1030261, 90.0, 115.0, typeof(Board), 1044041, 35, 1044351);
 
-                index = AddCraft(typeof(RedArmoire), 1044292, 1030328, 90.0, 115.0, typeof(Board), 1044041, 40, 1044351);
+            index = AddCraft(typeof(ShortCabinet), 1044292, 1030263, 90.0, 115.0, typeof(Board), 1044041, 35, 1044351);
 
-                index = AddCraft(typeof(ElegantArmoire), 1044292, 1030330, 90.0, 115.0, typeof(Board), 1044041, 40, 1044351);
+            index = AddCraft(typeof(RedArmoire), 1044292, 1030328, 90.0, 115.0, typeof(Board), 1044041, 40, 1044351);
 
-                index = AddCraft(typeof(MapleArmoire), 1044292, 1030332, 90.0, 115.0, typeof(Board), 1044041, 40, 1044351);
+            index = AddCraft(typeof(ElegantArmoire), 1044292, 1030330, 90.0, 115.0, typeof(Board), 1044041, 40, 1044351);
 
-                index = AddCraft(typeof(CherryArmoire), 1044292, 1030334, 90.0, 115.0, typeof(Board), 1044041, 40, 1044351);
-            }
+            index = AddCraft(typeof(MapleArmoire), 1044292, 1030332, 90.0, 115.0, typeof(Board), 1044041, 40, 1044351);
+
+            index = AddCraft(typeof(CherryArmoire), 1044292, 1030334, 90.0, 115.0, typeof(Board), 1044041, 40, 1044351);
 
             index = AddCraft(typeof(Keg), 1044292, 1023711, 57.8, 82.8, typeof(BarrelStaves), 1044288, 3, 1044253);
             AddRes(index, typeof(BarrelHoops), 1044289, 1, 1044253);
             AddRes(index, typeof(BarrelLid), 1044251, 1, 1044253);
             ForceNonExceptional(index);
 
-            #region Mondain's Legacy
-            if (Core.ML)
-            {
-                index = AddCraft(typeof(ArcaneBookShelfDeedSouth), 1044292, 1072871, 94.7, 119.7, typeof(Board), 1044041, 80, 1044351);
-                AddRecipe(index, (int)CarpRecipes.ArcaneBookshelfSouth);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(TownTrashBarrel), 1044292, "Lixeira", 57.8, 82.8, typeof(BarrelStaves), 1044288, 5, 1044253);
+            AddRes(index, typeof(BarrelHoops), 1044289, 3, 1044253);
+            AddRes(index, typeof(BarrelLid), 1044251, 1, 1044253);
 
-                index = AddCraft(typeof(ArcaneBookShelfDeedEast), 1044292, 1073371, 94.7, 119.7, typeof(Board), 1044041, 80, 1044351);
-                AddRecipe(index, (int)CarpRecipes.ArcaneBookshelfEast);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(ArcaneBookShelfDeedSouth), 1044292, 1072871, 94.7, 119.7, typeof(Board), 1044041, 80, 1044351);
+            AddRecipe(index, (int)CarpRecipes.ArcaneBookshelfSouth);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(OrnateElvenChestSouthDeed), 1044292, 1072862, 94.7, 119.7, typeof(Board), 1044041, 40, 1044351);
-                AddRecipe(index, (int)CarpRecipes.OrnateElvenChestSouth);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(ArcaneBookShelfDeedEast), 1044292, 1073371, 94.7, 119.7, typeof(Board), 1044041, 80, 1044351);
+            AddRecipe(index, (int)CarpRecipes.ArcaneBookshelfEast);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(OrnateElvenChestEastDeed), 1044292, 1073383, 94.7, 119.7, typeof(Board), 1044041, 40, 1044351);
-                AddRecipe(index, (int)CarpRecipes.OrnateElvenChestEast);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(OrnateElvenChestSouthDeed), 1044292, 1072862, 94.7, 119.7, typeof(Board), 1044041, 40, 1044351);
+            AddRecipe(index, (int)CarpRecipes.OrnateElvenChestSouth);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(ElvenWashBasinSouthWithDrawerDeed), 1044292, 1072865, 70.0, 95.0, typeof(Board), 1044041, 40, 1044351);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(OrnateElvenChestEastDeed), 1044292, 1073383, 94.7, 119.7, typeof(Board), 1044041, 40, 1044351);
+            AddRecipe(index, (int)CarpRecipes.OrnateElvenChestEast);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(ElvenWashBasinEastWithDrawerDeed), 1044292, 1073387, 70.0, 95.0, typeof(Board), 1044041, 40, 1044351);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(ElvenWashBasinSouthWithDrawerDeed), 1044292, 1072865, 70.0, 95.0, typeof(Board), 1044041, 40, 1044351);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(ElvenDresserDeedSouth), 1044292, 1072864, 75.0, 100.0, typeof(Board), 1044041, 45, 1044351);
-                AddRecipe(index, (int)CarpRecipes.ElvenDresserSouth);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(ElvenWashBasinEastWithDrawerDeed), 1044292, 1073387, 70.0, 95.0, typeof(Board), 1044041, 40, 1044351);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(ElvenDresserDeedEast), 1044292, 1073388, 75.0, 100.0, typeof(Board), 1044041, 45, 1044351);
-                AddRecipe(index, (int)CarpRecipes.ElvenDresserEast);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(ElvenDresserDeedSouth), 1044292, 1072864, 75.0, 100.0, typeof(Board), 1044041, 45, 1044351);
+            AddRecipe(index, (int)CarpRecipes.ElvenDresserSouth);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(FancyElvenArmoire), 1044292, 1072866, 80.0, 105.0, typeof(Board), 1044041, 60, 1044351);
-                AddRecipe(index, (int)CarpRecipes.FancyElvenArmoire);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(ElvenDresserDeedEast), 1044292, 1073388, 75.0, 100.0, typeof(Board), 1044041, 45, 1044351);
+            AddRecipe(index, (int)CarpRecipes.ElvenDresserEast);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(SimpleElvenArmoire), 1044292, 1073401, 80.0, 105.0, typeof(Board), 1044041, 60, 1044351);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(FancyElvenArmoire), 1044292, 1072866, 80.0, 105.0, typeof(Board), 1044041, 60, 1044351);
+            AddRecipe(index, (int)CarpRecipes.FancyElvenArmoire);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(RarewoodChest), 1044292, 1073402, 80.0, 105.0, typeof(Board), 1044041, 30, 1044351);
+            index = AddCraft(typeof(SimpleElvenArmoire), 1044292, 1073401, 80.0, 105.0, typeof(Board), 1044041, 60, 1044351);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(DecorativeBox), 1044292, 1073403, 80.0, 105.0, typeof(Board), 1044041, 25, 1044351);
-            }
-            #endregion
+            index = AddCraft(typeof(RarewoodChest), 1044292, 1073402, 80.0, 105.0, typeof(Board), 1044041, 30, 1044351);
+
+            index = AddCraft(typeof(DecorativeBox), 1044292, 1073403, 80.0, 105.0, typeof(Board), 1044041, 25, 1044351);
 
             index = AddCraft(typeof(AcademicBookCase), 1044292, 1071213, 60.0, 85.0, typeof(Board), 1044041, 25, 1044351);
             AddRes(index, typeof(AcademicBooksArtifact), 1071202, 1, 1044253);
@@ -441,7 +434,7 @@ namespace Server.Engines.Craft
 
                 index = AddCraft(typeof(PhantomStaff), 1044566, 1072919, 90.0, 130.0, typeof(Board), 1044041, 16, 1044351);
                 AddRes(index, typeof(DiseasedBark), 1032683, 1, 1053098);
-                AddRes(index, typeof(Putrefaction), 1032678, 10, 1053098);
+                AddRes(index, typeof(Putrefication), 1032678, 10, 1053098);
                 AddRes(index, typeof(Taint), 1032679, 10, 1053098);
                 AddRecipe(index, (int)CarpRecipes.PhantomStaff);
                 ForceNonExceptional(index);
@@ -528,7 +521,7 @@ namespace Server.Engines.Craft
                 index = AddCraft(typeof(IronwoodCrown), 1062760, 1072924, 85.0, 120.0, typeof(Board), 1044041, 10, 1044351);
                 AddRes(index, typeof(DiseasedBark), 1032683, 1, 1053098);
                 AddRes(index, typeof(Corruption), 1032676, 10, 1053098);
-                AddRes(index, typeof(Putrefaction), 1032678, 10, 1053098);
+                AddRes(index, typeof(Putrefication), 1032678, 10, 1053098);
                 AddRecipe(index, (int)CarpRecipes.IronwoodCrown);
                 ForceNonExceptional(index);
 
@@ -560,7 +553,7 @@ namespace Server.Engines.Craft
                 index = AddCraft(typeof(DarkwoodLegs), 1062760, 1073484, 85.0, 120.0, typeof(Board), 1044041, 15, 1044351);
                 AddRes(index, typeof(GrizzledBones), 1032684, 1, 1053098);
                 AddRes(index, typeof(Corruption), 1032676, 10, 1053098);
-                AddRes(index, typeof(Putrefaction), 1072137, 10, 1053098);
+                AddRes(index, typeof(Putrefication), 1072137, 10, 1053098);
                 ForceNonExceptional(index);
 
                 index = AddCraft(typeof(DarkwoodPauldrons), 1062760, 1073485, 85.0, 120.0, typeof(Board), 1044041, 15, 1044351);
@@ -571,7 +564,7 @@ namespace Server.Engines.Craft
 
                 index = AddCraft(typeof(DarkwoodGloves), 1062760, 1073486, 85.0, 120.0, typeof(Board), 1044041, 15, 1044351);
                 AddRes(index, typeof(CapturedEssence), 1032686, 1, 1053098);
-                AddRes(index, typeof(Putrefaction), 1032678, 10, 1053098);
+                AddRes(index, typeof(Putrefication), 1032678, 10, 1053098);
                 AddRes(index, typeof(Muculent), 1032680, 10, 1053098);
                 ForceNonExceptional(index);
             }
@@ -649,60 +642,57 @@ namespace Server.Engines.Craft
             SetNeededThemePack(index, ThemePack.Kings);
 
             // Misc
-            if (Core.AOS)
-            {
-                AddCraft(typeof(PlayerBBEast), 1044290, 1062420, 85.0, 110.0, typeof(Board), 1044041, 50, 1044351);
-                AddCraft(typeof(PlayerBBSouth), 1044290, 1062421, 85.0, 110.0, typeof(Board), 1044041, 50, 1044351);
-            }
+
+            AddCraft(typeof(PlayerBBEast), 1044290, 1062420, 85.0, 110.0, typeof(Board), 1044041, 50, 1044351);
+            AddCraft(typeof(PlayerBBSouth), 1044290, 1062421, 85.0, 110.0, typeof(Board), 1044041, 50, 1044351);
+
 
             #region Mondain's Legacy
-            if (Core.ML)
-            {
-                index = AddCraft(typeof(ParrotPerchAddonDeed), 1044290, 1072617, 50.0, 85.0, typeof(Board), 1044041, 100, 1044351);
-                ForceNonExceptional(index);
 
-                index = AddCraft(typeof(ArcaneCircleDeed), 1044290, 1072703, 94.7, 119.7, typeof(Board), 1044041, 100, 1044351);
-                AddRes(index, typeof(BlueDiamond), 1026255, 2, 1053098);
-                AddRes(index, typeof(PerfectEmerald), 1026251, 2, 1053098);
-                AddRes(index, typeof(FireRuby), 1026254, 2, 1053098);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(ParrotPerchAddonDeed), 1044290, 1072617, 50.0, 85.0, typeof(Board), 1044041, 100, 1044351);
+            ForceNonExceptional(index);
 
-				index = AddCraft(typeof(TallElvenBedSouthDeed), 1044290, 1072858, 94.7, 119.7, typeof(Board), 1044041, 200, 1044351);
-                AddSkill(index, SkillName.Tailoring, 75.0, 80.0);
-                AddRes(index, typeof(Cloth), 1044286, 100, 1044287);
-                AddRecipe(index, (int)CarpRecipes.TallElvenBedSouth);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(ArcaneCircleDeed), 1044290, 1072703, 94.7, 119.7, typeof(Board), 1044041, 100, 1044351);
+            AddRes(index, typeof(BlueDiamond), 1026255, 2, 1053098);
+            AddRes(index, typeof(PerfectEmerald), 1026251, 2, 1053098);
+            AddRes(index, typeof(FireRuby), 1026254, 2, 1053098);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(TallElvenBedEastDeed), 1044290, 1072859, 94.7, 119.7, typeof(Board), 1044041, 200, 1044351);
-                AddSkill(index, SkillName.Tailoring, 75.0, 80.0);
-                AddRes(index, typeof(Cloth), 1044286, 100, 1044287);
-                AddRecipe(index, (int)CarpRecipes.TallElvenBedEast);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(TallElvenBedSouthDeed), 1044290, 1072858, 94.7, 119.7, typeof(Board), 1044041, 200, 1044351);
+            AddSkill(index, SkillName.Tailoring, 75.0, 80.0);
+            AddRes(index, typeof(Cloth), 1044286, 100, 1044287);
+            AddRecipe(index, (int)CarpRecipes.TallElvenBedSouth);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(ElvenBedSouthDeed), 1044290, 1072860, 94.7, 119.7, typeof(Board), 1044041, 100, 1044351);
-                AddRes(index, typeof(Cloth), 1044286, 100, 1044287);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(TallElvenBedEastDeed), 1044290, 1072859, 94.7, 119.7, typeof(Board), 1044041, 200, 1044351);
+            AddSkill(index, SkillName.Tailoring, 75.0, 80.0);
+            AddRes(index, typeof(Cloth), 1044286, 100, 1044287);
+            AddRecipe(index, (int)CarpRecipes.TallElvenBedEast);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(ElvenBedEastDeed), 1044290, 1072861, 94.7, 119.7, typeof(Board), 1044041, 100, 1044351);
-                AddRes(index, typeof(Cloth), 1044286, 100, 1044287);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(ElvenBedSouthDeed), 1044290, 1072860, 94.7, 119.7, typeof(Board), 1044041, 100, 1044351);
+            AddRes(index, typeof(Cloth), 1044286, 100, 1044287);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(ElvenLoveseatSouthDeed), 1044290, 1072867, 80.0, 105.0, typeof(Board), 1044041, 50, 1044351);
-                SetDisplayID(index, 0x2DDF);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(ElvenBedEastDeed), 1044290, 1072861, 94.7, 119.7, typeof(Board), 1044041, 100, 1044351);
+            AddRes(index, typeof(Cloth), 1044286, 100, 1044287);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(ElvenLoveseatEastDeed), 1044290, 1073372, 80.0, 105.0, typeof(Board), 1044041, 50, 1044351);
-                SetDisplayID(index, 0x2DE0);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(ElvenLoveseatSouthDeed), 1044290, 1072867, 80.0, 105.0, typeof(Board), 1044041, 50, 1044351);
+            SetDisplayID(index, 0x2DDF);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(AlchemistTableSouthDeed), 1044290, 1073396, 85.0, 110.0, typeof(Board), 1044041, 70, 1044351);
-                SetDisplayID(index, 0x2DD4);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(ElvenLoveseatEastDeed), 1044290, 1073372, 80.0, 105.0, typeof(Board), 1044041, 50, 1044351);
+            SetDisplayID(index, 0x2DE0);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(AlchemistTableEastDeed), 1044290, 1073397, 85.0, 110.0, typeof(Board), 1044041, 70, 1044351);
-                SetDisplayID(index, 0x2DD3);
-                ForceNonExceptional(index);
-            }
+            index = AddCraft(typeof(AlchemistTableSouthDeed), 1044290, 1073396, 85.0, 110.0, typeof(Board), 1044041, 70, 1044351);
+            SetDisplayID(index, 0x2DD4);
+            ForceNonExceptional(index);
+
+            index = AddCraft(typeof(AlchemistTableEastDeed), 1044290, 1073397, 85.0, 110.0, typeof(Board), 1044041, 70, 1044351);
+            SetDisplayID(index, 0x2DD3);
+            ForceNonExceptional(index);
             #endregion
 
             index = AddCraft(typeof(SmallBedSouthDeed), 1044290, 1044321, 94.7, 119.8, typeof(Board), 1044041, 100, 1044351);
@@ -733,20 +723,19 @@ namespace Server.Engines.Craft
             AddSkill(index, SkillName.Magery, 50.0, 55.0);
             AddRes(index, typeof(IronIngot), 1044036, 40, 1044037);
 
-            if (Core.SA)
-            {
-                index = AddCraft(typeof(GargishCouchEastDeed), 1044290, 1111776, 90.0, 115.0, typeof(Board), 1044041, 75, 1044351);
 
-                index = AddCraft(typeof(GargishCouchSouthDeed), 1044290, 1111775, 90.0, 115.0, typeof(Board), 1044041, 75, 1044351);
+            index = AddCraft(typeof(GargishCouchEastDeed), 1044290, 1111776, 90.0, 115.0, typeof(Board), 1044041, 75, 1044351);
 
-                index = AddCraft(typeof(LongTableSouthDeed), 1044290, 1111781, 90.0, 115.0, typeof(Board), 1044041, 80, 1044351);
+            index = AddCraft(typeof(GargishCouchSouthDeed), 1044290, 1111775, 90.0, 115.0, typeof(Board), 1044041, 75, 1044351);
 
-                index = AddCraft(typeof(LongTableEastDeed), 1044290, 1111782, 90.0, 115.0, typeof(Board), 1044041, 80, 1044351);
-           
-                index = AddCraft(typeof(TerMurDresserEastDeed), 1044290, 1111784, 90.0, 115.0, typeof(Board), 1044041, 60, 1044351);
+            index = AddCraft(typeof(LongTableSouthDeed), 1044290, 1111781, 90.0, 115.0, typeof(Board), 1044041, 80, 1044351);
 
-                index = AddCraft(typeof(TerMurDresserSouthDeed), 1044290, 1111783, 90.0, 115.0, typeof(Board), 1044041, 60, 1044351);
-            }
+            index = AddCraft(typeof(LongTableEastDeed), 1044290, 1111782, 90.0, 115.0, typeof(Board), 1044041, 80, 1044351);
+
+            index = AddCraft(typeof(TerMurDresserEastDeed), 1044290, 1111784, 90.0, 115.0, typeof(Board), 1044041, 60, 1044351);
+
+            index = AddCraft(typeof(TerMurDresserSouthDeed), 1044290, 1111783, 90.0, 115.0, typeof(Board), 1044041, 60, 1044351);
+
 
             index = AddCraft(typeof(RusticBenchSouthDeed), 1044290, 1150593, 94.7, 119.8, typeof(Board), 1044041, 35, 1044351);
             SetNeededThemePack(index, ThemePack.Rustic);
@@ -876,24 +865,22 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(Cloth), 1044286, 10, 1044287);
 
             #region Mondain's Legacy
-            if (Core.ML)
-            {
-                index = AddCraft(typeof(ElvenSpinningwheelEastDeed), 1044298, 1073393, 75.0, 100.0, typeof(Board), 1044041, 60, 1044351);
-                AddSkill(index, SkillName.Tailoring, 65.0, 85.0);
-                AddRes(index, typeof(Cloth), 1044286, 40, 1044287);
-                ForceNonExceptional(index);
 
-                index = AddCraft(typeof(ElvenSpinningwheelSouthDeed), 1044298, 1072878, 75.0, 100.0, typeof(Board), 1044041, 60, 1044351);
-                AddSkill(index, SkillName.Tailoring, 65.0, 85.0);
-                AddRes(index, typeof(Cloth), 1044286, 40, 1044287);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(ElvenSpinningwheelEastDeed), 1044298, 1073393, 75.0, 100.0, typeof(Board), 1044041, 60, 1044351);
+            AddSkill(index, SkillName.Tailoring, 65.0, 85.0);
+            AddRes(index, typeof(Cloth), 1044286, 40, 1044287);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(ElvenStoveSouthDeed), 1044298, 1073394, 85.0, 110.0, typeof(Board), 1044041, 80, 1044351);
-                ForceNonExceptional(index);
+            index = AddCraft(typeof(ElvenSpinningwheelSouthDeed), 1044298, 1072878, 75.0, 100.0, typeof(Board), 1044041, 60, 1044351);
+            AddSkill(index, SkillName.Tailoring, 65.0, 85.0);
+            AddRes(index, typeof(Cloth), 1044286, 40, 1044287);
+            ForceNonExceptional(index);
 
-                index = AddCraft(typeof(ElvenStoveEastDeed), 1044298, 1073395, 85.0, 110.0, typeof(Board), 1044041, 80, 1044351);
-                ForceNonExceptional(index);
-            }
+            index = AddCraft(typeof(ElvenStoveSouthDeed), 1044298, 1073394, 85.0, 110.0, typeof(Board), 1044041, 80, 1044351);
+            ForceNonExceptional(index);
+
+            index = AddCraft(typeof(ElvenStoveEastDeed), 1044298, 1073395, 85.0, 110.0, typeof(Board), 1044041, 80, 1044351);
+            ForceNonExceptional(index);
             #endregion
 
             index = AddCraft(typeof(SpinningwheelEastDeed), 1044298, 1044341, 73.6, 98.6, typeof(Board), 1044041, 75, 1044351);
@@ -910,7 +897,7 @@ namespace Server.Engines.Craft
 
             index = AddCraft(typeof(LoomSouthDeed), 1044298, 1044344, 84.2, 109.2, typeof(Board), 1044041, 85, 1044351);
             AddSkill(index, SkillName.Tailoring, 65.0, 70.0);
-            AddRes(index, typeof(Cloth), 1044286, 25, 1044287);            
+            AddRes(index, typeof(Cloth), 1044286, 25, 1044287);
 
             index = AddCraft(typeof(StoneOvenEastDeed), 1044298, 1044345, 68.4, 93.4, typeof(Board), 1044041, 85, 1044351);
             AddSkill(index, SkillName.Tinkering, 50.0, 55.0);
@@ -933,23 +920,17 @@ namespace Server.Engines.Craft
 
             // Anvils and Forges
             #region Mondain's Legacy
-            if (Core.ML)
-            {
-                index = AddCraft(typeof(ElvenForgeDeed), 1111809, 1072875, 94.7, 119.7, typeof(Board), 1044041, 200, 1044351);
-                ForceNonExceptional(index);
-            }
+
+            index = AddCraft(typeof(ElvenForgeDeed), 1111809, 1072875, 94.7, 119.7, typeof(Board), 1044041, 200, 1044351);
+            ForceNonExceptional(index);
             #endregion
 
-            #region SA
-            if (Core.SA)
-            {
-                index = AddCraft(typeof(SoulForgeDeed), 1111809, 1095827, 100.0, 200.0, typeof(Board), 1044041, 150, 1044351);
-                AddSkill(index, SkillName.Imbuing, 75.0, 80.0);
-                AddRes(index, typeof(IronIngot), 1044036, 150, 1044037);
-                AddRes(index, typeof(RelicFragment), 1031699, 1, 1044253);
-                ForceNonExceptional(index);
-            }
-            #endregion
+            index = AddCraft(typeof(SoulForgeDeed), 1111809, 1095827, 100.0, 200.0, typeof(Board), 1044041, 150, 1044351);
+            AddSkill(index, SkillName.Imbuing, 75.0, 80.0);
+
+            AddRes(index, typeof(IronIngot), 1044036, 150, 1044037);
+            AddRes(index, typeof(RelicFragment), 1031699, 10, 1044253);
+            ForceNonExceptional(index);
 
             index = AddCraft(typeof(SmallForgeDeed), 1111809, 1044330, 73.6, 98.6, typeof(Board), 1044041, 5, 1044351);
             AddSkill(index, SkillName.Blacksmith, 75.0, 80.0);
@@ -988,21 +969,22 @@ namespace Server.Engines.Craft
             AddSkill(index, SkillName.Tailoring, 50.0, 55.0);
             AddRes(index, typeof(Cloth), 1044286, 60, 1044287);
 
+            Resmelt = true;
             MarkOption = true;
-            Repair = Core.AOS;
+            Repair = true;
             CanEnhance = Core.ML;
 
             SetSubRes(typeof(Board), 1072643);
 
             // Add every material you want the player to be able to choose from
             // This will override the overridable material	TODO: Verify the required skill amount
-            AddSubRes(typeof(Board), 1072643, 00.0, 1044041, 1072652);
-            AddSubRes(typeof(OakBoard), 1072644, 65.0, 1044041, 1072652);
-            AddSubRes(typeof(AshBoard), 1072645, 75.0, 1044041, 1072652);
-            AddSubRes(typeof(YewBoard), 1072646, 85.0, 1044041, 1072652);
-            AddSubRes(typeof(HeartwoodBoard), 1072647, 95.0, 1044041, 1072652);
-            AddSubRes(typeof(BloodwoodBoard), 1072648, 95.0, 1044041, 1072652);
-            AddSubRes(typeof(FrostwoodBoard), 1072649, 95.0, 1044041, 1072652);
+            AddSubRes(typeof(Board), "Cedro", 00.0, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(OakBoard), "Carvalho", 60.0, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(AshBoard), "Pinho", 70.0, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(YewBoard), "Mogno", 80.0, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(HeartwoodBoard), "Eucalipto", 90.0, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(BloodwoodBoard), "Carmesim", 100.0, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(FrostwoodBoard), "Gelo", 101.0, "Voce nao sabe usar esta madeira");
         }
     }
 }

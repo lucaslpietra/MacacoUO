@@ -9,40 +9,38 @@ namespace Server.Mobiles
         public AncientWyrm()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "an ancient wyrm";
-            Body = 46;
-            BaseSoundID = 362;
+            this.Name = "an ancient wyrm";
+            this.Body = 46;
+            this.BaseSoundID = 362;
 
-            SetStr(1096, 1185);
-            SetDex(86, 175);
-            SetInt(686, 775);
+            this.SetStr(1096, 1185);
+            this.SetDex(86, 175);
+            this.SetInt(686, 775);
 
-            SetHits(658, 711);
+            this.SetHits(658, 711);
 
-            SetDamage(29, 35);
+            this.SetDamage(29, 35);
 
-            SetDamageType(ResistanceType.Physical, 75);
-            SetDamageType(ResistanceType.Fire, 25);
+            this.SetDamageType(ResistanceType.Physical, 75);
+            this.SetDamageType(ResistanceType.Fire, 25);
 
-            SetResistance(ResistanceType.Physical, 65, 75);
-            SetResistance(ResistanceType.Fire, 80, 90);
-            SetResistance(ResistanceType.Cold, 70, 80);
-            SetResistance(ResistanceType.Poison, 60, 70);
-            SetResistance(ResistanceType.Energy, 60, 70);
+            this.SetResistance(ResistanceType.Physical, 65, 75);
+            this.SetResistance(ResistanceType.Fire, 80, 90);
+            this.SetResistance(ResistanceType.Cold, 70, 80);
+            this.SetResistance(ResistanceType.Poison, 60, 70);
+            this.SetResistance(ResistanceType.Energy, 60, 70);
 
-            SetSkill(SkillName.EvalInt, 80.1, 100.0);
-            SetSkill(SkillName.Magery, 80.1, 100.0);
-            SetSkill(SkillName.Meditation, 52.5, 75.0);
-            SetSkill(SkillName.MagicResist, 100.5, 150.0);
-            SetSkill(SkillName.Tactics, 97.6, 100.0);
-            SetSkill(SkillName.Wrestling, 97.6, 100.0);
+            this.SetSkill(SkillName.EvalInt, 80.1, 100.0);
+            this.SetSkill(SkillName.Magery, 80.1, 100.0);
+            this.SetSkill(SkillName.Meditation, 52.5, 75.0);
+            this.SetSkill(SkillName.MagicResist, 100.5, 150.0);
+            this.SetSkill(SkillName.Tactics, 97.6, 100.0);
+            this.SetSkill(SkillName.Wrestling, 97.6, 100.0);
 
-            Fame = 22500;
-            Karma = -22500;
+            this.Fame = 22500;
+            this.Karma = -22500;
 
-            VirtualArmor = 70;
-
-            SetSpecialAbility(SpecialAbility.DragonBreath);
+            this.VirtualArmor = 70;
         }
 
         public AncientWyrm(Serial serial)
@@ -57,6 +55,13 @@ namespace Server.Mobiles
                 return true;
             }
         }
+        public override bool HasBreath
+        {
+            get
+            {
+                return true;
+            }
+        }// fire breath enabled
         public override bool AutoDispel
         {
             get
@@ -129,8 +134,8 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.FilthyRich, 3);
-            AddLoot(LootPack.Gems, 5);
+            this.AddLoot(LootPack.FilthyRich, 3);
+            this.AddLoot(LootPack.Gems, 5);
         }
 
         public override int GetIdleSound()

@@ -14,7 +14,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public SwampDragon()
-            : this("a swamp dragon")
+            : this("dragao de comodo")
         {
         }
 
@@ -53,7 +53,7 @@ namespace Server.Mobiles
 
             Tamable = true;
             ControlSlots = 1;
-            MinTameSkill = 93.9;
+            MinTameSkill = 70;
         }
 
         public SwampDragon(Serial serial)
@@ -153,10 +153,10 @@ namespace Server.Mobiles
                 {
                     default:
                         return BardingExceptional ? 12000 : 10000;
-                    case CraftResource.DullCopper:
-                    case CraftResource.Valorite:
+                    case CraftResource.Berilo:
+                    case CraftResource.Quartzo:
                         return BardingExceptional ? 14500 : 12500;
-                    case CraftResource.ShadowIron:
+                    case CraftResource.Vibranium:
                         return BardingExceptional ? 17000 : 15000;
                 }
             }

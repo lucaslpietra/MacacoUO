@@ -130,7 +130,7 @@ namespace Server.Services.TownCryer
                 AddButton(50, y, 0x5FB, 0x5FC, 200 + i, GumpButtonType.Reply, 0);
                 AddLabelCropped(87, y, 631, 20, 0, entry.Title);
 
-                if (User.AccessLevel > AccessLevel.Player) // Couselors+ can moderate events
+                if (User.AccessLevel > AccessLevel.VIP) // Couselors+ can moderate events
                 {
                     AddButton(735, y, 0x5FD, 0x5FE, 2000 + i, GumpButtonType.Reply, 0);
                     AddButton(760, y, 0x5FF, 0x600, 2500 + i, GumpButtonType.Reply, 0);

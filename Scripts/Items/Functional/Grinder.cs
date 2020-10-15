@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-
 using Server.Gumps;
 using Server.Multis;
 using Server.Targeting;
-using Server.ContextMenus;
 
 namespace Server.Items
 {
@@ -23,7 +20,7 @@ namespace Server.Items
             LootType = LootType.Blessed;
         }
 
-        /*public bool CheckAccessible(Mobile from, Item item)
+        public bool CheckAccessible(Mobile from, Item item)
         {
             if (from.AccessLevel >= AccessLevel.GameMaster)
                 return true; // Staff can access anything
@@ -43,13 +40,6 @@ namespace Server.Items
             }
 
             return false;
-        }*/
-
-        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
-        {
-            base.GetContextMenuEntries(from, list);
-
-            SetSecureLevelEntry.AddTo(from, this, list);
         }
 
         public Grinder(Serial serial)
@@ -59,40 +49,33 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            var house = BaseHouse.FindHouseAt(this);
-
-            if (house == null || !house.IsLockedDown(this))
-            {
-                from.SendLocalizedMessage(1114298); // This must be locked down in order to use it.
-            }
-            else if (from.InRange(GetWorldLocation(), 2) /*&& CheckAccessible(from, this)*/)
-            {
+            if (CheckAccessible(from, this))
                 from.Target = new InternalTarget(this);
-            }
         }
 
         private class InternalTarget : Target
         {
+            private readonly Item Item;
             public InternalTarget(Item item)
                 : base(-1, true, TargetFlags.None)
             {
+                Item = item;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is CoffeePod)
-                {
-                    var pod = (CoffeePod)targeted;
+                if (Item.Deleted)
+                    return;
 
-                    if (!pod.IsChildOf(from.Backpack))
-                    {
-                        from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
-                    }
-                    else
-                    {
-                        from.AddToBackpack(new CoffeeGrounds(pod.Amount));
-                        pod.Delete();
-                    }
+                if (!Item.IsChildOf(from.Backpack))
+                {
+                    from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+                    return;
+                }
+
+                if (Item is CoffeePod)
+                {
+                    from.AddToBackpack(new CoffeeGrounds(((CoffeePod)Item).Amount));
                 }
                 else
                 {

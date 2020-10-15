@@ -6,88 +6,123 @@ using System.Collections;
 using Server.Network;
 using Server.Spells;
 using Server.Targeting;
+using System.Collections.Generic;
+using Server.Mobiles;
 #endregion
 
 namespace Server.Items
 {
-	public abstract class BaseExplosionPotion : BasePotion
-	{
-		private const int ExplosionRange = 2; // How long is the blast radius?
-		private Timer m_Timer;
+    public abstract class BaseExplosionPotion : BasePotion
+    {
+        private const int ExplosionRange = 2; // How long is the blast radius?
+        private Timer m_Timer;
+        private ArrayList m_Users;
 
-		public BaseExplosionPotion(PotionEffect effect)
-			: base(0xF0D, effect)
-		{ }
+        public BaseExplosionPotion(PotionEffect effect)
+            : base(0xF0D, effect)
+        { }
 
-		public BaseExplosionPotion(Serial serial)
-			: base(serial)
-		{ }
+        public BaseExplosionPotion(Serial serial)
+            : base(serial)
+        { }
 
-		public abstract int MinDamage { get; }
-		public abstract int MaxDamage { get; }
-		public override bool RequireFreeHand { get { return false; } }
+        public abstract int MinDamage { get; }
+        public abstract int MaxDamage { get; }
+        public override bool RequireFreeHand { get { return false; } }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.Write(0); // version
-		}
+            writer.Write(0); // version
+        }
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadInt();
-		}
+            int version = reader.ReadInt();
+        }
 
-		public virtual object FindParent(Mobile from)
-		{
-			Mobile m = HeldBy;
+        public virtual object FindParent(Mobile from)
+        {
+            Mobile m = HeldBy;
 
-			if (m != null && m.Holding == this)
-			{
-				return m;
-			}
+            if (m != null && m.Holding == this)
+            {
+                return m;
+            }
 
-			object obj = RootParent;
+            object obj = RootParent;
 
-			if (obj != null)
-			{
-				return obj;
-			}
+            if (obj != null)
+            {
+                return obj;
+            }
 
-			if (Map == Map.Internal)
-			{
-				return from;
-			}
+            if (Map == Map.Internal)
+            {
+                return from;
+            }
 
-			return this;
-		}
+            return this;
+        }
 
-		public override void Drink(Mobile from)
-		{
-			if (Core.AOS && (from.Paralyzed || from.Frozen || (from.Spell != null && from.Spell.IsCasting)))
-			{
-				from.SendLocalizedMessage(1062725); // You can not use a purple potion while paralyzed.
-				return;
-			}
+        public static Dictionary<Mobile, Item> Using = new Dictionary<Mobile, Item>();
 
-			ThrowTarget targ = from.Target as ThrowTarget;
-			Stackable = false; // Scavenged explosion potions won't stack with those ones in backpack, and still will explode.
+        public static bool Throwing(Mobile from)
+        {
+            return Using.ContainsKey(from); ;
+        }
 
-			if (targ != null && targ.Potion == this)
-			{
-				return;
-			}
+        public override void Drink(Mobile from)
+        {
+            /*
+            if (from.Spell != null && from.Spell.IsCasting)
+            {
+                from.SendMessage("Voce nao pode usar uma pocao de explosao enquanto conjura magias"); // You can not use a purple potion while paralyzed.
+                return;
+            }
+            */
 
-			from.RevealingAction();
-			from.Target = new ThrowTarget(this);
+            ThrowTarget targ = from.Target as ThrowTarget;
+            Stackable = false; // Scavenged explosion potions won't stack with those ones in backpack, and still will explode.
 
-			if (m_Timer == null)
-			{
-				from.SendLocalizedMessage(500236); // You should throw it now!
+            if (targ != null && targ.Potion == this)
+            {
+                return;
+            }
 
+            from.RevealingAction();
+
+            if (m_Users == null)
+            {
+                m_Users = new ArrayList();
+            }
+
+            if (!m_Users.Contains(from))
+            {
+                m_Users.Add(from);
+            }
+
+            from.Target = new ThrowTarget(this);
+
+            if (m_Timer == null)
+            {
+                from.SendMessage("Aguarde para jogar no tempo correto !"); // You should throw it now!
+                Using.Add(from, this);
+                var tempo = 3;
+                if (Utility.RandomBool())
+                    tempo = 2;
+                m_Timer = Timer.DelayCall(
+                        TimeSpan.FromSeconds(1),
+                        TimeSpan.FromSeconds(1),
+                        5,
+                        new TimerStateCallback(Detonate_OnTick),
+                        new object[] { from, tempo }
+                );
+
+                /*
 				if (Core.ML)
 				{
 					m_Timer = Timer.DelayCall(
@@ -106,57 +141,48 @@ namespace Server.Items
 						new TimerStateCallback(Detonate_OnTick),
 						new object[] {from, 3}); // 2.6 seconds explosion delay
 				}
-			}
-		}
+                */
+            }
+        }
 
-		public void Explode(Mobile from, bool direct, Point3D loc, Map map)
-		{
-			if (Deleted)
-			{
-				return;
-			}
+        public void Explode(Mobile from, bool direct, Point3D loc, Map map)
+        {
+            Using.Remove(from);
 
-            bool damageThrower = false;
-
-            if (from != null)
+            if (Deleted)
             {
-                if (from.Target is ThrowTarget && ((ThrowTarget)from.Target).Potion == this)
-                {
-                    Target.Cancel(from);
-                }
-
-                if (IsChildOf(from.Backpack) || Parent == from)
-                {
-                    damageThrower = true;
-                }
+                return;
             }
 
             Consume();
 
-            if (map == null)
-			{
-				return;
-			}
-
-			Effects.PlaySound(loc, map, 0x307);
-
-			Effects.SendLocationEffect(loc, map, 0x36B0, 9, 10, 0, 0);
-			int alchemyBonus = 0;
-
-			if (direct)
-			{
-				alchemyBonus = (int)(from.Skills.Alchemy.Value / (Core.AOS ? 5 : 10));
-			}
-
-			int min = Scale(from, MinDamage);
-			int max = Scale(from, MaxDamage);
-
-            var list = SpellHelper.AcquireIndirectTargets(from, loc, map, ExplosionRange, false).OfType<Mobile>().ToList();
-
-            if (from != null && damageThrower && !list.Contains(from))
+            for (int i = 0; m_Users != null && i < m_Users.Count; ++i)
             {
-                list.Add(from);
+                Mobile m = (Mobile)m_Users[i];
+                ThrowTarget targ = m.Target as ThrowTarget;
+
+                if (targ != null && targ.Potion == this)
+                {
+                    Target.Cancel(m);
+                }
             }
+
+            if (map == null)
+            {
+                return;
+            }
+
+            Effects.PlaySound(loc, map, 0x307);
+
+            Effects.SendLocationEffect(loc, map, 0x36B0, 9, 10, 0, 0);
+            int alchemyBonus = 0;
+
+            alchemyBonus = (int)(from.Skills.Alchemy.Value / 10);
+
+            int min = Scale(from, MinDamage);
+            int max = Scale(from, MaxDamage);
+
+            var list = SpellHelper.AcquireIndirectTargets(from, loc, map, ExplosionRange).OfType<Mobile>().ToList();
 
             foreach (var m in list)
             {
@@ -169,149 +195,158 @@ namespace Server.Items
 
                 damage += alchemyBonus;
 
-                if (!Core.AOS && damage > 40)
+                if (damage > 35)
                 {
-                    damage = 40;
+                    damage = 35;
                 }
-                else if (Core.AOS && list.Count > 2)
+                else if (list.Count > 2)
                 {
                     damage /= list.Count - 1;
                 }
 
+                if (m is BaseCreature)
+                {
+                    damage *= (int)(2 + from.Skills[SkillName.Alchemy].Value / 33);
+                }
+                   
                 AOS.Damage(m, from, damage, 0, 100, 0, 0, 0, Server.DamageType.SpellAOE);
             }
 
             list.Clear();
-		}
+        }
 
-		private void Detonate_OnTick(object state)
-		{
-			if (Deleted)
-			{
-				return;
-			}
+        private void Detonate_OnTick(object state)
+        {
+            var states = (object[])state;
+            Mobile from = (Mobile)states[0];
 
-			var states = (object[])state;
-			Mobile from = (Mobile)states[0];
-			int timer = (int)states[1];
+            if (Deleted)
+            {
+                Using.Remove(from);
+                return;
+            }
 
-			object parent = FindParent(from);
 
-			if (timer == 0)
-			{
-				Point3D loc;
-				Map map;
+            int timer = (int)states[1];
 
-				if (parent is Item)
-				{
-					Item item = (Item)parent;
+            object parent = FindParent(from);
 
-					loc = item.GetWorldLocation();
-					map = item.Map;
-				}
-				else if (parent is Mobile)
-				{
-					Mobile m = (Mobile)parent;
+            if (timer == 0)
+            {
+                Point3D loc;
+                Map map;
 
-					loc = m.Location;
-					map = m.Map;
-				}
-				else
-				{
-					return;
-				}
+                if (parent is Item)
+                {
+                    Item item = (Item)parent;
 
-				Explode(from, true, loc, map);
-				m_Timer = null;
-			}
-			else
-			{
-				if (parent is Item)
-				{
-					((Item)parent).PublicOverheadMessage(MessageType.Regular, 0x22, false, timer.ToString());
-				}
-				else if (parent is Mobile)
-				{
-					((Mobile)parent).PublicOverheadMessage(MessageType.Regular, 0x22, false, timer.ToString());
-				}
+                    loc = item.GetWorldLocation();
+                    map = item.Map;
+                }
+                else if (parent is Mobile)
+                {
+                    Mobile m = (Mobile)parent;
 
-				states[1] = timer - 1;
-			}
-		}
+                    loc = m.Location;
+                    map = m.Map;
+                }
+                else
+                {
+                    return;
+                }
 
-		private void Reposition_OnTick(object state)
-		{
-			if (Deleted)
-			{
-				return;
-			}
+                Using.Remove(from);
+                Explode(from, true, loc, map);
+                m_Timer = null;
+            }
+            else
+            {
+                if (parent is Item)
+                {
+                    ((Item)parent).PublicOverheadMessage(MessageType.Regular, 0x22, false, timer.ToString());
+                }
+                else if (parent is Mobile)
+                {
+                    ((Mobile)parent).PublicOverheadMessage(MessageType.Regular, 0x22, false, timer.ToString());
+                }
 
-			var states = (object[])state;
-			Mobile from = (Mobile)states[0];
-			IPoint3D p = (IPoint3D)states[1];
-			Map map = (Map)states[2];
+                states[1] = timer - 1;
+            }
+        }
 
-			Point3D loc = new Point3D(p);
-		    MoveToWorld(loc, map);
-		}
+        private void Reposition_OnTick(object state)
+        {
+            if (Deleted)
+            {
+                return;
+            }
 
-		private class ThrowTarget : Target
-		{
-			private readonly BaseExplosionPotion m_Potion;
+            var states = (object[])state;
+            Mobile from = (Mobile)states[0];
+            IPoint3D p = (IPoint3D)states[1];
+            Map map = (Map)states[2];
 
-			public ThrowTarget(BaseExplosionPotion potion)
-				: base(12, true, TargetFlags.None)
-			{
-				m_Potion = potion;
-			}
+            Point3D loc = new Point3D(p);
+            MoveToWorld(loc, map);
+        }
 
-			public BaseExplosionPotion Potion { get { return m_Potion; } }
+        private class ThrowTarget : Target
+        {
+            private readonly BaseExplosionPotion m_Potion;
 
-			protected override void OnTarget(Mobile from, object targeted)
-			{
-				if (m_Potion.Deleted || m_Potion.Map == Map.Internal)
-				{
-					return;
-				}
+            public ThrowTarget(BaseExplosionPotion potion)
+                : base(12, true, TargetFlags.None)
+            {
+                m_Potion = potion;
+            }
 
-				IPoint3D p = targeted as IPoint3D;
+            public BaseExplosionPotion Potion { get { return m_Potion; } }
 
-				if (p == null)
-				{
-					return;
-				}
+            protected override void OnTarget(Mobile from, object targeted)
+            {
+                if (m_Potion.Deleted || m_Potion.Map == Map.Internal)
+                {
+                    return;
+                }
 
-				Map map = from.Map;
+                IPoint3D p = targeted as IPoint3D;
 
-				if (map == null)
-				{
-					return;
-				}
+                if (p == null)
+                {
+                    return;
+                }
 
-				SpellHelper.GetSurfaceTop(ref p);
+                Map map = from.Map;
 
-				from.RevealingAction();
+                if (map == null)
+                {
+                    return;
+                }
 
-				IEntity to;
+                SpellHelper.GetSurfaceTop(ref p);
 
-				to = new Entity(Serial.Zero, new Point3D(p), map);
+                from.RevealingAction();
+
+                IEntity to;
+
+                to = new Entity(Serial.Zero, new Point3D(p), map);
 
                 if (p is Mobile)
                 {
                     to = (Mobile)p;
                 }
 
-				Effects.SendMovingEffect(from, to, m_Potion.ItemID, 7, 0, false, false, m_Potion.Hue, 0);
+                Effects.SendMovingEffect(from, to, m_Potion.ItemID, 12, 0, false, false, m_Potion.Hue, 0);
 
-				if (m_Potion.Amount > 1)
-				{
-					Mobile.LiftItemDupe(m_Potion, 1);
-				}
+                if (m_Potion.Amount > 1)
+                {
+                    Mobile.LiftItemDupe(m_Potion, 1);
+                }
 
-				m_Potion.Internalize();
-				Timer.DelayCall(
-					TimeSpan.FromSeconds(1.0), new TimerStateCallback(m_Potion.Reposition_OnTick), new object[] {from, p, map});
-			}
-		}
-	}
+                m_Potion.Internalize();
+                Timer.DelayCall(
+                    TimeSpan.FromSeconds(1), new TimerStateCallback(m_Potion.Reposition_OnTick), new object[] { from, p, map });
+            }
+        }
+    }
 }

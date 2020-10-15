@@ -106,15 +106,11 @@ namespace Server.Spells.Bushido
                 }
             }
 			
-            if (IsEvading(defender) && BaseWeapon.CheckParry(defender))
+            if (IsEvading(defender) && BaseWeapon.CheckParry(defender, null))
             {
-                defender.Emote("*evades*"); // Yes.  Eew.  Blame OSI.
+                defender.OverheadMessage("* se esquiva *"); // Yes.  Eew.  Blame OSI.
                 defender.FixedEffect(0x37B9, 10, 16);
-
-                if (Core.SA)
-                {
-                    defender.Animate(AnimationType.Block, 0);
-                }
+                defender.Animate(AnimationType.Block, 0);
 
                 return true;
             }

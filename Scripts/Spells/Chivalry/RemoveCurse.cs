@@ -54,7 +54,7 @@ namespace Server.Spells.Chivalry
                 return 1060726;
             }
         }// Extermo Vomica
-        
+
         public override bool CheckDisturb(DisturbType type, bool firstCircle, bool resistable)
         {
             return true;
@@ -108,12 +108,7 @@ namespace Server.Spells.Chivalry
                     WeakenSpell.RemoveEffects(m);
                     FeeblemindSpell.RemoveEffects(m);
                     ClumsySpell.RemoveEffects(m);
-
-                    if (Core.ML)
-                    {
-                        BloodOathSpell.RemoveCurse(m);
-                    }
-
+                    BloodOathSpell.RemoveCurse(m);
                     MindRotSpell.ClearMindRotScalar(m);
                     SpellPlagueSpell.RemoveFromList(m);
 
@@ -132,7 +127,7 @@ namespace Server.Spells.Chivalry
         {
             private readonly RemoveCurseSpell m_Owner;
             public InternalTarget(RemoveCurseSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Beneficial)
+                : base(14, false, TargetFlags.Beneficial)
             {
                 this.m_Owner = owner;
             }

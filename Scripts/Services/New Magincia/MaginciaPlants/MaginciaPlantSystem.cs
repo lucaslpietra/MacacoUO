@@ -1,6 +1,12 @@
 using Server;
 using System;
+using Server.Items;
+using Server.Mobiles;
+using Server.Multis;
 using System.Collections.Generic;
+using Server.ContextMenus;
+using Server.Network;
+using Server.Gumps;
 using Server.Engines.NewMagincia;
 
 namespace Server.Engines.Plants
@@ -9,44 +15,47 @@ namespace Server.Engines.Plants
     {
         public static readonly bool Enabled = true;
         public static readonly int PlantDelay = 4;
-        public Dictionary<Mobile, DateTime> PlantDelayTable { get; } = new Dictionary<Mobile, DateTime>();
 
-        public static MaginciaPlantSystem FelInstance { get; private set; }
-        public static MaginciaPlantSystem TramInstance { get; private set; }
+        private Dictionary<Mobile, DateTime> m_PlantDelayTable = new Dictionary<Mobile, DateTime>();
+        public Dictionary<Mobile, DateTime> PlantDelayTable { get { return m_PlantDelayTable; } }
+
+        private static MaginciaPlantSystem m_FelInstance;
+        private static MaginciaPlantSystem m_TramInstance;
+
+        public static MaginciaPlantSystem FelInstance { get { return m_FelInstance; } }
+        public static MaginciaPlantSystem TramInstance { get { return m_TramInstance; } }
 
         public static void Initialize()
         {
             if (Enabled)
             {
-                if (FelInstance == null)
+                if (m_FelInstance == null)
                 {
-                    FelInstance = new MaginciaPlantSystem();
-                    FelInstance.MoveToWorld(new Point3D(3715, 2049, 5), Map.Felucca);
+                    m_FelInstance = new MaginciaPlantSystem();
+                    m_FelInstance.MoveToWorld(new Point3D(3715, 2049, 5), Map.Felucca);
                 }
-                if (TramInstance == null)
+                if (m_TramInstance == null)
                 {
-                    TramInstance = new MaginciaPlantSystem();
-                    TramInstance.MoveToWorld(new Point3D(3715, 2049, 5), Map.Trammel);
+                    m_TramInstance = new MaginciaPlantSystem();
+                    m_TramInstance.MoveToWorld(new Point3D(3715, 2049, 5), Map.Trammel);
                 }
             }
         }
 
-        public MaginciaPlantSystem()
-            : base(3240)
+        public MaginciaPlantSystem() : base(3240)
         {
             Movable = false;
         }
 
         public bool CheckPlantDelay(Mobile from)
         {
-            if (PlantDelayTable.ContainsKey(from))
+            if (m_PlantDelayTable.ContainsKey(from))
             {
-                if (PlantDelayTable[from] > DateTime.UtcNow)
+                if (m_PlantDelayTable[from] > DateTime.UtcNow)
                 {
-                    TimeSpan left = PlantDelayTable[from] - DateTime.UtcNow;
+                    TimeSpan left = m_PlantDelayTable[from] - DateTime.UtcNow;
 
-                    // Time remaining to plant on the Isle of Magincia again: ~1_val~ days ~2_val~ hours ~3_val~ minutes.
-                    from.SendLocalizedMessage(1150459, string.Format("{0}\t{1}\t{2}", left.Days.ToString(), left.Hours.ToString(), left.Minutes.ToString()));
+                    from.SendLocalizedMessage(1150459, String.Format("{0}\t{1}\t{2}", left.Days.ToString(), left.Hours.ToString(), left.Minutes.ToString()));
                     return false;
                 }
             }
@@ -56,14 +65,14 @@ namespace Server.Engines.Plants
 
         public void OnPlantDelete(Mobile from)
         {
-            if (PlantDelayTable.ContainsKey(from))
-                PlantDelayTable.Remove(from);
+            if (m_PlantDelayTable.ContainsKey(from))
+                m_PlantDelayTable.Remove(from);
         }
 
         public void OnPlantPlanted(Mobile from)
         {
-            if (from.AccessLevel == AccessLevel.Player)
-                PlantDelayTable[from] = DateTime.UtcNow + TimeSpan.FromDays(PlantDelay);
+            if (from.AccessLevel <= AccessLevel.VIP)
+                m_PlantDelayTable[from] = DateTime.UtcNow + TimeSpan.FromDays(PlantDelay);
             else
                 from.SendMessage("As staff, you bypass the {0} day plant delay.", PlantDelay);
         }
@@ -131,9 +140,9 @@ namespace Server.Engines.Plants
             Map map = from.Map;
             
             if (map == Map.Trammel)
-                system = TramInstance;
+                system = m_TramInstance;
             else if (map == Map.Felucca)
-                system = FelInstance;
+                system = m_FelInstance;
 
             if (system == null)
             {
@@ -174,22 +183,21 @@ namespace Server.Engines.Plants
                 return;
 
             if (map == Map.Trammel)
-                TramInstance.OnPlantDelete(owner);
+                m_TramInstance.OnPlantDelete(owner);
             else if (map == Map.Felucca)
-                FelInstance.OnPlantDelete(owner);
+                m_FelInstance.OnPlantDelete(owner);
         }
 
         public static void OnPlantPlanted(Mobile from, Map map)
         {
             if (map == Map.Felucca)
-                FelInstance.OnPlantPlanted(from);
+                m_FelInstance.OnPlantPlanted(from);
             else if (map == Map.Trammel)
-                TramInstance.OnPlantPlanted(from);
+                m_TramInstance.OnPlantPlanted(from);
         }
 
         public static Rectangle2D[] MagGrowBounds { get { return m_MagGrowBounds; } }
-
-        private static readonly Rectangle2D[] m_MagGrowBounds = new Rectangle2D[]
+        private static Rectangle2D[] m_MagGrowBounds = new Rectangle2D[]
         {
             new Rectangle2D(3663, 2103, 19, 19),
             new Rectangle2D(3731, 2199, 7, 7),
@@ -209,14 +217,14 @@ namespace Server.Engines.Plants
         {
             List<Mobile> toRemove = new List<Mobile>();
 
-            foreach (KeyValuePair<Mobile, DateTime> kvp in PlantDelayTable)
+            foreach (KeyValuePair<Mobile, DateTime> kvp in m_PlantDelayTable)
             {
                 if (kvp.Value < DateTime.UtcNow)
                     toRemove.Add(kvp.Key);
             }
 
             foreach (Mobile m in toRemove)
-                PlantDelayTable.Remove(m);
+                m_PlantDelayTable.Remove(m);
         }
 
         public MaginciaPlantSystem(Serial serial) : base(serial)
@@ -226,12 +234,13 @@ namespace Server.Engines.Plants
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)0); // version
 
             DefragPlantDelayTable();
 
-            writer.Write(PlantDelayTable.Count);
-            foreach (KeyValuePair<Mobile, DateTime> kvp in PlantDelayTable)
+            writer.Write(m_PlantDelayTable.Count);
+            foreach (KeyValuePair<Mobile, DateTime> kvp in m_PlantDelayTable)
             {
                 writer.Write(kvp.Key);
                 writer.Write(kvp.Value);
@@ -241,6 +250,7 @@ namespace Server.Engines.Plants
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
 
             int c = reader.ReadInt();
@@ -251,13 +261,15 @@ namespace Server.Engines.Plants
                 DateTime dt = reader.ReadDateTime();
 
                 if (m != null && dt > DateTime.UtcNow)
-                    PlantDelayTable[m] = dt;
+                    m_PlantDelayTable[m] = dt;
             }
 
-            if (Map == Map.Felucca)
-                FelInstance = this;
-            else if (Map == Map.Trammel)
-                TramInstance = this;
+            if (this.Map == Map.Felucca)
+                m_FelInstance = this;
+
+            else if (this.Map == Map.Trammel)
+                m_TramInstance = this;
+
             else
                 Delete();
         }

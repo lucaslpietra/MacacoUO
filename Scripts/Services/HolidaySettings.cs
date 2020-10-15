@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Server.Items;
 
 namespace Server.Events.Halloween
@@ -17,8 +17,7 @@ namespace Server.Events.Halloween
             typeof(ChairInAGhostCostume),
             typeof(ExcellentIronMaiden),
             typeof(HalloweenGuillotine),
-            typeof(ColoredSmallWebs),
-            typeof(FlamingScarecrow)
+            typeof(ColoredSmallWebs)
         };
         private static readonly Type[] m_Treats =
         {

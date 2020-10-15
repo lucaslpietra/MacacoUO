@@ -166,17 +166,7 @@ namespace Server.Engines.Help
 
 				if (m_Entry.Sender.NetState != null && index != -1)
 				{
-					m_Entry.Sender.SendLocalizedMessage(1008077, true, (index + 1).ToString());
-						// Thank you for paging. Queue status : 
-					if(SupportEmail == null || SupportWebsite == null)
-					{
-						m_Entry.Sender.SendLocalizedMessage(1008084);
-							// You can reference our website at www.uo.com or contact us at support@uo.com. To cancel your page, please select the help button again and select cancel.
-					}
-					else
-					{
-						m_Entry.Sender.SendMessage("You can reference our website at " + SupportWebsite + " or contact us at " + SupportEmail + ". To cancel your page, please select the help button again and select cancel.");
-					}
+					m_Entry.Sender.SendMessage(78, "Seu numero na fila: "+ (index + 1).ToString());
 
 					if (m_Entry.Handler != null && m_Entry.Handler.NetState == null)
 					{

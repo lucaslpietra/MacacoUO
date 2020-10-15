@@ -1,3 +1,4 @@
+using Server.Ziden.Traducao;
 using System;
 
 namespace Server.Engines.Craft
@@ -24,6 +25,55 @@ namespace Server.Engines.Craft
 
             this.m_NameString = name;
             this.m_MessageString = message;
+
+            var trans = Lang.Trans(m_NameNumber);
+
+            if (trans != null)
+            {
+                m_NameNumber = 0;
+                m_NameString = trans;
+            }
+
+            if (Trads.Items.ContainsKey(type.Name))
+            {
+                m_NameNumber = 0;
+                m_NameString = Trads.Items[type.Name];
+            }
+            else
+            {
+                var trans2 = Lang.Trans(m_NameNumber);
+                if (trans2 != null)
+                {
+                    m_NameNumber = 0;
+                    m_NameString = trans2;
+                }
+                else
+                {
+                    try
+                    {
+                        // Gambiarra porca... mas eh oq tem pra hj
+                        Item.BypassInitialization = true;
+                        var i = (Item)Activator.CreateInstance(type, true);
+                        Item.BypassInitialization = false;
+                        if (i.Name != null)
+                        {
+                            m_NameNumber = 0;
+                            m_NameString = i.Name;
+                        }
+                        else if (i.DefaultName != null)
+                        {
+                            m_NameNumber = 0;
+                            m_NameString = i.DefaultName;
+                        }
+                        i = null;
+                    }
+                    catch (Exception e)
+                    {
+                        Item.BypassInitialization = false;
+                        Console.WriteLine("[Erro] Instanciando craft item " + type.Name);
+                    }
+                }
+            }
         }
 
         public Type ItemType

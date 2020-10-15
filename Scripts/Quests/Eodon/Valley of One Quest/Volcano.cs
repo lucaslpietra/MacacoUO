@@ -88,7 +88,7 @@ namespace Server.Items
                 List<Mobile> players = _Region.GetPlayers();
                 players.ForEach(m =>
                 {
-                    if (m.AccessLevel == AccessLevel.Player)
+                    if (m.AccessLevel <= AccessLevel.VIP)
                         m.PrivateOverheadMessage(MessageType.Regular, 0x21, 1156506, m.NetState); // *The Volcano is becoming unstable!*
                 });
 
@@ -139,7 +139,7 @@ namespace Server.Items
 
                         foreach (Mobile m in mobiles)
                         {
-                            if (m.AccessLevel == AccessLevel.Player && m is PlayerMobile)
+                            if (m.AccessLevel <= AccessLevel.VIP && m is PlayerMobile)
                                 m.PlaySound(520);
                         }
 
@@ -153,7 +153,7 @@ namespace Server.Items
 
                             foreach (Mobile m in eable)
                             {
-                                if (m.Alive && m.AccessLevel == AccessLevel.Player && (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)))
+                                if (m.Alive && m.AccessLevel <= AccessLevel.VIP && (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)))
                                     DoLavaDamageDelayed(m);
                             }
 
@@ -178,10 +178,10 @@ namespace Server.Items
 
         public void CheckMovement(Mobile m)
         {
-            if (!m.Alive || m.AccessLevel > AccessLevel.Player || (m is BaseCreature && ((BaseCreature)m).GetMaster() == null))
+            if (!m.Alive || m.AccessLevel > AccessLevel.VIP || (m is BaseCreature && ((BaseCreature)m).GetMaster() == null))
                 return;
 
-            if (_LavaTimer != null && m.AccessLevel == AccessLevel.Player && m.Alive && _CurrentLava.Contains(m) && !_SafeZone.Contains(m) && !InSafeZone(m))
+            if (_LavaTimer != null && m.AccessLevel <= AccessLevel.VIP && m.Alive && _CurrentLava.Contains(m) && !_SafeZone.Contains(m) && !InSafeZone(m))
             {
                 DoLavaDamageDelayed(m);
             }

@@ -12,7 +12,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public Tinker()
-            : base("the tinker")
+            : base("o funileiro")
         {
             SetSkill(SkillName.Lockpicking, 60.0, 83.0);
             SetSkill(SkillName.RemoveTrap, 75.0, 98.0);
@@ -58,8 +58,8 @@ namespace Server.Mobiles
 
         public override void OnSuccessfulBulkOrderReceive(Mobile from)
         {
-            if (from is PlayerMobile)
-                ((PlayerMobile)from).NextTinkeringBulkOrder = TimeSpan.Zero;
+            //if (from is PlayerMobile)
+            //    ((PlayerMobile)from).NextTinkeringBulkOrder = TimeSpan.Zero;
         }
 
         #endregion

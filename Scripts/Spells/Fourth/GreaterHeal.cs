@@ -51,28 +51,46 @@ namespace Server.Spells.Fourth
             {
                 this.Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2, 500951); // You cannot heal that.
             }
-            else if (m.Poisoned || Server.Items.MortalStrike.IsWounded(m))
+            else if ((!Shard.POL_STYLE || Shard.SPHERE_STYLE) && m.Poisoned)
+            {
+                this.Caster.PrivateOverheadMessage("Voce esta envenenado...");
+            }
+            else if (Server.Items.MortalStrike.IsWounded(m))
             {
                 this.Caster.LocalOverheadMessage(MessageType.Regular, 0x22, (this.Caster == m) ? 1005000 : 1010398);
             }
             else if (this.CheckBSequence(m))
             {
-                SpellHelper.Turn(this.Caster, m);
+                int toHeal = (int)(this.Caster.Skills[SkillName.Magery].Value * 0.15);
+                toHeal += Utility.Random(1, 15);
 
-                // Algorithm: (40% of magery) + (1-10)
+                var inscript = this.Caster.Skills[SkillName.Inscribe].Value;
+                if (Caster is BaseCreature)
+                    inscript += 100;
 
-                int toHeal = (int)(this.Caster.Skills[SkillName.Magery].Value * 0.4);
-                toHeal += Utility.Random(1, 10);
+                var inscriptBonus = (int)(inscript * 0.165);
+                toHeal += inscriptBonus;
+                
+                /*
+                if(this.Caster.GetRepeatedTypes(this.GetType(), TimeSpan.FromSeconds(20)) >= 2)
+                {
+                    this.Caster.SendMessage("Por usar a magia repetidamente seu poder nao e tao eficaz");
+                    toHeal = (int)(toHeal * 0.85);
+                }
+                */
 
                 //m.Heal( toHeal, Caster );
                 SpellHelper.Heal(toHeal, m, this.Caster);
 
+                Caster.MovingParticles(m, 0x376A, 7, 0, false, false, 9502, 0x376A, 0x1F2);
                 m.FixedParticles(0x376A, 9, 32, 5030, EffectLayer.Waist);
                 m.PlaySound(0x202);
             }
 
             this.FinishSequence();
         }
+
+        public virtual bool PunishRepeatedSpells { get { return false; } }
 
         public class InternalTarget : Target
         {

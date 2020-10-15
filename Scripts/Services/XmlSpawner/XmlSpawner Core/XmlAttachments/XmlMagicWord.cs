@@ -107,7 +107,7 @@ namespace Server.Engines.XmlSpawner2
 			string msg = null;
 
 			// can force identification before the skill mods can be applied
-			if(from != null && from.AccessLevel == AccessLevel.Player)
+			if(from != null && from.AccessLevel <= AccessLevel.VIP)
 			{
 				m_Identified = true;
 			}
@@ -162,7 +162,7 @@ namespace Server.Engines.XmlSpawner2
 		{
 			base.OnSpeech(e);
 		    
-			if(e.Mobile == null || e.Mobile.AccessLevel > AccessLevel.Player) return;
+			if(e.Mobile == null || e.Mobile.AccessLevel > AccessLevel.VIP) return;
 
 			// dont respond to other players speech if this is attached to a mob
 			if(AttachedTo is Mobile && (Mobile)AttachedTo != e.Mobile) return;

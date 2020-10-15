@@ -7,7 +7,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public RidableLlama()
-            : this("a ridable llama")
+            : this("lhama montavel")
         {
         }
 
@@ -43,7 +43,7 @@ namespace Server.Mobiles
 
             this.Tamable = true;
             this.ControlSlots = 1;
-            this.MinTameSkill = 29.1;
+            this.MinTameSkill = 65;
         }
 
         public RidableLlama(Serial serial)

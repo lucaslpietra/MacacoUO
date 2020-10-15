@@ -63,7 +63,7 @@ namespace Server.Engines.XmlSpawner2
 		{
 			base.OnIdentify(from);
 
-			if(from == null || from.AccessLevel == AccessLevel.Player) return null;
+			if(from == null || from.AccessLevel <= AccessLevel.VIP) return null;
 
 			if(Expiration > TimeSpan.Zero)
 			{

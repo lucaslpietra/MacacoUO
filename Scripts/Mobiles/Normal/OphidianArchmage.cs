@@ -6,16 +6,11 @@ namespace Server.Mobiles
     [TypeAlias("Server.Mobiles.OphidianJusticar", "Server.Mobiles.OphidianZealot")]
     public class OphidianArchmage : BaseCreature
     {
-        private static readonly string[] m_Names = new string[]
-        {
-            "an ophidian justicar",
-            "an ophidian zealot"
-        };
         [Constructable]
         public OphidianArchmage()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = m_Names[Utility.Random(m_Names.Length)];
+            this.Name = "arquimago ophidiano";
             this.Body = 85;
             this.BaseSoundID = 639;
 
@@ -61,13 +56,6 @@ namespace Server.Mobiles
             get
             {
                 return 1;
-            }
-        }
-		public override int TreasureMapLevel
-        {
-            get
-            {
-                return 2;
             }
         }
 

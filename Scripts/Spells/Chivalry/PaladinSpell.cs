@@ -1,6 +1,7 @@
 #region References
 using System;
-
+using Server.Misc.Custom;
+using Server.Mobiles;
 using Server.Network;
 #endregion
 
@@ -19,6 +20,7 @@ namespace Server.Spells.Chivalry
 		public override SkillName CastSkill { get { return SkillName.Chivalry; } }
 		public override SkillName DamageSkill { get { return SkillName.Chivalry; } }
 		public override bool ClearHandsOnCast { get { return false; } }
+		//public override int CastDelayBase{ get{ return 1; } }
 		public override int CastRecoveryBase { get { return 7; } }
 
 		public static int ComputePowerValue(Mobile from, int div)
@@ -35,27 +37,38 @@ namespace Server.Spells.Chivalry
 
 		public override bool CheckCast()
 		{
-			int mana = ScaleMana(RequiredMana);
+			int mana = AjustaMana(RequiredMana);
+            int stam = 0;//ScaleStamina(RequiredMana/8);
 
-			if (!base.CheckCast())
+            if (!base.CheckCast())
 			{
 				return false;
 			}
 
-			if (Caster.Player && Caster.TithingPoints < RequiredTithing)
-			{
-				Caster.SendLocalizedMessage(1060173, RequiredTithing.ToString());
-					// You must have at least ~1_TITHE_REQUIREMENT~ Tithing Points to use this ability,
-				return false;
-			}
 			else if (Caster.Mana < mana)
 			{
-				Caster.SendLocalizedMessage(1060174, mana.ToString());
-					// You must have at least ~1_MANA_REQUIREMENT~ Mana to use this ability.
-				return false;
+                Caster.SendMessage("Voce precisa de pelo menos " + mana + " mana para usar isto");
+                    // You must have at least ~1_MANA_REQUIREMENT~ Mana to use this ability.
+                return false;
 			}
+            else if (Caster.Stam < stam)
+            {
+                Caster.SendMessage("Voce precisa de pelo menos " + stam + " stamina para usar isto");
+                // You must have at least ~1_MANA_REQUIREMENT~ Mana to use this ability.
+                return false;
+            }
 
-			return true;
+            if (ElementalBall.UseElementalBall(Caster))
+                return true;
+
+            if (Caster.Player && Caster.TithingPoints < RequiredTithing)
+            {
+                Caster.SendMessage("Voce precisa doar " + RequiredTithing + " ou mais moedas em uma anhk antes de usar esta skill.");
+                // You must have at least ~1_TITHE_REQUIREMENT~ Tithing Points to use this ability,
+                return false;
+            }
+
+            return true;
 		}
 
 		public override bool CheckFizzle()
@@ -67,22 +80,32 @@ namespace Server.Spells.Chivalry
 				requiredTithing = 0;
 			}
 
-			int mana = ScaleMana(RequiredMana);
+			int mana = AjustaMana(RequiredMana);
+            int stam = 0;// ScaleStamina(RequiredMana/4);
 
-			if (Caster.TithingPoints < requiredTithing)
+          
+			if (Caster.Mana < mana)
 			{
-				Caster.SendLocalizedMessage(1060173, RequiredTithing.ToString());
-					// You must have at least ~1_TITHE_REQUIREMENT~ Tithing Points to use this ability,
-				return false;
-			}
-			else if (Caster.Mana < mana)
-			{
-				Caster.SendLocalizedMessage(1060174, mana.ToString());
-					// You must have at least ~1_MANA_REQUIREMENT~ Mana to use this ability.
-				return false;
-			}
+                Caster.SendMessage("Voce precisa de pelo menos " + mana + " mana para usar isto");
+                // You must have at least ~1_MANA_REQUIREMENT~ Mana to use this ability.
+                return false;
+            }
+            else if (Caster.Stam < stam)
+            {
+                Caster.SendMessage("Voce precisa de pelo menos " + stam + " stamina para usar isto");
+                // You must have at least ~1_MANA_REQUIREMENT~ Mana to use this ability.
+                return false;
+            }
+            var elemental = ElementalBall.UseElementalBall(Caster);
+            if (!elemental && Caster.TithingPoints < requiredTithing)
+            {
+                Caster.SendMessage("Voce precisa doar " + RequiredTithing + " ou mais moedas em uma anhk antes de usar esta skill.");
+                // You must have at least ~1_TITHE_REQUIREMENT~ Tithing Points to use this ability,
+                return false;
+            }
 
-			Caster.TithingPoints -= requiredTithing;
+            if (!elemental)
+                Caster.TithingPoints -= requiredTithing;
 
 			if (!base.CheckFizzle())
 			{
@@ -90,17 +113,21 @@ namespace Server.Spells.Chivalry
 			}
 
 			Caster.Mana -= mana;
-
-			return true;
+            Caster.Stam -= stam;
+            return true;
 		}
 
-        public override void SayMantra()
-        {
-            if (Caster.Player)
-                Caster.PublicOverheadMessage(MessageType.Spell, Caster.SpeechHue, MantraNumber, "", false);
+        /*
+		public override void SayMantra()
+		{
+            if (Info.Mantra != null && Info.Mantra.Length > 0 && (m_Caster.Player || (m_Caster is BaseCreature && ((BaseCreature)m_Caster).ShowSpellMantra)))
+            {
+                m_Caster.PublicOverheadMessage(MessageType.Regular, 1153, false, Info.Mantra);
+            }
         }
+        */
 
-        public override void DoFizzle()
+		public override void DoFizzle()
 		{
 			Caster.PlaySound(0x1D6);
 			Caster.NextSpellTime = Core.TickCount;

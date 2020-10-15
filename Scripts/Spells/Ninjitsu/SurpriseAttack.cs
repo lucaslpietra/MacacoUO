@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Server.Items;
 using Server.SkillHandlers;
 
 namespace Server.Spells.Ninjitsu
@@ -29,7 +30,7 @@ namespace Server.Spells.Ninjitsu
         {
             get
             {
-                return new TextDefinition(1063128);
+                return new TextDefinition("Voce se prepara para um ataque surpresa");
             }
         }// You prepare to surprise your prey.
         public override bool ValidatesDuringHit
@@ -54,7 +55,7 @@ namespace Server.Spells.Ninjitsu
         {
             if (!from.Hidden || from.AllowedStealthSteps <= 0)
             {
-                from.SendLocalizedMessage(1063087); // You must be in stealth mode to use this ability.
+                from.SendMessage("Voce precisa estar em stealth para usar isto"); // You must be in stealth mode to use this ability.
                 return false;
             }
 
@@ -79,11 +80,16 @@ namespace Server.Spells.Ninjitsu
             //Validates before swing
             ClearCurrentMove(attacker);
 
-            attacker.SendLocalizedMessage(1063129); // You catch your opponent off guard with your Surprise Attack!
-            defender.SendLocalizedMessage(1063130); // Your defenses are lowered as your opponent surprises you!
+            attacker.SendMessage("Voce deu um ataque surpresa"); // You catch your opponent off guard with your Surprise Attack!
+            defender.SendMessage("Sua defesa esta reduzida pois sofreu um ataque surpresa"); // Your defenses are lowered as your opponent surprises you!
 
             defender.FixedParticles(0x37B9, 1, 5, 0x26DA, 0, 3, EffectLayer.Head);
-
+            var malus = (int)(attacker.Skills.Ninjitsu.Value / 10);
+            if (attacker.Weapon is BaseRanged)
+                malus /= 2;
+      
+            defender.VirtualArmorMod -= malus;
+            defender.OverheadMessage("* vulneravel *");
             attacker.RevealingAction();
 
             SurpriseAttackInfo info;
@@ -98,10 +104,6 @@ namespace Server.Spells.Ninjitsu
                 m_Table.Remove(defender);
             }
 
-            int ninjitsu = attacker.Skills[SkillName.Ninjitsu].Fixed;
-
-            int malus = ninjitsu / 60 + (int)Tracking.GetStalkingBonus(attacker, defender);
-
             info = new SurpriseAttackInfo(defender, malus);
             info.m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(8.0), new TimerStateCallback(EndSurprise), info);
 
@@ -114,7 +116,7 @@ namespace Server.Spells.Ninjitsu
         {
             ClearCurrentMove(attacker);
 
-            attacker.SendLocalizedMessage(1063161); // You failed to properly use the element of surprise.
+            attacker.SendMessage("Voce nao conseguiu surpreender o alvo"); // You failed to properly use the element of surprise.
 
             attacker.RevealingAction();
         }
@@ -126,8 +128,8 @@ namespace Server.Spells.Ninjitsu
             if (info.m_Timer != null)
                 info.m_Timer.Stop();
 
-            info.m_Target.SendLocalizedMessage(1063131); // Your defenses have returned to normal.
-
+            info.m_Target.SendMessage("Suas defesas retornaram ao normal"); // Your defenses have returned to normal.
+            info.m_Target.VirtualArmorMod += info.m_Malus;
             m_Table.Remove(info.m_Target);
         }
 

@@ -27,13 +27,13 @@ namespace Server.Items
                 return 30;
             }
         }
-		
-		public static bool IsBleeding(Mobile m)
+
+        public static bool IsBleeding(Mobile m)
         {
             return m_BleedTable.ContainsKey(m);
         }
-		
-		public static void BeginBleed(Mobile m, Mobile from, bool splintering = false)
+
+        public static void BeginBleed(Mobile m, Mobile from, bool splintering = false)
         {
             BleedTimer timer = null;
 
@@ -56,15 +56,12 @@ namespace Server.Items
             m_BleedTable[m] = timer;
             timer.Start();
 
-            from.SendLocalizedMessage(1060159); // Your target is bleeding!
-            m.SendLocalizedMessage(1060160); // You are bleeding!
+            from.SendLocalizedMessage("Seu alvo esta sangrando"); // Your target is bleeding!
+            m.SendLocalizedMessage("Voce esta sangrando"); // You are bleeding!
 
-            if (m is PlayerMobile)
-            {
-                m.LocalOverheadMessage(MessageType.Regular, 0x21, 1060757); // You are bleeding profusely
-                m.NonlocalOverheadMessage(MessageType.Regular, 0x21, 1060758, m.Name); // ~1_NAME~ is bleeding profusely
-            }
 
+            m.NonlocalOverheadMessage(MessageType.Regular, 0x21, false, "* sangrando *"); // You are bleeding profusely
+ 
             m.PlaySound(0x133);
             m.FixedParticles(0x377A, 244, 25, 9950, 31, 0, EffectLayer.Waist);
         }
@@ -81,7 +78,7 @@ namespace Server.Items
 
                 if (blooddrinker && from.Hits < from.HitsMax)
                 {
-                    from.SendLocalizedMessage(1113606); //The blood drinker effect heals you.
+                    from.SendLocalizedMessage("A sanguesuga te cura"); //The blood drinker effect heals you.
                     from.Heal(damage);
                 }
 
@@ -112,13 +109,13 @@ namespace Server.Items
             BuffInfo.RemoveBuff(m, BuffIcon.Bleed);
 
             if (message)
-                m.SendLocalizedMessage(1060167); // The bleeding wounds have healed, you are no longer bleeding!
+                m.SendLocalizedMessage("Voce nao esta mais sangrando"); // The bleeding wounds have healed, you are no longer bleeding!
         }
-		
-		public static bool CheckBloodDrink(Mobile attacker)
-		{
+
+        public static bool CheckBloodDrink(Mobile attacker)
+        {
             return attacker.Weapon is BaseWeapon && ((BaseWeapon)attacker.Weapon).WeaponAttributes.BloodDrinker > 0;
-		}
+        }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
@@ -133,11 +130,11 @@ namespace Server.Items
             if ((context != null && (context.Type == typeof(LichFormSpell) || context.Type == typeof(WraithFormSpell))) ||
                 (defender is BaseCreature && ((BaseCreature)defender).BleedImmune) || Server.Spells.Mysticism.StoneFormSpell.CheckImmunity(defender))
             {
-                attacker.SendLocalizedMessage(1062052); // Your target is not affected by the bleed attack!
+                attacker.SendLocalizedMessage("Seu alvo e imune a sangramentos"); // Your target is not affected by the bleed attack!
                 return;
             }
 
-			BeginBleed(defender, attacker);
+            BeginBleed(defender, attacker);
         }
 
         private class BleedTimer : Timer
@@ -154,10 +151,10 @@ namespace Server.Items
                 m_From = from;
                 m_Mobile = m;
                 Priority = TimerPriority.TwoFiftyMS;
-				m_BloodDrinker = blooddrinker;
+                m_BloodDrinker = blooddrinker;
 
                 m_MaxCount = Spells.SkillMasteries.ResilienceSpell.UnderEffects(m) ? 3 : 5;
-			}
+            }
 
             protected override void OnTick()
             {

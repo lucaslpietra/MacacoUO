@@ -1,3 +1,4 @@
+using Server.Spells.Fourth;
 using System;
 
 namespace Server.Mobiles
@@ -8,9 +9,9 @@ namespace Server.Mobiles
     {
         [Constructable]
         public PlagueRat()
-            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.05, 0.1)
         {
-            this.Name = "a Clan Ribbon Plague Rat";
+            this.Name = "rato purulento";
             this.Body = 0xD7;
             this.Hue = 1710;
             this.BaseSoundID = 0x188;
@@ -19,7 +20,7 @@ namespace Server.Mobiles
             this.SetDex(51);
             this.SetInt(17);
 
-            this.SetHits(92);
+            this.SetHits(80);
             this.SetMana(0);
 
             this.SetDamage(4, 8);
@@ -44,6 +45,16 @@ namespace Server.Mobiles
         public PlagueRat(Serial serial)
             : base(serial)
         {
+        }
+
+        public override void OnGaveMeleeAttack(Mobile defender)
+        {
+            base.OnGaveMeleeAttack(defender);
+            defender.ApplyPoison(this, Poison.Lethal);
+            CurseSpell.DoCurse(this, defender, false);
+            defender.SendMessage("Voce foi infectado com a praga");
+            defender.OverheadMessage("* infectado *");
+            defender.FixedEffect(0x376A, 1, 32, 1, 0);
         }
 
         public override int Meat

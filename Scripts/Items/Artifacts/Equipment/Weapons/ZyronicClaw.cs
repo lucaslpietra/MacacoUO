@@ -9,7 +9,7 @@ namespace Server.Items
         public ZyronicClaw()
         {
             Hue = 0x485;
-            Slayer = SlayerName.ElementalBan;
+            Slayer = SlayerName.Elemental;
             WeaponAttributes.HitLeechMana = 81;
             Attributes.AttackChance = 30;
             Attributes.WeaponDamage = 50;

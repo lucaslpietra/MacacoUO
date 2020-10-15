@@ -19,7 +19,7 @@ namespace Server.Mobiles
         public LeatherWolf()
             : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            Name = "a leather wolf";
+            Name = "lobo rabanastre";
             Body = 739;
             BaseSoundID = 0xE5;
 
@@ -59,7 +59,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (!Controlled && 0.2 > Utility.RandomDouble())
+            if (0.2 > Utility.RandomDouble())
                 c.DropItem(new LeatherWolfSkin());         
         }
 
@@ -111,7 +111,7 @@ namespace Server.Mobiles
 
                 if (spawned)
                 {
-                    Say(1113132); // The leather wolf howls for help
+                    Say("Uiva pedindo ajuda"); // The leather wolf howls for help
                     PlaySound(0xE6);
                 }
             }

@@ -34,19 +34,25 @@ namespace Server.Spells.SkillMasteries
                 double lore = Caster.Skills[SkillName.AnimalLore].Base;
                 bool asone = SpellType == TrainingType.AsOne;
 
-                double skillvalue = (taming + (lore/2));
-                int mastery_base = 12;
-                if (skillvalue < 150) mastery_base = 12;
-                if (skillvalue < 165) mastery_base = 10;
-                if (skillvalue < 180) mastery_base = 8;
-                if (skillvalue >= 180) mastery_base = 6;
+                if (taming >= 120.0)
+                {
+                    if (lore >= 120)
+                    {
+                        return asone ? 12 : 6;
+                    }
 
-                return asone ? mastery_base*2 : mastery_base;
+                    if (lore >= 115)
+                    {
+                        return asone ? 16 : 8;
+                    }
+                }
+
+                return asone ? 20 : 10;
             }
         }
 
         public override double RequiredSkill { get { return 90; } }
-        public override int RequiredMana { get { return 40; } }
+        public override int RequiredMana { get { return 30; } }
         public override bool PartyEffects { get { return false; } }
         public override SkillName CastSkill { get { return SkillName.AnimalTaming; } }
 
@@ -64,7 +70,7 @@ namespace Server.Spells.SkillMasteries
         {
         }
 
-        public override bool Cast()
+        public override bool CheckCast()
         {
             CombatTrainingSpell spell = GetSpell(Caster, typeof(CombatTrainingSpell)) as CombatTrainingSpell;
 
@@ -74,11 +80,6 @@ namespace Server.Spells.SkillMasteries
                 return false;
             }
 
-            return base.Cast();
-        }
-
-        public override bool CheckCast()
-        {
             if (Caster is PlayerMobile && ((PlayerMobile)Caster).AllFollowers == null || ((PlayerMobile)Caster).AllFollowers.Count == 0)
             {
                 Caster.SendLocalizedMessage(1156112); // This ability requires you to have pets.
@@ -102,7 +103,7 @@ namespace Server.Spells.SkillMasteries
 
         public void OnSelected(TrainingType type, Mobile target)
         {
-            if (!CheckSequence() || (type == TrainingType.AsOne && Caster is PlayerMobile && ((PlayerMobile)Caster).AllFollowers.Where(mob => mob != target).Count() == 0))
+            if (type == TrainingType.AsOne && Caster is PlayerMobile && ((PlayerMobile)Caster).AllFollowers.Where(mob => mob != target).Count() == 0)
             {
                 FinishSequence();
                 return;
@@ -354,11 +355,6 @@ namespace Server.Spells.SkillMasteries
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is Server.Engines.Despise.DespiseCreature)
-                {
-                    return;
-                }
-
                 if (targeted is BaseCreature && ((BaseCreature)targeted).GetMaster() == from && from.Spell == Spell)
                 {
                     Spell.Caster.FixedEffect(0x3779, 10, 20, 1270, 0);
@@ -367,8 +363,8 @@ namespace Server.Spells.SkillMasteries
                     int taming = (int)from.Skills[SkillName.AnimalTaming].Value;
                     int lore = (int)from.Skills[SkillName.AnimalLore].Value;
 
-                    from.CheckTargetSkill(SkillName.AnimalTaming, (BaseCreature)targeted, taming - 25, taming + 25);
-                    from.CheckTargetSkill(SkillName.AnimalLore, (BaseCreature)targeted, lore - 25, lore + 25);
+                    from.CheckTargetSkillMinMax(SkillName.AnimalTaming, (BaseCreature)targeted, taming - 25, taming + 25);
+                    from.CheckTargetSkillMinMax(SkillName.AnimalLore, (BaseCreature)targeted, lore - 25, lore + 25);
 
                     from.CloseGump(typeof(ChooseTrainingGump));
                     from.SendGump(new ChooseTrainingGump(from, (BaseCreature)targeted, Spell));
@@ -427,34 +423,17 @@ namespace Server.Spells.SkillMasteries
 
             AddHtmlLocalized(20, 20, 150, 16, 1156113, Hue, false, false); // Select Training
 
-            int y = 40;
-            if (MasteryInfo.HasLearned(caster, SkillName.AnimalTaming, 1))
-            {
-                AddButton(20, y, 9762, 9763, 1, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(43, y, 150, 16, 1156109, Hue, false, false); // Empowerment
-                y += 20;
-            }
+            AddButton(20, 40, 9762, 9763, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(43, 40, 150, 16, 1156109, Hue, false, false); // Empowerment
 
-            if (MasteryInfo.HasLearned(caster, SkillName.AnimalTaming, 2))
-            {
-                AddButton(20, y, 9762, 9763, 2, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(43, y, 150, 16, 1153271, Hue, false, false); // Berserk
-                y += 20;
-            }
+            AddButton(20, 60, 9762, 9763, 2, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(43, 60, 150, 16, 1153271, Hue, false, false); // Berserk
 
-            if (MasteryInfo.HasLearned(caster, SkillName.AnimalTaming, 3))
-            {
-                AddButton(20, y, 9762, 9763, 3, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(43, y, 150, 16, 1156108, Hue, false, false); // Consume Damage
-                y += 20;
-            }
+            AddButton(20, 80, 9762, 9763, 3, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(43, 80, 150, 16, 1156108, Hue, false, false); // Consume Damage
 
-            if (MasteryInfo.HasLearned(caster, SkillName.AnimalTaming, 1))
-            {
-                AddButton(20, y, 9762, 9763, 4, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(43, y, 150, 16, 1157544, Hue, false, false); // As One
-                y += 20;
-            }
+            AddButton(20, 100, 9762, 9763, 4, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(43, 100, 150, 16, 1157544, Hue, false, false); // As One
         }
 
         public override void OnResponse(NetState state, RelayInfo info)

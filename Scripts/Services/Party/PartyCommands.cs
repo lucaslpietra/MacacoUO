@@ -14,9 +14,9 @@ namespace Server.Engines.PartySystem
             Party p = Party.Get(from);
 
             if (p != null && p.Leader != from)
-                from.SendLocalizedMessage(1005453); // You may only add members to the party if you are the leader.
+                from.SendMessage("Tem de ser o lider"); // You may only add members to the party if you are the leader.
             else if (p != null && (p.Members.Count + p.Candidates.Count) >= Party.Capacity)
-                from.SendLocalizedMessage(1008095); // You may only have 10 in your party (this includes candidates).
+                from.SendMessage("Max 10 pessoas no grupo"); // You may only have 10 in your party (this includes candidates).
             else
                 from.Target = new AddPartyTarget(from);
         }
@@ -27,13 +27,13 @@ namespace Server.Engines.PartySystem
 
             if (p == null)
             {
-                from.SendLocalizedMessage(3000211); // You are not in a party.
+                from.SendMessage("Voce nao esta em um grupo"); // You are not in a party.
                 return;
             }
 
             if (p.Leader == from && target == null)
             {
-                from.SendLocalizedMessage(1005455); // Who would you like to remove from your party?
+                from.SendMessage("Quem voce quer remover do grupo?"); // Who would you like to remove from your party?
                 from.Target = new RemovePartyTarget();
             }
             else if ((p.Leader == from || from == target) && p.Contains(target))
@@ -52,7 +52,7 @@ namespace Server.Engines.PartySystem
             if (p != null && p.Contains(target))
                 p.SendPrivateMessage(from, target, text);
             else
-                from.SendLocalizedMessage(3000211); // You are not in a party.
+                from.SendMessage("Voce nao esta em grupo"); // You are not in a party.
         }
 
         public override void OnPublicMessage(Mobile from, string text)
@@ -65,7 +65,7 @@ namespace Server.Engines.PartySystem
             if (p != null)
                 p.SendPublicMessage(from, text);
             else
-                from.SendLocalizedMessage(3000211); // You are not in a party.
+                from.SendMessage("Voce nao esta em grupo"); // You are not in a party.
         }
 
         public override void OnSetCanLoot(Mobile from, bool canLoot)
@@ -74,7 +74,7 @@ namespace Server.Engines.PartySystem
 
             if (p == null)
             {
-                from.SendLocalizedMessage(3000211); // You are not in a party.
+                from.SendMessage("Voce nao esta em grupo"); // You are not in a party.
             }
             else
             {
@@ -85,9 +85,9 @@ namespace Server.Engines.PartySystem
                     mi.CanLoot = canLoot;
 
                     if (canLoot)
-                        from.SendLocalizedMessage(1005447); // You have chosen to allow your party to loot your corpse.
+                        from.SendMessage("Liberando grupo lootear seus corpos"); // You have chosen to allow your party to loot your corpse.
                     else
-                        from.SendLocalizedMessage(1005448); // You have chosen to prevent your party from looting your corpse.
+                        from.SendMessage("Nao deixando grupo lootear seus corpos"); // You have chosen to prevent your party from looting your corpse.
                 }
             }
         }
@@ -100,7 +100,7 @@ namespace Server.Engines.PartySystem
             Party p = Party.Get(leader);
 
             if (leader == null || p == null || !p.Candidates.Contains(from))
-                from.SendLocalizedMessage(3000222); // No one has invited you to be in a party.
+                from.SendMessage("Ninguem te convidou :("); // No one has invited you to be in a party.
             else if ((p.Members.Count + p.Candidates.Count) <= Party.Capacity)
                 p.OnAccept(from);
         }
@@ -113,7 +113,7 @@ namespace Server.Engines.PartySystem
             Party p = Party.Get(leader);
 
             if (leader == null || p == null || !p.Candidates.Contains(from))
-                from.SendLocalizedMessage(3000222); // No one has invited you to be in a party.
+                from.SendMessage("Ninguem te convidou :("); // No one has invited you to be in a party.
             else
                 p.OnDecline(from, leader);
         }

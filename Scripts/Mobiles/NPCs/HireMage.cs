@@ -11,7 +11,9 @@ namespace Server.Mobiles
         {
             SpeechHue = Utility.RandomDyedHue();
             Hue = Utility.RandomSkinHue();
-            Title = "the mage";
+            this.Title = "o mago ";
+            if (Female)
+                this.Title = "a maga ";
             if (Female = Utility.RandomBool()) 
             {
                 Body = 0x191;
@@ -34,12 +36,12 @@ namespace Server.Mobiles
 
             SetDamage(10, 23);
 
-            SetSkill(SkillName.EvalInt, 100.0, 125);
-            SetSkill(SkillName.Magery, 100, 125);
-            SetSkill(SkillName.Meditation, 100, 125);
-            SetSkill(SkillName.MagicResist, 100, 125);
-            SetSkill(SkillName.Tactics, 100, 125);
-            SetSkill(SkillName.Macing, 100, 125);
+            SetSkill(SkillName.EvalInt, 20, 50);
+            SetSkill(SkillName.Magery, 20, 50);
+            SetSkill(SkillName.Meditation, 20, 50);
+            SetSkill(SkillName.MagicResist, 20, 50);
+            SetSkill(SkillName.Tactics, 20, 50);
+            SetSkill(SkillName.Macing, 35, 35);
 
             Fame = 100;
             Karma = 100;
@@ -52,7 +54,7 @@ namespace Server.Mobiles
                 AddItem(new Shoes(Utility.RandomNeutralHue()));
             else
                 AddItem(new ThighBoots());
-
+            AddItem(new QuarterStaff());
             PackGold(20, 100);
         }
 

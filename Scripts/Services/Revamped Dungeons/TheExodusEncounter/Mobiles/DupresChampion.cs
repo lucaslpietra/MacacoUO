@@ -88,16 +88,6 @@ namespace Server.Mobiles
             PackGold( 400, 600 );            
 		}
 
-        public override void OnKilledBy(Mobile m)
-        {
-            base.OnKilledBy(m);
-
-            if (Utility.RandomDouble() < 0.1)
-            {
-                ExodusChest.GiveRituelItem(m);
-            }
-        }
-
         public override void GenerateLoot()
         {
             if (Utility.RandomDouble() < 0.1)

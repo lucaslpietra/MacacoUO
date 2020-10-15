@@ -20,7 +20,7 @@ namespace Server.Spells.Necromancy
         {
             get
             {
-                return TimeSpan.FromSeconds(2.25);
+                return TimeSpan.FromSeconds(2.0);
             }
         }
 
@@ -56,11 +56,12 @@ namespace Server.Spells.Necromancy
 
         public override bool CheckCast()
         {
-            BaseCreature check = (BaseCreature)m_Table[this.Caster];
+            BaseFamiliar check = (BaseFamiliar)m_Table[this.Caster];
 
             if (check != null && !check.Deleted)
             {
-                this.Caster.SendLocalizedMessage(1061605); // You already have a familiar.
+                check.EndRelease(Caster);
+                Caster.SendMessage("Seu antigo capetinha se foi");
                 return false;
             }
 
@@ -148,11 +149,11 @@ namespace Server.Spells.Necromancy
 
         private readonly SummonFamiliarSpell m_Spell;
 
-        private const int EnabledColor16 = 0x0F20;
-        private const int DisabledColor16 = 0x262A;
+        private const int EnabledColor16 = 1;
+        private const int DisabledColor16 = 32;
 
-        private const int EnabledColor32 = 0x18CD00;
-        private const int DisabledColor32 = 0x4A8B52;
+        private const int EnabledColor32 = 1;
+        private const int DisabledColor32 = 32;
 
         public SummonFamiliarGump(Mobile from, SummonFamiliarEntry[] entries, SummonFamiliarSpell spell)
             : base(200, 100)
@@ -163,7 +164,7 @@ namespace Server.Spells.Necromancy
 
             this.AddPage(0);
 
-            this.AddBackground(10, 10, 250, 178, 9270);
+            this.AddBackground(10, 10, 250, 178, 9200);
             this.AddAlphaRegion(20, 20, 230, 158);
 
             this.AddImage(220, 20, 10464);
@@ -175,7 +176,7 @@ namespace Server.Spells.Necromancy
             this.AddItem(8, 15, 6882);
             this.AddItem(2, 168, 6880);
 
-            this.AddHtmlLocalized(30, 26, 200, 20, 1060147, EnabledColor16, false, false); // Chose thy familiar...
+            this.AddHtml(30, 26, 200, 20, "Escolha seu Capetinha", EnabledColor16, false, false); // Chose thy familiar...
 
             double necro = from.Skills[SkillName.Necromancy].Value;
             double spirit = from.Skills[SkillName.SpiritSpeak].Value;
@@ -217,14 +218,14 @@ namespace Server.Spells.Necromancy
                 else if (necro < entry.ReqNecromancy || spirit < entry.ReqSpiritSpeak)
                 {
                     // That familiar requires ~1_NECROMANCY~ Necromancy and ~2_SPIRIT~ Spirit Speak.
-                    this.m_From.SendLocalizedMessage(1061606, String.Format("{0:F1}\t{1:F1}", entry.ReqNecromancy, entry.ReqSpiritSpeak));
+                    this.m_From.SendLocalizedMessage(String.Format("Este capetinha precisa de {0:F1} necromancy e \t{1:F1} spirit speak", entry.ReqNecromancy, entry.ReqSpiritSpeak));
 
                     this.m_From.CloseGump(typeof(SummonFamiliarGump));
                     this.m_From.SendGump(new SummonFamiliarGump(this.m_From, SummonFamiliarSpell.Entries, this.m_Spell));
                 }
                 else if (entry.Type == null)
                 {
-                    this.m_From.SendMessage("That familiar has not yet been defined.");
+                    this.m_From.SendMessage("Capetinha zuado.");
 
                     this.m_From.CloseGump(typeof(SummonFamiliarGump));
                     this.m_From.SendGump(new SummonFamiliarGump(this.m_From, SummonFamiliarSpell.Entries, this.m_Spell));
@@ -251,7 +252,7 @@ namespace Server.Spells.Necromancy
             }
             else
             {
-                this.m_From.SendLocalizedMessage(1061825); // You decide not to summon a familiar.
+                this.m_From.SendLocalizedMessage("Voce decide nao invocar um capetinha"); // You decide not to summon a familiar.
             }
         }
     }

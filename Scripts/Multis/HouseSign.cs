@@ -72,7 +72,7 @@ namespace Server.Multis
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            list.Add(1061638); // A House Sign
+            list.Add("Placa da Casa"); // A House Sign
         }
 
         public override bool ForceShowProperties
@@ -97,27 +97,28 @@ namespace Server.Multis
         {
             base.GetProperties(list);
 
-            list.Add(1061639, Utility.FixHtml(GetName())); // Name: ~1_NAME~
-            list.Add(1061640, (m_Owner == null || m_Owner.Owner == null) ? "nobody" : m_Owner.Owner.Name); // Owner: ~1_OWNER~
+            list.AddTwoValues("Nome", Utility.FixHtml(GetName())); // Name: ~1_NAME~
+            list.AddTwoValues("Dono", (m_Owner == null || m_Owner.Owner == null) ? "ninguem" : m_Owner.Owner.Name); // Owner: ~1_OWNER~
 
             if (m_Owner != null)
             {
-                list.Add(m_Owner.Public ? 1061641 : 1061642); // This House is Open to the Public : This is a Private Home
-
                 m_GettingProperties = true;
                 DecayLevel level = m_Owner.DecayLevel;
                 m_GettingProperties = false;
 
                 if (level == DecayLevel.DemolitionPending)
                 {
-                    list.Add(1062497); // Demolition Pending
+                    list.Add("Para ser demolida"); // Demolition Pending
                 }
                 else if (level != DecayLevel.Ageless)
                 {
                     if (level == DecayLevel.Collapsed)
                         level = DecayLevel.IDOC;
 
-                    list.Add(1062028, String.Format("#{0}", 1043009 + (int)level)); // Condition: This structure is ...
+                    list.Add("Nivel de Abandono: "+ (int)level); // Condition: This structure is ...
+                } else
+                {
+                    list.Add("Casa Eterna");
                 }
             }
         }
@@ -126,42 +127,15 @@ namespace Server.Multis
         {
             if (m_Owner != null && BaseHouse.DecayEnabled && m_Owner.DecayPeriod != TimeSpan.Zero)
             {
-                string message;
-
-                switch ( m_Owner.DecayLevel )
-                {
-                    case DecayLevel.Ageless:
-                        message = "ageless";
-                        break;
-                    case DecayLevel.Fairly:
-                        message = "fairly worn";
-                        break;
-                    case DecayLevel.Greatly:
-                        message = "greatly worn";
-                        break;
-                    case DecayLevel.LikeNew:
-                        message = "like new";
-                        break;
-                    case DecayLevel.Slightly:
-                        message = "slightly worn";
-                        break;
-                    case DecayLevel.Somewhat:
-                        message = "somewhat worn";
-                        break;
-                    default:
-                        message = "in danger of collapsing";
-                        break;
-                }
-
-                LabelTo(from, "This house is {0}.", message);
+                LabelTo(from, "Nivel de Abandono: " + (int)m_Owner.DecayLevel);
             }
-
             base.OnSingleClick(from);
         }
 
+
         public void ShowSign(Mobile m)
         {
-            if (m_Owner != null && m.AccessLevel == AccessLevel.Player)
+            if (m_Owner != null && m.AccessLevel <= AccessLevel.VIP)
             {
                 if ((Core.ML && m_Owner.IsFriend(m)) || !Core.ML)
                 {
@@ -170,7 +144,7 @@ namespace Server.Multis
 
                 if (!Core.AOS && m_Owner.IsFriend(m))
                 {
-                    m.SendLocalizedMessage(501293); // Welcome back to the house, friend!
+                    m.SendMessage("Bem vindo de volta, amigo"); // Welcome back to the house, friend!
                 }
             }
 
@@ -270,7 +244,7 @@ namespace Server.Multis
 
                 if (from.Map != m_Sign.Map || !from.InRange(m_Sign, 5))
                 {
-                    from.SendLocalizedMessage(1062429); // You must be within five paces of the house sign to use this option.
+                    from.SendMessage("Muito longe"); // You must be within five paces of the house sign to use this option.
                 }
                 else
                 {
@@ -298,7 +272,7 @@ namespace Server.Multis
 
                 if (from.Map != m_Sign.Map || !from.InRange(m_Sign, 5))
                 {
-                    from.SendLocalizedMessage(1062429); // You must be within five paces of the house sign to use this option.
+                    from.SendMessage("Muito longe"); // You must be within five paces of the house sign to use this option.
                 }
                 else
                 {

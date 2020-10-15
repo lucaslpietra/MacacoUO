@@ -43,8 +43,10 @@ namespace Server.Spells.Second
 
                 if (p != null)
                 {
-                    int chanceToCure = 10000 + (int)(this.Caster.Skills[SkillName.Magery].Value * 75) - ((p.RealLevel + 1) * (Core.AOS ? (p.RealLevel < 4 ? 3300 : 3100) : 1750));
+                    int chanceToCure = 10000 + (int)(this.Caster.Skills[SkillName.Magery].Value * 60) + (int)(this.Caster.Skills[SkillName.Inscribe].Value * 25) - ((p.RealLevel + 1) * (p.RealLevel < 4 ? 3300 : 3100));
                     chanceToCure /= 100;
+
+                    Shard.Debug("Chance de curar poison: " + chanceToCure);
 
                     if (chanceToCure > Utility.Random(100))
                     {
@@ -62,6 +64,7 @@ namespace Server.Spells.Second
                     }
                 }
 
+                Caster.MovingParticles(m, 0x373A, 7, 0, false, false, 9502, 0x373A, 0x1F2);
                 m.FixedParticles(0x373A, 10, 15, 5012, EffectLayer.Waist);
                 m.PlaySound(0x1E0);
             }

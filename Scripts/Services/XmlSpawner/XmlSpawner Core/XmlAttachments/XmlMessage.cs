@@ -109,7 +109,7 @@ namespace Server.Engines.XmlSpawner2
 
 		public override string OnIdentify(Mobile from)
 		{
-			if(from == null || from.AccessLevel == AccessLevel.Player) return null;
+			if(from == null || from.AccessLevel <= AccessLevel.VIP) return null;
 
 			string msg = null;
 
@@ -139,7 +139,7 @@ namespace Server.Engines.XmlSpawner2
 		{
 			base.OnSpeech(e);
 		    
-			if(e.Mobile == null || e.Mobile.AccessLevel > AccessLevel.Player) return;
+			if(e.Mobile == null || e.Mobile.AccessLevel > AccessLevel.VIP) return;
 
 			if(e.Speech == ActivationWord)
 			{
@@ -153,7 +153,7 @@ namespace Server.Engines.XmlSpawner2
 		{
 			base.OnMovement(e);
 
-			if(e.Mobile == null || e.Mobile.AccessLevel > AccessLevel.Player) return;
+			if(e.Mobile == null || e.Mobile.AccessLevel > AccessLevel.VIP) return;
 
 			if(AttachedTo is Item && (((Item)AttachedTo).Parent == null) && Utility.InRange( e.Mobile.Location, ((Item)AttachedTo).Location, proximityrange ))
 			{

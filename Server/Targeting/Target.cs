@@ -80,7 +80,6 @@ namespace Server.Targeting
 			from.ClearTarget();
 
 			Cancel(from);
-
 			OnTargetCancel(from, TargetCancelType.Timeout);
 			OnTargetFinish(from);
 		}
@@ -220,7 +219,7 @@ namespace Server.Targeting
 
 				object root = item.RootParent;
 
-				if (!m_AllowNonlocal && root is Mobile && root != from && from.AccessLevel == AccessLevel.Player)
+				if (!m_AllowNonlocal && root is Mobile && root != from && from.AccessLevel <= AccessLevel.VIP)
 				{
 					OnNonlocalTarget(from, targeted);
 					OnTargetFinish(from);
@@ -269,8 +268,9 @@ namespace Server.Targeting
 				}
 				else if (from.Region.OnTarget(from, this, targeted))
 				{
+                  
 					OnTarget(from, targeted);
-				}
+                }
 			}
 
 			OnTargetFinish(from);

@@ -9,7 +9,7 @@ namespace Server.Items
         public TheDragonSlayer()
         {
             Hue = 0x530;
-            Slayer = SlayerName.DragonSlaying;
+            Slayer = SlayerName.Dragoes;
             Attributes.Luck = 110;
             Attributes.WeaponDamage = 50;
             WeaponAttributes.ResistFireBonus = 20;

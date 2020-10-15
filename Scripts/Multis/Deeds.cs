@@ -49,7 +49,7 @@ namespace Server.Multis.Deeds
             : base(0x14F0)
         {
             this.Weight = 1.0;
-            this.LootType = LootType.Newbied;
+            this.LootType = LootType.Blessed;
 
             this.m_MultiID = id;
             this.m_Offset = offset;
@@ -159,7 +159,7 @@ namespace Server.Multis.Deeds
                 {
                     case HousePlacementResult.Valid:
                         {
-                            if (from.AccessLevel > AccessLevel.Player || BaseHouse.CheckAccountHouseLimit(from))
+                            if (from.AccessLevel > AccessLevel.VIP || BaseHouse.CheckAccountHouseLimit(from))
                             {
                                 BaseHouse house = this.GetHouse(from);
                                 house.MoveToWorld(center, from.Map);

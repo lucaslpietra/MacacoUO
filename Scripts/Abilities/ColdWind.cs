@@ -45,10 +45,10 @@ namespace Server.Items
             if (timer != null)
             {
                 timer.DoExpire();
-                defender.SendLocalizedMessage(1070831); // The freezing wind continues to blow!
+                defender.SendLocalizedMessage("O vento gelante continua soprando"); // The freezing wind continues to blow!
             }
             else
-                defender.SendLocalizedMessage(1070832); // An icy wind surrounds you, freezing your lungs as you breathe!
+                defender.SendLocalizedMessage("Um vento gelante congelando seus pulmoes enquanto voce respira"); // An icy wind surrounds you, freezing your lungs as you breathe!
 
             timer = new ExpireTimer(defender, attacker);
             timer.Start();
@@ -95,7 +95,7 @@ namespace Server.Items
                 if (++m_Count >= 5)
                 {
                     DoExpire();
-                    m_Mobile.SendLocalizedMessage(1070830); // The icy wind dissipates.
+                    m_Mobile.SendLocalizedMessage("O vento gelante se dissipa"); // The icy wind dissipates.
                 }
             }
         }

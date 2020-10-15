@@ -10,19 +10,19 @@ namespace Server.Multis
         {
             m_Stages = new Dictionary<DecayLevel, DecayStageInfo>();
 
-            Register(DecayLevel.LikeNew, TimeSpan.FromHours(1), TimeSpan.FromHours(1));
-            Register(DecayLevel.Slightly, TimeSpan.FromDays(1), TimeSpan.FromDays(2));
-            Register(DecayLevel.Somewhat, TimeSpan.FromDays(1), TimeSpan.FromDays(2));
-            Register(DecayLevel.Fairly, TimeSpan.FromDays(1), TimeSpan.FromDays(2));
-            Register(DecayLevel.Greatly, TimeSpan.FromDays(1), TimeSpan.FromDays(2));
-            Register(DecayLevel.IDOC, TimeSpan.FromHours(12), TimeSpan.FromHours(24));
+            Register(DecayLevel.LikeNew, TimeSpan.FromHours(24), TimeSpan.FromHours(24));
+            Register(DecayLevel.Slightly, TimeSpan.FromDays(2), TimeSpan.FromDays(2));
+            Register(DecayLevel.Somewhat, TimeSpan.FromDays(2), TimeSpan.FromDays(2));
+            Register(DecayLevel.Fairly, TimeSpan.FromDays(2), TimeSpan.FromDays(2));
+            Register(DecayLevel.Greatly, TimeSpan.FromDays(2), TimeSpan.FromDays(2));
+            Register(DecayLevel.IDOC, TimeSpan.FromHours(2), TimeSpan.FromHours(32));
         }
 
         public static bool Enabled
         {
             get
             {
-                return Core.ML;
+                return false;
             }
         }
         public static void Register(DecayLevel level, TimeSpan min, TimeSpan max)

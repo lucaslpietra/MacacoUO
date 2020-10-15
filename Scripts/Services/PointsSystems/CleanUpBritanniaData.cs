@@ -1,14 +1,11 @@
 using System;
-using System.Collections.Generic;
-
 using Server;
+using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
 using Server.Engines.Quests.Doom;
 using Server.Accounting;
-using Server.Engines.Craft;
-using Server.SkillHandlers;
 
 namespace Server.Engines.Points
 {
@@ -37,10 +34,10 @@ namespace Server.Engines.Points
 
         public static double GetPoints(Item item)
         {
-            if (item is IVvVItem && ((IVvVItem)item).IsVvVItem)
-                return 0;
-
             double points = 0;
+
+            if (item is IVvVItem && ((IVvVItem)item).IsVvVItem)
+                return points;
 
             Type type = item.GetType();
 
@@ -63,32 +60,33 @@ namespace Server.Engines.Points
                 {
                     RunicHammer hammer = (RunicHammer)item;
 
-                    if (hammer.Resource == CraftResource.DullCopper)
-                        points = 5 * hammer.UsesRemaining;
-                    else if (hammer.Resource == CraftResource.ShadowIron)
-                        points = 10 * hammer.UsesRemaining;
-                    else if (hammer.Resource == CraftResource.Copper)
+                 
+                    if (hammer.Resource == CraftResource.Cobre)
                         points = 25 * hammer.UsesRemaining;
                     else if (hammer.Resource == CraftResource.Bronze)
                         points = 100 * hammer.UsesRemaining;
-                    else if (hammer.Resource == CraftResource.Gold)
+                    else if (hammer.Resource == CraftResource.Dourado)
                         points = 250 * hammer.UsesRemaining;
-                    else if (hammer.Resource == CraftResource.Agapite)
+                    else if (hammer.Resource == CraftResource.Niobio)
                         points = 1000 * hammer.UsesRemaining;
-                    else if (hammer.Resource == CraftResource.Verite)
+                    else if (hammer.Resource == CraftResource.Lazurita)
+                        points = 2000 * hammer.UsesRemaining;
+                    else if (hammer.Resource == CraftResource.Quartzo)
+                        points = 3000 * hammer.UsesRemaining;
+                    if (hammer.Resource == CraftResource.Berilo)
                         points = 4000 * hammer.UsesRemaining;
-                    else if (hammer.Resource == CraftResource.Valorite)
+                    else if (hammer.Resource == CraftResource.Vibranium)
                         points = 8000 * hammer.UsesRemaining;
                 }
                 else if (item is RunicSewingKit)
                 {
                     RunicSewingKit sewing = (RunicSewingKit)item;
 
-                    if (sewing.Resource == CraftResource.SpinedLeather)
+                    if (sewing.Resource == CraftResource.CouroSpinned)
                         points = 10 * sewing.UsesRemaining;
-                    else if (sewing.Resource == CraftResource.HornedLeather)
+                    else if (sewing.Resource == CraftResource.CouroHorned)
                         points = 100 * sewing.UsesRemaining;
-                    else if (sewing.Resource == CraftResource.BarbedLeather)
+                    else if (sewing.Resource == CraftResource.CouroBarbed)
                         points = 400 * sewing.UsesRemaining;
                 }
                 else if (item is PowerScroll)
@@ -149,10 +147,6 @@ namespace Server.Engines.Points
                     BasePigmentsOfTokuno pigments = (BasePigmentsOfTokuno)item;
                     points = 500 * pigments.UsesRemaining;
                 }
-                else if (item is ICombatEquipment)
-                {
-                    points = GetPointsForEquipment(item);
-                }
 
                 if (item.LootType != LootType.Blessed && points < 100 && item is IShipwreckedItem && ((IShipwreckedItem)item).IsShipwreckedItem)
                 {
@@ -193,14 +187,14 @@ namespace Server.Engines.Points
 
             //Mining
             Entries[typeof(IronIngot)] = 0.10;
-            Entries[typeof(DullCopperIngot)] = 0.50;
-            Entries[typeof(ShadowIronIngot)] = 0.75;
+            Entries[typeof(BeriloIngot)] = 0.50;
+            Entries[typeof(VibraniumIngot)] = 0.75;
             Entries[typeof(CopperIngot)] = 1.0;
             Entries[typeof(BronzeIngot)] = 1.50;
-            Entries[typeof(GoldIngot)] = 2.50;
-            Entries[typeof(AgapiteIngot)] = 5.0;
-            Entries[typeof(VeriteIngot)] = 8.50;
-            Entries[typeof(ValoriteIngot)] = 10.0;
+            Entries[typeof(SilverIngot)] = 2.50;
+            Entries[typeof(NiobioIngot)] = 5.0;
+            Entries[typeof(LazuritaIngot)] = 8.50;
+            Entries[typeof(QuartzoIngot)] = 10.0;
             Entries[typeof(Amber)] = 0.30;
             Entries[typeof(Citrine)] = 0.30;
             Entries[typeof(Ruby)] = 0.30;
@@ -728,84 +722,6 @@ namespace Server.Engines.Points
 
             //Treasure Hunting
             Entries[typeof(Lockpick)] = 0.10;
-        }
-
-        public static int GetPointsForEquipment(Item item)
-        {
-            if (item is IEpiphanyArmor)
-            {
-                return 1000;
-            }
-
-            foreach (CraftSystem system in CraftSystem.Systems)
-            {
-                CraftItem crItem = null;
-
-                if (system != null && system.CraftItems != null)
-                {
-                    var type = item.GetType();
-
-                    if (type == typeof(SilverRing))
-                    {
-                        type = typeof(GoldRing);
-                    }
-                    else if (type == typeof(SilverBracelet))
-                    {
-                        type = typeof(GoldBracelet);
-                    }
-
-                    crItem = system.CraftItems.SearchFor(type);
-
-                    if (crItem != null && crItem.Resources != null)
-                    {
-                        CraftRes craftRes = crItem.Resources.GetAt(0);
-                        double amount = 1;
-
-                        if (craftRes != null)
-                        {
-                            amount = craftRes.Amount;
-                        }
-
-                        double award = 1;
-
-                        if (item is IResource)
-                        {
-                            switch (((IResource)item).Resource)
-                            {
-                                default: award = amount * .1; break;
-                                case CraftResource.DullCopper: award = amount * .47; break;
-                                case CraftResource.ShadowIron: award = amount * .73; break;
-                                case CraftResource.Copper: award = amount * 1.0; break;
-                                case CraftResource.Bronze: award = amount * 1.47; break;
-                                case CraftResource.Gold: award = amount * 2.5; break;
-                                case CraftResource.Agapite: award = amount * 5.0; break;
-                                case CraftResource.Verite: award = amount * 8.5; break;
-                                case CraftResource.Valorite: award = amount * 10; break;
-                                case CraftResource.SpinedLeather: award = amount * 0.5; break;
-                                case CraftResource.HornedLeather: award = amount * 1.0; break;
-                                case CraftResource.BarbedLeather: award = amount * 2.0; break;
-                                case CraftResource.OakWood: award = amount * .17; break;
-                                case CraftResource.AshWood: award = amount * .33; break;
-                                case CraftResource.YewWood: award = amount * .67; break;
-                                case CraftResource.Heartwood: award = amount * 1.0; break;
-                                case CraftResource.Bloodwood: award = amount * 2.17; break;
-                                case CraftResource.Frostwood: award = amount * 3.17; break;
-                            }
-                        }
-
-                        var weight = Imbuing.GetTotalWeight(item, -1, false, true);
-
-                        if (weight > 0)
-                        {
-                            award += weight / 30;
-                        }
-
-                        return (int)award;
-                    }
-                }
-            }
-
-            return 0;
         }
 
         #region Points Exchange

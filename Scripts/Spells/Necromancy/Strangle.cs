@@ -7,6 +7,13 @@ namespace Server.Spells.Necromancy
 {
     public class StrangleSpell : NecromancerSpell
     {
+        public static int ScaleStamina(Mobile m, int stamina)
+        {
+            if (UnderEffects(m))
+                return (int)(stamina * 1.5);
+            return stamina;
+        }
+
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Strangle", "In Bal Nox",
             209,
@@ -23,7 +30,7 @@ namespace Server.Spells.Necromancy
         {
             get
             {
-                return TimeSpan.FromSeconds(2.25);
+                return TimeSpan.FromSeconds(2.0);
             }
         }
         public override double RequiredSkill
@@ -105,6 +112,12 @@ namespace Server.Spells.Necromancy
             m.FixedParticles(0x36CB, 1, 9, 9911, 67, 5, EffectLayer.Head);
             m.FixedParticles(0x374A, 1, 17, 9502, 1108, 4, (EffectLayer)255);
 
+            if (CheckResisted(m, 7))
+            {
+                m.SendMessage("Voce sente seu corpo resistindo a magia");
+                return;
+            }
+
             if (Server.Spells.Mysticism.StoneFormSpell.CheckImmunity(m))
             {
                 Caster.SendLocalizedMessage(1095250); // Your target resists strangle.
@@ -113,6 +126,7 @@ namespace Server.Spells.Necromancy
             {
                 Timer t = new InternalTimer(m, Caster, strength);
                 t.Start();
+
 
                 m_Table[m] = t;
 

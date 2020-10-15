@@ -14,6 +14,7 @@ namespace Server.Items
         public FireHorn()
             : base(0xFC7)
         {
+            Name = "Chifre de Fogo";
             this.Hue = 0x466;
             this.Weight = 1.0;
         }
@@ -21,6 +22,12 @@ namespace Server.Items
         public FireHorn(Serial serial)
             : base(serial)
         {
+        }
+
+        public override void AddNameProperties(ObjectPropertyList list)
+        {
+            base.AddNameProperties(list);
+            list.Add("Bardos podem usar isto para causar dano");
         }
 
         public override int LabelNumber
@@ -117,7 +124,7 @@ namespace Server.Items
                 {
                     double toDeal = damage;
 
-                    if (!Core.AOS && m.CheckSkill(SkillName.MagicResist, 0.0, 120.0))
+                    if (!Core.AOS && m.CheckSkillMult(SkillName.MagicResist, 0.0, 120.0))
                     {
                         toDeal *= 0.5;
                         m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.

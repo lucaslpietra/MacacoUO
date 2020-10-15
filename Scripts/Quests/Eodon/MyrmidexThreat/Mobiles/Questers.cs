@@ -38,7 +38,7 @@ namespace Server.Mobiles
 
         public override void OnOfferFailed()
         {
-            Say(1080107); // I'm sorry, I have nothing for you at this time.
+            Say("Nao tenho nada a voce agora"); // I'm sorry, I have nothing for you at this time.
         }
 
 		public Yar(Serial serial) : base(serial)
@@ -297,7 +297,7 @@ namespace Server.Mobiles
 
         public override void OnOfferFailed()
         {
-            Say(1080107); // I'm sorry, I have nothing for you at this time.
+            Say("Nao tenho nada a voce agora"); // I'm sorry, I have nothing for you at this time.
         }
 
 		public override void InitBody()

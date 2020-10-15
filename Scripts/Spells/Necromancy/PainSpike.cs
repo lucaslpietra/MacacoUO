@@ -14,7 +14,8 @@ namespace Server.Spells.Necromancy
             203,
             9031,
             Reagent.GraveDust,
-            Reagent.PigIron);
+            Reagent.PigIron
+        );
 
         private static readonly Dictionary<Mobile, InternalTimer> m_Table = new Dictionary<Mobile, InternalTimer>();
 
@@ -27,7 +28,7 @@ namespace Server.Spells.Necromancy
         {
             get
             {
-                return TimeSpan.FromSeconds(1.25);
+                return TimeSpan.FromSeconds(1.0);
             }
         }
         public override double RequiredSkill
@@ -71,19 +72,28 @@ namespace Server.Spells.Necromancy
 
         public void ApplyEffects(Mobile m, double strength = 1.0)
         {
-            //SpellHelper.CheckReflect( (int)Circle, Caster, ref m ); //Irrelevent asfter AoS
+            SpellHelper.CheckReflect( (int)3, Caster, ref m ); //Irrelevent asfter AoS
 
             /* Temporarily causes intense physical pain to the target, dealing direct damage.
              * After 10 seconds the spell wears off, and if the target is still alive, 
              * some of the Hit Points lost through Pain Spike are restored.
              */
 
+            Caster.MovingParticles(m, 0x37C4, 7, 0, false, false, 9915, 9916, 0x160);
             m.FixedParticles(0x37C4, 1, 8, 9916, 39, 3, EffectLayer.Head);
             m.FixedParticles(0x37C4, 1, 8, 9502, 39, 4, EffectLayer.Head);
             m.PlaySound(0x210);
 
             double damage = (((GetDamageSkill(Caster) - GetResistSkill(m)) / 10) + (m.Player ? 18 : 30)) * strength;
-            m.CheckSkill(SkillName.MagicResist, 0.0, 120.0);	//Skill check for gain
+            damage *= GetDamageScalar(m);
+
+            m.CheckSkillMult(SkillName.MagicResist, 0.0, 120.0);    //Skill check for gain
+
+            if (CheckResisted(m, 5))
+            {
+                m.SendMessage("Voce sente seu corpo resistindo a magia");
+                damage *= 0.7;
+            }
 
             if (damage < 1)
                 damage = 1;

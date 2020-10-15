@@ -9,7 +9,8 @@ namespace Server.Items
         public StuddedGloves()
             : base(0x13D5)
         {
-            Weight = 1.0;
+            this.Weight = 1.0;
+            this.Name = "Luvas de Couro Reforçado";
         }
 
         public StuddedGloves(Serial serial)
@@ -118,6 +119,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (this.Weight == 2.0)
+                this.Weight = 1.0;
         }
     }
 }

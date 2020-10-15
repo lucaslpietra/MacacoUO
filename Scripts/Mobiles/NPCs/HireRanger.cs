@@ -23,7 +23,9 @@ namespace Server.Mobiles
                 AddItem(new ShortPants(Utility.RandomNeutralHue()));
             }
 
-            Title = "the ranger";
+            this.Title = "o ranger ";
+            if (Female)
+                this.Title = "a ranger ";
             HairItemID = Race.RandomHair(Female);
             HairHue = Race.RandomHairHue();
             Race.RandomFacialHair(this);

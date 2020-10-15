@@ -17,7 +17,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public Weaponsmith()
-            : base("the weaponsmith")
+            : base("o ferreiro de armas")
         {
             this.SetSkill(SkillName.ArmsLore, 64.0, 100.0);
             this.SetSkill(SkillName.Blacksmith, 65.0, 88.0);
@@ -102,8 +102,8 @@ namespace Server.Mobiles
 
         public override void OnSuccessfulBulkOrderReceive(Mobile from)
         {
-            if (Core.SE && from is PlayerMobile)
-                ((PlayerMobile)from).NextSmithBulkOrder = TimeSpan.Zero;
+            //if (Core.SE && from is PlayerMobile)
+            //    ((PlayerMobile)from).NextSmithBulkOrder = TimeSpan.Zero;
         }
 
         #endregion

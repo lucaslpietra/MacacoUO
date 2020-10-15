@@ -18,22 +18,22 @@ namespace Server.Guilds
 
             this.AddBackground(0, 0, 500, 340, 0x24AE);
             this.AddBackground(65, 50, 370, 30, 0x2486);
-            this.AddHtmlLocalized(75, 55, 370, 26, 1062979, 0x3C00, false, false); // <div align=center><i>Declaration of War</i></div>
+            this.AddHtml(75, 55, 370, 26, "<div align=center><i>Declarar Guerra</i></div>", 0x3C00, false, false); // <div align=center><i>Declaration of War</i></div>
             this.AddImage(410, 45, 0x232C);
-            this.AddHtmlLocalized(65, 95, 200, 20, 1063009, 0x14AF, false, false); // <i>Duration of War</i>
-            this.AddHtmlLocalized(65, 120, 400, 20, 1063010, 0x0, false, false); // Enter the number of hours the war will last.
+            this.AddHtml(65, 95, 200, 20, "Duracao", 0x14AF, false, false); // <i>Duration of War</i>
+            this.AddHtml(65, 120, 400, 20, "Digite a duracao em horas da guerra",  false, false); // Enter the number of hours the war will last.
             this.AddBackground(65, 150, 40, 30, 0x2486);
             this.AddTextEntry(70, 154, 50, 30, 0x481, 10, (war != null) ? war.WarLength.Hours.ToString() : "0");
-            this.AddHtmlLocalized(65, 195, 200, 20, 1063011, 0x14AF, false, false); // <i>Victory Condition</i>
-            this.AddHtmlLocalized(65, 220, 400, 20, 1063012, 0x0, false, false); // Enter the winning number of kills.
+            this.AddHtml(65, 195, 200, 20, "Condicoes de Vitoria", 0x14AF, false, false); // <i>Victory Condition</i>
+            this.AddHtml(65, 220, 400, 20, "Digite a quantidade de kills",  false, false); // Enter the winning number of kills.
             this.AddBackground(65, 250, 40, 30, 0x2486);
             this.AddTextEntry(70, 254, 50, 30, 0x481, 11, (war != null) ? war.MaxKills.ToString() : "0");
             this.AddBackground(190, 270, 130, 26, 0x2486);
             this.AddButton(195, 275, 0x845, 0x846, 0, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(220, 273, 90, 26, 1006045, 0x0, false, false); // Cancel
+            this.AddHtml(220, 273, 90, 26, "Cancelar",  false, false); // Cancel
             this.AddBackground(330, 270, 130, 26, 0x2486);
             this.AddButton(335, 275, 0x845, 0x846, 1, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(360, 273, 90, 26, 1062989, 0x5000, false, false); // Declare War!
+            this.AddHtml(360, 273, 90, 26, "Declarar guerra", 0x5000, false, false); // Declare War!
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
@@ -54,17 +54,17 @@ namespace Server.Guilds
 
                         if (!playerRank.GetFlag(RankFlags.ControlWarStatus))
                         {
-                            pm.SendLocalizedMessage(1063440); // You don't have permission to negotiate wars.
+                            pm.SendMessage("Sem permissao"); // You don't have permission to negotiate wars.
                         }
                         else if (alliance != null && alliance.Leader != this.guild)
                         {
-                            pm.SendLocalizedMessage(1063239, String.Format("{0}\t{1}", this.guild.Name, alliance.Name)); // ~1_val~ is not the leader of the ~2_val~ alliance.
-                            pm.SendLocalizedMessage(1070707, alliance.Leader.Name); // You need to negotiate via ~1_val~ instead.
+                            pm.SendMessage(String.Format("{0} nao eh o lider de \t{1}", this.guild.Name, alliance.Name)); // ~1_val~ is not the leader of the ~2_val~ alliance.
+                            pm.SendMessage("Negocie com "+alliance.Leader.Name); // You need to negotiate via ~1_val~ instead.
                         }
                         else if (otherAlliance != null && otherAlliance.Leader != this.m_Other)
                         {
-                            pm.SendLocalizedMessage(1063239, String.Format("{0}\t{1}", this.m_Other.Name, otherAlliance.Name)); // ~1_val~ is not the leader of the ~2_val~ alliance.
-                            pm.SendLocalizedMessage(1070707, otherAlliance.Leader.Name); // You need to negotiate via ~1_val~ instead.
+                            pm.SendMessage(String.Format("{0} nao eh o lider de \t{1}", this.m_Other.Name, otherAlliance.Name)); // ~1_val~ is not the leader of the ~2_val~ alliance.
+                            pm.SendMessage("Negocie com "+otherAlliance.Leader.Name); // You need to negotiate via ~1_val~ instead.
                         }
                         else
                         {
@@ -106,13 +106,13 @@ namespace Server.Guilds
 
                                 if (war != null)
                                 {
-                                    pm.SendLocalizedMessage(1070752); // The proposal has been updated.
+                                    pm.SendMessage("Atualizado"); // The proposal has been updated.
                                     //m_Other.GuildMessage( 1070782 ); // ~1_val~ has responded to your proposal.
                                 }
                                 else
-                                    this.m_Other.GuildMessage(1070781, ((this.guild.Alliance != null) ? this.guild.Alliance.Name : this.guild.Name)); // ~1_val~ has proposed a war.
+                                    this.m_Other.GuildTextMessage(((this.guild.Alliance != null) ? this.guild.Alliance.Name : this.guild.Name) +" propos uma GUERRA !!!!"); // ~1_val~ has proposed a war.
 
-                                pm.SendLocalizedMessage(1070751, ((this.m_Other.Alliance != null) ? this.m_Other.Alliance.Name : this.m_Other.Name)); // War proposal has been sent to ~1_val~.
+                                pm.SendMessage("Proposta de guerra enviada a "+((this.m_Other.Alliance != null) ? this.m_Other.Alliance.Name : this.m_Other.Name)); // War proposal has been sent to ~1_val~.
                             }
                         }
                         break;

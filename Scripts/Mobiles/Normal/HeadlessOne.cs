@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public HeadlessOne()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a headless one";
+            this.Name = "monstro sem cabeca";
             this.Body = 31;
             this.Hue = Utility.RandomSkinHue() & 0x7FFF;
             this.BaseSoundID = 0x39D;

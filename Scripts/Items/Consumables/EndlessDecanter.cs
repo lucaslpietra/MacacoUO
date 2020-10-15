@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 using Server.ContextMenus;
@@ -103,12 +103,12 @@ namespace Server.Items
         {
             base.AddNameProperties(list);
 
-            list.Add(1115889);  // Auto Water Refill
+            list.Add("Auto Refill");  // Auto Water Refill
 
             if (m_Linked)
-                list.Add(1115893);  // Linked
+                list.Add("Linkado");  // Linked
             else
-                list.Add(1115894);  // Unlinked
+                list.Add("Deslinkado");  // Unlinked
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)

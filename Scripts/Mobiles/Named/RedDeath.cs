@@ -48,7 +48,6 @@ namespace Server.Mobiles
             }
 
             SetWeaponAbility(WeaponAbility.WhirlwindAttack);
-            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public RedDeath(Serial serial)
@@ -68,6 +67,27 @@ namespace Server.Mobiles
             get
             {
                 return true;
+            }
+        }
+        public override bool HasBreath
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public override int BreathChaosDamage
+        {
+            get
+            {
+                return 100;
+            }
+        }
+        public override int BreathFireDamage
+        {
+            get
+            {
+                return 0;
             }
         }
         public override void GenerateLoot()

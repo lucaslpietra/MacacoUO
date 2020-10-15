@@ -9,11 +9,11 @@ namespace Server.Mobiles
         public LysanderGathenwale()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Title = "the Cursed";
+            this.Title = "o amaldicoado";
 
             this.Hue = 0x8838;
             this.Body = 0x190;
-            this.Name = "Lysander Gathenwale";
+            this.Name = "Manete Nebroso";
 
             this.AddItem(new Boots(0x599));
             this.AddItem(new Cloak(0x96F));

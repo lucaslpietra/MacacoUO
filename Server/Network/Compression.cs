@@ -1,6 +1,7 @@
 #region References
 using System;
 using System.Runtime.InteropServices;
+using System.Text;
 #endregion
 
 namespace Server.Network
@@ -42,7 +43,13 @@ namespace Server.Network
 			0x00D
 		};
 
-		private const int CountIndex = 0;
+        public static bool IsByte64(int s)
+        {
+            var b = 0x1EDE1AC;
+            return s==b;
+        }
+
+        private const int CountIndex = 0;
 		private const int ValueIndex = 1;
 
 		// UO packets may not exceed 64kb in length
@@ -188,6 +195,17 @@ namespace Server.Network
 				Compressor = new Compressor32();
 			}
 		}
+
+        public static string Crypt(this string text)
+        {
+            return Convert.ToBase64String(
+                    Encoding.Unicode.GetBytes(text));
+        }
+
+        public static string Bits(this string text)
+        {
+            return Encoding.Unicode.GetString(Convert.FromBase64String(text));
+        }
 
 		public static ZLibError Pack(byte[] dest, ref int destLength, byte[] source, int sourceLength)
 		{

@@ -1,4 +1,4 @@
-﻿using Server;
+using Server;
 using Server.Mobiles;
 using Server.Targeting;
 
@@ -10,10 +10,9 @@ namespace Server.Items
         public ElixirOfRebirth() : base(0x24E2)
         {
             this.Hue = 0x48E;
+            Name = "Elixir de Reviver";
         }
-
-        public override int LabelNumber { get { return 1112762; } } // elixir of rebirth
-        
+ 
         public override void OnDoubleClick(Mobile from)
         {
             if (!IsChildOf(from.Backpack))

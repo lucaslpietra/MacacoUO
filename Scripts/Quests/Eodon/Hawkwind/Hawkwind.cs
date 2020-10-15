@@ -38,7 +38,7 @@ namespace Server.Engines.Quests.TimeLord
 
         public override bool CanPaperdollBeOpenedBy(Mobile from)
         {
-            return from.AccessLevel > AccessLevel.Player;
+            return from.AccessLevel > AccessLevel.VIP;
         }
 
         public override void InitOutfit()

@@ -90,7 +90,7 @@ namespace Server.Items
             if (m is BaseCreature && ((BaseCreature)m).IsMonster)
                 return true;
 
-            if (m.AccessLevel == AccessLevel.Player && m.Alive)
+            if (m.AccessLevel <= AccessLevel.VIP && m.Alive)
             {
                 BeginWebbing(m);
                 m.PlaySound(0x204);

@@ -5,12 +5,16 @@ namespace Server.Mobiles
 { 
     [CorpseName("an evil mage lord corpse")] 
     public class EvilMageLord : BaseCreature 
-    { 
+    {
+
+        public override double DisturbChance { get { return 1; } }
+        public override bool IsSmart { get { return true; } }
+
         [Constructable] 
         public EvilMageLord()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         { 
-            Name = NameList.RandomName("evil mage lord");
+            Name = NameList.RandomName("evil mage");
             Body = Utility.RandomList(125, 126);
 
             PackItem(new Robe(Utility.RandomMetalHue())); 
@@ -20,7 +24,7 @@ namespace Server.Mobiles
             SetDex(191, 215);
             SetInt(126, 150);
 
-            SetHits(49, 63);
+            SetHits(200, 300);
 
             SetDamage(5, 10);
 
@@ -43,7 +47,7 @@ namespace Server.Mobiles
             Karma = -10500;
 
             VirtualArmor = 16;
-			switch (Utility.Random(16))
+			switch (Utility.Random(26))
             {
                 case 0: PackItem(new BloodOathScroll()); break;
                 case 1: PackItem(new CurseWeaponScroll()); break;

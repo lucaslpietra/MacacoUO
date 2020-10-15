@@ -10,6 +10,7 @@ namespace Server.Items
             : base(0x26C3)
         {
             this.Weight = 6.0;
+            Name = "Besta Repetidora";
         }
 
         public RepeatingCrossbow(Serial serial)
@@ -91,35 +92,35 @@ namespace Server.Items
         {
             get
             {
-                return 30;
+                return 60;
             }
         }
         public override int OldMinDamage
         {
             get
             {
-                return 10;
+                return 3;
             }
         }
         public override int OldMaxDamage
         {
             get
             {
-                return 12;
+                return 5;
             }
         }
         public override int OldSpeed
         {
             get
             {
-                return 41;
+                return 50;
             }
         }
         public override int DefMaxRange
         {
             get
             {
-                return 7;
+                return 12;
             }
         }
         public override int InitMinHits

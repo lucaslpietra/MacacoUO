@@ -86,10 +86,10 @@ namespace Server.Items
                 Mobile parent = (Mobile)this.RootParent;
 				
                 if (this.Name == null)
-                    parent.SendLocalizedMessage(1072515, "#" + this.LabelNumber); // The ~1_name~ expired...
+                    parent.SendMessage(LabelNumber + " se desfez");
                 else
-                    parent.SendLocalizedMessage(1072515, this.Name); // The ~1_name~ expired...
-					
+                    parent.SendMessage(Name + " se desfez");
+
                 Effects.SendLocationParticles(EffectItem.Create(parent.Location, parent.Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
                 Effects.PlaySound(parent.Location, parent.Map, 0x201);
             }

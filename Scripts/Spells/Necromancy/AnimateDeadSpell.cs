@@ -21,7 +21,7 @@ namespace Server.Spells.Necromancy
         {
             get
             {
-                return TimeSpan.FromSeconds(1.75);
+                return TimeSpan.FromSeconds(1.5);
             }
         }
 
@@ -97,7 +97,7 @@ namespace Server.Spells.Necromancy
         private static readonly CreatureGroup[] m_Groups = new CreatureGroup[]
         {
             // Undead group--empty
-            new CreatureGroup(SlayerGroup.GetEntryByName(SlayerName.Silver).Types, new SummonEntry[0]),
+            new CreatureGroup(SlayerGroup.GetEntryByName(SlayerName.Undeads).Types, new SummonEntry[0]),
             // Insects
             new CreatureGroup(new Type[]
             {
@@ -148,22 +148,22 @@ namespace Server.Spells.Necromancy
             }, new SummonEntry[]
                {
                    new SummonEntry(18000, typeof(SkeletalDragon)),
-                   new SummonEntry(10000, typeof(FleshGolem)),
-                   new SummonEntry(5000, typeof(Lich)),
+                   new SummonEntry(10000, typeof(Lich)),
+                   new SummonEntry(70000, typeof(FleshGolem)),
+                   new SummonEntry(5000, typeof(SkeletalKnight), typeof(BoneKnight)),
                    new SummonEntry(3000, typeof(SkeletalKnight), typeof(BoneKnight)),
-                   new SummonEntry(2000, typeof(Mummy)),
-                   new SummonEntry(1000, typeof(SkeletalMage), typeof(BoneMagi)),
-                   new SummonEntry(0, typeof(PatchworkSkeleton))
+                   new SummonEntry(2000, typeof(SkeletalMage), typeof(BoneMagi)),
+                   new SummonEntry(0, typeof(Skeleton))
                }),
             // Default group
             new CreatureGroup(new Type[0], new SummonEntry[]
             {
                 new SummonEntry(18000, typeof(LichLord)),
-                new SummonEntry(10000, typeof(FleshGolem)),
-                new SummonEntry(5000, typeof(Lich)),
-                new SummonEntry(3000, typeof(SkeletalKnight), typeof(BoneKnight)),
-                new SummonEntry(2000, typeof(Mummy)),
-                new SummonEntry(1000, typeof(SkeletalMage), typeof(BoneMagi)),
+                new SummonEntry(10000, typeof(Lich)),
+                new SummonEntry(70000, typeof(FleshGolem)),
+                new SummonEntry(50000, typeof(BoneKnight)),
+                new SummonEntry(3000, typeof(SkeletalKnight)),
+                new SummonEntry(2000, typeof(SkeletalMage), typeof(BoneMagi)),
                 new SummonEntry(0, typeof(PatchworkSkeleton))
             }),
         };
@@ -295,7 +295,7 @@ namespace Server.Spells.Necromancy
             if (list.Count > 3)
                 Timer.DelayCall(TimeSpan.Zero, new TimerCallback(list[0].Kill));
 
-            Timer.DelayCall(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0), new TimerStateCallback(Summoned_Damage), summoned);
+            Timer.DelayCall(TimeSpan.FromSeconds(4.0), TimeSpan.FromSeconds(4.0), new TimerStateCallback(Summoned_Damage), summoned);
         }
 
         private static void Summoned_Damage(object state)
@@ -394,11 +394,11 @@ namespace Server.Spells.Necromancy
                 if (bc is BaseMount)
                     bc.ControlSlots = 1;
                 else
-                    bc.ControlSlots = 0;
+                    bc.ControlSlots = 1;
 
                 Effects.PlaySound(loc, map, bc.GetAngerSound());
-
-                BaseCreature.Summon((BaseCreature)summoned, false, caster, loc, 0x28, TimeSpan.FromDays(1.0));
+                summoned.OverheadMessage("* se levanta *");
+                BaseCreature.Summon((BaseCreature)summoned, true, caster, loc, 0x28, TimeSpan.FromDays(1.0));
             }
 
             if (summoned is SkeletalDragon)
@@ -411,6 +411,7 @@ namespace Server.Spells.Necromancy
 
             corpse.Hue = 1109;
             corpse.Animated = true;
+            corpse.Channeled = true;
 
             Register(caster, summoned);
 

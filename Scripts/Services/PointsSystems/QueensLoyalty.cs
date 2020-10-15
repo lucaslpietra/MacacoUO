@@ -21,25 +21,21 @@ namespace Server.Engines.Points
 		public override TextDefinition Name { get { return m_Name; } }
 		public override bool AutoAdd { get { return true; } }
 		public override double MaxPoints { get { return 15000; } }
+        public override bool ShowOnLoyaltyGump { get { return false; } }
 
-        private TextDefinition m_Name = new TextDefinition(1095163);
+        private TextDefinition m_Name = new TextDefinition("Lealdade a Rainha");
 
         public QueensLoyalty()
 		{
 			InitializeEntries();
 		}
 		
-		public override void ProcessKill(Mobile victim, Mobile damager)
+		public override void ProcessKill(BaseCreature victim, Mobile damager, int index)
 		{
-            var bc = victim as BaseCreature;
-
-			if(bc == null || bc.Map != Map.TerMur || damager.Map != Map.TerMur)
+			if(victim.Map != Map.TerMur || damager.Map != Map.TerMur)
 				return;
 				
-			Type type = bc.GetType();
-
-            if (!Entries.ContainsKey(type))
-                return;
+			Type type = victim.GetType();
 
             if (damager is BaseCreature && (((BaseCreature)damager).Controlled || ((BaseCreature)damager).Summoned))
                 damager = ((BaseCreature)damager).GetMaster();
@@ -47,13 +43,15 @@ namespace Server.Engines.Points
             if (damager == null)
                 return;
 
-			if(bc.GetHighestDamager() == damager)
+			if(index == 0)
 			{
-			    AwardPoints(damager, Entries[type].Item1, false);
+				if(Entries.ContainsKey(type))
+					AwardPoints(damager, Entries[type].Item1, false);
 			}
 			else
 			{
-				AwardPoints(damager, Entries[type].Item2, false);
+				if(Entries.ContainsKey(type))
+					AwardPoints(damager, Entries[type].Item2, false);
 			}
 		}
 		
@@ -101,10 +99,10 @@ namespace Server.Engines.Points
 			switch(GetLoyalty(from))
 			{
 				default:
-                case QueensLoyaltyRating.Friend: return new TextDefinition(1095166);
-                case QueensLoyaltyRating.Noble: return new TextDefinition(1095167);
-                case QueensLoyaltyRating.Enemy: return new TextDefinition(1095164);
-                case QueensLoyaltyRating.Citizen: return new TextDefinition(1095165);
+                case QueensLoyaltyRating.Friend: return new TextDefinition("Amigo");
+                case QueensLoyaltyRating.Noble: return new TextDefinition("Nobre");
+                case QueensLoyaltyRating.Enemy: return new TextDefinition("Inimigo");
+                case QueensLoyaltyRating.Citizen: return new TextDefinition("Cidadao");
 			}
 		}
 		

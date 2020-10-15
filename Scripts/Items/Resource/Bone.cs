@@ -8,6 +8,7 @@ namespace Server.Items
         public Bone()
             : this(1)
         {
+           
         }
 
         [Constructable]
@@ -38,6 +39,12 @@ namespace Server.Items
                 return true;
             }
         }
+
+        public override void OnDoubleClick(Mobile m)
+        {
+            m.SendMessage("Talvez um alfaiate consiga combinar isto com couro para criar armaduras");
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

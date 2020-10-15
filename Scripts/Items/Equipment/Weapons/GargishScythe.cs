@@ -140,7 +140,11 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
+
+            if (Weight == 15.0)
+                Weight = 5.0;
         }
     }
 }

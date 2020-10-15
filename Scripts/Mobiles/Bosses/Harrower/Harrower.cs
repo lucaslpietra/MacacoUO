@@ -376,13 +376,13 @@ namespace Server.Mobiles
 		{
 			double random = Utility.RandomDouble();
 
-			if (0.1 >= random)
+			if (0.05 >= random)
 				return 25;
-			else if (0.25 >= random)
+			else if (0.15 >= random)
 				return 20;
-			else if (0.45 >= random)
+			else if (0.25 >= random)
 				return 15;
-			else if (0.70 >= random)
+			else if (0.4 >= random)
 				return 10;
 			return 5;
 		}

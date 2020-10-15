@@ -8,7 +8,7 @@ namespace Server.Items
         public LeatherNinjaMitts()
             : base(0x2792)
         {
-            Weight = 2.0;
+            this.Weight = 2.0;
         }
 
         public LeatherNinjaMitts(Serial serial)
@@ -83,7 +83,7 @@ namespace Server.Items
         {
             get
             {
-                return 3;
+                return 12;
             }
         }
         public override ArmorMaterialType MaterialType
@@ -129,6 +129,7 @@ namespace Server.Items
                         }
 
                         this.Weight = 2.0;
+                        this.ItemID = 0x2792;
 
                         break;
                     }

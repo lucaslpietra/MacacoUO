@@ -188,7 +188,7 @@ namespace Server.Engines.Craft
             {
                 var socket = origItem.GetSocket<SlayerSocket>();
 
-                if (socket.Slayer == SlayerName.Silver)
+                if (socket.Slayer == SlayerName.Undeads)
                 {
                     number = 1155681; // You cannot alter an item that has been treated with Tincture of Silver.
                 }
@@ -322,8 +322,6 @@ namespace Server.Engines.Craft
 
                 origItem.Delete();
 
-                EventSink.InvokeAlterItem(new AlterItemEventArgs(from, m_Tool is Item ? (Item)m_Tool : m_Contract, origItem, newitem));
-
                 number = 1094727; // You have altered the item.
             }
 
@@ -367,7 +365,7 @@ namespace Server.Engines.Craft
                 if ((armor.RequiredRace != null && armor.RequiredRace == Race.Gargoyle && !armor.IsArtifact))
                     return false;
 
-                if (armor is RingmailGlovesOfMining && armor.Resource > CraftResource.Iron)
+                if (armor is RingmailGlovesOfMining && armor.Resource > CraftResource.Ferro)
                     return false;
             }
 

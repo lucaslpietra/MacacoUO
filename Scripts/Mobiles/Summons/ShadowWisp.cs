@@ -1,3 +1,4 @@
+using Server.Services;
 using System;
 using System.Collections;
 
@@ -9,7 +10,7 @@ namespace Server.Mobiles
         private DateTime m_NextFlare;
         public ShadowWispFamiliar()
         {
-            this.Name = "a shadow wisp";
+            this.Name = "fada do mal";
             this.Body = 165;
             this.Hue = 0x901;
             this.BaseSoundID = 466;
@@ -106,7 +107,16 @@ namespace Server.Mobiles
                 if (friendly)
                 {
                     m.FixedEffect(0x37C4, 1, 12, 1109, 3); // At player
-                    m.Mana += 1 - (m.Karma / 1000);
+                    var mana = 1 - (m.Karma / 1000);
+                    m.Mana += mana;
+                    if(mana > 0)
+                    {
+                        DamageNumbers.ShowDamage(mana, m, m, 2124);
+                    } else if(m==caster)
+                    {
+                        m.SendMessage("Voce tem muito karma para sua fada do mal regenerar mana");
+                    }
+                    
                 }
             }
         }

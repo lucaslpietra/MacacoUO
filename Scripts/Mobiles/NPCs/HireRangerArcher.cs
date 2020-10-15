@@ -23,7 +23,9 @@ namespace Server.Mobiles
                 Name = NameList.RandomName("male");
             }
 
-            Title = "the ranger";
+            this.Title = "o arqueiro ";
+            if (Female)
+                this.Title = "a arqueira ";
             HairItemID = Race.RandomHair(Female);
             HairHue = Race.RandomHairHue();
             Race.RandomFacialHair(this);

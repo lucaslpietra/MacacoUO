@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server.Gumps;
 using Server.Mobiles;
 using System.Linq;
@@ -20,7 +20,7 @@ namespace Server.Engines.Points
             AddImage(20, 317, 8001);
             AddImage(20, 387, 8003);
 
-            AddHtmlLocalized(0, 8, 345, 20, 1152187, false, false); // <center>Loyalty Ratings</center>
+            AddHtml(0, 8, 345, 20, "<center>Pontos</center>", false, false); // <center>Loyalty Ratings</center>
 
             int y = 40;
 
@@ -33,6 +33,7 @@ namespace Server.Engines.Points
 
                 TextDefinition title = sys.GetTitle(pm);
 
+                /*
                 if (title != null)
                 {
                     if (title.Number > 0)
@@ -40,10 +41,11 @@ namespace Server.Engines.Points
                     else if (title.String != null)
                         AddHtml(68, y + 20, 100, 20, title.String, false, false);
                 }
+                */
 
-                AddHtmlLocalized(175, y + 20, 100, 20, 1095171, ((int)sys.GetPoints(pm)).ToString(), 0, false, false); // (~1_AMT~ points)
+                AddHtmlLocalized(175, y, 100, 20, 1095171, ((int)sys.GetPoints(pm)).ToString(), 0, false, false); // (~1_AMT~ points)
 
-                y += 45;
+                y += 25;
             }
 
             AddHtmlLocalized(50, 285, 150, 20, 1115129, pm.Fame.ToString(), 0, false, false); // Fame: ~1_AMT~
@@ -51,7 +53,7 @@ namespace Server.Engines.Points
 
             if (CityLoyaltySystem.Enabled && CityLoyaltySystem.Cities != null)
             {
-                AddHtmlLocalized(60, 395, 150, 20, 1152190, false, false);  // City Loyalty
+                AddHtml(60, 395, 150, 20, "Lealdade a Cidade:", false, false);  // City Loyalty
                 AddButton(40, 400, 2103, 2104, 1, GumpButtonType.Reply, 0);
             }
         }

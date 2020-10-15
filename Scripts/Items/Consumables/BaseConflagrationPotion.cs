@@ -185,7 +185,7 @@ namespace Server.Items
                     return;
 
                 // Add delay
-                if (from.AccessLevel == AccessLevel.Player)
+                if (from.AccessLevel <= AccessLevel.VIP)
                 {
                     BaseConflagrationPotion.AddDelay(from);
                 }
@@ -315,7 +315,10 @@ namespace Server.Items
                 {
                     m_From.DoHarmful(m);
 
-                    AOS.Damage(m, m_From, GetDamage(), 0, 100, 0, 0, 0);
+                    var dmg = GetDamage();
+                    if (m.Body.IsHuman)
+                        dmg /= 2;
+                    AOS.Damage(m, m_From, dmg, 0, 100, 0, 0, 0);
                     m.PlaySound(0x208);
                 }
 

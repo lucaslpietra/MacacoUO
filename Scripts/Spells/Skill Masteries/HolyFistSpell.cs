@@ -115,7 +115,7 @@ namespace Server.Spells.SkillMasteries
                         Server.Timer.DelayCall(TimeSpan.FromSeconds(skill / 60), () =>
                             {
                                 if (!TransformationSpellHelper.UnderTransformation(mob, typeof(AnimalForm)) &&
-                                    (Core.SA || !TransformationSpellHelper.UnderTransformation(mob, typeof(Server.Spells.Spellweaving.ReaperFormSpell))))
+                                    !TransformationSpellHelper.UnderTransformation(mob, typeof(Server.Spells.Spellweaving.ReaperFormSpell)))
                                     mob.SendSpeedControl(SpeedControlType.Disable);
                             });
                     }
@@ -144,7 +144,7 @@ namespace Server.Spells.SkillMasteries
 
         private bool IsUndead(BaseCreature bc)
         {
-            SlayerEntry entry = SlayerGroup.GetEntryByName(SlayerName.Silver);
+            SlayerEntry entry = SlayerGroup.GetEntryByName(SlayerName.Undeads);
 
             return entry != null && entry.Slays(bc);
         }

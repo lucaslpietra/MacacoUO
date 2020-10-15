@@ -36,7 +36,8 @@ namespace Server.Spells.Seventh
         {
             get
             {
-                return true;
+                //return true;
+                return false;
             }
         }
         public override void OnCast()
@@ -57,11 +58,19 @@ namespace Server.Spells.Seventh
                 if (p is Item)
                     p = ((Item)p).GetWorldLocation();
 
-                var targets = AcquireIndirectTargets(p, 2).ToList();
+                var targets = AcquireIndirectTargets(p, 8, true).ToList();
                 var count = Math.Max(1, targets.Count);
+
+                if(targets.Count ==0)
+                {
+                    Caster.PlaySound(0x029);
+                }
 
                 foreach (var dam in targets)
                 {
+                    if (!Caster.InLOS(dam))
+                        continue;
+
                     var id = dam;
                     var m = id as Mobile;
                     double damage;
@@ -73,12 +82,12 @@ namespace Server.Spells.Seventh
 
                     if (Core.AOS && count > 2)
                         damage = (damage * 2) / count;
-                    else if (!Core.AOS)
-                        damage /= count;
+                    else if (!Core.AOS && count > 2)
+                        damage /= (count/2);
 
                     if (!Core.AOS && m != null && CheckResisted(m))
                     {
-                        damage *= 0.5;
+                        damage *= 0.75;
 
                         m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                     }
@@ -92,7 +101,7 @@ namespace Server.Spells.Seventh
                     }
 
                     Effects.SendBoltEffect(id, true, 0, false);
-
+                    id.PlaySound(0x029);
                     Caster.DoHarmful(id);
                     SpellHelper.Damage(this, id, damage, 0, 0, 0, 0, 100);
                 }
@@ -107,7 +116,7 @@ namespace Server.Spells.Seventh
         {
             private readonly ChainLightningSpell m_Owner;
             public InternalTarget(ChainLightningSpell owner)
-                : base(Core.ML ? 10 : 12, true, TargetFlags.None)
+                : base(Spell.RANGE, true, TargetFlags.None)
             {
                 m_Owner = owner;
             }

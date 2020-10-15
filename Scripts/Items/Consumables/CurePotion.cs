@@ -21,7 +21,7 @@ namespace Server.Items
         };
         [Constructable]
         public CurePotion()
-            : base(PotionEffect.Cure)
+            : base(PotionEffect.Cura)
         {
         }
 

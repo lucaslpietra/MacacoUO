@@ -9,6 +9,7 @@
 /Scripts/obj
 /Scripts/Output
 /Scripts/Custom
+/Scripts/Rage/Testes
 
 /Honesty
 /Logs
@@ -20,6 +21,9 @@
 /VitaNexCore
 /TheBox
 /.vs
+/.vscode
+/Testes
+/TestesConsole
 
 /staffHistory.xml
 /reportHistory.xml

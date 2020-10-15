@@ -9,7 +9,7 @@ namespace Server.Mobiles
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         [Constructable]
         public Carpenter()
-            : base("the carpenter")
+            : base("o carpinteiro")
         {
             this.SetSkill(SkillName.Carpentry, 85.0, 100.0);
             this.SetSkill(SkillName.Lumberjacking, 60.0, 83.0);
@@ -66,8 +66,8 @@ namespace Server.Mobiles
 
         public override void OnSuccessfulBulkOrderReceive(Mobile from)
         {
-            if (from is PlayerMobile)
-                ((PlayerMobile)from).NextCarpentryBulkOrder = TimeSpan.Zero;
+            //if (from is PlayerMobile)
+            //    ((PlayerMobile)from).NextCarpentryBulkOrder = TimeSpan.Zero;
         }
 
         #endregion

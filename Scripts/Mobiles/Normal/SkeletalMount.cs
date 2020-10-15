@@ -7,7 +7,7 @@ namespace Server.Mobiles
     {
         [Constructable] 
         public SkeletalMount()
-            : this("a skeletal steed")
+            : this("cavalo morto-vivo")
         {
         }
 

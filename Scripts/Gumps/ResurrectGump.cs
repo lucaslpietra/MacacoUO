@@ -14,7 +14,6 @@ namespace Server.Gumps
         Healer = 2,
         Generic = 3,
         SilverSapling = 102034,
-        GemOfSalvation = 84106,
     }
 
     public class ResurrectGump : Gump
@@ -65,6 +64,7 @@ namespace Server.Gumps
         public ResurrectGump(Mobile owner, Mobile healer, ResurrectMessage msg, bool fromSacrifice, double hitsScalar, Action<Mobile> callback)
             : base(100, 0)
         {
+
             m_Healer = healer;
             m_FromSacrifice = fromSacrifice;
             m_HitsScalar = hitsScalar;
@@ -75,9 +75,9 @@ namespace Server.Gumps
 
             AddBackground(0, 0, 400, 350, 2600);
 
-            AddHtmlLocalized(0, 20, 400, 35, 1011022, false, false); // <center>Resurrection</center>
+            AddHtml(0, 20, 400, 35, "<center>Voltar a Vida</center>", false, false); // <center>Resurrection</center>
 
-            AddHtmlLocalized(50, 55, 300, 140, 1011023 + (int)msg, true, true); /* It is possible for you to be resurrected here by this healer. Do you wish to try?<br>
+            AddHtmlLocalized(50, 55, 300, 140, @"Voce pode ressusitar aqui, gostaria ?<br>* CONTINUE - Voltar a vida.< br >*CANCEL - Prefere continuar como fantasma por hora.", true, true); /* It is possible for you to be resurrected here by this healer. Do you wish to try?<br>
             * CONTINUE - You chose to try to come back to life now.<br>
             * CANCEL - You prefer to remain a ghost for now.
             */
@@ -256,6 +256,7 @@ namespace Server.Gumps
                     Misc.Titles.AwardFame(from, -amount, true);
                 }
 
+                /*
                 if (!Core.AOS && from.ShortTermMurders >= 5)
                 {
                     double loss = (100.0 - (4.0 + (from.ShortTermMurders / 5.0))) / 100.0; // 5 to 15% loss
@@ -278,9 +279,10 @@ namespace Server.Gumps
                             from.Skills[s].Base *= loss;
                     }
                 }
+                */
 
                 if (from.Alive && m_HitsScalar > 0)
-                    from.Hits = (int)(from.HitsMax * m_HitsScalar);
+                    from.Hits = from.HitsMax;
 
                 if (m_Callback != null)
                     m_Callback(from);

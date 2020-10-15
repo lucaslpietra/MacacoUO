@@ -53,7 +53,7 @@ namespace Server.Engines.Plants
         {
             Mobile from = sender.Mobile;
 
-            if (info.ButtonID == 0 || m_Plant.Deleted || m_Plant.PlantStatus >= PlantStatus.DecorativePlant || m_Plant.PlantStatus == PlantStatus.BowlOfDirt)
+            if (info.ButtonID == 0 || m_Plant.Deleted || m_Plant.PlantStatus >= PlantStatus.PlantaDecorativa || m_Plant.PlantStatus == PlantStatus.Terra)
                 return;
 
             if ((info.ButtonID >= 6 && info.ButtonID <= 8) && !from.InRange(m_Plant.GetWorldLocation(), 3))

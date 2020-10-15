@@ -21,7 +21,7 @@ namespace Server.Spells.Necromancy
         {
             get
             {
-                return TimeSpan.FromSeconds(2.25);
+                return TimeSpan.FromSeconds(2.0);
             }
         }
         public override double RequiredSkill
@@ -81,11 +81,12 @@ namespace Server.Spells.Necromancy
 
             m.ResetStatTimers();
         }
+        /*
         public override void OnTick(Mobile m)
         {
             --m.Hits;
         }
-
+        */
         public override void RemoveEffect(Mobile m)
         {
             BuffInfo.RemoveBuff(m, BuffIcon.LichForm);

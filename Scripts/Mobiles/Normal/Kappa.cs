@@ -11,7 +11,7 @@ namespace Server.Mobiles
         public Kappa()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a kappa";
+            Name = "kappa";
             Body = 240;
 
             SetStr(186, 230);
@@ -56,7 +56,7 @@ namespace Server.Mobiles
                 }
             }
 
-            if (Core.ML && Utility.RandomDouble() < .33)
+            if ( Utility.RandomDouble() < .1)
                 PackItem(Engines.Plants.Seed.RandomPeculiarSeed(2));
 
             SetSpecialAbility(SpecialAbility.LifeLeech);
@@ -65,14 +65,6 @@ namespace Server.Mobiles
         public Kappa(Serial serial)
             : base(serial)
         {
-        }
-		
-		public override int TreasureMapLevel
-        {
-            get
-            {
-                return 2;
-            }
         }
 
         public override void GenerateLoot()

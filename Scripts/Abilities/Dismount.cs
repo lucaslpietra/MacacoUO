@@ -11,7 +11,7 @@ namespace Server.Items
     /// </summary>
     public class Dismount : WeaponAbility
     {
-        public static readonly TimeSpan DefenderRemountDelay = TimeSpan.FromSeconds(10.0);// TODO: Taken from bola script, needs to be verified
+        public static readonly TimeSpan DefenderRemountDelay = TimeSpan.FromSeconds(0);// TODO: Taken from bola script, needs to be verified
         public static readonly TimeSpan AttackerRemountDelay = TimeSpan.FromSeconds(3.0);
         public Dismount()
         {
@@ -55,7 +55,7 @@ namespace Server.Items
 
             if (mount == null && !defender.Flying && (!Core.ML || !Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(defender)))
             {
-                attacker.SendLocalizedMessage(1060848); // This attack only works on mounted or flying targets
+                attacker.SendLocalizedMessage("Este ataque apenas funciona em quem esta montado"); // This attack only works on mounted or flying targets
                 return;
             }
 
@@ -69,10 +69,18 @@ namespace Server.Items
                 return; //Lesser Hiryu have an 80% chance of missing this attack
             }
 
+            if(defender.Skills[SkillName.Tactics].Value >= 100 && Utility.RandomDouble() < 0.2)
+            {
+                defender.SendMessage("Por ter conhecimento em taticas de batalha voce se manteve montado");
+                attacker.SendMessage("O alvo tinha bom conhecimento de taticas de batalha e se manteve montado");
+                AOS.Damage(defender, attacker, Utility.RandomMinMax(15, 25), 100, 0, 0, 0, 0);
+                return;
+            }
+
             defender.PlaySound(0x140);
             defender.FixedParticles(0x3728, 10, 15, 9955, EffectLayer.Waist);
 
-            int delay = Core.TOL && attacker.Weapon is BaseRanged ? 8 : 10;
+            int delay = 3;
 
             DoDismount(attacker, defender, mount, delay);
 
@@ -90,15 +98,15 @@ namespace Server.Items
             {
                 if (Core.ML && Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(defender))
                 {
-                    defender.SendLocalizedMessage(1114066, attacker.Name); // ~1_NAME~ knocked you out of animal form!
+                    defender.SendLocalizedMessage("Voce foi retirado de sua transformacao"); // ~1_NAME~ knocked you out of animal form!
                 }
                 else if (defender.Flying)
                 {
-                    defender.SendLocalizedMessage(1113590, attacker.Name); // You have been grounded by ~1_NAME~!
+                    defender.SendLocalizedMessage("Voce caiu"); // You have been grounded by ~1_NAME~!
                 }
                 else if (defender.Mounted)
                 {
-                    defender.SendLocalizedMessage(1060083); // You fall off of your mount and take damage!
+                    defender.SendLocalizedMessage("Voce foi desmontado"); // You fall off of your mount and take damage!
                 }
 
                 ((PlayerMobile)defender).SetMountBlock(type, TimeSpan.FromSeconds(delay), true);

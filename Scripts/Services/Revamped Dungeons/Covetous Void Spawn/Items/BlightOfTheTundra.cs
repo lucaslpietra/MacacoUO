@@ -59,19 +59,20 @@ namespace Server.Items
         }
     }
 
-    public class GargishBlightOfTheTundra : SoulGlaive
+    public class GargishBlightOfTheTundra : VikingSword
     {
-        public override int LabelNumber { get { return 1152727; } } // Blight of the Tundra
 		public override bool IsArtifact { get { return true; } }
 
         [Constructable]
         public GargishBlightOfTheTundra() : this(true)
         {
+            Name = "Espada da Tundra";
         }
 
         [Constructable]
         public GargishBlightOfTheTundra(bool antique)
         {
+            Name = "Espada da Tundra";
             Attributes.BonusStr = 5;
             Attributes.RegenStam = 10;
             Attributes.AttackChance = 15;

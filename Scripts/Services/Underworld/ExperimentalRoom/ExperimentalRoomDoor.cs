@@ -27,7 +27,7 @@ namespace Server.Items {
 
         public override void Use(Mobile from)
         {
-            if (from.AccessLevel > AccessLevel.Player)
+            if (from.AccessLevel > AccessLevel.VIP)
             {
                 from.SendMessage("You open the door with your godly powers.");
                 base.Use(from);
@@ -105,7 +105,7 @@ namespace Server.Items {
 		
 		public override bool OnMoveOver(Mobile from)
 		{
-			if(from.AccessLevel > AccessLevel.Player)
+			if(from.AccessLevel > AccessLevel.VIP)
 				return true;
 				
 			Container pack = from.Backpack;

@@ -11,6 +11,7 @@ namespace Server.Items
             : base(0x27C6)
         {
             this.Weight = 6.0;
+            this.Name = "Armadura de Couro";
         }
 
         public LeatherDo(Serial serial)

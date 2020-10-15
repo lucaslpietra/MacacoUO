@@ -1231,14 +1231,14 @@ namespace Server.Items
 
             if (GetFlag(ConditionFlag.DenyMounted) && m.Mounted)
             {
-                m.SendLocalizedMessage(1077252); // You must dismount before proceeding.
+                m.SendMessage("Voce nao pode entrar ai montado"); // You must dismount before proceeding.
                 return false;
             }
 
             if (GetFlag(ConditionFlag.DenyFollowers) &&
                 (m.Followers != 0 || (m is PlayerMobile && ((PlayerMobile)m).AutoStabled.Count != 0)))
             {
-                m.SendLocalizedMessage(1077250); // No pets permitted beyond this point.
+                m.SendMessage("Animais nao sao permitidos aqui"); // No pets permitted beyond this point.
                 return false;
             }
 

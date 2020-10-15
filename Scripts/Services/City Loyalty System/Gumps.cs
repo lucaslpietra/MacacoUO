@@ -24,7 +24,7 @@ namespace Server.Engines.CityLoyalty
 
         public override void AddGumpLayout()
         {
-            AddHtmlLocalized(0, 7, 345, 20, 1154645, "#1152190", 0, false, false); // City Loyalty
+            AddHtml(0, 7, 345, 20, "Lealdade a Cidade", 0, false, false); // City Loyalty
 
             AddImage(0, 0, 8000);
             AddImage(20, 37, 8001);
@@ -34,10 +34,10 @@ namespace Server.Engines.CityLoyalty
             AddImage(20, 317, 8001);
             AddImage(20, 387, 8003);
 
-            AddHtmlLocalized(65, 395, 200, 16, 1152189, false, false); // Loyalty Ratings
+            AddHtml(65, 395, 200, 16, "Lealdades", false, false); // Loyalty Ratings
             AddButton(50, 400, 2103, 2104, 500, GumpButtonType.Reply, 0);
 
-            AddHtmlLocalized(175, 395, 200, 16, 1157159, false, false); // Toggle Gain Message
+            AddHtml(175, 395, 200, 16, "Mostrar mensagem de ganho", false, false); // Toggle Gain Message
             AddButton(160, 400, 2103, 2104, 501, GumpButtonType.Reply, 0);
         }
 
@@ -57,12 +57,12 @@ namespace Server.Engines.CityLoyalty
                         if (entry.ShowGainMessage)
                         {
                             entry.ShowGainMessage = false;
-                            User.SendLocalizedMessage(1157160); //You will no longer receive City Loyalty gain messages.
+                            User.SendLocalizedMessage("Voce nao vai ver as mensagens de ganho de lealdade"); //You will no longer receive City Loyalty gain messages.
                         }
                         else
                         {
                             entry.ShowGainMessage = true;
-                            User.SendLocalizedMessage(1157161); //You will now receive City Loyalty gain messages.
+                            User.SendLocalizedMessage("Voce vai ver as mensagens de ganho de lealdade"); //You will now receive City Loyalty gain messages.
                         }
                     }
                 }
@@ -93,45 +93,45 @@ namespace Server.Engines.CityLoyalty
                 if (city.CanUtilize && Citizenship == null && CityLoyaltySystem.CanAddCitizen(User))
                     AddButton(30, y + 3, 2103, 2104, 100 + i, GumpButtonType.Reply, 0);
 
-                AddHtmlLocalized(50, y, 200, 16, CityLoyaltySystem.CityLocalization(city.City), false, false);
-                AddHtmlLocalized(200, y, 200, 16, CityLoyaltySystem.RatingLocalization(city.GetLoyaltyRating(User)), false, false);
+                AddHtml(50, y, 200, 16, city.City.ToString(), false, false);
+                AddHtml(200, y, 200, 16, city.GetLoyaltyRating(User).ToString(), false, false);
 
                 y += 20;
             }
 			
 			y += 20;
 			
-			AddHtmlLocalized(70, y, 250, 16, 1152883, false, false); // Citizenship:
+			AddHtml(70, y, 250, 16, "Cidadania:", false, false); // Citizenship:
 			AddHtmlLocalized(200, y, 100, 16, Citizenship != null ? CityLoyaltySystem.CityLocalization(Citizenship.City) : 1152884, false, false);
 			
 			y += 40;
 
             if (!CityLoyaltySystem.IsSetup())
             {
-                AddHtml(70, y, 250, 60, "City Loyalty System has not been enabled by your server owner yet.", false, false);
+                AddHtml(70, y, 250, 60, "Bugou chora pro hendrix.", false, false);
             }
             else if (Citizenship != null)
             {
-                AddHtmlLocalized(115, y - 5, 150, 16, 1152890, false, false); // Citizenship Titles
+                AddHtml(115, y - 5, 150, 16, "Titulos de Cidadania", false, false); // Citizenship Titles
                 AddButton(100, y, 2103, 2104, 1, GumpButtonType.Reply, 0);
 
                 y += 20;
 
-                AddHtmlLocalized(115, y - 5, 150, 16, 1152888, false, false); // Renounce Citizenship
+                AddHtml(115, y - 5, 150, 16, "Renunciar Titulos", false, false); // Renounce Citizenship
                 AddButton(100, y, 2103, 2104, 2, GumpButtonType.Reply, 0);
             }
             else
             {
                 if (CityLoyaltySystem.CanAddCitizen(User))
                 {
-                    AddHtmlLocalized(30, y, 280, 90, 1152885, false, false);
+                    AddHtml(30, y, 280, 90, "Clique na gema para declarar sua cidadania", false, false);
                     /*Click the gem next to the name of a city to declare your 
                      * citizenship. You may renounce citizenship, but afterwards
                      * you may not declare new citizenship for one week.*/
                 }
                 else
                 {
-                    AddHtmlLocalized(30, y, 285, 80, 1152886, CityLoyaltySystem.NextJoinCity(User).ToString(), 0, false, false);
+                    AddHtml(30, y, 285, 80, "Voce ja eh um cidadao, agurade alguns dias para declarar novamente", 0, false, false);
                     /*You recently renounced citizenship, so you must wait ~1_COUNT~ 
                      * more days before you may declare citizenship again.*/
                 }
@@ -183,7 +183,13 @@ namespace Server.Engines.CityLoyalty
             if (City == null)
                 return;
 
-            AddHtmlLocalized(30, 40, 285, 200, 1152891, String.Format("#{0}", CityLoyaltySystem.GetCityLocalization(City.City).ToString()), 1, false, true);
+            AddHtml(30, 40, 285, 200, @"Se você decidir declarar a cidadania com a cidade, receberá o título de Cidadão.
+ Se sua classificação de fidelidade para a cidade for alta o suficiente, você poderá receber títulos com
+ aquela cidade. < br > < br > Você só pode ter cidadania em uma cidade por vez.Você pode renunciar
+ cidadania a qualquer momento.Depois de renunciar à cidadania, você deve esperar uma semana antes de declarar
+ cidadania novamente. < br > < br > Observe que obter títulos de cidades requer lealdade positiva com sua cidade,
+e você deverá doar fundos para os cofres da cidade. < br > < br > Tem certeza de que deseja
+ declarar cidadania com a cidade", 1, false, true);
             /*If you choose to declare citizenship with ~1_CITY~, you will be granted the "Citizen" title.
              * If your loyalty rating to ~1_CITY~ is high enough, you will be able to receive titles with
              * that city.<br><br>You may only have citizenship in one city at a time. You may renounce 
@@ -192,10 +198,10 @@ namespace Server.Engines.CityLoyalty
              * and you will be required to donate funds to the city's coffers.<br><br>Are you sure you wish to
              * declare citizenship with ~1_CITY~?*/
 
-            AddHtmlLocalized(115, 280, 150, 16, 1152892, false, false); // Declare Citizenship
+            AddHtml(115, 280, 150, 16, "Declarar Cidadania", false, false); // Declare Citizenship
             AddButton(100, 285, 2103, 2104, 1, GumpButtonType.Reply, 0);
 
-            AddHtmlLocalized(115, 300, 150, 16, 1152889, false, false); // Cancel
+            AddHtml(115, 300, 150, 16, "Cancelar", false, false); // Cancel
             AddButton(100, 305, 2103, 2104, 2, GumpButtonType.Reply, 0);
         }
 
@@ -685,7 +691,7 @@ namespace Server.Engines.CityLoyalty
                 {
                     City.HeraldMessage(User, 1154057); // Begging thy pardon but the City Treasury doth nay have the funds available to make such a deal!
                 }
-                else if (User.AccessLevel == AccessLevel.Player && City.TradeDealStart != DateTime.MinValue && City.TradeDealStart + TimeSpan.FromDays(CityLoyaltySystem.TradeDealCooldown) > DateTime.UtcNow)
+                else if (User.AccessLevel <= AccessLevel.VIP && City.TradeDealStart != DateTime.MinValue && City.TradeDealStart + TimeSpan.FromDays(CityLoyaltySystem.TradeDealCooldown) > DateTime.UtcNow)
                 {
                     City.HeraldMessage(User, 1154056); // You may only make a trade deal once per real world week!
                 }
@@ -709,7 +715,7 @@ namespace Server.Engines.CityLoyalty
             TradeDeal.MaritimeGuild,
             TradeDeal.MerchantsAssociation,
             TradeDeal.MiningCooperative,
-            TradeDeal.LeagueOfRangers,
+            TradeDeal.LeageOfRangers,
             TradeDeal.GuildOfAssassins,
             TradeDeal.WarriorsGuild,
         };

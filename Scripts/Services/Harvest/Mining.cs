@@ -50,14 +50,14 @@ namespace Server.Engines.Harvest
             HarvestDefinition oreAndStone = this.m_OreAndStone = new HarvestDefinition();
 
             // Resource banks are every 8x8 tiles
-            oreAndStone.BankWidth = 8;
-            oreAndStone.BankHeight = 8;
+            oreAndStone.BankWidth = 4;
+            oreAndStone.BankHeight = 4;
 
             // Every bank holds from 10 to 34 ore
-            oreAndStone.MinTotal = 10;
-            oreAndStone.MaxTotal = 34;
+            oreAndStone.MinTotal = 40;
+            oreAndStone.MaxTotal = 60;
 
-            // A resource bank will respawn its content every 10 to 20 minutes
+            // A resource bank will respawn its content every 10 to 20 minutes - Alterado de 15 para até 40 a fim de evitar que o personagem fique sempre aguardando o respawn.
             oreAndStone.MinRespawn = TimeSpan.FromMinutes(10.0);
             oreAndStone.MaxRespawn = TimeSpan.FromMinutes(20.0);
 
@@ -72,70 +72,73 @@ namespace Server.Engines.Harvest
 
             // One ore per harvest action
             oreAndStone.ConsumedPerHarvest = 1;
-            oreAndStone.ConsumedPerFeluccaHarvest = 2;
+            oreAndStone.ConsumedPerFeluccaHarvest = 1;
 
             // The digging effect
-            oreAndStone.EffectActions = new int[] { Core.SA ? 3 : 11 };
+            oreAndStone.EffectActions = new int[] { 3 };
             oreAndStone.EffectSounds = new int[] { 0x125, 0x126 };
-            oreAndStone.EffectCounts = new int[] { 1 };
-            oreAndStone.EffectDelay = TimeSpan.FromSeconds(1.6);
+            //oreAndStone.EffectCounts = new int[] { 1 };
+            oreAndStone.EffectCounts = new int[] { 2 };
+            oreAndStone.EffectDelay = TimeSpan.FromSeconds(2);
             oreAndStone.EffectSoundDelay = TimeSpan.FromSeconds(0.9);
 
-            oreAndStone.NoResourcesMessage = 503040; // There is no metal here to mine.
-            oreAndStone.DoubleHarvestMessage = 503042; // Someone has gotten to the metal before you.
-            oreAndStone.TimedOutOfRangeMessage = 503041; // You have moved too far away to continue mining.
-            oreAndStone.OutOfRangeMessage = 500446; // That is too far away.
-            oreAndStone.FailMessage = 503043; // You loosen some rocks but fail to find any useable ore.
-            oreAndStone.PackFullMessage = 1010481; // Your backpack is full, so the ore you mined is lost.
-            oreAndStone.ToolBrokeMessage = 1044038; // You have worn out your tool!
+            oreAndStone.NoResourcesMessage = "Não tem mais minério neste local"; // There is no metal here to mine.
+            oreAndStone.DoubleHarvestMessage = "Alguém pegou o minério antes de você"; // Someone has gotten to the metal before you.
+            oreAndStone.TimedOutOfRangeMessage = "Você se moveu e parou de minerar"; // You have moved too far away to continue mining.
+            oreAndStone.OutOfRangeMessage = "Isto está muito longe"; // That is too far away.
+            oreAndStone.FailMessage = "Você não encontrou nenhum minério"; // You loosen some rocks but fail to find any useable ore.
+            oreAndStone.PackFullMessage = "Sua mochila está cheia e o item foi jogado no chão"; // Your backpack is full, so the ore you mined is lost.
+            oreAndStone.ToolBrokeMessage = "Sua ferramenta quebrou!"; // You have worn out your tool!
 
             res = new HarvestResource[]
             {
-                new HarvestResource(00.0, 00.0, 100.0, 1007072, typeof(IronOre), typeof(Granite)),
-                new HarvestResource(65.0, 25.0, 105.0, 1007073, typeof(DullCopperOre),	typeof(DullCopperGranite), typeof(DullCopperElemental)),
-                new HarvestResource(70.0, 30.0, 110.0, 1007074, typeof(ShadowIronOre),	typeof(ShadowIronGranite), typeof(ShadowIronElemental)),
-                new HarvestResource(75.0, 35.0, 115.0, 1007075, typeof(CopperOre), typeof(CopperGranite), typeof(CopperElemental)),
-                new HarvestResource(80.0, 40.0, 120.0, 1007076, typeof(BronzeOre), typeof(BronzeGranite), typeof(BronzeElemental)),
-                new HarvestResource(85.0, 45.0, 125.0, 1007077, typeof(GoldOre), typeof(GoldGranite), typeof(GoldenElemental)),
-                new HarvestResource(90.0, 50.0, 130.0, 1007078, typeof(AgapiteOre), typeof(AgapiteGranite), typeof(AgapiteElemental)),
-                new HarvestResource(95.0, 55.0, 135.0, 1007079, typeof(VeriteOre), typeof(VeriteGranite), typeof(VeriteElemental)),
-                new HarvestResource(99.0, 59.0, 139.0, 1007080, typeof(ValoriteOre), typeof(ValoriteGranite), typeof(ValoriteElemental))
+              new HarvestResource(00.0, 00.0, 90.0, "Você encontrou minério de Ferro e colocou em sua mochila", typeof(IronOre), typeof(Granite)),
+                new HarvestResource(65.0, 25, 100, "Você encontrou minério de Cobre e colocou em sua mochila", typeof(CopperOre), typeof(CopperGranite), typeof(CopperElemental)),
+                new HarvestResource(70, 30, 110.0, "Você encontrou minério de Bronze e colocou em sua mochila", typeof(BronzeOre), typeof(BronzeGranite), typeof(BronzeElemental)),
+                new HarvestResource(75, 35, 115.0, "Você encontrou minério de Dourado e colocou em sua mochila", typeof(SilverOre), typeof(GoldGranite), typeof(GoldenElemental)),
+                new HarvestResource(80, 40, 120.0, "Você encontrou minério de Nióbio e colocou em sua mochila", typeof(NiobioOre), typeof(AgapiteGranite), typeof(AgapiteElemental)),
+                new HarvestResource(90, 45, 125.0, "Você encontrou minério de Lazurita e colocou em sua mochila", typeof(LazuritaOre), typeof(VeriteGranite), typeof(VeriteElemental)),
+                new HarvestResource(95, 60, 130.0, "Você encontrou minério de Quartzo e colocou em sua mochila", typeof(QuartzoOre), typeof(ValoriteGranite), typeof(ValoriteElemental)),
+                new HarvestResource(100, 55, 135.0, "Você encontrou minério de Berillo e colocou em sua mochila", typeof(BeriloOre),    typeof(DullCopperGranite), typeof(DullCopperElemental)),
+                new HarvestResource(103, 90.9, 139.0, "Você encontrou minério de Vibranium e colocou em sua mochila", typeof(VibraniumOre), typeof(ShadowIronGranite), typeof(ShadowIronElemental)),
+                 new HarvestResource(105, 90.9, 139.0, "Você encontrou minério de Adamantium e colocou em sua mochila", typeof(AdamantiumOre)),
             };
 
             veins = new HarvestVein[]
             {
-                new HarvestVein(49.6, 0.0, res[0], null), // Iron
-                new HarvestVein(11.2, 0.5, res[1], res[0]), // Dull Copper
-                new HarvestVein(09.8, 0.5, res[2], res[0]), // Shadow Iron
-                new HarvestVein(08.4, 0.5, res[3], res[0]), // Copper
-                new HarvestVein(07.0, 0.5, res[4], res[0]), // Bronze
-                new HarvestVein(05.6, 0.5, res[5], res[0]), // Gold
-                new HarvestVein(04.2, 0.5, res[6], res[0]), // Agapite
-                new HarvestVein(02.8, 0.5, res[7], res[0]), // Verite
-                new HarvestVein(01.4, 0.5, res[8], res[0])// Valorite
+                new HarvestVein(49.8, 0.0, res[0], null),   // Iron
+                new HarvestVein(11.4, 0.5, res[1], res[0]), // cobre
+                new HarvestVein(09.8, 0.5, res[2], res[0]), // bronze
+                new HarvestVein(08.4, 0.5, res[3], res[0]), // prata
+                new HarvestVein(07.0, 0.5, res[4], res[0]), // niobio               // aqui estão os rates que, a princípio, serão mantidos pro beta/realease. Desativados pro alfa.
+                new HarvestVein(05.5, 0.5, res[5], res[0]), // lazurita
+                new HarvestVein(04, 0.5, res[6], res[0]), // quartzo
+                new HarvestVein(02.6, 0.5, res[7], res[0]), // berillo
+                new HarvestVein(01, 0.5, res[8], res[0]),  // vibranium
+                new HarvestVein(0.5, 0.5, res[9], res[0])  // adamantium
             };
 
             oreAndStone.Resources = res;
             oreAndStone.Veins = veins;
 
-            if (Core.ML)
+            // if (Core.ML)
+            // {
+            oreAndStone.BonusResources = new BonusHarvestResource[]
             {
-                oreAndStone.BonusResources = new BonusHarvestResource[]
-                {
-                    new BonusHarvestResource(0, 99.2, null, null), //Nothing
-                    new BonusHarvestResource(100, .1, 1072562, typeof(BlueDiamond)),
-                    new BonusHarvestResource(100, .1, 1072567, typeof(DarkSapphire)),
-                    new BonusHarvestResource(100, .1, 1072570, typeof(EcruCitrine)),
-                    new BonusHarvestResource(100, .1, 1072564, typeof(FireRuby)),
-                    new BonusHarvestResource(100, .1, 1072566, typeof(PerfectEmerald)),
-                    new BonusHarvestResource(100, .1, 1072568, typeof(Turquoise)),
-                    new BonusHarvestResource(100, .1, 1077180, typeof(SmallPieceofBlackrock)),
-                    new BonusHarvestResource(100, .1, 1113344, typeof(CrystallineBlackrock), Map.TerMur)
-				};
-            }
+                    new BonusHarvestResource(0, 99.84, null, null), //Nothing
+                    new BonusHarvestResource(100, .02, "Voce achou uma pedra preciosa", typeof(Diamond)),
+                    new BonusHarvestResource(100, .02, 1072567, typeof(StarSapphire)),
+                    new BonusHarvestResource(100, .02, 1072570, typeof(Citrine)),
+                    new BonusHarvestResource(100, .02, 1072564, typeof(Ruby)),
+                    new BonusHarvestResource(100, .02, 1072566, typeof(Emerald)),
+                    new BonusHarvestResource(100, .02, 1072568, typeof(Turquoise)),
+                    new BonusHarvestResource(100, .02, 1077180, typeof(SmallPieceofBlackrock)),
+                    new BonusHarvestResource(100, .02, 1113344, typeof(CrystallineBlackrock))
+            };
+            //  }
 
             oreAndStone.RaceBonus = Core.ML;
-            oreAndStone.RandomizeVeins = Core.ML;
+            oreAndStone.RandomizeVeins = false;
 
             this.Definitions.Add(oreAndStone);
             #endregion
@@ -166,26 +169,35 @@ namespace Server.Engines.Harvest
 
             // One sand per harvest action
             sand.ConsumedPerHarvest = 1;
-            sand.ConsumedPerFeluccaHarvest = 2;
+            sand.ConsumedPerFeluccaHarvest = 1;
 
             // The digging effect
-            sand.EffectActions = new int[] { Core.SA ? 3 : 11 };
+            sand.EffectActions = new int[] { 3 };
             sand.EffectSounds = new int[] { 0x125, 0x126 };
-            sand.EffectCounts = new int[] { 6 };
-            sand.EffectDelay = TimeSpan.FromSeconds(1.6);
+            //oreAndStone.EffectCounts = new int[] { 1 };
+            sand.EffectCounts = new int[] { 3 };
+            sand.EffectDelay = TimeSpan.FromSeconds(2);
             sand.EffectSoundDelay = TimeSpan.FromSeconds(0.9);
 
-            sand.NoResourcesMessage = 1044629; // There is no sand here to mine.
-            sand.DoubleHarvestMessage = 1044629; // There is no sand here to mine.
-            sand.TimedOutOfRangeMessage = 503041; // You have moved too far away to continue mining.
-            sand.OutOfRangeMessage = 500446; // That is too far away.
-            sand.FailMessage = 1044630; // You dig for a while but fail to find any of sufficient quality for glassblowing.
-            sand.PackFullMessage = 1044632; // Your backpack can't hold the sand, and it is lost!
-            sand.ToolBrokeMessage = 1044038; // You have worn out your tool!
+            /*oreAndStone.NoResourcesMessage = "Nao tem minerio aqui"; // There is no metal here to mine.
+            oreAndStone.DoubleHarvestMessage = "Alguem pegou seu minerio"; // Someone has gotten to the metal before you.
+            oreAndStone.TimedOutOfRangeMessage = "Voce esta muito longe do minerio"; // You have moved too far away to continue mining.
+            oreAndStone.OutOfRangeMessage = "Isto esta muito longe"; // That is too far away.
+            oreAndStone.FailMessage = "Voce nao conseguiu encontrar minerio"; // You loosen some rocks but fail to find any useable ore.
+            oreAndStone.PackFullMessage = "Sua mochila esta cheia"; // Your backpack is full, so the ore you mined is lost.
+            oreAndStone.ToolBrokeMessage = "Sua ferramenta quebrou !"; // You have worn out your tool!*/
+
+            oreAndStone.NoResourcesMessage = "Não tem mais minério neste local"; // There is no metal here to mine.
+            oreAndStone.DoubleHarvestMessage = "Alguém pegou o minério antes de você"; // Someone has gotten to the metal before you.
+            oreAndStone.TimedOutOfRangeMessage = "Você se moveu e parou de minerar"; // You have moved too far away to continue mining.
+            oreAndStone.OutOfRangeMessage = "Isto está muito longe"; // That is too far away.
+            oreAndStone.FailMessage = "Você não encontrou nenhum minério"; // You loosen some rocks but fail to find any useable ore.
+            oreAndStone.PackFullMessage = "Sua mochila está cheia e o item foi jogado no chão"; // Your backpack is full, so the ore you mined is lost.
+            oreAndStone.ToolBrokeMessage = "Sua ferramenta quebrou!"; // You have worn out your tool!
 
             res = new HarvestResource[]
             {
-                new HarvestResource(100.0, 70.0, 100.0, 1044631, typeof(Sand))
+                new HarvestResource(70, 65.0, 100.0, 1044631, typeof(Sand))
             };
 
             veins = new HarvestVein[]
@@ -207,7 +219,7 @@ namespace Server.Engines.Harvest
                 #region Void Pool Items
                 HarvestMap hmap = HarvestMap.CheckMapOnHarvest(from, loc, def);
 
-                if (hmap != null && hmap.Resource >= CraftResource.Iron && hmap.Resource <= CraftResource.Valorite)
+                if (hmap != null && hmap.Resource >= CraftResource.Ferro && hmap.Resource <= CraftResource.Quartzo)
                 {
                     hmap.UsesRemaining--;
                     hmap.InvalidateProperties();
@@ -291,14 +303,9 @@ namespace Server.Engines.Harvest
             if (!base.CheckHarvest(from, tool, def, toHarvest))
                 return false;
 
-            if (def == this.m_Sand && !(from is PlayerMobile && from.Skills[SkillName.Mining].Base >= 100.0 && ((PlayerMobile)from).SandMining))
+            if (def == this.m_Sand && !(from is PlayerMobile && from.Skills[SkillName.Mining].Base >= 60 && ((PlayerMobile)from).SandMining))
             {
                 this.OnBadHarvestTarget(from, tool, toHarvest);
-                return false;
-            }
-            else if (from.Mounted)
-            {
-                from.SendLocalizedMessage(501864); // You can't mine while riding.
                 return false;
             }
             else if (from.IsBodyMod && !from.Body.IsHuman)
@@ -392,6 +399,7 @@ namespace Server.Engines.Harvest
                     }
                 }
             }
+            //base.OnHarvestStarted(from, tool, def, resource);
         }
 
         #region High Seas
@@ -483,7 +491,8 @@ namespace Server.Engines.Harvest
             if (!base.BeginHarvesting(from, tool))
                 return false;
 
-            from.SendLocalizedMessage(503033); // Where do you wish to dig?
+            //from.SendLocalizedMessage(503033); // Where do you wish to dig?
+            from.SendMessage("Onde você gostaria de minerar?");
             return true;
         }
 
@@ -491,23 +500,24 @@ namespace Server.Engines.Harvest
         {
             base.OnHarvestStarted(from, tool, def, toHarvest);
 
-            if (Core.ML)
-                from.RevealingAction();
+            from.RevealingAction();
         }
 
         public override void OnBadHarvestTarget(Mobile from, Item tool, object toHarvest)
         {
             if (toHarvest is LandTarget)
             {
-                from.SendLocalizedMessage(501862); // You can't mine there.
-            }            
+                //from.SendLocalizedMessage(501862); // You can't mine there.
+                from.SendMessage("Você não pode minerar neste local.");
+            }
             else if (!(toHarvest is LandTarget))
             {
-                from.SendLocalizedMessage(501863); // You can't mine that.
+                //from.SendLocalizedMessage(501863); // You can't mine that.
+                from.SendMessage("Você não pode minerar isto.");
             }
             else if (from.Mounted || from.Flying)
             {
-                from.SendLocalizedMessage(501864); // You can't dig while riding or flying.
+                from.SendMessage("Você não pode minerar montado."); // You can't dig while riding or flying.
             }
         }
 

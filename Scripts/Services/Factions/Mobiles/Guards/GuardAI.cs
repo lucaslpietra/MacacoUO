@@ -131,7 +131,7 @@ namespace Server.Factions
 		{
 			get
 			{
-				if (m_Bandage != null && m_Bandage.Timer == null)
+				if (m_Bandage != null && m_Bandage.Time == null)
 				{
 					m_Bandage = null;
 				}
@@ -141,7 +141,7 @@ namespace Server.Factions
 					return TimeSpan.MaxValue;
 				}
 
-				TimeSpan ts = (m_BandageStart + m_Bandage.Timer.Delay) - DateTime.UtcNow;
+				TimeSpan ts = (m_BandageStart + m_Bandage.Time.Delay) - DateTime.UtcNow;
 
 				if (ts < TimeSpan.FromSeconds(-1.0))
 				{
@@ -699,7 +699,7 @@ namespace Server.Factions
 					if (IsAllowed(GuardAI.Magic) && ((m_Guard.Hits * 100) / Math.Max(m_Guard.HitsMax, 1)) < 10 &&
 						m_Guard.Home != Point3D.Zero && !Utility.InRange(m_Guard.Location, m_Guard.Home, 15) && m_Guard.Mana >= 11)
 					{
-						spell = new RecallSpell(m_Guard, null, new RunebookEntry(m_Guard.Home, m_Guard.Map, "Guard's Home", null, RecallRuneType.Normal), null);
+						spell = new RecallSpell(m_Guard, null, new RunebookEntry(m_Guard.Home, m_Guard.Map, "Guard's Home", null), null);
 					}
 					else if (IsAllowed(GuardAI.Bless))
 					{

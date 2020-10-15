@@ -21,17 +21,17 @@ namespace Server.Items
 
                 if (runictype <= .25)
                 {
-                    res = CraftResource.DullCopper;
+                    res = CraftResource.Berilo;
                     charges = 50;
                 }
                 else if (runictype <= .40)
                 {
-                    res = CraftResource.ShadowIron;
+                    res = CraftResource.Vibranium;
                     charges = 45;
                 }
                 else if (runictype <= .55)
                 {
-                    res = CraftResource.Copper;
+                    res = CraftResource.Cobre;
                     charges = 40;
                 }
                 else if (runictype <= .65)
@@ -41,22 +41,22 @@ namespace Server.Items
                 }
                 else if (runictype <= .75)
                 {
-                    res = CraftResource.Gold;
+                    res = CraftResource.Dourado;
                     charges = 30;
                 }
                 else if (runictype <= .85)
                 {
-                    res = CraftResource.Agapite;
+                    res = CraftResource.Niobio;
                     charges = 25;
                 }
                 else if (runictype <= .98)
                 {
-                    res = CraftResource.Verite;
+                    res = CraftResource.Lazurita;
                     charges = 20;
                 }
                 else
                 {
-                    res = CraftResource.Valorite;
+                    res = CraftResource.Quartzo;
                     charges = 15;
                 }
 

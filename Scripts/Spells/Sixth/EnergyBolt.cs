@@ -27,7 +27,7 @@ namespace Server.Spells.Sixth
         {
             get
             {
-                return true;
+                return false;
             }
         }
         public override void OnCast()
@@ -45,8 +45,6 @@ namespace Server.Spells.Sixth
             {
                 IDamageable source = Caster;
                 IDamageable target = m;
-
-                SpellHelper.Turn(Caster, m);
 
                 if (SpellHelper.CheckReflect((int)Circle, ref source, ref target))
                 {
@@ -66,11 +64,11 @@ namespace Server.Spells.Sixth
                 else if (m is Mobile)
                 {
                     Mobile mob = m as Mobile;
-                    damage = Utility.Random(24, 18);
+                    damage = Utility.Random(25, 15);
 
                     if (CheckResisted(mob))
                     {
-                        damage *= 0.75;
+                        damage *= 0.5;
 
                         mob.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                     }
@@ -97,7 +95,7 @@ namespace Server.Spells.Sixth
         {
             private readonly EnergyBoltSpell m_Owner;
             public InternalTarget(EnergyBoltSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(Spell.RANGE, false, TargetFlags.Harmful)
             {
                 m_Owner = owner;
             }

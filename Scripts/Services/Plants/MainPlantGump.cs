@@ -8,7 +8,6 @@ namespace Server.Engines.Plants
     public class MainPlantGump : Gump
     {
         private readonly PlantItem m_Plant;
-
         public MainPlantGump(PlantItem plant)
             : base(20, 20)
         {
@@ -68,16 +67,8 @@ namespace Server.Engines.Plants
             AddButton(48, 183, 0xD2, 0xD2, 11, GumpButtonType.Reply, 0); // Help
             AddLabel(54, 183, 0x835, "?");
 
-            if (plant is MaginciaPlantItem || plant is RaisedGardenPlantItem)
-            {
-                AddItem(219, 180, 0x913);
-            }
-            else
-            {                
-                AddItem(219, 180, 0x15FD);
-            }
-
             AddButton(232, 183, 0xD4, 0xD4, 12, GumpButtonType.Reply, 0); // Empty the bowl
+            AddItem(219, 180, 0x15FD);
         }
 
         public static Item GetPotion(Mobile from, PotionEffect[] effects)
@@ -112,7 +103,7 @@ namespace Server.Engines.Plants
         {
             Mobile from = sender.Mobile;
 
-            if (info.ButtonID == 0 || m_Plant.Deleted || m_Plant.PlantStatus >= PlantStatus.DecorativePlant)
+            if (info.ButtonID == 0 || m_Plant.Deleted || m_Plant.PlantStatus >= PlantStatus.PlantaDecorativa)
                 return;
 			
             if (((info.ButtonID >= 6 && info.ButtonID <= 10) || info.ButtonID == 12) && !from.InRange(m_Plant.GetWorldLocation(), 3))
@@ -131,7 +122,7 @@ namespace Server.Engines.Plants
             {
                 case 1: // Reproduction menu
                     {
-                        if (m_Plant.PlantStatus > PlantStatus.BowlOfDirt)
+                        if (m_Plant.PlantStatus > PlantStatus.Terra)
                         {
                             from.SendGump(new ReproductionGump(m_Plant));
                         }
@@ -200,7 +191,8 @@ namespace Server.Engines.Plants
                         if (!foundUsableWater)
                         {
                             from.Target = new PlantPourTarget(m_Plant);
-                            from.SendLocalizedMessage(1060808, "#" + m_Plant.GetLocalizedPlantStatus().ToString()); // Target the container you wish to use to water the ~1_val~.
+                            from.SendMessage("Selecione o container para aguar " + m_Plant.PlantStatus);
+                            //from.SendLocalizedMessage(1060808, "#" + m_Plant.GetLocalizedPlantStatus().ToString()); // Target the container you wish to use to water the ~1_val~.
                         }
 
                         from.SendGump(new MainPlantGump(m_Plant));
@@ -209,25 +201,25 @@ namespace Server.Engines.Plants
                     }
                 case 7: // Poison potion
                     {
-                        AddPotion(from, PotionEffect.PoisonGreater, PotionEffect.PoisonDeadly);
+                        AddPotion(from, PotionEffect.VenenoForte, PotionEffect.VenenoMortal);
 
                         break;
                     }
                 case 8: // Cure potion
                     {
-                        AddPotion(from, PotionEffect.CureGreater);
+                        AddPotion(from, PotionEffect.CuraMaior);
 
                         break;
                     }
                 case 9: // Heal potion
                     {
-                        AddPotion(from, PotionEffect.HealGreater);
+                        AddPotion(from, PotionEffect.VidaForte);
 
                         break;
                     }
                 case 10: // Strength potion
                     {
-                        AddPotion(from, PotionEffect.StrengthGreater);
+                        AddPotion(from, PotionEffect.ForcaMaior);
 
                         break;
                     }
@@ -263,7 +255,7 @@ namespace Server.Engines.Plants
         {
             PlantStatus status = m_Plant.PlantStatus;
 
-            if (status < PlantStatus.FullGrownPlant)
+            if (status < PlantStatus.PlantaCrescida)
             {
                 AddImage(110, 85, 0x589);
 
@@ -312,7 +304,7 @@ namespace Server.Engines.Plants
                     AddItem(130 + typeInfo.OffsetX, 96 + typeInfo.OffsetY, typeInfo.ItemID, hueInfo.Hue);
             }
 
-            if (status != PlantStatus.BowlOfDirt)
+            if (status != PlantStatus.Terra)
             {
                 int message = m_Plant.PlantSystem.GetLocalizedHealth();
 

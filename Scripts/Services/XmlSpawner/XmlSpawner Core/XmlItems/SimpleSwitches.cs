@@ -338,7 +338,7 @@ namespace Server.Items
 			}
 
 			// report any problems to staff
-			if (status_str != null && from != null && from.AccessLevel > AccessLevel.Player)
+			if (status_str != null && from != null && from.AccessLevel > AccessLevel.VIP)
 			{
 				from.SendMessage("{0}", status_str);
 			}
@@ -635,7 +635,7 @@ namespace Server.Items
 			}
 
 			// report any problems to staff
-			if (status_str != null && from != null && from.AccessLevel > AccessLevel.Player)
+			if (status_str != null && from != null && from.AccessLevel > AccessLevel.VIP)
 			{
 				from.SendMessage("{0}", status_str);
 			}

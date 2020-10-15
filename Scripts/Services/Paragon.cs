@@ -1,4 +1,5 @@
 using System;
+using Server.Engines.CannedEvil;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -7,29 +8,11 @@ namespace Server.Mobiles
     {
         public static double ChestChance = .10;// Chance that a paragon will carry a paragon chest
         public static double ChocolateIngredientChance = .20;// Chance that a paragon will drop a chocolatiering ingredient
-        public static Map[] Maps = new Map[]                   // Maps that paragons will spawn on
-        {
-            Map.Ilshenar
-        };
-        public static Type[] Artifacts = new Type[]
-        {
-            typeof(GoldBricks), typeof(PhillipsWoodenSteed),
-            typeof(AlchemistsBauble), typeof(ArcticDeathDealer),
-            typeof(BlazeOfDeath), typeof(BowOfTheJukaKing),
-            typeof(BurglarsBandana), typeof(CavortingClub),
-            typeof(EnchantedTitanLegBone), typeof(GwennosHarp),
-            typeof(IolosLute), typeof(LunaLance),
-            typeof(NightsKiss), typeof(NoxRangersHeavyCrossbow),
-            typeof(OrcishVisage), typeof(PolarBearMask),
-            typeof(ShieldOfInvulnerability), typeof(StaffOfPower),
-            typeof(VioletCourage), typeof(HeartOfTheLion),
-            typeof(WrathOfTheDryad), typeof(PixieSwatter),
-            typeof(GlovesOfThePugilist)
-        };
+
         public static int Hue = 0x501;// Paragon hue
 
         // Buffs
-        public static double HitsBuff = 5.0;
+        public static double HitsBuff = 1.5;
         public static double StrBuff = 1.05;
         public static double IntBuff = 1.20;
         public static double DexBuff = 1.20;
@@ -37,11 +20,17 @@ namespace Server.Mobiles
         public static double SpeedBuff = 1.20;
         public static double FameBuff = 1.40;
         public static double KarmaBuff = 1.40;
-        public static int DamageBuff = 5;
+        public static int DamageBuff = 3;
         public static void Convert(BaseCreature bc)
         {
             if (bc.IsParagon ||
-				!bc.CanBeParagon)
+                !bc.CanBeParagon)
+                return;
+
+            if (!bc.Murderer)
+                return;
+
+            if (bc.Region is ChampionSpawnRegion)
                 return;
 
             bc.Hue = Hue;
@@ -135,11 +124,11 @@ namespace Server.Mobiles
 
         public static bool CheckConvert(BaseCreature bc, Point3D location, Map m)
         {
-            if (!Core.AOS)
-                return false;
+            //if (!Core.AOS)
+            //    return false;
 
-            if (Array.IndexOf(Maps, m) == -1)
-                return false;
+            //if (Array.IndexOf(Maps, m) == -1)
+            //    return false;
 
             if (bc is BaseChampion || bc is Harrower || bc is BaseVendor || bc is BaseEscortable || bc is Clone || bc.IsParagon)
                 return false;
@@ -156,8 +145,8 @@ namespace Server.Mobiles
 
         public static bool CheckArtifactChance(Mobile m, BaseCreature bc)
         {
-            if (!Core.AOS)
-                return false;
+            //if (!Core.AOS)
+            //    return false;
 
             double fame = (double)bc.Fame;
 
@@ -173,12 +162,39 @@ namespace Server.Mobiles
 
         public static void GiveArtifactTo(Mobile m)
         {
-            Item item = (Item)Activator.CreateInstance(Artifacts[Utility.Random(Artifacts.Length)]);
+            Item i = null;
+            if (Utility.RandomDouble() < 0.2)
+            {
+                i = Decos.RandomDeco();
+                i.Hue = Paragon.Hue;
+                i.Name = "Artefato banhado a ouro";
+            } 
+            else if (Utility.RandomBool())
+            {
+                if(Utility.RandomDouble() < 0.2)
+                {
+                    i = Loot.RandomInstrument();
+                    ((IResource)i).Resource = CraftResource.Mogno;
+                    ((IQuality)i).Quality = ItemQuality.Exceptional;
+                    i.Hue = Paragon.Hue;
+                } else
+                {
+                    i = Loot.RandomWeapon();
+                    ((IResource)i).Resource = CraftResource.Dourado;
+                    ((IQuality)i).Quality = ItemQuality.Exceptional;
+                }
+            } else
+            {
+                i = Loot.RandomArmor();
+                ((IResource)i).Resource = CraftResource.Dourado;
+                ((IQuality)i).Quality = ItemQuality.Exceptional;
+            }
 
-            if (m.AddToBackpack(item))
-                m.SendMessage("As a reward for slaying the mighty paragon, an artifact has been placed in your backpack.");
-            else
-                m.SendMessage("As your backpack is full, your reward for destroying the legendary paragon has been placed at your feet.");
+            if (i.Name != null)
+                i.Name = i.Name + " Paragon";
+
+            if (m.AddToBackpack(i))
+                m.SendMessage("Voce recebeu um item dourado.");
         }
     }
 }

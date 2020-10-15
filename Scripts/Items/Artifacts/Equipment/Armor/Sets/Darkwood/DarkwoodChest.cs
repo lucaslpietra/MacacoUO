@@ -118,13 +118,13 @@ namespace Server.Items
 			
             switch ( this.Resource )
             {
-                case CraftResource.Bloodwood:
+                case CraftResource.Carmesim:
                     this.Attributes.RegenHits = 2;
                     break;
-                case CraftResource.Heartwood:
+                case CraftResource.Eucalipto:
                     this.Attributes.Luck = 40;
                     break;
-                case CraftResource.YewWood:
+                case CraftResource.Mogno:
                     this.Attributes.RegenHits = 1;
                     break;
             }

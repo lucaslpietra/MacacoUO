@@ -2,6 +2,7 @@ using System;
 
 namespace Server.Items
 {
+
     public enum WeaponType
     {
         Axe,		// Axes, Hatches, etc. These can give concussion blows
@@ -27,9 +28,9 @@ namespace Server.Items
     public enum WeaponAccuracyLevel
     {
         Regular,
-        Accurate,
-        Surpassingly,
-        Eminently,
+        Leve,
+        Agil,
+        Veloz,
         Exceedingly,
         Supremely
     }

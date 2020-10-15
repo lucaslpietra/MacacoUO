@@ -9,7 +9,8 @@ namespace Server.Items
         public DragonGloves()
             : base(0x2643)
         {
-            Weight = 2.0;
+            this.Weight = 2.0;
+            this.Name = "Luvas do Dragao";
         }
 
         public DragonGloves(Serial serial)
@@ -91,7 +92,7 @@ namespace Server.Items
         {
             get
             {
-                return 40;
+                return 45;
             }
         }
         public override ArmorMaterialType MaterialType
@@ -105,7 +106,7 @@ namespace Server.Items
         {
             get
             {
-                return CraftResource.RedScales;
+                return CraftResource.EscamasVermelhas;
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -118,6 +119,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (this.Weight == 1.0)
+                this.Weight = 2.0;
         }
     }
 }

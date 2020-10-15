@@ -108,10 +108,10 @@ namespace Server.Guilds
 
         private static readonly InfoField<PlayerMobile>[] m_Fields = new InfoField<PlayerMobile>[]
         {
-            new InfoField<PlayerMobile>(1062955, 130, GuildRosterGump.NameComparer.Instance), //Name
-            new InfoField<PlayerMobile>(1062956, 80, GuildRosterGump.RankComparer.Instance), //Rank
-            new InfoField<PlayerMobile>(1062952, 80, GuildRosterGump.LastOnComparer.Instance), //Last On
-            new InfoField<PlayerMobile>(1062953, 150, GuildRosterGump.TitleComparer.Instance)//Guild Title
+            new InfoField<PlayerMobile>("Nome", 130, GuildRosterGump.NameComparer.Instance), //Name
+            new InfoField<PlayerMobile>("Rank", 80, GuildRosterGump.RankComparer.Instance), //Rank
+            new InfoField<PlayerMobile>("Ultimo Visto", 80, GuildRosterGump.LastOnComparer.Instance), //Last On
+            new InfoField<PlayerMobile>("Titulo", 150, GuildRosterGump.TitleComparer.Instance)//Guild Title
         };
 
         public GuildRosterGump(PlayerMobile pm, Guild g)
@@ -129,14 +129,14 @@ namespace Server.Guilds
         {
             base.PopulateGump();
 
-            AddHtmlLocalized(266, 43, 110, 26, 1062974, 0xF, false, false); // Guild Roster
+            AddHtml(266, 43, 110, 26, "Membros", false, false); // Guild Roster
         }
 
         public override void DrawEndingEntry(int itemNumber)
         {
             AddBackground(225, 148 + itemNumber * 28, 150, 26, 0x2486);
             AddButton(230, 153 + itemNumber * 28, 0x845, 0x846, 8, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(255, 151 + itemNumber * 28, 110, 26, 1062992, 0x0, false, false); // Invite Player
+            AddHtml(255, 151 + itemNumber * 28, 110, 26, "Convidar Jogador", false, false); // Invite Player
         }
 
         protected override TextDefinition[] GetValuesFor(PlayerMobile pm, int aryLength)
@@ -192,11 +192,11 @@ namespace Server.Guilds
             {
                 if (pm.GuildRank.GetFlag(RankFlags.CanInvitePlayer))
                 {
-                    pm.SendLocalizedMessage(1063048); // Whom do you wish to invite into your guild?
+                    pm.SendMessage("Quem voce quer convidar?"); // Whom do you wish to invite into your guild?
                     pm.BeginTarget(-1, false, Targeting.TargetFlags.None, new TargetStateCallback(InvitePlayer_Callback), guild);
                 }
                 else
-                    pm.SendLocalizedMessage(503301); // You don't have permission to do that.
+                    pm.SendMessage("Sem permissao"); // You don't have permission to do that.
             }
         }
 
@@ -215,27 +215,27 @@ namespace Server.Guilds
 
             if (pm == null || !IsMember(pm, guild) || !pm.GuildRank.GetFlag(RankFlags.CanInvitePlayer))
             {
-                pm.SendLocalizedMessage(503301); // You don't have permission to do that.
+                pm.SendMessage("Sem perms"); // You don't have permission to do that.
             }
             else if (targ == null)
             {
-                pm.SendLocalizedMessage(1063334); // That isn't a valid player.
+                pm.SendMessage("Jogador invalido"); // That isn't a valid player.
             }
             else if (!targ.AcceptGuildInvites)
             {
-                pm.SendLocalizedMessage(1063049, targ.Name); // ~1_val~ is not accepting guild invitations.
+                pm.SendMessage("Nao esta aceitando convites"); // ~1_val~ is not accepting guild invitations.
             }
             else if (g.IsMember(targ))
             {
-                pm.SendLocalizedMessage(1063050, targ.Name); // ~1_val~ is already a member of your guild!
+                pm.SendMessage("Ja eh membro da guilda"); // ~1_val~ is already a member of your guild!
             }
             else if (targ.Guild != null)
             {
-                pm.SendLocalizedMessage(1063051, targ.Name); // ~1_val~ is already a member of a guild.
+                pm.SendMessage("Ja tem uma guilda"); // ~1_val~ is already a member of a guild.
             }
             else if (targ.HasGump(typeof(BaseGuildGump)) || targ.HasGump(typeof(CreateGuildGump)))	//TODO: Check message if CreateGuildGump Open
             {
-                pm.SendLocalizedMessage(1063052, targ.Name); // ~1_val~ is currently considering another guild invitation.
+                pm.SendMessage("Esta considerando um novo convite"); // ~1_val~ is currently considering another guild invitation.
             }
             #region Factions
             else if (targ.Young && guildFaction != null)
@@ -259,7 +259,7 @@ namespace Server.Guilds
             #endregion
             else
             {
-                pm.SendLocalizedMessage(1063053, targ.Name); // You invite ~1_val~ to join your guild.
+                pm.SendMessage("Voce enviou o convite"); // You invite ~1_val~ to join your guild.
                 targ.SendGump(new GuildInvitationRequest(targ, guild, pm));
             }
         }

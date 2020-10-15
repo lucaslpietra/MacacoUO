@@ -41,7 +41,7 @@ namespace Server.Spells.Spellweaving
             if (bc == null || bc.IsParagon || (bc.Controlled && !bc.Allured) || bc.Summoned || bc.AllureImmune)
                 return false;
 				
-            SlayerEntry slayer = SlayerGroup.GetEntryByName(SlayerName.Repond);
+            SlayerEntry slayer = SlayerGroup.GetEntryByName(SlayerName.Humanoides);
 			
             if (slayer != null && slayer.Slays(bc))
                 return true;

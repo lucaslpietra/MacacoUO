@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Server.Items;
+using Server.Network;
 using Server.SkillHandlers;
 
 namespace Server.Spells.Ninjitsu
@@ -30,7 +31,7 @@ namespace Server.Spells.Ninjitsu
         {
             get
             {
-                return new TextDefinition(1063091);
+                return new TextDefinition("Voce se prepara para um toque da morte");
             }
         }// You prepare to hit your opponent with a Death Strike.
         public static void AddStep(Mobile m)
@@ -40,7 +41,7 @@ namespace Server.Spells.Ninjitsu
             if (info == null)
                 return;
 
-            if (++info.m_Steps >= 5)
+            if (++info.m_Steps >= 6)
                 ProcessDeathStrike(m);
         }
 
@@ -54,6 +55,8 @@ namespace Server.Spells.Ninjitsu
             if (!this.Validate(attacker) || !this.CheckMana(attacker, true))
                 return;
 
+           
+               
             ClearCurrentMove(attacker);
 
             double ninjitsu = attacker.Skills[SkillName.Ninjitsu].Value;
@@ -67,11 +70,11 @@ namespace Server.Spells.Ninjitsu
             if (ninjitsu < 100) //This formula is an approximation from OSI data.  TODO: find correct formula
                 chance = 30 + (ninjitsu - 85) * 2.2;
             else
-                chance = 63 + (ninjitsu - 100) * 1.1;
+                chance = 85 + (ninjitsu - 100) * 1.1;
 
             if ((chance / 100) < Utility.RandomDouble())
             {
-                attacker.SendLocalizedMessage(1070779); // You missed your opponent with a Death Strike.
+                attacker.SendMessage("Voce errou o toque da morte"); // You missed your opponent with a Death Strike.
                 return;
             }
 
@@ -81,7 +84,7 @@ namespace Server.Spells.Ninjitsu
 
             if (m_Table.Contains(defender))
             {
-                defender.SendLocalizedMessage(1063092); // Your opponent lands another Death Strike!
+                defender.SendMessage("Seu oponente te deu outro toque da morte"); // Your opponent lands another Death Strike!
 
                 info = (DeathStrikeInfo)m_Table[defender];
 
@@ -95,10 +98,12 @@ namespace Server.Spells.Ninjitsu
             }
             else
             {
-                defender.SendLocalizedMessage(1063093); // You have been hit by a Death Strike!  Move with caution!
+              
+                defender.SendMessage("Voce foi atingido pelo toque da morte. Evite se movimentar muito ou sofrera !"); // You have been hit by a Death Strike!  Move with caution!
             }
+            defender.NonlocalOverheadMessage(MessageType.Regular, 0, false, "* ofegante *");
 
-            attacker.SendLocalizedMessage(1063094); // You inflict a Death Strike upon your opponent!
+            attacker.SendMessage("Voce atingiu seu inimigo com o toque da morte"); // You inflict a Death Strike upon your opponent!
 
             defender.FixedParticles(0x374A, 1, 17, 0x26BC, EffectLayer.Waist);
             attacker.PlaySound(attacker.Female ? 0x50D : 0x50E);
@@ -107,10 +112,11 @@ namespace Server.Spells.Ninjitsu
             info.m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(5.0), new TimerStateCallback(ProcessDeathStrike), defender);
 
             m_Table[defender] = info;
-            
-            BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.DeathStrike, 1075645, TimeSpan.FromSeconds(5.0), defender, String.Format("{0}", damageBonus)));
 
+            BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.DeathStrike, 1075645, TimeSpan.FromSeconds(5.0), defender, String.Format("{0}", damageBonus)));
+            this.mult = 3;
             this.CheckGain(attacker);
+
         }
 
         private static void ProcessDeathStrike(object state)
@@ -141,15 +147,28 @@ namespace Server.Spells.Ninjitsu
                     damage = (int)Math.Floor(Math.Min(30, (ninjitsu / 9) * (0.3 + 0.7 * scalar) + stalkingBonus));
 
                 if (info.m_isRanged)
+                    damage /= 4;
+                else
                     damage /= 2;
             }
             else
             {
-                int divisor = (info.m_Steps >= 5) ? 30 : 80;
+                /*
+                int divisor = (info.m_Steps >= 5) ? 40 : 80;
                 double baseDamage = ninjitsu / divisor * 10;
-
-                maxDamage = (info.m_Steps >= 5) ? 62 : 22; // DamageBonus is 8 at most. That brings the cap up to 70/30.
+                Shard.Debug("STEPS: " + info.m_Steps);
+                maxDamage = 50; // DamageBonus is 8 at most. That brings the cap up to 70/30.
                 damage = Math.Max(0, Math.Min(maxDamage, (int)(baseDamage + stalkingBonus))) + info.m_DamageBonus;
+                */
+                var passos = info.m_Steps > 5 ? 5 : info.m_Steps;
+                var dano = passos * (ninjitsu / 14);
+                dano += stalkingBonus;
+
+                if (info.m_isRanged)
+                    damage /= 4;
+                else
+                    damage /= 2;
+                damage = (int)dano;
             }
 
             if (Core.ML)
@@ -182,10 +201,7 @@ namespace Server.Spells.Ninjitsu
 
         public static void Initialize()
         {
-            if (Core.SE)
-            {
-                EventSink.Movement += new MovementEventHandler(EventSink_Movement);
-            }
+            EventSink.Movement += new MovementEventHandler(EventSink_Movement);
         }
 
         public static void EventSink_Movement(MovementEventArgs e)

@@ -2,6 +2,7 @@ using System;
 
 namespace Server.Items
 {
+    //Based Off Kryss
     [FlipableAttribute(0x48BC, 0x48BD)]
     public class GargishKryss : BaseSword
     {
@@ -9,7 +10,7 @@ namespace Server.Items
         public GargishKryss()
             : base(0x48BC)
         {
-            Weight = 2.0;
+            this.Weight = 2.0;
         }
 
         public GargishKryss(Serial serial)
@@ -160,13 +161,18 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
+
+            if (this.Weight == 1.0)
+                this.Weight = 2.0;
         }
     }
 }

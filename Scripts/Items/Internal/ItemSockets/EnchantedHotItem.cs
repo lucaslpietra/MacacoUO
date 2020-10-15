@@ -1,3 +1,4 @@
+using Server.Services;
 using System;
 
 namespace Server.Items
@@ -21,19 +22,23 @@ namespace Server.Items
 
         protected override void OnTick()
         {
+            var mob = Owner.RootParent as Mobile;
             if (Owner == null || Owner.Deleted)
             {
                 EndTimer();
             }
-            else if (Owner.RootParent is Mobile)
+            else if (mob != null)
             {
-                if (((Mobile)Owner.RootParent).Region.IsPartOf("Wrong"))
+                if (mob.Region.IsPartOf("Wrong"))
                 {
-                    AOS.Damage((Mobile)Owner.RootParent, Utility.RandomMinMax(10, 13), 0, 100, 0, 0, 0);
+                    var n = Utility.RandomMinMax(3, 6);
+                    mob.Damage(n);
+                    DamageNumbers.ShowDamage(n, mob, mob, 2736);
+                    //AOS.Damage((Mobile)Owner.RootParent, Utility.RandomMinMax(3, 10), 0, 100, 0, 0, 0);
 
-                    if (0.2 > Utility.RandomDouble())
+                    if (0.1 > Utility.RandomDouble())
                     {
-                        ((Mobile)Owner.RootParent).SendLocalizedMessage(1152086); // Ouch! These stolen items are hot!
+                        mob.SendLocalizedMessage("Que item estranho que eh quente assim ?"); // Ouch! These stolen items are hot!
                     }
                 }
             }
@@ -41,8 +46,8 @@ namespace Server.Items
 
         public override void GetProperties(ObjectPropertyList list)
         {
-            list.Add(1152081); // Enchanted Hot Item
-            list.Add(1152082); // (Escape from dungeon to remove spell)
+            //list.Add(1152081); // Enchanted Hot Item
+            list.AddThreeValues("Item Quente", "Escape da Prisao", "Fique com o item"); // (Escape from dungeon to remove spell)
         }
 
         public override void OnRemoved()
@@ -63,6 +68,22 @@ namespace Server.Items
             {
                 Container = ((EnchantedHotItemSocket)oldSocket).Container;
             }
+        }
+
+        public static bool TemHotItem(Mobile m)
+        {
+            bool found = false;
+
+            m.Backpack.Items.IterateReverse(i =>
+            {
+                var socket = i.GetSocket<EnchantedHotItemSocket>();
+
+                if (socket != null)
+                {
+                    found = true;
+                }
+            });
+            return found;
         }
 
         public static void OnEnterRegion(OnEnterRegionEventArgs e)

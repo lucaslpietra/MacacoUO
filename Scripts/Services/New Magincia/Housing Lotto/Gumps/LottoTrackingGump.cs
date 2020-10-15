@@ -78,7 +78,7 @@ namespace Server.Engines.NewMagincia
         {
             Mobile from = state.Mobile;
 
-            if (info.ButtonID >= 5 && from.AccessLevel > AccessLevel.Player)
+            if (info.ButtonID >= 5 && from.AccessLevel > AccessLevel.VIP)
             {
                 int index = info.ButtonID - 5;
 

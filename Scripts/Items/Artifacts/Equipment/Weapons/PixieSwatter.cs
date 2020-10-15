@@ -14,7 +14,7 @@ namespace Server.Items
             WeaponAttributes.UseBestSkill = 1;
             WeaponAttributes.ResistFireBonus = 12;
             WeaponAttributes.ResistEnergyBonus = 12;
-            Slayer = SlayerName.Fey;
+            Slayer = SlayerName.Fadas;
         }
 
         public PixieSwatter(Serial serial)

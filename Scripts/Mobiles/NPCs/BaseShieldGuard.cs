@@ -10,7 +10,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Melee, FightMode.Aggressor, 14, 1, 0.8, 1.6)
         {
             this.InitStats(1000, 1000, 1000);
-            this.Title = "the guard";
+            this.Title = "o guarda";
 
             this.SpeechHue = Utility.RandomDyedHue();
 

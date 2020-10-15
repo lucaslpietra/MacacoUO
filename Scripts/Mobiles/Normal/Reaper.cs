@@ -1,5 +1,6 @@
 using System;
 using Server.Items;
+using Server.Spells;
 
 namespace Server.Mobiles
 {
@@ -10,7 +11,7 @@ namespace Server.Mobiles
         public Reaper()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a reaper";
+            this.Name = "ente";
             this.Body = 47;
             this.BaseSoundID = 442;
 
@@ -21,7 +22,7 @@ namespace Server.Mobiles
             this.SetHits(40, 129);
             this.SetStam(0);
 
-            this.SetDamage(9, 11);
+            this.SetDamage(9, 15);
 
             this.SetDamageType(ResistanceType.Physical, 80);
             this.SetDamageType(ResistanceType.Poison, 20);
@@ -43,13 +44,82 @@ namespace Server.Mobiles
 
             this.VirtualArmor = 40;
 
+            var r = Utility.Random(20);
+            if(r==1)
+            {
+                Name = "ente gelido";
+                Hue = 1154;
+                this.SetDamage(20, 40);
+                this.PackItem(new FrostwoodLog(5));
+            }
+          
             this.PackItem(new Log(10));
             this.PackItem(new MandrakeRoot(5));
+
+            SetWeaponAbility(WeaponAbility.MortalStrike);
         }
 
         public Reaper(Serial serial)
             : base(serial)
         {
+        }
+
+        public override void OnThink()
+        {
+            if (this.Combatant != null && this.Combatant.InRange2D(this.Location, 14))
+            {
+                if (this.Combatant.GetDistance(this.Location) <= 2)
+                    return;
+
+                if (!this.IsCooldown("omnoma"))
+                {
+                    this.SetCooldown("omnoma", TimeSpan.FromSeconds(1.5));
+                }
+                else
+                {
+                    return;
+                }
+
+                if (!this.InLOS(this.Combatant))
+                {
+                    return;
+                }
+
+                var defender = (Mobile)this.Combatant;
+                SpellHelper.Turn(this, defender);
+                var locPlayerGo = Corpser.GetPoint(defender, this.Direction);
+                if (defender.Map.CanFit(locPlayerGo, locPlayerGo.Z))
+                {
+                    this.PlayAttackAnimation();
+                    this.MovingParticles(defender, 0x0D3B, 15, 0, false, false, 9502, 4019, 0x160);
+                    Timer.DelayCall(TimeSpan.FromMilliseconds(400), () =>
+                    {
+                        defender.Freeze(TimeSpan.FromMilliseconds(600));
+                        Timer.DelayCall(TimeSpan.FromMilliseconds(400), () =>
+                        {
+                            defender.MovingParticles(this, 0x0D3B, 15, 0, false, false, 9502, 4019, 0x160);
+                            defender.SendMessage("A arvore joga uma vinha");
+                            defender.MoveToWorld(locPlayerGo, defender.Map);
+                            if (!this.IsCooldown("omnom"))
+                            {
+                                this.SetCooldown("omnom", TimeSpan.FromSeconds(10));
+                                this.OverheadMessage("* nhac nhac *");
+                            }
+                        });
+                    });
+
+                }
+            }
+            base.OnThink();
+        }
+
+        public override void OnGaveMeleeAttack(Mobile defender)
+        {
+            if(!BleedAttack.IsBleeding(defender))
+            {
+                BleedAttack.BeginBleed(defender, this, true);
+            }
+
         }
 
         public override Poison PoisonImmune
@@ -59,6 +129,7 @@ namespace Server.Mobiles
                 return Poison.Greater;
             }
         }
+
         public override int TreasureMapLevel
         {
             get
@@ -66,6 +137,7 @@ namespace Server.Mobiles
                 return 2;
             }
         }
+
         public override bool DisallowAllMoves
         {
             get
@@ -73,6 +145,7 @@ namespace Server.Mobiles
                 return true;
             }
         }
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Average);

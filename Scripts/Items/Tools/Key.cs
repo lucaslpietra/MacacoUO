@@ -14,13 +14,14 @@ namespace Server.Items
         Rusty = 0x1013
     }
 
-    public interface ILockable
+    public interface ILockable 
     {
         bool Locked { get; set; }
         uint KeyValue { get; set; }
+        bool CanUseKey { get; set; }
     }
 
-    public class Key : Item, IResource, IQuality
+    public class Key : Item, IResource
     {
         private string m_Description;
         private uint m_KeyVal;
@@ -288,8 +289,10 @@ namespace Server.Items
             from.Target = t;
         }
 
-        public override void AddCraftedProperties(ObjectPropertyList list)
+        public override void GetProperties(ObjectPropertyList list)
         {
+            base.GetProperties(list);
+
             string desc;
 
             if (m_KeyVal == 0)
@@ -313,7 +316,7 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            if (_Resource > CraftResource.Iron)
+            if (_Resource > CraftResource.Ferro)
             {
                 list.Add(1053099, "#{0}\t{1}", CraftResources.GetLocalizationNumber(_Resource), String.Format("#{0}", LabelNumber.ToString())); // ~1_oretype~ ~2_armortype~
             }
@@ -379,6 +382,12 @@ namespace Server.Items
                     if (o is Item)
                     {
                         Item item = (Item)o;
+
+                        if (!o.CanUseKey)
+                        {
+                            item.PrivateMessage("Voce nao pode usar isto aqui", from);
+                            return false;
+                        }
 
                         if (o.Locked)
                             item.SendLocalizedMessageTo(from, 1048000); // You lock it.
@@ -457,12 +466,6 @@ namespace Server.Items
                 }
                 else if (targeted is ILockable)
                 {
-                    if (targeted is Plank && ((Plank)targeted).IsOpen)
-                    {
-                        ((Item)targeted).SendLocalizedMessageTo(from, 501671); // You cannot currently lock that.
-                        return;
-                    }
-
                     if (m_Key.UseOn(from, (ILockable)targeted))
                         number = -1;
                     else
@@ -507,7 +510,7 @@ namespace Server.Items
                     {
                         number = 501675; // This key is also blank.
                     }
-                    else if (from.CheckTargetSkill(SkillName.Tinkering, k, 0, 75.0))
+                    else if (from.CheckTargetSkillMinMax(SkillName.Tinkering, k, 0, 75.0))
                     {
                         number = 501676; // You make a copy of the key.
 

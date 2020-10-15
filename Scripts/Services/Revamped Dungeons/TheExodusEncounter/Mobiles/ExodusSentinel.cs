@@ -51,16 +51,6 @@ namespace Server.Mobiles
             this.AddLoot(LootPack.Rich);
         }
 
-        public override void OnKilledBy(Mobile m)
-        {
-            base.OnKilledBy(m);
-
-            if (Utility.RandomDouble() < 0.1)
-            {
-                ExodusChest.GiveRituelItem(m);
-            }            
-        }
-
         public ExodusSentinel(Serial serial) : base(serial)
         {
         }

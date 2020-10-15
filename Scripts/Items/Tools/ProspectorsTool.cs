@@ -12,6 +12,7 @@ namespace Server.Items
         public ProspectorsTool()
             : base(0xFB4)
         {
+            Name = "Marreta Mineradora Magica";
             Weight = 10.0;
             UsesRemaining = 50;
             ShowUsesRemaining = true;
@@ -60,7 +61,7 @@ namespace Server.Items
 
             if (!system.GetHarvestDetails(from, this, toProspect, out tileID, out map, out loc))
             {
-                from.SendLocalizedMessage(1049048); // You cannot use your prospector tool on that.
+                from.SendMessage("Voce nao pode usar isto ali"); // You cannot use your prospector tool on that.
                 return;
             }
 
@@ -68,7 +69,7 @@ namespace Server.Items
 
             if (def == null || def.Veins.Length <= 1)
             {
-                from.SendLocalizedMessage(1049048); // You cannot use your prospector tool on that.
+                from.SendMessage("Voce nao pode usar isto ali");// You cannot use your prospector tool on that.
                 return;
             }
 
@@ -76,7 +77,7 @@ namespace Server.Items
 
             if (bank == null)
             {
-                from.SendLocalizedMessage(1049048); // You cannot use your prospector tool on that.
+                from.SendMessage("Voce nao pode usar isto ali"); // You cannot use your prospector tool on that.
                 return;
             }
 
@@ -84,12 +85,12 @@ namespace Server.Items
 
             if (vein == null || defaultVein == null)
             {
-                from.SendLocalizedMessage(1049048); // You cannot use your prospector tool on that.
+                from.SendMessage("Voce nao pode usar isto ali"); // You cannot use your prospector tool on that.
                 return;
             }
             else if (vein != defaultVein)
             {
-                from.SendLocalizedMessage(1049049); // That ore looks to be prospected already.
+                from.SendMessage("Este local ja foi melhorado"); // That ore looks to be prospected already.
                 return;
             }
 
@@ -97,22 +98,22 @@ namespace Server.Items
 
             if (veinIndex < 0)
             {
-                from.SendLocalizedMessage(1049048); // You cannot use your prospector tool on that.
+                from.SendMessage("Voce nao pode usar isto ali"); // You cannot use your prospector tool on that.
             }
             else if (veinIndex >= (def.Veins.Length - 1))
             {
-                from.SendLocalizedMessage(1049061); // You cannot improve valorite ore through prospecting.
+                from.SendMessage("Este ja e o melhor minerio"); // You cannot improve valorite ore through prospecting.
             }
             else
             {
                 bank.Vein = def.Veins[veinIndex + 1];
-                from.SendLocalizedMessage(1049050 + veinIndex);
-
+                from.SendMessage("Voce agora pode encontrar minerios melhores ali");
+                from.SendMessage("Use Forensics Eval no local para saber os minerios que tem ali");
                 --UsesRemaining;
 
                 if (UsesRemaining <= 0)
                 {
-                    from.SendLocalizedMessage(1049062); // You have used up your prospector's tool.
+                    from.SendMessage("Sua ferramenta quebrou"); // You have used up your prospector's tool.
                     Delete();
                 }
             }

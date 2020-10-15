@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public OphidianMatriarch()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an ophidian matriarch";
+            this.Name = "matriarca ophidiana";
             this.Body = 87;
             this.BaseSoundID = 644;
 
@@ -17,9 +17,9 @@ namespace Server.Mobiles
             this.SetDex(96, 115);
             this.SetInt(366, 455);
 
-            this.SetHits(250, 303);
+            this.SetHits(350, 403);
 
-            this.SetDamage(11, 13);
+            this.SetDamage(11, 19);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
@@ -54,6 +54,7 @@ namespace Server.Mobiles
                 return Poison.Greater;
             }
         }
+
         public override int TreasureMapLevel
         {
             get

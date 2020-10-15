@@ -112,7 +112,7 @@ namespace Server.Factions
                 }
                 else
                 {
-                    AddHtmlLocalized(200, 55 + (i * 30), 150, 20, town.Owner.Definition.OwnerLabel, false, false);
+                    AddHtmlLocalized(200, 55 + (i * 30), 150, 20, town.Owner.Definition.OwnerLabel, 0, false, false);
 
                     BaseMonolith monolith = town.Monolith;
 
@@ -308,7 +308,7 @@ namespace Server.Factions
                             }
                             else if (MerchantTitles.IsQualified(m_From, mti))
                             {
-                                m_From.SendLocalizedMessage(mti.Assigned);
+                                m_From.SendLocalizedMessage(mti.Assigned.Number);
 
                                 if (pl != null)
                                     pl.MerchantTitle = newTitle;

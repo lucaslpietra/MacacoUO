@@ -7,8 +7,7 @@ namespace Server.Mobiles
     { 
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         [Constructable]
-        public InnKeeper()
-            : base("the innkeeper")
+        public InnKeeper() : base("o hoteleiro")
         { 
         }
 

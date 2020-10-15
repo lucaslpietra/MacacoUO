@@ -32,7 +32,7 @@ namespace Server.Gumps
             this.AddItem(195, 90, 0xCAD);
             this.AddItem(218, 95, 0xCB0);
 
-            this.AddHtmlLocalized(30, 30, 150, 75, 1049665, false, false); // <div align=center>Wilt thou sanctify the resurrection of:</div>
+            this.AddHtml(30, 30, 150, 75, "Santificar o ress de", false, false); // <div align=center>Wilt thou sanctify the resurrection of:</div>
             this.AddHtml(30, 70, 150, 25, String.Format("<div align=CENTER>{0}</div>", pet.Name), true, false);
 
             this.AddButton(40, 105, 0x81A, 0x81B, 0x1, GumpButtonType.Reply, 0); // Okay
@@ -50,7 +50,7 @@ namespace Server.Gumps
             {
                 if (this.m_Pet.Map == null || !this.m_Pet.Map.CanFit(this.m_Pet.Location, 16, false, false))
                 {
-                    from.SendLocalizedMessage(503256); // You fail to resurrect the creature.
+                    from.SendLocalizedMessage("Voce falhou"); // You fail to resurrect the creature.
                     return;
                 }
                 else if (this.m_Pet.Region != null && this.m_Pet.Region.IsPartOf("Khaldun"))	//TODO: Confirm for pets, as per Bandage's script.

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server.Items;
 using System.Collections;
 
@@ -100,7 +100,7 @@ namespace Server.Mobiles
                 IPooledEnumerable eable = m_Owner.GetMobilesInRange(9);
                 foreach (Mobile m in eable)
                 {
-                    if (m == null || m is DiabolicalSeaweed || !m_Owner.CanBeHarmful(m) || m.AccessLevel == AccessLevel.Player)
+                    if (m == null || m is DiabolicalSeaweed || !m_Owner.CanBeHarmful(m) || m.AccessLevel <= AccessLevel.VIP)
                         continue;
 
                     int offsetX = Math.Abs(m.Location.X - m_Owner.Location.X);

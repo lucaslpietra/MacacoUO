@@ -24,8 +24,8 @@ namespace Server.Engines.VvV
                 switch (this.SteedType)
                 {
                     default:
-                    case SteedType.Ostard: return new VvVMount("a war ostard", 0xDA, 0x3EA4, this.Hue);
-                    case SteedType.WarHorse: return new VvVMount("a war horse", 0xE2, 0x3EA0, this.Hue);
+                    case SteedType.Ostard: return new VvVMount("ostard de guerra", 0xDA, 0x3EA4, this.Hue);
+                    case SteedType.WarHorse: return new VvVMount("cavalo de guerra", 0xE2, 0x3EA0, this.Hue);
                 }
             }
         }
@@ -48,7 +48,7 @@ namespace Server.Engines.VvV
         {
             if (!ViceVsVirtueSystem.IsVvV(m))
             {
-                m.SendLocalizedMessage(1155496); // This item can only be used by VvV participants!
+                m.SendLocalizedMessage("Este item so pode ser usado para jogadores da Guerra Infinita"); // This item can only be used by VvV participants!
                 return;
             }
 
@@ -114,7 +114,7 @@ namespace Server.Engines.VvV
 					Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
 					{
                         if(!Deleted && ControlMaster != null)
-						    ControlMaster.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, cliloc, ControlMaster.NetState);
+						    ControlMaster.PrivateOverheadMessage(Server.Network.MessageType.Regular,0,true, "Batalha: "+ _Readiness+"/20", ControlMaster.NetState);
 					});
 				}
 				
@@ -229,7 +229,7 @@ namespace Server.Engines.VvV
         public override bool CanTransfer(Mobile m)
         {
             if (ControlMaster != null && ControlMaster.NetState != null)
-                ControlMaster.SendLocalizedMessage(1155547); // Pets obtained from VvV are non-transferable.
+                ControlMaster.SendLocalizedMessage("Nao pode transferir pets da Guerra Infinita"); // Pets obtained from VvV are non-transferable.
 
             return false;
         }
@@ -237,7 +237,7 @@ namespace Server.Engines.VvV
         public override bool CanFriend(Mobile m)
         {
             if (ControlMaster != null && ControlMaster.NetState != null)
-                ControlMaster.SendLocalizedMessage(1155548); // You may not add friends to a VvV War Steed.
+                ControlMaster.SendLocalizedMessage("Nao pode transferir pets da Guerra Infinita"); // You may not add friends to a VvV War Steed.
 
             return false;
         }

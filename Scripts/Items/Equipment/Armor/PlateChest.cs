@@ -11,7 +11,8 @@ namespace Server.Items
         public PlateChest()
             : base(0x1415)
         {
-            Weight = 10.0;
+            this.Weight = 10.0;
+            this.Name = "Peitoral de Metal";
         }
 
         public PlateChest(Serial serial)
@@ -19,11 +20,20 @@ namespace Server.Items
         {
         }
 
+        public override int MaxMageryCircle { get { return 3; } }
+
         public override int BasePhysicalResistance
         {
             get
             {
                 return 5;
+            }
+        }
+        public override int OldDexBonus
+        {
+            get
+            {
+                return -10;
             }
         }
         public override int BaseFireResistance
@@ -79,21 +89,14 @@ namespace Server.Items
         {
             get
             {
-                return 60;
-            }
-        }
-        public override int OldDexBonus
-        {
-            get
-            {
-                return -8;
+                return 80;
             }
         }
         public override int ArmorBase
         {
             get
             {
-                return 40;
+                return 60;
             }
         }
         public override ArmorMaterialType MaterialType
@@ -113,6 +116,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (this.Weight == 1.0)
+                this.Weight = 10.0;
         }
     }
 }

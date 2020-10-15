@@ -27,6 +27,7 @@ namespace Server.Items
             : base(0x175D)
         {
             Hue = 2001;
+            Stackable = true;
         }
 
         public bool Dye(Mobile from, DyeTub sender)
@@ -44,7 +45,8 @@ namespace Server.Items
             if (Deleted || !from.CanSee(this))
                 return false;
 
-            base.ScissorHelper(from, new Bandage(), 1);
+            from.SendMessage("Talvez algum alfaiate saiba criar bandagens...");
+            //base.ScissorHelper(from, new Bandage(), 1);
 
             return true;
         }
@@ -107,7 +109,7 @@ namespace Server.Items
 
                     from.SendLocalizedMessage(1040006); // You wipe away all of your body paint.
 
-                    Consume();
+                    Consume(1);
                 }
                 else
                 {
@@ -127,7 +129,7 @@ namespace Server.Items
                     beverage.ReplaceWith(bomb);
 
                     from.SendLocalizedMessage(1060580); // You prepare a firebomb.
-                    Consume();
+                    Consume(1);
                 }
             }
             else if (obj is Meteorite && !((Meteorite)obj).Polished)

@@ -14,13 +14,22 @@ namespace Server.Items
 		{
             Hue = 1191;
 			Attributes.SpellChanneling = 1;
+            Name = "Lamina de Coleta";
 		}
 	
 		public HarvestersBlade(Serial serial) : base(serial)
 		{
 		}
-		
-		public override void Serialize(GenericWriter writer)
+
+        public override void AddNameProperties(ObjectPropertyList list)
+        {
+            base.AddNameProperties(list);
+
+            list.Add("Coleta Recursos Melhor");
+        }
+
+
+        public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
 			writer.Write((int)1);
@@ -216,8 +225,10 @@ namespace Server.Items
             }
         }
 
-        public override void AddUsesRemainingProperties(ObjectPropertyList list)
+        public override void GetProperties(ObjectPropertyList list)
         {
+            base.GetProperties(list);
+
             if(ShowUsesRemaining)
                 list.Add(1049116, m_UsesRemaining.ToString()); // [ Charges: ~1_CHARGES~ ]
         }

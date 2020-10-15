@@ -19,7 +19,7 @@ namespace Server.Items
 		{
             if (from.InRange(this.Location, 3))
             {
-                if (from.AccessLevel == AccessLevel.Player && IsInCooldown(from))
+                if (from.AccessLevel <= AccessLevel.VIP && IsInCooldown(from))
                     from.SendLocalizedMessage(1113413); // You have recently participated in this challenge. You must wait 24 hours to try again.
                 else if (from.Backpack != null)
                 {
@@ -32,7 +32,7 @@ namespace Server.Items
                         from.AddToBackpack(new UnderworldPuzzleItem());
                         from.SendMessage("You recieve a puzzle piece.");
 
-                        if (from.AccessLevel == AccessLevel.Player)
+                        if (from.AccessLevel <= AccessLevel.VIP)
                             m_Table[from] = DateTime.UtcNow + TimeSpan.FromHours(24);
                     }
                 }

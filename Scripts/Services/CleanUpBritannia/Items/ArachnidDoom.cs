@@ -9,7 +9,7 @@ namespace Server.Items
         {
             this.Hue = 1944;
             this.Weight = 4;
-            this.Slayer = SlayerName.ArachnidDoom;
+            this.Slayer = SlayerName.Aracnideos;
 
             UsesRemaining = 450;
         }       

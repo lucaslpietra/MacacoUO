@@ -33,27 +33,27 @@ namespace Server.Items
             {
                 if (Factions.Sigil.ExistsOn(from))
                 {
-                    from.SendLocalizedMessage(1010465); // You cannot disguise yourself while holding a sigil.
+                    from.SendMessage("Nessa forma nao neh..."); // You cannot disguise yourself while holding a sigil.
                 }
                 else if (!from.CanBeginAction(typeof(Spells.Fifth.IncognitoSpell)))
                 {
-                    from.SendLocalizedMessage(501698); // You cannot disguise yourself while incognitoed.
+                    from.SendMessage("Nessa forma nao neh..."); // You cannot disguise yourself while incognitoed.
                 }
                 else if (!from.CanBeginAction(typeof(Spells.Seventh.PolymorphSpell)))
                 {
-                    from.SendLocalizedMessage(501699); // You cannot disguise yourself while polymorphed.
+                    from.SendMessage("Nessa forma nao neh..."); // You cannot disguise yourself while polymorphed.
                 }
                 else if (TransformationSpellHelper.UnderTransformation(from))
                 {
-                    from.SendLocalizedMessage(501699); // You cannot disguise yourself while polymorphed.
+                    from.SendMessage("Nessa forma nao neh..."); // You cannot disguise yourself while polymorphed.
                 }
                 else if (Spells.Ninjitsu.AnimalForm.UnderTransformation(from))
                 {
-                    from.SendLocalizedMessage(1061634); // You cannot disguise yourself while in that form.
+                    from.SendMessage("Nessa forma nao neh..."); // You cannot disguise yourself while in that form.
                 }
                 else if (from.IsBodyMod || from.FindItemOnLayer(Layer.Helm) is OrcishKinMask)
                 {
-                    from.SendLocalizedMessage(501605); // You are already disguised.
+                    from.SendMessage("Voce ja esta disfarcado"); // You are already disguised.
                 }
                 else
                 {
@@ -63,8 +63,8 @@ namespace Server.Items
                     if (from is PlayerMobile)
                         ((PlayerMobile)from).SavagePaintExpiration = TimeSpan.FromDays(7.0);
 
-                    from.SendLocalizedMessage(1042537); // You now bear the markings of the savage tribe.  Your body paint will last about a week or you can remove it with an oil cloth.
-
+                    from.SendMessage("Voce agora tem as marcas tribais"); // You now bear the markings of the savage tribe.  Your body paint will last about a week or you can remove it with an oil cloth.
+                    from.SendMessage("A tinta dura uma semana e pode ser removida com Pano com Oleo");
                     this.Consume();
                 }
             }

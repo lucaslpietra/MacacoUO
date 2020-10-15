@@ -9,6 +9,7 @@ namespace Server.Spells
         UseRequest,
         Hurt,
         Kill,
-        NewCast
+        NewCast,
+        Moved
     }
 }

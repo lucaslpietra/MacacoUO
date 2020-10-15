@@ -10,6 +10,7 @@ namespace Server.Items
 		[Constructable]
 		public MetalKeg()
 		{
+            this.Name = "Barril de Pocoes de Metal";
 		}
 
 		public MetalKeg( Serial serial ) : base( serial )

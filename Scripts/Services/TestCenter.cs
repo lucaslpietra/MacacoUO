@@ -184,7 +184,7 @@ namespace Server.Misc
         private static Item MakeNewbie(Item item)
         {
             if (!Core.AOS)
-                item.LootType = LootType.Newbied;
+                item.LootType = LootType.Blessed;
 
             return item;
         }
@@ -223,10 +223,10 @@ namespace Server.Misc
             cont = new Backpack();
             cont.Name = "Various Potion Kegs";
 
-            PlaceItemIn(cont, 45, 149, MakePotionKeg(PotionEffect.CureGreater, 0x2D));
-            PlaceItemIn(cont, 69, 149, MakePotionKeg(PotionEffect.HealGreater, 0x499));
-            PlaceItemIn(cont, 93, 149, MakePotionKeg(PotionEffect.PoisonDeadly, 0x46));
-            PlaceItemIn(cont, 117, 149, MakePotionKeg(PotionEffect.RefreshTotal, 0x21));
+            PlaceItemIn(cont, 45, 149, MakePotionKeg(PotionEffect.CuraMaior, 0x2D));
+            PlaceItemIn(cont, 69, 149, MakePotionKeg(PotionEffect.VidaForte, 0x499));
+            PlaceItemIn(cont, 93, 149, MakePotionKeg(PotionEffect.VenenoMortal, 0x46));
+            PlaceItemIn(cont, 117, 149, MakePotionKeg(PotionEffect.StaminaTotal, 0x21));
             PlaceItemIn(cont, 141, 149, MakePotionKeg(PotionEffect.ExplosionGreater, 0x74));
 
             PlaceItemIn(cont, 93, 82, new Bottle(1000));
@@ -249,18 +249,18 @@ namespace Server.Misc
             PlaceItemIn(cont, 60, 118, new FletcherTools(1000));
             PlaceItemIn(cont, 90, 118, new SewingKit(1000));
 
-            PlaceItemIn(cont, 36, 51, new RunicHammer(CraftResource.DullCopper, 1000));
-            PlaceItemIn(cont, 42, 51, new RunicHammer(CraftResource.ShadowIron, 1000));
-            PlaceItemIn(cont, 48, 51, new RunicHammer(CraftResource.Copper, 1000));
+            PlaceItemIn(cont, 36, 51, new RunicHammer(CraftResource.Berilo, 1000));
+            PlaceItemIn(cont, 42, 51, new RunicHammer(CraftResource.Vibranium, 1000));
+            PlaceItemIn(cont, 48, 51, new RunicHammer(CraftResource.Cobre, 1000));
             PlaceItemIn(cont, 54, 51, new RunicHammer(CraftResource.Bronze, 1000));
-            PlaceItemIn(cont, 61, 51, new RunicHammer(CraftResource.Gold, 1000));
-            PlaceItemIn(cont, 67, 51, new RunicHammer(CraftResource.Agapite, 1000));
-            PlaceItemIn(cont, 73, 51, new RunicHammer(CraftResource.Verite, 1000));
-            PlaceItemIn(cont, 79, 51, new RunicHammer(CraftResource.Valorite, 1000));
+            PlaceItemIn(cont, 61, 51, new RunicHammer(CraftResource.Dourado, 1000));
+            PlaceItemIn(cont, 67, 51, new RunicHammer(CraftResource.Niobio, 1000));
+            PlaceItemIn(cont, 73, 51, new RunicHammer(CraftResource.Lazurita, 1000));
+            PlaceItemIn(cont, 79, 51, new RunicHammer(CraftResource.Quartzo, 1000));
 
-            PlaceItemIn(cont, 36, 55, new RunicSewingKit(CraftResource.SpinedLeather, 1000));
-            PlaceItemIn(cont, 42, 55, new RunicSewingKit(CraftResource.HornedLeather, 1000));
-            PlaceItemIn(cont, 48, 55, new RunicSewingKit(CraftResource.BarbedLeather, 1000));
+            PlaceItemIn(cont, 36, 55, new RunicSewingKit(CraftResource.CouroSpinned, 1000));
+            PlaceItemIn(cont, 42, 55, new RunicSewingKit(CraftResource.CouroHorned, 1000));
+            PlaceItemIn(cont, 48, 55, new RunicSewingKit(CraftResource.CouroBarbed, 1000));
 
             PlaceItemIn(bank, 118, 169, cont);
             // End bag of tools
@@ -313,14 +313,14 @@ namespace Server.Misc
             PlaceItemIn(cont, 30, 84, new Board(5000));
             PlaceItemIn(cont, 57, 80, new BlankScroll(500));
 
-            PlaceItemIn(cont, 30, 35, new DullCopperIngot(5000));
-            PlaceItemIn(cont, 37, 35, new ShadowIronIngot(5000));
+            PlaceItemIn(cont, 30, 35, new BeriloIngot(5000));
+            PlaceItemIn(cont, 37, 35, new VibraniumIngot(5000));
             PlaceItemIn(cont, 44, 35, new CopperIngot(5000));
             PlaceItemIn(cont, 51, 35, new BronzeIngot(5000));
-            PlaceItemIn(cont, 58, 35, new GoldIngot(5000));
-            PlaceItemIn(cont, 65, 35, new AgapiteIngot(5000));
-            PlaceItemIn(cont, 72, 35, new VeriteIngot(5000));
-            PlaceItemIn(cont, 79, 35, new ValoriteIngot(5000));
+            PlaceItemIn(cont, 58, 35, new SilverIngot(5000));
+            PlaceItemIn(cont, 65, 35, new NiobioIngot(5000));
+            PlaceItemIn(cont, 72, 35, new LazuritaIngot(5000));
+            PlaceItemIn(cont, 79, 35, new QuartzoIngot(5000));
             PlaceItemIn(cont, 86, 35, new IronIngot(5000));
 
             PlaceItemIn(cont, 30, 59, new RedScales(5000));
@@ -618,14 +618,14 @@ namespace Server.Misc
             bank.DropItem(MakeNewbie(new Log(1000)));
 
             bank.DropItem(MakeNewbie(new IronIngot(5000)));
-            bank.DropItem(MakeNewbie(new DullCopperIngot(5000)));
-            bank.DropItem(MakeNewbie(new ShadowIronIngot(5000)));
+            bank.DropItem(MakeNewbie(new BeriloIngot(5000)));
+            bank.DropItem(MakeNewbie(new VibraniumIngot(5000)));
             bank.DropItem(MakeNewbie(new CopperIngot(5000)));
             bank.DropItem(MakeNewbie(new BronzeIngot(5000)));
-            bank.DropItem(MakeNewbie(new GoldIngot(5000)));
-            bank.DropItem(MakeNewbie(new AgapiteIngot(5000)));
-            bank.DropItem(MakeNewbie(new VeriteIngot(5000)));
-            bank.DropItem(MakeNewbie(new ValoriteIngot(5000)));
+            bank.DropItem(MakeNewbie(new SilverIngot(5000)));
+            bank.DropItem(MakeNewbie(new NiobioIngot(5000)));
+            bank.DropItem(MakeNewbie(new LazuritaIngot(5000)));
+            bank.DropItem(MakeNewbie(new QuartzoIngot(5000)));
 
             // Reagents
             bank.DropItem(MakeNewbie(new BlackPearl(1000)));

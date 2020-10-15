@@ -20,7 +20,7 @@ namespace Server.Mobiles
 			: base(target)
 		{
 			InitStats(100, 125, 25);
-			Title = "the guard";
+			Title = "o guarda";
 
 			SpeechHue = Utility.RandomDyedHue();
 
@@ -61,7 +61,7 @@ namespace Server.Mobiles
 
 			Arrow arrows = new Arrow(250);
 
-			arrows.LootType = LootType.Newbied;
+			arrows.LootType = LootType.Blessed;
 
 			pack.DropItem(arrows);
 			pack.DropItem(new Gold(10, 25));
@@ -106,17 +106,17 @@ namespace Server.Mobiles
 
 					Combatant = value;
 
-					if (oldFocus != null && !oldFocus.Alive)
-					{
-						Say("Thou hast suffered thy punishment, scoundrel.");
-					}
+                    if (oldFocus != null && !oldFocus.Alive)
+                    {
+                        Say("Voce sempre sofrera as consequencias pelos seus crimes, criatura do mal.");
+                    }
 
-					if (value != null)
-					{
-						Say(500131); // Thou wilt regret thine actions, swine!
-					}
+                    if (value != null)
+                    {
+                        Say("O crime nao compensa, seu mal trapilho"); // Thou wilt regret thine actions, swine!
+                    }
 
-					if (m_AttackTimer != null)
+                    if (m_AttackTimer != null)
 					{
 						m_AttackTimer.Stop();
 						m_AttackTimer = null;

@@ -8,6 +8,7 @@ namespace Server.Items
         public BagOfAllReagents()
             : this(50)
         {
+            Name = "Sacola de reagentes para magia";
         }
 
         [Constructable]

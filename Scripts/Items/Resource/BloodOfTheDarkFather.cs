@@ -14,9 +14,16 @@ namespace Server.Items
         public BloodOfTheDarkFather(int amount)
             : base(0x9D7F)
         {
+            Name = "Sangue do Senhor da Escuridao";
             this.Hue = 2741;
             this.Stackable = true;
             this.Amount = amount;
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            from.SendMessage("Isto parece ser algo extremamente raro...");
+            base.OnDoubleClick(from);
         }
 
         public BloodOfTheDarkFather(Serial serial)

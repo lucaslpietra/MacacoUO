@@ -49,8 +49,8 @@ namespace Server.Items
             }
 
             ClearCurrentAbility(attacker);
-            attacker.SendLocalizedMessage(1150281); // You begin trying to strike with both your weapons at once.
-            attacker.SendLocalizedMessage(1150284, true, Duration.TotalSeconds.ToString()); // Remaining Duration (seconds):
+            attacker.SendLocalizedMessage("Voce comeca atacar com as duas armas"); // You begin trying to strike with both your weapons at once.
+            attacker.SendLocalizedMessage("Segundos restantes: "+Duration.TotalSeconds.ToString()); // Remaining Duration (seconds):
 
             DualWieldTimer t = new DualWieldTimer(attacker, .25);
             BuffInfo.AddBuff(attacker, new BuffInfo(BuffIcon.DualWield, 1151294, 1151293, Duration, attacker, "25"));
@@ -70,7 +70,7 @@ namespace Server.Items
         {
             if (m_Registry.ContainsKey(from))
             {
-                from.SendLocalizedMessage(1150285); // You no longer try to strike with both weapons at the same time.
+                from.SendLocalizedMessage("Voce nao esta mais atacando com as duas armas"); // You no longer try to strike with both weapons at the same time.
 
                 m_Registry[from].Stop();
                 m_Registry.Remove(from);

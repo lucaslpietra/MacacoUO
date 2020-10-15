@@ -6,7 +6,7 @@ namespace Server.Mobiles
     public class HirePaladin : BaseHire 
     {
         [Constructable] 
-        public HirePaladin()
+        public HirePaladin(): base(AIType.AI_Paladin)
         {
             SpeechHue = Utility.RandomDyedHue();
             Hue = Utility.RandomSkinHue();
@@ -22,7 +22,9 @@ namespace Server.Mobiles
                 Name = NameList.RandomName("male");
             }
 
-            Title = "the paladin";
+            this.Title = "o paladino ";
+            if (Female)
+                this.Title = "a paladina ";
             HairItemID = Race.RandomHair(Female);
             HairHue = Race.RandomHairHue();
             Race.RandomFacialHair(this);

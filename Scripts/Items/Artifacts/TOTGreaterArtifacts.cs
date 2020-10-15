@@ -454,8 +454,8 @@ namespace Server.Items
             Attributes.Luck = 125;
             Attributes.WeaponDamage = 50;
 
-            Slayer = SlayerName.ElementalBan;
-            Slayer2 = SlayerName.ReptilianDeath;
+            Slayer = SlayerName.Elemental;
+            Slayer2 = SlayerName.Repteis;
         }
 
         public TheHorselord(Serial serial)

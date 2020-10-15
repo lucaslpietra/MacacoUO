@@ -397,6 +397,7 @@ namespace Server.Items
         public ForgedMetal()
             : base(0xFB8)
         {
+            this.Name = "Ferramentas do Joalheiro";
             this.Weight = 5.0;
         }
 

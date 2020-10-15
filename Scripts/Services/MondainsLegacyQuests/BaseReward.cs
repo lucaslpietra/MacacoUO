@@ -63,7 +63,7 @@ namespace Server.Engines.Quests
 			return Utility.RandomMinMax(0x898, 0x8B0);
 		}
 
-		public static void ApplyMods(Item item)
+		private static void ApplyMods(Item item)
 		{
 			if (item != null)
 			{
@@ -107,19 +107,19 @@ namespace Server.Engines.Quests
             {
                 if (ran <= 0.0001)
                 {
-                    return new RunicFletcherTool(CraftResource.Heartwood, 15);
+                    return new RunicFletcherTool(CraftResource.Eucalipto, 15);
                 }
                 else if (ran <= 0.0005)
                 {
-                    return new RunicFletcherTool(CraftResource.YewWood, 25);
+                    return new RunicFletcherTool(CraftResource.Mogno, 25);
                 }
                 else if (ran <= 0.0025)
                 {
-                    return new RunicFletcherTool(CraftResource.AshWood, 35);
+                    return new RunicFletcherTool(CraftResource.Pinho, 35);
                 }
                 else if (ran <= 0.005)
                 {
-                    return new RunicFletcherTool(CraftResource.OakWood, 45);
+                    return new RunicFletcherTool(CraftResource.Carvalho, 45);
                 }
             }
             else if (ran <= 0.01)
@@ -127,13 +127,13 @@ namespace Server.Engines.Quests
                 switch (Utility.Random(4))
                 {
                     case 0:
-                        return new RunicFletcherTool(CraftResource.OakWood, 45);
+                        return new RunicFletcherTool(CraftResource.Carvalho, 45);
                     case 1:
-                        return new RunicFletcherTool(CraftResource.AshWood, 35);
+                        return new RunicFletcherTool(CraftResource.Pinho, 35);
                     case 2:
-                        return new RunicFletcherTool(CraftResource.YewWood, 25);
+                        return new RunicFletcherTool(CraftResource.Mogno, 25);
                     case 3:
-                        return new RunicFletcherTool(CraftResource.Heartwood, 15);
+                        return new RunicFletcherTool(CraftResource.Eucalipto, 15);
                 }
             }
 
@@ -176,14 +176,11 @@ namespace Server.Engines.Quests
 
 		public static Item TinkerRecipe()
 		{
-            RecipeScroll recipe = null;
+            RecipeScroll recipes;
 
-            if (0.01 > Utility.RandomDouble())
-            {
-                recipe = new RecipeScroll(Utility.RandomList(450, 451, 452, 453));
-            }
+            recipes = GetRecipe(new int[] { 450, 451, 452, 453 });
 
-            return recipe;
+            return recipes;
         }
 
         public static Item AlchemyRecipe()
@@ -226,19 +223,19 @@ namespace Server.Engines.Quests
             {
                 if (ran <= 0.0001)
                 {
-                    return new RunicDovetailSaw(CraftResource.Heartwood, 15);
+                    return new RunicDovetailSaw(CraftResource.Eucalipto, 15);
                 }
                 else if (ran <= 0.0005)
                 {
-                    return new RunicDovetailSaw(CraftResource.YewWood, 25);
+                    return new RunicDovetailSaw(CraftResource.Mogno, 25);
                 }
                 else if (ran <= 0.0025)
                 {
-                    return new RunicDovetailSaw(CraftResource.AshWood, 35);
+                    return new RunicDovetailSaw(CraftResource.Pinho, 35);
                 }
                 else if (ran <= 0.005)
                 {
-                    return new RunicDovetailSaw(CraftResource.OakWood, 45);
+                    return new RunicDovetailSaw(CraftResource.Carvalho, 45);
                 }
             }
             else if (ran <= 0.01)
@@ -246,13 +243,13 @@ namespace Server.Engines.Quests
                 switch (Utility.Random(4))
                 {
                     case 0:
-                        return new RunicDovetailSaw(CraftResource.OakWood, 45);
+                        return new RunicDovetailSaw(CraftResource.Carvalho, 45);
                     case 1:
-                        return new RunicDovetailSaw(CraftResource.AshWood, 35);
+                        return new RunicDovetailSaw(CraftResource.Pinho, 35);
                     case 2:
-                        return new RunicDovetailSaw(CraftResource.YewWood, 25);
+                        return new RunicDovetailSaw(CraftResource.Mogno, 25);
                     case 3:
-                        return new RunicDovetailSaw(CraftResource.Heartwood, 15);
+                        return new RunicDovetailSaw(CraftResource.Eucalipto, 15);
                 }
             }
 
@@ -286,7 +283,7 @@ namespace Server.Engines.Quests
 
 		public static Item CookRecipe()
 		{
-			return GetRecipe(Enum.GetValues(typeof(CookRecipes)));
+			return GetRecipe(Enum.GetValues(typeof(CookRecipesExp)));
 		}
 
 		public static RecipeScroll GetRecipe(Array list)

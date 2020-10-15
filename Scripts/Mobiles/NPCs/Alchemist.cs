@@ -9,10 +9,10 @@ namespace Server.Mobiles
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         [Constructable]
         public Alchemist()
-            : base("the alchemist")
+            : base("o alquimista")
         {
             this.SetSkill(SkillName.Alchemy, 85.0, 100.0);
-            this.SetSkill(SkillName.TasteID, 65.0, 88.0);
+            this.SetSkill(SkillName.Jewelcrafting, 65.0, 88.0);
         }
 
         #region Bulk Orders
@@ -30,8 +30,8 @@ namespace Server.Mobiles
 
         public override void OnSuccessfulBulkOrderReceive(Mobile from)
         {
-            if (from is PlayerMobile)
-                ((PlayerMobile)from).NextAlchemyBulkOrder = TimeSpan.Zero;
+            //if (from is PlayerMobile)
+            //    ((PlayerMobile)from).NextAlchemyBulkOrder = TimeSpan.Zero;
         }
 
         #endregion

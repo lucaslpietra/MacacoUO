@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public SkeletalDragon()
             : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a skeletal dragon";
+            Name = "esqueleto de dragao";
             Body = 104;
             BaseSoundID = 0x488;
 
@@ -42,8 +42,6 @@ namespace Server.Mobiles
             Karma = -22500;
 
             VirtualArmor = 80;
-
-            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public SkeletalDragon(Serial serial)
@@ -53,8 +51,12 @@ namespace Server.Mobiles
 
         public override bool AutoDispel { get { return !Controlled; } }
         public override bool BleedImmune { get { return true; } }
+        public override bool HasBreath { get { return true; } } // fire breath enabled
         public override bool ReacquireOnMovement { get { return !Controlled; } }
         public override double BonusPetDamageScalar { get { return (Core.SE) ? 3.0 : 1.0; } }
+        public override int BreathFireDamage { get { return 0; } }
+        public override int BreathColdDamage { get { return 30; } }
+        public override int BreathEffectHue { get { return 0x480; } }
         public override int Hides { get { return 20; } }
         public override int Meat { get { return 19; } } // where's it hiding these? :)
         public override HideType HideType { get { return HideType.Barbed; } }
@@ -64,7 +66,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.FilthyRich, 4);
+            AddLoot(LootPack.FilthyRich, 2);
             AddLoot(LootPack.Gems, 5);
         }
 

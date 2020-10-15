@@ -30,13 +30,13 @@ namespace Server.Network
                 if (toDisarm != null)
                 {
                     from.Backpack.DropItem(toDisarm);
-                    from.NextActionTime = Core.TickCount + Mobile.ActionDelay;
+                    from.NextActionTime = Core.TickCount + Mobile.EquipItemDelay;
                 }
 
                 if (toEquip != toDisarm && toEquip != null && toEquip.Movable && toEquip.IsChildOf(from.Backpack))
                 {
                     from.EquipItem(toEquip);
-                    from.NextActionTime = Core.TickCount + Mobile.ActionDelay;
+                    from.NextActionTime = Core.TickCount + Mobile.EquipItemDelay;
                 }
             }
             else

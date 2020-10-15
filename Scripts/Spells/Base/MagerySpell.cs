@@ -1,10 +1,36 @@
 using System;
 using Server.Items;
+using Server.Mobiles;
+using Server.Network;
+using Server.Spells.Third;
 
 namespace Server.Spells
 {
     public abstract class MagerySpell : Spell
     {
+        public virtual void SayMantra()
+        {
+            if (Info.Mantra != null && Info.Mantra.Length > 0 && (m_Caster.Player || (m_Caster is BaseCreature && ((BaseCreature)m_Caster).ShowSpellMantra)))
+            {
+                m_Caster.PublicOverheadMessage(MessageType.Regular, 0, false, Info.Mantra);
+                /*
+                if (m_Caster is PlayerMobile)
+                {
+                    m_Caster.PublicOverheadMessage(MessageType.Emote, 1153, false, m_Info.Mantra);
+                }
+                else
+                    m_Caster.PublicOverheadMessage(MessageType.Regular, 0, false, "* conjurando uma magia *");
+                //m_Caster.PublicOverheadMessage(MessageType.Spell, m_Caster.SpeechHue, true, m_Info.Mantra, false);
+                */
+            }
+        }
+        // Magias q vao ficar mais dificeis castar andando
+        public static readonly Type[] MovementNerfWhenRepeated =
+        {
+            typeof(TeleportSpell)
+        };
+
+        public virtual int GetMinSkill { get { return 0; } }
         private static readonly int[] m_ManaTable = new int[] { 4, 6, 9, 11, 14, 20, 40, 50 };
         private const double ChanceOffset = 20.0, ChanceLength = 100.0 / 7.0;
         public MagerySpell(Mobile caster, Item scroll, SpellInfo info)
@@ -17,7 +43,7 @@ namespace Server.Spells
         {
             get
             {
-                return TimeSpan.FromMilliseconds(((4 + (int)Circle) * CastDelaySecondsPerTick)  * 1000);
+                return TimeSpan.FromSeconds((3 + (int)Circle) * CastDelaySecondsPerTick);
             }
         }
         public override bool ConsumeReagents()
@@ -31,6 +57,32 @@ namespace Server.Spells
             return false;
         }
 
+        public override bool ValidateCast(Mobile from)
+        {
+            var circleMax = this.CicloArmadura(from);
+            if(circleMax < (int)this.Circle+1)
+            {
+                from.SendMessage("Esta armadura e muito pesada para esta magia");
+                return false;
+            }
+            return true;
+        }
+
+        public override int SkillNeeded
+        {
+            get
+            {
+                if (Circle == SpellCircle.Eighth)
+                    return 100;
+                if (Circle == SpellCircle.Seventh)
+                    return 80;
+                if (Circle == SpellCircle.Sixth)
+                    return 65;
+
+                return (int)((double)(Circle + 1) * 11);
+            }
+        }
+
         public override void GetCastSkills(out double min, out double max)
         {
             int circle = (int)Circle;
@@ -42,6 +94,12 @@ namespace Server.Spells
 
             min = avg - ChanceOffset;
             max = avg + ChanceOffset;
+
+            var m = GetMinSkill;
+            if (m != 0)
+            {
+                min = m;
+            }
         }
 
         public override int GetMana()
@@ -54,9 +112,16 @@ namespace Server.Spells
 
         public virtual bool CheckResisted(Mobile target)
         {
+            if (target == Caster)
+                return false;
+
             double n = GetResistPercent(target);
 
+            Shard.Debug("Resist % " + n, target);
+
             n /= 100.0;
+
+         
 
             if (n <= 0.0)
                 return false;
@@ -67,19 +132,43 @@ namespace Server.Spells
             int maxSkill = (1 + (int)Circle) * 10;
             maxSkill += (1 + ((int)Circle / 6)) * 25;
 
-            if (target.Skills[SkillName.MagicResist].Value < maxSkill)
-                target.CheckSkill(SkillName.MagicResist, 0.0, target.Skills[SkillName.MagicResist].Cap);
+            if (target.Skills[SkillName.MagicResist].Value < maxSkill && target != Caster)
+                target.CheckSkillMult(SkillName.MagicResist, 0.0, target.Skills[SkillName.MagicResist].Cap);
 
-            return (n >= Utility.RandomDouble());
+            var resisted = (n >= Utility.RandomDouble());
+
+            if (resisted)
+            {
+                Caster.PlaySound(0x1E6);
+                target.FixedEffect(0x42CF, 10, 5);
+            }
+            return resisted;
         }
 
         public virtual double GetResistPercentForCircle(Mobile target, SpellCircle circle)
         {
-            double value = GetResistSkill(target);
-            double firstPercent = value / 5.0;
-            double secondPercent = value - (((Caster.Skills[CastSkill].Value - 20.0) / 5.0) + (1 + (int)circle) * 5.0);
+            var resist = target.Skills[SkillName.MagicResist].Value;
+            var cap = resist / 5;
 
-            return (firstPercent > secondPercent ? firstPercent : secondPercent) / 2.0; // Seems should be about half of what stratics says.
+            var magery = Caster.Skills[CastSkill].Value;
+            var circ = 1 + (double)circle;
+
+            var chance = ((magery * 2) / 10 + circ * circ);
+            chance = resist - chance;
+            if (chance < cap)
+                chance = cap;
+
+            if(Shard.SPHERE_STYLE)
+                chance *= 0.5; // sem pre cast mais dificil de resistir
+            else
+                chance *= 0.8;
+
+            if (Caster is BaseCreature && target is PlayerMobile)
+                chance /= 1.5;
+
+            Shard.Debug("Chance RS: " + chance);
+
+            return chance;
         }
 
         public virtual double GetResistPercent(Mobile target)
@@ -93,8 +182,13 @@ namespace Server.Spells
                 return TimeSpan.Zero;
 
             if (!Core.AOS)
-                return TimeSpan.FromSeconds(0.5 + (0.25 * (int)Circle));
-
+            {
+                if(Caster is BaseCreature)
+                    return TimeSpan.FromSeconds(0.5 + 0.5 * (int)Circle);
+                //if(Circle < SpellCircle.Third)
+                //    return TimeSpan.FromSeconds(1.25);
+                return TimeSpan.FromSeconds(0.5 + 0.5 * (int)Circle);
+            }
             return base.GetCastDelay();
         }
     }

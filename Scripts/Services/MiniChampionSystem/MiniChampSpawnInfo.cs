@@ -44,7 +44,7 @@ namespace Server.Engines.MiniChamps
 
                     killed = true;
                 }
-                else if (!creature.InRange(Owner.Location, Owner.SpawnRange + 10))
+                else if (!creature.InRange(Owner.Location, Owner.SpawnRange + 40))
                 {
                     // bring to home
                     Map map = Owner.Map;
@@ -112,7 +112,7 @@ namespace Server.Engines.MiniChamps
 
         public void AddProperties(ObjectPropertyList list, int cliloc)
         {
-            list.Add(cliloc, "{0}: Killed {1}/{2}, Spawned {3}/{4}",
+            list.Add(cliloc, "{0}: Mortos {1}/{2}, Spawnados {3}/{4}",
                 MonsterType.Name, Killed, Required, Spawned, MaxSpawned);
         }
 

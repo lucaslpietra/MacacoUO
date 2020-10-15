@@ -39,8 +39,6 @@ namespace Server.Mobiles
 
             Tamable = false;
             ControlSlots = 1;
-
-            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public UnholySteed(Serial serial)
@@ -60,6 +58,13 @@ namespace Server.Mobiles
             get
             {
                 return false;
+            }
+        }
+        public override bool HasBreath
+        {
+            get
+            {
+                return true;
             }
         }
         public override FoodType FavoriteFood

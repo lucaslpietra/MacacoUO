@@ -18,10 +18,12 @@ namespace Server.RemoteAdmin
 
         public static void Configure()
         {
+            Shard.Debug("==== Registrado pacote hideout ====");
             PacketHandlers.Register(0xF1, 0, false, new OnPacketReceive(OnReceive));
+            //PacketHandlers.Register(0x22, 0, false, new OnPacketReceive(OnReceive2));
 
-			Core.MultiConsoleOut.Add(new EventTextWriter(new EventTextWriter.OnConsoleChar(OnConsoleChar), new EventTextWriter.OnConsoleLine(OnConsoleLine), new EventTextWriter.OnConsoleStr(OnConsoleString)));
-			Timer.DelayCall(TimeSpan.FromMinutes(2.5), TimeSpan.FromMinutes(2.5), new TimerCallback(CleanUp));
+            Core.MultiConsoleOut.Add(new EventTextWriter(new EventTextWriter.OnConsoleChar(OnConsoleChar), new EventTextWriter.OnConsoleLine(OnConsoleLine), new EventTextWriter.OnConsoleStr(OnConsoleString)));
+            Timer.DelayCall(TimeSpan.FromMinutes(2.5), TimeSpan.FromMinutes(2.5), new TimerCallback(CleanUp));
         }
 
         public static void OnConsoleString(string str)
@@ -110,8 +112,21 @@ namespace Server.RemoteAdmin
                 m_ConsoleData.Remove(0, m_ConsoleData.Length - 1024);
         }
 
+        public static void OnReceive2(NetState state, PacketReader pvSrc)
+        {
+            Shard.Debug("GATEWAY REQUEST 2");
+            string statStr = String.Format(", Name={0}, Age={1}, Clients={2}, Items={3}, Chars={4}, Mem={5}K, Ver={6}", Server.Misc.ServerList.ServerName, (int)(DateTime.UtcNow - Server.Items.Clock.ServerStart).TotalHours, NetState.GetOnlinePlayers(), World.Items.Count, World.Mobiles.Count, (int)(System.GC.GetTotalMemory(false) / 1024), ProtocolVersion);
+            state.Send(new UOGInfo(statStr));
+            state.Dispose();
+            Shard.Debug("Comando 0xFF - desconectando");
+
+
+        }
+
         public static void OnReceive(NetState state, PacketReader pvSrc)
         {
+            Shard.Debug("GATEWAY REQUEST");
+
             byte cmd = pvSrc.ReadByte();
             if (cmd == 0x02)
             {
@@ -120,13 +135,15 @@ namespace Server.RemoteAdmin
             else if (cmd == 0xFE)
             {
                 state.Send(new CompactServerInfo());
+                Shard.Debug("Comando 0xFE, desconectando");
                 state.Dispose();
             }
             else if (cmd == 0xFF)
             {
-                string statStr = String.Format(", Name={0}, Age={1}, Clients={2}, Items={3}, Chars={4}, Mem={5}K, Ver={6}", Server.Misc.ServerList.ServerName, (int)(DateTime.UtcNow - Server.Items.Clock.ServerStart).TotalHours, NetState.Instances.Count, World.Items.Count, World.Mobiles.Count, (int)(System.GC.GetTotalMemory(false) / 1024), ProtocolVersion);
+                string statStr = String.Format(", Name={0}, Age={1}, Clients={2}, Items={3}, Chars={4}, Mem={5}K, Ver={6}", Server.Misc.ServerList.ServerName, (int)(DateTime.UtcNow - Server.Items.Clock.ServerStart).TotalHours, NetState.GetOnlinePlayers(), World.Items.Count, World.Mobiles.Count, (int)(System.GC.GetTotalMemory(false) / 1024), ProtocolVersion);
                 state.Send(new UOGInfo(statStr));
-                state.Dispose();
+                //state.Dispose(false);
+                Shard.Debug("Comando 0xFF - desconectando");
             }
             else if (!IsAuth(state))
             {
@@ -144,13 +161,14 @@ namespace Server.RemoteAdmin
         {
             Timer.DelayCall(TimeSpan.FromSeconds(15.0), new TimerStateCallback(Disconnect), state);
         }
-		
+
         private static void Disconnect(object state)
         {
             m_Auth.Remove(state);
             ((NetState)state).Dispose();
+            Shard.Debug("Network disconnect ", ((NetState)state).Mobile);
         }
-		
+
         public static void Authenticate(NetState state, PacketReader pvSrc)
         {
             string user = pvSrc.ReadString(30);
@@ -178,7 +196,7 @@ namespace Server.RemoteAdmin
             else if (a.AccessLevel < AccessLevel.Administrator || a.Banned)
             {
                 Console.WriteLine("ADMIN: Account '{0}' does not have admin access. Connection Denied.", user);
-                state.Send(new Login(LoginResponse.NoAccess)); 
+                state.Send(new Login(LoginResponse.NoAccess));
                 DelayedDisconnect(state);
             }
             else
@@ -241,7 +259,7 @@ namespace Server.RemoteAdmin
             }
         }
     }
-	
+
     public class EventTextWriter : System.IO.TextWriter
     {
         public delegate void OnConsoleChar(char ch);

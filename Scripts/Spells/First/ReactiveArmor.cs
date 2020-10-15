@@ -25,7 +25,7 @@ namespace Server.Spells.First
                 return SpellCircle.First;
             }
         }
-        public static void EndArmor(Mobile m)
+        public static bool EndArmor(Mobile m)
         {
             if (m_Table.Contains(m))
             {
@@ -39,7 +39,9 @@ namespace Server.Spells.First
 
                 m_Table.Remove(m);
                 BuffInfo.RemoveBuff(m, BuffIcon.ReactiveArmor);
+                return true;
             }
+            return false;
         }
 
         public override bool CheckCast()
@@ -69,7 +71,7 @@ namespace Server.Spells.First
                 * 15 + (Inscription/20) Physcial bonus
                 * -5 Elemental
                 * The reactive armor spell has an indefinite duration, becoming active when cast, and deactivated when re-cast. 
-                * Reactive Armor, Protection, and Magic Reflection will stay onóeven after logging out, even after dyingóuntil you ìturn them offî by casting them again. 
+                * Reactive Armor, Protection, and Magic Reflection will stay on‚Äîeven after logging out, even after dying‚Äîuntil you ‚Äúturn them off‚Äù by casting them again. 
                 * (+20 physical -5 elemental at 100 Inscription)
                 */
                 if (this.CheckSequence())
@@ -133,7 +135,7 @@ namespace Server.Spells.First
                     if (this.Caster.BeginAction(typeof(DefensiveSpell)))
                     {
                         int value = (int)(this.Caster.Skills[SkillName.Magery].Value + this.Caster.Skills[SkillName.Meditation].Value + this.Caster.Skills[SkillName.Inscribe].Value);
-                        value /= 3;
+                        value /= 4;
 
                         if (value < 0)
                             value = 1;
@@ -141,6 +143,8 @@ namespace Server.Spells.First
                             value = 75;
 
                         this.Caster.MeleeDamageAbsorb = value;
+
+                        this.Caster.OverheadMessage("+"+value+"");
 
                         this.Caster.FixedParticles(0x376A, 9, 32, 5008, EffectLayer.Waist);
                         this.Caster.PlaySound(0x1F2);

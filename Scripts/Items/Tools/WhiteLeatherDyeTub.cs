@@ -4,8 +4,6 @@ namespace Server.Items
 {
     public class WhiteLeatherDyeTub : LeatherDyeTub
     {
-		public override int LabelNumber { get { return 1149900; } } // White Leather Dye Tub
-		
         [Constructable]
         public WhiteLeatherDyeTub()
         {

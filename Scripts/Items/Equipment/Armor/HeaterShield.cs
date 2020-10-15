@@ -10,7 +10,8 @@ namespace Server.Items
         public HeaterShield()
             : base(0x1B76)
         {
-            this.Weight = 8.0;
+            this.Weight = 20.0;
+            this.Name = "Escudo Grande";
         }
 
         public HeaterShield(Serial serial)
@@ -25,6 +26,7 @@ namespace Server.Items
                 return 0;
             }
         }
+
         public override int BaseFireResistance
         {
             get
@@ -32,6 +34,7 @@ namespace Server.Items
                 return 1;
             }
         }
+
         public override int BaseColdResistance
         {
             get
@@ -39,6 +42,7 @@ namespace Server.Items
                 return 0;
             }
         }
+
         public override int BasePoisonResistance
         {
             get
@@ -46,6 +50,7 @@ namespace Server.Items
                 return 0;
             }
         }
+
         public override int BaseEnergyResistance
         {
             get
@@ -53,6 +58,7 @@ namespace Server.Items
                 return 0;
             }
         }
+
         public override int InitMinHits
         {
             get
@@ -60,6 +66,7 @@ namespace Server.Items
                 return 50;
             }
         }
+
         public override int InitMaxHits
         {
             get
@@ -67,6 +74,7 @@ namespace Server.Items
                 return 65;
             }
         }
+
         public override int AosStrReq
         {
             get
@@ -74,11 +82,20 @@ namespace Server.Items
                 return 90;
             }
         }
+
+        public override int OldStrReq
+        {
+            get
+            {
+                return 90;
+            }
+        }
+
         public override int ArmorBase
         {
             get
             {
-                return 23;
+                return 20;
             }
         }
         public override void Deserialize(GenericReader reader)

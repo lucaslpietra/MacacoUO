@@ -10,7 +10,9 @@ namespace Server.Spells.Seventh
             245,
             9042,
             Reagent.SpidersSilk,
-            Reagent.SulfurousAsh);
+            Reagent.SulfurousAsh
+        );
+
         public FlameStrikeSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {
@@ -23,13 +25,11 @@ namespace Server.Spells.Seventh
                 return SpellCircle.Seventh;
             }
         }
-        public override bool DelayedDamage
-        {
-            get
-            {
-                return true;
-            }
-        }
+
+        public override int SkillNeeded { get { return 90; } }
+
+        public override bool DelayedDamage { get { return true; } } //removido deley do dano do FS
+
         public override void OnCast()
         {
             this.Caster.Target = new InternalTarget(this);
@@ -43,7 +43,7 @@ namespace Server.Spells.Seventh
             }
             else if (this.CheckHSequence(m))
             {
-                SpellHelper.Turn(this.Caster, m);
+                //SpellHelper.Turn(this.Caster, m);
 
                 Mobile source = this.Caster;
 
@@ -61,8 +61,7 @@ namespace Server.Spells.Seventh
 
                     if (this.CheckResisted((Mobile)m))
                     {
-                        damage *= 0.6;
-
+                        damage *= 0.75;
                         ((Mobile)m).SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                     }
 
@@ -71,7 +70,10 @@ namespace Server.Spells.Seventh
 
                 if (m != null)
                 {
-                    m.FixedParticles(0x3709, 10, 30, 5052, EffectLayer.LeftFoot);
+                    if(m!=Caster)
+                        Caster.MovingParticles(m, 0x3709, 10, 30, false, true, 9502, 4019, 0x160);
+                    else
+                        m.FixedParticles(0x3709, 10, 30, 5052, EffectLayer.LeftFoot);
                     m.PlaySound(0x208);
                 }
 
@@ -80,7 +82,6 @@ namespace Server.Spells.Seventh
                     SpellHelper.Damage(this, m, damage, 0, 100, 0, 0, 0);
                 }
             }
-
             this.FinishSequence();
         }
 
@@ -88,7 +89,7 @@ namespace Server.Spells.Seventh
         {
             private readonly FlameStrikeSpell m_Owner;
             public InternalTarget(FlameStrikeSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(Spell.RANGE, false, TargetFlags.Harmful)
             {
                 this.m_Owner = owner;
             }

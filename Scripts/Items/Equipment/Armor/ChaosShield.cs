@@ -11,9 +11,7 @@ namespace Server.Items
         public ChaosShield()
             : base(0x1BC3)
         {
-            if (!Core.AOS)
-                this.LootType = LootType.Newbied;
-
+            Name = "Escudo do Caos";
             this.Weight = 5.0;
         }
 
@@ -78,11 +76,20 @@ namespace Server.Items
                 return 95;
             }
         }
+
+        public override int OldStrReq
+        {
+            get
+            {
+                return 100;
+            }
+        }
+
         public override int ArmorBase
         {
             get
             {
-                return 32;
+                return 25;
             }
         }
         public override void Deserialize(GenericReader reader)
@@ -112,6 +119,8 @@ namespace Server.Items
 
         public virtual bool Validate(Mobile m)
         {
+            return true;
+
             if (m == null || !m.Player || m.IsStaff() || Core.AOS)
                 return true;
 

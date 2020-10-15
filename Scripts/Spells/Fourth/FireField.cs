@@ -3,6 +3,7 @@ using System.Collections;
 using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
+using Server.Spells.Fifth;
 using Server.Targeting;
 
 namespace Server.Spells.Fourth
@@ -70,7 +71,21 @@ namespace Server.Spells.Fourth
                     eastToWest = false;
                 }
 
-                Effects.PlaySound(p, Caster.Map, 0x20C);
+                if ((Caster.Location.X == p.X && Caster.Location.Y == p.Y) || Caster == p)
+                {
+                    var north = Caster.Direction.HasFlag(Direction.North);
+                    var south = Caster.Direction.HasFlag(Direction.South);
+                    var east = Caster.Direction.HasFlag(Direction.East);
+                    var west = Caster.Direction.HasFlag(Direction.West);
+
+                    if ((north || south) && (!east && !west))
+                        eastToWest = true;
+                    else
+                        eastToWest = false;
+                }
+
+                //Effects.PlaySound(p, Caster.Map, 0x357);
+                Effects.PlaySound(p, Caster.Map, 0x356);
 
                 int itemID = eastToWest ? 0x398C : 0x3996;
                 TimeSpan duration;
@@ -82,8 +97,10 @@ namespace Server.Spells.Fourth
 
                 Point3D pnt = new Point3D(p);
 
+                Field f = new Field();
+
                 if (SpellHelper.CheckField(pnt, Caster.Map))
-                    new FireFieldItem(itemID, pnt, Caster, Caster.Map, duration);
+                    f.Add(new FireFieldItem(itemID, pnt, Caster, Caster.Map, duration));
 
                 for (int i = 1; i <= 2; ++i)
                 {
@@ -93,13 +110,13 @@ namespace Server.Spells.Fourth
                         SpellHelper.AdjustField(ref point, Caster.Map, 16, false);
 
                         if (SpellHelper.CheckField(point, Caster.Map))
-                            new FireFieldItem(itemID, point, Caster, Caster.Map, duration);
+                            f.Add(new FireFieldItem(itemID, point, Caster, Caster.Map, duration));
 
                         point = new Point3D(eastToWest ? pnt.X + -index : pnt.X, eastToWest ? pnt.Y : pnt.Y + -index, pnt.Z);
                         SpellHelper.AdjustField(ref point, Caster.Map, 16, false);
 
                         if (SpellHelper.CheckField(point, Caster.Map))
-                            new FireFieldItem(itemID, point, Caster, Caster.Map, duration);
+                            f.Add(new FireFieldItem(itemID, point, Caster, Caster.Map, duration));
                     }, i);
                 }
             }
@@ -159,6 +176,9 @@ namespace Server.Spells.Fourth
             {
                 base.OnAfterDelete();
 
+                if (DispelFieldSpell.fields.ContainsKey(this.Serial))
+                    DispelFieldSpell.fields.Remove(this.Serial);
+
                 if (m_Timer != null)
                     m_Timer.Stop();
             }
@@ -210,7 +230,8 @@ namespace Server.Spells.Fourth
 
             public override bool OnMoveOver(Mobile m)
             {
-                if (Visible && m_Caster != null && (!Core.AOS || m != m_Caster) && SpellHelper.ValidIndirectTarget(m_Caster, m) && m_Caster.CanBeHarmful(m, false))
+                Shard.Debug("Visible " + Visible + " CanHarm " + m_Caster.CanBeHarmful(m, false)+" Valid target "+ SpellHelper.ValidIndirectTarget(m_Caster, m));
+                if (Visible && m_Caster != null && m_Caster.CanBeHarmful(m, false))
                 {
                     if (SpellHelper.CanRevealCaster(m))
                         m_Caster.RevealingAction();
@@ -219,13 +240,14 @@ namespace Server.Spells.Fourth
 
                     int damage = m_Damage;
 
-                    if (!Core.AOS && m.CheckSkill(SkillName.MagicResist, 0.0, 30.0))
+                    if (!Core.AOS && m_Caster != m && m.CheckSkillMult(SkillName.MagicResist, 0.0, 80.0))
                     {
                         damage = 1;
 
                         m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                     }
 
+                    Shard.Debug("Dano");
                     AOS.Damage(m, m_Caster, damage, 0, 100, 0, 0, 0);
                     m.PlaySound(0x208);
 
@@ -274,8 +296,10 @@ namespace Server.Spells.Fourth
 
                             foreach (Mobile m in eable)
                             {
-                                if ((m.Z + 16) > m_Item.Z && (m_Item.Z + 12) > m.Z && (!Core.AOS || m != caster) && SpellHelper.ValidIndirectTarget(caster, m) && caster.CanBeHarmful(m, false))
+                                if ((m.Z + 16) > m_Item.Z && (m_Item.Z + 12) > m.Z && SpellHelper.ValidIndirectTarget(caster, m) && caster.CanBeHarmful(m, false))
+                                {
                                     m_Queue.Enqueue(m);
+                                }  
                             }
 
                             eable.Free();
@@ -283,7 +307,7 @@ namespace Server.Spells.Fourth
                             while (m_Queue.Count > 0)
                             {
                                 Mobile m = (Mobile)m_Queue.Dequeue();
-								
+                                Shard.Debug("Queimando a rosca de " + m.Name);
                                 if (SpellHelper.CanRevealCaster(m))
                                     caster.RevealingAction();
 
@@ -291,7 +315,7 @@ namespace Server.Spells.Fourth
 
                                 int damage = m_Item.m_Damage;
 
-                                if (!Core.AOS && m.CheckSkill(SkillName.MagicResist, 0.0, 30.0))
+                                if (!Core.AOS && m != caster && m.CheckSkillMult(SkillName.MagicResist, 0.0, 30.0))
                                 {
                                     damage = 1;
 

@@ -1,5 +1,4 @@
 using System;
-
 using Server;
 using Server.Items;
 using Server.Mobiles;
@@ -7,8 +6,6 @@ using Server.Engines.Quests;
 using Server.Engines.Points;
 using Server.Accounting;
 using Server.Engines.BulkOrders;
-using Server.Engines.CityLoyalty;
-using Server.Misc;
 
 namespace Server.Mobiles
 {
@@ -157,87 +154,7 @@ namespace Server.Mobiles
             }
         }
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public double Doubloons
-        {
-            get
-            {
-                return (int)PointsSystem.RisingTide.GetPoints(Player);
-            }
-            set
-            {
-                PointsSystem.RisingTide.SetPoints(Player, value);
-            }
-        }
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public double GauntletPoints
-        {
-            get
-            {
-                return (int)PointsSystem.DoomGauntlet.GetPoints(Player);
-            }
-            set
-            {
-                PointsSystem.DoomGauntlet.SetPoints(Player, value);
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public double TOTPoints
-        {
-            get
-            {
-                return (int)PointsSystem.TreasuresOfTokuno.GetPoints(Player);
-            }
-            set
-            {
-                PointsSystem.TreasuresOfTokuno.SetPoints(Player, value);
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int TOTurnIns
-        {
-            get
-            {
-                return PointsSystem.TreasuresOfTokuno.GetTurnIns(Player);
-            }
-            set
-            {
-                PointsSystem.TreasuresOfTokuno.GetPlayerEntry<TreasuresOfTokuno.TOTEntry>(Player).TurnIns = value;
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public double VASPoints
-        {
-            get
-            {
-                return (int)PointsSystem.VirtueArtifacts.GetPoints(Player);
-            }
-            set
-            {
-                PointsSystem.VirtueArtifacts.SetPoints(Player, value);
-            }
-        }
-
-        private CityLoyaltyProps _CityLoyaltyProps;
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public CityLoyaltyProps CityLoyalty
-        {
-            get
-            {
-                if (_CityLoyaltyProps == null)
-                    _CityLoyaltyProps = new CityLoyaltyProps(Player);
-
-                return _CityLoyaltyProps;
-            }
-            set
-            {
-            }
-        }
     }
 
     [PropertyObject]
@@ -385,129 +302,6 @@ namespace Server.Mobiles
         {
             Type = type;
             Entry = entry;
-        }
-    }
-
-    [PropertyObject]
-    public class CityLoyaltyProps
-    {
-        public PlayerMobile Player { get; private set; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public CityLoyaltyEntry Moonglow
-        {
-            get
-            {
-                return CityLoyaltySystem.Moonglow.GetPlayerEntry<CityLoyaltyEntry>(Player);
-            }
-            set { }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public CityLoyaltyEntry Britain
-        {
-            get
-            {
-                return CityLoyaltySystem.Britain.GetPlayerEntry<CityLoyaltyEntry>(Player);
-            }
-            set { }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public CityLoyaltyEntry Jhelom
-        {
-            get
-            {
-                return CityLoyaltySystem.Jhelom.GetPlayerEntry<CityLoyaltyEntry>(Player);
-            }
-            set { }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public CityLoyaltyEntry Yew
-        {
-            get
-            {
-                return CityLoyaltySystem.Yew.GetPlayerEntry<CityLoyaltyEntry>(Player);
-            }
-            set { }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public CityLoyaltyEntry Minoc
-        {
-            get
-            {
-                return CityLoyaltySystem.Minoc.GetPlayerEntry<CityLoyaltyEntry>(Player);
-            }
-            set { }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public CityLoyaltyEntry Trinsic
-        {
-            get
-            {
-                return CityLoyaltySystem.Trinsic.GetPlayerEntry<CityLoyaltyEntry>(Player);
-            }
-            set { }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public CityLoyaltyEntry SkaraBrae
-        {
-            get
-            {
-                return CityLoyaltySystem.SkaraBrae.GetPlayerEntry<CityLoyaltyEntry>(Player);
-            }
-            set { }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public CityLoyaltyEntry NewMagincia
-        {
-            get
-            {
-                return CityLoyaltySystem.NewMagincia.GetPlayerEntry<CityLoyaltyEntry>(Player);
-            }
-            set { }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public CityLoyaltyEntry Vesper
-        {
-            get
-            {
-                return CityLoyaltySystem.Vesper.GetPlayerEntry<CityLoyaltyEntry>(Player);
-            }
-            set { }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public CityTradeSystem.CityTradeEntry TradeEntry
-        {
-            get
-            {
-                return CityLoyaltySystem.CityTrading.GetPlayerEntry<CityTradeSystem.CityTradeEntry>(Player);
-            }
-            set { }
-        }
-
-        public CityLoyaltyProps(PlayerMobile pm)
-        {
-            Player = pm;
-        }
-
-        public override string ToString()
-        {
-            var sys = CityLoyaltySystem.GetCitizenship(Player, false);
-
-            if (sys != null)
-            {
-                return String.Format("Citizenship: {0}", sys.City.ToString());
-            }
-
-            return base.ToString();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public Hind()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a hind";
+            this.Name = "veado";
             this.Body = 0xED;
 
             this.SetStr(21, 51);

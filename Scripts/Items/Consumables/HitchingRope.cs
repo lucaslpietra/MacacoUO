@@ -31,7 +31,7 @@ namespace Server.Items
         {
             if (IsChildOf(from.Backpack) || (from.InRange(GetWorldLocation(), 2) && Movable))
             {
-                from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1071159); // Select the hitching post you want to supply hitching rope.
+                from.SendMessage("Selecione o poste de estabulo"); // Select the hitching post you want to supply hitching rope.
                 from.Target = new InternalTarget(this);
             }
             else
@@ -78,11 +78,11 @@ namespace Server.Items
 
                     if (postItem.UsesRemaining >= 1)
                     {
-                        from.SendMessage("Hitching Rope cannot be applied at this time.", 0x59);
+                        from.SendMessage("Voce tem que aguardar o poste ter 0 cargas.", 0x59);
                     }
                     else if (postItem.Replica && postItem.Charges <= 0 && postItem.UsesRemaining == 0)
                     {
-                        from.SendLocalizedMessage(1071157); // This hitching post is damaged. You can't use it any longer.
+                        from.SendMessage("Este poste esta danificado"); // This hitching post is damaged. You can't use it any longer.
                     }
                     else
                     {
@@ -93,13 +93,13 @@ namespace Server.Items
 
                         if (postItem is Item)
                         {
-                            from.SendLocalizedMessage(1071158); // Supplied hitching rope.
+                            from.SendLocalizedMessage("Voce adicionou a corda"); // Supplied hitching rope.
                         }
                     }
                 }
                 else
                 {
-                    from.SendLocalizedMessage(1062020); // That has no effect.
+                    from.SendLocalizedMessage("Sem efeito"); // That has no effect.
                 }
             }
         }

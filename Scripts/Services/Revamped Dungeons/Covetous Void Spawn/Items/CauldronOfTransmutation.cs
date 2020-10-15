@@ -343,7 +343,7 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            list.Add(1152600, String.Format("#{0}", CraftResources.GetLocalizationNumber(Resource))); // ~1_RES~ Cauldron of Transmutation
+            list.Add("Caldeirao de Transmutacao de " + Resource.ToString());
         }
 
         public override void GetProperties(ObjectPropertyList list)

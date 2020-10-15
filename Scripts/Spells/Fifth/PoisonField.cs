@@ -70,14 +70,30 @@ namespace Server.Spells.Fifth
                     eastToWest = false;
                 }
 
-                Effects.PlaySound(p, Caster.Map, 0x20B);
+                if ((Caster.Location.X == p.X && Caster.Location.Y == p.Y) || Caster == p)
+                {
+                    var north = Caster.Direction.HasFlag(Direction.North);
+                    var south = Caster.Direction.HasFlag(Direction.South);
+                    var east = Caster.Direction.HasFlag(Direction.East);
+                    var west = Caster.Direction.HasFlag(Direction.West);
+
+                    if ((north || south) && (!east && !west))
+                        eastToWest = true;
+                    else
+                        eastToWest = false;
+                }
+
+                //Effects.PlaySound(p, Caster.Map, 0x20B);
+                Effects.PlaySound(p, Caster.Map, 0x20C);
                 int itemID = eastToWest ? 0x3915 : 0x3922;
 
                 Point3D pnt = new Point3D(p);
                 TimeSpan duration = TimeSpan.FromSeconds(3 + (Caster.Skills.Magery.Fixed / 25));
 
+                Field f = new Field();
+
                 if (SpellHelper.CheckField(pnt, Caster.Map))
-                    new InternalItem(itemID, pnt, Caster, Caster.Map, duration);
+                    f.Add(new PoisonFieldItem(itemID, pnt, Caster, Caster.Map, duration));
 
                 for (int i = 1; i <= 2; ++i)
                 {
@@ -87,13 +103,13 @@ namespace Server.Spells.Fifth
                         SpellHelper.AdjustField(ref point, Caster.Map, 16, false);
 
                         if (SpellHelper.CheckField(point, Caster.Map))
-                            new InternalItem(itemID, point, Caster, Caster.Map, duration);
+                            f.Add(new PoisonFieldItem(itemID, point, Caster, Caster.Map, duration));
 
                         point = new Point3D(eastToWest ? pnt.X + -index : pnt.X, eastToWest ? pnt.Y : pnt.Y + -index, pnt.Z);
                         SpellHelper.AdjustField(ref point, Caster.Map, 16, false);
 
                         if (SpellHelper.CheckField(point, Caster.Map))
-                            new InternalItem(itemID, point, Caster, Caster.Map, duration);
+                            f.Add(new PoisonFieldItem(itemID, point, Caster, Caster.Map, duration));
                     }, i);
                 }
             }
@@ -102,7 +118,7 @@ namespace Server.Spells.Fifth
         }
 
         [DispellableField]
-        public class InternalItem : Item
+        public class PoisonFieldItem : Item
         {
             private Timer m_Timer;
             private DateTime m_End;
@@ -110,7 +126,7 @@ namespace Server.Spells.Fifth
 
             public Mobile Caster { get { return m_Caster; } }
 
-            public InternalItem(int itemID, Point3D loc, Mobile caster, Map map, TimeSpan duration)
+            public PoisonFieldItem(int itemID, Point3D loc, Mobile caster, Map map, TimeSpan duration)
                 : base(itemID)
             {
                 bool canFit = SpellHelper.AdjustField(ref loc, map, 12, false);
@@ -129,7 +145,7 @@ namespace Server.Spells.Fifth
                 m_Timer.Start();
             }
 
-            public InternalItem(Serial serial)
+            public PoisonFieldItem(Serial serial)
                 : base(serial)
             {
             }
@@ -144,6 +160,9 @@ namespace Server.Spells.Fifth
             public override void OnAfterDelete()
             {
                 base.OnAfterDelete();
+
+                if (DispelFieldSpell.fields.ContainsKey(this.Serial))
+                    DispelFieldSpell.fields.Remove(this.Serial);
 
                 if (m_Timer != null)
                     m_Timer.Stop();
@@ -207,7 +226,16 @@ namespace Server.Spells.Fifth
                 }
                 else
                 {
-                    p = Poison.Regular;
+                    int total = (m_Caster.Skills.Magery.Fixed + m_Caster.Skills.Poisoning.Fixed) / 2;
+
+                    if (total >= 1000)
+                        p = Poison.Deadly;
+                    else if (total > 850)
+                        p = Poison.Greater;
+                    else if (total > 650)
+                        p = Poison.Regular;
+                    else
+                        p = Poison.Lesser;
                 }
 
                 if (m.ApplyPoison(m_Caster, p) == ApplyPoisonResult.Poisoned)
@@ -220,7 +248,7 @@ namespace Server.Spells.Fifth
 
             public override bool OnMoveOver(Mobile m)
             {
-                if (Visible && m_Caster != null && (!Core.AOS || m != m_Caster) && SpellHelper.ValidIndirectTarget(m_Caster, m) && m_Caster.CanBeHarmful(m, false))
+                if (Visible && m_Caster != null && m_Caster.CanBeHarmful(m, false))
                 {
                     m_Caster.DoHarmful(m);
 
@@ -234,10 +262,10 @@ namespace Server.Spells.Fifth
             private class InternalTimer : Timer
             {
                 private static readonly Queue m_Queue = new Queue();
-                private readonly InternalItem m_Item;
+                private readonly PoisonFieldItem m_Item;
                 private readonly bool m_InLOS;
                 private readonly bool m_CanFit;
-                public InternalTimer(InternalItem item, bool inLOS, bool canFit)
+                public InternalTimer(PoisonFieldItem item, bool inLOS, bool canFit)
                     : base(TimeSpan.FromMilliseconds(500), TimeSpan.FromSeconds(1.5))
                 {
                     m_Item = item;

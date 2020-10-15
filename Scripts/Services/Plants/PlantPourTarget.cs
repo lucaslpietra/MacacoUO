@@ -22,7 +22,7 @@ namespace Server.Engines.Plants
 
         protected override void OnTargetFinish(Mobile from)
         {
-            if (!this.m_Plant.Deleted && this.m_Plant.PlantStatus < PlantStatus.DecorativePlant && from.InRange(this.m_Plant.GetWorldLocation(), 3) && this.m_Plant.IsUsableBy(from))
+            if (!this.m_Plant.Deleted && this.m_Plant.PlantStatus < PlantStatus.PlantaDecorativa && from.InRange(this.m_Plant.GetWorldLocation(), 3) && this.m_Plant.IsUsableBy(from))
             {
                 if (from.HasGump(typeof(MainPlantGump)))
                     from.CloseGump(typeof(MainPlantGump));

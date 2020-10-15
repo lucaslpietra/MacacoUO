@@ -23,7 +23,7 @@ namespace Server.Items
         {
             if (this.GetSkill(from, SkillName.Bushido) < 50.0)
             {
-                from.SendLocalizedMessage(1070768, "50"); // You need ~1_SKILL_REQUIREMENT~ Bushido skill to perform that attack!
+                from.SendLocalizedMessage("Voce precisa de 50 Bushido para fazer isto"); // You need ~1_SKILL_REQUIREMENT~ Bushido skill to perform that attack!
                 return false;
             }
 
@@ -34,7 +34,7 @@ namespace Server.Items
         {
             if (!Core.ML && defender.Frozen)
             {
-                attacker.SendLocalizedMessage(1061923); // The target is already frozen.
+                attacker.SendLocalizedMessage("O alvo ja esta paralizado"); // The target is already frozen.
                 return false;
             }
 
@@ -77,13 +77,13 @@ namespace Server.Items
 
             if (!immune)
             {
-                attacker.SendLocalizedMessage(1063356); // You cripple your target with a nerve strike!
-                defender.SendLocalizedMessage(1063357); // Your attacker dealt a crippling nerve strike!
+                attacker.SendLocalizedMessage("Voce paralizou o alvo acertando um nervo dele"); // You cripple your target with a nerve strike!
+                defender.SendLocalizedMessage("Seu inimigo acertou um nervo seu,  lhe paralizando"); // Your attacker dealt a crippling nerve strike!
             }
             else
             {
-                attacker.SendLocalizedMessage(1070804); // Your target resists paralysis.
-                defender.SendLocalizedMessage(1070813); // You resist paralysis.
+                attacker.SendLocalizedMessage("Resistiu ao ataque"); // Your target resists paralysis.
+                defender.SendLocalizedMessage("Voce resistiu a um ataque no seu nervo"); // You resist paralysis.
             }
 
             if (doEffects)

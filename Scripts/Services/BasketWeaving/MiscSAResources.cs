@@ -13,11 +13,11 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public PlantHue PlantHue { get { return m_PlantHue; } set { m_PlantHue = value; InvalidatePlantHue(); InvalidateProperties(); } }
 
-        public override int LabelNumber { get { return 1112248; } } //dry reeds
 
         public DryReeds(PlantHue hue)
             : base(0x1BD5)
         {
+            Name = "Juncos Secos";
             PlantHue = hue;
             Stackable = true;
         }
@@ -91,7 +91,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int v = reader.ReadInt();
 
-            if(v > 0)
+            if (v > 0)
                 m_PlantHue = (PlantHue)reader.ReadInt();
         }
     }
@@ -103,17 +103,17 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public PlantHue PlantHue { get { return m_PlantHue; } set { m_PlantHue = value; InvalidatePlantHue(); InvalidateProperties(); } }
 
-        public override int LabelNumber { get { return 1112249; } } //Softened reeds
-
         [Constructable]
         public SoftenedReeds()
             : this(PlantHue.Plain)
         {
+
         }
 
         public SoftenedReeds(PlantHue hue)
             : base(0x4006)
         {
+            Name = "Juncos Amaciados";
             m_PlantHue = hue;
             InvalidatePlantHue();
             Stackable = true;
@@ -189,19 +189,18 @@ namespace Server.Items
             base.Deserialize(reader);
             int v = reader.ReadInt();
 
-            if(v > 1)
+            if (v > 1)
                 m_PlantHue = (PlantHue)reader.ReadInt();
         }
     }
 
     public class CrystalGranules : Item
     {
-        public override int LabelNumber { get { return 1112329; } } // crystal granules
-
         [Constructable]
         public CrystalGranules()
             : base(16392)
         {
+            Name = "Graozinhos de cristal";
             Hue = 2625;
         }
 

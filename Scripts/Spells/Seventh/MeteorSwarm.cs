@@ -53,7 +53,8 @@ namespace Server.Spells.Seventh
         {
             get
             {
-                return true;
+                //return true;
+                return false;
             }
         }
         public override void OnCast()

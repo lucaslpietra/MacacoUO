@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public MinotaurCaptain()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)// NEED TO CHECK
         {
-            Name = "a minotaur captain";
+            Name = "minotauro capitao";
             Body = 280;
 
             SetStr(401, 425);
@@ -55,8 +55,6 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-		
-		public override int TreasureMapLevel { get { return 3; } }
 
         public override void GenerateLoot()
         {

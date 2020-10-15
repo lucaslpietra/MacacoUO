@@ -18,6 +18,7 @@ using Server.Spells.Fourth;
 using Server.Targeting;
 using Server.Spells.SkillMasteries;
 using Server.Spells.Spellweaving;
+using Server.Services;
 
 namespace Server
 {
@@ -159,12 +160,12 @@ namespace Server.Spells
         {
             return CheckMulti(p, map, true, 0);
         }
-		
+
         public static bool CheckMulti(Point3D p, Map map, bool houses)
         {
             return CheckMulti(p, map, houses, 0);
         }
-		
+
         public static bool CheckMulti(Point3D p, Map map, bool houses, int housingrange)
         {
             if (map == null || map == Map.Internal)
@@ -188,12 +189,17 @@ namespace Server.Spells
                     return true;
                 }
             }
-			
             return false;
         }
 
         public static void Turn(Mobile from, object to)
         {
+            bool running = (from.Direction & Direction.Running) != 0;
+            if (running)
+            {
+                return;
+            }
+
             IPoint3D target = to as IPoint3D;
             int d = -1;
 
@@ -227,12 +233,20 @@ namespace Server.Spells
             return Aggression.CheckHasAggression(m, Core.AOS);
         }
 
+        public static bool CheckCombatFast(Mobile m, bool restrict = true)
+        {
+            if (!restrict)
+                return false;
+
+            return Aggression.CheckHasAggressionFast(m, Core.AOS);
+        }
+
         public static bool AdjustField(ref Point3D p, Map map, int height, bool mobsBlock)
         {
             if (map == null)
                 return false;
 
-            for (int offset = 0; offset < 25; ++offset)
+            for (int offset = 0; offset < 10; ++offset)
             {
                 Point3D loc = new Point3D(p.X, p.Y, p.Z - offset);
 
@@ -256,6 +270,9 @@ namespace Server.Spells
 
         public static bool CheckField(Point3D p, Map map)
         {
+            if (Shard.POL_STYLE)
+                return true;
+
             if (map == null)
                 return false;
 
@@ -265,7 +282,7 @@ namespace Server.Spells
             {
                 Type t = item.GetType();
 
-                if(t.IsDefined(typeof(DispellableFieldAttribute), false) || t.IsDefined(typeof(DispellableFieldAttribute), true))
+                if (t.IsDefined(typeof(DispellableFieldAttribute), false) || t.IsDefined(typeof(DispellableFieldAttribute), true))
                 {
                     eable.Free();
                     return false;
@@ -297,17 +314,17 @@ namespace Server.Spells
 
             return true;
         }
-		
+
         public static bool CanRevealCaster(Mobile m)
         {
             if (m is BaseCreature)
             {
                 BaseCreature c = (BaseCreature)m;
-						
+
                 if (!c.Controlled)
                     return true;
             }
-			
+
             return false;
         }
 
@@ -329,13 +346,13 @@ namespace Server.Spells
             }
         }
 
-		protected static void RemoveStatOffsetCallback(object state)
-		{
-			if (!(state is Mobile))
-				return;
-			// This call has the side-effect of updating all stats
-			((Mobile)state).CheckStatTimers();
-		}			
+        protected static void RemoveStatOffsetCallback(object state)
+        {
+            if (!(state is Mobile))
+                return;
+            // This call has the side-effect of updating all stats
+            ((Mobile)state).CheckStatTimers();
+        }
 
         public static bool AddStatOffset(Mobile m, StatType type, int offset, TimeSpan duration)
         {
@@ -358,14 +375,11 @@ namespace Server.Spells
             string name = String.Format("[Magic] {0} Buff", type);
 
             StatMod mod = target.GetStatMod(name);
-
             if (mod != null)
-            {
                 offset = Math.Max(mod.Offset, offset);
-            }
 
             target.AddStatMod(new StatMod(type, name, offset, duration));
-			Timer.DelayCall(duration, RemoveStatOffsetCallback, target);
+            Timer.DelayCall(duration, RemoveStatOffsetCallback, target);
 
             return true;
         }
@@ -401,13 +415,13 @@ namespace Server.Spells
 
             StatMod mod = target.GetStatMod(name);
 
-			if (mod != null)
-				offset = Math.Max(mod.Offset, offset);
+            if (mod != null)
+                offset = Math.Max(mod.Offset, offset);
 
-			offset *= -1;
+            offset *= -1;
 
             target.AddStatMod(new StatMod(type, name, offset, TimeSpan.Zero));
-			return true;
+            return true;
         }
 
         public static TimeSpan GetDuration(Mobile caster, Mobile target)
@@ -464,19 +478,19 @@ namespace Server.Spells
                     // This is handled in Spell.cs
 
                     if (curse)
-                        target.CheckSkill(SkillName.MagicResist, 0.0, 120.0);
+                        target.CheckSkillMult(SkillName.MagicResist, 0.0, 120.0);
                 }
 
                 double percent = GetOffsetScalar(caster, target, curse);
 
-                switch( type )
+                switch (type)
                 {
                     case StatType.Str:
-                        return (int)Math.Ceiling(target.RawStr * percent);
+                        return (int)(target.RawStr * percent);
                     case StatType.Dex:
-                        return (int)Math.Ceiling(target.RawDex * percent);
+                        return (int)(target.RawDex * percent);
                     case StatType.Int:
-                        return (int)Math.Ceiling(target.RawInt * percent);
+                        return (int)(target.RawInt * percent);
                 }
             }
 
@@ -507,17 +521,19 @@ namespace Server.Spells
             return g;
         }
 
-        public static bool ValidIndirectTarget(Mobile from, Mobile to)
+        public static bool ValidIndirectTarget(Mobile from, Mobile to, bool ignoreGuild = false, bool ignoreNoto = true)
         {
             if (from == to)
             {
                 return true;
             }
 
+            /*
             if (to.Hidden && to.AccessLevel > from.AccessLevel)
             {
                 return false;
             }
+            */
 
             if (Server.Engines.ArenaSystem.PVPArenaSystem.IsFriendly(from, to))
             {
@@ -537,7 +553,7 @@ namespace Server.Spells
             Guild fromGuild = GetGuildFor(from);
             Guild toGuild = GetGuildFor(to);
 
-            if (fromGuild != null && toGuild != null && (fromGuild == toGuild || fromGuild.IsAlly(toGuild)))
+            if (!ignoreGuild && fromGuild != null && toGuild != null && (fromGuild == toGuild || fromGuild.IsAlly(toGuild)))
             {
                 return false;
             }
@@ -627,16 +643,14 @@ namespace Server.Spells
                 return true;
             }
 
-            return (Notoriety.Compute(from, to) != Notoriety.Innocent || from.Murderer);
+            var noto = Notoriety.Compute(from, to);
+            var notoDiff = noto != Notoriety.Innocent;
+            Shard.Debug("Can Harm Noto =" + noto);
+            return (from.IsStaff() || (ignoreNoto || notoDiff) || from.Murderer);
         }
 
-        public static IEnumerable<IDamageable> AcquireIndirectTargets(Mobile caster, IPoint3D p, Map map, int range)
+        public static IEnumerable<IDamageable> AcquireIndirectTargets(Mobile caster, IPoint3D p, Map map, int range, bool allies=false)
         {
-            return AcquireIndirectTargets(caster, p, map, range, true);
-        }
-
-        public static IEnumerable<IDamageable> AcquireIndirectTargets(Mobile caster, IPoint3D p, Map map, int range, bool losCheck)
-        {  
             if (map == null)
             {
                 yield break;
@@ -651,7 +665,7 @@ namespace Server.Spells
                     continue;
                 }
 
-                if (!id.Alive || (losCheck && !caster.InLOS(id)) || !caster.CanBeHarmful(id, false))
+                if (!id.Alive || !caster.InLOS(id)|| (!allies && !caster.CanBeHarmful(id, false)))
                 {
                     continue;
                 }
@@ -679,34 +693,53 @@ namespace Server.Spells
             1, 1
         };
 
-        public static void Summon(BaseCreature creature, Mobile caster, int sound, TimeSpan duration, bool scaleDuration, bool scaleStats, bool summoned = true, SkillName useSkill = SkillName.Magery)
+        public static void Summon(BaseCreature creature, Mobile caster, int sound, TimeSpan duration, bool scaleDuration, bool scaleStats, bool summoned = true, SkillName useSkill = SkillName.SpiritSpeak)
         {
             Map map = caster.Map;
-
             if (map == null)
                 return;
 
-            double scale = 1.0 + ((caster.Skills[useSkill].Value - 100.0) / 200.0);
+            Shard.Debug("Duration: " + duration.TotalSeconds, caster);
+            if (caster is BaseCreature && (useSkill == SkillName.SpiritSpeak || useSkill == SkillName.Begging))
+                useSkill = SkillName.Magery;
 
-            if (scaleDuration)
-                duration = TimeSpan.FromSeconds(duration.TotalSeconds * scale);
-
-            if (scaleStats)
+            if(useSkill == SkillName.SpiritSpeak && caster.Skills[useSkill].Value < 20)
             {
-                creature.RawStr = (int)(creature.RawStr * scale);
-                creature.Hits = creature.HitsMax;
-
-                creature.RawDex = (int)(creature.RawDex * scale);
-                creature.Stam = creature.StamMax;
-
-                creature.RawInt = (int)(creature.RawInt * scale);
-                creature.Mana = creature.ManaMax;
+                if(!caster.IsCooldown("dicass"))
+                {
+                    caster.SetCooldown("dicass", TimeSpan.FromHours(12));
+                    caster.SendMessage(78, "Para criar summons mais fortes o mago precisa da skill Spirit Speak");
+                }
             }
+
+            double scale = 0.5 + (caster.Skills[useSkill].Value / 200);
+            double scaleDur = 1 + (caster.Skills[useSkill].Value / 100)/2;
+
+            duration = TimeSpan.FromSeconds(duration.TotalSeconds * scaleDur);
+            Shard.Debug("Duration Scaled: " + duration.TotalSeconds, caster);
+            Shard.Debug("Summon Scale: " + scale, caster);
+
+            creature.RawStr = (int)(creature.RawStr * scale);
+            creature.Hits = creature.HitsMax;
+
+            creature.RawDex = (int)(creature.RawDex * scale);
+            creature.Stam = creature.StamMax;
+
+            creature.RawInt = (int)(creature.RawInt * scale);
+            creature.Mana = creature.ManaMax;
 
             Point3D p = new Point3D(caster);
 
+            creature.Skills[SkillName.Magery].Base *= scale;
+            creature.Skills[SkillName.MagicResist].Base *= scale;
+            creature.Skills[SkillName.Necromancy].Base *= scale;
+            creature.Skills[SkillName.Wrestling].Base *= scale;
+            creature.Skills[SkillName.Tactics].Base *= scale;
+            creature.Skills[SkillName.Anatomy].Base *= scale;
+
             if (SpellHelper.FindValidSpawnLocation(map, ref p, true))
             {
+                //caster.CheckSkill(SkillName.SpiritSpeak, 0, 100);
                 BaseCreature.Summon(creature, summoned, caster, p, sound, duration);
                 return;
             }
@@ -825,13 +858,13 @@ namespace Server.Spells
         private static readonly bool[,] m_Rules = new bool[,]
         {
 					/*T2A(Fel),	Khaldun,	Ilshenar,	Wind(Tram),	Wind(Fel),	Dungeons(Fel),	Solen(Tram),	Solen(Fel),	CrystalCave(Malas),	Gauntlet(Malas),	Gauntlet(Ferry),	SafeZone,	Stronghold,	ChampionSpawn,	Dungeons(Tokuno[Malas]),	LampRoom(Doom),	GuardianRoom(Doom),	Heartwood,	MLDungeons, SA Dungeons		Tomb of Kings	Maze of Death	SA Entrance,    Eodon*/
-/* Recall From */	{ false,	false,		true,		true,		false,		false,			true,			false,		false,				false,				false,				true,		true,		false,			true,						false,			false,				false,		false,      true,           true,           false,          false,          true} ,
-/* Recall To */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false,      false,          false,          false,          false,          false },
-/* Gate From */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false,      false,          false,          false,          false,          false },
-/* Gate To */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false,      false,          false,          false,          false,          false },
-/* Mark In */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false,      false,          false,          false,          false,          false },
-/* Tele From */		{ true,		true,		true,		true,		true,		true,			true,			true,		false,				true,				true,				true,		false,		true,			true,						true,			true,				false,		true,       true,           false,          false,          false,          true },
-/* Tele To */		{ true,		true,		true,		true,		true,		true,			true,			true,		false,				true,				false,				false,		false, 		true,			true,						true,			true,				false,		false,      true,           false,          false,          false,          true },
+/* Recall From */	{ false,    false,      true,       true,       false,      false,          true,           false,      false,              false,              false,              true,       true,       false,          true,                       false,          false,              false,      false,      true,           true,           false,          false,          true} ,
+/* Recall To */		{ false,    false,      false,      false,      false,      false,          false,          false,      false,              false,              false,              false,      false,      false,          false,                      false,          false,              false,      false,      false,          false,          false,          false,          false },
+/* Gate From */		{ false,    false,      false,      false,      false,      false,          false,          false,      false,              false,              false,              false,      false,      false,          false,                      false,          false,              false,      false,      false,          false,          false,          false,          false },
+/* Gate To */		{ false,    false,      false,      false,      false,      false,          false,          false,      false,              false,              false,              false,      false,      false,          false,                      false,          false,              false,      false,      false,          false,          false,          false,          false },
+/* Mark In */		{ false,    false,      false,      false,      false,      false,          false,          false,      false,              false,              false,              false,      false,      false,          false,                      false,          false,              false,      false,      false,          false,          false,          false,          false },
+/* Tele From */		{ true,     true,       true,       true,       true,       true,           true,           true,       false,              true,               true,               true,       false,      true,           true,                       true,           true,               false,      true,       true,           false,          false,          false,          true },
+/* Tele To */		{ true,     true,       true,       true,       true,       true,           true,           true,       false,              true,               false,              false,      false,      true,           true,                       true,           true,               false,      false,      true,           false,          false,          false,          true },
         };
 
         public static void SendInvalidMessage(Mobile caster, TravelCheckType type)
@@ -867,36 +900,38 @@ namespace Server.Spells
                 return false;
             }
 
-            if (caster != null)
+            if (caster != null && caster.IsPlayer())
             {
-                if (caster.IsPlayer())
+                // Jail region#
+                if (caster.Region.IsPartOf<Regions.Jail>())
                 {
-                    // Jail region
-                    if (caster.Region.IsPartOf<Regions.Jail>())
-                    {
-                        caster.SendLocalizedMessage(1114345); // You'll need a better jailbreak plan than that!
-                        return false;
-                    }
-                    else if (caster.Region is Regions.GreenAcres)
-                    {
-                        caster.SendLocalizedMessage(502360); // You cannot teleport into that area.
-                        return false;
-                    }
-                }
-
-                // Always allow monsters to teleport
-                if (caster is BaseCreature && (type == TravelCheckType.TeleportTo || type == TravelCheckType.TeleportFrom))
-                {
-                    BaseCreature bc = (BaseCreature) caster;
-
-                    if (!bc.Controlled && !bc.Summoned)
-                        return true;
-                }
-
-                if (Siege.SiegeShard && !Siege.CheckTravel(caster, loc, map, type))
-                {
+                    caster.SendLocalizedMessage(1114345); // You'll need a better jailbreak plan than that!
                     return false;
                 }
+                else if (caster.Region is Regions.GreenAcres)
+                {
+                    caster.SendLocalizedMessage(502360); // You cannot teleport into that area.
+                    return false;
+                }
+                else if (caster.Region.IsPartOf("Wrong"))
+                {
+                    caster.SendLocalizedMessage("Voce nao pode escapar da prisao"); // You cannot teleport into that area.
+                    return false;
+                }
+            }
+
+            // Always allow monsters to teleport
+            if (caster is BaseCreature && (type == TravelCheckType.TeleportTo || type == TravelCheckType.TeleportFrom))
+            {
+                BaseCreature bc = (BaseCreature)caster;
+
+                if (!bc.Controlled && !bc.Summoned)
+                    return true;
+            }
+
+            if (Siege.SiegeShard && !Siege.CheckTravel(caster, loc, map, type))
+            {
+                return false;
             }
 
             m_TravelCaster = caster;
@@ -905,37 +940,30 @@ namespace Server.Spells
             int v = (int)type;
             bool isValid = true;
 
-            if (caster != null)
+            BaseRegion destination = Region.Find(loc, map) as BaseRegion;
+            BaseRegion current = Region.Find(caster.Location, map) as BaseRegion;
+
+            if (destination != null && !destination.CheckTravel(caster, loc, type))
+                isValid = false;
+
+            if (isValid && current != null && !current.CheckTravel(caster, loc, type))
+                isValid = false;
+
+            #region Mondain's Legacy
+            if (m_TravelCaster != null && m_TravelCaster.Region != null)
             {
-                BaseRegion destination = Region.Find(loc, map) as BaseRegion;
-                BaseRegion current = Region.Find(caster.Location, map) as BaseRegion;
-
-                if (destination != null && !destination.CheckTravel(caster, loc, type))
+                if (m_TravelCaster.Region.IsPartOf("Blighted Grove") && loc.Z < -10)
                     isValid = false;
-
-                if (isValid && current != null && !current.CheckTravel(caster, loc, type))
-                    isValid = false;
-
-                #region Mondain's Legacy
-
-                if (caster.Region != null)
-                {
-                    if (caster.Region.IsPartOf("Blighted Grove") && loc.Z < -10)
-                        isValid = false;
-                }
-
-                if ((int)type <= 4 && (IsNewDungeon(caster.Map, caster.Location) || IsNewDungeon(map, loc)))
-                    isValid = false;
-                
-                #endregion
-
-                #region High Seas
-
-                if (BaseBoat.IsDriving(caster))
-                    return false;
-
-                #endregion
             }
+
+            if ((int)type <= 4 && (IsNewDungeon(caster.Map, caster.Location) || IsNewDungeon(map, loc)))
+                isValid = false;
+            #endregion
+
+            #region High Seas
+            if (BaseBoat.IsDriving(caster))
+                return false;
+            #endregion
 
             for (int i = 0; isValid && i < m_Validators.Length; ++i)
                 isValid = (m_Rules[v, i] || !m_Validators[i](map, loc));
@@ -944,32 +972,6 @@ namespace Server.Spells
                 SendInvalidMessage(caster, type);
 
             return isValid;
-        }
-
-        public static bool CheckCanTravel(Mobile m)
-        {
-            if (Factions.Sigil.ExistsOn(m))
-            {
-                m.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
-                return false;
-            }
-            else if (m.Criminal)
-            {
-                m.SendLocalizedMessage(1005561, "", 0x22); // Thou'rt a criminal and cannot escape so easily.
-                return false;
-            }
-            else if (CheckCombat(m))
-            {
-                m.SendLocalizedMessage(1005564, "", 0x22); // Wouldst thou flee during the heat of battle??
-                return false;
-            }
-            else if (Server.Misc.WeightOverloading.IsOverloaded(m))
-            {
-                m.SendLocalizedMessage(502359, "", 0x22); // Thou art too encumbered to move.
-                return false;
-            }
-
-            return true;
         }
 
         public static bool IsWindLoc(Point3D loc)
@@ -1206,7 +1208,7 @@ namespace Server.Spells
 
             if (map == null)
                 return false;
-            
+
             GuardedRegion reg = (GuardedRegion)Region.Find(loc, map).GetRegion(typeof(GuardedRegion));
 
             return (reg != null && !reg.IsDisabled());
@@ -1324,11 +1326,21 @@ namespace Server.Spells
             {
                 ++circle;
 
+                var ini = target.MagicDamageAbsorb;
                 target.MagicDamageAbsorb -= circle;
+              
 
                 // This order isn't very intuitive, but you have to nullify reflect before target gets switched
 
                 reflect = (target.MagicDamageAbsorb >= 0);
+
+                if(reflect)
+                {
+                    target.SendMessage("Seu Magic Reflection desceu em " + circle + " circulos, agora voce tem " + target.MagicDamageAbsorb + " circulos de protecao");
+                } else
+                {
+                    target.SendMessage("Seu Magic Reflection desceu em " + circle + " circulos, como voce tinha apenas "+ini+" circulos de protecao voce nao conseguiu refletir a magia");
+                }
 
                 if (target is BaseCreature)
                     ((BaseCreature)target).CheckReflect(caster, ref reflect);
@@ -1342,10 +1354,12 @@ namespace Server.Spells
                 if (reflect)
                 {
                     target.FixedEffect(0x37B9, 10, 5);
+                    target.SendMessage("Sua aura magica o protege");
 
-                    Mobile temp = caster;
-                    source = target;
-                    target = temp;
+                    var tmp = defender;
+                    defender = source;
+                    source = tmp;
+
                 }
             }
             else if (target is BaseCreature)
@@ -1396,6 +1410,15 @@ namespace Server.Spells
                 if (target is BaseCreature)
                     ((BaseCreature)target).AlterSpellDamageFrom(from, ref iDamage);
 
+                if (target != null)
+                {
+                    var hue = 42;
+                    if (target is PlayerMobile)
+                    {
+                        hue = 32;
+                    }
+                    DamageNumbers.ShowDamage(iDamage, from, target, hue);
+                }
                 target.Damage(iDamage, from);
             }
             else
@@ -1475,7 +1498,7 @@ namespace Server.Spells
 
                 int damageGiven = AOS.Damage(damageable, from, iDamage, phys, fire, cold, pois, nrgy, chaos, direct, dtype);
 
-                if(target != null)
+                if (target != null)
                     Spells.Mysticism.SpellPlagueSpell.OnMobileDamaged(target);
 
                 if (target != null && target.DFA != DFAlgorithm.Standard)
@@ -1485,7 +1508,7 @@ namespace Server.Spells
 
                 NegativeAttributes.OnCombatAction(from);
 
-                if(from != target)
+                if (from != target)
                     NegativeAttributes.OnCombatAction(target);
             }
             else
@@ -1516,7 +1539,7 @@ namespace Server.Spells
                 if (SearingWounds.IsUnderEffects(target))
                 {
                     amount /= 2;
-                    target.SendLocalizedMessage(1151178); // The cauterized wound resists some of your healing.
+                    target.SendMessage("Suas feridas prejudicam a cura"); // The cauterized wound resists some of your healing.
                 }
 
                 int realAmount = Math.Min(amount, target.HitsMax - target.Hits);
@@ -1559,6 +1582,15 @@ namespace Server.Spells
                 if (m_Target is BaseCreature)
                     ((BaseCreature)m_Target).AlterSpellDamageFrom(m_From, ref m_Damage);
 
+                if (m_Target != null)
+                {
+                    var hue = 42;
+                    if (m_Target is PlayerMobile)
+                    {
+                        hue = 32;
+                    }
+                    DamageNumbers.ShowDamage(m_Damage, m_From, m_Target, hue);
+                }
                 m_Target.Damage(m_Damage);
                 if (m_Spell != null)
                     m_Spell.RemoveDelayedDamageContext(m_Target);
@@ -1687,6 +1719,11 @@ namespace Server.Spells
 
                 context.Timer.Stop();
                 context.Spell.RemoveEffect(m);
+
+                if(m is PlayerMobile)
+                {
+                    ((PlayerMobile)(m)).UnstoreMount();
+                }
             }
         }
 
@@ -1747,11 +1784,11 @@ namespace Server.Spells
                 caster.SendLocalizedMessage(1061091); // You cannot cast that spell in this form.
                 return false;
             }
-			else if (caster.Flying && !(spell is VampiricEmbraceSpell))
-			{
-				caster.SendLocalizedMessage(1112567); // You are flying.
-				return false;
-			}
+            else if (caster.Flying && !(spell is VampiricEmbraceSpell))
+            {
+                caster.SendLocalizedMessage(1112567); // You are flying.
+                return false;
+            }
 
             return true;
         }
@@ -1824,6 +1861,11 @@ namespace Server.Spells
 
                     if (!((Body)transformSpell.Body).IsHuman)
                     {
+                        if (caster is PlayerMobile)
+                        {
+                            ((PlayerMobile)caster).StoreMount();
+                        }
+
                         Mobiles.IMount mt = caster.Mount;
 
                         if (mt != null)

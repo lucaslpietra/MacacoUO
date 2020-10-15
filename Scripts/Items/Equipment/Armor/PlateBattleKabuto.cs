@@ -9,6 +9,7 @@ namespace Server.Items
             : base(0x2785)
         {
             this.Weight = 6.0;
+            this.Name = "Elmo de batalha Kabuto";
         }
 
         public PlateBattleKabuto(Serial serial)

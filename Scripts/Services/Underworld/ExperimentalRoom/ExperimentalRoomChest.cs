@@ -78,7 +78,7 @@ namespace Server.Items {
 		
 		public override bool IsChildVisibleTo( Mobile m, Item child )
 		{
-			if (m.AccessLevel > AccessLevel.Player) 
+			if (m.AccessLevel > AccessLevel.VIP) 
 				return true;
 			
 			if (m_Instancing != null) 

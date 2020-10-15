@@ -95,7 +95,7 @@ namespace Server.Spells.Chivalry
                 m_Table[Caster] = t = Timer.DelayCall(TimeSpan.FromSeconds(delay), new TimerStateCallback(Expire_Callback), Caster);
                 Caster.Delta(MobileDelta.WeaponDamage);
 
-                string args = String.Format("{0}\t{1}\t{2}\t{3}", GetAttackBonus(Caster).ToString(), GetDamageBonus(Caster).ToString(), GetWeaponSpeedBonus(Caster).ToString(), GetDefendMalus(Caster).ToString());
+                string args = String.Format("{0}\t{1}\t{2}\t{3}", 0, GetWeaponSpeedBonus(Caster).ToString(), 0, 0);
 
                 BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.DivineFury, 1060589, 1150218, TimeSpan.FromSeconds(delay), Caster, args));
                 // ~1_HCI~% hit chance<br> ~2_DI~% damage<br>~3_SSI~% swing speed increase<br>-~4_DCI~% defense chance
@@ -106,41 +106,22 @@ namespace Server.Spells.Chivalry
 
         public static int GetDamageBonus(Mobile m)
         {
-            if (m_Table.ContainsKey(m))
-            {
-                return m.Skills[SkillName.Chivalry].Value >= 120.0 && m.Karma >= 10000 ? 20 : 10;
-            }
-
             return 0;
         }
 
         public static int GetWeaponSpeedBonus(Mobile m)
         {
-            if (m_Table.ContainsKey(m))
-            {
-                return m.Skills[SkillName.Chivalry].Value >= 120.0 && m.Karma >= 10000 ? 15 : 10;
-            }
-
-            return 0;
+            return (int)m.Skills[SkillName.Chivalry].Value/10;
         }
 
         public static int GetAttackBonus(Mobile m)
         {
-            if (m_Table.ContainsKey(m))
-            {
-                return m.Skills[SkillName.Chivalry].Value >= 120.0 && m.Karma >= 10000 ? 15 : 10;
-            }
-
             return 0;
         }
 
         public static int GetDefendMalus(Mobile m)
         {
-            if (m_Table.ContainsKey(m))
-            {
-                return m.Skills[SkillName.Chivalry].Value >= 120.0 && m.Karma >= 10000 ? 10 : 20;
-            }
-
+           
             return 0;
         }
 

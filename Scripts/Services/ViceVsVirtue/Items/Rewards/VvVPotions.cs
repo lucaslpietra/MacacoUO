@@ -378,6 +378,7 @@ namespace Server.Engines.VvV
         [Constructable]
         public AntiParalysisPotion()
         {
+            Name = "Pocao Anti Paralizia";
             Hue = 2543;
         }
 
@@ -385,7 +386,7 @@ namespace Server.Engines.VvV
         {
             if (!m.Paralyzed)
             {
-                m.SendLocalizedMessage(1155544); // You are not currently paralyzed
+                m.SendLocalizedMessage("Voce nao esta paralizado"); // You are not currently paralyzed
                 return false;
             }
 
@@ -396,7 +397,6 @@ namespace Server.Engines.VvV
         {
             m.Paralyzed = false;
             m.Stam /= 2;
-
             Consume();
         }
 
@@ -437,6 +437,12 @@ namespace Server.Engines.VvV
 
         public override void Use(Mobile m)
         {
+            if (!m.Region.IsPartOf("Tretonia"))
+            {
+                m.SendMessage("Voce apenas pode usar isto em Tretonia (por enquanto)");
+                return;
+            }
+
             Effects.SendMovingEffect(m, new Entity(Serial.Zero, new Point3D(m.X, m.Y, m.Z + 25), m.Map), this.ItemID, 3, 0, false, false, this.Hue, 0);
             
             int count = 5;
@@ -473,7 +479,7 @@ namespace Server.Engines.VvV
                     eable.Free();
                 });
 
-            if (m.AccessLevel == AccessLevel.Player)
+            if (m.AccessLevel <= AccessLevel.VIP)
                 Consume();
         }
 

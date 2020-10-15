@@ -34,7 +34,7 @@ namespace Server.Spells.Sixth
         {
             get
             {
-                return false;
+                return true;
             }
         }
         public override void OnCast()
@@ -58,8 +58,7 @@ namespace Server.Spells.Sixth
             {
                 Mobile attacker = Caster;
 
-                SpellHelper.Turn(Caster, m);
-
+                // SpellHelper.Turn(Caster, m);
                 SpellHelper.CheckReflect((int)Circle, Caster, ref m);
 
                 InternalTimer t = new InternalTimer(this, attacker, m);
@@ -76,7 +75,7 @@ namespace Server.Spells.Sixth
             private readonly Mobile m_Attacker;
 
             public InternalTimer(MagerySpell spell, Mobile attacker, IDamageable target)
-                : base(TimeSpan.FromSeconds(Core.AOS ? 3.0 : 2.5))
+                : base(TimeSpan.FromSeconds(Utility.Random(3, 2)))
             {
                 m_Spell = spell;
                 m_Attacker = attacker;
@@ -102,11 +101,11 @@ namespace Server.Spells.Sixth
                     }
                     else if (defender != null)
                     {
-                        damage = Utility.Random(23, 22);
+                        damage = Utility.Random(18, 24);
 
                         if (m_Spell.CheckResisted(defender))
                         {
-                            damage *= 0.75;
+                            damage *= 0.5;
 
                             defender.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                         }
@@ -116,13 +115,14 @@ namespace Server.Spells.Sixth
 
                     if (defender != null)
                     {
-                        defender.FixedParticles(0x36BD, 20, 10, 5044, EffectLayer.Head);
-                        defender.PlaySound(0x307);
+                        //defender.FixedParticles(0x36BD, 20, 10, 5044, EffectLayer.Head);
+                        m_Attacker.MovingParticles(defender, 0x36BD, 10, 30, true, true, 9502, 4019, 0x207);
+                        defender.PlaySound(0x207);
                     }
                     else
                     {
                         Effects.SendLocationParticles(m_Target, 0x36BD, 20, 10, 5044);
-                        Effects.PlaySound(m_Target.Location, m_Target.Map, 0x307);
+                        Effects.PlaySound(m_Target.Location, m_Target.Map, 0x207);
                     }
 
                     if (damage > 0)
@@ -140,7 +140,7 @@ namespace Server.Spells.Sixth
         {
             private readonly ExplosionSpell m_Owner;
             public InternalTarget(ExplosionSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(Spell.RANGE, false, TargetFlags.Harmful)
             {
                 m_Owner = owner;
             }

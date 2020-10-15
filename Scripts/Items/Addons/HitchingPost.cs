@@ -91,9 +91,13 @@ namespace Server.Items
         public HitchingPost(bool replica)
             : base(0x14E7)
         {
+
             Weight = 10;
             Replica = replica;
-
+            if (Replica)
+                Name = "Poste de Estabulo";
+            else
+                Name = "Poste de Estabulo Mitico";
             Charges = replica ? 2 : -1;
             UsesRemaining = replica ? 15 : 30;
 
@@ -123,11 +127,11 @@ namespace Server.Items
         {
             base.AddNameProperties(list);
 
-            list.Add(1060584, m_UsesRemaining.ToString());
+            list.AddTwoValues("Usos", m_UsesRemaining.ToString());
 
             if (m_Replica)
             {
-                list.Add(1071215, m_Charges.ToString());
+                list.AddTwoValues("Cargas", m_Charges.ToString());
             }
         }
 
@@ -164,7 +168,7 @@ namespace Server.Items
                 AddBackground(0, 0, 325, 50 + (list.Count * 20), 9250);
                 AddAlphaRegion(5, 5, 315, 40 + (list.Count * 20));
 
-                AddHtml(15, 15, 275, 20, "<BASEFONT COLOR=#FFFFFF>Select a pet to retrieve from the stables:</BASEFONT>", false, false);
+                AddHtml(15, 15, 275, 20, "<BASEFONT COLOR=#FFFFFF>Selecione um pet para retirar:</BASEFONT>", false, false);
 
                 for (int i = 0; i < list.Count; ++i)
                 {
@@ -220,12 +224,12 @@ namespace Server.Items
             {
                 if (!m_Replica || Charges > 0)
                 {
-                    from.SendLocalizedMessage(1071151); //Hitching rope is insufficient. You have to supply it.
+                    from.SendLocalizedMessage("Voce precisa de mais coleiras de pets para recarregar isto"); //Hitching rope is insufficient. You have to supply it.
 
                 }
                 else
                 {
-                    from.SendLocalizedMessage(1071157); //This hitching post is damaged. You can't use it any longer.
+                    from.SendLocalizedMessage("Este poste esta danificado..."); //This hitching post is damaged. You can't use it any longer.
                 }
             }
             else
@@ -373,10 +377,7 @@ namespace Server.Items
 
                     from.Stabled.Add(pet);
 
-                    if (m_Replica)
-                    {
-                        UsesRemaining -= 1;
-                    }
+                    UsesRemaining -= 1;
 
                     from.SendLocalizedMessage(502679); // Very well, thy pet is stabled. Thou mayst recover it by saying 'claim' to me. In one real world week, I shall sell it off if it is not claimed!
                 }

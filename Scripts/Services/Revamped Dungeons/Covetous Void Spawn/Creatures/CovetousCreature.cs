@@ -135,7 +135,7 @@ using Server.Items;
 
             foreach (Mobile m in eable)
             {
-                if (m is PlayerMobile && m.AccessLevel == AccessLevel.Player)
+                if (m is PlayerMobile && m.AccessLevel <= AccessLevel.VIP)
                 {
                     canTeleport = false;
                     break;

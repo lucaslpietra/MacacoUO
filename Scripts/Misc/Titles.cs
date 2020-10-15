@@ -15,54 +15,52 @@ namespace Server.Misc
 
         public static void AwardFame(Mobile m, int offset, bool message)
         {
-            var fame = m.Fame;
-
             if (offset > 0)
             {
-                if (fame >= MaxFame)
+                if (m.Fame >= MaxFame)
                     return;
 
-                offset -= fame / 100;
+                offset -= m.Fame / 100;
 
                 if (offset < 0)
                     offset = 0;
             }
             else if (offset < 0)
             {
-                if (fame <= MinFame)
+                if (m.Fame <= MinFame)
                     return;
 
-                offset -= fame / 100;
+                offset -= m.Fame / 100;
 
                 if (offset > 0)
                     offset = 0;
             }
 
-            if ((fame + offset) > MaxFame)
-                offset = MaxFame - fame;
-            else if ((fame + offset) < MinFame)
-                offset = MinFame - fame;
+            if ((m.Fame + offset) > MaxFame)
+                offset = MaxFame - m.Fame;
+            else if ((m.Fame + offset) < MinFame)
+                offset = MinFame - m.Fame;
 
             m.Fame += offset;
 
             if (message)
             {
                 if (offset > 40)
-                    m.SendLocalizedMessage(1019054); // You have gained a lot of fame.
+                    m.SendMessage("Voce ganhou muita fama"); // You have gained a lot of fame.
                 else if (offset > 20)
-                    m.SendLocalizedMessage(1019053); // You have gained a good amount of fame.
+                    m.SendMessage("Voce ganhou um bom bocado de fama"); // You have gained a good amount of fame.
                 else if (offset > 10)
-                    m.SendLocalizedMessage(1019052); // You have gained some fame.
+                    m.SendMessage("Voce ganhou alguma fama"); // You have gained some fame.
                 else if (offset > 0)
-                    m.SendLocalizedMessage(1019051); // You have gained a little fame.
+                    m.SendMessage("Voce ganhou um pouco de fama"); // You have gained a little fame.
                 else if (offset < -40)
-                    m.SendLocalizedMessage(1019058); // You have lost a lot of fame.
+                    m.SendMessage("Voce perdeu muita fama"); // You have lost a lot of fame.
                 else if (offset < -20)
-                    m.SendLocalizedMessage(1019057); // You have lost a good amount of fame.
+                    m.SendMessage("Voce perdeu um bocado de fama");  // You have lost a good amount of fame.
                 else if (offset < -10)
-                    m.SendLocalizedMessage(1019056); // You have lost some fame.
+                    m.SendMessage("Voce perdeu alguma fama"); // You have lost some fame.
                 else if (offset < 0)
-                    m.SendLocalizedMessage(1019055); // You have lost a little fame.
+                    m.SendMessage("Voce perdeu um pouco de fama");  // You have lost a little fame.
             }
         }
 
@@ -71,8 +69,7 @@ namespace Server.Misc
 
         public static void AwardKarma(Mobile m, int offset, bool message)
         {
-            var karma = m.Karma;
-
+            #region Mondain's Legacy
             if (m.Talisman is BaseTalisman)
             {
                 BaseTalisman talisman = (BaseTalisman)m.Talisman;
@@ -82,71 +79,74 @@ namespace Server.Misc
                 else if (talisman.KarmaLoss < 0)
                     offset *= (1 - (int)(((double)-talisman.KarmaLoss) / 100));
             }
+            #endregion
 
+            #region Heritage Items
             int karmaLoss = AosAttributes.GetValue(m, AosAttribute.IncreasedKarmaLoss);
 
             if (karmaLoss != 0 && offset < 0)
             {
                 offset -= (int)(offset * (karmaLoss / 100.0));
             }
+            #endregion
 
             if (offset > 0)
             {
                 if (m is PlayerMobile && ((PlayerMobile)m).KarmaLocked)
                     return;
 
-                if (karma >= MaxKarma)
+                if (m.Karma >= MaxKarma)
                     return;
 
-                offset -= karma / 100;
+                offset -= m.Karma / 100;
 
                 if (offset < 0)
                     offset = 0;
             }
             else if (offset < 0)
             {
-                if (karma <= MinKarma)
+                if (m.Karma <= MinKarma)
                     return;
 
-                offset -= karma / 100;
+                offset -= m.Karma / 100;
 
                 if (offset > 0)
                     offset = 0;
             }
 
-            if ((karma + offset) > MaxKarma)
-                offset = MaxKarma - karma;
-            else if ((karma + offset) < MinKarma)
-                offset = MinKarma - karma;
+            if ((m.Karma + offset) > MaxKarma)
+                offset = MaxKarma - m.Karma;
+            else if ((m.Karma + offset) < MinKarma)
+                offset = MinKarma - m.Karma;
 
-            bool wasPositiveKarma = (karma >= 0);
+            bool wasPositiveKarma = (m.Karma >= 0);
 
             m.Karma += offset;
 
             if (message)
             {
                 if (offset > 40)
-                    m.SendLocalizedMessage(1019062); // You have gained a lot of karma.
+                    m.SendMessage("Voce ganhou muito karma"); // You have gained a lot of karma.
                 else if (offset > 20)
-                    m.SendLocalizedMessage(1019061); // You have gained a good amount of karma.
+                    m.SendMessage("Voce ganhou um bocado de karma"); // You have gained a good amount of karma.
                 else if (offset > 10)
-                    m.SendLocalizedMessage(1019060); // You have gained some karma.
+                    m.SendMessage("Voce ganhou karma"); // You have gained some karma.
                 else if (offset > 0)
-                    m.SendLocalizedMessage(1019059); // You have gained a little karma.
+                    m.SendMessage("Voce ganhou um pouquinho de karma"); // You have gained a little karma.
                 else if (offset < -40)
-                    m.SendLocalizedMessage(1019066); // You have lost a lot of karma.
+                    m.SendMessage("Voce perdeu muito karma"); // You have lost a lot of karma.
                 else if (offset < -20)
-                    m.SendLocalizedMessage(1019065); // You have lost a good amount of karma.
+                    m.SendMessage("Voce perdeu um bocado de karma"); // You have lost a good amount of karma.
                 else if (offset < -10)
-                    m.SendLocalizedMessage(1019064); // You have lost some karma.
+                    m.SendMessage("Voce perdeu karma"); // You have lost some karma.
                 else if (offset < 0)
-                    m.SendLocalizedMessage(1019063); // You have lost a little karma.
+                    m.SendMessage("Voce perdeu um pouquinho de karma"); // You have lost a little karma.
             }
 
             if (!Core.AOS && wasPositiveKarma && m.Karma < 0 && m is PlayerMobile && !((PlayerMobile)m).KarmaLocked)
             {
                 ((PlayerMobile)m).KarmaLocked = true;
-                m.SendLocalizedMessage(1042511, "", 0x22); // Karma is locked.  A mantra spoken at a shrine will unlock it again.
+                m.SendMessage("Karma trancado - destranque em uma ankh"); // Karma is locked.  A mantra spoken at a shrine will unlock it again.
             }
         }
 
@@ -171,7 +171,7 @@ namespace Server.Misc
 
                         if ((karma >= 0 && ke.m_Karma >= 0 && karma >= ke.m_Karma) || (karma < 0 && ke.m_Karma < 0 && karma < ke.m_Karma))
                         {
-                            list.Add(title.AppendFormat(ke.m_Title, m.Name, m.Female ? "Lady" : "Lord").ToString());
+                            list.Add(title.AppendFormat(m.Female ? Feminino(ke.m_Title) : ke.m_Title, m.Name, m.Female ? "Lady" : "Lord").ToString());
                         }
                     }
                 }
@@ -201,7 +201,7 @@ namespace Server.Misc
 
                         if (karma <= ke.m_Karma || j == (karmaEntries.Length - 1))
                         {
-                            return String.Format(ke.m_Title, beheld.Name, beheld.Female ? "Lady" : "Lord");
+                            return String.Format(beheld.Female ? Feminino(ke.m_Title) : ke.m_Title, beheld.Name, beheld.Female ? "Lady" : "Lord");
                         }
                     }
 
@@ -211,17 +211,56 @@ namespace Server.Misc
             return String.Empty;
         }
 
+        private static Dictionary<string, string> Cache = new Dictionary<string, string>();
+
+        public static string Feminino(string title)
+        {
+            string cached = null;
+            Cache.TryGetValue(title, out cached);
+            if (cached != null)
+            {
+                return cached;
+            }
+
+            if (title != null)
+            {
+                var remake = "";
+                var split = title.Split(' ');
+                foreach (var parte in split)
+                {
+                    if (parte.Contains("{"))
+                        remake += parte + " ";
+                    else
+                    {
+                        if (parte == "o")
+                            remake += "a ";
+                        else
+                        {
+                            if (parte.Substring(parte.Length - 1) == "o")
+                            {
+                                remake += parte.Substring(0, parte.Length - 1) + "a ";
+                            }
+                        }
+                    }
+                }
+                var txt = remake.Substring(0, remake.Length - 1);
+                Cache[title] = txt;
+                return txt;
+            }
+            return title;
+        }
+
         public static string ComputeTitle(Mobile beholder, Mobile beheld)
         {
             StringBuilder title = new StringBuilder();
 
             bool showSkillTitle = beheld.ShowFameTitle && ((beholder == beheld) || (beheld.Fame >= 5000));
 
-            if (Core.SA && beheld.ShowFameTitle && beheld is PlayerMobile && ((PlayerMobile)beheld).FameKarmaTitle != null)
+            if (beheld.ShowFameTitle && beheld is PlayerMobile && ((PlayerMobile)beheld).FameKarmaTitle != null)
             {
                 title.AppendFormat(((PlayerMobile)beheld).FameKarmaTitle, beheld.Name, beheld.Female ? "Lady" : "Lord");
             }
-			else if (beheld.ShowFameTitle || (beholder == beheld))
+            else if (beheld.ShowFameTitle || (beholder == beheld))
             {
                 title.Append(ComputeFameTitle(beheld));
             }
@@ -239,7 +278,7 @@ namespace Server.Misc
                     if (((PlayerMobile)beheld).CurrentChampTitle != null)
                         title.AppendFormat(((PlayerMobile)beheld).CurrentChampTitle);
                 }
-				else if (info.Harrower > 0)
+                else if (info.Harrower > 0)
                     title.AppendFormat(": {0} of Evil", HarrowerTitles[Math.Min(HarrowerTitles.Length, info.Harrower) - 1]);
                 else
                 {
@@ -271,12 +310,12 @@ namespace Server.Misc
 
             string customTitle = beheld.Title;
 
-            if (Core.SA)
+            if (true)
             {
                 if (beheld is PlayerMobile && ((PlayerMobile)beheld).PaperdollSkillTitle != null)
                     title.Append(", ").Append(((PlayerMobile)beheld).PaperdollSkillTitle);
-                else if (beheld is BaseVendor) 
-					title.AppendFormat(" {0}", customTitle);
+                else if (beheld is BaseVendor)
+                    title.AppendFormat(" {0}", customTitle);
             }
             else if (customTitle != null && (customTitle = customTitle.Trim()).Length > 0)
             {
@@ -353,16 +392,16 @@ namespace Server.Misc
 
         private static readonly string[,] m_Levels = new string[,]
         {
-            { "Neophyte", "Neophyte", "Neophyte" },
-            { "Novice", "Novice", "Novice" },
-            { "Apprentice", "Apprentice", "Apprentice" },
-            { "Journeyman", "Journeyman", "Journeyman" },
-            { "Expert", "Expert", "Expert" },
-            { "Adept", "Adept", "Adept" },
-            { "Master", "Master", "Master" },
-            { "Grandmaster", "Grandmaster", "Grandmaster" },
-            { "Elder", "Tatsujin", "Shinobi" },
-            { "Legendary", "Kengo", "Ka-ge" }
+            { "Neofito", "Neofito", "Neofito" },
+            { "Iniciante", "Iniciante", "Iniciante" },
+            { "Estudante", "Estudante", "Estudante" },
+            { "Aprendiz", "Aprendiz", "Aprendiz" },
+            { "Experiente", "Experiente", "Experiente" },
+            { "Adepto", "Adepto", "Adepto" },
+            { "Mestre", "Mestre", "Mestre" },
+            { "Grao Mestre", "Grao Mestre", "Grao Mestre" },
+            { "Epico", "Epico", "Epico" },
+            { "Lendario", "Lendario", "Lendario" }
         };
 
         private static string GetSkillLevel(Skill skill)
@@ -372,7 +411,7 @@ namespace Server.Misc
 
         private static int GetTableType(Skill skill)
         {
-            switch ( skill.SkillName )
+            switch (skill.SkillName)
             {
                 default:
                     return 0;
@@ -396,73 +435,73 @@ namespace Server.Misc
         {
             new FameEntry(1249, new KarmaEntry[]
             {
-                new KarmaEntry(-10000, "The Outcast {0}"),
-                new KarmaEntry(-5000, "The Despicable {0}"),
-                new KarmaEntry(-2500, "The Scoundrel {0}"),
-                new KarmaEntry(-1250, "The Unsavory {0}"),
-                new KarmaEntry(-625, "The Rude {0}"),
+                new KarmaEntry(-10000, "O Funesto {0}"),
+                new KarmaEntry(-5000, "O Desprezivel {0}"),
+                new KarmaEntry(-2500, "O Nocivo {0}"),
+                new KarmaEntry(-1250, "O Soturno {0}"),
+                new KarmaEntry(-625, "O Rude {0}"),
                 new KarmaEntry(624, "{0}"),
-                new KarmaEntry(1249, "The Fair {0}"),
-                new KarmaEntry(2499, "The Kind {0}"),
-                new KarmaEntry(4999, "The Good {0}"),
-                new KarmaEntry(9999, "The Honest {0}"),
-                new KarmaEntry(10000, "The Trustworthy {0}")
+                new KarmaEntry(1249, "O Correto {0}"),
+                new KarmaEntry(2499, "O Gentil {0}"),
+                new KarmaEntry(4999, "O Bom {0}"),
+                new KarmaEntry(9999, "O Digno {0}"),
+                new KarmaEntry(10000, "O Confiavel {0}")
             }),
             new FameEntry(2499, new KarmaEntry[]
             {
-                new KarmaEntry(-10000, "The Wretched {0}"),
-                new KarmaEntry(-5000, "The Dastardly {0}"),
-                new KarmaEntry(-2500, "The Malicious {0}"),
-                new KarmaEntry(-1250, "The Dishonorable {0}"),
-                new KarmaEntry(-625, "The Disreputable {0}"),
-                new KarmaEntry(624, "The Notable {0}"),
-                new KarmaEntry(1249, "The Upstanding {0}"),
-                new KarmaEntry(2499, "The Respectable {0}"),
-                new KarmaEntry(4999, "The Honorable {0}"),
-                new KarmaEntry(9999, "The Commendable {0}"),
-                new KarmaEntry(10000, "The Estimable {0}")
+                new KarmaEntry(-10000, "O Fascinora {0}"),
+                new KarmaEntry(-5000, "O Covarde {0}"),
+                new KarmaEntry(-2500, "O Perverso {0}"),
+                new KarmaEntry(-1250, "O Malicioso {0}"),
+                new KarmaEntry(-625, "O Desonesto {0}"),
+                new KarmaEntry(624, "O Notavel {0}"),
+                new KarmaEntry(1249, "O Honesto {0}"),
+                new KarmaEntry(2499, "O Respeitavel {0}"),
+                new KarmaEntry(4999, "O Qualificado {0}"),
+                new KarmaEntry(9999, "O Estimado {0}"),
+                new KarmaEntry(10000, "O Honrado {0}")
             }),
             new FameEntry(4999, new KarmaEntry[]
             {
-                new KarmaEntry(-10000, "The Nefarious {0}"),
-                new KarmaEntry(-5000, "The Wicked {0}"),
-                new KarmaEntry(-2500, "The Vile {0}"),
-                new KarmaEntry(-1250, "The Ignoble {0}"),
-                new KarmaEntry(-625, "The Notorious {0}"),
-                new KarmaEntry(624, "The Prominent {0}"),
-                new KarmaEntry(1249, "The Reputable {0}"),
-                new KarmaEntry(2499, "The Proper {0}"),
-                new KarmaEntry(4999, "The Admirable {0}"),
-                new KarmaEntry(9999, "The Famed {0}"),
-                new KarmaEntry(10000, "The Great {0}")
+                new KarmaEntry(-10000, "O Abominável {0}"),
+                new KarmaEntry(-5000, "O Depravado {0}"),
+                new KarmaEntry(-2500, "O Vil {0}"),
+                new KarmaEntry(-1250, "O Ignobil {0}"),
+                new KarmaEntry(-625, "O Estupido {0}"),
+                new KarmaEntry(624, "O Renomado {0}"),
+                new KarmaEntry(1249, "O Nobre {0}"),
+                new KarmaEntry(2499, "O Veneravel {0}"),
+                new KarmaEntry(4999, "O Extraordinario {0}"),
+                new KarmaEntry(9999, "O Admiravel {0}"),
+                new KarmaEntry(10000, "O Grandioso {0}")
             }),
             new FameEntry(9999, new KarmaEntry[]
             {
-                new KarmaEntry(-10000, "The Dread {0}"),
-                new KarmaEntry(-5000, "The Evil {0}"),
-                new KarmaEntry(-2500, "The Villainous {0}"),
-                new KarmaEntry(-1250, "The Sinister {0}"),
-                new KarmaEntry(-625, "The Infamous {0}"),
-                new KarmaEntry(624, "The Renowned {0}"),
-                new KarmaEntry(1249, "The Distinguished {0}"),
-                new KarmaEntry(2499, "The Eminent {0}"),
-                new KarmaEntry(4999, "The Noble {0}"),
-                new KarmaEntry(9999, "The Illustrious {0}"),
-                new KarmaEntry(10000, "The Glorious {0}")
+                new KarmaEntry(-10000, "O Terrivel {0}"),
+                new KarmaEntry(-5000, "O Cruel {0}"),
+                new KarmaEntry(-2500, "O Maligno {0}"),
+                new KarmaEntry(-1250, "O Sinistro {0}"),
+                new KarmaEntry(-625, "O Infame {0}"),
+                new KarmaEntry(624, "O Renomado {0}"),
+                new KarmaEntry(1249, "O Probo {0}"),
+                new KarmaEntry(2499, "O Eminente {0}"),
+                new KarmaEntry(4999, "O Ilustre {0}"),
+                new KarmaEntry(9999, "O Grandioso {0}"),
+                new KarmaEntry(10000, "O Glorioso {0}")
             }),
             new FameEntry(10000, new KarmaEntry[]
             {
-                new KarmaEntry(-10000, "The Dread {1} {0}"),
-                new KarmaEntry(-5000, "The Evil {1} {0}"),
-                new KarmaEntry(-2500, "The Dark {1} {0}"),
-                new KarmaEntry(-1250, "The Sinister {1} {0}"),
-                new KarmaEntry(-625, "The Dishonored {1} {0}"),
+                new KarmaEntry(-10000, "O Temido {1} {0}"),
+                new KarmaEntry(-5000, "O Cruel {1} {0}"),
+                new KarmaEntry(-2500, "O Maligno {1} {0}"),
+                new KarmaEntry(-1250, "O Sinistro {1} {0}"),
+                new KarmaEntry(-625, "O Infame {1} {0}"),
                 new KarmaEntry(624, "{1} {0}"),
-                new KarmaEntry(1249, "The Distinguished {1} {0}"),
-                new KarmaEntry(2499, "The Eminent {1} {0}"),
-                new KarmaEntry(4999, "The Noble {1} {0}"),
-                new KarmaEntry(9999, "The Illustrious {1} {0}"),
-                new KarmaEntry(10000, "The Glorious {1} {0}")
+                new KarmaEntry(1249, "O Renomado {1} {0}"),
+                new KarmaEntry(2499, "O Eminente {1} {0}"),
+                new KarmaEntry(4999, "O Ilustre {1} {0}"),
+                new KarmaEntry(9999, "O Grandioso {1} {0}"),
+                new KarmaEntry(10000, "O Glorioso {1} {0}")
             })
         };
 

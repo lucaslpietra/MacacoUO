@@ -116,7 +116,10 @@ namespace Server.Misc
                         NetState ns = from.NetState;
 
                         if (ns != null)
+                        {
+                            Shard.Debug("Profanidade, kikando");
                             ns.Dispose();
+                        }
 
                         return false;
                     }

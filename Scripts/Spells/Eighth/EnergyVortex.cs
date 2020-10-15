@@ -63,9 +63,23 @@ namespace Server.Spells.Eighth
                 if (Core.AOS)
                     duration = TimeSpan.FromSeconds(90.0);
                 else
-                    duration = TimeSpan.FromSeconds(Utility.Random(80, 40));
+                    duration = TimeSpan.FromSeconds(20 + (2 * this.Caster.Skills.SpiritSpeak.Fixed));
 
-                BaseCreature.Summon(new EnergyVortex(true), false, this.Caster, new Point3D(p), 0x212, duration);
+                var creature = new EnergyVortex(true);
+                if (Caster.Skills[SkillName.Begging].Value < 80)
+                {
+                    SpellHelper.Summon(creature, Caster, 0x212, duration, true, true, false, SkillName.SpiritSpeak);
+///BaseCreature.Summon(creature, false, this.Caster, new Point3D(p), 0x212, duration);
+                    creature.SummonMaster = null;
+                }
+                if (Caster.Skills[SkillName.Begging].Value < 95)
+                {
+                    SpellHelper.Summon(creature, Caster, 0x212, duration, true, true, false, SkillName.SpiritSpeak);
+                }
+                else
+                {
+                    SpellHelper.Summon(creature, Caster, 0x212, duration, true, true, true, SkillName.SpiritSpeak);
+                }
             }
 
             this.FinishSequence();

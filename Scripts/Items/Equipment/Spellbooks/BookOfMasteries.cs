@@ -79,7 +79,7 @@ namespace Server.Items
 
         public static bool CheckCooldown(Mobile from)
         {
-            if (from.AccessLevel > AccessLevel.Player)
+            if (from.AccessLevel > AccessLevel.VIP)
                 return true;
 
             if (m_Cooldown != null && m_Cooldown.ContainsKey(from))

@@ -5,24 +5,31 @@ using Server;
 using Server.Items;
 using Server.Network;
 using System;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
 	public abstract class BaseTreasureChestMod : LockableContainer
 	{
-		private ChestTimer m_DeleteTimer;
+        public static List<BaseTreasureChestMod> Tesouros = new List<BaseTreasureChestMod>();
+
+        public static Dictionary<Region, List<BaseTreasureChestMod>> ByRegion = new Dictionary<Region, List<BaseTreasureChestMod>>(); 
+
+        private ChestTimer m_DeleteTimer;
 		//public override bool Decays { get{ return true; } }
 		//public override TimeSpan DecayTime{ get{ return TimeSpan.FromMinutes( Utility.Random( 10, 15 ) ); } }
 		public override int DefaultGumpID{ get{ return 0x42; } }
 		public override int DefaultDropSound{ get{ return 0x42; } }
 		public override Rectangle2D Bounds{ get{ return new Rectangle2D( 20, 105, 150, 180 ); } }
 		public override bool IsDecoContainer{get{ return false; }}
-		
+        public abstract int GetLevel();
+
 		public BaseTreasureChestMod( int itemID ) : base ( itemID )
 		{
+            Name = "Tesouro nivel "+GetLevel();
 			Locked = true;
 			Movable = false;
-
+            Tesouros.Add(this);
 			Key key = (Key)FindItemByType( typeof(Key) );
 
 			if( key != null )
@@ -30,6 +37,17 @@ namespace Server.Items
 
             if(Core.SA)
                 RefinementComponent.Roll(this, 1, 0.08);
+
+            Timer.DelayCall(TimeSpan.FromSeconds(1), () => {
+                var r = this.GetRegion();
+                if(r != null)
+                {
+                    if (!ByRegion.ContainsKey(r))
+                        ByRegion.Add(r, new List<BaseTreasureChestMod>());
+                    ByRegion[r].Add(this);
+                }
+
+            });
 		}
 
 		public BaseTreasureChestMod( Serial serial ) : base( serial )
@@ -43,7 +61,19 @@ namespace Server.Items
 			writer.Write( (int) 0 );
 		}
 
-		public override void Deserialize( GenericReader reader )
+        public override void OnDelete()
+        {
+            var r = this.GetRegion();
+            if (r != null)
+            {
+                if (ByRegion.ContainsKey(r))
+                    ByRegion[r].Remove(this);
+            }
+            Tesouros.Remove(this);
+            base.OnDelete();
+        }
+
+        public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 
@@ -51,6 +81,8 @@ namespace Server.Items
 
 			if( !Locked )
 				StartDeleteTimer();
+
+            Tesouros.Add(this);
 		}
 
 		public override void OnTelekinesis( Mobile from )
@@ -63,7 +95,7 @@ namespace Server.Items
 			}
 
 			base.OnTelekinesis( from );
-			Name = "a treasure chest";
+			Name = "um bau de tesouro";
 			StartDeleteTimer();
 		}
 
@@ -73,7 +105,7 @@ namespace Server.Items
 				return;
 
 			base.OnDoubleClick( from );
-			Name = "a treasure chest";
+			Name = "um bau de tesouro";
 			StartDeleteTimer();
 		}
 

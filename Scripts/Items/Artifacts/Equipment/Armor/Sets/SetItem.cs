@@ -29,7 +29,8 @@ namespace Server
         Bestial,
         Virtuoso,
         Aloron,
-        Darden
+        Darden,
+        Chefs
     }
 
     public interface ISetItem
@@ -338,7 +339,7 @@ namespace Server
             {
                 if (item.SetID == SetItem.Aloron && item.SetEquipped)
                 {
-                    return SlayerName.Dinosaur;
+                    return SlayerName.Dinossauros;
                 }
 
                 if (item.SetID == SetItem.Darden && item.SetEquipped)
@@ -352,6 +353,8 @@ namespace Server
 
         public static bool ResistsBonusPerPiece(ISetItem item)
         {
+            return false;
+            /*
             if (item.SetPhysicalBonus == 0 && item.SetFireBonus == 0 && item.SetColdBonus == 0 && item.SetPoisonBonus == 0 && item.SetEnergyBonus == 0)
                 return true;
 
@@ -361,7 +364,9 @@ namespace Server
                 case SetItem.Virtue:
                 case SetItem.Aloron:
                 case SetItem.Darden: return true;
+               
             }
+             */
         }
 
         public static int GetSetTotalResist(Mobile m, ResistanceType resist)

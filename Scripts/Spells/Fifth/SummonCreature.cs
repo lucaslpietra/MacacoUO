@@ -30,9 +30,7 @@ namespace Server.Spells.Fifth
             typeof(Eagle),
             typeof(Gorilla),
             typeof(SnowLeopard),
-            typeof(Pig),
             typeof(Hind),
-            typeof(Rabbit)
         };
         public SummonCreatureSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
@@ -73,11 +71,11 @@ namespace Server.Spells.Fifth
                     TimeSpan duration;
 
                     if (Core.AOS)
-                        duration = TimeSpan.FromSeconds((2 * this.Caster.Skills.Magery.Fixed) / 5);
+                        duration = TimeSpan.FromSeconds((2 * this.Caster.Skills.SpiritSpeak.Fixed) / 5);
                     else
-                        duration = TimeSpan.FromSeconds(4.0 * this.Caster.Skills[SkillName.Magery].Value);
+                        duration = TimeSpan.FromSeconds(15 + this.Caster.Skills[SkillName.SpiritSpeak].Value * 2);
 
-                    SpellHelper.Summon(creature, this.Caster, 0x215, duration, false, false);
+                    SpellHelper.Summon(creature, this.Caster, 0x215, duration, true, true, true, SkillName.SpiritSpeak);
                 }
                 catch
                 {
@@ -92,7 +90,7 @@ namespace Server.Spells.Fifth
             if (Core.AOS)
                 return TimeSpan.FromTicks(base.GetCastDelay().Ticks * 5);
 
-            return base.GetCastDelay() + TimeSpan.FromSeconds(6.0);
+            return base.GetCastDelay();
         }
     }
 }

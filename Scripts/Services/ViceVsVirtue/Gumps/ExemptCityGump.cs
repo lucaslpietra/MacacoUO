@@ -19,7 +19,7 @@ namespace Server.Engines.VvV
         public void AddGumpLayout()
         {
             AddBackground(0, 0, 250, 300, 83);
-            AddHtml(0, 15, 250, 60, "<basefont color=#FFFFFF><center>City Exempt List:<br>Check any cities that you do not want participating in VvV Battles.</center>", false, false);
+            AddHtml(0, 15, 250, 60, "<basefont color=#FFFFFF><center>Cidades:<br>Selecione as cidades que nao deseja participar do Guerra Infinita.</center>", false, false);
 
             for (int i = 0; i < 8; i++)
             {
@@ -27,7 +27,7 @@ namespace Server.Engines.VvV
                 int button = ViceVsVirtueSystem.Instance.ExemptCities.Contains(city) ? 211 : 210;
 
                 AddButton(20, 80 + (i * 23), button, button, i + 1, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(44, 80 + (i * 23), 200, 20, ViceVsVirtueSystem.GetCityLocalization(city), 0xFFFF, false, false);
+                AddHtml(44, 80 + (i * 23), 200, 20, ViceVsVirtueSystem.GetCityLocalization(city), 0xFFFF, false, false);
             }
         }
 

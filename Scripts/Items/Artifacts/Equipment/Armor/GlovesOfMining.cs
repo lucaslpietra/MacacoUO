@@ -11,6 +11,7 @@ namespace Server.Items
         public LeatherGlovesOfMining(int bonus)
             : base(bonus, 0x13C6)
         {
+            Name = "Luvinhas do Minerador";
             Weight = 1;
         }
 
@@ -137,6 +138,7 @@ namespace Server.Items
         public StuddedGlovesOfMining(int bonus)
             : base(bonus, 0x13D5)
         {
+            Name = "Luvas do Minerador";
             Weight = 2;
         }
 
@@ -257,6 +259,7 @@ namespace Server.Items
         public RingmailGlovesOfMining(int bonus)
             : base(bonus, 0x13EB)
         {
+            Name = "Luvas de Malha do Minerador";
             Weight = 1;
         }
 
@@ -517,7 +520,7 @@ namespace Server.Items
         {
             this.m_Bonus = bonus;
 
-            this.Hue = CraftResources.GetHue((CraftResource)Utility.RandomMinMax((int)CraftResource.DullCopper, (int)CraftResource.Valorite));
+            this.Hue = CraftResources.GetHue((CraftResource)Utility.RandomMinMax((int)CraftResource.Berilo, (int)CraftResource.Quartzo));
         }
 
         public BaseGlovesOfMining(Serial serial)
@@ -584,7 +587,7 @@ namespace Server.Items
             base.GetProperties(list);
 
             if (this.m_Bonus != 0)
-                list.Add(1062005, this.m_Bonus.ToString()); // mining bonus +~1_val~
+                list.Add("Mining +"+this.m_Bonus.ToString()); // mining bonus +~1_val~
         }
 
         public override void Serialize(GenericWriter writer)

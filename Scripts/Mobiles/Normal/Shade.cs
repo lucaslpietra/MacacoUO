@@ -10,18 +10,18 @@ namespace Server.Mobiles
         public Shade()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a shade";
+            this.Name = "sombra";
             this.Body = 26;
             this.Hue = 0x4001;
             this.BaseSoundID = 0x482;
 
             this.SetStr(76, 100);
             this.SetDex(76, 95);
-            this.SetInt(36, 60);
+            this.SetInt(35, 40);
 
-            this.SetHits(46, 60);
+            this.SetHits(15, 30);
 
-            this.SetDamage(7, 11);
+            this.SetDamage(1, 3);
 
             this.SetDamageType(ResistanceType.Physical, 50);
             this.SetDamageType(ResistanceType.Cold, 50);
@@ -30,8 +30,8 @@ namespace Server.Mobiles
             this.SetResistance(ResistanceType.Cold, 15, 25);
             this.SetResistance(ResistanceType.Poison, 10, 20);
 
-            this.SetSkill(SkillName.EvalInt, 55.1, 70.0);
-            this.SetSkill(SkillName.Magery, 55.1, 70.0);
+            this.SetSkill(SkillName.EvalInt, 35.1, 70.0);
+            this.SetSkill(SkillName.Magery, 30.1, 50.0);
             this.SetSkill(SkillName.MagicResist, 55.1, 70.0);
             this.SetSkill(SkillName.Tactics, 45.1, 60.0);
             this.SetSkill(SkillName.Wrestling, 45.1, 55.0);
@@ -42,6 +42,21 @@ namespace Server.Mobiles
             this.VirtualArmor = 28;
 
             this.PackReg(10);
+        }
+
+        public override void OnStartCombat(Mobile m)
+        {
+            base.OnStartCombat(m);
+            if (m != FocusMob && m != null && m is PlayerMobile)
+            {
+                var player = (PlayerMobile)m;
+                if (!player.IsCooldown("specfreeze"))
+                {
+                    player.SetCooldown("specfreeze", TimeSpan.FromSeconds(40));
+                    PublicOverheadMessage(Network.MessageType.Regular, 0, false, "* preparando um olhar petrificante *");
+                    new Wraith.FreezeTimer(this, m).Start();
+                }
+            }
         }
 
         public Shade(Serial serial)

@@ -25,13 +25,9 @@ namespace Server.Engines.Auction
                 Auctions.ForEach(a =>
                 {
                     if (a.OnGoing && a.EndTime < DateTime.Now && !a.InClaimPeriod)
-                    {
                         a.EndAuction();
-                    }
                     else if (a.InClaimPeriod && DateTime.UtcNow > a.ClaimPeriod)
-                    {
                         a.EndClaimPeriod();
-                    }
 
                 });
             });
@@ -205,8 +201,7 @@ namespace Server.Engines.Auction
 															name, 
 															CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")), 
 															CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US"))));
-					/*  You have been out bid in an auction for ~1_ITEMNAME~. The current winning bid amount is 
-					 * ~2_BIDAMT~plat and ~3_BIDAMT~gp.*/
+			
 					MaginciaLottoSystem.SendMessageTo(HighestBid.Mobile, message);
 
                     Account a = HighestBid.Mobile.Account as Account;
@@ -304,8 +299,7 @@ namespace Server.Engines.Auction
                                                         name,
                                                         CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
                                                         CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US"))));
-                /*  You have won an auction for ~1_ITEMNAME~! Your bid amount of ~2_BIDAMT~plat and ~3_BIDAMT~gp won the auction. 
-                 *  You have 3 days from the end of the auction to claim your item or it will be lost.*/
+   
                 MaginciaLottoSystem.SendMessageTo(HighestBid.Mobile, message);
 
                 Account a = m.Account as Account;
@@ -322,8 +316,7 @@ namespace Server.Engines.Auction
                                                         name,
                                                         CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
                                                         CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US"))));
-                /*Your auction for ~1_ITEMNAME~ has ended with a winning bid of ~2_BIDAMT~plat and ~3_BIDAMT~gp. The winning bid has 
-                 *been deposited into your currency account.*/
+     
                 MaginciaLottoSystem.SendMessageTo(Owner, message);
 
                 ClaimPeriod = DateTime.UtcNow + TimeSpan.FromDays(3);
@@ -365,7 +358,7 @@ namespace Server.Engines.Auction
                                                                 CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
                                                                 CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
                                                                 name));
-                    /*Your winning bid amount of ~1_BIDAMT~plat and ~2_BIDAMT~gp for ~3_ITEMNAME~ has been refunded to you due to house collapse.*/
+                   
                     MaginciaLottoSystem.SendMessageTo(bid.Mobile, mes);
 
                     Account a = bid.Mobile.Account as Account;
@@ -526,51 +519,52 @@ namespace Server.Engines.Auction
 
             int version = reader.ReadInt();
 
-            switch (version)
+            Owner = reader.ReadMobile();
+            AuctionItem = reader.ReadItem();
+            CurrentBid = reader.ReadLong();
+            StartBid = reader.ReadLong();
+            Buyout = reader.ReadLong();
+            Description = reader.ReadString();
+
+            if (version == 1)
             {
-                case 2:
-                    ClaimPeriod = reader.ReadDateTime();
-                    goto case 1;
-                case 1:
-                    Owner = reader.ReadMobile();
-                    AuctionItem = reader.ReadItem();
-                    CurrentBid = reader.ReadLong();
-                    StartBid = reader.ReadLong();
-                    Buyout = reader.ReadLong();
-                    Description = reader.ReadString();
-                    Duration = reader.ReadInt();
+                Duration = reader.ReadInt();
+            }
+            else
+            {
+                int TempDuration = reader.ReadInt();
 
-                    StartTime = reader.ReadDateTime();
-                    OnGoing = reader.ReadBool();
+                Duration = TempDuration == 7 ? 10080 : TempDuration == 5 ? 7200 : 4320;
+            }            
 
-                    Bids = new List<BidEntry>();
+            StartTime = reader.ReadDateTime();
+            OnGoing = reader.ReadBool();
 
-                    int count = reader.ReadInt();
-                    for (int i = 0; i < count; i++)
-                    {
-                        PlayerMobile m = reader.ReadMobile() as PlayerMobile;
-                        BidEntry entry = new BidEntry(m, reader);
+            Bids = new List<BidEntry>();
 
-                        if (m != null)
-                        {
-                            Bids.Add(entry);
+            int count = reader.ReadInt();
+            for (int i = 0; i < count; i++)
+            {
+                PlayerMobile m = reader.ReadMobile() as PlayerMobile;
+                BidEntry entry = new BidEntry(m, reader);
 
-                            if (entry.CurrentBid > 0 && (HighestBid == null || entry.CurrentBid > HighestBid.CurrentBid))
-                                HighestBid = entry;
-                        }
-                    }
+                if (m != null)
+                {
+                    Bids.Add(entry);
 
-                    count = reader.ReadInt();
+                    if (entry.CurrentBid > 0 && (HighestBid == null || entry.CurrentBid > HighestBid.CurrentBid))
+                        HighestBid = entry;
+                }
+            }
 
-                    if (count > 0)
-                        BidHistory = new List<HistoryEntry>();
+            count = reader.ReadInt();
 
-                    for (int i = 0; i < count; i++)
-                    {
-                        BidHistory.Add(new HistoryEntry(reader));
-                    }
+            if (count > 0)
+                BidHistory = new List<HistoryEntry>();
 
-                    break;
+            for (int i = 0; i < count; i++)
+            {
+                BidHistory.Add(new HistoryEntry(reader));
             }
 
             if (HasBegun)
@@ -579,9 +573,7 @@ namespace Server.Engines.Auction
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write(2);
-
-            writer.Write(ClaimPeriod);
+            writer.Write(1);
 
             writer.Write(Owner);
             writer.Write(AuctionItem);

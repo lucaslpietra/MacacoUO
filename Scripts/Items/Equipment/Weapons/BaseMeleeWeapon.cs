@@ -15,12 +15,14 @@ namespace Server.Items
         {
         }
 
-        public override int AbsorbDamage(Mobile attacker, Mobile defender, int damage)
+        public override Tuple<int, bool> AbsorbDamage(Mobile attacker, Mobile defender, int damage)
         {
-            damage = base.AbsorbDamage(attacker, defender, damage);
+            var mods = base.AbsorbDamage(attacker, defender, damage);
+
+            damage = mods.Item1;
 
             if (Core.AOS)
-                return damage;
+                return mods;
 			
             int absorb = defender.MeleeDamageAbsorb;
 
@@ -44,12 +46,13 @@ namespace Server.Items
                 else
                 {
                     defender.MeleeDamageAbsorb = 0;
-                    defender.SendLocalizedMessage(1005556); // Your reactive armor spell has been nullified.
+                    defender.SendLocalizedMessage("Sua armadura reativa acabou"); // Your reactive armor spell has been nullified.
                     DefensiveSpell.Nullify(defender);
                 }
             }
 
-            return damage;
+
+            return new Tuple<int, bool>(damage, mods.Item2);
         }
 
         public override void Serialize(GenericWriter writer)

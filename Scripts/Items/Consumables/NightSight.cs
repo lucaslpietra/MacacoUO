@@ -6,7 +6,7 @@ namespace Server.Items
     {
         [Constructable]
         public NightSightPotion()
-            : base(0xF06, PotionEffect.Nightsight)
+            : base(0xF06, PotionEffect.VisaoNoturna)
         {
         }
 
@@ -44,7 +44,7 @@ namespace Server.Items
             }
             else
             {
-                from.SendLocalizedMessage(502178); // You are already affected by this type of potion.
+                from.SendMessage("You already have nightsight.");
             }
         }
     }

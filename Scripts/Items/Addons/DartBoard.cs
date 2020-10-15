@@ -67,7 +67,7 @@ namespace Server.Items
             if (canThrow)
                 this.Throw(from);
             else
-                from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
+                from.LocalOverheadMessage(MessageType.Regular, 0x7B2, 1019045); // I can't reach that.
         }
 
         public void Throw(Mobile from)
@@ -76,7 +76,7 @@ namespace Server.Items
 
             if (knife == null)
             {
-                from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 500751); // Try holding a knife...
+                from.LocalOverheadMessage(MessageType.Regular, 0x7B2, 500751); // Try holding a knife...
                 return;
             }
 
@@ -108,7 +108,7 @@ namespace Server.Items
             else
                 message = 500757; // Missed.
 
-            this.PublicOverheadMessage(MessageType.Regular, 0x3B2, message);
+            this.PublicOverheadMessage(MessageType.Regular, 0x7B2, message);
         }
 
         public override void Serialize(GenericWriter writer)

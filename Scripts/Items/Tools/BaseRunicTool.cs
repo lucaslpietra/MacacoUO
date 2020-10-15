@@ -386,7 +386,7 @@ namespace Server.Items
                         ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitDispel, 2, 50, 2);
                         break;
                     case 11:
-                        ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLeechHits, 2, ItemPropertyInfo.GetMaxIntensity(weapon, AosWeaponAttribute.HitLeechHits), 2);
+                        ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLeechHits, 2, Server.SkillHandlers.Imbuing.GetPropRange(weapon, AosWeaponAttribute.HitLeechHits)[1], 2);
                         break;
                     case 12:
                         ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLowerAttack, 2, 50, 2);
@@ -395,7 +395,7 @@ namespace Server.Items
                         ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLowerDefend, 2, 50, 2);
                         break;
                     case 14:
-                        ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLeechMana, 2, ItemPropertyInfo.GetMaxIntensity(weapon, AosWeaponAttribute.HitLeechMana), 2);
+                        ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLeechMana, 2, Server.SkillHandlers.Imbuing.GetPropRange(weapon, AosWeaponAttribute.HitLeechMana)[1], 2);
                         break;
                     case 15:
                         ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLeechStam, 2, 50, 2);
@@ -448,7 +448,7 @@ namespace Server.Items
             SlayerGroup group = groups[Utility.Random(6)]; //-1 To Exclude the Fey Slayer which appears ONLY on a certain artifact.
             SlayerEntry entry;
 
-            if (group.Entries.Length == 0 || 10 > Utility.Random(100)) // 10% chance to do super slayer
+            if (group.Entries.Length == 0 || 5 > Utility.Random(100)) // 10% chance to do super slayer
             {
                 entry = group.Super;
             }
@@ -497,7 +497,7 @@ namespace Server.Items
 
             if (!isShield && armor.MeditationAllowance == ArmorMeditationAllowance.All)
                 m_Props.Set(3, true); // remove mage armor from possible properties
-            if (armor.Resource >= CraftResource.RegularLeather && armor.Resource <= CraftResource.BarbedLeather)
+            if (armor.Resource >= CraftResource.RegularLeather && armor.Resource <= CraftResource.CouroBarbed)
             {
                 m_Props.Set(0, true); // remove lower requirements from possible properties for leather armor
                 m_Props.Set(2, true); // remove durability bonus from possible properties

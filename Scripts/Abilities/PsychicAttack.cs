@@ -18,8 +18,8 @@ namespace Server.Items
 
             ClearCurrentAbility(attacker);
 
-            attacker.SendLocalizedMessage(1074383); // Your shot sends forth a wave of psychic energy.
-            defender.SendLocalizedMessage(1074384); // Your mind is attacked by psychic force!
+            attacker.SendLocalizedMessage("Seu tiro lanca energia psiquica"); // Your shot sends forth a wave of psychic energy.
+            defender.SendLocalizedMessage("Sua mente foi afetada por energia psiquica"); // Your mind is attacked by psychic force!
 
             defender.FixedParticles(0x3789, 10, 25, 5032, EffectLayer.Head);
             defender.PlaySound(0x1F8);
@@ -54,7 +54,7 @@ namespace Server.Items
             if (m_Registry.ContainsKey(defender))
                 m_Registry.Remove(defender);
 
-            defender.SendLocalizedMessage(1150292); // You recover from the effects of the psychic attack.
+            defender.SendLocalizedMessage("Sua mente se recupera"); // You recover from the effects of the psychic attack.
         }
 
         public class PsychicAttackTimer : Timer

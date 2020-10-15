@@ -2,23 +2,27 @@ using Server;
 using System;
 using Server.Multis;
 using Server.Mobiles;
+using Server.Network;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
     public class GalleonHold : Container
     {
+        private BaseGalleon m_Galleon;
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public BaseGalleon Galleon { get; private set; }
+        public BaseGalleon Galleon { get { return m_Galleon; } }
 
         public override int DefaultMaxWeight
         {
             get
             {
-                if (Galleon is BritannianShip)
+                if (m_Galleon is BritannianShip)
                     return 28000;
-                else if (Galleon is GargishGalleon)
+                else if (m_Galleon is GargishGalleon)
                     return 12000;
-                else if (Galleon is OrcishGalleon)
+                else if (m_Galleon is OrcishGalleon)
                     return 14000;
                 else
                     return 16000;
@@ -33,40 +37,32 @@ namespace Server.Items
 
         public GalleonHold(BaseGalleon galleon, int itemID) : base(itemID)
         {
-            Galleon = galleon;
+            m_Galleon = galleon;
             Movable = false;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (Galleon == null || from.AccessLevel > AccessLevel.Player)
-            {
+            if (m_Galleon == null || from.AccessLevel > AccessLevel.VIP)
                 base.OnDoubleClick(from);
-            }
-            else if (!Galleon.Contains(from))
+            else if (!m_Galleon.Contains(from))
             {
-                if (Galleon.TillerMan != null)
-                    Galleon.TillerManSay(502490); // You must be on the ship to open the hold.
+                if(m_Galleon.TillerMan != null)
+                    m_Galleon.TillerManSay(502490); // You must be on the ship to open the hold.
             }
-            else if (Galleon.Owner is PlayerMobile && !Galleon.Scuttled && Galleon.GetSecurityLevel(from) < SecurityLevel.Officer)
-            {
-                from.Say(1010436); // You do not have permission to do this.
-            }
+            else if (m_Galleon.Owner is PlayerMobile && !m_Galleon.Scuttled && m_Galleon.GetSecurityLevel(from) < SecurityLevel.Officer)
+                from.SendMessage("You must be at least an officer to access the cargo hold.");
             else
                 base.OnDoubleClick(from);
         }
 
-        public GalleonHold(Serial serial)
-            : base(serial)
-        {
-        }
+        public GalleonHold(Serial serial) : base(serial) { }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
             writer.Write((int)0);
-
-            writer.Write(Galleon);
+            writer.Write(m_Galleon);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -74,7 +70,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            Galleon = reader.ReadItem() as BaseGalleon;
+            m_Galleon = reader.ReadItem() as BaseGalleon;
 
             if (ItemID == 33648)
                 ItemID = 23648;
@@ -83,24 +79,26 @@ namespace Server.Items
 
     public class HoldItem : Item
     {
-        public override int LabelNumber { get { return 1149699; } } // cargo hold
+        public override int LabelNumber { get { return 1149699; } }
         public override bool ForceShowProperties { get { return true; } }
 
+        private GalleonHold m_Hold;
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public GalleonHold Hold { get; private set; }
+        public GalleonHold Hold { get { return m_Hold; } }
 
         public HoldItem(GalleonHold hold, int itemid) : base(itemid)
         {
-            Hold = hold;
+            m_Hold = hold;
             Movable = false;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (Hold == null || Hold.Galleon == null || !from.InRange(Location, 2))
+            if (m_Hold == null || m_Hold.Galleon == null || !from.InRange(this.Location, 2))
                 return;
 
-            Hold.OnDoubleClick(from);
+            m_Hold.OnDoubleClick(from);
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -110,25 +108,20 @@ namespace Server.Items
             list.Add(1072241, String.Format("{0}\t{1}\t{2}\t{3}", Hold.TotalItems, Hold.MaxItems, Hold.TotalWeight, Hold.MaxWeight)); // Contents: ~1_COUNT~/~2_MAXCOUNT~ items, ~3_WEIGHT~/~4_MAXWEIGHT~ stones
         }
 
-        public HoldItem(Serial serial)
-            : base(serial)
-        {
-        }
+        public HoldItem(Serial serial) : base(serial) { }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
             writer.Write((int)0);
-
-            writer.Write(Hold);
+            writer.Write(m_Hold);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            Hold = reader.ReadItem() as GalleonHold;
+            m_Hold = reader.ReadItem() as GalleonHold;
         }
     }
 }

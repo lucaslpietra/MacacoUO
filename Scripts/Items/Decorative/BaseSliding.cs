@@ -22,6 +22,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
+            PublicOverheadMessage(Network.MessageType.Emote, 0, false, "* abrindo uma passagem secreta *");
             this.ItemID = this.m_OpenedID;
             Timer.DelayCall(TimeSpan.FromSeconds(1.6), delegate()
             {

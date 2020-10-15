@@ -92,7 +92,7 @@ namespace Server.Items
             if (this.IsChildOf(from.Backpack))
             {
                 from.BeginTarget(6, false, TargetFlags.None, new TargetCallback(OnTarget));
-                from.SendLocalizedMessage(1053024); // Select the swamp dragon you wish to place the barding on.
+                from.SendMessage("Selecione um dragao do pantano"); // Select the swamp dragon you wish to place the barding on.
             }
             else
             {
@@ -109,11 +109,11 @@ namespace Server.Items
 
             if (pet == null || pet.HasBarding)
             {
-                from.SendLocalizedMessage(1053025); // That is not an unarmored swamp dragon.
+                from.SendMessage("Isto nao eh um dragao do pantano sem aramadura"); // That is not an unarmored swamp dragon.
             }
             else if (!pet.Controlled || pet.ControlMaster != from)
             {
-                from.SendLocalizedMessage(1053026); // You can only put barding on a tamed swamp dragon that you own.
+                from.SendMessage("Voce so pode por essa armadura em um dragao do pantano q vc controla"); // You can only put barding on a tamed swamp dragon that you own.
             }
             else if (!this.IsChildOf(from.Backpack))
             {
@@ -130,7 +130,7 @@ namespace Server.Items
 
                 this.Delete();
 
-                from.SendLocalizedMessage(1053027); // You place the barding on your swamp dragon.  Use a bladed item on your dragon to remove the armor.
+                from.SendMessage("Voce colocou a armadura. Use uma lamina no dragao do pantano para retirar a armadura"); // You place the barding on your swamp dragon.  Use a bladed item on your dragon to remove the armor.
             }
         }
 

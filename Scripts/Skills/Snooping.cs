@@ -61,14 +61,14 @@ namespace Server.SkillHandlers
                     return;
                 }
 
-                if (root != null && from.IsPlayer() && from.Skills[SkillName.Snooping].Value < Utility.Random(100))
+                if (root != null && from.IsPlayer() && from.Skills[SkillName.Snooping].Value < Utility.Random(120))
                 {
                     Map map = from.Map;
 
                     if (map != null)
                     {
-                        string message = String.Format("You notice {0} peeking into your belongings!", from.Name);
-
+                        string message = String.Format("Voce nota {0} bisbilhotando na sua mochila!", from.Name);
+                        ((PlayerMobile)from).PermaFlags.Add(root);
                         root.Send(new AsciiMessage(-1, -1, MessageType.Label, 946, 3, "", message));                        
                     }
                 }
@@ -76,7 +76,7 @@ namespace Server.SkillHandlers
                 if (from.IsPlayer())
                     Titles.AwardKarma(from, -4, true);
 
-                if (from.IsStaff() || from.CheckTargetSkill(SkillName.Snooping, cont, 0.0, 100.0))
+                if (from.IsStaff() || from.CheckTargetSkillMinMax(SkillName.Snooping, cont, 0.0, 100.0))
                 {
                     if (cont is TrapableContainer && ((TrapableContainer)cont).ExecuteTrap(from))
                         return;
@@ -85,7 +85,7 @@ namespace Server.SkillHandlers
                 }
                 else
                 {
-                    from.SendLocalizedMessage(500210); // You failed to peek into the container.
+                    from.SendLocalizedMessage("Voce falhou em ver o container"); // You failed to peek into the container.
 					
                     if (from.Skills[SkillName.Hiding].Value / 2 < Utility.Random(100))
                         from.RevealingAction();

@@ -10,6 +10,7 @@ namespace Server.Items
             : base(0x2B78)
         {
             this.Weight = 5.0;
+            this.Name = "Armadura de Couro";
         }
 
         public HidePants(Serial serial)

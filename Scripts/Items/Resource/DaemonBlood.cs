@@ -8,12 +8,14 @@ namespace Server.Items
         public DaemonBlood()
             : this(1)
         {
+            
         }
 
         [Constructable]
         public DaemonBlood(int amount)
             : base(0xF7D, amount)
         {
+            Name = "Sangue de Demonio";
         }
 
         public DaemonBlood(Serial serial)

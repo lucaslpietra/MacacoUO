@@ -83,7 +83,7 @@ namespace Server.Engines.HuntsmasterChallenge
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m.AccessLevel > AccessLevel.Player)
+            if (m.AccessLevel > AccessLevel.VIP)
                 m.SendGump(new PropertiesGump(m, this));
         }
 

@@ -19,7 +19,7 @@ namespace Server.Commands
     {
         public static void Initialize()
         {
-            CommandSystem.Prefix = "[";
+            CommandSystem.Prefix = ".";
 
             Register("Go", AccessLevel.Counselor, new CommandEventHandler(Go_OnCommand));
 
@@ -29,7 +29,7 @@ namespace Server.Commands
 
             Register("ClearFacet", AccessLevel.Administrator, new CommandEventHandler(ClearFacet_OnCommand));
 
-            Register("Where", AccessLevel.Counselor, new CommandEventHandler(Where_OnCommand));
+            Register("Where", AccessLevel.Player, new CommandEventHandler(Where_OnCommand));
 
             Register("AutoPageNotify", AccessLevel.Counselor, new CommandEventHandler(APN_OnCommand));
             Register("APN", AccessLevel.Counselor, new CommandEventHandler(APN_OnCommand));
@@ -86,7 +86,7 @@ namespace Server.Commands
             Mobile from = e.Mobile;
             Map map = from.Map;
 
-            from.SendMessage("You are at {0} {1} {2} in {3}.", from.X, from.Y, from.Z, map);
+            from.SendMessage("Voce esta em {0} {1} {2} in {3}.", from.X, from.Y, from.Z, map);
 
             if (map != null)
             {
@@ -105,7 +105,7 @@ namespace Server.Commands
                         reg = reg.Parent;
                     }
 
-                    from.SendMessage("Your region is {0}.", builder.ToString());
+                    from.SendMessage("Sua regiao e {0}.", builder.ToString());
                 }
             }
         }

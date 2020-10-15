@@ -12,6 +12,7 @@ namespace Server.Items
             : base(0x1407)
         {
             this.Weight = 17.0;
+            Name = "Maca Pesada";
         }
 
         public WarMace(Serial serial)

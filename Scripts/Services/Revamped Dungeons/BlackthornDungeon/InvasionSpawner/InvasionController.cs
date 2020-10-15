@@ -525,7 +525,7 @@ namespace Server.Engines.Blackthorn
 
             Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
             {
-                if (Beacon == null || Beacon.Destroyed)
+                if (Beacon != null && Beacon.Destroyed)
                 {
                     Timer.DelayCall(TimeSpan.FromMinutes(2), () =>
                     {
@@ -544,11 +544,13 @@ namespace Server.Engines.Blackthorn
                 TramInstance.MoveToWorld(new Point3D(6359, 2570, 0), Map.Trammel);
             }
 
+            /*
             if (FelInstance == null)
             {
                 TramInstance = new InvasionController(Map.Felucca);
                 TramInstance.MoveToWorld(new Point3D(6359, 2570, 0), Map.Felucca);
             }
+            */
 
             Defs = new Dictionary<City, InvasionDefinition>();
 

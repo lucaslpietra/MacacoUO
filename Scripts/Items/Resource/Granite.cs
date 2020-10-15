@@ -8,10 +8,10 @@ namespace Server.Items
         public BaseGranite(CraftResource resource)
             : base(0x1779)
         {
-            Hue = CraftResources.GetHue(resource);
-            Stackable = Core.ML;
+            this.Hue = CraftResources.GetHue(resource);
+            this.Stackable = Core.ML;
 
-            m_Resource = resource;
+            this.m_Resource = resource;
         }
 
         public BaseGranite(Serial serial)
@@ -27,12 +27,12 @@ namespace Server.Items
         {
             get
             {
-                return m_Resource;
+                return this.m_Resource;
             }
             set
             {
-                m_Resource = value;
-                InvalidateProperties();
+                this.m_Resource = value;
+                this.InvalidateProperties();
             }
         }
         public override double DefaultWeight
@@ -55,7 +55,7 @@ namespace Server.Items
 
             writer.Write((int)1); // version
 
-            writer.Write((int)m_Resource);
+            writer.Write((int)this.m_Resource);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -69,27 +69,27 @@ namespace Server.Items
                 case 1:
                 case 0:
                     {
-                        m_Resource = (CraftResource)reader.ReadInt();
+                        this.m_Resource = (CraftResource)reader.ReadInt();
                         break;
                     }
             }
 			
             if (version < 1)
-                Stackable = Core.ML;
+                this.Stackable = Core.ML;
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            if (!CraftResources.IsStandard(m_Resource))
+            if (!CraftResources.IsStandard(this.m_Resource))
             {
-                int num = CraftResources.GetLocalizationNumber(m_Resource);
+                int num = CraftResources.GetLocalizationNumber(this.m_Resource);
 
                 if (num > 0)
                     list.Add(num);
                 else
-                    list.Add(CraftResources.GetName(m_Resource));
+                    list.Add(CraftResources.GetName(this.m_Resource));
             }
         }
     }
@@ -98,18 +98,9 @@ namespace Server.Items
     {
         [Constructable]
         public Granite()
-            : this(1)
+            : base(CraftResource.Ferro)
         {
-        }
-
-        [Constructable]
-        public Granite(int amount)
-            : base(CraftResource.Iron)
-        {
-            if (Stackable)
-                Amount = amount;
-            else
-                Amount = 1;
+            Name = "Granito";
         }
 
         public Granite(Serial serial)
@@ -136,18 +127,8 @@ namespace Server.Items
     {
         [Constructable]
         public DullCopperGranite()
-            : this(1)
+            : base(CraftResource.Berilo)
         {
-        }
-
-        [Constructable]
-        public DullCopperGranite(int amount)
-            : base(CraftResource.DullCopper)
-        {
-            if (Stackable)
-                Amount = amount;
-            else
-                Amount = 1;
         }
 
         public DullCopperGranite(Serial serial)
@@ -174,18 +155,8 @@ namespace Server.Items
     {
         [Constructable]
         public ShadowIronGranite()
-            : this(1)
+            : base(CraftResource.Vibranium)
         {
-        }
-
-        [Constructable]
-        public ShadowIronGranite(int amount)
-            : base(CraftResource.ShadowIron)
-        {
-            if (Stackable)
-                Amount = amount;
-            else
-                Amount = 1;
         }
 
         public ShadowIronGranite(Serial serial)
@@ -212,18 +183,8 @@ namespace Server.Items
     {
         [Constructable]
         public CopperGranite()
-            : this(1)
+            : base(CraftResource.Cobre)
         {
-        }
-
-        [Constructable]
-        public CopperGranite(int amount)
-            : base(CraftResource.Copper)
-        {
-            if (Stackable)
-                Amount = amount;
-            else
-                Amount = 1;
         }
 
         public CopperGranite(Serial serial)
@@ -250,18 +211,8 @@ namespace Server.Items
     {
         [Constructable]
         public BronzeGranite()
-            : this(1)
-        {
-        }
-
-        [Constructable]
-        public BronzeGranite(int amount)
             : base(CraftResource.Bronze)
         {
-            if (Stackable)
-                Amount = amount;
-            else
-                Amount = 1;
         }
 
         public BronzeGranite(Serial serial)
@@ -288,18 +239,8 @@ namespace Server.Items
     {
         [Constructable]
         public GoldGranite()
-            : this(1)
+            : base(CraftResource.Dourado)
         {
-        }
-
-        [Constructable]
-        public GoldGranite(int amount)
-            : base(CraftResource.Gold)
-        {
-            if (Stackable)
-                Amount = amount;
-            else
-                Amount = 1;
         }
 
         public GoldGranite(Serial serial)
@@ -326,18 +267,8 @@ namespace Server.Items
     {
         [Constructable]
         public AgapiteGranite()
-            : this(1)
+            : base(CraftResource.Niobio)
         {
-        }
-
-        [Constructable]
-        public AgapiteGranite(int amount)
-            : base(CraftResource.Agapite)
-        {
-            if (Stackable)
-                Amount = amount;
-            else
-                Amount = 1;
         }
 
         public AgapiteGranite(Serial serial)
@@ -364,18 +295,8 @@ namespace Server.Items
     {
         [Constructable]
         public VeriteGranite()
-            : this(1)
+            : base(CraftResource.Lazurita)
         {
-        }
-
-        [Constructable]
-        public VeriteGranite(int amount)
-            : base(CraftResource.Verite)
-        {
-            if (Stackable)
-                Amount = amount;
-            else
-                Amount = 1;
         }
 
         public VeriteGranite(Serial serial)
@@ -402,18 +323,8 @@ namespace Server.Items
     {
         [Constructable]
         public ValoriteGranite()
-            : this(1)
+            : base(CraftResource.Quartzo)
         {
-        }
-
-        [Constructable]
-        public ValoriteGranite(int amount)
-            : base(CraftResource.Valorite)
-        {
-            if (Stackable)
-                Amount = amount;
-            else
-                Amount = 1;
         }
 
         public ValoriteGranite(Serial serial)

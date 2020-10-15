@@ -190,7 +190,7 @@ namespace Server.Items
 
             DestructionOfZipactriotlQuest q = QuestHelper.GetQuest((PlayerMobile)from, typeof(DestructionOfZipactriotlQuest)) as DestructionOfZipactriotlQuest;
 			
-			if(q != null || from.AccessLevel > AccessLevel.Player)
+			if(q != null || from.AccessLevel > AccessLevel.VIP)
 			{
 				BaseCreature.TeleportPets(from, _Destination, Map.TerMur);
 				from.MoveToWorld(_Destination, Map.TerMur);

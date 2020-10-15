@@ -112,6 +112,7 @@ namespace Server.Items
         public ModifiedClockworkAssembly(ClockworkType type)
             : base(0x1EA8)
         {
+            this.Name = "Engenhoca Mecanica";
             m_Type = type;
             Weight = 5.0;
         }

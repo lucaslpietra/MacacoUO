@@ -1,3 +1,4 @@
+
 using System;
 using Server.Items;
 using Server.Targeting;
@@ -15,7 +16,7 @@ namespace Server.SkillHandlers
         {
             m.Target = new InternalTargetPoison();
 
-            m.SendLocalizedMessage(502137); // Select the poison you wish to use
+            m.SendMessage("Escolha o veneno que deseja usar"); // Select the poison you wish to use
 
             return TimeSpan.FromSeconds(10.0); // 10 second delay before beign able to re-use a skill
         }
@@ -31,12 +32,12 @@ namespace Server.SkillHandlers
             {
                 if (targeted is BasePoisonPotion)
                 {
-                    from.SendLocalizedMessage(502142); // To what do you wish to apply the poison?
+                    from.SendMessage("Em que deseja aplicar o veneno ?"); // To what do you wish to apply the poison?
                     from.Target = new InternalTarget((BasePoisonPotion)targeted);
                 }
                 else // Not a Poison Potion
                 {
-                    from.SendLocalizedMessage(502139); // That is not a poison potion.
+                    from.SendMessage("Isto nao e uma pocao de veneno"); // That is not a poison potion.
                 }
             }
 
@@ -68,27 +69,23 @@ namespace Server.SkillHandlers
                         {
                             startTimer = (weapon.PrimaryAbility == WeaponAbility.InfectiousStrike || weapon.SecondaryAbility == WeaponAbility.InfectiousStrike);
                         }
-                        else if (weapon.Layer == Layer.OneHanded)
+                        else
                         {
                             // Only Bladed or Piercing weapon can be poisoned
-                            startTimer = (weapon.Type == WeaponType.Slashing || weapon.Type == WeaponType.Piercing);
+                            startTimer = (weapon.Type == WeaponType.Slashing || weapon.Type == WeaponType.Piercing || weapon.Type == WeaponType.Polearm || weapon.Type == WeaponType.Axe);
                         }
                     }
 
                     if (startTimer)
                     {
                         new InternalTimer(from, (Item)targeted, m_Potion).Start();
-
                         from.PlaySound(0x4F);
                         m_Potion.Consume();
                         from.AddToBackpack(new Bottle());
                     }
                     else // Target can't be poisoned
                     {
-                        if (Core.AOS)
-                            from.SendLocalizedMessage(1060204); // You cannot poison that! You can only poison infectious weapons, food or drink.
-                        else
-                            from.SendLocalizedMessage(502145); // You cannot poison that! You can only poison bladed or piercing weapons, food or drink.
+                        from.SendMessage("Voce nao pode envenenar isto, a arma precisa ter a habilidade 'infectar' como por exemplo a kopesh (kryss)"); // You cannot poison that! You can only poison bladed or piercing weapons, food or drink.
                     }
                 }
 
@@ -113,7 +110,7 @@ namespace Server.SkillHandlers
 
                     protected override void OnTick()
                     {
-                        if (m_From.CheckTargetSkill(SkillName.Poisoning, m_Target, m_MinSkill, m_MaxSkill))
+                        if (m_From.CheckTargetSkillMinMax(SkillName.Poisoning, m_Target, m_MinSkill, m_MaxSkill))
                         {
                             if (m_Target is Food)
                             {
@@ -135,7 +132,7 @@ namespace Server.SkillHandlers
                                 ((Shuriken)m_Target).PoisonCharges = Math.Min(18 - (m_Poison.RealLevel * 2), ((Shuriken)m_Target).UsesRemaining);
                             }
 
-                            m_From.SendLocalizedMessage(1010517); // You apply the poison
+                            m_From.SendMessage("Voce aplicou o veneno"); // You apply the poison
 
                             Misc.Titles.AwardKarma(m_From, -20, true);
                         }
@@ -144,7 +141,7 @@ namespace Server.SkillHandlers
                             // 5% of chance of getting poisoned if failed
                             if (m_From.Skills[SkillName.Poisoning].Base < 80.0 && Utility.Random(20) == 0)
                             {
-                                m_From.SendLocalizedMessage(502148); // You make a grave mistake while applying the poison.
+                                m_From.SendMessage("Voce acidentalmente derramou o veneno em sua pele"); // You make a grave mistake while applying the poison.
                                 m_From.ApplyPoison(m_From, m_Poison);
                             }
                             else
@@ -152,15 +149,11 @@ namespace Server.SkillHandlers
                                 if (m_Target is BaseWeapon)
                                 {
                                     BaseWeapon weapon = (BaseWeapon)m_Target;
-
-                                    if (weapon.Type == WeaponType.Slashing)
-                                        m_From.SendLocalizedMessage(1010516); // You fail to apply a sufficient dose of poison on the blade
-                                    else
-                                        m_From.SendLocalizedMessage(1010518); // You fail to apply a sufficient dose of poison
+                                    m_From.SendMessage("Voce falhou em aplicar o veneno"); // You fail to apply a sufficient dose of poison
                                 }
                                 else
                                 {
-                                    m_From.SendLocalizedMessage(1010518); // You fail to apply a sufficient dose of poison
+                                    m_From.SendMessage("Voce falhou em aplicar o veneno"); // You fail to apply a sufficient dose of poison
                                 }
                             }
                         }

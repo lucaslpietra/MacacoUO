@@ -75,11 +75,16 @@ namespace Server.Regions
         }
     }
 
-    public class NoTravelSpellsAllowed : DungeonRegion
+    public class NoTravelSpellsAllowed : BaseRegion
     {
         public NoTravelSpellsAllowed(XmlElement xml, Map map, Region parent)
             : base(xml, map, parent)
         {
+        }
+
+        public override bool AllowHousing(Mobile from, Point3D p)
+        {
+            return false;
         }
 
         public override bool CheckTravel(Mobile m, Point3D newLocation, Server.Spells.TravelCheckType travelType)
@@ -106,7 +111,7 @@ namespace Server.Regions
                 
                 PlayerMobile pm = m as PlayerMobile;
 
-                if (m.AccessLevel == AccessLevel.Player)
+                if (m.AccessLevel <= AccessLevel.VIP)
                 {
                     if (m.Mounted || m.Flying)
                     {

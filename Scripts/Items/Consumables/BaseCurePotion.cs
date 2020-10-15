@@ -66,8 +66,9 @@ namespace Server.Items
             {
                 CureLevelInfo li = info[i];
 
-                if (li.Poison.RealLevel == from.Poison.RealLevel &&
-					Scale(from, li.Chance) > Utility.RandomDouble())
+                //if (li.Poison != null && from.Poison != null && li.Poison.RealLevel == from.Poison.RealLevel &&
+                if (li.Poison != null && from.Poison != null && li.Poison.RealLevel >= from.Poison.RealLevel &&
+                    Scale(from, li.Chance) > Utility.RandomDouble())
                 {
                     cure = true;
                     break;
@@ -76,14 +77,14 @@ namespace Server.Items
 
             if (cure && from.CurePoison(from))
             {
-                from.SendLocalizedMessage(500231); // You feel cured of poison!
+                from.SendMessage("Voce foi curado do veneno"); // You feel cured of poison!
 
                 from.FixedEffect(0x373A, 10, 15);
                 from.PlaySound(0x1E0);
             }
-            else if (!cure)
+            else if (!cure && from.Poisoned)
             {
-                from.SendLocalizedMessage(500232); // That potion was not strong enough to cure your ailment!
+                from.SendMessage("O veneno eh forte demais para este antidoto"); // That potion was not strong enough to cure your ailment!
             }
         }
 
@@ -93,18 +94,12 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(1061652); // The garlic in the potion would surely kill you.
             }
-            else if (from.Poisoned)
-            {
-                DoCure(from);
-                PlayDrinkEffect(from);
-                from.FixedParticles(0x373A, 10, 15, 5012, EffectLayer.Waist);
-                from.PlaySound(0x1E0);
-                Consume();
-            }
-            else
-            {
-                from.SendLocalizedMessage(1042000); // You are not poisoned.
-            }
+            DoCure(from);
+            PlayDrinkEffect(from);
+            from.FixedParticles(0x373A, 10, 15, 5012, EffectLayer.Waist);
+            from.PlaySound(0x1E0);
+            Consume();
+
         }
     }
 }

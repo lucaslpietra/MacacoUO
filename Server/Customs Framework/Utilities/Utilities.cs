@@ -1,4 +1,4 @@
-﻿#region References
+#region References
 using System;
 using System.IO;
 
@@ -140,7 +140,7 @@ namespace CustomsFramework
 		{
 			if (!Core.AOS)
 			{
-				item.LootType = LootType.Newbied;
+				item.LootType = LootType.Blessed;
 			}
 
 			return item;

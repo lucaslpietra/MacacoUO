@@ -6,6 +6,8 @@ namespace Server.Engines.Quests
 {
     public abstract class MondainQuester : BaseVendor
     {
+        public static List<MondainQuester> Questers = new List<MondainQuester>();
+
         protected readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         private DateTime m_Spoken;
         public MondainQuester()
@@ -22,6 +24,7 @@ namespace Server.Engines.Quests
         public MondainQuester(string name, string title)
             : base(title)
         {
+            Questers.Add(this);
             Name = name;
             SpeechHue = 0x3B2;
         }
@@ -103,6 +106,38 @@ namespace Server.Engines.Quests
         { 
         }
 
+        public static Dictionary<Type, BaseQuest> Cache = new Dictionary<Type, BaseQuest>();
+
+        public override void OnDelete()
+        {
+            base.OnDelete();
+            Questers.Remove(this);
+        }
+
+        public override void OnAfterDelete()
+        {
+            base.OnAfterDelete();
+            Questers.Remove(this);
+        }
+
+        public static BaseQuest GetCachedQuest(PlayerMobile player, Type t)
+        {
+            if (Cache.ContainsKey(t))
+            {
+                var q = Cache[t];
+                q.Owner = player;
+                return q;
+            }
+
+            var quest = QuestHelper.Construct(t) as BaseQuest;
+            if (quest != null)
+            {
+                Cache[t] = quest;
+            }
+            quest.Owner = player;
+            return quest;
+        }
+
         public virtual void OnTalk(PlayerMobile player)
         { 
             if (QuestHelper.DeliveryArrived(player, this))
@@ -143,7 +178,7 @@ namespace Server.Engines.Quests
 
         public virtual void OnOfferFailed()
         {
-            Say(1080107); // I'm sorry, I have nothing for you at this time.
+            Say("Nao tenho mais nada com voce..."); // I'm sorry, I have nothing for you at this time.
         }
 
         public virtual void Advertise()
@@ -194,7 +229,11 @@ namespace Server.Engines.Quests
         public override void OnDoubleClick(Mobile m)
         {
             if (m.Alive && m is PlayerMobile)
-                OnTalk((PlayerMobile)m);				
+            {
+                OnTalk((PlayerMobile)m);
+                //base.OnDoubleClick(m);
+            }
+            
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -228,7 +267,9 @@ namespace Server.Engines.Quests
             m_Spoken = DateTime.UtcNow;
 			
             if (CantWalk)
-                Frozen = true;	
+                Frozen = true;
+
+            Questers.Add(this);
         }
     }
 }

@@ -9,7 +9,9 @@ namespace Server.Items
         [Constructable]
         public OrcishBow()
         {
+            Name = "Arco Orc";
             Hue = 1107;
+            Attributes.BonusDex = 2;
             Attributes.WeaponDamage = 25;
             WeaponAttributes.DurabilityBonus = 70;
         }
@@ -17,13 +19,6 @@ namespace Server.Items
         public OrcishBow(Serial serial)
             : base(serial)
         {
-        }
-
-        public override void AddWeightProperty(ObjectPropertyList list)
-        {
-            base.AddWeightProperty(list);
-
-            list.Add(1060410, WeaponAttributes.DurabilityBonus.ToString()); // durability ~1_val~%
         }
 
         public override void Serialize(GenericWriter writer)

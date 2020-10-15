@@ -10,6 +10,7 @@ namespace Server.Items
             : base(0xDF0)
         {
             this.Weight = 6.0;
+            Name = "Cajado Negro";
         }
 
         public BlackStaff(Serial serial)

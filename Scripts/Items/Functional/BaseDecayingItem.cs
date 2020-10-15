@@ -52,15 +52,15 @@ namespace Server.Items
                     int minutes = t.Minutes;
 
                     if (weeks > 1)
-                        list.Add(1153092, (t.Days / 7).ToString()); // Lifespan: ~1_val~ weeks
+                        list.AddTwoValues("Semanas", (t.Days / 7).ToString()); // Lifespan: ~1_val~ weeks
                     else if (days > 1)
-                        list.Add(1153091, t.Days.ToString()); // Lifespan: ~1_val~ days
+                        list.AddTwoValues("Dias", t.Days.ToString()); // Lifespan: ~1_val~ days
                     else if (hours > 1)
-                        list.Add(1153090, t.Hours.ToString()); // Lifespan: ~1_val~ hours
+                        list.AddTwoValues("Horas", t.Hours.ToString()); // Lifespan: ~1_val~ hours
                     else if (minutes > 1)
-                        list.Add(1153089, t.Minutes.ToString()); // Lifespan: ~1_val~ minutes
+                        list.AddTwoValues("Minutos", t.Minutes.ToString()); // Lifespan: ~1_val~ minutes
                     else
-                        list.Add(1072517, t.Seconds.ToString()); // Lifespan: ~1_val~ seconds
+                        list.AddTwoValues("Segundos", t.Seconds.ToString()); // Lifespan: ~1_val~ seconds
                 }
             }
         }
@@ -99,10 +99,10 @@ namespace Server.Items
                 Mobile parent = (Mobile)RootParent;
 				
                 if (Name == null)
-                    parent.SendLocalizedMessage(1072515, "#" + LabelNumber); // The ~1_name~ expired...
+                    parent.SendMessage(LabelNumber+" se desfez"); // The ~1_name~ expired...
                 else
-                    parent.SendLocalizedMessage(1072515, Name); // The ~1_name~ expired...
-					
+                    parent.SendMessage(Name + " se desfez");  // The ~1_name~ expired...
+
                 Effects.SendLocationParticles(EffectItem.Create(parent.Location, parent.Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
                 Effects.PlaySound(parent.Location, parent.Map, 0x201);
             }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Server.Network;
 using Server.Spells;
+using Server.Spells.Necromancy;
 
 namespace Server.Items
 {
@@ -38,16 +39,16 @@ namespace Server.Items
             }
         }
 
-		/// <summary>
-		///		Return false to make this special ability consume no ammo from ranged weapons
-		/// </summary>
-		public virtual bool ConsumeAmmo
-		{
-			get
-			{
-				return true;
-			}
-		}
+        /// <summary>
+        ///		Return false to make this special ability consume no ammo from ranged weapons
+        /// </summary>
+        public virtual bool ConsumeAmmo
+        {
+            get
+            {
+                return true;
+            }
+        }
 
         public virtual void OnHit(Mobile attacker, Mobile defender, int damage)
         {
@@ -73,14 +74,41 @@ namespace Server.Items
             return true;
         }
 
+        public void ApplyCooldown(Mobile from) {
+            BaseWeapon weapon = from.Weapon as BaseWeapon;
+            var cdName = "primaria";
+            var cd = this.BaseMana/3;
+
+            if (weapon != null && (weapon.SecondaryAbility == this))
+            {
+                cd = this.BaseMana;
+                cdName = "secundaria";
+            }
+
+            from.SetCooldown(cdName, TimeSpan.FromSeconds(cd));
+        }
+
+        public virtual int ValidateCooldown(Mobile from)
+        {
+            BaseWeapon weapon = from.Weapon as BaseWeapon;
+            var cdName = "primaria";
+            if (weapon != null && (weapon.SecondaryAbility == this)) {
+                cdName = "secundaria";
+            }
+            if (from.IsCooldown(cdName))
+                return from.TimeRemaining(cdName);
+
+            return 0;
+        }
+
         public virtual double GetRequiredSkill(Mobile from)
         {
             BaseWeapon weapon = from.Weapon as BaseWeapon;
 
             if (weapon != null && (weapon.PrimaryAbility == this || weapon.PrimaryAbility == Bladeweave))
-                return 70.0;
+                return 80.0;
             else if (weapon != null && (weapon.SecondaryAbility == this || weapon.SecondaryAbility == Bladeweave))
-                return 90.0;
+                return 100.0;
 
             return 200.0;
         }
@@ -93,9 +121,9 @@ namespace Server.Items
             BaseWeapon weapon = from.Weapon as BaseWeapon;
 
             if (weapon != null && (weapon.PrimaryAbility == this || weapon.PrimaryAbility == Bladeweave))
-                return Core.TOL ? 30.0 : 70.0;
+                return 70.0;
             else if (weapon != null && (weapon.SecondaryAbility == this || weapon.SecondaryAbility == Bladeweave))
-                return Core.TOL ? 60.0 : 90.0;
+                return 100.0;
 
             return 200.0;
         }
@@ -103,6 +131,22 @@ namespace Server.Items
         public virtual SkillName GetSecondarySkill(Mobile from)
         {
             return SkillName.Tactics;
+        }
+
+        public virtual int CalculateStamina(Mobile from)
+        {
+            int stamina = BaseMana;
+            double skillTotal = GetSkillTotal(from);
+            if (skillTotal >= 300.0)
+                stamina -= 10;
+            else if (skillTotal >= 200.0)
+                stamina -= 5;
+
+            // Using a special move within 3 seconds of the previous special move costs double mana 
+            if (GetContext(from) != null)
+                stamina *= 2;
+
+            return StrangleSpell.ScaleStamina(from, (int)(stamina * 1.25));
         }
 
         public virtual int CalculateMana(Mobile from)
@@ -120,7 +164,7 @@ namespace Server.Items
 
             if (!Server.Spells.Necromancy.MindRotSpell.GetMindRotScalar(from, ref scalar))
             {
-                scalar = 1.0;
+                scalar = 0.5;
             }
 
             if (Server.Spells.Mysticism.PurgeMagicSpell.IsUnderCurseEffects(from))
@@ -150,25 +194,28 @@ namespace Server.Items
             if (weapon == null)
                 return false;
 
-            Skill skill = from.Skills[weapon.Skill];
+            var weaponSkill = weapon.Skill;
+            Skill skill = from.Skills[weaponSkill];
 
             double reqSkill = GetRequiredSkill(from);
             double reqSecondarySkill = GetRequiredSecondarySkill(from);
-            SkillName secondarySkill = Core.TOL ? GetSecondarySkill(from) : SkillName.Tactics;
+            SkillName secondarySkill = GetSecondarySkill(from);
 
-            if (Core.ML && from.Skills[secondarySkill].Base < reqSecondarySkill)
+            if (weaponSkill == SkillName.Wrestling && reqSecondarySkill > 0)
             {
-                int loc = GetSkillLocalization(secondarySkill);
+                secondarySkill = SkillName.ArmsLore;
+                reqSecondarySkill = 100;
+            }
 
-                if (loc == 1060184)
-                {
-                    from.SendLocalizedMessage(loc);
-                }
-                else
-                {
-                    from.SendLocalizedMessage(loc, reqSecondarySkill.ToString());
-                }
+            if (from.Skills[secondarySkill].Base < reqSecondarySkill)
+            {
+                from.SendMessage("Requisito mínimo para usar esta habilidade: " + reqSecondarySkill.ToString() + " " + secondarySkill);
+                return false;
+            }
 
+            if (skill.SkillName != SkillName.Wrestling && from.Skills[SkillName.Anatomy].Value < reqSkill)
+            {
+                from.SendMessage("Requisito mínimo para usar esta habilidade: "+reqSkill+" Anatomy");
                 return false;
             }
 
@@ -182,27 +229,28 @@ namespace Server.Items
 
             if (reqSecondarySkill != 0.0 && !Core.TOL)
             {
-                from.SendLocalizedMessage(1079308, reqSkill.ToString()); // You need ~1_SKILL_REQUIREMENT~ weapon and tactics skill to perform that attack
+                from.SendMessage("Requisito minimo para usar esta habilidade: " + reqSkill.ToString() +" em " + skill.SkillName + " e " + secondarySkill); // You need ~1_SKILL_REQUIREMENT~ weapon and tactics skill to perform that attack
             }
             else
             {
-                from.SendLocalizedMessage(1060182, reqSkill.ToString()); // You need ~1_SKILL_REQUIREMENT~ weapon skill to perform that attack
+                from.SendMessage("Requisito minimo para usar esta habilidade: "+reqSkill+" "+skill.SkillName); // You need ~1_SKILL_REQUIREMENT~ weapon skill to perform that attack
             }
+
 
             return false;
         }
 
-        private int GetSkillLocalization(SkillName skill)
+        private string GetSkillLocalization(SkillName skill)
         {
             switch (skill)
             {
-                default: return Core.TOL ? 1157351 : 1079308;
-                    // You need ~1_SKILL_REQUIREMENT~ weapon and tactics skill to perform that attack                                                             
-                    // You need ~1_SKILL_REQUIREMENT~ tactics skill to perform that attack
+                default: return "Requisito minimo para usar esta habilidade: Tactics ";
+                // You need ~1_SKILL_REQUIREMENT~ weapon and tactics skill to perform that attack                                                             
+                // You need ~1_SKILL_REQUIREMENT~ tactics skill to perform that attack
                 case SkillName.Bushido:
-                case SkillName.Ninjitsu: return 1063347;
-                    // You need ~1_SKILL_REQUIREMENT~ Bushido or Ninjitsu skill to perform that attack!
-                case SkillName.Poisoning: return 1060184;
+                case SkillName.Ninjitsu: return "Desabilitado, por enquanto pois precisa de ";
+                // You need ~1_SKILL_REQUIREMENT~ Bushido or Ninjitsu skill to perform that attack!
+                case SkillName.Poisoning: return "Para usar esta habilidade voce precisa de ";
                     // You lack the required poisoning to perform that attack
             }
         }
@@ -232,11 +280,11 @@ namespace Server.Items
 
         public virtual bool CheckMana(Mobile from, bool consume)
         {
-            int mana = CalculateMana(from);
-
-            if (from.Mana < mana)
+            //int mana = CalculateMana(from);
+            int stamina = CalculateStamina(from);
+            if (from.Stam < stamina)
             {
-                from.SendLocalizedMessage(1060181, mana.ToString()); // You need ~1_MANA_REQUIREMENT~ mana to perform that attack
+                from.SendMessage("Stamina insuficiente, precisa de " + stamina.ToString()); // You need ~1_MANA_REQUIREMENT~ mana to perform that attack
                 return false;
             }
 
@@ -253,37 +301,42 @@ namespace Server.Items
                 if (ManaPhasingOrb.IsInManaPhase(from))
                     ManaPhasingOrb.RemoveFromTable(from);
                 else
-                    from.Mana -= mana;
+                    from.Stam -= stamina;
             }
-
             return true;
         }
 
         public virtual bool Validate(Mobile from)
         {
             if (!from.Player && (!Core.TOL || CheckMana(from, false)))
+            {
+                from.SendMessage("Mana insuficiente");
                 return true;
+            }
+
+            /*
+            var cooldown = ValidateCooldown(from);
+            if(cooldown > 0)
+            {
+                from.SendMessage("Aguarde " + cooldown + " segundos para poder usar isto");
+                return false;
+            }
+            */
 
             NetState state = from.NetState;
 
             if (state == null)
                 return false;
 
-            if (RequiresSE && !state.SupportsExpansion(Expansion.SE))
-            {
-                from.SendLocalizedMessage(1063456); // You must upgrade to Samurai Empire in order to use that ability.
-                return false;
-            }
-
             if (Spells.Bushido.HonorableExecution.IsUnderPenalty(from) || Spells.Ninjitsu.AnimalForm.UnderTransformation(from))
             {
-                from.SendLocalizedMessage(1063024); // You cannot perform this special move right now.
+                from.SendMessage("Voce nao pode fazer isto agora"); // You cannot perform this special move right now.
                 return false;
             }
 
-            if (Core.ML && from.Spell != null)
+            if (from.Spell != null)
             {
-                from.SendLocalizedMessage(1063024); // You cannot perform this special move right now.
+                from.SendMessage("Voce nao pode usar habilidades e magias ao mesmo tempo"); // You cannot perform this special move right now.
                 return false;
             }
 
@@ -407,11 +460,13 @@ namespace Server.Items
 
         public static WeaponAbility GetCurrentAbility(Mobile m)
         {
+            /*
             if (!Core.AOS)
             {
                 ClearCurrentAbility(m);
                 return null;
             }
+            */
 
             WeaponAbility a = (WeaponAbility)m_Table[m];
 
@@ -432,12 +487,6 @@ namespace Server.Items
 
         public static bool SetCurrentAbility(Mobile m, WeaponAbility a)
         {
-            if (!Core.AOS)
-            {
-                ClearCurrentAbility(m);
-                return false;
-            }
-
             if (!IsWeaponAbility(m, a))
             {
                 ClearCurrentAbility(m);
@@ -457,8 +506,8 @@ namespace Server.Items
             else
             {
                 SpecialMove.ClearCurrentMove(m);
-
                 m_Table[m] = a;
+                m.SendMessage("Habilidade setada " + a.GetType().Name);
             }
 
             return true;
@@ -468,7 +517,7 @@ namespace Server.Items
         {
             m_Table.Remove(m);
 
-            if (Core.AOS && m.NetState != null)
+            if (m.NetState != null)
                 m.Send(ClearWeaponAbility.Instance);
         }
 

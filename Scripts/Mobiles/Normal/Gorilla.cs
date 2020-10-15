@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public Gorilla()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a gorilla";
+            this.Name = "gorilla";
             this.Body = 0x1D;
             this.BaseSoundID = 0x9E;
 

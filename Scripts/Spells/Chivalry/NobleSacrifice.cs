@@ -42,7 +42,7 @@ namespace Server.Spells.Chivalry
         {
             get
             {
-                return 30;
+                return 100;
             }
         }
         public override int MantraNumber
@@ -88,9 +88,6 @@ namespace Server.Spells.Chivalry
 
                 bool sacrifice = false;
 
-                // TODO: Is there really a resurrection chance?
-                double resChance = 0.1 + (0.9 * ((double)Caster.Karma / 10000));
-
                 for (int i = 0; i < targets.Count; ++i)
                 {
                     Mobile m = targets[i];
@@ -101,11 +98,10 @@ namespace Server.Spells.Chivalry
                         {
                             Caster.SendLocalizedMessage(1010395); // The veil of death in this area is too strong and resists thy efforts to restore life.
                         }
-                        else if (resChance > Utility.RandomDouble())
+                        else
                         {
                             m.FixedParticles(0x375A, 1, 15, 5005, 5, 3, EffectLayer.Head);
-                            m.CloseGump(typeof(ResurrectGump));
-                            m.SendGump(new ResurrectGump(m, Caster));
+                            m.Resurrect();
                             sacrifice = true;
                         }
                     }

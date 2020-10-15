@@ -4,9 +4,14 @@ namespace Server.Items
 {
     public class TotalRefreshPotion : BaseRefreshPotion
     {
+		public override string DefaultName
+        {
+            get { return "Poção de Stamina Total"; }            
+        }
+		
         [Constructable]
         public TotalRefreshPotion()
-            : base(PotionEffect.RefreshTotal)
+            : base(PotionEffect.StaminaTotal)
         {
         }
 

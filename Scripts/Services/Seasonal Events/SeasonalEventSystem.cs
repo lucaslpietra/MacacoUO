@@ -11,7 +11,6 @@ using Server.Commands;
 using Server.Engines.TreasuresOfDoom;
 using Server.Engines.Khaldun;
 using Server.Engines.SorcerersDungeon;
-using Server.Engines.RisingTide;
 
 namespace Server.Engines.SeasonalEvents
 {
@@ -22,9 +21,7 @@ namespace Server.Engines.SeasonalEvents
         TreasuresOfKotlCity,
         SorcerersDungeon,
         TreasuresOfDoom,
-        TreasuresOfKhaldun,
-        KrampusEncounter,
-        RisingTide
+        TreasuresOfKhaldun
     }
 
     public enum EventStatus
@@ -60,14 +57,12 @@ namespace Server.Engines.SeasonalEvents
         {
             Entries = new List<SeasonalEventEntry>();
 
-            Entries.Add(new SeasonalEventEntry(EventType.TreasuresOfTokuno,     "Treasures of Tokuno",  EventStatus.Inactive));
-            Entries.Add(new SeasonalEventEntry(EventType.VirtueArtifacts,       "Virtue Artifacts",     EventStatus.Active));
-            Entries.Add(new SeasonalEventEntry(EventType.TreasuresOfKotlCity,   "Treasures of Kotl",    EventStatus.Inactive,   10, 1, 60));
-            Entries.Add(new SeasonalEventEntry(EventType.SorcerersDungeon,      "Sorcerer's Dungeon",   EventStatus.Seasonal,   10, 1, 60));
-            Entries.Add(new SeasonalEventEntry(EventType.TreasuresOfDoom,       "Treasures of Doom",    EventStatus.Seasonal,   10, 1, 60));
-            Entries.Add(new SeasonalEventEntry(EventType.TreasuresOfKhaldun,    "Treasures of Khaldun", EventStatus.Seasonal,   10, 1, 60));
-            Entries.Add(new SeasonalEventEntry(EventType.KrampusEncounter,      "Krampus Encounter",    EventStatus.Seasonal,   12, 1, 60));
-            Entries.Add(new SeasonalEventEntry(EventType.RisingTide,            "Rising Tide",          EventStatus.Active));
+            Entries.Add(new SeasonalEventEntry(EventType.TreasuresOfTokuno, "Treasures of Tokuno", EventStatus.Inactive));
+            Entries.Add(new SeasonalEventEntry(EventType.VirtueArtifacts, "Virtue Artifacts", EventStatus.Active));
+            Entries.Add(new SeasonalEventEntry(EventType.TreasuresOfKotlCity, "Treasures of Kotl", EventStatus.Inactive, 10, 1, 60));
+            Entries.Add(new SeasonalEventEntry(EventType.SorcerersDungeon, "Sorcerer's Dungeon", EventStatus.Seasonal, 10, 1, 60));
+            Entries.Add(new SeasonalEventEntry(EventType.TreasuresOfDoom, "Treasures of Doom", EventStatus.Seasonal, 10, 1, 60));
+            Entries.Add(new SeasonalEventEntry(EventType.TreasuresOfKhaldun, "Treasures of Khaldun", EventStatus.Seasonal, 10, 1, 60));
         }
 
         [Usage("SeasonSystemGump")]
@@ -256,12 +251,6 @@ namespace Server.Engines.SeasonalEvents
                     break;
                 case EventType.SorcerersDungeon:
                     SorcerersDungeonGenerate.CheckEnabled();
-                    break;
-                case EventType.KrampusEncounter:
-                    KrampusEncounter.CheckEnabled();
-                    break;
-                case EventType.RisingTide:
-                    RisingTideGeneration.CheckEnabled();
                     break;
             }
         }

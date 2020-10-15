@@ -46,6 +46,97 @@ namespace Server.Spells.Third
             this.Caster.Target = new InternalTarget(this);
         }
 
+        public static void Teleporta(Mobile m, IPoint3D p)
+        {
+            IPoint3D orig = p;
+            Map map = m.Map;
+
+            SpellHelper.GetSurfaceTop(ref p);
+
+            Point3D from = m.Location;
+            Point3D to = new Point3D(p);
+
+            var st = m.Map.GetStaticTiles(to);
+            bool staticInvalido = false;
+            foreach (var s in st)
+            {
+                if (s.IsWater())
+                {
+                    staticInvalido = true;
+                }
+                var td = TileData.ItemTable[s.ID & TileData.MaxItemValue];
+                if (td.Impassable)
+                    staticInvalido = true;
+            }
+
+            var land = m.Map.Tiles.GetLandTile(to.X, to.Y);
+            if (land.IsWater() || land.IsCoastline())
+                staticInvalido = true;
+            else
+            {
+                var landdata = TileData.LandTable[land.ID & TileData.MaxItemValue];
+                if ((landdata.Flags & TileFlag.Impassable) != 0)
+                {
+                    staticInvalido = true;
+                }
+            }
+            if (staticInvalido)
+            {
+                m.SendMessage("Voce nao pode teleportar ali");
+            }
+            else if (Factions.Sigil.ExistsOn(m))
+            {
+                m.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
+            }
+            else if (Server.Misc.WeightOverloading.IsOverloaded(m))
+            {
+                m.SendLocalizedMessage(502359, "", 0x22); // Thou art too encumbered to move.
+            }
+            else if (!SpellHelper.CheckTravel(m, TravelCheckType.TeleportFrom))
+            {
+            }
+            else if (!SpellHelper.CheckTravel(m, map, to, TravelCheckType.TeleportTo))
+            {
+            }
+            else if (map == null || !map.CanFit(p.X, p.Y, p.Z, 16, false, false, true))
+                m.SendLocalizedMessage("Este local esta bloqueado"); // That location is blocked.
+
+            else if (SpellHelper.CheckMulti(to, map))
+            {
+                m.SendLocalizedMessage(502831); // Cannot teleport to that spot.
+            }
+            else if (Region.Find(to, map).GetRegion(typeof(HouseRegion)) != null)
+            {
+                m.SendLocalizedMessage(502829); // Cannot teleport to that spot.
+            }
+            else
+            {
+                m.Location = to;
+                m.ProcessDelta();
+
+                if (m.Player)
+                {
+                    Effects.SendLocationParticles(EffectItem.Create(from, m.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
+                    Effects.SendLocationParticles(EffectItem.Create(to, m.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023);
+                }
+                else
+                {
+                    m.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
+                }
+
+                m.PlaySound(0x1FE);
+
+                IPooledEnumerable eable = m.GetItemsInRange(0);
+
+                foreach (Item item in eable)
+                {
+                    if (item is Server.Spells.Fifth.PoisonFieldSpell.PoisonFieldItem || item is Server.Spells.Fourth.FireFieldSpell.FireFieldItem)
+                        item.OnMoveOver(m);
+                }
+                eable.Free();
+            }
+        }
+
         public void Target(IPoint3D p)
         {
             IPoint3D orig = p;
@@ -56,7 +147,38 @@ namespace Server.Spells.Third
             Point3D from = this.Caster.Location;
             Point3D to = new Point3D(p);
 
-            if (Factions.Sigil.ExistsOn(this.Caster))
+            var st = this.Caster.Map.GetStaticTiles(to);
+            bool staticInvalido = false;
+            foreach (var s in st)
+            {
+                if (s.IsWater())
+                {
+                    staticInvalido = true;
+                }
+                var td = TileData.ItemTable[s.ID & TileData.MaxItemValue];
+                if (td.Impassable)
+                    staticInvalido = true;
+            }
+
+            var land = this.Caster.Map.Tiles.GetLandTile(to.X, to.Y);
+            if (land.IsWater() || land.IsCoastline())
+                staticInvalido = true;
+            else
+            {
+                var landdata = TileData.LandTable[land.ID & TileData.MaxItemValue];
+                if ((landdata.Flags & TileFlag.Impassable) != 0)
+                {
+                    staticInvalido = true;
+                }
+            }
+
+
+
+            if (staticInvalido)
+            {
+                this.Caster.SendMessage("Voce nao pode teleportar ali");
+            }
+            else if (Factions.Sigil.ExistsOn(this.Caster))
             {
                 this.Caster.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
             }
@@ -70,10 +192,9 @@ namespace Server.Spells.Third
             else if (!SpellHelper.CheckTravel(this.Caster, map, to, TravelCheckType.TeleportTo))
             {
             }
-            else if (map == null || !map.CanSpawnMobile(p.X, p.Y, p.Z))
-            {
-                this.Caster.SendLocalizedMessage(501942); // That location is blocked.
-            }
+            else if (map == null || !map.CanFit(p.X, p.Y, p.Z, 16, false, false, true))
+                Caster.SendLocalizedMessage("Este local esta bloqueado"); // That location is blocked.
+
             else if (SpellHelper.CheckMulti(to, map))
             {
                 this.Caster.SendLocalizedMessage(502831); // Cannot teleport to that spot.
@@ -84,8 +205,6 @@ namespace Server.Spells.Third
             }
             else if (this.CheckSequence())
             {
-                SpellHelper.Turn(this.Caster, orig);
-
                 Mobile m = this.Caster;
 
                 m.Location = to;
@@ -107,7 +226,7 @@ namespace Server.Spells.Third
 
                 foreach (Item item in eable)
                 {
-                    if (item is Server.Spells.Fifth.PoisonFieldSpell.InternalItem || item is Server.Spells.Fourth.FireFieldSpell.FireFieldItem)
+                    if (item is Server.Spells.Fifth.PoisonFieldSpell.PoisonFieldItem || item is Server.Spells.Fourth.FireFieldSpell.FireFieldItem)
                         item.OnMoveOver(m);
                 }
 
@@ -117,11 +236,13 @@ namespace Server.Spells.Third
             this.FinishSequence();
         }
 
+        public override bool PunishSpellMovementIfRepeated { get { return true; } }
+
         public class InternalTarget : Target
         {
             private readonly TeleportSpell m_Owner;
             public InternalTarget(TeleportSpell owner)
-                : base(Core.ML ? 11 : 12, true, TargetFlags.None)
+                : base(14, true, TargetFlags.None)
             {
                 this.m_Owner = owner;
             }

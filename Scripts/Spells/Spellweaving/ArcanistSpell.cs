@@ -112,7 +112,7 @@ namespace Server.Spells.Spellweaving
 				return false;
 			}
 
-			int mana = ScaleMana(RequiredMana);
+			int mana = AjustaMana(RequiredMana);
 
 			if (Caster.Mana < mana)
 			{

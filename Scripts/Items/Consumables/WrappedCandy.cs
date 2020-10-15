@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace Server.Items
 {
@@ -13,8 +13,7 @@ namespace Server.Items
         public WrappedCandy(int amount)
             : base(0x469e)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
         }
 
         public WrappedCandy(Serial serial)

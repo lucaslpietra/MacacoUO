@@ -258,7 +258,7 @@ namespace Server.Factions
             if (Faction.Find(m) == null)
                 return false;
 
-            return m.CheckTargetSkill(SkillName.DetectHidden, this, 80.0, 100.0);
+            return m.CheckTargetSkillMinMax(SkillName.DetectHidden, this, 80.0, 100.0);
         }
 
         public virtual void OnRevealed(Mobile m)

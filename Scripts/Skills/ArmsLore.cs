@@ -35,7 +35,7 @@ namespace Server.SkillHandlers
             {
                 if (targeted is BaseWeapon)
                 {
-                    if (from.CheckTargetSkill(SkillName.ArmsLore, targeted, 0, 100))
+                    if (from.CheckTargetSkillMinMax(SkillName.ArmsLore, targeted, 0, 100))
                     {
                         BaseWeapon weap = (BaseWeapon)targeted;
 
@@ -48,55 +48,26 @@ namespace Server.SkillHandlers
                             else if (hp > 9)
                                 hp = 9;
 
-                            from.SendLocalizedMessage(1038285 + hp);
+                            from.SendMessage("Durabilidade: " + weap.GetDurabString());
                         }
 
                         int damage = (weap.MaxDamage + weap.MinDamage) / 2;
                         int hand = (weap.Layer == Layer.OneHanded ? 0 : 1);
 
-                        if (damage < 3)
-                            damage = 0;
-                        else
-                            damage = (int)Math.Ceiling(Math.Min(damage, 30) / 5.0);
-                        /*
-                        else if ( damage < 6 )
-                        damage = 1;
-                        else if ( damage < 11 )
-                        damage = 2;
-                        else if ( damage < 16 )
-                        damage = 3;
-                        else if ( damage < 21 )
-                        damage = 4;
-                        else if ( damage < 26 )
-                        damage = 5;
-                        else
-                        damage = 6;
-                        * */
-
-                        WeaponType type = weap.Type;
-
-                        if (type == WeaponType.Ranged)
-                            from.SendLocalizedMessage(1038224 + (damage * 9));
-                        else if (type == WeaponType.Piercing)
-                            from.SendLocalizedMessage(1038218 + hand + (damage * 9));
-                        else if (type == WeaponType.Slashing)
-                            from.SendLocalizedMessage(1038220 + hand + (damage * 9));
-                        else if (type == WeaponType.Bashing)
-                            from.SendLocalizedMessage(1038222 + hand + (damage * 9));
-                        else
-                            from.SendLocalizedMessage(1038216 + hand + (damage * 9));
+                        from.SendMessage("Dano: " + weap.MinDamage + "-" + weap.MaxDamage);
+                        from.SendMessage("Velocidade: " + weap.Speed);
 
                         if (weap.Poison != null && weap.PoisonCharges > 0)
-                            from.SendLocalizedMessage(1038284); // It appears to have poison smeared on it.
+                            from.SendMessage("Aparentemente uma arma envenada com "+weap.PoisonCharges+" cargas de veneno"); // It appears to have poison smeared on it.
                     }
                     else
                     {
-                        from.SendLocalizedMessage(500353); // You are not certain...
+                        from.SendMessage("Voce nao tem certeza..."); // You are not certain...
                     }
                 }
                 else if (targeted is BaseArmor)
                 {
-                    if (from.CheckTargetSkill(SkillName.ArmsLore, targeted, 0, 100))
+                    if (from.CheckTargetSkillMinMax(SkillName.ArmsLore, targeted, 0, 100))
                     {
                         BaseArmor arm = (BaseArmor)targeted;
 
@@ -109,10 +80,10 @@ namespace Server.SkillHandlers
                             else if (hp > 9)
                                 hp = 9;
 
-                            from.SendLocalizedMessage(1038285 + hp);
+                            from.SendMessage("HP da armadura:" + hp);
                         }
 
-                        from.SendLocalizedMessage(1038295 + (int)Math.Ceiling(Math.Min(arm.ArmorRating, 35) / 5.0));
+                        from.SendMessage("Rating de armadura :" + (int)Math.Ceiling(Math.Min(arm.ArmorRating, 35) / 5.0));
                         /*
                         if ( arm.ArmorRating < 1 )
                         from.SendLocalizedMessage( 1038295 ); // This armor offers no defense against attackers.
@@ -141,7 +112,7 @@ namespace Server.SkillHandlers
                 {
                     SwampDragon pet = (SwampDragon)targeted;
 
-                    if (from.CheckTargetSkill(SkillName.ArmsLore, targeted, 0, 100))
+                    if (from.CheckTargetSkillMinMax(SkillName.ArmsLore, targeted, 0, 100))
                     {
                         int perc = (4 * pet.BardingHP) / pet.BardingMaxHP;
 

@@ -12,6 +12,7 @@ namespace Server.Items
             : base(0xF52)
         {
             this.Weight = 1.0;
+            Name = "Adaga";
         }
 
         public Dagger(Serial serial)
@@ -86,14 +87,14 @@ namespace Server.Items
         {
             get
             {
-                return 15;
+                return 12;
             }
         }
         public override int OldSpeed
         {
             get
             {
-                return 55;
+                return 62;
             }
         }
         public override int InitMinHits
@@ -131,6 +132,13 @@ namespace Server.Items
                 return WeaponAnimation.Pierce1H;
             }
         }
+
+        public override void AddNameProperties(ObjectPropertyList list)
+        {
+            base.AddNameProperties(list);
+            list.Add("Usa Ninjutsu ou Fencing");
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

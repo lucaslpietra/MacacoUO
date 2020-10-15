@@ -89,7 +89,7 @@ namespace Server.Spells.SkillMasteries
             else if (CheckSequence())
             {
                 AnimalFormContext context = AnimalForm.GetContext(Caster);
-                int mana = ScaleMana(RequiredMana);
+                int mana = AjustaMana(RequiredMana);
 
                 Ninjitsu.AnimalForm.AddLastAnimalForm(Caster, 16);
 
@@ -124,7 +124,7 @@ namespace Server.Spells.SkillMasteries
                 Caster.FixedParticles(0x3728, 10, 13, 2023, EffectLayer.Waist);
                 Caster.Mana -= mana;
 
-                Caster.CheckSkill(SkillName.Ninjitsu, 0.0, 90.0);
+                Caster.CheckSkillMult(SkillName.Ninjitsu, 0.0, 90.0);
 
                 BaseMount.Dismount(Caster);
 

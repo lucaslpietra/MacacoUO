@@ -13,11 +13,11 @@ namespace Server.Mobiles
 
         [Constructable]
         public EnergyVortex(bool summoned)
-            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Berserk, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            Name = "an energy vortex";
+            Name = "vortex de energia";
 
-            if (Core.SE && 0.002 > Utility.RandomDouble()) // Per OSI FoF, it's a 1/500 chance.
+            if (0.002 > Utility.RandomDouble()) // Per OSI FoF, it's a 1/500 chance.
             {
                 // Llama vortex!
                 Body = 0xDC;
@@ -28,10 +28,10 @@ namespace Server.Mobiles
                 Body = 164;
             }
 
-            bool weak = summoned && Siege.SiegeShard;
+            bool weak = false;
 
-            SetStr(weak ? 100 : 200);
-            SetDex(weak ? 150 : 200);
+            SetStr(weak ? 150 : 200);
+            SetDex(weak ? 170 : 200);
             SetInt(100);
 
             SetHits((Core.SE && !weak) ? 140 : 70);
@@ -57,13 +57,16 @@ namespace Server.Mobiles
             Karma = 0;
 
             VirtualArmor = 40;
-            ControlSlots = (Core.SE) ? 2 : 1;
+            ControlSlots = 2;
         }
 
         public EnergyVortex(Serial serial)
             : base(serial)
         {
         }
+
+        public override bool Commandable { get { return false; } }
+
 
         public override bool DeleteCorpseOnDeath
         {
@@ -72,6 +75,12 @@ namespace Server.Mobiles
                 return Summoned;
             }
         }
+
+        public override bool IsEnemy(Mobile m)
+        {
+            return true;
+        }
+
         public override bool AlwaysMurderer
         {
             get

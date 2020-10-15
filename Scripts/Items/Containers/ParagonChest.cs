@@ -1,3 +1,4 @@
+using Server.Mobiles;
 using System;
 
 namespace Server.Items
@@ -186,6 +187,9 @@ namespace Server.Items
                     }
                     else
                     {
+                        if (weapon.Name != null)
+                            weapon.Name = weapon.Name + " Paragon";
+                        weapon.Hue = Paragon.Hue;
                         weapon.DamageLevel = (WeaponDamageLevel)Utility.Random(6);
                         weapon.AccuracyLevel = (WeaponAccuracyLevel)Utility.Random(6);
                         weapon.DurabilityLevel = (WeaponDurabilityLevel)Utility.Random(6);
@@ -208,6 +212,9 @@ namespace Server.Items
                     }
                     else
                     {
+                        if (armor.Name != null)
+                            armor.Name = armor.Name + " Paragon";
+                        armor.Hue = Paragon.Hue;
                         armor.ProtectionLevel = (ArmorProtectionLevel)Utility.Random(6);
                         armor.Durability = (ArmorDurabilityLevel)Utility.Random(6);
                     }

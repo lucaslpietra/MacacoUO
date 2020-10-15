@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Grim()
             : base()
         {
-            Name = "Grim";
+            Name = "Dragao Anciao";
             Hue = 1744;
 
             SetStr(527, 580);
@@ -48,7 +48,6 @@ namespace Server.Mobiles
             }
 
             SetWeaponAbility(WeaponAbility.CrushingBlow);
-            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public override bool GivesMLMinorArtifact
@@ -68,6 +67,13 @@ namespace Server.Mobiles
                 return true;
             }
         }
+        public override bool HasBreath
+        {
+            get
+            {
+                return true;
+            }
+        }// fire breath enabled
         public override int Meat
         {
             get

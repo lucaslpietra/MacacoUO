@@ -10,18 +10,21 @@ namespace Server.Items
         public CompassionArms()
             : base(0x2B0A)
         {
+            Name = "Bracadeiras da Compaixao";
             this.LootType = LootType.Blessed;
             this.Weight = 3.0;
             this.SetHue = 0;
             this.Hue = 0x226;
 			
-            this.SetSelfRepair = 5;
-			
+            //this.SetSelfRepair = 5;
+
+            /*
             this.SetPhysicalBonus = 5;
             this.SetFireBonus = 5;
             this.SetColdBonus = 5;
             this.SetPoisonBonus = 5;
             this.SetEnergyBonus = 5;
+            */
         }
 
         public CompassionArms(Serial serial)

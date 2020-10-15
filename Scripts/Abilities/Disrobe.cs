@@ -34,12 +34,12 @@ namespace Server.Items
 
             if (pack == null || toDisrobe == null || !toDisrobe.Movable)
             {
-                attacker.SendLocalizedMessage(1004001); // You cannot disarm your opponent.
+                attacker.SendLocalizedMessage("Voce nao pode desarmar isto"); // You cannot disarm your opponent.
             }
             else if (this.CheckMana(attacker, true))
             {
                 //attacker.SendLocalizedMessage( 1060092 ); // You disarm their weapon!
-                defender.SendLocalizedMessage(1062002); // You can no longer wear your ~1_ARMOR~
+                defender.SendLocalizedMessage("Voce nao pode mais usar sua armadura"); // You can no longer wear your ~1_ARMOR~
 
                 defender.PlaySound(0x3B9);
                 //defender.FixedParticles( 0x37BE, 232, 25, 9948, EffectLayer.InnerTorso );

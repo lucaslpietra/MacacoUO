@@ -17,7 +17,7 @@ namespace Server.Engines.Despise
         [Constructable]
         public Phantom(int powerLevel) : base(AIType.AI_Melee, FightMode.Good)
         {
-            Name = "Phantom";
+            Name = "fantasma";
             Body = 0xFC;
             BaseSoundID = 0x482;
             Hue = 2671;
@@ -26,7 +26,6 @@ namespace Server.Engines.Despise
             Karma = GetKarmaEvil;
 
             Power = powerLevel;
-            SetMagicalAbility(MagicalAbility.Discordance);
         }
 
         protected override BaseAI ForcedAI { get { return new DespiseMeleeAI(this); } }
@@ -99,7 +98,7 @@ namespace Server.Engines.Despise
         [Constructable]
         public Naba(int powerLevel) : base(AIType.AI_Mage, FightMode.Good)
         {
-            Name = "Naba";
+            Name = "naba";
             Body = 0x88;
             BaseSoundID = 639;
             Hue = 2707;
@@ -141,7 +140,7 @@ namespace Server.Engines.Despise
         [Constructable]
         public Darkmane(int powerLevel) : base(AIType.AI_Melee, FightMode.Good)
         {
-            Name = "Darkmane";
+            Name = "assombradao";
             Body = 0xCC;
             Hue = 1910;
             BaseSoundID = 0xA8;
@@ -194,7 +193,7 @@ namespace Server.Engines.Despise
         [Constructable]
         public Skeletrex(int powerLevel) : base(AIType.AI_Archer, FightMode.Good)
         {
-            Name = "Skeletrex";
+            Name = "skeletrex";
             Body = 147;
             BaseSoundID = 451;
             Hue = 2075;
@@ -243,7 +242,7 @@ namespace Server.Engines.Despise
         [Constructable]
         public Hellion(int powerLevel) : base(AIType.AI_Melee, FightMode.Good)
         {
-            Name = "Hellion";
+            Name = "gargula infernal";
             Body = 4;
             BaseSoundID = 0x174;
             Hue = 2671;
@@ -299,7 +298,7 @@ namespace Server.Engines.Despise
         [Constructable]
         public Echidnite(int powerLevel) : base(AIType.AI_Melee, FightMode.Good)
         {
-            Name = "Echidnite";
+            Name = "echidnite";
             Body = 250;
             BaseSoundID = 0x52A;
             Hue = 2671;
@@ -354,7 +353,7 @@ namespace Server.Engines.Despise
         [Constructable]
         public BirlingBlades(int powerLevel) : base(AIType.AI_Melee, FightMode.Good)
         {
-            Name = "Birling Blades";
+            Name = "laminas malignas";
             Body = 574;
             BaseSoundID = 224;
             Hue = 2672;
@@ -430,7 +429,7 @@ namespace Server.Engines.Despise
         [Constructable]
         public Prometheoid(int powerLevel) : base(AIType.AI_Melee, FightMode.Good)
         {
-            Name = "Prometheoid";
+            Name = "promethoide";
             Body = 305;
             BaseSoundID = 224;
             Hue = 2671;

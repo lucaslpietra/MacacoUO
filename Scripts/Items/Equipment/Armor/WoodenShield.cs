@@ -11,6 +11,7 @@ namespace Server.Items
             : base(0x1B7A)
         {
             this.Weight = 5.0;
+            this.Name = "Escudo de Madeira";
         }
 
         public WoodenShield(Serial serial)
@@ -78,7 +79,7 @@ namespace Server.Items
         {
             get
             {
-                return 8;
+                return 10;
             }
         }
         public override void Deserialize(GenericReader reader)

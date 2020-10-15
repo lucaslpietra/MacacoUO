@@ -36,6 +36,7 @@ namespace Server.Spells.First
                 return true;
             }
         }
+
         public override Type[] DelayDamageFamily { get { return new Type[] { typeof(Server.Spells.Mysticism.NetherBoltSpell) }; } }
         public override void OnCast()
         {
@@ -53,13 +54,12 @@ namespace Server.Spells.First
                 IDamageable source = Caster;
                 IDamageable target = d;
 
-                SpellHelper.Turn(Caster, d);
-
                 if (Core.SA && HasDelayContext(d))
                 {
                     DoHurtFizzle();
                     return;
                 }
+                //SpellHelper.Turn(Caster, target);
 
                 if (SpellHelper.CheckReflect((int)Circle, ref source, ref target))
                 {
@@ -82,7 +82,7 @@ namespace Server.Spells.First
 
                     if (CheckResisted((Mobile)target))
                     {
-                        damage *= 0.75;
+                        damage *= 0.4;
 
                         ((Mobile)target).SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                     }
@@ -106,7 +106,7 @@ namespace Server.Spells.First
         {
             private readonly MagicArrowSpell m_Owner;
             public InternalTarget(MagicArrowSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(Spell.RANGE, false, TargetFlags.Harmful)
             {
                 m_Owner = owner;
             }

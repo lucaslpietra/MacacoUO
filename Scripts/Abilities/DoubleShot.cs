@@ -31,7 +31,7 @@ namespace Server.Items
 
         public override SkillName GetSecondarySkill(Mobile from)
         {
-            return from.Skills[SkillName.Ninjitsu].Base > from.Skills[SkillName.Bushido].Base ? SkillName.Ninjitsu : SkillName.Bushido;
+            return SkillName.Tactics;
         }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
@@ -48,13 +48,16 @@ namespace Server.Items
         {
             if (base.Validate(from))
             {
+                /*
                 if (from.Mounted)
                     return true;
                 else
                 {
-                    from.SendLocalizedMessage(1070770); // You can only execute this attack while mounted!
+                    from.SendLocalizedMessage("Voce precisa estar montado para isto"); // You can only execute this attack while mounted!
                     ClearCurrentAbility(from);
                 }
+                */
+                return true;
             }
 
             return false;
@@ -67,8 +70,8 @@ namespace Server.Items
 
             ClearCurrentAbility(attacker);
 
-            attacker.SendLocalizedMessage(1063348); // You launch two shots at once!
-            defender.SendLocalizedMessage(1063349); // You're attacked with a barrage of shots!
+            attacker.SendLocalizedMessage("Voce da um tiro duplo"); // You launch two shots at once!
+            defender.SendLocalizedMessage("Voce foi atacado por um tiro duplo"); // You're attacked with a barrage of shots!
 
             defender.FixedParticles(0x37B9, 1, 19, 0x251D, EffectLayer.Waist);
 

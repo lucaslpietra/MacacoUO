@@ -8,7 +8,7 @@ namespace Server.Mobiles
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         [Constructable]
         public Bard()
-            : base("the bard")
+            : base("o bardo")
         {
             this.SetSkill(SkillName.Discordance, 64.0, 100.0);
             this.SetSkill(SkillName.Musicianship, 64.0, 100.0);

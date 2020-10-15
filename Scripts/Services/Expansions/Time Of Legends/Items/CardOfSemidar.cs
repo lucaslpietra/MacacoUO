@@ -15,8 +15,7 @@ namespace Server.Items
             Shamino,
             Juonar,
             ProfessorRafkin,
-            Minax,
-            Krampus
+            Minax
         }
 
         public override int LabelNumber
@@ -50,31 +49,22 @@ namespace Server.Items
             if (from.InRange(this.GetWorldLocation(), 3))
             {
                 Gump g = new Gump(100, 100);
-
-                if (_Type == CardType.Krampus)
-                {
-                    g.AddImage(0, 0, 39914);
-                }
-                else
-                {
-                    g.AddImage(0, 0, 39904 + (int)_Type);
-                }
+                g.AddImage(0, 0, 39904 + (int)_Type);
 
                 from.SendGump(g);
             }
         }
-
+        
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            switch (_Type)
-            {
-                case CardType.ProfessorRafkin: list.Add(1156562); break;
-                case CardType.Minax: list.Add(1156981); break;
-                case CardType.Krampus: list.Add(1158799); break;
-                default: list.Add(1156396 + (int)_Type); break;
-            }
+            if (_Type == CardType.ProfessorRafkin)
+                list.Add(1156562); // Professor Ellie Rafkin
+            else if (_Type == CardType.Minax)
+                list.Add(1156981); // Minax the Enchantress
+            else
+                list.Add(1156396 + (int)_Type);
         }
 
         public CardOfSemidar(Serial serial)

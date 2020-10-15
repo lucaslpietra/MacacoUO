@@ -45,8 +45,8 @@ namespace Server.Items
         {
             get
             {
-                if (this.m_Resource >= CraftResource.SpinedLeather && this.m_Resource <= CraftResource.BarbedLeather)
-                    return 1049684 + (int)(this.m_Resource - CraftResource.SpinedLeather);
+                if (this.m_Resource >= CraftResource.CouroSpinned && this.m_Resource <= CraftResource.CouroBarbed)
+                    return 1049684 + (int)(this.m_Resource - CraftResource.CouroSpinned);
 
                 return 1047022;
             }
@@ -163,7 +163,7 @@ namespace Server.Items
     [FlipableAttribute(0x1081, 0x1082)]
     public class SpinedLeather : BaseLeather
     {
-        protected override CraftResource DefaultResource { get { return CraftResource.SpinedLeather; } }
+        protected override CraftResource DefaultResource { get { return CraftResource.CouroSpinned; } }
 
         [Constructable]
         public SpinedLeather()
@@ -173,8 +173,9 @@ namespace Server.Items
 
         [Constructable]
         public SpinedLeather(int amount)
-            : base(CraftResource.SpinedLeather, amount)
+            : base(CraftResource.CouroSpinned, amount)
         {
+            this.Name = "Couro Spined";
         }
 
         public SpinedLeather(Serial serial)
@@ -200,7 +201,7 @@ namespace Server.Items
     [FlipableAttribute(0x1081, 0x1082)]
     public class HornedLeather : BaseLeather
     {
-        protected override CraftResource DefaultResource { get { return CraftResource.HornedLeather; } }
+        protected override CraftResource DefaultResource { get { return CraftResource.CouroHorned; } }
 
         [Constructable]
         public HornedLeather()
@@ -210,8 +211,9 @@ namespace Server.Items
 
         [Constructable]
         public HornedLeather(int amount)
-            : base(CraftResource.HornedLeather, amount)
+            : base(CraftResource.CouroHorned, amount)
         {
+            this.Name = "Couro Horned";
         }
 
         public HornedLeather(Serial serial)
@@ -237,7 +239,7 @@ namespace Server.Items
     [FlipableAttribute(0x1081, 0x1082)]
     public class BarbedLeather : BaseLeather
     {
-        protected override CraftResource DefaultResource { get { return CraftResource.BarbedLeather; } }
+        protected override CraftResource DefaultResource { get { return CraftResource.CouroBarbed; } }
 
         [Constructable]
         public BarbedLeather()
@@ -247,8 +249,9 @@ namespace Server.Items
 
         [Constructable]
         public BarbedLeather(int amount)
-            : base(CraftResource.BarbedLeather, amount)
+            : base(CraftResource.CouroBarbed, amount)
         {
+            this.Name = "Couro Barbed";
         }
 
         public BarbedLeather(Serial serial)

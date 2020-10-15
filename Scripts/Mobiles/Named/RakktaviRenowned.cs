@@ -117,6 +117,12 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (this.Body == 42)
+            {
+                this.Body = 0x8E;
+                this.Hue = 0;
+            }
         }
     }
 }

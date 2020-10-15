@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-
 using Server.Items;
+using Server.Ziden.Traducoes;
 
 namespace Server.Engines.Craft
 {
@@ -24,14 +23,17 @@ namespace Server.Engines.Craft
         private bool m_Repair;
         private bool m_MarkOption;
         private bool m_CanEnhance;
-
+        #region SA
         private bool m_QuestOption;
 		private bool m_CanAlter;
+        #endregion
 
         private readonly CraftItemCol m_CraftItems;
         private readonly CraftGroupCol m_CraftGroups;
         private readonly CraftSubResCol m_CraftSubRes;
         private readonly CraftSubResCol m_CraftSubRes2;
+
+       
 
         public int MinCraftEffect
         {
@@ -154,22 +156,6 @@ namespace Server.Engines.Craft
                 c.OnMade(item);
         }
 
-        public void OnRepair(Mobile m, ITool tool, Item deed, Item addon, IEntity e)
-        {
-            Item source;
-
-            if (tool is Item)
-            {
-                source = (Item)tool;
-            }
-            else
-            {
-                source = deed ?? addon;
-            }
-
-            EventSink.InvokeRepairItem(new RepairItemEventArgs(m, source, e));
-        }
-
         public bool Resmelt
         {
             get
@@ -218,6 +204,7 @@ namespace Server.Engines.Craft
             }
         }
 		
+        #region SA
         public bool QuestOption
         {
             get
@@ -229,8 +216,11 @@ namespace Server.Engines.Craft
                 m_QuestOption = value;
             }
         }
-		
-		public bool CanAlter
+
+        public bool Jewelcraft = false;
+
+
+        public bool CanAlter
         {
             get
             {
@@ -241,6 +231,7 @@ namespace Server.Engines.Craft
                 m_CanAlter = value;
             }
         }
+        #endregion
 
         public CraftSystem(int minCraftEffect, int maxCraftEffect, double delay)
         {
@@ -252,6 +243,8 @@ namespace Server.Engines.Craft
             m_CraftGroups = new CraftGroupCol();
             m_CraftSubRes = new CraftSubResCol();
             m_CraftSubRes2 = new CraftSubResCol();
+
+            SaveTrads.OnLoad();
 
             InitCraftList();
             AddSystem(this);
@@ -265,16 +258,9 @@ namespace Server.Engines.Craft
             Systems.Add(system);
         }
 
-        private Type[] _GlobalNoConsume =
-        {
-            typeof(CapturedEssence), typeof(EyeOfTheTravesty), typeof(DiseasedBark),  typeof(LardOfParoxysmus), typeof(GrizzledBones), typeof(DreadHornMane),
-
-            typeof(Blight), typeof(Corruption), typeof(Muculent), typeof(Scourge), typeof(Putrefaction), typeof(Taint)
-        };
-
         public virtual bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
         {
-            return !_GlobalNoConsume.Any(t => t == resourceType);
+            return true;
         }
 
         public virtual bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem, ref MasterCraftsmanTalisman talisman)
@@ -342,6 +328,7 @@ namespace Server.Engines.Craft
 
             if (index == -1)
             {
+                //Shard.Debug("Criando craft group " + groupName.String+" - "+groupName.Number);
                 CraftGroup craftGroup = new CraftGroup(groupName);
                 craftGroup.AddCraftItem(craftItem);
                 m_CraftGroups.Add(craftGroup);
@@ -406,12 +393,6 @@ namespace Server.Engines.Craft
             craftItem.NeedMaker = needMaker;
         }
 
-        public void SetNeedWater(int index, bool needWater)
-        {
-            CraftItem craftItem = m_CraftItems.GetAt(index);
-            craftItem.NeedWater = needWater;
-        }
-
         public void SetBeverageType(int index, BeverageType requiredBeverage)
         {
             CraftItem craftItem = m_CraftItems.GetAt(index);
@@ -424,12 +405,21 @@ namespace Server.Engines.Craft
             craftItem.NeedMill = needMill;
         }
 
+        #region Cooking System
+        public void SetNeedSteamPoweredBeverageMaker(int index, bool needSteamPoweredBeverageMaker)
+        {
+            CraftItem craftItem = this.m_CraftItems.GetAt(index);
+            craftItem.NeedSteamPoweredBeverageMaker = needSteamPoweredBeverageMaker;
+        }
+        #endregion
+
         public void SetNeededThemePack(int index, ThemePack pack)
         {
             CraftItem craftItem = m_CraftItems.GetAt(index);
             craftItem.RequiredThemePack = pack;
         }
 
+        #region SA
         public void SetRequiresBasketWeaving(int index)
         {
             CraftItem craftItem = m_CraftItems.GetAt(index);
@@ -447,7 +437,9 @@ namespace Server.Engines.Craft
             CraftItem craftItem = m_CraftItems.GetAt(index);
             craftItem.RequiresMechanicalLife = true;
         }
+        #endregion
 
+        #region TOL
         public void SetData(int index, object data)
         {
             CraftItem craftItem = m_CraftItems.GetAt(index);
@@ -459,23 +451,7 @@ namespace Server.Engines.Craft
             CraftItem craftItem = m_CraftItems.GetAt(index);
             craftItem.DisplayID = id;
         }
-
-        /// <summary>
-        /// Add a callback Action to allow mutating the crafted item. Handy when you have a single Item Type but you want to create variations of it.
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="action"></param>
-        public void SetMutateAction(int index, Action<Mobile, Item, ITool> action)
-        {
-            CraftItem craftItem = m_CraftItems.GetAt(index);
-            craftItem.MutateAction = action;
-        }
-
-        public void SetForceSuccess(int index, int success)
-        {
-            CraftItem craftItem = m_CraftItems.GetAt(index);
-            craftItem.ForceSuccessChance = success;
-        }
+        #endregion
 
         public void AddRes(int index, Type type, TextDefinition name, int amount)
         {
@@ -516,12 +492,6 @@ namespace Server.Engines.Craft
         {
             CraftItem craftItem = m_CraftItems.GetAt(index);
             craftItem.ForceNonExceptional = true;
-        }
-
-        public void ForceExceptional(int index)
-        {
-            CraftItem craftItem = m_CraftItems.GetAt(index);
-            craftItem.ForceExceptional = true;
         }
 
         public void SetMinSkillOffset(int index, double skillOffset)

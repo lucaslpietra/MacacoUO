@@ -17,7 +17,7 @@ namespace Server.Mobiles
 
 		[Constructable]
 		public Veterinarian()
-			: base("the vet")
+			: base("o veterinario")
 		{
 			SetSkill(SkillName.AnimalLore, 85.0, 100.0);
 			SetSkill(SkillName.Veterinary, 90.0, 100.0);
@@ -38,6 +38,9 @@ namespace Server.Mobiles
 			foreach (Mobile m in eable)
 			{
 				BaseCreature bc = m as BaseCreature;
+
+                if (bc is BaseHire)
+                    continue;
 
 				if (bc != null && bc.IsDeadBondedPet && bc.ControlMaster == from && from.InLOS(bc))
 					pets.Add(bc);
@@ -130,10 +133,10 @@ namespace Server.Mobiles
 		//public override int TypeID { get { return 0xF3E96; } }
 		
 
-		private Veterinarian m_Vet;
+		private BaseVendor m_Vet;
 		private BaseCreature[] m_Pets;
 
-		public VetResurrectGump(Veterinarian vet, BaseCreature[] pets)
+		public VetResurrectGump(BaseVendor vet, BaseCreature[] pets)
 			: base(150, 50)
 		{
 			m_Vet = vet;
@@ -153,9 +156,9 @@ namespace Server.Mobiles
 			AddImage(380, 381, 0xE18);
 			AddImageTiled(15, 15, 365, 370, 0xA40);
 
-			AddHtmlLocalized(30, 20, 355, 35, 1113193, 0xFFFFFF, false, false); // Ah, thine pet seems to be in dire condition! I can help thee, but must charge a small fee...
-			AddHtmlLocalized(30, 72, 345, 40, 1113284, 0x1DB2D, false, false); // Please select the pet you wish to resurrect:
-			AddHtmlLocalized(20, 280, 345, 40, 1113286, 0x1DB2D, false, false); // <CENTER>Your pet will suffer 0.2 points of skill-loss if resurrected in this manner.</CENTER>
+			AddHtml(30, 20, 355, 35, "Seu companheiro parece estar mal ", 0xFFFFFF, false, false); // Ah, thine pet seems to be in dire condition! I can help thee, but must charge a small fee...
+            AddHtml(30, 72, 345, 40, "Selecione quem deseja ressar", 0x1DB2D, false, false); // Please select the pet you wish to resurrect:
+            AddHtml(20, 280, 345, 40, "Seu pet perdera 0.2 de skill pelo ress.", 0x1DB2D, false, false); // <CENTER>Your pet will suffer 0.2 points of skill-loss if resurrected in this manner.</CENTER>
 			AddImageTiled(95, 62, 200, 1, 0x23C5);
 			AddImageTiled(15, 325, 365, 1, 0x2393);
 
@@ -191,7 +194,7 @@ namespace Server.Mobiles
 				case -1:
 					{
 						// You decide against paying the Veterinarian, and the ghost of your pet looks at you sadly...
-						from.SendLocalizedMessage(1113197);
+						from.SendMessage("Voce decide nao pagar e seu pet fica triste com voce");
 
 						break;
 					}

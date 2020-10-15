@@ -5,12 +5,17 @@ namespace Server.Items
 {
     public class AutomatonActuator : Item
     {
-        public override int LabelNumber { get { return 1156997; } } // Automaton Actuator
-
         [Constructable]
         public AutomatonActuator()
             : base(0x9CE9)
         {
+            Name = "Forno Mecanico";
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            from.SendMessage("Quem sabe voce possa usar isto para fabricar joias, tente usar uma ferramenta de joalheiro com isto");
+            base.OnDoubleClick(from);
         }
 
         public AutomatonActuator(Serial serial)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using Server.Mobiles;
 using Server.Accounting;
@@ -12,8 +12,7 @@ namespace Server.Items
         public const int SlotIncrease = 3;
         public const int MaxPerChar = 21;
 
-        public override int LabelNumber { get { return 1070997; } } // A promotional token
-        public TextDefinition ItemName { get { return 1157618; } } // your Stable Slot Increase (Account-Bound)
+        public TextDefinition ItemName { get { return "Seu espaco no estabulo aumenta"; } } // your Stable Slot Increase (Account-Bound)
 
         public Type GumpType { get { return typeof(StableSlotIncreaseToken.InternalGump); } }
 
@@ -30,6 +29,7 @@ namespace Server.Items
         public StableSlotIncreaseToken(string account)
             : base(0x2AAA)
         {
+            Name = "Aumentar Tamanho Estabulo";
             Account = account;
 
             LootType = LootType.Blessed;

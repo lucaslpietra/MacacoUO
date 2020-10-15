@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Server;
 using Server.Multis;
@@ -7,140 +8,146 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public enum PlankSide { Port, Starboard }
+	public enum PlankSide{ Port, Starboard }
 
-    public class Plank : Item, ILockable
-    {
-        private Timer m_CloseTimer;
+	public class Plank : Item, ILockable
+	{
+        public bool CanUseKey { get { return true; } set { } }
+        private BaseBoat m_Boat;
+		private PlankSide m_Side;
+		private bool m_Locked;
+		private uint m_KeyValue;
 
-        public Plank(BaseBoat boat, PlankSide side, uint keyValue)
-            : base(0x3EB1 + (int)side)
-        {
-            Boat = boat;
-            Side = side;
-            KeyValue = keyValue;
-            Locked = true;
+		private Timer m_CloseTimer;
 
-            Movable = false;
-        }
+		public Plank( BaseBoat boat, PlankSide side, uint keyValue ) : base( 0x3EB1 + (int)side )
+		{
+			m_Boat = boat;
+			m_Side = side;
+			m_KeyValue = keyValue;
+			m_Locked = true;
 
-        public Plank(Serial serial)
-            : base(serial)
-        {
-        }
+			Movable = false;
+		}
 
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-            writer.Write((int)0);//version
+		public Plank( Serial serial ) : base(serial)
+		{
+		}
 
-            writer.Write(Boat);
-            writer.Write((int)Side);
-            writer.Write(Locked);
-            writer.Write(KeyValue);
-        }
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
 
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-            int version = reader.ReadInt();
+			writer.Write( (int) 0 );//version
 
-            switch (version)
-            {
-                case 0:
-                    {
-                        Boat = reader.ReadItem() as BaseBoat;
-                        Side = (PlankSide)reader.ReadInt();
-                        Locked = reader.ReadBool();
-                        KeyValue = reader.ReadUInt();
+			writer.Write( m_Boat );
+			writer.Write( (int) m_Side );
+			writer.Write( m_Locked );
+			writer.Write( m_KeyValue );
+		}
 
-                        if (Boat == null)
-                            Delete();
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
 
-                        break;
-                    }
-            }
+			int version = reader.ReadInt();
 
-            if (IsOpen)
-            {
-                m_CloseTimer = new CloseTimer(this);
-                m_CloseTimer.Start();
-            }
-        }
+			switch ( version )
+			{
+				case 0:
+				{
+					m_Boat = reader.ReadItem() as BaseBoat;
+					m_Side = (PlankSide) reader.ReadInt();
+					m_Locked = reader.ReadBool();
+					m_KeyValue = reader.ReadUInt();
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public BaseBoat Boat { get; set; }
+					if ( m_Boat == null )
+						Delete();
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public PlankSide Side { get; set; }
+					break;
+				}
+			}
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool Locked { get; set; }
+			if ( IsOpen )
+			{
+				m_CloseTimer = new CloseTimer( this );
+				m_CloseTimer.Start();
+			}
+		}
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public uint KeyValue { get; set; }
+		[CommandProperty( AccessLevel.GameMaster )]
+		public BaseBoat Boat{ get{ return m_Boat; } set{ m_Boat = value; } }
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsOpen { get { return ItemID == 0x3ED5 || ItemID == 0x3ED4 || ItemID == 0x3E84 || ItemID == 0x3E89; } }
+		[CommandProperty( AccessLevel.GameMaster )]
+		public PlankSide Side{ get{ return m_Side; } set{ m_Side = value; } }
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool Starboard { get { return Side == PlankSide.Starboard; } }
+		[CommandProperty( AccessLevel.GameMaster )]
+		public bool Locked{ get{ return m_Locked; } set{ m_Locked = value; } }
 
-        public void SetFacing(Direction dir)
-        {
-            if (IsOpen)
-            {
-                switch (dir)
-                {
-                    case Direction.North: ItemID = Starboard ? 0x3ED4 : 0x3ED5; break;
-                    case Direction.East: ItemID = Starboard ? 0x3E84 : 0x3E89; break;
-                    case Direction.South: ItemID = Starboard ? 0x3ED5 : 0x3ED4; break;
-                    case Direction.West: ItemID = Starboard ? 0x3E89 : 0x3E84; break;
-                }
-            }
-            else
-            {
-                switch (dir)
-                {
-                    case Direction.North: ItemID = Starboard ? 0x3EB2 : 0x3EB1; break;
-                    case Direction.East: ItemID = Starboard ? 0x3E85 : 0x3E8A; break;
-                    case Direction.South: ItemID = Starboard ? 0x3EB1 : 0x3EB2; break;
-                    case Direction.West: ItemID = Starboard ? 0x3E8A : 0x3E85; break;
-                }
-            }
-        }
+		[CommandProperty( AccessLevel.GameMaster )]
+		public uint KeyValue{ get{ return m_KeyValue; } set{ m_KeyValue = value; } }
 
-        public void Open()
-        {
-            if (IsOpen || Deleted)
-                return;
+		[CommandProperty( AccessLevel.GameMaster )]
+		public bool IsOpen{ get{ return ( ItemID == 0x3ED5 || ItemID == 0x3ED4 || ItemID == 0x3E84 || ItemID == 0x3E89 ); } }
 
-            if (m_CloseTimer != null)
-                m_CloseTimer.Stop();
+		[CommandProperty( AccessLevel.GameMaster )]
+		public bool Starboard{ get{ return ( m_Side == PlankSide.Starboard ); } }
 
-            if (Locked)
-            {
-                m_CloseTimer = new CloseTimer(this);
-                m_CloseTimer.Start();
-            }
+		public void SetFacing( Direction dir )
+		{
+			if ( IsOpen )
+			{
+				switch ( dir )
+				{
+					case Direction.North: ItemID = Starboard ? 0x3ED4 : 0x3ED5; break;
+					case Direction.East:  ItemID = Starboard ? 0x3E84 : 0x3E89; break;
+					case Direction.South: ItemID = Starboard ? 0x3ED5 : 0x3ED4; break;
+					case Direction.West:  ItemID = Starboard ? 0x3E89 : 0x3E84; break;
+				}
+			}
+			else
+			{
+				switch ( dir )
+				{
+					case Direction.North: ItemID = Starboard ? 0x3EB2 : 0x3EB1; break;
+					case Direction.East:  ItemID = Starboard ? 0x3E85 : 0x3E8A; break;
+					case Direction.South: ItemID = Starboard ? 0x3EB1 : 0x3EB2; break;
+					case Direction.West:  ItemID = Starboard ? 0x3E8A : 0x3E85; break;
+				}
+			}
+		}
 
-            switch (ItemID)
-            {
-                case 0x3EB1: ItemID = 0x3ED5; break;
-                case 0x3E8A: ItemID = 0x3E89; break;
-                case 0x3EB2: ItemID = 0x3ED4; break;
-                case 0x3E85: ItemID = 0x3E84; break;
-            }
-        }
+		public void Open()
+		{
+			if ( IsOpen || Deleted )
+				return;
+
+			if ( m_CloseTimer != null )
+				m_CloseTimer.Stop();
+					
+			if ( Locked )
+			{
+				m_CloseTimer = new CloseTimer( this );
+				m_CloseTimer.Start();
+			}			
+
+			switch ( ItemID )
+			{
+				case 0x3EB1: ItemID = 0x3ED5; break;
+				case 0x3E8A: ItemID = 0x3E89; break;
+				case 0x3EB2: ItemID = 0x3ED4; break;
+				case 0x3E85: ItemID = 0x3E84; break;
+			}
+
+			if ( m_Boat != null )
+				m_Boat.Refresh();
+		}
 
         public override bool OnMoveOver(Mobile from)
         {
             if (IsOpen)
             {
-                if (from.Player && Boat != null && !Boat.Contains(from) && Locked) // If the plank is locked, no one can enter the ship from the outside.
-                    return false;
-
-                if ((from.Player && (from.Direction & Direction.Running) != 0) || (Boat != null && !Boat.Contains(from)))
+                if ((from.Player && (from.Direction & Direction.Running) != 0) || (m_Boat != null && !m_Boat.Contains(from)))
                     return true;
 
                 Map map = Map;
@@ -169,7 +176,7 @@ namespace Server.Items
                     {
                         z = from.Z + j;
 
-                        if (map.CanFit(x, y, z, 16, false, false) && !Spells.SpellHelper.CheckMulti(new Point3D(x, y, z), map) && !Region.Find(new Point3D(x, y, z), map).IsPartOf(typeof(Factions.StrongholdRegion)))
+                        if (map.CanFit(x, y, z, 16, false, false) && !Server.Spells.SpellHelper.CheckMulti(new Point3D(x, y, z), map) && !Region.Find(new Point3D(x, y, z), map).IsPartOf(typeof(Factions.StrongholdRegion)))
                         {
                             if (i == 1 && j >= -2 && j <= 2)
                                 return true;
@@ -181,7 +188,7 @@ namespace Server.Items
 
                     z = map.GetAverageZ(x, y);
 
-                    if (map.CanFit(x, y, z, 16, false, false) && !Spells.SpellHelper.CheckMulti(new Point3D(x, y, z), map) && !Region.Find(new Point3D(x, y, z), map).IsPartOf(typeof(Factions.StrongholdRegion)))
+                    if (map.CanFit(x, y, z, 16, false, false) && !Server.Spells.SpellHelper.CheckMulti(new Point3D(x, y, z), map) && !Region.Find(new Point3D(x, y, z), map).IsPartOf(typeof(Factions.StrongholdRegion)))
                     {
                         if (i == 1)
                             return true;
@@ -199,155 +206,149 @@ namespace Server.Items
             }
         }
 
-        public bool CanClose()
-        {
-            Map map = Map;
+		public bool CanClose()
+		{
+			Map map = Map;
 
-            if (map == null || Deleted)
-                return false;
+			if ( map == null || Deleted )
+				return false;
 
-            IPooledEnumerable eable = GetObjectsInRange(0);
-            foreach (object o in eable)
-            {
+            IPooledEnumerable eable = this.GetObjectsInRange(0);
+			foreach ( object o in eable )
+			{
                 if (o != this)
                 {
                     eable.Free();
                     return false;
                 }
-            }
+			}
             eable.Free();
-            return true;
-        }
+			return true;
+		}
 
-        public void Close()
-        {
-            if (!IsOpen || !CanClose() || Deleted)
-                return;
+		public void Close()
+		{
+			if ( !IsOpen || !CanClose() || Deleted )
+				return;
 
-            if (m_CloseTimer != null)
-                m_CloseTimer.Stop();
+			if ( m_CloseTimer != null )
+				m_CloseTimer.Stop();
 
-            m_CloseTimer = null;
+			m_CloseTimer = null;
 
-            switch (ItemID)
-            {
-                case 0x3ED5: ItemID = 0x3EB1; break;
-                case 0x3E89: ItemID = 0x3E8A; break;
-                case 0x3ED4: ItemID = 0x3EB2; break;
-                case 0x3E84: ItemID = 0x3E85; break;
-            }
-        }
+			switch ( ItemID )
+			{
+				case 0x3ED5: ItemID = 0x3EB1; break;
+				case 0x3E89: ItemID = 0x3E8A; break;
+				case 0x3ED4: ItemID = 0x3EB2; break;
+				case 0x3E84: ItemID = 0x3E85; break;
+			}
 
-        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
-        {
-            base.GetContextMenuEntries(from, list);
-            if (!from.Alive && Boat.Contains(from))
-            {
-                list.Add(new PlanksContext(from, this));
-            }
-        }
+			if ( m_Boat != null )
+				m_Boat.Refresh();
+		}
 
-        public class PlanksContext : ContextMenuEntry
-        {
-            private Plank m_Plank;
-            private Mobile m_From;
+		public override void GetContextMenuEntries( Mobile from, List<ContextMenuEntry> list )
+		{
+			base.GetContextMenuEntries( from, list );
+			if ( !from.Alive && m_Boat.Contains(from))
+			{
+				list.Add( new PlanksContext(from, this));
+			}
+		}
 
-            public PlanksContext(Mobile from, Plank plank) : base(6132, 10)
-            {
-                m_Plank = plank;
-                m_From = from;
-            }
+		public class PlanksContext : ContextMenuEntry
+		{
+			private Plank m_Plank;
+			private Mobile m_From;
+			
+            public PlanksContext(Mobile from, Plank plank ): base(6132, 10)
+			{
+				m_Plank = plank;
+				m_From = from;
+			}
 
-            public override void OnClick()
-            {
-                m_Plank.OnDoubleClick(m_From);
-            }
-        }
+			public override void OnClick()
+			{
+				m_Plank.OnDoubleClick( m_From );
+			}
+		}
 
-        public override void OnDoubleClickDead(Mobile from)
-        {
-            OnDoubleClick(from);
-        }
+		public override void OnDoubleClickDead( Mobile from )
+		{
+			OnDoubleClick( from );
+		}
 
-        public override void OnDoubleClick(Mobile from)
-        {
-            if (Boat == null)
-                return;
+		public override void OnDoubleClick( Mobile from )
+		{
+			if ( m_Boat == null )
+				return;
 
-            Boat.Refresh();
-
-            if (BaseBoat.IsDriving(from))
-            {
-                from.SendLocalizedMessage(1116610); // You can't do that while piloting a ship!
-                return;
-            }
-
-            if (from.InRange(GetWorldLocation(), 8))
-            {
-                if (Boat.Contains(from))
-                {
-                    if (IsOpen)
-                        Close();
-                    else
-                        Open();
-                }
-                else
-                {
-                    if (!IsOpen)
-                    {
-                        if (!Locked)
-                        {
-                            Open();
-                        }
-                        else if (from.AccessLevel >= AccessLevel.GameMaster)
-                        {
-                            from.LocalOverheadMessage(Network.MessageType.Regular, 0x00, 502502); // That is locked but your godly powers allow access
-                            Open();
-                        }
-                        else
-                        {
-                            from.LocalOverheadMessage(Network.MessageType.Regular, 0x00, 502503); // That is locked.
-                        }
-                    }
-                    else if (!Locked)
-                    {
-                        Point3D p = new Point3D(X, Y, Z + 3);
+			if ( from.InRange( GetWorldLocation(), 8 ) )
+			{
+				if ( m_Boat.Contains( from ) )
+				{
+					if ( IsOpen )
+						Close();
+					else
+						Open();
+				}
+				else
+				{
+					if ( !IsOpen )
+					{
+						if ( !Locked )
+						{
+							Open();
+						}
+						else if ( from.AccessLevel >= AccessLevel.GameMaster )
+						{
+							from.LocalOverheadMessage( Network.MessageType.Regular, 0x00, 502502 ); // That is locked but your godly powers allow access
+							Open();
+						}
+						else
+						{
+							from.LocalOverheadMessage( Network.MessageType.Regular, 0x00, 502503 ); // That is locked.
+						}
+					}
+					else if ( !Locked )
+					{
+                        Point3D p = new Point3D(this.X, this.Y, this.Z + 3);
 
                         BaseCreature.TeleportPets(from, p, Map);
                         from.Location = p;
-                    }
-                    else if (from.AccessLevel >= AccessLevel.GameMaster)
-                    {
-                        from.LocalOverheadMessage(Network.MessageType.Regular, 0x00, 502502); // That is locked but your godly powers allow access
+					}
+					else if ( from.AccessLevel >= AccessLevel.GameMaster )
+					{
+						from.LocalOverheadMessage( Network.MessageType.Regular, 0x00, 502502 ); // That is locked but your godly powers allow access
 
-                        Point3D p = new Point3D(X, Y, Z + 3);
+                        Point3D p = new Point3D(this.X, this.Y, this.Z + 3);
 
                         BaseCreature.TeleportPets(from, p, Map);
                         from.Location = p;
-                    }
-                    else
-                    {
-                        from.LocalOverheadMessage(Network.MessageType.Regular, 0x00, 502503); // That is locked.
-                    }
-                }
-            }
-        }
+					}
+					else
+					{
+						from.LocalOverheadMessage( Network.MessageType.Regular, 0x00, 502503 ); // That is locked.
+					}
+				}
+			}
+		}
 
-        private class CloseTimer : Timer
-        {
-            private Plank m_Plank;
+		private class CloseTimer : Timer
+		{
+			private Plank m_Plank;
 
-            public CloseTimer(Plank plank)
-                : base(TimeSpan.FromSeconds(5.0), TimeSpan.FromSeconds(5.0))
-            {
-                m_Plank = plank;
-                Priority = TimerPriority.OneSecond;
-            }
+			public CloseTimer( Plank plank ) : base( TimeSpan.FromSeconds( 5.0 ), TimeSpan.FromSeconds( 5.0 ) )
+			{
+				m_Plank = plank;
+				Priority = TimerPriority.OneSecond;
+			}
 
-            protected override void OnTick()
-            {
-                m_Plank.Close();
-            }
-        }
-    }
+			protected override void OnTick()
+			{
+				m_Plank.Close();
+			}
+		}
+	}
 }

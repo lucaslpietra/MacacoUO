@@ -19,8 +19,8 @@ namespace Server.Items
             WeaponAttributes.HitLeechHits = 70;
             Attributes.WeaponSpeed = 30;
 
-            Slayer = SlayerName.Exorcism;
-            Slayer2 = SlayerName.Silver;
+            Slayer = SlayerName.Exorcismo;
+            Slayer2 = SlayerName.Undeads;
         }
 
         public ScepterOfPride(Serial serial)

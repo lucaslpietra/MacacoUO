@@ -171,7 +171,6 @@ namespace Server.Multis
                     flip = true;
                     break;
             }
-
             if (!flip)
                 from.SendLocalizedMessage(1042273); // You cannot turn that.
         }
@@ -182,7 +181,6 @@ namespace Server.Multis
             {
                 base.OnMoveOver(m);
             }
-
             return true;
         }
 
@@ -192,11 +190,10 @@ namespace Server.Multis
             {
                 if (UsesCharges)
                 {
-                    list.Add(new RechargeEntry(from, this));
+                    list.Add(new RechargeEntry(from, this)); 
                     list.Add(new ChangeTypeEntry(from, this));
                 }                
             }
-
             base.GetContextMenuEntries(from, list);
         }
 
@@ -368,19 +365,16 @@ namespace Server.Multis
                 from.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
                 return false;
             }
+            /*
             else if (from.Criminal)
             {
                 from.SendLocalizedMessage(1005561, "", 0x22); // Thou'rt a criminal and cannot escape so easily.
                 return false;
             }
+            */
             else if (SpellHelper.CheckCombat(from))
             {
                 from.SendLocalizedMessage(1005564, "", 0x22); // Wouldst thou flee during the heat of battle??
-                return false;
-            }
-            else if (destMap == Map.Felucca && from is PlayerMobile && ((PlayerMobile)from).Young)
-            {
-                from.SendLocalizedMessage(1049543); // You decide against traveling to Felucca while you are still young.
                 return false;
             }
             else if (SpellHelper.RestrictRedTravel && from.Murderer && destMap.Rules != MapRules.FeluccaRules && !Siege.SiegeShard)
@@ -678,12 +672,12 @@ namespace Server.Multis
         {
             base.GetProperties(list);
 
-            list.Add(1115123); // Congratulations on becoming the<br> owner of your very own house<br> teleporter set!
-            list.Add(1115124); // To use them, lock one down in your<br> home then lock the other down in<br> the home of a trusted friend.
+            list.Add("Parabéns por se tornar o proprietário de sua própria casa e conjunto de teletransportadores!"); // Congratulations on becoming the<br> owner of your very own house<br> teleporter set!
+            list.Add("Para usa-los voce precisa trancar no chao de sua casa falando 'trancar'"); // To use them, lock one down in your<br> home then lock the other down in<br> the home of a trusted friend.
 
             if (!VetReward)
             {
-                list.Add(1115125); // Drop Gate Travel scrolls onto these<br> to recharge them.
+                list.Add("Coloque pergaminhos de gate travel para recarregar"); // Drop Gate Travel scrolls onto these<br> to recharge them.
             }
         }
 

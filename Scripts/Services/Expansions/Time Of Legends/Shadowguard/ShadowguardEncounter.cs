@@ -30,13 +30,7 @@ namespace Server.Engines.Shadowguard
 		public EncounterType Encounter { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool HasBegun { get; set; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
 		public bool DoneWarning { get; set; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool Completed { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
 		public DateTime StartTime { get; set; }
@@ -80,8 +74,6 @@ namespace Server.Engines.Shadowguard
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active { get { return Controller != null && Controller.Encounters.Contains(this); } }
-
-        public List<PlayerMobile> Participants { get; private set; } = new List<PlayerMobile>();
 
 		public ShadowguardEncounter(EncounterType encounter, ShadowguardInstance instance = null)
 		{
@@ -155,7 +147,6 @@ namespace Server.Engines.Shadowguard
         public void OnBeginEncounter()
         {
             AddPlayers(PartyLeader);
-            HasBegun = true;
 
             SendPartyMessage(1156251, 0x20);
             //There is a 30 minute time limit for each encounter. You will receive a time limit warning at 5 minutes.
@@ -173,10 +164,12 @@ namespace Server.Engines.Shadowguard
 				
 				if(p != null)
 				{
-                    foreach (var pm in p.Members.Select(x => x.Mobile))
-                    {
-                        AddPlayer(pm);
-                    }
+                    ColUtility.ForEach(
+                        p.Members.Where(
+                        info => info.Mobile.Alive && 
+                            Controller.Lobby.Contains(new Point2D(info.Mobile.X, info.Mobile.Y)) && 
+                            info.Mobile.NetState != null), 
+                        info => AddPlayer(info.Mobile));
 				}
 				
 				AddPlayer(m);
@@ -185,62 +178,24 @@ namespace Server.Engines.Shadowguard
 
         protected void SendPartyMessage(int cliloc, int hue = 0x3B2)
         {
-            if (HasBegun)
-            {
-                foreach (var pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
-                {
-                    pm.SendLocalizedMessage(cliloc, null, hue);
-                }
-            }
+            if (PartyLeader == null)
+                return;
+
+            Party p = Party.Get(PartyLeader);
+
+            if (p != null)
+                p.Members.ForEach(info => info.Mobile.SendLocalizedMessage(cliloc, null, hue));
             else
-            {
-                if (PartyLeader == null)
-                    return;
-
-                Party p = Party.Get(PartyLeader);
-
-                if (p != null)
-                    p.Members.ForEach(info => info.Mobile.SendLocalizedMessage(cliloc, null, hue));
-                else
-                    PartyLeader.SendLocalizedMessage(cliloc, null, hue);
-            }
+                PartyLeader.SendLocalizedMessage(cliloc, null, hue);
         }
-
-        protected void SendPartyMessage(string message, int hue = 0x3B2)
-        {
-            if (HasBegun)
-            {
-                foreach (var pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
-                {
-                    pm.SendMessage(hue, message);
-                }
-            }
-            else
-            {
-                if (PartyLeader == null)
-                    return;
-
-                Party p = Party.Get(PartyLeader);
-
-                if (p != null)
-                    p.Members.ForEach(info => info.Mobile.SendMessage(hue, message));
-                else
-                    PartyLeader.SendMessage(hue, message);
-            }
-        }
-
-        public void AddPlayer(Mobile m)
+		
+		public void AddPlayer(Mobile m)
 		{
             Point3D p = StartLoc;
             ConvertOffset(ref p);
 
 			MovePlayer(m, p);
             m.CloseGump(typeof(ShadowguardGump));
-
-            if (m is PlayerMobile)
-            {
-                Participants.Add((PlayerMobile)m);
-            }
 		}
 		
 		public void DoWarning()
@@ -268,10 +223,14 @@ namespace Server.Engines.Shadowguard
                     Reset(true);
                 });
 		}
+
+        public bool Completed { get { return _Completed; } }
+
+        private bool _Completed;
 		
 		public virtual void CompleteEncounter()
 		{
-            if (Completed)
+            if (_Completed)
                 return;
 
 			Timer.DelayCall(ResetDuration, () =>
@@ -284,7 +243,7 @@ namespace Server.Engines.Shadowguard
             else
                 SendPartyMessage(1156244); //You have bested this tower of Shadowguard! You will be teleported out of the tower in 60 seconds!
 
-            Completed = true;
+            _Completed = true;
 		}
 		
 		public virtual void Reset(bool expired = false)
@@ -296,7 +255,6 @@ namespace Server.Engines.Shadowguard
 
             RemovePlayers();
             PartyLeader = null;
-            HasBegun = false;
 
             ClearItems();
 
@@ -319,11 +277,6 @@ namespace Server.Engines.Shadowguard
                 m =>
 			    {
 				    MovePlayer(m, Controller.KickLocation, false);
-
-                    if (m is PlayerMobile && Participants.Contains((PlayerMobile)m))
-                    {
-                        Participants.Remove((PlayerMobile)m);
-                    }
 			    });
 		}
 
@@ -359,19 +312,32 @@ namespace Server.Engines.Shadowguard
 		
 		public void CheckPlayerStatus(Mobile m)
 		{
-            if (m is PlayerMobile)
-            {
-                foreach (var pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
-                {
-                    if (pm.Alive && pm.NetState != null)
-                    {
-                        return;
-                    }
-                }
+			if(m is PlayerMobile)
+			{
+				Party p = Party.Get(m);
+                bool aliveandconnectedandpresent = false;
 
-                Expire(false);
-                SendPartyMessage(1156267); // All members of your party are dead, have logged off, or have chosen to exit Shadowguard. You will be removed from the encounter shortly.
-            }
+				if(p != null)
+				{
+                    foreach (PartyMemberInfo info in p.Members)
+					{
+                        if (info.Mobile.Alive && info.Mobile.NetState != null && ShadowguardController.GetEncounter(m.Location, m.Map) == this)
+						{
+							aliveandconnectedandpresent = true;
+						}
+					}
+				}
+
+                if (!aliveandconnectedandpresent)
+				{
+					Expire(false);
+
+					if(p != null)
+						p.Members.ForEach(info => info.Mobile.SendLocalizedMessage(1156267)); // All members of your party are dead, have logged off, or have chosen to exit Shadowguard. You will be removed from the encounter shortly.
+                    else
+                        m.SendLocalizedMessage(1156267); // All members of your party are dead, have logged off, or have chosen to exit Shadowguard. You will be removed from the encounter shortly.
+				}
+			}
 		}
 
         public void ConvertOffset(ref Point3D p)
@@ -386,13 +352,7 @@ namespace Server.Engines.Shadowguard
 		
 		public virtual void Serialize(GenericWriter writer)
 		{
-			writer.Write(2);
-
-            writer.WriteMobileList<PlayerMobile>(Participants);
-
-            writer.WriteDeltaTime(StartTime);
-            writer.Write(Completed);
-            writer.Write(HasBegun);
+			writer.Write(0);
 
             writer.Write(Instance.Index);
 			writer.Write(PartyLeader);
@@ -403,35 +363,14 @@ namespace Server.Engines.Shadowguard
 		{
 			int version = reader.ReadInt();
 
-            switch (version)
-            {
-                case 2:
-                    Participants = reader.ReadStrongMobileList<PlayerMobile>();
-                    goto case 1;
-                case 1:
-                    StartTime = reader.ReadDeltaTime();
-                    Completed = reader.ReadBool();
-                    HasBegun = reader.ReadBool();
-                    goto case 0;
-                case 0:
-                    Instance = Controller.Instances[reader.ReadInt()];
-                    PartyLeader = reader.ReadMobile();
-                    Addon = reader.ReadItem() as BaseAddon;
-                    break;
-            }
+            Instance = Controller.Instances[reader.ReadInt()];
+			PartyLeader = reader.ReadMobile();
+            Addon = reader.ReadItem() as BaseAddon;
 
             if (Instance != null)
-            {
                 Instance.Encounter = this;
-            }
 
-            if (Completed)
-            {
-                Timer.DelayCall(ResetDuration, () =>
-                {
-                    Reset();
-                });
-            }
+			StartTime = DateTime.UtcNow;
 		}
 
         public static Dictionary<EncounterType, EncounterDef> Defs { get; set; }

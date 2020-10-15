@@ -9,7 +9,7 @@ namespace Server.Items
         public TheNightReaper()
         {
             Hue = 0x41C;
-            Slayer = SlayerName.Exorcism;
+            Slayer = SlayerName.Exorcismo;
             Attributes.NightSight = 1;
             Attributes.WeaponSpeed = 25;
             Attributes.WeaponDamage = 55;

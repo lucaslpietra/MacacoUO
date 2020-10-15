@@ -271,10 +271,10 @@ namespace Server.Items
 
             from.AddToBackpack(new Diamond(this.SideLength));
 
-            Item ore = new ShadowIronOre(9);
+            Item ore = new VibraniumOre(9);
             ore.MoveToWorld(new Point3D(this.X - 1, this.Y, this.Z + 2), this.Map);
 
-            ore = new ShadowIronOre(14);
+            ore = new VibraniumOre(14);
             ore.MoveToWorld(new Point3D(this.X - 2, this.Y - 1, this.Z + 2), this.Map);
 
             this.Delete();
@@ -368,10 +368,10 @@ namespace Server.Items
 
                 this.AddBackground(95, 20, 442, 90, 0xA28);
 
-                this.AddHtml(229, 35, 300, 45, "GENERATOR CONTROL PANEL", false, false);
+                this.AddHtml(229, 35, 300, 45, "Gerador De Energia", false, false);
 
-                this.AddHtml(223, 60, 300, 70, "Use the Directional Controls to", false, false);
-                this.AddHtml(253, 75, 300, 85, "Close the Grid Circuit", false, false);
+                this.AddHtml(223, 60, 300, 70, "Use as setas direcionai", false, false);
+                this.AddHtml(253, 75, 300, 85, "Feche todo o circuito", false, false);
 
                 this.AddImage(140, 40, 0x28D3);
                 this.AddImage(420, 40, 0x28D3);

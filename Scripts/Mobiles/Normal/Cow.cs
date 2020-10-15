@@ -1,3 +1,4 @@
+
 using System;
 
 namespace Server.Mobiles
@@ -11,16 +12,18 @@ namespace Server.Mobiles
         public Cow()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            Name = "a cow";
+            Name = "uma vaca";
             Body = Utility.RandomList(0xD8, 0xE7);
             BaseSoundID = 0x78;
 
-            SetStr(30);
+            SetStr(60);
             SetDex(15);
             SetInt(5);
 
             SetHits(18);
             SetMana(0);
+
+            SetDamage(1, 4);
 
             SetDamage(1, 4);
 
@@ -45,7 +48,19 @@ namespace Server.Mobiles
                 FightMode = FightMode.Closest;
         }
 
-        public Cow(Serial serial)
+        public override void OnDamage(int amount, Mobile from, bool willKill)
+        {
+            if(willKill)
+            {
+                this.PublicOverheadMessage(Network.MessageType.Regular, 0, false, "* da um mugido alto e cai no chao *");
+            }
+            if(Utility.Random(10)==1)
+            {
+                this.PublicOverheadMessage(Network.MessageType.Regular, 0, false, "* parece estar confusa *");
+            }
+        }
+
+            public Cow(Serial serial)
             : base(serial)
         {
         }

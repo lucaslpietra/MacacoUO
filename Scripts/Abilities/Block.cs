@@ -88,7 +88,7 @@ namespace Server.Items
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Block, 1151291, 1151292, TimeSpan.FromSeconds(Core.TOL ? 6 : 3), m, args));
             // Next incoming damage reduced.<br>Defense Chance Increase: +~1_val~%<br>Incoming Spell Damage: -~2_val~%<br>Incoming Attack Damage: -~3_val~%<br>Hit Chance Penalty: ~4_val~%<br>Damage Penalty: ~5_val~%
 
-            Timer.DelayCall(TimeSpan.FromSeconds(Core.TOL ? 6 : 3), () =>
+            Timer.DelayCall(TimeSpan.FromSeconds(6), () =>
             {
                 if(IsBlocking(m))
                     EndBlock(m);
@@ -103,7 +103,7 @@ namespace Server.Items
 
                 BuffInfo.RemoveBuff(m, BuffIcon.Block);
 
-                m.SendLocalizedMessage(1150286); // You no longer try to block the next attack.
+                m.SendLocalizedMessage("Voce nao esta mais bloqueando"); // You no longer try to block the next attack.
 
                 if (_Table.Count == 0)
                     _Table = null;
@@ -117,8 +117,8 @@ namespace Server.Items
 
             ClearCurrentAbility(attacker);
 
-            attacker.SendLocalizedMessage(1063345); // You block an attack!
-            defender.SendLocalizedMessage(1063346); // Your attack was blocked!
+            attacker.SendLocalizedMessage("Voce bloqueou um ataque"); // You block an attack!
+            defender.SendLocalizedMessage("Seu ataque foi bloqueado"); // Your attack was blocked!
 
             attacker.FixedParticles(0x37C4, 1, 16, 0x251D, 0x39D, 0x3, EffectLayer.RightHand);
 

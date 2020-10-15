@@ -19,13 +19,6 @@ namespace Server.Services.Virtues
 {
 	public static class HonestyVirtue
 	{
-        /// <summary>
-        /// Set this to false if you are having memory shortages. True means points are validated at compile time and reduces run time processing
-        /// to randomly choose a point. Making it false will dramatically decrease program memory usage and compile time, however will choose
-        /// each random point at runtime.
-        /// </summary>
-        public static readonly bool UseSpawnArea = false;
-
 		public static bool Enabled { get; set; }
 		public static int MaxGeneration { get; set; }
 		public static bool TrammelGeneration { get; set; }
@@ -79,10 +72,7 @@ namespace Server.Services.Virtues
 
 				GenerateHonestyItems();
 
-                if (UseSpawnArea)
-                {
-                    Task.Factory.StartNew(GenerateImages);
-                }
+				Task.Factory.StartNew(GenerateImages);
 			}
 		}
 
@@ -124,39 +114,18 @@ namespace Server.Services.Virtues
 			_Items.RemoveAll(ItemFlags.GetTaken);
 		}
 
-        /*
+		/*
 		private static bool ValidateSpawnPoint(Map map, int x, int y, int z)
 		{
 			return TreasureMap.ValidateLocation(x, y, map);
 		}
 		*/
-        private static Point3D GetRandom(Map map)
-        {
-            if (map == null)
-                return Point3D.Zero;
-
-            var fw = map.MapID <= 1 ? 5119 : map.Width;
-            var fh = map.MapID <= 1 ? 4095 : map.Height;
-
-            int x, y, z = 0;
-
-            do
-            {
-                x = Utility.RandomMinMax(0, fw);
-                y = Utility.RandomMinMax(0, fh);
-                z = map.Tiles.GetLandTile(x, y).Z;
-            }
-            while (!ValidateSpawnPoint(map, x, y, z));
-
-            return new Point3D(x, y, z);
-        }
-
 		private static bool ValidateSpawnPoint(Map map, int x, int y, int z)
 		{
 			var lt = map.Tiles.GetLandTile(x, y);
 			var ld = TileData.LandTable[lt.ID];
 
-			if (lt.Ignored || (ld.Flags & TileFlag.Impassable) > 0 || (ld.Flags & TileFlag.Wet) > 0 || (ld.Flags & TileFlag.Roof) > 0)
+			if (lt.Ignored || (ld.Flags & TileFlag.Impassable) > 0)
 			{
 				return false;
 			}
@@ -206,53 +175,51 @@ namespace Server.Services.Virtues
 			Console.WriteLine("[Honesty]: Generating...");
 			Utility.PopColor();
 
-            var sw = new Stopwatch();
-            var s = 0.0;
+			var sw = new Stopwatch();
 
-            if (UseSpawnArea)
-            {
-                if (_FeluccaArea == null)
-                {
-                    Utility.PushColor(ConsoleColor.Yellow);
-                    Console.Write("[Honesty]: Felucca - Reticulating splines...");
-                    Utility.PopColor();
+			var s = 0.0;
 
-                    sw.Restart();
+			if (_FeluccaArea == null)
+			{
+				Utility.PushColor(ConsoleColor.Yellow);
+				Console.Write("[Honesty]: Felucca - Reticulating splines...");
+				Utility.PopColor();
 
-                    _FeluccaArea = SpawnArea.Instantiate(Map.Felucca.DefaultRegion, _Filter, ValidateSpawnPoint, true);
+				sw.Restart();
 
-                    sw.Stop();
+				_FeluccaArea = SpawnArea.Instantiate(Map.Felucca.DefaultRegion, _Filter, ValidateSpawnPoint, true);
 
-                    s += sw.Elapsed.TotalSeconds;
+				sw.Stop();
 
-                    Utility.PushColor(ConsoleColor.Green);
-                    Console.WriteLine("done ({0:F2} seconds)", sw.Elapsed.TotalSeconds);
-                    Utility.PopColor();
-                }
+				s += sw.Elapsed.TotalSeconds;
 
-                if (_TrammelArea == null && TrammelGeneration)
-                {
-                    Utility.PushColor(ConsoleColor.Yellow);
-                    Console.Write("[Honesty]: Trammel - Reticulating splines...");
-                    Utility.PopColor();
+				Utility.PushColor(ConsoleColor.Green);
+				Console.WriteLine("done ({0:F2} seconds)", sw.Elapsed.TotalSeconds);
+				Utility.PopColor();
+			}
 
-                    sw.Restart();
+			if (_TrammelArea == null && TrammelGeneration)
+			{
+				Utility.PushColor(ConsoleColor.Yellow);
+				Console.Write("[Honesty]: Trammel - Reticulating splines...");
+				Utility.PopColor();
 
-                    _TrammelArea = SpawnArea.Instantiate(Map.Trammel.DefaultRegion, _Filter, ValidateSpawnPoint, true);
+				sw.Restart();
 
-                    sw.Stop();
+				_TrammelArea = SpawnArea.Instantiate(Map.Trammel.DefaultRegion, _Filter, ValidateSpawnPoint, true);
 
-                    s += sw.Elapsed.TotalSeconds;
+				sw.Stop();
 
-                    Utility.PushColor(ConsoleColor.Green);
-                    Console.WriteLine("done ({0:F2} seconds)", sw.Elapsed.TotalSeconds);
-                    Utility.PopColor();
-                }
-            }
+				s += sw.Elapsed.TotalSeconds;
+
+				Utility.PushColor(ConsoleColor.Green);
+				Console.WriteLine("done ({0:F2} seconds)", sw.Elapsed.TotalSeconds);
+				Utility.PopColor();
+			}
 
 			try
 			{
-				Map facet;
+				SpawnArea area;
 				Point3D loc;
 				Item item;
 
@@ -264,7 +231,7 @@ namespace Server.Services.Virtues
 					Console.Write("[Honesty]: Creating {0:#,0} lost items...", count);
 					Utility.PopColor();
 
-                    sw.Restart();
+					sw.Restart();
 
 					var spawned = new Item[count];
 
@@ -294,18 +261,9 @@ namespace Server.Services.Virtues
 
 						try
 						{
-                            if (UseSpawnArea)
-                            {
-                                var area = _TrammelArea != null && Utility.RandomBool() ? _TrammelArea : _FeluccaArea;
-                                facet = area.Facet;
+							area = _TrammelArea != null && Utility.RandomBool() ? _TrammelArea : _FeluccaArea;
 
-                                loc = area.GetRandom();
-                            }
-                            else
-                            {
-                                facet = TrammelGeneration && Utility.RandomBool() ? Map.Trammel : Map.Felucca;
-                                loc = GetRandom(facet);
-                            }
+							loc = area.GetRandom();
 
 							if (loc == Point3D.Zero)
 							{
@@ -321,8 +279,8 @@ namespace Server.Services.Virtues
 
 							ItemFlags.SetTaken(item, false);
 
-							item.OnBeforeSpawn(loc, facet);
-							item.MoveToWorld(loc, facet);
+							item.OnBeforeSpawn(loc, area.Facet);
+							item.MoveToWorld(loc, area.Facet);
 							item.OnAfterSpawn();
 						}
 						catch

@@ -12,6 +12,7 @@ namespace Server.Items
             : base(0xF4D)
         {
             this.Weight = 7.0;
+            this.Name = "Bardiche";
         }
 
         public Bardiche(Serial serial)
@@ -66,6 +67,13 @@ namespace Server.Items
             get
             {
                 return 3.75f;
+            }
+        }
+        public override int DefMaxRange
+        {
+            get
+            {
+                return 2;
             }
         }
         public override int OldStrengthReq

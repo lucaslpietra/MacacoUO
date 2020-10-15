@@ -14,7 +14,7 @@ namespace Server.Items
             Attributes.AttackChance = 15;
             Attributes.WeaponSpeed = 40;
             WeaponAttributes.UseBestSkill = 1;
-            Slayer3 = TalismanSlayerName.Mage;
+            // TODO: Mage Slayer
         }
 
         public FleshRipper(Serial serial)

@@ -13,7 +13,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Mage)
         {
             Name = "Neira";
-            Title = "the necromancer";
+            Title = "a necromante";
             Body = 401;
             Hue = 0x83EC;
 
@@ -48,10 +48,9 @@ namespace Server.Mobiles
             Female = true;
 
             Item shroud = new HoodedShroudOfShadows();
-
-            shroud.Movable = false;
-
             AddItem(shroud);
+            if (Utility.RandomBool())
+                shroud.Movable = false;
 
             Scimitar weapon = new Scimitar();
 

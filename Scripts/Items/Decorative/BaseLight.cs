@@ -6,7 +6,7 @@ using Server.ContextMenus;
 
 namespace Server.Items
 {
-    public abstract class BaseLight : Item, ICraftable, IResource, IQuality, ISecurable
+    public abstract class BaseLight : Item, ICraftable, IResource, ISecurable
     {
         public static readonly bool Burnout = false;
         private Timer m_Timer;
@@ -86,14 +86,17 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Burning
         {
-            get { return m_Burning; }
+            get
+            {
+                return this.m_Burning;
+            }
             set
             {
-                if (m_Burning == value) return;
-                if (value)
-                    Ignite();
-                else
-                    Douse();
+                if (this.m_Burning != value)
+                {
+                    this.m_Burning = true;
+                    this.DoTimer(this.m_Duration);
+                }
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -221,8 +224,10 @@ namespace Server.Items
             }
         }
 
-        public override void AddCraftedProperties(ObjectPropertyList list)
+        public override void GetProperties(ObjectPropertyList list)
         {
+            base.GetProperties(list);
+
             if (_PlayerConstructed && _Crafter != null)
             {
                 list.Add(1050043, _Crafter.TitleName); // crafted by ~1_NAME~
@@ -236,7 +241,7 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            if (_Resource > CraftResource.Iron)
+            if (_Resource > CraftResource.Ferro)
             {
                 list.Add(1053099, "#{0}\t{1}", CraftResources.GetLocalizationNumber(_Resource), String.Format("#{0}", LabelNumber.ToString())); // ~1_oretype~ ~2_armortype~
             }

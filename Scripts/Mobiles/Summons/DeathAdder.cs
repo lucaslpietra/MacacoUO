@@ -7,7 +7,7 @@ namespace Server.Mobiles
     {
         public DeathAdder()
         {
-            this.Name = "a death adder";
+            this.Name = "cobra da morte";
             this.Body = 0x15;
             this.Hue = 0x455;
             this.BaseSoundID = 219;

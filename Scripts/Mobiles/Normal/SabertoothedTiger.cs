@@ -12,7 +12,7 @@ namespace Server.Mobiles
         public SabertoothedTiger()
             : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            Name = "saber-toothed tiger";
+            Name = "tigre dente de sabre";
             Body = 0x588;
             Female = true;
 
@@ -64,7 +64,7 @@ namespace Server.Mobiles
 
         public override void OnAfterTame(Mobile tamer)
         {
-            if (Owners.Count == 0 && PetTrainingHelper.Enabled)
+            if (PetTrainingHelper.Enabled)
             {
                 RawStr = (int)Math.Max(1, RawStr * 0.5);
                 RawDex = (int)Math.Max(1, RawDex * 0.5);

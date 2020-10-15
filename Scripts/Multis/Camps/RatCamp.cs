@@ -69,7 +69,7 @@ namespace Server.Multis
                     Prisoner = new Noble();
                     break;
                 default:
-                    Prisoner = new SeekerOfAdventure();
+                    Prisoner = new Noble(); // new SeekerOfAdventure();
                     break;
             }
 

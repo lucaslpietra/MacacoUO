@@ -58,7 +58,21 @@ namespace Server.Engines.Blackthorn
         }
 
         public override bool UseSmartAI { get { return true; } }
+
+        public override bool HasAura { get { return true; } }
+        public override TimeSpan AuraInterval { get { return TimeSpan.FromSeconds(2); } }
+        public override int AuraRange { get { return 3; } }
+
+        public override int AuraBaseDamage { get { return 25; } }
+        public override int AuraEnergyDamage { get { return 100; } }
+
         public virtual bool CanDoSpecial { get { return SpellCaster; } }
+
+        public override void AuraEffect(Mobile m)
+        {
+            if (m.NetState != null)
+                m.SendLocalizedMessage(1151112, String.Format("{0}\t#1072073", this.Name)); // : The creature's aura of energy is damaging you!
+        }
 
         public virtual double MinSkill { get { return 100.0; } }
         public virtual double MaxSkill { get { return 120.0; } }
@@ -145,8 +159,6 @@ namespace Server.Engines.Blackthorn
                         spell.Cast();
                     });
             }
-
-            SetAreaEffect(AreaEffect.AuraOfEnergy);
         }
 
         public virtual void SetBody()
@@ -477,7 +489,7 @@ namespace Server.Engines.Blackthorn
 
                         foreach (Mobile mob in eable)
                         {
-                            if (mob.AccessLevel > AccessLevel.Player)
+                            if (mob.AccessLevel > AccessLevel.VIP)
                                 continue;
 
                             if (mob is PlayerMobile || (mob is BaseCreature && ((BaseCreature)mob).GetMaster() is PlayerMobile) && CanBeHarmful(mob))

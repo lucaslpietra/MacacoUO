@@ -32,8 +32,8 @@ namespace Server.Items
 
             ClearCurrentAbility(attacker);
 
-            attacker.SendLocalizedMessage(1060090); // You have delivered a crushing blow!
-            defender.SendLocalizedMessage(1060091); // You take extra damage from the crushing attack!
+            attacker.SendLocalizedMessage("Voce usou um golpe especial"); // You have delivered a crushing blow!
+            defender.SendLocalizedMessage("Voce tomou dano extra do ataque pesado"); // You take extra damage from the crushing attack!
 
             defender.PlaySound(0x1E1);
             defender.FixedParticles(0, 1, 0, 9946, EffectLayer.Head);

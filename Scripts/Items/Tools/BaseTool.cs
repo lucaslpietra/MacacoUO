@@ -3,6 +3,7 @@ using Server.Engines.Craft;
 using Server.Network;
 using Server.ContextMenus;
 using System.Collections.Generic;
+using Server.Gumps;
 
 namespace Server.Items
 {
@@ -15,7 +16,7 @@ namespace Server.Items
         bool CheckAccessible(Mobile from, ref int num);
     }
 
-    public abstract class BaseTool : Item, ITool, IResource, IQuality
+    public abstract class BaseTool : Item, ITool, IResource, ICraftable
     {
         private Mobile m_Crafter;
         private ItemQuality m_Quality;
@@ -23,6 +24,33 @@ namespace Server.Items
         private bool m_RepairMode;
         private CraftResource _Resource;
         private bool _PlayerConstructed;
+
+        public int OnCraft(
+            int quality,
+            bool makersMark,
+            Mobile from,
+            CraftSystem craftSystem,
+            Type typeRes,
+            ITool tool,
+            CraftItem craftItem,
+            int resHue)
+        {
+            if (typeRes == null)
+            {
+                typeRes = craftItem.Resources.GetAt(0).ItemType;
+            }
+
+            Resource = CraftResources.GetFromType(typeRes);
+
+            PlayerConstructed = true;
+
+            Quality = (ItemQuality)quality;
+
+            if (makersMark)
+                Crafter = from;
+
+            return quality;
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CraftResource Resource
@@ -33,6 +61,7 @@ namespace Server.Items
                 _Resource = value;
                 Hue = CraftResources.GetHue(_Resource);
                 InvalidateProperties();
+                ScaleUses();
             }
         }
 
@@ -93,10 +122,40 @@ namespace Server.Items
 
         public int GetUsesScalar()
         {
+            var scalar = 100;
             if (m_Quality == ItemQuality.Exceptional)
-                return 200;
-
-            return 100;
+                scalar += 50;
+            if (Resource == CraftResource.Cobre)
+                scalar += 50;
+            else if (Resource == CraftResource.Bronze)
+                scalar += 80;
+            else if (Resource == CraftResource.Dourado)
+                scalar += 90;
+            else if (Resource == CraftResource.Niobio)
+                scalar += 100;
+            else if (Resource == CraftResource.Lazurita)
+                scalar += 130;
+            else if (Resource == CraftResource.Quartzo)
+                scalar += 250;
+            else if (Resource == CraftResource.Berilo)
+                scalar += 130;
+            else if (Resource == CraftResource.Vibranium)
+                scalar += 130;
+            else if (Resource == CraftResource.Adamantium)
+                scalar += 130;
+            else if (Resource == CraftResource.Carmesim)
+                scalar += 250;
+            else if (Resource == CraftResource.Gelo)
+                scalar += 250;
+            else if (Resource == CraftResource.Eucalipto)
+                scalar += 150;
+            else if (Resource == CraftResource.Mogno)
+                scalar += 120;
+            else if (Resource == CraftResource.Pinho)
+                scalar += 100;
+            else if (Resource == CraftResource.Carvalho)
+                scalar += 50;
+            return scalar;
         }
 
         public bool ShowUsesRemaining
@@ -110,7 +169,7 @@ namespace Server.Items
         public abstract CraftSystem CraftSystem { get; }
 
         public BaseTool(int itemID)
-            : this(Utility.RandomMinMax(25, 75), itemID)
+            : this(Utility.RandomMinMax(250, 300), itemID)
         {
         }
 
@@ -126,18 +185,20 @@ namespace Server.Items
         {
         }
 
-        public override void AddCraftedProperties(ObjectPropertyList list)
+        public override void GetProperties(ObjectPropertyList list)
         {
+            base.GetProperties(list);
+
             if (m_Crafter != null)
                 list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
             if (m_Quality == ItemQuality.Exceptional)
                 list.Add(1060636); // exceptional
-        }
 
-        public override void AddUsesRemainingProperties(ObjectPropertyList list)
-        {
-            list.Add(1060584, UsesRemaining.ToString()); // uses remaining: ~1_val~
+            if (Resource != CraftResource.None)
+                list.Add("Feito de " + Resource.ToString());
+
+            list.Add("Usos Restantes: "+ m_UsesRemaining.ToString()); // uses remaining: ~1_val~
         }
 
         public virtual void DisplayDurabilityTo(Mobile m)
@@ -218,34 +279,44 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (IsChildOf(from.Backpack) || Parent == from)
-            {
-                CraftSystem system = CraftSystem;
+            CaptchaGump.sendCaptcha(from, BaseTool.OnDoubleClickRedirected, this);
+        }
 
-                if (Core.TOL && m_RepairMode)
+        public static void OnDoubleClickRedirected(Mobile from, object o)
+        {
+            if (o == null || (!(o is BaseTool)))
+                return;
+
+            BaseTool tool = (BaseTool)o;
+
+            if (tool.IsChildOf(from.Backpack) || tool.Parent == from)
+            {
+                if (tool.Layer == Layer.OneHanded || tool.Layer == Layer.TwoHanded)
                 {
-                    Repair.Do(from, system, this);
+                    from.ClearHands();
+                    from.EquipItem(tool);
+                }
+
+                CraftSystem system = tool.CraftSystem;
+
+                int num = system.CanCraft(from, tool, null);
+
+                if (num > 0 && (num != 1044267 || !Core.SE)) // Blacksmithing shows the gump regardless of proximity of an anvil and forge after SE
+                {
+                    from.SendLocalizedMessage(num);
                 }
                 else
                 {
-                    int num = system.CanCraft(from, this, null);
+                    CraftContext context = system.GetContext(from);
 
-                    if (num > 0 && (num != 1044267 || !Core.SE)) // Blacksmithing shows the gump regardless of proximity of an anvil and forge after SE
-                    {
-                        from.SendLocalizedMessage(num);
-                    }
-                    else
-                    {
-                        from.SendGump(new CraftGump(from, system, this, null));
-                    }
+                    from.SendGump(new CraftGump(from, system, tool, null));
                 }
             }
             else
             {
-                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+                from.SendMessage("Isto precisa estar em sua mochila"); // That must be in your pack for you to use it.
             }
         }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -298,18 +369,5 @@ namespace Server.Items
             }
         }
 
-        #region ICraftable Members
-        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
-        {
-            PlayerConstructed = true;
-
-            Quality = (ItemQuality)quality;
-
-            if (makersMark)
-                Crafter = from;
-
-            return quality;
-        }
-        #endregion
     }
 }

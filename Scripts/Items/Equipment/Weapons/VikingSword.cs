@@ -12,6 +12,7 @@ namespace Server.Items
             : base(0x13B9)
         {
             this.Weight = 6.0;
+            Name = "Espada Viking";
         }
 
         public VikingSword(Serial serial)
@@ -75,6 +76,7 @@ namespace Server.Items
                 return 40;
             }
         }
+
         public override int OldMinDamage
         {
             get

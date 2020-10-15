@@ -10,7 +10,7 @@ namespace Server.Items
             : base()
         {
             Hue = 0x554;
-            Slayer = SlayerName.DragonSlaying;
+            Slayer = SlayerName.Dragoes;
             Attributes.AttackChance = 10;
             Attributes.WeaponDamage = 60;
             WeaponAttributes.ResistFireBonus = 20;

@@ -115,6 +115,11 @@ namespace Server.Mobiles
         public override bool CanPeace { get { return true; } }
         public override bool CanProvoke { get { return true; } }
 
+
+        public override TimeSpan DiscordInterval { get { return TimeSpan.FromSeconds(60); } }
+        public override TimeSpan PeaceInterval { get { return TimeSpan.FromSeconds(60); } }
+        public override TimeSpan ProvokeInterval { get { return TimeSpan.FromSeconds(60); } }
+
 		public override WeaponAbility GetWeaponAbility()
         {
 			if(Weapon is BaseWeapon)

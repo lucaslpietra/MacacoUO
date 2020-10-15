@@ -1,8 +1,6 @@
+using Server;
 using System;
 using System.Collections.Generic;
-
-using Server;
-using Server.Items;
 
 namespace Server.Multis
 {
@@ -52,11 +50,13 @@ namespace Server.Multis
 
         public bool IsTrackingBoat(Item item)
         {
-            if (item is BaseBoat || item is PlunderBeaconAddon)
+            if (item is BaseBoat)
             {
+                BaseBoat boat = item as BaseBoat;
+
                 foreach (BoatTrackingArrow arrow in m_Arrows)
                 {
-                    if (arrow.Boat == item)
+                    if (arrow.Boat == boat)
                         return true;
                 }
             }
@@ -99,18 +99,27 @@ namespace Server.Multis
 
 		private Mobile m_From;
 		private Timer m_Timer;
-        private Item m_Boat;
+        private BaseBoat m_Boat;
 
         public Mobile From { get { return m_From; } }
         public Timer Timer { get { return m_Timer; } }
-        public Item Boat { get { return m_Boat; } }
+        public BaseBoat Boat { get { return m_Boat; } }
 
-		public BoatTrackingArrow(Mobile from, Item boat, int range) : base(from, boat)
+		public BoatTrackingArrow(Mobile from, BaseBoat boat, int range) : base(from, boat)
 		{
             m_Boat = boat;
             m_From = from;
 			m_Timer = new BoatTrackingTimer(from, boat, range, this);
 			m_Timer.Start();
+
+            if (boat != null && from != null)
+            {
+                string name = "a ship with no name";
+                if (boat.ShipName != null && boat.ShipName != "" && boat.ShipName != String.Empty)
+                    name = boat.ShipName;
+
+                from.SendMessage("You are now tracking the {0}.", name);
+            }
 		}
 
 		public override void OnClick(bool rightClick)
@@ -155,10 +164,11 @@ namespace Server.Multis
 		{
 			if(!ShipTrackingContext.CanAddContext(from))
 			{
+                from.SendMessage("You are already tracking 5 boats.");
 				return;
 			}
 
-			var targets = new List<Item>();
+			List<BaseBoat> targets = new List<BaseBoat>();
  			Map map = from.Map;
 			
 			if(map == null || map == Map.Internal)
@@ -173,18 +183,23 @@ namespace Server.Multis
 			}
 
             IPooledEnumerable eable = map.GetItemsInRange(from.Location, MaxRange);
-
 			foreach(Item item in eable)
 			{
 				if(context != null && context.IsTrackingBoat(item))
 					continue;
-				if(!targets.Contains(item)  && ((item is BaseBoat && (BaseBoat)item != fromBoat) || item is PlunderBeaconAddon))
-					targets.Add(item);
+				if(item is BaseBoat && (BaseBoat)item != fromBoat && !targets.Contains((BaseBoat)item))
+					targets.Add((BaseBoat)item);
 			}
 		
 			eable.Free();
 
 			List<BoatTrackingArrow> arrows = new List<BoatTrackingArrow>();
+
+			if(targets.Count == 0)
+			{
+                from.SendMessage("There are no boats in the area to track.");
+                return;
+			}
 
 			for(int i = 0; i < targets.Count; i++)
 			{
@@ -210,12 +225,12 @@ namespace Server.Multis
 	public class BoatTrackingTimer : Timer
 	{
         private Mobile m_From;
-		private Item m_Target;
+		private BaseBoat m_Target;
 		private int m_Range;
 		private int m_LastX, m_LastY;
 		private QuestArrow m_Arrow;
 
-		public BoatTrackingTimer(Mobile from, Item target, int range, QuestArrow arrow) : base( TimeSpan.FromSeconds( 0.25 ), TimeSpan.FromSeconds( 2.5 ) )
+		public BoatTrackingTimer(Mobile from, BaseBoat target, int range, QuestArrow arrow) : base( TimeSpan.FromSeconds( 0.25 ), TimeSpan.FromSeconds( 2.5 ) )
 		{
             m_From = from;
 			m_Target = target;

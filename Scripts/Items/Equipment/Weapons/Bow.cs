@@ -3,17 +3,18 @@ using System;
 namespace Server.Items
 {
     [FlipableAttribute(0x13B2, 0x13B1)]
-    public class Bow : BaseRanged
+    public class PraticeBow : BaseRanged
     {
         [Constructable]
-        public Bow()
+        public PraticeBow()
             : base(0x13B2)
         {
-            Weight = 6.0;
-            Layer = Layer.TwoHanded;
+            this.Weight = 6.0;
+            this.Layer = Layer.TwoHanded;
+            Name = "Arco de Treino";
         }
 
-        public Bow(Serial serial)
+        public PraticeBow(Serial serial)
             : base(serial)
         {
         }
@@ -99,21 +100,21 @@ namespace Server.Items
         {
             get
             {
-                return 9;
+                return 5;
             }
         }
         public override int OldMaxDamage
         {
             get
             {
-                return 41;
+                return 8;
             }
         }
         public override int OldSpeed
         {
             get
             {
-                return 20;
+                return 15;
             }
         }
         public override int DefMaxRange
@@ -147,13 +148,18 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
+
+            if (this.Weight == 7.0)
+                this.Weight = 6.0;
         }
     }
 }

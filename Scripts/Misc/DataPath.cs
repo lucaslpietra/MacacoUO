@@ -4,7 +4,6 @@ using System.IO;
 
 using Microsoft.Win32;
 
-using Ultima;
 #endregion
 
 namespace Server.Misc
@@ -19,27 +18,48 @@ namespace Server.Misc
         */
 		private static readonly string CustomPath = Config.Get(@"DataPath.CustomPath", default(string));
 
+        public static void ReloadPath()
+        {
+            if(DataPathServer.Loaded)
+            {
+                return;
+            }
+            string path = "";
+
+            Console.WriteLine("=========== PATHS ===========");
+
+            if (CustomPath != null)
+            {
+                Console.WriteLine("CUSTOM PATH: " + CustomPath);
+                path = CustomPath;
+            }
+            else if (!Core.Unix)
+            {
+                Console.WriteLine("Path Windaum");
+                //path = Files.LoadDirectory();
+            }
+            else
+            {
+                Console.WriteLine("Path Cagada");
+                path = null;
+            }
+
+            // Console.WriteLine("-- PATH: " + path);
+            if (!String.IsNullOrWhiteSpace(path))
+            {
+                Console.WriteLine("Carregando arquivos da path");
+                Core.DataDirectories.Add(path);
+            }
+            else
+            {
+                throw new Exception("Nao carregou path do UO " + path);
+            }
+            DataPathServer.Loaded = true;
+        }
+
 		static DataPath()
 		{
-			string path;
-
-			if (CustomPath != null)
-			{
-				path = CustomPath;
-			}
-			else if (!Core.Unix)
-			{
-				path = Files.LoadDirectory();
-			}
-			else
-			{
-				path = null;
-			}
-
-			if (!String.IsNullOrWhiteSpace(path))
-			{
-				Core.DataDirectories.Add(path);
-			}
+            ReloadPath();
 		}
 
         /* The following is a list of files which a required for proper execution:
@@ -59,6 +79,20 @@ namespace Server.Misc
         */
         public static void Configure()
         {
+        	if (CustomPath != null)
+			{
+                Core.DataDirectories.Add(CustomPath);
+			}
+            else
+            {
+                Console.WriteLine("CAGOU DIRETORIO NAO SETADA CUSTOM PATH");
+            }
+            /*
+			else if(Files.LoadDirectory() != null && !Core.Unix)
+			{	
+				Core.DataDirectories.Add(Files.LoadDirectory());
+			}
+
 			if (Core.DataDirectories.Count == 0 && !Core.Service)
 			{
 				Console.WriteLine("Enter the Ultima Online directory:");
@@ -75,6 +109,7 @@ namespace Server.Misc
 			Utility.PushColor(ConsoleColor.DarkYellow);
 			Console.WriteLine("DataPath: " + Core.DataDirectories[0]);
 			Utility.PopColor();
+            */
         }
 
         private static string GetPath(string subName, string keyName)

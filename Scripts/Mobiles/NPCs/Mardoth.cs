@@ -146,7 +146,7 @@ namespace Server.Engines.Quests.Necro
 
                                 BaseWeapon weapon = new BoneHarvester();
 
-                                weapon.Slayer = SlayerName.OrcSlaying;
+                                weapon.Slayer = SlayerName.Orcs;
 
                                 if (Core.AOS)
                                 {

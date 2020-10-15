@@ -66,13 +66,7 @@ namespace Server.Items
                 this.m_MapDest = value;
             }
         }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1016511;
-            }
-        }// the floor of the cavern seems to have collapsed here - a faint light is visible at the bottom of the pit
+
         public override void OnDoubleClick(Mobile m)
         {
             if (!this.m_Active)
@@ -96,7 +90,7 @@ namespace Server.Items
             }
             else
             {
-                m.SendLocalizedMessage(1019045); // I can't reach that.
+                m.SendMessage("Muito longe"); // I can't reach that.
             }
         }
 

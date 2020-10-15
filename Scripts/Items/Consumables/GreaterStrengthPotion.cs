@@ -4,9 +4,14 @@ namespace Server.Items
 {
     public class GreaterStrengthPotion : BaseStrengthPotion
     {
+		public override string DefaultName
+        {
+            get { return "Poção de Força Maior"; }            
+        }
+		
         [Constructable]
         public GreaterStrengthPotion()
-            : base(PotionEffect.StrengthGreater)
+            : base(PotionEffect.ForcaMaior)
         {
         }
 
@@ -19,7 +24,7 @@ namespace Server.Items
         {
             get
             {
-                return 20;
+                return 30;
             }
         }
         public override TimeSpan Duration

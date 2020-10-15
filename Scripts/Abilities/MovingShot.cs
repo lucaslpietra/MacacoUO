@@ -43,7 +43,7 @@ namespace Server.Items
             //Validates in OnSwing for accuracy scalar
             ClearCurrentAbility(attacker);
 
-            attacker.SendLocalizedMessage(1060089); // You fail to execute your special move
+            attacker.SendLocalizedMessage("Voce falhou ao usar o tiro em movimento"); // You fail to execute your special move
         }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
@@ -51,7 +51,7 @@ namespace Server.Items
             //Validates in OnSwing for accuracy scalar
             ClearCurrentAbility(attacker);
 
-            attacker.SendLocalizedMessage(1060216); // Your shot was successful
+            attacker.SendLocalizedMessage("Voce acertou seu tiro em movimento"); // Your shot was successful
         }
     }
 }

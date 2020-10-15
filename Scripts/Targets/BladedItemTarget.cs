@@ -132,13 +132,13 @@ namespace Server.Targets
                     if (bank == null)
                         return;
 
-                    if (bank.Current < 5)
+                    if (bank.Current < 2)
                     {
                         from.SendLocalizedMessage(500493); // There's not enough wood here to harvest.
                     }
                     else
                     {
-                        bank.Consume(5, from);
+                        bank.Consume(2, from);
 
                         Item item = new Kindling();
 

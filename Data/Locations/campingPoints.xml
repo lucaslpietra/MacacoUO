@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<places>
+	<parent name="Camping">
+		<child name="Rhodes" x="1314" y="1379" z="0" />
+		<child name="Arbor" x="1774" y="1080" z="0" />
+		<child name="Cabo da Tormenta" x="994" y="1915" z="0" />
+		<child name="Vermell" x="1699" y="1679" z="0" />
+		<child name="Pedran" x="849" y="862" z="0" />
+		<child name="Lillano" x="550" y="1362" z="0" />
+		<child name="Albus" x="1211" y="863" z="2" />
+		<child name="Bowan" x="844" y="1775" z="0" />
+		<child name="Mao do Exodo" x="800" y="1041" z="0" />
+		<child name="Pulma" x="1105" y="1509" z="20" />
+		<child name="Mina dos Orcs" x="1456" y="1284" z="0" />
+		<child name="Khalmer" x="996" y="1770" z="0" />
+		<child name="Endium" x="1678" y="1477" z="0" />
+		<child name="Vila dos Selvagens" x="805" y="1222" z="0" />
+		<child name="Virindi" x="1038" y="1549" z="2" />
+		<child name="Cripta do Necromante" x="691" y="1318" z="0" />
+		<child name="Laboratorio Goblin" x="1485" y="1514" z="0" />
+		<child name="Morthuna" x="722" y="1655" z="10" />
+		<child name="Ostrov" x="732" y="1486" z="0" />
+		<child name="Zoologico" x="1460" y="1660" z="10" />
+		<child name="Cemiterio de Pedra" x="1723" y="1255" z="0" />
+		<child name="Cemiterio de Marmore" x="800" y="1130" z="0" />
+		<child name="Tretonia" x="1335" y="1901" z="0"/>
+	</parent>
+</places>

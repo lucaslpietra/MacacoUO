@@ -205,21 +205,21 @@ namespace Server.Engines.Despise
 
                 if (orb == null || orb.Alignment != strongest)
                 {
-                    m.SendLocalizedMessage(strongest != Alignment.Neutral ? 1153334 : 1153333);
+                    m.SendLocalizedMessage(strongest != Alignment.Neutral ? "O chamado foi feito mas voce nao e forte suficiente para escuta-lo" : "As forcas de seu inimigo estao mais fortes, e foram chamadas a batalha");
                     // The Call to Arms has sounded, but your forces are not yet strong enough to heed it.
                     // Your enemy forces are stronger, and they have been called to battle.
                 }
                 else if (orb != null && orb.Alignment == strongest)
                 {
-                    m.SendLocalizedMessage(1153332); // The Call to Arms has sounded. The forces of your alignment are strong, and you have been called to battle!
+                    m.SendLocalizedMessage("O chamado foi feito. Suas forcas estao fortes e voce esta pronto para a batalha !"); // The Call to Arms has sounded. The forces of your alignment are strong, and you have been called to battle!
 
                     if (orb.Conscripted)
                     {
-                        m.SendLocalizedMessage(1153337); // You will be teleported into the depths of the dungeon within 60 seconds to heed the Call to Arms, unless you release your conscripted creature or it dies.
+                        m.SendLocalizedMessage("Voce sera teleportado ao fundo da dungeon em 60 segundos"); // You will be teleported into the depths of the dungeon within 60 seconds to heed the Call to Arms, unless you release your conscripted creature or it dies.
                         m_ToTransport.Add(m);
                     }
                     else
-                        m.SendLocalizedMessage(1153338); // You have under 60 seconds to conscript a creature to answer the Call to Arms, or you will not be summoned for the battle.
+                        m.SendLocalizedMessage("Voce tem 60 segundos para encontrar uma criatura para atender ao chamado da batalha"); // You have under 60 seconds to conscript a creature to answer the Call to Arms, or you will not be summoned for the battle.
                 }
             }
 

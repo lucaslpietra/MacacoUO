@@ -29,7 +29,7 @@ namespace Server.Engines.Craft
             this.AddBackground(0, 0, 220, 170, 5054);
             this.AddBackground(10, 10, 200, 150, 3000);
 
-            this.AddHtmlLocalized(20, 20, 180, 80, 1018317, false, false); // Do you wish to place your maker's mark on this item?
+            this.AddHtml(20, 20, 180, 80, "Voce deseja assinar seu item?", false, false); // Do you wish to place your maker's mark on this item?
 
             this.AddHtmlLocalized(55, 100, 140, 25, 1011011, false, false); // CONTINUE
             this.AddButton(20, 100, 4005, 4007, 1, GumpButtonType.Reply, 0);
@@ -43,9 +43,9 @@ namespace Server.Engines.Craft
             bool makersMark = (info.ButtonID == 1);
 
             if (makersMark)
-                this.m_From.SendLocalizedMessage(501808); // You mark the item.
+                this.m_From.SendMessage("Voce assinou o item"); // You mark the item.
             else
-                this.m_From.SendLocalizedMessage(501809); // Cancelled mark.
+                this.m_From.SendMessage("Voce nao assinou o item"); // Cancelled mark.
 
             this.m_CraftItem.CompleteCraft(this.m_Quality, makersMark, this.m_From, this.m_CraftSystem, this.m_TypeRes, this.m_Tool, null);
         }

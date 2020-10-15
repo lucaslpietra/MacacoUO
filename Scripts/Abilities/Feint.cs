@@ -39,8 +39,8 @@ namespace Server.Items
             bool creature = attacker is BaseCreature;
 			ClearCurrentAbility( attacker );
 
-			attacker.SendLocalizedMessage( 1063360 ); // You baffle your target with a feint!
-			defender.SendLocalizedMessage( 1063361 ); // You were deceived by an attacker's feint!
+			attacker.SendLocalizedMessage( "Voce finta o inimigo" ); // You baffle your target with a feint!
+			defender.SendLocalizedMessage( "O inimigo fintou e te confundiu" ); // You were deceived by an attacker's feint!
 
 			attacker.FixedParticles( 0x3728, 1, 13, 0x7F3, 0x962, 0, EffectLayer.Waist );
             attacker.PlaySound(0x525);

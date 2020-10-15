@@ -11,6 +11,7 @@ namespace Server.Items
         public OrcHelm()
             : base(0x1F0B)
         {
+            this.Name = "Capacete Orc";
         }
 
         public OrcHelm(Serial serial)
@@ -99,7 +100,7 @@ namespace Server.Items
         {
             get
             {
-                return ArmorMaterialType.Bone;
+                return ArmorMaterialType.Leather;
             }
         }
         public override CraftResource DefaultResource
@@ -125,7 +126,12 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();            
+            int version = reader.ReadInt();
+
+            if (version == 0 && (this.Weight == 1 || this.Weight == 5))
+            {
+                this.Weight = -1;
+            }
         }
     }
 }

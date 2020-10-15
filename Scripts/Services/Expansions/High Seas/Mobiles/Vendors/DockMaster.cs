@@ -1,4 +1,4 @@
-using Server;
+﻿using Server;
 using System;
 using Server.Items;
 using Server.ContextMenus;
@@ -49,9 +49,9 @@ namespace Server.Mobiles
 
             public override void OnClick()
             {
-                var boat = BaseBoat.GetBoat(m_From);
+                BaseBoat boat = m_DockMaster.GetBoatInRegion(m_From);
 
-                if (boat != null && m_DockMaster.InRange(boat.Location, 100))
+                if (boat != null)
                     boat.BeginDryDock(m_From, m_DockMaster);
                 else
                     m_DockMaster.SayTo(m_From, 502581); //I cannot find the ship!
@@ -83,9 +83,9 @@ namespace Server.Mobiles
                     return;
                 }
 
-                var boat = BaseBoat.GetBoat(m_From);
+                BaseBoat boat = m_DockMaster.GetBoatInRegion(m_From);
 
-                if (boat != null && m_DockMaster.InRange(boat.Location, 50))
+                if(boat != null)
                     m_DockMaster.TryRetrieveHold(m_From, boat);
                 else
                     m_DockMaster.SayTo(m_From, 502581); //I cannot find the ship!

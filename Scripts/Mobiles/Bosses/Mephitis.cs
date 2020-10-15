@@ -44,9 +44,6 @@ namespace Server.Mobiles
             VirtualArmor = 80;
 
             SetSpecialAbility(SpecialAbility.Webbing);
-
-            ForceActiveSpeed = 0.3;
-            ForcePassiveSpeed = 0.6;
         }
 
         public Mephitis(Serial serial)

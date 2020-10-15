@@ -1,3 +1,4 @@
+using Server.Spells.Fourth;
 using System;
 using System.Collections;
 
@@ -19,7 +20,7 @@ namespace Server.Spells.Second
         {
         }
 
-        public static Hashtable Registry
+        public static Hashtable CastDisturbProtection
         {
             get
             {
@@ -57,11 +58,12 @@ namespace Server.Spells.Second
                 };
 
                 m_Table[target] = mods;
-                Registry[target] = 100.0;
+                CastDisturbProtection[target] = 100.0;
 
                 target.AddResistanceMod((ResistanceMod)mods[0]);
                 target.AddSkillMod((SkillMod)mods[1]);
 
+              
                 int physloss = -15 + (int)(caster.Skills[SkillName.Inscribe].Value / 20);
                 int resistloss = -35 + (int)(caster.Skills[SkillName.Inscribe].Value / 20);
                 string args = String.Format("{0}\t{1}", physloss, resistloss);
@@ -73,7 +75,7 @@ namespace Server.Spells.Second
                 target.FixedParticles(0x375A, 9, 20, 5016, EffectLayer.Waist);
 
                 m_Table.Remove(target);
-                Registry.Remove(target);
+                CastDisturbProtection.Remove(target);
 
                 target.RemoveResistanceMod((ResistanceMod)mods[0]);
                 target.RemoveSkillMod((SkillMod)mods[1]);
@@ -83,21 +85,23 @@ namespace Server.Spells.Second
             }
         }
 
-        public static void EndProtection(Mobile m)
+        public static bool EndProtection(Mobile m)
         {
             if (m_Table.Contains(m))
             {
                 object[] mods = (object[])m_Table[m];
 
                 m_Table.Remove(m);
-                Registry.Remove(m);
+                CastDisturbProtection.Remove(m);
 
                 m.RemoveResistanceMod((ResistanceMod)mods[0]);
                 m.RemoveSkillMod((SkillMod)mods[1]);
 
                 BuffInfo.RemoveBuff(m, BuffIcon.Protection);
                 BuffInfo.RemoveBuff(m, BuffIcon.ArchProtection);
+                return true;
             }
+            return false;
         }
 
         public override bool CheckCast()
@@ -142,15 +146,38 @@ namespace Server.Spells.Second
                 {
                     if (this.Caster.BeginAction(typeof(DefensiveSpell)))
                     {
-                        double value = (int)(this.Caster.Skills[SkillName.EvalInt].Value + this.Caster.Skills[SkillName.Meditation].Value + this.Caster.Skills[SkillName.Inscribe].Value);
-                        value /= 4;
+                        double value = (int)(this.Caster.Skills[SkillName.Magery].Value + this.Caster.Skills[SkillName.Meditation].Value + this.Caster.Skills[SkillName.Inscribe].Value);
+
 
                         if (value < 0)
                             value = 0;
-                        else if (value > 75)
-                            value = 75.0;
 
-                        Registry.Add(this.Caster, value);
+                        //if(!Shard.POL_STYLE)
+                        //{
+                        value /= 4;
+                        CastDisturbProtection.Add(this.Caster, value);
+                        this.Caster.VirtualArmorMod -= 10;
+
+                        Caster.SendMessage("Voce tem uma aura de protecao que diminui sua armadura porem faz voce mais resistente a disturb quando levar dano");
+
+                        /*
+                        } else
+                        {
+                            value /= 30;
+                            if (this.Caster.BeginAction(typeof(ArchProtectionSpell)))
+                            {
+                                var v = (int)value;
+                                this.Caster.VirtualArmorMod += v;
+                                ArchProtectionSpell.AddEntry(this.Caster, v);
+                                string args = String.Format("{0}\t{1}", 0, 0);
+                                BuffInfo.AddBuff(this.Caster, new BuffInfo(BuffIcon.Protection, 1075816, args.ToString()));
+                            } else
+                            {
+                                this.Caster.SendLocalizedMessage(1005559); // This spell is already in effect.
+                            }
+                        }
+                        */
+
                         new InternalTimer(this.Caster).Start();
 
                         this.Caster.FixedParticles(0x375A, 9, 20, 5016, EffectLayer.Waist);
@@ -192,8 +219,22 @@ namespace Server.Spells.Second
 
             protected override void OnTick()
             {
-                ProtectionSpell.Registry.Remove(this.m_Caster);
+                /*
+                if (Shard.POL_STYLE)
+                {
+                    ArchProtectionSpell.RemoveEntry(this.m_Caster);
+                    BuffInfo.RemoveBuff(this.m_Caster, BuffIcon.Protection);
+                    DefensiveSpell.Nullify(this.m_Caster);
+                }
+                else
+                {
+                    ProtectionSpell.CastDisturbProtection.Remove(this.m_Caster);
+                    DefensiveSpell.Nullify(this.m_Caster);
+                }
+                */
+                ProtectionSpell.CastDisturbProtection.Remove(this.m_Caster);
                 DefensiveSpell.Nullify(this.m_Caster);
+                this.m_Caster.VirtualArmorMod += 10;
             }
         }
     }

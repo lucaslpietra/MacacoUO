@@ -2,14 +2,16 @@ using System;
 
 namespace Server.Engines.Quests
 { 
-    public class Percolem : MondainQuester, ITierQuester
+    public class Percolem : MondainQuester
     {
-        public TierQuestInfo TierInfo { get { return TierQuestInfo.Percolem; } }
-
         [Constructable]
         public Percolem()
             : base("Percolem", "the Hunter")
         {
+            if (!(this is MondainQuester))
+
+                this.Name = "Percolem";
+            this.Title = "the Hunter";
         }
 
         public Percolem(Serial serial)
@@ -21,32 +23,34 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] { };
+                return new Type[] 
+                {
+                    typeof(PercolemTheHunterTierOneQuest)
+                };
             }
         }
-
         public override void InitBody()
         {
-            InitStats(100, 100, 25);
+            this.InitStats(100, 100, 25);
 			
-            Female = false;
-            Race = Race.Human;
+            this.Female = false;
+            this.Race = Race.Human;
 			
-            Hue = 0x840C;
-            HairItemID = 0x203C;
-            HairHue = 0x3B3;
+            this.Hue = 0x840C;
+            this.HairItemID = 0x203C;
+            this.HairHue = 0x3B3;
         }
 
         public override void InitOutfit()
         {
-            CantWalk = true;
+            this.CantWalk = true;
             
-            AddItem(new Server.Items.Boots());
-            AddItem(new Server.Items.Shirt(1436));
-            AddItem(new Server.Items.ShortPants(1436));
-            AddItem(new Server.Items.CompositeBow());
+            this.AddItem(new Server.Items.Boots());
+            this.AddItem(new Server.Items.Shirt(1436));
+            this.AddItem(new Server.Items.ShortPants(1436));
+            this.AddItem(new Server.Items.CompositeBow());
             
-            Blessed = true;
+            this.Blessed = true;
         }
 
         public override void Serialize(GenericWriter writer)

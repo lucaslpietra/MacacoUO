@@ -1,4 +1,5 @@
 using System;
+using Server.Mobiles;
 using Server.Targeting;
 
 namespace Server.Items
@@ -15,6 +16,7 @@ namespace Server.Items
         public Flax(int amount)
             : base(0x1A9C)
         {
+            this.Name = "Punhado de Linho";
             this.Stackable = true;
             this.Weight = 1.0;
             this.Amount = amount;
@@ -27,11 +29,14 @@ namespace Server.Items
 
         public static void OnSpun(ISpinningWheel wheel, Mobile from, int hue)
         {
-            Item item = new SpoolOfThread(6);
+            Item item = new SpoolOfThread(2);
             item.Hue = hue;
 
             from.AddToBackpack(item);
-            from.SendLocalizedMessage(1010577); // You put the spools of thread in your backpack.
+            from.SendMessage("Voce colocou fios de la em sua mochila"); // You put the spools of thread in your backpack.
+
+            var player = (PlayerMobile)from;
+            new PickWheelTarget((Flax)player.LastItem).Invoke(from, player.LastTarget);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -52,12 +57,12 @@ namespace Server.Items
         {
             if (this.IsChildOf(from.Backpack))
             {
-                from.SendLocalizedMessage(502655); // What spinning wheel do you wish to spin this on?
+                from.SendMessage("Selecione uma roda de tecer"); // What spinning wheel do you wish to spin this on?
                 from.Target = new PickWheelTarget(this);
             }
             else
             {
-                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+                from.SendMessage("O item precisa estar em sua mochila"); // That must be in your pack for you to use it.
             }
         }
 
@@ -80,17 +85,24 @@ namespace Server.Items
                 if (wheel == null && targeted is AddonComponent)
                     wheel = ((AddonComponent)targeted).Addon as ISpinningWheel;
 
+                if(from is PlayerMobile)
+                {
+                    var player = (PlayerMobile)from;
+                    player.LastTarget = targeted;
+                    player.LastItem = m_Flax;
+                }
+
                 if (wheel is Item)
                 {
                     Item item = (Item)wheel;
 
                     if (!this.m_Flax.IsChildOf(from.Backpack))
                     {
-                        from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+                        from.SendMessage("Precisa estar em sua mochila"); // That must be in your pack for you to use it.
                     }
                     else if (wheel.Spinning)
                     {
-                        from.SendLocalizedMessage(502656); // That spinning wheel is being used.
+                        from.SendMessage("Esta roda ja esta sendo usada"); // That spinning wheel is being used.
                     }
                     else
                     {
@@ -100,7 +112,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    from.SendLocalizedMessage(502658); // Use that on a spinning wheel.
+                    from.SendMessage("Use isto em uma roda de tecer"); // Use that on a spinning wheel.
                 }
             }
         }

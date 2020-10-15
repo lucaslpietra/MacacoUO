@@ -26,7 +26,7 @@ namespace Server.Spells.Necromancy
         {
             get
             {
-                return TimeSpan.FromSeconds((Core.ML ? 2.0 : 1.5));
+                return TimeSpan.FromSeconds((Core.ML ? 1.75 : 1.5));
             }
         }
         public override double RequiredSkill
@@ -47,7 +47,7 @@ namespace Server.Spells.Necromancy
         {
             get
             {
-                return false;
+                return true;
             }
         }
         public override void OnCast()
@@ -62,24 +62,38 @@ namespace Server.Spells.Necromancy
                 Mobile mob = m as Mobile;
                 SpellHelper.Turn(Caster, m);
 
-                ApplyEffects(m);
+                ApplyEffects(mob);
                 ConduitSpell.CheckAffected(Caster, m, ApplyEffects);
             }
 
             FinishSequence();
         }
 
-        public void ApplyEffects(IDamageable m, double strength = 1.0)
+        public void ApplyEffects(Mobile m, double strength = 0.6)
         {
             /* Creates a blast of poisonous energy centered on the target.
                 * The main target is inflicted with a large amount of Poison damage, and all valid targets in a radius of 2 tiles around the main target are inflicted with a lesser effect.
                 * One tile from main target receives 50% damage, two tiles from target receives 33% damage.
                 */
 
-            Effects.SendLocationParticles(EffectItem.Create(m.Location, m.Map, EffectItem.DefaultDuration), 0x36B0, 1, 14, 63, 7, 9915, 0);
+            Caster.MovingParticles(
+                m,//IEntity to
+                0x36B0,//int itemID,
+                7, // int speed,
+                0, // int duration,
+                false, // bool fixedDirection,
+                true, // bool explodes,
+                63, // int hue,
+                9915, // int renderMode,
+                9915, // int effect,
+                9915, // int explodeEffect,
+                0x160, // int explodeSound,
+                0 // unkw
+                );
+            //Effects.SendLocationParticles(EffectItem.Create(m.Location, m.Map, EffectItem.DefaultDuration), 0x36B0, 1, 14, 63, 7, 9915, 0);
             Effects.PlaySound(m.Location, m.Map, 0x229);
 
-            double damage = Utility.RandomMinMax((Core.ML ? 32 : 36), 40) * ((300 + (GetDamageSkill(Caster) * 9)) / 1000);
+            double damage = Utility.RandomMinMax(32, 40) * ((300 + (GetDamageSkill(Caster) * 9)) / 1000);
             damage *= strength;
 
             double sdiBonus;
@@ -104,13 +118,34 @@ namespace Server.Spells.Necromancy
                 sdiBonus = (double)AosAttributes.GetValue(Caster, AosAttribute.SpellDamage) / 100;
             }
 
-            double pvmDamage = (damage * (1 + sdiBonus)) * strength;
             double pvpDamage = damage * (1 + sdiBonus);
+            pvpDamage *= GetDamageScalar(m);
 
             Map map = m.Map;
 
             if (map != null)
             {
+                if (m is Mobile && CheckResisted((Mobile)m, 7))
+                {
+                    m.SendMessage("Voce sente seu corpo resistindo a magia");
+                    damage *= 0.70;
+                }
+                else
+                {
+                    if (Caster.Skills[SkillName.Poisoning].Value > 80)
+                    {
+                        m.ApplyPoison(Caster, Poison.Regular);
+                    }
+                    else
+                    {
+                        m.ApplyPoison(Caster, Poison.Lesser);
+                    }
+                }
+
+                Caster.DoHarmful(m);
+                SpellHelper.Damage(this, m, pvpDamage, 0, 0, 0, 100, 0);
+
+                /*
                 foreach (var id in AcquireIndirectTargets(m.Location, 2))
                 {
                     int num;
@@ -122,9 +157,25 @@ namespace Server.Spells.Necromancy
                     else
                         num = 3;
 
+                    if (id is Mobile && CheckResisted((Mobile)id, 6))
+                    {
+                        m.SendMessage("Voce sente seu corpo resistindo a magia");
+                        damage *= 0.55;
+                    } else
+                    {
+                        if(Caster.Skills[SkillName.Poisoning].Value > 80)
+                        {
+                            ((Mobile)id).Poison = Poison.Regular;
+                        } else
+                        {
+                            ((Mobile)id).Poison = Poison.Lesser;
+                        }
+                    }
+
                     Caster.DoHarmful(id);
-                    SpellHelper.Damage(this, id, ((id is PlayerMobile && Caster.Player) ? pvpDamage : pvmDamage) / num, 0, 0, 0, 100, 0);
+                    SpellHelper.Damage(this, id, pvpDamage / num, 0, 0, 0, 100, 0);
                 }
+                */
             }
         }
 

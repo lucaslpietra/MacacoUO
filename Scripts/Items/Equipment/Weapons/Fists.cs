@@ -97,14 +97,14 @@ namespace Server.Items
         {
             get
             {
-                return -1;
+                return 0x13C;
             }
         }
         public override int DefMissSound
         {
             get
             {
-                return -1;
+                return 0x23A;
             }
         }
 
@@ -133,9 +133,9 @@ namespace Server.Items
         public Fists()
             : base(0)
         {
-            Visible = false;
-            Movable = false;
-            Quality = ItemQuality.Normal;
+            this.Visible = false;
+            this.Movable = false;
+            this.Quality = ItemQuality.Normal;
         }
 
         public Fists(Serial serial)

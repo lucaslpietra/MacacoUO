@@ -44,7 +44,7 @@ namespace Server.Items
 
             humanoid.Super = new SlayerEntry
                 (
-                    SlayerName.Repond,
+                    SlayerName.Humanoides,
 
                     typeof(ClanCA), typeof(ClanCT),
                     typeof(ClanRS), typeof(ClanRC),
@@ -71,30 +71,45 @@ namespace Server.Items
                     typeof(RakktaviRenowned), typeof(TikitaviRenowned),
                     typeof(VitaviRenowned), typeof(EnslavedGoblinScout),
                     typeof(EnslavedGoblinKeeper), typeof(EnslavedGreenGoblin),
-                    typeof(EnslavedGreenGoblinAlchemist), typeof(EnslavedGoblinMage),
+                    typeof(EnslavedGreenGoblinAlchemist), typeof(EnslavedGoblinMage), typeof(GoblinTesoureiro),
                     typeof(EnslavedGrayGoblin), typeof(GreenGoblinScout),
-                    typeof(GreenGoblinAlchemist), typeof(GreenGoblin),
+                    typeof(GreenGoblinAlchemist), typeof(GreenGoblin), typeof(GreenGoblinMage),
                     typeof(GrayGoblinMage), typeof(GrayGoblinKeeper),
                     typeof(GrayGoblin), typeof(GreenGoblinAlchemistRenowned),
                     typeof(GrayGoblinMageRenowned), typeof(CorgulTheSoulBinder),
                     typeof(PirateCrew), typeof(LizardmanWitchdoctor),
                     typeof(OrcFootSoldier), typeof(RatmanAssassin),
-                    typeof(OgreBoneCrusher), typeof(TitanRockHunter)
+                    typeof(TitanRockHunter)
                 );
 
             humanoid.Entries = new SlayerEntry[]
             {
                 new SlayerEntry
                     (
-                        SlayerName.OgreTrashing,
+                        SlayerName.Ogros,
 
                         typeof(Ogre),               typeof(OgreLord),
-                        typeof(ArcticOgreLord),     typeof(OgreBoneCrusher)
+                        typeof(ArcticOgreLord)  
                     ),
 
                 new SlayerEntry
+                (
+                    SlayerName.Goblins,
+
+                    typeof(EnslavedGoblinScout),
+                    typeof(EnslavedGoblinKeeper), typeof(EnslavedGreenGoblin),
+                    typeof(EnslavedGreenGoblinAlchemist), typeof(EnslavedGoblinMage),
+                    typeof(EnslavedGrayGoblin), typeof(GreenGoblinScout),
+                    typeof(GreenGoblinAlchemist), typeof(GreenGoblin), typeof(GreenGoblinMage),
+                    typeof(GrayGoblinMage), typeof(GrayGoblinKeeper),
+                    typeof(GrayGoblin), typeof(GreenGoblinAlchemistRenowned),
+                    typeof(GrayGoblinMageRenowned), typeof(GoblinTesoureiro)
+
+                 ),
+
+                new SlayerEntry
                     (
-                        SlayerName.OrcSlaying,
+                        SlayerName.Orcs,
 
                         typeof(Orc),            typeof(OrcBomber),
                         typeof(OrcBrute),       typeof(OrcCaptain),
@@ -105,7 +120,7 @@ namespace Server.Items
 
                 new SlayerEntry
                     (
-                        SlayerName.TrollSlaughter,
+                        SlayerName.Trolls,
 
                         typeof(Troll),  typeof(FrostTroll)
                     ),
@@ -118,7 +133,7 @@ namespace Server.Items
 
             undead.Super = new SlayerEntry
                 (
-                    SlayerName.Silver,
+                    SlayerName.Undeads,
 
                     typeof(AncientLich), typeof(AncientLichRenowned),
                     typeof(Bogle), typeof(BoneKnight),
@@ -144,8 +159,7 @@ namespace Server.Items
                     typeof(PutridUndeadGuardian), typeof(Juonar),
                     typeof(Spellbinder), typeof(AngeredSpirit),
                     typeof(BoneSwordSlinger), typeof(CovetousRevenant),
-                    typeof(DiseasedLich), typeof(VileCadaver),
-                    typeof(GrizzledMare), typeof(SkeletalCat)
+                    typeof(DiseasedLich), typeof(VileCadaver)
                 );
 
             undead.Entries = new SlayerEntry[0];
@@ -157,7 +171,7 @@ namespace Server.Items
 
             fey.Super = new SlayerEntry
                 (
-                    SlayerName.Fey,
+                    SlayerName.Fadas,
 
                     typeof(Centaur), typeof(CuSidhe),
                     typeof(EtherealWarrior), typeof(Kirin),
@@ -189,7 +203,7 @@ namespace Server.Items
 
             elemental.Super = new SlayerEntry
                 (
-                    SlayerName.ElementalBan,
+                    SlayerName.Elemental,
 
                     typeof(LavaElemental), typeof(ToxicElemental),
                     typeof(AcidElemental), typeof(AcidElementalRenowned),
@@ -220,14 +234,14 @@ namespace Server.Items
                 {
                     new SlayerEntry
                         (
-                            SlayerName.BloodDrinking,
+                            SlayerName.Sanguinarios,
 
                             typeof(BloodElemental),     typeof(DemonKnight)
                         ),
 
                     new SlayerEntry
                         (
-                            SlayerName.EarthShatter,
+                            SlayerName.QuedraPedras,
 
                             typeof(AgapiteElemental),   typeof(BronzeElemental),
                             typeof(CopperElemental),    typeof(DullCopperElemental),
@@ -240,7 +254,7 @@ namespace Server.Items
 
                     new SlayerEntry
                         (
-                            SlayerName.ElementalHealth,
+                            SlayerName.Envenenados,
 
                             typeof(PoisonElemental),    typeof(DemonKnight),
                             typeof(VenomElemental)
@@ -248,7 +262,7 @@ namespace Server.Items
 
                     new SlayerEntry
                         (
-                            SlayerName.FlameDousing,
+                            SlayerName.Flamejantes,
 
                             typeof(FireElemental),          typeof(FireElementalRenowned),
                             typeof(SummonedFireElemental),  typeof(FlameElemental),
@@ -257,7 +271,7 @@ namespace Server.Items
 
                     new SlayerEntry
                         (
-                            SlayerName.SummerWind,
+                            SlayerName.Gelados,
 
                             typeof(SnowElemental),  typeof(IceElemental),
                             typeof(DemonKnight)
@@ -276,7 +290,7 @@ namespace Server.Items
 
                     new SlayerEntry
                         (
-                            SlayerName.WaterDissipation,
+                            SlayerName.Aquosos,
 
                             typeof(WaterElemental),     typeof(SummonedWaterElemental),
                             typeof(DemonKnight),        typeof(CovetousWaterElemental)
@@ -294,11 +308,11 @@ namespace Server.Items
                     typeof(BloodElemental)
                 };
 
-            if (Core.AOS)
+            if (true)
             {
                 abyss.Super = new SlayerEntry
                     (
-                        SlayerName.Exorcism,
+                        SlayerName.Exorcismo,
 
                         typeof(DevourerRenowned), typeof(FireDaemonRenowned),
                         typeof(AbysmalHorror), typeof(AbyssalInfernal),
@@ -324,8 +338,7 @@ namespace Server.Items
                         typeof(UsagralemBallem), typeof(EffetePutridGargoyle),
                         typeof(EffeteUndeadGargoyle), typeof(PitFiend),
                         typeof(ArchDaemon), typeof(AbyssalAbomination),
-                        typeof(Virtuebane), typeof(LesserOni),
-                        typeof(Lifestealer)
+                        typeof(Virtuebane), typeof(LesserOni)
                     );
 
                 abyss.Entries = new SlayerEntry[]
@@ -333,7 +346,7 @@ namespace Server.Items
                     // Daemon Dismissal & Balron Damnation have been removed and moved up to super slayer on OSI.
                     new SlayerEntry
                         (
-                            SlayerName.GargoylesFoe,
+                            SlayerName.Gargulas,
 
                             typeof(EnslavedGargoyle),       typeof(FireGargoyle),
                             typeof(Gargoyle),               typeof(GargoyleDestroyer),
@@ -349,7 +362,7 @@ namespace Server.Items
             {
                 abyss.Super = new SlayerEntry
                     (
-                        SlayerName.Exorcism,
+                        SlayerName.Exorcismo,
 
                         typeof(AbysmalHorror), typeof(Balron),
                         typeof(BoneDemon), typeof(ChaosDaemon),
@@ -368,7 +381,7 @@ namespace Server.Items
                 {
                     new SlayerEntry
                         (
-                            SlayerName.DaemonDismissal,
+                            SlayerName.Demonios,
 
                             typeof(Semidar),        typeof(AbyssalInfernal),
                             typeof(AbysmalHorror),  typeof(Balron),
@@ -383,7 +396,7 @@ namespace Server.Items
 
                     new SlayerEntry
                         (
-                            SlayerName.GargoylesFoe,
+                            SlayerName.Gargulas,
 
                             typeof(FireGargoyle),       typeof(Gargoyle),
                             typeof(StoneGargoyle),      typeof(EnslavedGargoyle),
@@ -392,7 +405,7 @@ namespace Server.Items
 
                     new SlayerEntry
                         (
-                            SlayerName.BalronDamnation,
+                            SlayerName.Balrons,
 
                             typeof(Balron)
                         )
@@ -413,7 +426,7 @@ namespace Server.Items
 
             arachnid.Super = new SlayerEntry
                 (
-                    SlayerName.ArachnidDoom,
+                    SlayerName.Aracnideos,
 
                     typeof(DreadSpider), typeof(FrostSpider),
                     typeof(GiantBlackWidow), typeof(GiantSpider),
@@ -433,7 +446,7 @@ namespace Server.Items
             {
                 new SlayerEntry
                     (
-                        SlayerName.ScorpionsBane,
+                        SlayerName.Escorpioes,
 
                         typeof(Scorpion),           typeof(Miasma),
                         typeof(SpeckledScorpion)
@@ -441,7 +454,7 @@ namespace Server.Items
 
                 new SlayerEntry
                     (
-                        SlayerName.SpidersDeath,
+                        SlayerName.Aranhas,
 
                         typeof(DreadSpider),        typeof(FrostSpider),
                         typeof(GiantBlackWidow),    typeof(GiantSpider),
@@ -475,7 +488,7 @@ namespace Server.Items
 
             reptilian.Super = new SlayerEntry
                 (
-                    SlayerName.ReptilianDeath,
+                    SlayerName.Repteis,
 
                     typeof(Rikktor), typeof(Serado),
                     typeof(SkeletalDragonRenowned), typeof(WyvernRenowned),
@@ -513,7 +526,7 @@ namespace Server.Items
             {
                 new SlayerEntry
                     (
-                        SlayerName.DragonSlaying,
+                        SlayerName.Dragoes,
 
                         typeof(Rikktor),            typeof(SkeletalDragonRenowned),
                         typeof(WyvernRenowned),     typeof(AncientWyrm),
@@ -532,14 +545,14 @@ namespace Server.Items
 
                 new SlayerEntry
                     (
-                        SlayerName.LizardmanSlaughter,
+                        SlayerName.HomensLagarto,
 
                         typeof(Lizardman)
                     ),
 
                 new SlayerEntry
                     (
-                        SlayerName.Ophidian,
+                        SlayerName.Ofidianos,
 
                         typeof(OphidianArchmage),   typeof(OphidianKnight),
                         typeof(OphidianMage),       typeof(OphidianMatriarch),
@@ -548,7 +561,7 @@ namespace Server.Items
 
                 new SlayerEntry
                     (
-                        SlayerName.SnakesBane,
+                        SlayerName.Cobras,
 
                         typeof(CrystalSeaSerpent),  typeof(Coil),
                         typeof(CoralSnake),         typeof(DeepSeaSerpent),
@@ -591,7 +604,7 @@ namespace Server.Items
             dino.Super =
                 new SlayerEntry(
                     
-                    SlayerName.Dinosaur, 
+                    SlayerName.Dinossauros, 
                     
                     typeof(Dimetrosaur), typeof(Gallusaurus), 
                     typeof(Archaeosaurus), typeof(Najasaurus),
@@ -720,7 +733,7 @@ namespace Server.Items
                 }
             }
 
-            return SlayerName.Silver;
+            return BaseRunicTool.GetRandomSlayer();
         }
 
         public bool OppositionSuperSlays(Mobile m)
@@ -739,7 +752,7 @@ namespace Server.Items
 
         private static SlayerEntry[] CompileEntries(SlayerGroup[] groups)
         {
-            SlayerEntry[] entries = new SlayerEntry[32];
+            SlayerEntry[] entries = new SlayerEntry[33];
 
             for (int i = 0; i < groups.Length; ++i)
             {

@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public Ghoul()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a ghoul";
+            this.Name = "zumbi assombrado";
             this.Body = 153;
             this.BaseSoundID = 0x482;
 
@@ -71,7 +71,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Meager);
-            this.PackItem(Loot.RandomWeapon());
+            if(Utility.RandomDouble() < 0.2)
+                this.PackItem(Loot.RandomWeapon());
         }
 
         public override void Serialize(GenericWriter writer)

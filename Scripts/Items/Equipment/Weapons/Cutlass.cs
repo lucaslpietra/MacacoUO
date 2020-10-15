@@ -10,6 +10,7 @@ namespace Server.Items
             : base(0x1441)
         {
             this.Weight = 8.0;
+            Name = "Espadinha";
         }
 
         public Cutlass(Serial serial)

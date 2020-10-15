@@ -76,7 +76,7 @@ namespace Server.Spells.SkillMasteries
 		
 		public override bool CheckCast()
 		{
-			int mana = ScaleMana( RequiredMana );
+			int mana = AjustaMana( RequiredMana );
 
 			if ( !base.CheckCast() )
 				return false;
@@ -108,7 +108,7 @@ namespace Server.Spells.SkillMasteries
 
         public override void DoFizzle()
         {
-            Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2, 502632); // The spell fizzles.
+            Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2,false, "A magia se desfaz"); // The spell fizzles.
 
             if (Caster.Player)
             {
@@ -185,7 +185,7 @@ namespace Server.Spells.SkillMasteries
 
                 Expire();
             }
-            else if (Caster.Player && Caster.Skills[CastSkill].Value < RequiredSkill)
+            else if (Caster.Skills[CastSkill].Value < RequiredSkill)
             {
                 Expire();
             }
@@ -282,7 +282,7 @@ namespace Server.Spells.SkillMasteries
             double upkeep = UpKeep;
             int mana = (int)(upkeep - ((upkeep * mod) / 4.5));
 			
-			return ScaleMana(mana);
+			return AjustaMana(mana);
 		}
 		
 		public virtual void Expire(bool disrupt = false)
@@ -352,7 +352,7 @@ namespace Server.Spells.SkillMasteries
             maxSkill += (1 + (volumeMod / 6)) * 25;
 
             if (target.Skills[SkillName.MagicResist].Value < maxSkill)
-                target.CheckSkill(SkillName.MagicResist, 0.0, target.Skills[SkillName.MagicResist].Cap);
+                target.CheckSkillMult(SkillName.MagicResist, 0.0, target.Skills[SkillName.MagicResist].Cap);
 
             return (n >= Utility.RandomDouble());
         }

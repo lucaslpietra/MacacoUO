@@ -37,18 +37,9 @@ namespace Server.Items
         public Dough()
             : base(0x103d)
         {
-            Stackable = Core.ML;
+            Stackable = true;
             Weight = 1.0;
-        }
-
-        public override bool WillStack(Mobile from, Item item)
-        {
-            if (item is IQuality && ((IQuality)item).Quality != _Quality)
-            {
-                return false;
-            }
-
-            return base.WillStack(from, item);
+            Name = "Farinha";
         }
 
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
@@ -58,8 +49,10 @@ namespace Server.Items
             return quality;
         }
 
-        public override void AddCraftedProperties(ObjectPropertyList list)
+        public override void GetProperties(ObjectPropertyList list)
         {
+            base.GetProperties(list);
+
             if (_Quality == ItemQuality.Exceptional)
             {
                 list.Add(1060636); // Exceptional
@@ -180,13 +173,16 @@ namespace Server.Items
         public SweetDough()
             : base(0x103d)
         {
-            Stackable = Core.ML;
+            Stackable = true;
             Weight = 1.0;
             Hue = 150;
+            Name = "Farinha Doce";
         }
 
-        public override void AddCraftedProperties(ObjectPropertyList list)
+        public override void GetProperties(ObjectPropertyList list)
         {
+            base.GetProperties(list);
+
             if (_Quality == ItemQuality.Exceptional)
             {
                 list.Add(1060636); // Exceptional
@@ -281,7 +277,7 @@ namespace Server.Items
                         return;
                     }
 
-                    if (m_From.CheckSkill(SkillName.Cooking, 0, 10))
+                    if (m_From.CheckSkillMult(SkillName.Cooking, 0, 10))
                     {
                         if (m_From.AddToBackpack(new Muffins()))
                             m_From.PlaySound(0x57);
@@ -429,9 +425,34 @@ namespace Server.Items
     }
 
     // ********** SackFlour **********
-    public class SackFlour : Item, IQuality
+    [TypeAlias("Server.Items.SackFlourOpen")]
+    public class SackFlour : Item, IHasQuantity, IQuality
     {
+        private int m_Quantity;
         private ItemQuality _Quality;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int Quantity
+        {
+            get
+            {
+                return m_Quantity;
+            }
+            set
+            {
+                if (value < 0)
+                    value = 0;
+                else if (value > 20)
+                    value = 20;
+
+                m_Quantity = value;
+
+                if (m_Quantity == 0)
+                    Delete();
+                else if (m_Quantity < 20 && (ItemID == 0x1039 || ItemID == 0x1045))
+                    ++ItemID;
+            }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
@@ -440,45 +461,10 @@ namespace Server.Items
 
         [Constructable]
         public SackFlour()
-            : this(1)
-        {
-        }
-
-        [Constructable]
-        public SackFlour(int amount)
             : base(0x1039)
         {
             Weight = 5.0;
-
-            Stackable = true;
-            Amount = amount;
-        }
-
-        public override void OnDoubleClick(Mobile from)
-        {
-            if (!Movable)
-                return;
-
-            var flour = new SackFlourOpen();
-            flour.Location = Location;
-
-            if (Parent is Container)
-            {
-                ((Container)Parent).DropItem(flour);
-            }
-            else
-            {
-                flour.MoveToWorld(GetWorldLocation(), Map);
-            }
-
-            if (Amount > 1)
-            {
-                Amount--;
-            }
-            else
-            {
-                Delete();
-            }
+            m_Quantity = 20;
         }
 
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
@@ -488,8 +474,10 @@ namespace Server.Items
             return quality;
         }
 
-        public override void AddCraftedProperties(ObjectPropertyList list)
+        public override void GetProperties(ObjectPropertyList list)
         {
+            base.GetProperties(list);
+
             if (_Quality == ItemQuality.Exceptional)
             {
                 list.Add(1060636); // Exceptional
@@ -505,9 +493,11 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)4); // version
+            writer.Write((int)3); // version
 
             writer.Write((int)_Quality);
+
+            writer.Write((int)m_Quantity);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -518,27 +508,52 @@ namespace Server.Items
 
             switch ( version )
             {
-                case 4:
-                    _Quality = (ItemQuality)reader.ReadInt();
-                    break;
                 case 3:
-                    _Quality = (ItemQuality)reader.ReadInt();
-                    reader.ReadInt();
-                    Stackable = true;
-                    break;
+                    {
+                        _Quality = (ItemQuality)reader.ReadInt();
+                        goto case 2;
+                    }
+                case 2:
+                case 1:
+                    {
+                        m_Quantity = reader.ReadInt();
+                        break;
+                    }
+                case 0:
+                    {
+                        m_Quantity = 20;
+                        break;
+                    }
             }
+
+            if (version < 2 && Weight == 1.0)
+                Weight = 5.0;
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (!Movable)
+                return;
+
+            if ((ItemID == 0x1039 || ItemID == 0x1045))
+                ++ItemID;
+            #if false
+			Delete();
+			from.AddToBackpack( new SackFlourOpen() );
+            #endif
         }
     }
 
+    #if false
 	// ********** SackFlourOpen **********
 	public class SackFlourOpen : Item
 	{
 		public override int LabelNumber{ get{ return 1024166; } } // open sack of flour
 
 		[Constructable]
-		public SackFlourOpen() : base(0x103A)
+		public SackFlourOpen() : base(UtilityItem.RandomChoice( 0x1046, 0x103a ))
 		{
-			Weight = 4.0;
+			Weight = 1.0;
 		}
 
 		public SackFlourOpen( Serial serial ) : base( serial )
@@ -558,7 +573,55 @@ namespace Server.Items
 
 			int version = reader.ReadInt();
 		}
+
+		public override void OnDoubleClick( Mobile from )
+		{
+			if ( !Movable )
+				return;
+
+			from.Target = new InternalTarget( this );
+		}
+
+		private class InternalTarget : Target
+		{
+			private SackFlourOpen m_Item;
+
+			public InternalTarget( SackFlourOpen item ) : base( 1, false, TargetFlags.None )
+			{
+				m_Item = item;
+			}
+
+			protected override void OnTarget( Mobile from, object targeted )
+			{
+				if ( m_Item.Deleted ) return;
+
+				if ( targeted is WoodenBowl )
+				{
+					m_Item.Delete();
+					((WoodenBowl)targeted).Delete();
+
+					from.AddToBackpack( new BowlFlour() );
+				}
+				else if ( targeted is TribalBerry )
+				{
+					if ( from.Skills[SkillName.Cooking].Base >= 80.0 )
+					{
+						m_Item.Delete();
+						((TribalBerry)targeted).Delete();
+
+						from.AddToBackpack( new TribalPaint() );
+
+						from.SendLocalizedMessage( 1042002 ); // You combine the berry and the flour into the tribal paint worn by the savages.
+					}
+					else
+					{
+						from.SendLocalizedMessage( 1042003 ); // You don't have the cooking skill to create the body paint.
+					}
+				}
+			}
+		}
 	}
+    #endif
 
     // ********** Eggshells **********
     public class Eggshells : Item

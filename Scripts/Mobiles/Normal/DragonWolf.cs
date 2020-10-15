@@ -41,8 +41,6 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 4;
             MinTameSkill = 102.0;
-
-            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public DragonWolf(Serial serial)
@@ -50,6 +48,7 @@ namespace Server.Mobiles
         {
         }
 
+        public override bool HasBreath { get { return true; } } // fire breath enabled
         public override bool CanAngerOnTame { get { return true; } }
 
         public override int Meat { get { return 4; } }

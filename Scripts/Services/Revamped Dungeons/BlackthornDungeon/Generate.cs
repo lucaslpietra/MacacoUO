@@ -21,7 +21,7 @@ namespace Server.Engines.Blackthorn
             Mobile m = e.Mobile;
 
             Generate(Map.Trammel);
-            Generate(Map.Felucca);
+            //Generate(Map.Felucca);
 
             CommandSystem.Handle(m, Server.Commands.CommandSystem.Prefix + "XmlLoad RevampedSpawns/BlackthornDungeon.xml");
         }
@@ -56,35 +56,34 @@ namespace Server.Engines.Blackthorn
             door.MoveToWorld(new Point3D(6425, 2680, 0), map);
 
             // Tram ones already exist on create world teleporter section
-            if (map == Map.Felucca)
-            {
-                Teleporter tele = new Teleporter(new Point3D(1517, 1417, 9), map);
-                tele.MoveToWorld(new Point3D(6440, 2677, 20), map);
 
-                tele = new Teleporter(new Point3D(1517, 1418, 9), map);
-                tele.MoveToWorld(new Point3D(6440, 2678, 20), map);
+            Teleporter tele = new Teleporter(new Point3D(1517, 1417, 9), map);
+            tele.MoveToWorld(new Point3D(6440, 2677, 20), map);
 
-                tele = new Teleporter(new Point3D(1517, 1419, 9), map);
-                tele.MoveToWorld(new Point3D(6440, 2679, 20), map);
+            tele = new Teleporter(new Point3D(1517, 1418, 9), map);
+            tele.MoveToWorld(new Point3D(6440, 2678, 20), map);
 
-                tele = new Teleporter(new Point3D(1517, 1420, 9), map);
-                tele.MoveToWorld(new Point3D(6440, 2680, 20), map);
+            tele = new Teleporter(new Point3D(1517, 1419, 9), map);
+            tele.MoveToWorld(new Point3D(6440, 2679, 20), map);
 
-                tele = new Teleporter(new Point3D(1517, 1420, 9), map);
-                tele.MoveToWorld(new Point3D(6440, 2681, 20), map);
+            tele = new Teleporter(new Point3D(1517, 1420, 9), map);
+            tele.MoveToWorld(new Point3D(6440, 2680, 20), map);
 
-                tele = new Teleporter(new Point3D(6440, 2677, 20), map);
-                tele.MoveToWorld(new Point3D(1517, 1417, 9), map);
+            tele = new Teleporter(new Point3D(1517, 1420, 9), map);
+            tele.MoveToWorld(new Point3D(6440, 2681, 20), map);
 
-                tele = new Teleporter(new Point3D(6440, 2678, 20), map);
-                tele.MoveToWorld(new Point3D(1517, 1418, 9), map);
+            tele = new Teleporter(new Point3D(6440, 2677, 20), map);
+            tele.MoveToWorld(new Point3D(1517, 1417, 9), map);
 
-                tele = new Teleporter(new Point3D(6440, 2679, 20), map);
-                tele.MoveToWorld(new Point3D(1517, 1419, 9), map);
+            tele = new Teleporter(new Point3D(6440, 2678, 20), map);
+            tele.MoveToWorld(new Point3D(1517, 1418, 9), map);
 
-                tele = new Teleporter(new Point3D(6440, 2680, 20), map);
-                tele.MoveToWorld(new Point3D(1517, 1420, 12), map);
-            }
+            tele = new Teleporter(new Point3D(6440, 2679, 20), map);
+            tele.MoveToWorld(new Point3D(1517, 1419, 9), map);
+
+            tele = new Teleporter(new Point3D(6440, 2680, 20), map);
+            tele.MoveToWorld(new Point3D(1517, 1420, 12), map);
+
 
             foreach (var p in _BlockerList)
             {

@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public BloodElemental()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a blood elemental";
+            this.Name = "elemental de sangue";
             this.Body = 159;
             this.BaseSoundID = 278;
 

@@ -1,16 +1,17 @@
-﻿using System;
+using System;
 using Server;
 
 namespace Server.Items
 {
     public class SmugglersLantern : Lantern
     {
-        public override int LabelNumber { get { return 1071521; } } // Smuggler's Lantern
 
         [Constructable] 
         public SmugglersLantern()
         {
+            Name = "Lanterna Magica";
             Hue = Utility.RandomMinMax(192, 291);
+            LootType = LootType.Blessed;
         }
 
         public override bool AllowEquipedCast(Mobile from)
@@ -21,7 +22,7 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-            list.Add(1079766); // Spell Channeling
+            list.Add("Permite usar Magias"); // Spell Channeling
         }
 
         public SmugglersLantern(Serial serial)

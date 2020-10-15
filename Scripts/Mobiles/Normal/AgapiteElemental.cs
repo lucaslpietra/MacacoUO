@@ -45,7 +45,7 @@ namespace Server.Mobiles
 
             this.VirtualArmor = 32;
 
-            Item ore = new AgapiteOre(oreAmount);
+            Item ore = new NiobioOre(oreAmount);
             ore.ItemID = 0x19B9;
             this.PackItem(ore);
         }

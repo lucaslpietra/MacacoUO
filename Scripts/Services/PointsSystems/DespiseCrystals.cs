@@ -14,7 +14,7 @@ namespace Server.Engines.Points
 		public override bool AutoAdd { get { return true; } }
         public override double MaxPoints { get { return double.MaxValue; } }
 		
-		private TextDefinition m_Name = new TextDefinition(1151673);
+		private TextDefinition m_Name = new TextDefinition("Cristais Naturais");
 		
 		public DespiseCrystals()
 		{
@@ -27,7 +27,7 @@ namespace Server.Engines.Points
 		
 		public override TextDefinition GetTitle(PlayerMobile from)
 		{
-			return new TextDefinition(1123418);
+			return new TextDefinition("Naturalista");
 		}
 
         public override void Serialize(GenericWriter writer)

@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public EarthElemental()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an earth elemental";
+            this.Name = "elemental da terra";
             this.Body = 14;
             this.BaseSoundID = 268;
 
@@ -37,7 +37,7 @@ namespace Server.Mobiles
             this.Fame = 3500;
             this.Karma = -3500;
 
-            this.VirtualArmor = 34;
+            this.VirtualArmor = 100;
             this.ControlSlots = 2;
 
             this.PackItem(new FertileDirt(Utility.RandomMinMax(1, 4)));
@@ -46,6 +46,59 @@ namespace Server.Mobiles
             Item ore = new IronOre(5);
             ore.ItemID = 0x19B7;
             this.PackItem(ore);
+        }
+
+        public override void OnBeforeDamage(Mobile from, ref int totalDamage, DamageType type)
+        {
+
+            if (from == null)
+                return;
+
+            if (!this.Alive)
+                return;
+
+            if (type != DamageType.Melee)
+                return;
+
+            bool bonus = false;
+            base.OnBeforeDamage(from, ref totalDamage, type);
+            var arma = from.FindItemOnLayer(Layer.OneHanded);
+            if (arma != null && arma is BaseBashing)
+            {
+                totalDamage += 10;
+                bonus = true;
+            }
+
+            arma = from.FindItemOnLayer(Layer.TwoHanded);
+            if (arma != null && arma is BaseBashing)
+            {
+                bonus = true;
+                totalDamage += 5;
+            }
+
+            if (!bonus)
+            {
+                totalDamage /= 5;
+                if (!from.IsCooldown("dicabas2"))
+                {
+                    from.SetCooldown("dicabas2", TimeSpan.FromMinutes(10));
+                    from.SendMessage("Seu ataque nao foi muito efetivo por conta do tipo de sua arma");
+
+                }
+            }
+            else if (bonus)
+            {
+                if (Utility.RandomDouble() > 0.25)
+                {
+                    var ore = new IronOre();
+                    ore.MoveToWorld(this.Location);
+                }
+                if (!from.IsCooldown("dicabas"))
+                {
+                    from.SetCooldown("dicabas", TimeSpan.FromMinutes(10));
+                    from.SendMessage("Sua arma foi muito efetiva contra " + this.Name);
+                }
+            }
         }
 
         public EarthElemental(Serial serial)

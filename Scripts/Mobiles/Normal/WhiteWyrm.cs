@@ -12,7 +12,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Body = Utility.RandomBool() ? 180 : 49;
-            Name = "a white wyrm";
+            Name = "dragao branco";
             BaseSoundID = 362;
 
             SetStr(721, 760);
@@ -132,7 +132,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.FilthyRich, 2);
+            AddLoot(LootPack.Rich);
             AddLoot(LootPack.Average);
             AddLoot(LootPack.Gems, Utility.Random(1, 5));
         }

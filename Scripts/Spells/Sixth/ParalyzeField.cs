@@ -2,6 +2,7 @@ using System;
 using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
+using Server.Spells.Fifth;
 using Server.Targeting;
 
 namespace Server.Spells.Sixth
@@ -33,7 +34,7 @@ namespace Server.Spells.Sixth
             Caster.Target = new InternalTarget(this);
         }
 
-        public void Target(IPoint3D p)
+        public void Target(IPoint3D p, bool isSelf)
         {
             if (!Caster.CanSee(p))
             {
@@ -61,14 +62,29 @@ namespace Server.Spells.Sixth
                 else
                     eastToWest = false;
 
+                if ((Caster.Location.X == p.X && Caster.Location.Y == p.Y) || isSelf)
+                {
+                    var north = Caster.Direction.HasFlag(Direction.North);
+                    var south = Caster.Direction.HasFlag(Direction.South);
+                    var east = Caster.Direction.HasFlag(Direction.East);
+                    var west = Caster.Direction.HasFlag(Direction.West);
+
+                    if ((north || south) && (!east && !west))
+                        eastToWest = true;
+                    else
+                        eastToWest = false;
+                }
+
                 Effects.PlaySound(p, Caster.Map, 0x20B);
                 int itemID = eastToWest ? 0x3967 : 0x3979;
 
                 Point3D pnt = new Point3D(p);
                 TimeSpan duration = TimeSpan.FromSeconds(3.0 + (Caster.Skills[SkillName.Magery].Value / 3.0));
 
+                Field field = new Field();
+
                 if (SpellHelper.CheckField(pnt, Caster.Map))
-                    new InternalItem(itemID, pnt, Caster, Caster.Map, duration);
+                    field.Add(new InternalItem(itemID, pnt, Caster, Caster.Map, duration));
 
                 for (int i = 1; i <= 2; ++i)
                 {
@@ -78,16 +94,18 @@ namespace Server.Spells.Sixth
                         SpellHelper.AdjustField(ref point, Caster.Map, 16, false);
 
                         if (SpellHelper.CheckField(point, Caster.Map))
-                            new InternalItem(itemID, point, Caster, Caster.Map, duration);
+                            field.Add(new InternalItem(itemID, point, Caster, Caster.Map, duration));
 
                         point = new Point3D(eastToWest ? pnt.X + -index : pnt.X, eastToWest ? pnt.Y : pnt.Y + -index, pnt.Z);
                         SpellHelper.AdjustField(ref point, Caster.Map, 16, false);
 
                         if (SpellHelper.CheckField(point, Caster.Map))
-                            new InternalItem(itemID, point, Caster, Caster.Map, duration);
+                            field.Add(new InternalItem(itemID, point, Caster, Caster.Map, duration));
                     }, i);
                 }
+       
             }
+
 
             FinishSequence();
         }
@@ -137,6 +155,9 @@ namespace Server.Spells.Sixth
             {
                 base.OnAfterDelete();
 
+                if (DispelFieldSpell.fields.ContainsKey(this.Serial))
+                    DispelFieldSpell.fields.Remove(this.Serial);
+
                 if (m_Timer != null)
                     m_Timer.Stop();
             }
@@ -174,7 +195,7 @@ namespace Server.Spells.Sixth
 
             public override bool OnMoveOver(Mobile m)
             {
-                if (Visible && m_Caster != null && (!Core.AOS || m != m_Caster) && SpellHelper.ValidIndirectTarget(m_Caster, m) && m_Caster.CanBeHarmful(m, false))
+                if (Visible && m_Caster != null && (!Core.AOS || m != m_Caster) && m_Caster.CanBeHarmful(m, false))
                 {
                     if (SpellHelper.CanRevealCaster(m))
                         m_Caster.RevealingAction();
@@ -195,7 +216,7 @@ namespace Server.Spells.Sixth
                     }
                     else
                     {
-                        duration = 7.0 + (m_Caster.Skills[SkillName.Magery].Value * 0.2);
+                        duration = 4.0 + (m_Caster.Skills[SkillName.Magery].Value * 0.1);
                     }
 
                     m.Paralyze(TimeSpan.FromSeconds(duration));
@@ -239,7 +260,11 @@ namespace Server.Spells.Sixth
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is IPoint3D)
-                    m_Owner.Target((IPoint3D)o);
+                    m_Owner.Target((IPoint3D)o, false);
+                else if(o is PlayerMobile && o==from)
+                {
+                    m_Owner.Target((IPoint3D)o, true);
+                }
             }
 
             protected override void OnTargetFinish(Mobile from)

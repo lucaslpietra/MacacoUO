@@ -266,7 +266,7 @@ namespace Server.Items
             }
             else if (m_IsExtremeHue) 							//Already extreme, failed
             {
-                if (m != null && m.AccessLevel == AccessLevel.Player)
+                if (m != null && m.AccessLevel <= AccessLevel.VIP)
                     OnPuzzleFailed(m);
                 else
                 {

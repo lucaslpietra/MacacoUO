@@ -13,7 +13,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Melee)
         {
             Name = "Barracoon";
-            Title = "the piper";
+            Title = "o caximbeiro";
             Body = 0x190;
             Hue = 0x83EC;
 
@@ -75,16 +75,16 @@ namespace Server.Mobiles
                 return new Type[] { typeof(FangOfRactus) };
             }
         }
+
+        public override bool CanGivePowerscrolls { get { return false; } }
+
         public override Type[] SharedList
         {
             get
             {
                 return new Type[]
                 {
-                    typeof(EmbroideredOakLeafCloak),
-                    typeof(DjinnisRing),
-                    typeof(DetectiveBoots),
-                    typeof(GauntletsOfAnger)
+                    
                 };
             }
         }
@@ -127,7 +127,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return !Core.SE;
+                return false;
             }
         }
 		public override bool AllureImmune
@@ -141,14 +141,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return Core.SE;
+                return false;
             }
         }
         public override bool Uncalmable
         {
             get
             {
-                return Core.SE;
+                return true;
             }
         }
         public override Poison PoisonImmune
@@ -177,7 +177,9 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.UltraRich, 3);
+            AddLoot(LootPack.OldUltraRich, 2);
+            //AddItem(new WindrunnerStatue());
+            //Carnage.GetRandomPS(110);
         }
 
         public void Polymorph(Mobile m)
@@ -207,6 +209,23 @@ namespace Server.Mobiles
    
                 new ExpirePolymorphTimer(m).Start();
             }
+        }
+
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+            var wind = new Windrunner();
+            wind.MoveToWorld(c.Location, c.Map);
+            wind.OverheadMessage("* se transformou *");
+            wind.OverheadMessage("[2H Para Domar]");
+            Timer.DelayCall(TimeSpan.FromHours(2), () =>
+            {
+                if(this.Deleted || !this.Alive || this.ControlMaster != null || this.Map==Map.Internal)
+                {
+                    return;
+                }
+                this.Delete();
+            });
         }
 
         public void SpawnRatmen(Mobile target)

@@ -59,14 +59,23 @@ namespace Server.Engines.TreasuresOfKotlCity
             }
         }
 
-        public override void AwardPoints(PlayerMobile pm, Item item, int amount)
+        public override void AwardPoints(PlayerMobile pm, int amount)
         {
             PointsSystem.TreasuresOfKotlCity.AwardPoints(pm, amount);
         }
 
         public override bool IsRedeemableItem(Item item)
         {
-            return item is ICombatEquipment && ((ICombatEquipment)item).ReforgedSuffix == ReforgedSuffix.Kotl;
+            if (item is BaseWeapon && ((BaseWeapon)item).ReforgedSuffix == ReforgedSuffix.Kotl)
+                return true;
+            if (item is BaseArmor && ((BaseArmor)item).ReforgedSuffix == ReforgedSuffix.Kotl)
+                return true;
+            if (item is BaseJewel && ((BaseJewel)item).ReforgedSuffix == ReforgedSuffix.Kotl)
+                return true;
+            if (item is BaseClothing && ((BaseClothing)item).ReforgedSuffix == ReforgedSuffix.Kotl)
+                return true;
+
+            return false;
         }
 
         public override void SendRewardGump(Mobile m)

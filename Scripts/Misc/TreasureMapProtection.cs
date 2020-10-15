@@ -6,12 +6,11 @@ namespace Server
 {
     public class TreasureRegion : BaseRegion
     {
-        private const int Range = 5;// No house may be placed within 5 tiles of the treasure
+        private const int Range = 3;// No house may be placed within 5 tiles of the treasure
         public TreasureRegion(int x, int y, Map map)
             : base(null, map, Region.DefaultPriority, new Rectangle2D(x - Range, y - Range, 1 + (Range * 2), 1 + (Range * 2)))
         {
             this.GoLocation = new Point3D(x, y, map.GetAverageZ(x, y));
-
             this.Register();
         }
 
@@ -64,13 +63,13 @@ namespace Server
         public override void OnEnter(Mobile m)
         {
             if (m.IsStaff())
-                m.SendMessage("You have entered a protected treasure map area.");
+                m.SendMessage("[STAFF] Entrou em area de tesouro.");
         }
 
         public override void OnExit(Mobile m)
         {
             if (m.IsStaff())
-                m.SendMessage("You have left a protected treasure map area.");
+                m.SendMessage("[STAFF] Saiu da area de tesouro.");
         }
     }
 }

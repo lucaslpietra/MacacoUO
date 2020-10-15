@@ -12,6 +12,7 @@ namespace Server.Items
             : base(0x1C06)
         {
             this.Weight = 1.0;
+            this.Name = "Peitoral Feminino de Couro";
         }
 
         public FemaleLeatherChest(Serial serial)

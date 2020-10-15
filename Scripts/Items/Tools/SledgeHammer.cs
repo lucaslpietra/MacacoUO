@@ -11,6 +11,7 @@ namespace Server.Items
             : base(0xFB5)
         {
             Layer = Layer.OneHanded;
+            Name = "Martelo do Ferreiro";
         }
 
         [Constructable]
@@ -18,11 +19,13 @@ namespace Server.Items
             : base(uses, 0xFB5)
         {
             Layer = Layer.OneHanded;
+            Name = "Martelo do Ferreiro";
         }
 
         public SledgeHammer(Serial serial)
             : base(serial)
         {
+            Name = "Martelo do Ferreiro";
         }
 
         public override CraftSystem CraftSystem
@@ -157,7 +160,7 @@ namespace Server.Items
 
                 if (num > 0 && (num != 1044267 || !Core.SE)) // Blacksmithing shows the gump regardless of proximity of an anvil and forge after SE
                 {
-                    from.SendLocalizedMessage(num);
+                    DefBlacksmithy.Translate(from, num);
                 }
                 else
                 {

@@ -1,8 +1,9 @@
+using Server.Engines.Craft;
 using System;
 
 namespace Server.Items
 {
-    public class Shaft : Item, ICommodity
+    public class Shaft : Item, ICommodity, ICraftable
     {
         [Constructable]
         public Shaft()
@@ -56,6 +57,12 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+        }
+
+        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
+        {
+            this.Amount += (int)(from.Skills[SkillName.Fletching].Value / 3);
+            return quality;
         }
     }
 }

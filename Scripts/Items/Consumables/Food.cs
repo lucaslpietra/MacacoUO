@@ -144,8 +144,10 @@ namespace Server.Items
             return Eat(from);
         }
 
-        public override void AddCraftedProperties(ObjectPropertyList list)
+        public override void GetProperties(ObjectPropertyList list)
         {
+            base.GetProperties(list);
+
             if (_Quality == ItemQuality.Exceptional)
             {
                 list.Add(1060636); // Exceptional
@@ -218,34 +220,35 @@ namespace Server.Items
 
         public static bool FillHunger(Mobile from, int fillFactor)
         {
+            int iHunger = from.Hunger + fillFactor;
+
+        
             if (from.Hunger >= 20)
             {
-                from.SendLocalizedMessage(500867); // You are simply too full to eat any more!
+                from.SendMessage("Nao cabe mais nada no seu estomago. Voce precisa de uma pocao de refresh para recuperar sua stamina."); // You are simply too full to eat any more!
                 return false;
             }
-
-            int iHunger = from.Hunger + fillFactor;
 
             if (from.Stam < from.StamMax)
                 from.Stam += Utility.Random(6, 3) + fillFactor / 5;
 
+
             if (iHunger >= 20)
             {
                 from.Hunger = 20;
-                from.SendLocalizedMessage(500872); // You manage to eat the food, but you are stuffed!
+                from.SendMessage("Voce fez isso caber, voce esta muito cheio"); // You manage to eat the food, but you are stuffed!
             }
             else
             {
                 from.Hunger = iHunger;
-
                 if (iHunger < 5)
-                    from.SendLocalizedMessage(500868); // You eat the food, but are still extremely hungry.
+                    from.SendMessage("Voce comeu rapidola, ainda esta com muita fome."); // You eat the food, but are still extremely hungry.
                 else if (iHunger < 10)
-                    from.SendLocalizedMessage(500869); // You eat the food, and begin to feel more satiated.
+                    from.SendMessage("Voce comeu a comida e comeca se sentir um pouco mais satisfeito"); // You eat the food, and begin to feel more satiated.
                 else if (iHunger < 15)
-                    from.SendLocalizedMessage(500870); // After eating the food, you feel much less hungry.
+                    from.SendMessage("Agora sim, voce esta satisfeito"); // After eating the food, you feel much less hungry.
                 else
-                    from.SendLocalizedMessage(500871); // You feel quite full after consuming the food.
+                    from.SendMessage("Voce esta satisfeito"); // You feel quite full after consuming the food.
             }
 
             return true;
@@ -344,6 +347,7 @@ namespace Server.Items
         public BreadLoaf(int amount)
             : base(amount, 0x103B)
         {
+            Name = "Pão";
             Weight = 1.0;
             FillFactor = 3;
         }
@@ -1659,8 +1663,10 @@ namespace Server.Items
             }
         }
 
-        public override void AddCraftedProperties(ObjectPropertyList list)
+        public override void GetProperties(ObjectPropertyList list)
         {
+            base.GetProperties(list);
+
             if (_Quality == ItemQuality.Exceptional)
             {
                 list.Add(1060636); // Exceptional
@@ -1694,8 +1700,6 @@ namespace Server.Items
 
     public class Hamburger : Food
     {
-        public override int LabelNumber { get { return 1125202; } } // hamburger
-
         [Constructable]
         public Hamburger()
             : this(1)
@@ -1732,8 +1736,6 @@ namespace Server.Items
     [Flipable(0xA0D8, 0xA0D9)]
     public class HotDog : Food
     {
-        public override int LabelNumber { get { return 1125201; } } // hot dog
-
         [Constructable]
         public HotDog()
             : this(1)
@@ -1770,8 +1772,6 @@ namespace Server.Items
     [Flipable(0xA0D6, 0xA0D7)]
     public class CookableSausage : Food
     {
-        public override int LabelNumber { get { return 1125198; } } // sausage
-
         [Constructable]
         public CookableSausage()
             : base(0xA0D6)

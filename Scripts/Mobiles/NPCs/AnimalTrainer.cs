@@ -19,7 +19,7 @@ namespace Server.Mobiles
 
 		[Constructable]
 		public AnimalTrainer()
-			: base("the animal trainer")
+			: base("o domesticador")
 		{
 			SetSkill(SkillName.AnimalLore, 64.0, 100.0);
 			SetSkill(SkillName.AnimalTaming, 90.0, 100.0);
@@ -85,13 +85,539 @@ namespace Server.Mobiles
 
                 if (InLOS(m) && InRange(m, 8) && !InRange(oldLocation, 8) && DateTime.UtcNow >= _NextTalk)
                 {
-                    if (Utility.Random(100) < 50)
-                        Say(1157526); // Such an exciting time to be an Animal Trainer! New taming techniques have been discovered!
-
+                 
                     _NextTalk = DateTime.UtcNow + TimeSpan.FromSeconds(15);
                 }
             }
         }
+
+
+        private class PetSaleTarget : Target
+        {
+            private AnimalTrainer m_Trader;
+
+            public PetSaleTarget(AnimalTrainer trader) : base(12, false, TargetFlags.None)
+            {
+                m_Trader = trader;
+            }
+
+            protected override void OnTarget(Mobile from, object targeted)
+            {
+                if (targeted is BaseCreature)
+                {
+                    m_Trader.EndPetSale(from, (BaseCreature)targeted);
+                }
+                else if (targeted == from)
+                {
+                    m_Trader.SayTo(from, 502672); // HA HA HA! Sorry, I am not an inn. 
+                }
+
+            }
+        }
+
+        public void BeginPetSale(Mobile from)
+        {
+            if (Deleted || !from.CheckAlive())
+                return;
+
+            SayTo(from, "Que animal esta vendendo?");
+
+            from.Target = new PetSaleTarget(this);
+
+        }
+
+        //RUFO beginfunction
+        private void SellPetForGold(Mobile from, BaseCreature pet, int goldamount)
+        {
+            Item gold = new Gold(goldamount);
+            pet.ControlTarget = null;
+            pet.ControlOrder = OrderType.None;
+            pet.Internalize();
+            pet.SetControlMaster(null);
+            pet.SummonMaster = null;
+            pet.Delete();
+            from.PlaySound(0x2E6);
+            Container backpack = from.Backpack;
+            SayTo(from, "Obrigado. Aqui estao "+goldamount+" moedas.");
+            if (backpack == null || !backpack.TryDropItem(from, gold, false))
+            {
+                gold.MoveToWorld(from.Location, from.Map);
+
+            }
+
+        }
+        //RUFO endfunction
+
+
+        public void EndPetSale(Mobile from, BaseCreature pet)
+        {
+            if (Deleted || !from.CheckAlive())
+                return;
+
+            if (pet is BaseAnimal)
+            {
+                BaseAnimal ba = (BaseAnimal)pet;
+                if (from != ba.Owner && ba.Owner != null)
+                {
+                    SayTo(from, 1042562);
+                    return;
+                }
+                else if ((ba.Owner == null) && (!pet.Controlled || pet.ControlMaster != from))
+                {
+                    SayTo(from, 1042562);
+                    return;
+                }
+            }
+            else if (!pet.Controlled || pet.ControlMaster != from)
+            {
+                SayTo(from, 1042562); // You do not own that pet! 
+                return;
+            }
+
+            if (pet.IsDeadPet) SayTo(from, 1049668); // Living pets only, please. 
+            else if (pet.Summoned) SayTo(from, "That is a summoned creature!");
+            else if (pet.Body.IsHuman) SayTo(from, 502672); // HA HA HA! Sorry, I am not an inn. 
+            else if ((pet is PackLlama || pet is PackHorse || pet is Beetle) && (pet.Backpack != null && pet.Backpack.Items.Count > 0)) SayTo(from, 1042563); // You need to unload your pet. 
+            else if (pet.Combatant != null && pet.InRange(pet.Combatant, 12) && pet.Map == pet.Combatant.Map) SayTo(from, 1042564); // I'm sorry.  Your pet seems to be busy. 
+            else
+            {
+                if (pet is FarmChicken)
+                {
+                    FarmChicken ba = (FarmChicken)pet;
+                    double sellbonus = 0;
+                    if (ba.MotherBreed == ChickenBreed.Leghorn || ba.FatherBreed == ChickenBreed.Leghorn)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 5.0 : 2.5);
+                    }
+                    if (ba.MotherBreed == ChickenBreed.Barnevelder || ba.FatherBreed == ChickenBreed.Barnevelder)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 4.0 : 2.0);
+                    }
+                    if (ba.MotherBreed == ChickenBreed.Orpington || ba.FatherBreed == ChickenBreed.Orpington)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 2.0 : 1.0);
+                    }
+                    if (ba.MotherBreed == ChickenBreed.Poltava || ba.FatherBreed == ChickenBreed.Poltava)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 2.0 : 1.0);
+                    }
+                    if (ba.MotherBreed == ChickenBreed.Bresse || ba.FatherBreed == ChickenBreed.Bresse)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 5.0 : 2.5);
+                    }
+                    if (ba.MotherBreed == ChickenBreed.Braekel || ba.FatherBreed == ChickenBreed.Braekel)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 3.0 : 1.5);
+                    }
+                    if (ba.Age == AgeDescription.Baby)
+                    {
+                        sellbonus += 1.0;
+                    }
+                    else if (ba.Age == AgeDescription.Young)
+                    {
+                        sellbonus += 4.0;
+                    }
+                    else if (ba.Age == AgeDescription.Adult)
+                    {
+                        sellbonus += 6.0;
+                    }
+                    else if (ba.Age == AgeDescription.Senior)
+                    {
+                        sellbonus -= 10.0;
+                    }
+                    sellbonus += (ba.Female ? 10 : 0);
+                    SellPetForGold(from, pet, 15 + (int)sellbonus);
+                }
+                else if (pet is PackHorse) SellPetForGold(from, pet, 303);
+                else if (pet is Rabbit) SellPetForGold(from, pet, 39);
+                else if (pet is PackLlama) SellPetForGold(from, pet, 245);
+                else if (pet is Dog) SellPetForGold(from, pet, 90);
+                else if (pet is Cat) SellPetForGold(from, pet, 69);
+                else if (pet is Pig) SellPetForGold(from, pet, 57);
+                else if (pet is Bull) SellPetForGold(from, pet, 120);
+                else if (pet is FarmPig)
+                {
+                    FarmPig ba = (FarmPig)pet;
+                    double sellbonus = 0;
+                    if (ba.MotherBreed == PigBreed.Duroc || ba.FatherBreed == PigBreed.Duroc)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 5.0 : 2.5);
+                    }
+                    if (ba.MotherBreed == PigBreed.Iberian || ba.FatherBreed == PigBreed.Iberian)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 4.0 : 2.0);
+                    }
+                    if (ba.MotherBreed == PigBreed.Tamworth || ba.FatherBreed == PigBreed.Tamworth)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 2.0 : 1.0);
+                    }
+                    if (ba.MotherBreed == PigBreed.White || ba.FatherBreed == PigBreed.White)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 2.0 : 1.0);
+                    }
+                    if (ba.MotherBreed == PigBreed.Feral || ba.FatherBreed == PigBreed.Feral)
+                    {
+                        sellbonus -= (ba.IsPurebred() ? 5.0 : 2.5);
+                    }
+                    if (ba.Age == AgeDescription.Baby)
+                    {
+                        sellbonus += 5.0;
+                    }
+                    else if (ba.Age == AgeDescription.Young)
+                    {
+                        sellbonus += 10.0;
+                    }
+                    else if (ba.Age == AgeDescription.Adult)
+                    {
+                        sellbonus += 15.0;
+                    }
+                    else if (ba.Age == AgeDescription.Senior)
+                    {
+                        sellbonus -= 20.0;
+                    }
+                    sellbonus += (ba.Female ? 10 : 0);
+                    SellPetForGold(from, pet, 40 + (int)sellbonus);
+                }
+                else if (pet is WildBoar)
+                {
+                    WildBoar ba = (WildBoar)pet;
+                    double sellbonus = 0;
+                    if (ba.MotherBreed == PigBreed.Duroc || ba.FatherBreed == PigBreed.Duroc)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 5.0 : 2.5);
+                    }
+                    if (ba.MotherBreed == PigBreed.Iberian || ba.FatherBreed == PigBreed.Iberian)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 4.0 : 2.0);
+                    }
+                    if (ba.MotherBreed == PigBreed.Tamworth || ba.FatherBreed == PigBreed.Tamworth)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 2.0 : 1.0);
+                    }
+                    if (ba.MotherBreed == PigBreed.White || ba.FatherBreed == PigBreed.White)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 2.0 : 1.0);
+                    }
+                    if (ba.MotherBreed == PigBreed.Feral || ba.FatherBreed == PigBreed.Feral)
+                    {
+                        sellbonus -= (ba.IsPurebred() ? 5.0 : 2.5);
+                    }
+                    if (ba.Age == AgeDescription.Baby)
+                    {
+                        sellbonus += 5.0;
+                    }
+                    else if (ba.Age == AgeDescription.Young)
+                    {
+                        sellbonus += 10.0;
+                    }
+                    else if (ba.Age == AgeDescription.Adult)
+                    {
+                        sellbonus += 15.0;
+                    }
+                    else if (ba.Age == AgeDescription.Senior)
+                    {
+                        sellbonus -= 20.0;
+                    }
+                    sellbonus += (ba.Female ? 10 : 0);
+                    SellPetForGold(from, pet, 40 + (int)sellbonus);
+                }
+                else if (pet is Horse) SellPetForGold(from, pet, 250);
+                else if (pet is WildHorse)
+                {
+                    WildHorse ba = (WildHorse)pet;
+                    double sellbonus = 0;
+                    if (ba.MotherBreed == HorseBreed.Andalusian || ba.FatherBreed == HorseBreed.Andalusian)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 10.0 : 5.0);
+                    }
+                    if (ba.MotherBreed == HorseBreed.Arabian || ba.FatherBreed == HorseBreed.Arabian)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 5.0 : 2.5);
+                    }
+                    if (ba.MotherBreed == HorseBreed.Appaloosa || ba.FatherBreed == HorseBreed.Appaloosa)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 5.0 : 2.5);
+                    }
+                    if (ba.MotherBreed == HorseBreed.Haflinger || ba.FatherBreed == HorseBreed.Haflinger)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 5.0 : 2.5);
+                    }
+                    if (ba.MotherBreed == HorseBreed.Thoroughbred || ba.FatherBreed == HorseBreed.Thoroughbred)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 5.0 : 2.5);
+                    }
+                    if (ba.MotherBreed == HorseBreed.Hackney || ba.FatherBreed == HorseBreed.Hackney)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 5.0 : 2.5);
+                    }
+                    if (ba.Age == AgeDescription.Baby)
+                    {
+                        sellbonus += 5.0;
+                    }
+                    else if (ba.Age == AgeDescription.Young)
+                    {
+                        sellbonus += 10.0;
+                    }
+                    else if (ba.Age == AgeDescription.Adult)
+                    {
+                        sellbonus += 15.0;
+                    }
+                    else if (ba.Age == AgeDescription.Senior)
+                    {
+                        sellbonus -= 20.0;
+                    }
+                    sellbonus += (ba.Female ? 10 : 0);
+                    SellPetForGold(from, pet, 50 + (int)sellbonus);
+                }
+                else if (pet is ForestOstard) SellPetForGold(from, pet, 5000);
+                else if (pet is Cow) SellPetForGold(from, pet, 150);
+                else if (pet is FarmCow)
+                {
+                    FarmCow ba = (FarmCow)pet;
+                    double sellbonus = 0;
+                    if (ba.MotherBreed == CowBreed.Holstein || ba.FatherBreed == CowBreed.Holstein)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 10.0 : 5.0);
+                    }
+                    if (ba.MotherBreed == CowBreed.Guernsey || ba.FatherBreed == CowBreed.Guernsey)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 5.0 : 2.5);
+                    }
+                    if (ba.MotherBreed == CowBreed.Hereford || ba.FatherBreed == CowBreed.Hereford)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 5.0 : 2.5);
+                    }
+                    if (ba.MotherBreed == CowBreed.Angus || ba.FatherBreed == CowBreed.Angus)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 10.0 : 5.0);
+                    }
+                    if (ba.MotherBreed == CowBreed.Gloucester || ba.FatherBreed == CowBreed.Gloucester)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 3.0 : 1.5);
+                    }
+                    if (ba.MotherBreed == CowBreed.Montbeliarde || ba.FatherBreed == CowBreed.Montbeliarde)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 3.0 : 1.5);
+                    }
+                    if (ba.MotherBreed == CowBreed.Corriente || ba.FatherBreed == CowBreed.Corriente)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 4.0 : 2.0);
+                    }
+                    if (ba.MotherBreed == CowBreed.ToroBravo || ba.FatherBreed == CowBreed.ToroBravo)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 5.0 : 2.5);
+                    }
+                    if (ba.Age == AgeDescription.Baby)
+                    {
+                        sellbonus += 5.0;
+                    }
+                    else if (ba.Age == AgeDescription.Young)
+                    {
+                        sellbonus += 10.0;
+                    }
+                    else if (ba.Age == AgeDescription.Adult)
+                    {
+                        sellbonus += 15.0;
+                    }
+                    else if (ba.Age == AgeDescription.Senior)
+                    {
+                        sellbonus -= 20.0;
+                    }
+                    sellbonus += (ba.Female ? 10 : 0);
+                    SellPetForGold(from, pet, 70 + (int)sellbonus);
+                }
+                else if (pet is FarmBull)
+                {
+                    FarmBull ba = (FarmBull)pet;
+                    double sellbonus = 0;
+                    if (ba.MotherBreed == CowBreed.Holstein || ba.FatherBreed == CowBreed.Holstein)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 10.0 : 5.0);
+                    }
+                    if (ba.MotherBreed == CowBreed.Guernsey || ba.FatherBreed == CowBreed.Guernsey)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 5.0 : 2.5);
+                    }
+                    if (ba.MotherBreed == CowBreed.Hereford || ba.FatherBreed == CowBreed.Hereford)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 5.0 : 2.5);
+                    }
+                    if (ba.MotherBreed == CowBreed.Angus || ba.FatherBreed == CowBreed.Angus)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 10.0 : 5.0);
+                    }
+                    if (ba.MotherBreed == CowBreed.Gloucester || ba.FatherBreed == CowBreed.Gloucester)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 3.0 : 1.5);
+                    }
+                    if (ba.MotherBreed == CowBreed.Montbeliarde || ba.FatherBreed == CowBreed.Montbeliarde)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 3.0 : 1.5);
+                    }
+                    if (ba.MotherBreed == CowBreed.Corriente || ba.FatherBreed == CowBreed.Corriente)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 4.0 : 2.0);
+                    }
+                    if (ba.MotherBreed == CowBreed.ToroBravo || ba.FatherBreed == CowBreed.ToroBravo)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 5.0 : 2.5);
+                    }
+                    if (ba.Age == AgeDescription.Baby)
+                    {
+                        sellbonus += 5.0;
+                    }
+                    else if (ba.Age == AgeDescription.Young)
+                    {
+                        sellbonus += 10.0;
+                    }
+                    else if (ba.Age == AgeDescription.Adult)
+                    {
+                        sellbonus += 15.0;
+                    }
+                    else if (ba.Age == AgeDescription.Senior)
+                    {
+                        sellbonus -= 20.0;
+                    }
+                    sellbonus += (ba.Female ? 10 : 0);
+                    SellPetForGold(from, pet, 100 + (int)sellbonus);
+                }
+                else if (pet is Hind)
+                    SellPetForGold(from, pet, 75);
+                else if (pet is GreatHart)
+                    SellPetForGold(from, pet, 200);
+                else if (pet is Eagle)
+                    SellPetForGold(from, pet, 201);
+                else if (pet is Sheep)
+                    SellPetForGold(from, pet, 201);
+                else if (pet is FarmSheep)
+                {
+                    FarmSheep ba = (FarmSheep)pet;
+                    double sellbonus = 0;
+                    if (ba.MotherBreed == SheepBreed.Cormo || ba.FatherBreed == SheepBreed.Cormo)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 8.0 : 4.0);
+                    }
+                    if (ba.MotherBreed == SheepBreed.Cotswold || ba.FatherBreed == SheepBreed.Cotswold)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 7.0 : 3.5);
+                    }
+                    if (ba.MotherBreed == SheepBreed.Swaledale || ba.FatherBreed == SheepBreed.Swaledale)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 6.0 : 3.0);
+                    }
+                    if (ba.MotherBreed == SheepBreed.Coopworth || ba.FatherBreed == SheepBreed.Coopworth)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 5.0 : 2.0);
+                    }
+                    if (ba.MotherBreed == SheepBreed.Racka || ba.FatherBreed == SheepBreed.Racka)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 10.0 : 5.0);
+                    }
+                    if (ba.MotherBreed == SheepBreed.Latxa || ba.FatherBreed == SheepBreed.Latxa)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 5.0 : 2.5);
+                    }
+                    if (ba.MotherBreed == SheepBreed.Awassi || ba.FatherBreed == SheepBreed.Awassi)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 4.0 : 2.0);
+                    }
+                    if (ba.Age == AgeDescription.Baby)
+                    {
+                        sellbonus += 2.0;
+                    }
+                    else if (ba.Age == AgeDescription.Young)
+                    {
+                        sellbonus += 5.0;
+                    }
+                    else if (ba.Age == AgeDescription.Adult)
+                    {
+                        sellbonus += 10.0;
+                    }
+                    else if (ba.Age == AgeDescription.Senior)
+                    {
+                        sellbonus -= 20.0;
+                    }
+                    sellbonus += (ba.Female ? 10 : 0);
+                    SellPetForGold(from, pet, 60 + (int)sellbonus);
+                }
+                else if (pet is FarmGoat)
+                {
+                    FarmGoat ba = (FarmGoat)pet;
+                    double sellbonus = 0;
+                    if (ba.MotherBreed == GoatBreed.Pyrenean || ba.FatherBreed == GoatBreed.Pyrenean)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 8.0 : 4.0);
+                    }
+                    if (ba.MotherBreed == GoatBreed.Saanen || ba.FatherBreed == GoatBreed.Saanen)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 7.0 : 3.5);
+                    }
+                    if (ba.MotherBreed == GoatBreed.Angora || ba.FatherBreed == GoatBreed.Angora)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 10.0 : 5.0);
+                    }
+                    if (ba.MotherBreed == GoatBreed.Cashmere || ba.FatherBreed == GoatBreed.Cashmere)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 12.0 : 6.0);
+                    }
+                    if (ba.MotherBreed == GoatBreed.Boer || ba.FatherBreed == GoatBreed.Boer)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 5.0 : 2.5);
+                    }
+                    if (ba.MotherBreed == GoatBreed.Stiefelgeiss || ba.FatherBreed == GoatBreed.Stiefelgeiss)
+                    {
+                        sellbonus += (ba.IsPurebred() ? 4.0 : 2.0);
+                    }
+                    if (ba.Age == AgeDescription.Baby)
+                    {
+                        sellbonus += 2.0;
+                    }
+                    else if (ba.Age == AgeDescription.Young)
+                    {
+                        sellbonus += 5.0;
+                    }
+                    else if (ba.Age == AgeDescription.Adult)
+                    {
+                        sellbonus += 10.0;
+                    }
+                    else if (ba.Age == AgeDescription.Senior)
+                    {
+                        sellbonus -= 20.0;
+                    }
+                    sellbonus += (ba.Female ? 10 : 0);
+                    SellPetForGold(from, pet, 60 + (int)sellbonus);
+                }
+                else if (pet is BlackBear)
+                    SellPetForGold(from, pet, 200);
+                else if (pet is Bird)
+                    SellPetForGold(from, pet, 25);
+                else if (pet is TimberWolf)
+                    SellPetForGold(from, pet, 384);
+                else if (pet is GreyWolf)
+                    SellPetForGold(from, pet, 384);
+                else if (pet is DireWolf)
+                    SellPetForGold(from, pet, 384);
+                else if (pet is BlackBear)
+                    SellPetForGold(from, pet, 210);
+                else if (pet is Panther)
+                    SellPetForGold(from, pet, 300);
+                else if (pet is Cougar)
+                    SellPetForGold(from, pet, 200);
+                else if (pet is BrownBear)
+                    SellPetForGold(from, pet, 427);
+                else if (pet is GrizzlyBear)
+                    SellPetForGold(from, pet, 250);
+                else if (pet is Rat)
+                    SellPetForGold(from, pet, 53);
+                else if (pet is RidableLlama)
+                    SellPetForGold(from, pet, 101);
+                else if (pet is Llama)
+                    SellPetForGold(from, pet, 150);
+                else
+                    SayTo(from, "I dont want that Beast, go away"); // You can't PetSale that!
+            }
+        }
+
 
         private Type[] _Quests = { typeof(TamingPetQuest), typeof(UsingAnimalLoreQuest), typeof(LeadingIntoBattleQuest), typeof(TeachingSomethingNewQuest) };
 
@@ -129,8 +655,6 @@ namespace Server.Mobiles
                         player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.InProgress, false));
                         quest.InProgress();
                     }
-
-                    return false;
                 }
             }
 
@@ -220,6 +744,9 @@ namespace Server.Mobiles
 				{
 					if (pet != null)
 					{
+                        if (pet.Body.IsHuman)
+                            continue;
+
 						pet.IsStabled = false;
 						pet.StabledBy = null;
 					}
@@ -389,11 +916,18 @@ namespace Server.Mobiles
 			{
 				var pet = from.Stabled[i] as BaseCreature;
 
-				if (pet == null || pet.Deleted)
+                if (pet != null)
+                    if (pet.Body.IsHuman)
+                        continue;
+
+                    if (pet == null || pet.Deleted)
 				{
 					if (pet != null)
 					{
-						pet.IsStabled = false;
+                        if (pet.Body.IsHuman)
+                            continue;
+
+                        pet.IsStabled = false;
 						pet.StabledBy = null;
 					}
 
@@ -478,12 +1012,12 @@ namespace Server.Mobiles
 
 		public override void OnSpeech(SpeechEventArgs e)
 		{
-            if (e.Mobile.Map.Rules != MapRules.FeluccaRules && !CheckVendorAccess(e.Mobile))
+            if ((!e.Handled && (e.Speech.ToLower() == "vender")))//was sellpet
             {
-                return;
+                e.Handled = true;
+                BeginPetSale(e.Mobile);
             }
-
-			if (!e.Handled && e.HasKeyword(0x0008)) // *stable*
+            if (!e.Handled && e.HasKeyword(0x0008)) // *stable*
 			{
 				e.Handled = true;
 
@@ -553,8 +1087,6 @@ namespace Server.Mobiles
 			{
 				m_Trainer = trainer;
 				m_From = from;
-
-                Enabled = from.Map.Rules == MapRules.FeluccaRules || trainer.CheckVendorAccess(from);
 			}
 
 			public override void OnClick()
@@ -588,7 +1120,7 @@ namespace Server.Mobiles
 					15,
 					275,
 					20,
-                    "<BASEFONT COLOR=#000008>Select a pet to retrieve from the stables:</BASEFONT>",
+                    "<BASEFONT COLOR=#000008>Selecione o animal para retirar:</BASEFONT>",
 					false,
 					false);
 
@@ -601,7 +1133,10 @@ namespace Server.Mobiles
 						continue;
 					}
 
-					AddButton(15, 39 + (i * 20), 10006, 10006, i + 1, GumpButtonType.Reply, 0);
+                    if (pet.Body.IsHuman)
+                        continue;
+
+                    AddButton(15, 39 + (i * 20), 10006, 10006, i + 1, GumpButtonType.Reply, 0);
 					AddHtml(
 						32,
 						35 + (i * 20),
@@ -634,8 +1169,6 @@ namespace Server.Mobiles
 			{
 				m_Trainer = trainer;
 				m_From = from;
-
-                Enabled = from.Map.Rules == MapRules.FeluccaRules || trainer.CheckVendorAccess(from);
 			}
 
 			public override void OnClick()

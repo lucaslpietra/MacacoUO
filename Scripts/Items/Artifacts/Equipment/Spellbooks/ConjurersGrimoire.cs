@@ -12,7 +12,7 @@ namespace Server.Items
             : base()
         {
             Hue = 1157;
-            Slayer = SlayerName.Silver;
+            Slayer = SlayerName.Undeads;
             Attributes.LowerManaCost = 10;
             Attributes.BonusInt = 8;
             Attributes.SpellDamage = 15;

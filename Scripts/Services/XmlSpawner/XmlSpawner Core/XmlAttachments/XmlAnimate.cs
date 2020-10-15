@@ -331,7 +331,7 @@ namespace Server.Engines.XmlSpawner2
         {
             base.OnSpeech(e);
 
-            if (e.Mobile == null || e.Mobile.AccessLevel > AccessLevel.Player)
+            if (e.Mobile == null || e.Mobile.AccessLevel > AccessLevel.VIP)
                 return;
 
             if (e.Speech == this.ActivationWord)
@@ -344,7 +344,7 @@ namespace Server.Engines.XmlSpawner2
         {
             base.OnMovement(e);
 
-            if (e.Mobile == null || e.Mobile.AccessLevel > AccessLevel.Player)
+            if (e.Mobile == null || e.Mobile.AccessLevel > AccessLevel.VIP)
                 return;
 
             if (this.AttachedTo is Item && (((Item)this.AttachedTo).Parent == null) && Utility.InRange(e.Mobile.Location, ((Item)this.AttachedTo).Location, this.ProximityRange))

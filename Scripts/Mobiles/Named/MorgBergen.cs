@@ -9,11 +9,11 @@ namespace Server.Mobiles
         public MorgBergen()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Title = "the Cursed";
+            this.Title = "o amaldicoado";
 
             this.Hue = 0x8596;
             this.Body = 0x190;
-            this.Name = "Morg Bergen";
+            this.Name = "Arete Nebroso";
 
             this.AddItem(new ShortPants(0x59C));
 

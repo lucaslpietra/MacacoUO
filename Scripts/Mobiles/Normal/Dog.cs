@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public Dog()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            Name = "a dog";
+            Name = "um cachorro";
             Body = 0xD9;
             Hue = Utility.RandomAnimalHue();
             BaseSoundID = 0x85;
@@ -70,13 +70,18 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
+
+            if(version == 0)
+                MinTameSkill = -21.3;
         }
     }
 }

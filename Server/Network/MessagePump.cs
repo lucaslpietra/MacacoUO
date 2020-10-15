@@ -251,6 +251,7 @@ namespace Server.Network
 
 							if (packetLength < 3)
 							{
+                                Shard.Debug("Pacote invalido, desconectando");
 								ns.Dispose();
 								return;
 							}
@@ -301,10 +302,6 @@ namespace Server.Network
 							{
 								m_Throttled.Enqueue(ns);
 							}
-                            else
-                            {
-                                buffer.Dequeue(new byte[packetLength], 0, packetLength);
-                            }
 
 							return;
 						}

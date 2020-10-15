@@ -8,7 +8,7 @@ namespace Server.Mobiles
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         [Constructable]
         public Jeweler()
-            : base("the jeweler")
+            : base("o joalheiro")
         {
             this.SetSkill(SkillName.ItemID, 64.0, 100.0);
         }

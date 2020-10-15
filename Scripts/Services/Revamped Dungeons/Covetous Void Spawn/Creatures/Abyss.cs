@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public DaemonMongbat()
             : base(AIType.AI_Necro)
         {
-            Name = "a dameon mongbat";
+            Name = "gargulinha do tinhoso";
             Body = 39;
             BaseSoundID = 422;
         }
@@ -19,7 +19,7 @@ namespace Server.Mobiles
         public DaemonMongbat(int level, bool voidSpawn)
             : base(AIType.AI_Melee, level, voidSpawn)
         {
-            Name = "a dameon mongbat";
+            Name = "gargulinha do tinhoso";
             Body = 39;
             BaseSoundID = 422;
         }
@@ -49,7 +49,7 @@ namespace Server.Mobiles
         public GargoyleAssassin()
             : base(AIType.AI_Mage)
         {
-            Name = "a gargoyle assassin";
+            Name = "gargula assassino";
             Body = 0x4;
             BaseSoundID = 0x174;
         }
@@ -58,7 +58,7 @@ namespace Server.Mobiles
         public GargoyleAssassin(int level, bool voidSpawn)
             : base(AIType.AI_Mage, level, voidSpawn)
         {
-            Name = "a gargoyle assassin";
+            Name = "gargula assassino";
             Body = 0x4;
             BaseSoundID = 0x174;
         }
@@ -88,7 +88,7 @@ namespace Server.Mobiles
         public CovetousDoppleganger()
             : base(AIType.AI_Melee)
         {
-            Name = "a doppleganger";
+            Name = "doppleganger";
             Body = 0x309;
             BaseSoundID = 0x451;
         }
@@ -97,7 +97,7 @@ namespace Server.Mobiles
         public CovetousDoppleganger(int level, bool voidSpawn)
             : base(AIType.AI_Melee, level, voidSpawn)
         {
-            Name = "a doppleganger";
+            Name = "doppleganger";
             Body = 0x309;
             BaseSoundID = 0x451;
         }
@@ -127,7 +127,7 @@ namespace Server.Mobiles
         public LesserOni()
             : base(AIType.AI_Mage)
         {
-            Name = "a lesser oni";
+            Name = "oni";
             Body = 241;
 
             SetSpecialAbility(SpecialAbility.AngryFire);
@@ -137,7 +137,7 @@ namespace Server.Mobiles
         public LesserOni(int level, bool voidSpawn)
             : base(AIType.AI_Mage, level, voidSpawn)
         {
-            Name = "a lesser oni";
+            Name = "oni";
             Body = 241;
         }
 
@@ -172,7 +172,7 @@ namespace Server.Mobiles
         public CovetousFireDaemon()
             : base(AIType.AI_Mage)
         {
-            Name = "a fire daemon";
+            Name = "demonio de fogo";
             Body = 9;
             BaseSoundID = 357;
         }
@@ -181,7 +181,7 @@ namespace Server.Mobiles
         public CovetousFireDaemon(int level, bool voidSpawn)
             : base(AIType.AI_Mage, level, voidSpawn)
         {
-            Name = "a fire daemon";
+            Name = "demonio de fogo";
             Body = 9;
             BaseSoundID = 357;
         }

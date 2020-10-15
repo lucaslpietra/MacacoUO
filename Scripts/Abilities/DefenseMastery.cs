@@ -44,7 +44,7 @@ namespace Server.Items
 
             ClearCurrentAbility(attacker);
 
-            attacker.SendLocalizedMessage(1063353); // You perform a masterful defense!
+            attacker.SendLocalizedMessage("Voce faz uma defesa perfeita"); // You perform a masterful defense!
 
             attacker.FixedParticles(0x375A, 1, 17, 0x7F2, 0x3E8, 0x3, EffectLayer.Waist);
 

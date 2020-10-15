@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Server.Mobiles;
 
@@ -21,7 +22,7 @@ namespace Server.Spells.Necromancy
         {
             get
             {
-                return TimeSpan.FromSeconds(2.25);
+                return TimeSpan.FromSeconds(2.0);
             }
         }
         public override double RequiredSkill
@@ -87,6 +88,9 @@ namespace Server.Spells.Necromancy
                 return -5;
             }
         }
+
+        private static readonly Hashtable m_Table = new Hashtable();
+
         public override void DoEffect(Mobile m)
         {
             if (m is PlayerMobile)
@@ -95,7 +99,13 @@ namespace Server.Spells.Necromancy
             m.PlaySound(0x17F);
             m.FixedParticles(0x374A, 1, 15, 9902, 1108, 4, EffectLayer.Waist);
 
-            int manadrain = (int)(m.Skills.SpiritSpeak.Value / 5);
+            int manadrain = (int)(5 + ((15 * m.Skills.SpiritSpeak.Value) / 100));
+
+            this.Caster.VirtualArmorMod += 15;
+
+            var mod = new DefaultSkillMod(SkillName.MagicResist, true, -50 + Math.Min((int)(m.Skills[SkillName.Inscribe].Value / 20), 35));
+            m_Table[m] = mod;
+            m.AddSkillMod(mod);
 
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.WraithForm, 1060524, 1153829, String.Format("15\t5\t5\t{0}", manadrain)));
         }
@@ -104,6 +114,13 @@ namespace Server.Spells.Necromancy
         {
             if (m is PlayerMobile && m.IsPlayer())
                 ((PlayerMobile)m).IgnoreMobiles = false;
+
+            this.Caster.VirtualArmorMod -= 15;
+
+            var mod = (SkillMod)m_Table[m];
+            m_Table.Remove(m);
+
+            m.RemoveSkillMod(mod);
 
             BuffInfo.RemoveBuff(m, BuffIcon.WraithForm);
         }

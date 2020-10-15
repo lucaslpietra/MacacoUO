@@ -1,3 +1,4 @@
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
 
@@ -33,15 +34,20 @@ namespace Server.Spells.Eighth
         {
             get
             {
-                return !Core.AOS;
+                return false;
             }
         }
         public override void OnCast()
         {
             if (SpellHelper.CheckTown(Caster, Caster) && CheckSequence())
             {
-                foreach (var id in AcquireIndirectTargets(Caster.Location, 1 + (int)(Caster.Skills[SkillName.Magery].Value / 15.0)))
+                var targets = AcquireIndirectTargets(Caster.Location, 1 + (int)(Caster.Skills[SkillName.Magery].Value / 15.0));
+                bool foi = false;
+                foreach (var id in targets)
                 {
+                    if (!Caster.InLOS(id))
+                        continue;
+
                     Mobile m = id as Mobile;
 
                     int damage;
@@ -58,15 +64,33 @@ namespace Server.Spells.Eighth
                     {
                         damage = (id.Hits * 6) / 10;
 
-                        if ((m == null || !m.Player) && damage < 10)
-                            damage = 10;
-                        else if (damage > 75)
+                        if ((m == null || !m.Player) && damage < 40)
+                            damage = 40;
+                        else if (id is PlayerMobile && damage > 75)
                             damage = 75;
+                        else if (damage > 100)
+                            damage = 100;
                     }
 
+                    var mob = id as Mobile;
+                    Timer.DelayCall(TimeSpan.FromSeconds(0.6), () =>
+                    {
+                        mob.Freeze(TimeSpan.FromSeconds(1));
+                        mob.OverheadMessage("* atordoado *");
+                    });
+                  
                     Caster.DoHarmful(id);
+                    id.PlaySound(0x20D);
+                    Effects.SendMovingParticles(new Entity(Serial.Zero, new Point3D(id.X, id.Y, id.Z + 20), id.Map), id, 0x11B6, 5, 20, true, true, 0, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
                     SpellHelper.Damage(this, id, damage, 100, 0, 0, 0, 0);
+                    foi = true;
                 }
+
+                if (!foi)
+                {
+                    Caster.PlaySound(0x20D);
+                }
+
             }
 
             FinishSequence();

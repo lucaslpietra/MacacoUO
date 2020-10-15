@@ -9,17 +9,15 @@ namespace Server.Items
         [Constructable]
         public ClockworkLeggings()
         {
+            Name = "Calcas Mecanicas";
             Hue = 0xA91;
             Attributes.RegenStam = 5;
-            Attributes.DefendChance = 25;
-            Attributes.BonusDex = 5;
+            Attributes.BonusDex = 3;
         }
 
         public ClockworkLeggings(Serial serial)  : base(serial)
         {
         }
-
-        public override int LabelNumber { get { return 1153536; } }
 
         public override int BasePhysicalResistance { get { return 8; } }
         public override int BaseFireResistance { get { return 6; } }

@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public Llama()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a llama";
+            this.Name = "lhama";
             this.Body = 0xDC;
             this.BaseSoundID = 0x3F3;
 

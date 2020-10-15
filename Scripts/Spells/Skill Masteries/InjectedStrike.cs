@@ -97,7 +97,7 @@ namespace Server.Spells.SkillMasteries
                 }
                 else if (CheckSequence())
                 {
-                    if (Caster.CheckTargetSkill(CastSkill, potion, potion.MinPoisoningSkill, potion.MaxPoisoningSkill))
+                    if (Caster.CheckTargetSkillMinMax(CastSkill, potion, potion.MinPoisoningSkill, potion.MaxPoisoningSkill))
                     {
                         ApplyPoison(weapon, potion);
                         return;
@@ -114,7 +114,7 @@ namespace Server.Spells.SkillMasteries
                 {
                     if (potion != null)
                     {
-                        if (Caster.CheckTargetSkill(CastSkill, potion, potion.MinPoisoningSkill, potion.MaxPoisoningSkill))
+                        if (Caster.CheckTargetSkillMinMax(CastSkill, potion, potion.MinPoisoningSkill, potion.MaxPoisoningSkill))
                         {
                             ApplyPoison(weapon, potion);
                             return;

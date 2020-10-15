@@ -23,26 +23,26 @@ namespace Server.Guilds
         {
             base.PopulateGump();
 
-            this.AddHtmlLocalized(431, 43, 110, 26, 1062978, 0xF, false, false); // Diplomacy
+            this.AddHtml(431, 43, 110, 26, "Diplomacia", 0xF, false, false); // Diplomacy
 
-            this.AddHtmlLocalized(65, 80, 480, 26, 1063124, 0xF, true, false); // <i>Advanced Search Options</i>
+            this.AddHtml(65, 80, 480, 26, "Pesquisa", 0xF, true, false); // <i>Advanced Search Options</i>
 
-            this.AddHtmlLocalized(65, 110, 480, 26, 1063136 + (int)this.m_Display, 0xF, false, false); // Showing All Guilds/w/Relation/Waiting Relation
+            this.AddHtml(65, 110, 480, 26, "Mostrando Tudo" + (int)this.m_Display, 0xF, false, false); // Showing All Guilds/w/Relation/Waiting Relation
 
             this.AddGroup(1);
             this.AddRadio(75, 140, 0xD2, 0xD3, false, 2);
-            this.AddHtmlLocalized(105, 140, 200, 26, 1063006, 0x0, false, false); // Show Guilds with Relationship
+            this.AddHtml(105, 140, 200, 26, "Relacoes", 0x0, false, false); // Show Guilds with Relationship
             this.AddRadio(75, 170, 0xD2, 0xD3, false, 1);
-            this.AddHtmlLocalized(105, 170, 200, 26, 1063005, 0x0, false, false); // Show Guilds Awaiting Action
+            this.AddHtml(105, 170, 200, 26, "Aguardando Acoes", 0x0, false, false); // Show Guilds Awaiting Action
             this.AddRadio(75, 200, 0xD2, 0xD3, false, 0);
-            this.AddHtmlLocalized(105, 200, 200, 26, 1063007, 0x0, false, false); // Show All Guilds
+            this.AddHtml(105, 200, 200, 26, "Todas Guildas", 0x0, false, false); // Show All Guilds
 
             this.AddBackground(450, 370, 100, 26, 0x2486);
             this.AddButton(455, 375, 0x845, 0x846, 5, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(480, 373, 60, 26, 1006044, 0x0, false, false); // OK
+            this.AddHtml(480, 373, 60, 26, "OK", 0x0, false, false); // OK
             this.AddBackground(340, 370, 100, 26, 0x2486);
             this.AddButton(345, 375, 0x845, 0x846, 0, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(370, 373, 60, 26, 1006045, 0x0, false, false); // Cancel
+            this.AddHtml(370, 373, 60, 26, "Cancelar", 0x0, false, false); // Cancel
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)

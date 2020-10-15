@@ -247,7 +247,7 @@ namespace Server.Items
 
             if (m_Owner != null && (!SpecialFishingNet.ValidateDeepWater(Map, X, Y) || m_Owner.Skills[SkillName.Fishing].Base >= 75.0))
             {
-                m_Owner.CheckSkill(SkillName.Fishing, 0, m_Owner.Skills[SkillName.Fishing].Cap);
+                m_Owner.CheckSkillMult(SkillName.Fishing, 0, m_Owner.Skills[SkillName.Fishing].Cap);
             }
 
             if (!m_InUse)

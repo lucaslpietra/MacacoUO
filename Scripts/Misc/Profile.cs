@@ -1,5 +1,8 @@
 using System;
 using Server.Accounting;
+using Server.Engines.Points;
+using Server.Gumps;
+using Server.Mobiles;
 using Server.Network;
 
 namespace Server.Misc
@@ -14,12 +17,6 @@ namespace Server.Misc
 
         public static void EventSink_ChangeProfileRequest(ChangeProfileRequestEventArgs e)
         {
-            if (e.Beholder != e.Beheld && e.Beholder.AccessLevel <= e.Beheld.AccessLevel)
-            {
-                e.Beholder.SendMessage("You do not have permission to do that.");
-                return;
-            }
-            
             Mobile from = e.Beholder;
 
             if (from.ProfileLocked)
@@ -32,6 +29,18 @@ namespace Server.Misc
         {
             Mobile beholder = e.Beholder;
             Mobile beheld = e.Beheld;
+
+            if (beheld is BaseHire)
+            {
+                var bh = (BaseHire)beheld;
+                if (bh.ControlMaster == beholder)
+                {
+                    beholder.SendGump(new SkillsGump(beholder, bh));
+                } else
+                {
+                    bh.SayTo(beholder, "Oxe vc n eh meu mestre, nao vou te revelar minhas skills...");
+                }
+            }
 
             if (!beheld.Player)
                 return;
@@ -52,12 +61,18 @@ namespace Server.Misc
             }
 
             if (footer.Length == 0 && beholder == beheld)
-                footer = GetAccountDuration(beheld);
+                footer = "Pontos RP: "+PointsSystem.PontosRP.GetPoints(beholder);
+
+                    //GetAccountDuration(beheld);
 
             string body = beheld.Profile;
 
             if (body == null || body.Length <= 0)
+            {
                 body = "";
+                beholder.SendMessage(78, "Este e seu perfil RPG. Escreva uma descricao do seu personagem, quais sao as fraquezas dele ? Suas forcas ? O que ele gosta ? Invente um RP para seu personagem !");
+            }
+                
 
             beholder.Send(new DisplayProfile(beholder != beheld || !beheld.ProfileLocked, beheld, header, body, footer));
         }

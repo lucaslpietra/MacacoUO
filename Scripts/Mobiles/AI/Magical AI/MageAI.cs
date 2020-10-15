@@ -23,9 +23,10 @@ namespace Server.Mobiles
 {
 	public class MageAI : BaseAI
 	{
+		protected const double HealChance = 0.25; // 10% chance to heal at gm skill
+
 		public virtual SkillName CastSkill { get { return SkillName.Magery; } }
 		public virtual bool UsesMagery { get { return true; } }
-        public virtual double HealChance { get { return .25; } }
 
 		protected const double DispelChance = 0.75; // 75% chance to dispel at gm skill
 		protected double TeleportChance { get { return m_Mobile.TeleportChance; } }
@@ -39,7 +40,10 @@ namespace Server.Mobiles
 
 		public virtual bool SmartAI
 		{
-			get { return PetTrainingHelper.GetAbilityProfile(m_Mobile, true).HasAbility(MagicalAbility.MageryMastery); }
+			get {
+                return m_Mobile.IsSmart;
+                //return PetTrainingHelper.GetAbilityProfile(m_Mobile, true).HasAbility(MagicalAbility.MageryMastery);
+            }
 		}
 
 		public MageAI(BaseCreature m)
@@ -102,17 +106,16 @@ namespace Server.Mobiles
 		public override bool DoActionWander()
 		{
 			if (SmartAI && m_Mobile.Skills[SkillName.Meditation].Base > 0 && m_Mobile.Mana < m_Mobile.ManaMax &&
-				!m_Mobile.Meditating)
+				!m_Mobile.Meditating && !m_Mobile.Hidden)
 			{
-				m_Mobile.DebugSay("I am going to meditate");
-
+				m_Mobile.DebugSay("Vo meditar");
 				m_Mobile.UseSkill(SkillName.Meditation);
 				return true;
 			}
 
 			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
 			{
-				m_Mobile.DebugSay("I am going to attack {0}", m_Mobile.FocusMob.Name);
+				m_Mobile.DebugSay("Vo bater em {0}", m_Mobile.FocusMob.Name);
 
 				m_Mobile.Combatant = m_Mobile.FocusMob;
 				Action = ActionType.Combat;
@@ -120,7 +123,7 @@ namespace Server.Mobiles
 			}
 			else
 			{
-				m_Mobile.DebugSay("I am wandering");
+				m_Mobile.DebugSay("Dando rolezinho");
 
 				m_Mobile.Warmode = false;
 
@@ -153,14 +156,14 @@ namespace Server.Mobiles
 				// Try to find another combatant
 				if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
 				{
-					m_Mobile.DebugSay("Something happened to my combatant, so I am going to fight {0}", m_Mobile.FocusMob.Name);
+					m_Mobile.DebugSay("O nego q eu tava batendo n sei onde ta entao vo bater em {0}", m_Mobile.FocusMob.Name);
 
 					m_Mobile.Combatant = c = m_Mobile.FocusMob;
 					m_Mobile.FocusMob = null;
 				}
 				else
 				{
-					m_Mobile.DebugSay("Something happened to my combatant, and nothing is around. I am on guard.");
+					m_Mobile.DebugSay("Oxe o nego q eu tava tretando sumiu entao vou entrar n estado Guarda.");
 					Action = ActionType.Guard;
 					return true;
 				}
@@ -168,11 +171,11 @@ namespace Server.Mobiles
 
 			if (!m_Mobile.InLOS(c))
 			{
-				m_Mobile.DebugSay("I can't see my target");
+				m_Mobile.DebugSay("N consigo ver o manolo");
 
 				if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
 				{
-					m_Mobile.DebugSay("I will switch to {0}", m_Mobile.FocusMob.Name);
+					m_Mobile.DebugSay("Mudei pra {0}", m_Mobile.FocusMob.Name);
 					m_Mobile.Combatant = c = m_Mobile.FocusMob;
 					m_Mobile.FocusMob = null;
 				}
@@ -199,7 +202,7 @@ namespace Server.Mobiles
 
 				if (c == null)
 				{
-					m_Mobile.DebugSay("My combatant has fled, so I am on guard");
+					m_Mobile.DebugSay("Nego correu, to no estado guarda");
 					Action = ActionType.Guard;
 
 					return true;
@@ -213,7 +216,7 @@ namespace Server.Mobiles
 					// We are low on health, should we flee?
 					if (Utility.Random(100) <= Math.Max(10, 10 + c.Hits - m_Mobile.Hits))
 					{
-						m_Mobile.DebugSay("I am going to flee from {0}", c.Name);
+						m_Mobile.DebugSay("Vo correr de {0}", c.Name);
 						Action = ActionType.Flee;
 						return true;
 					}
@@ -226,7 +229,17 @@ namespace Server.Mobiles
 
 				if (m_Mobile.Poisoned)
 				{
-					spell = GetCureSpell();
+                    var items = m_Mobile.Map.GetItemsInRange(m_Mobile.Location, 0);
+                    foreach(var item in items)
+                    {
+                        if(item is PoisonFieldSpell.PoisonFieldItem)
+                        {
+                            spell = CheckCastDispelField();
+                            break;
+                        }
+                    }
+                    if (spell == null)
+					    spell = GetCureSpell();
 				}
 
 				if (SmartAI && spell == null && !m_Mobile.InRange(c.Location, 3) && UsesMagery && c is Mobile &&
@@ -242,7 +255,7 @@ namespace Server.Mobiles
 					spell = ChooseSpell(c);
 				}
 
-				m_Mobile.DebugSay(spell != null ? "Choosen Spell" : "No spell chosen");
+				m_Mobile.DebugSay(spell != null ? "Escolhi uma magia" : "Nao escolhi magia");
 				RunTo(c);
 
 				if (spell != null)
@@ -275,13 +288,13 @@ namespace Server.Mobiles
 				{
 					// virutal method needs to go in BaseAI
 					TryReveal();
-					m_Mobile.DebugSay("I am going to reveal my last target");
+					m_Mobile.DebugSay("Revelando manolo");
 				}
 			}
 
 			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
 			{
-				m_Mobile.DebugSay("I am going to attack {0}", m_Mobile.FocusMob.Name);
+				m_Mobile.DebugSay("Vo atacar {0}", m_Mobile.FocusMob.Name);
 
 				m_Mobile.Combatant = m_Mobile.FocusMob;
 				Action = ActionType.Combat;
@@ -310,12 +323,12 @@ namespace Server.Mobiles
 				// If I have a target, go back and fight them
 				if (c != null && m_Mobile.GetDistanceToSqrt(c) <= m_Mobile.RangePerception * 2)
 				{
-					m_Mobile.DebugSay("I am stronger now, reengaging {0}", c.Name);
+					m_Mobile.DebugSay("To fortim agora, voltando pra treta {0}", c.Name);
 					Action = ActionType.Combat;
 				}
 				else
 				{
-					m_Mobile.DebugSay("I am stronger now, my guard is up");
+					m_Mobile.DebugSay("To fortim agora, vo ficar em guarda");
 					Action = ActionType.Guard;
 				}
 			}
@@ -373,18 +386,18 @@ namespace Server.Mobiles
 
 				new TeleportSpell(m_Mobile, null).Cast();
 
-				m_Mobile.DebugSay("I am stuck, I'm going to try teleporting away");
+				m_Mobile.DebugSay("To travado vo dar TP");
 			}
 			else if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
 			{
-				m_Mobile.DebugSay("My move is blocked, so I am going to attack {0}", m_Mobile.FocusMob.Name);
+				m_Mobile.DebugSay("To com move bloqueado entao vo atacar {0}", m_Mobile.FocusMob.Name);
 
 				m_Mobile.Combatant = m_Mobile.FocusMob;
 				Action = ActionType.Combat;
 			}
 			else
 			{
-				m_Mobile.DebugSay("I am stuck");
+				m_Mobile.DebugSay("To travado");
 			}
 		}
 
@@ -411,12 +424,12 @@ namespace Server.Mobiles
 			{
 				if (!(c is Mobile))
 				{
-					m_Mobile.DebugSay("Just doing damage...");
+					m_Mobile.DebugSay("Dando dano...");
 					spell = GetRandomDamageSpell();
 				}
 				else
 				{
-					m_Mobile.DebugSay("Random combat spell...");
+					m_Mobile.DebugSay("Magia aleatoria...");
 					spell = RandomCombatSpell();
 				}
 
@@ -425,7 +438,7 @@ namespace Server.Mobiles
 
 			if (m_Mobile.Poisoned) // Top cast priority is cure
 			{
-				m_Mobile.DebugSay("I am going to cure myself");
+				m_Mobile.DebugSay("Vo me curar");
 
 				spell = GetCureSpell();
 			}
@@ -437,7 +450,7 @@ namespace Server.Mobiles
 
 			if (toDispel != null) // Something dispellable is attacking us
 			{
-				m_Mobile.DebugSay("I am going to dispel {0}", toDispel);
+				m_Mobile.DebugSay("Dispellando {0}", toDispel);
 
 				spell = DoDispel(toDispel);
 			}
@@ -447,11 +460,13 @@ namespace Server.Mobiles
 
 			if (c is Mobile && SmartAI && m_Combo != -1) // We are doing a spell combo
 			{
+                m_Mobile.DebugSay("Vo dar um combo");
 				spell = DoCombo((Mobile)c);
 			}
 			else if (c is Mobile && SmartAI && (((Mobile)c).Spell is HealSpell || ((Mobile)c).Spell is GreaterHealSpell) &&
 					 !((Mobile)c).Poisoned) // They have a heal spell out
 			{
+                m_Mobile.DebugSay("Nego ta se curando vo envenenar");
 				spell = new PoisonSpell(m_Mobile, null);
 			}
 			else
@@ -484,11 +499,10 @@ namespace Server.Mobiles
 				return null;
 			}
 
-            if (m_Mobile.Hits == m_Mobile.HitsMax || (!SmartAI && ScaleByCastSkill(HealChance) < Utility.RandomDouble()))
-            {
-                return null;
-            }
-
+			if (!SmartAI && ScaleByCastSkill(HealChance) < Utility.RandomDouble())
+			{
+				return null;
+			}
 			if (Utility.Random(0, 4 + (m_Mobile.Hits == 0 ? m_Mobile.HitsMax : (m_Mobile.HitsMax / m_Mobile.Hits))) < 3)
 			{
 				return null;
@@ -530,6 +544,9 @@ namespace Server.Mobiles
 
 		public Mobile FindDispelTarget(bool activeOnly)
 		{
+
+
+
 			if (m_Mobile.Deleted || m_Mobile.Int < 95 || CanDispel(m_Mobile) || m_Mobile.AutoDispel)
 				return null;
 
@@ -660,7 +677,7 @@ namespace Server.Mobiles
 
 			if (field != null)
 			{
-				m_Mobile.DebugSay("Found harmful field, attempting to dispel");
+				m_Mobile.DebugSay("Achei um field, vo dar dispel");
 				return new DispelFieldSpell(m_Mobile, null);
 			}
 
@@ -676,9 +693,9 @@ namespace Server.Mobiles
 
 			foreach (Item item in eable)
 			{
-				if (item is PoisonFieldSpell.InternalItem)
+				if (item is PoisonFieldSpell.PoisonFieldItem)
 				{
-					var field = (PoisonFieldSpell.InternalItem)item;
+					var field = (PoisonFieldSpell.PoisonFieldItem)item;
 
 					if (field.Visible && field.Caster != null && (!Core.AOS || m_Mobile != field.Caster) &&
 						SpellHelper.ValidIndirectTarget(field.Caster, m_Mobile) && field.Caster.CanBeHarmful(m_Mobile, false))
@@ -730,13 +747,13 @@ namespace Server.Mobiles
 				{
 					case 0: // Buff
 					{
-						m_Mobile.DebugSay("Cursing Thyself!");
+						m_Mobile.DebugSay("Me buffando !");
 						spell = GetRandomBuffSpell();
 						break;
 					}
 					case 1: // Curse
 					{
-						m_Mobile.DebugSay("Cursing Thou!");
+						m_Mobile.DebugSay("Te debuffando !");
 						spell = GetRandomCurseSpell();
 						break;
 					}
@@ -745,7 +762,7 @@ namespace Server.Mobiles
 					case 4:
 					case 5: // damage
 					{
-						m_Mobile.DebugSay("Just doing damage");
+						m_Mobile.DebugSay("Sorteando magia de dano");
 						spell = GetRandomDamageSpell();
 					}
 						break;
@@ -777,7 +794,7 @@ namespace Server.Mobiles
 						if (c.Poisoned || !CheckCanCastMagery(3))
 							goto default;
 
-						m_Mobile.DebugSay("Attempting to poison");
+						m_Mobile.DebugSay("Vo envenenar pq nao neh");
 
 						spell = new PoisonSpell(m_Mobile, null);
 						break;
@@ -787,7 +804,7 @@ namespace Server.Mobiles
 						if (!CheckCanCastMagery(3))
 							goto default;
 
-						m_Mobile.DebugSay("Blessing myself");
+						m_Mobile.DebugSay("Buffando");
 
 						spell = GetRandomBuffSpell(); //new BlessSpell(m_Mobile, null);
 						break;
@@ -795,7 +812,7 @@ namespace Server.Mobiles
 					case 3:
 					case 4: // Curse them
 					{
-						m_Mobile.DebugSay("Attempting to curse");
+						m_Mobile.DebugSay("Debuffando");
 
 						spell = GetRandomCurseSpell();
 
@@ -805,7 +822,7 @@ namespace Server.Mobiles
 					}
 					case 5: // Paralyze them
 					{
-						m_Mobile.DebugSay("Attempting to paralyze");
+						m_Mobile.DebugSay("Paralizando");
 
 						if (CheckCanCastMagery(5))
 							spell = new ParalyzeSpell(m_Mobile, null);
@@ -818,7 +835,7 @@ namespace Server.Mobiles
 					}
 					case 6: // Drain mana
 					{
-						m_Mobile.DebugSay("Attempting to drain mana");
+						m_Mobile.DebugSay("Tirando mana (mana drain)");
 
 						spell = GetRandomManaDrainSpell();
 
@@ -828,7 +845,7 @@ namespace Server.Mobiles
 					}
 					default: // Damage them
 					{
-						m_Mobile.DebugSay("Just doing damage");
+						m_Mobile.DebugSay("Soh tocando uma magia de dano random");
 
 						spell = GetRandomDamageSpell();
 						break;
@@ -882,7 +899,7 @@ namespace Server.Mobiles
 						{
 							if (c.Paralyzed && !c.Poisoned && !m_Mobile.Meditating)
 							{
-								m_Mobile.DebugSay("I am going to meditate");
+								m_Mobile.DebugSay("Meditanom");
 
 								m_Mobile.UseSkill(SkillName.Meditation);
 							}
@@ -1146,17 +1163,21 @@ namespace Server.Mobiles
 			Exp_FB_MA_Poison,
 			Exp_FB_Poison_Light,
 			Exp_FB_MA_Light,
-			Exp_Poison_FB_Light
+			Exp_Poison_FB_Light,
+            Para_Exp_Fs_Poison
 		}
 
 		public virtual Spell DoCombo(Mobile c)
 		{
 			Spell spell = null;
 
-			if (m_ComboType == ComboType.None)
-				m_ComboType = (ComboType)Utility.RandomMinMax(1, 7);
+            if (m_ComboType == ComboType.None)
+                //m_ComboType = (ComboType)Utility.RandomMinMax(1, 8);
+                m_ComboType = (ComboType)8; //Utility.RandomMinMax(1, 8);
 
-			if (m_Combo == 1)
+            m_Mobile.DebugSay("Dando combo "+ m_ComboType);
+
+            if (m_Combo == 1)
 			{
 				switch (m_ComboType)
 				{
@@ -1169,7 +1190,11 @@ namespace Server.Mobiles
 					case ComboType.Exp_Poison_FB_Light:
 						spell = new ExplosionSpell(m_Mobile, null);
 						break;
-				}
+                    case ComboType.Para_Exp_Fs_Poison:
+                        spell = new ParalyzeSpell(m_Mobile, null);
+                        break;
+
+                }
 			}
 			else if (m_Combo == 2)
 			{
@@ -1196,7 +1221,10 @@ namespace Server.Mobiles
 					case ComboType.Exp_Poison_FB_Light:
 						spell = new PoisonSpell(m_Mobile, null);
 						break;
-				}
+                    case ComboType.Para_Exp_Fs_Poison:
+                        spell = new ExplosionSpell(m_Mobile, null);
+                        break;
+                }
 			}
 			else if (m_Combo == 3)
 			{
@@ -1220,7 +1248,10 @@ namespace Server.Mobiles
 					case ComboType.Exp_Poison_FB_Light:
 						spell = new FireballSpell(m_Mobile, null);
 						break;
-				}
+                    case ComboType.Para_Exp_Fs_Poison:
+                        spell = new FlameStrikeSpell(m_Mobile, null);
+                        break;
+                }
 			}
 			else if (m_Combo == 4)
 			{
@@ -1241,7 +1272,10 @@ namespace Server.Mobiles
 						spell = new LightningSpell(m_Mobile, null);
 						EndCombo();
 						return spell;
-				}
+                    case ComboType.Para_Exp_Fs_Poison:
+                        spell = new PoisonSpell(m_Mobile, null);
+                        break;
+                }
 			}
 			else if (m_Combo == 5)
 			{
@@ -1257,7 +1291,11 @@ namespace Server.Mobiles
 						spell = new LightningSpell(m_Mobile, null);
 						EndCombo();
 						return spell;
-				}
+                    case ComboType.Para_Exp_Fs_Poison:
+                        spell = new FireballSpell(m_Mobile, null);
+                        EndCombo();
+                        break;
+                }
 			}
 
 			m_Combo++; // Move to next spell

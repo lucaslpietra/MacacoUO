@@ -21,6 +21,7 @@ namespace Server.Engines.Quests
                 return QuestChain.Marauders;
             }
         }
+
         public override Type NextQuest
         {
             get

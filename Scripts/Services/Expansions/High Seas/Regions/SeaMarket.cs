@@ -1,7 +1,4 @@
 using System;
-using System.Xml;
-using System.Linq;
-
 using Server;
 using Server.Mobiles;
 using Server.Items;
@@ -10,6 +7,7 @@ using System.Collections.Generic;
 using Server.Commands;
 using Server.Engines.Quests;
 using Server.Spells;
+using System.Linq;
 
 namespace Server.Regions
 {
@@ -19,6 +17,12 @@ namespace Server.Regions
 
         private static SeaMarketRegion m_Region1;
         private static SeaMarketRegion m_Region2;
+
+        public static void SetRegions(SeaMarketRegion reg1, SeaMarketRegion reg2)
+        {
+            m_Region1 = reg1;
+            m_Region2 = reg2;
+        }
 
         private Timer m_Timer;
 
@@ -60,21 +64,10 @@ namespace Server.Regions
             new Rectangle2D(4529, 2296, 45, 112),
         };
 
-        public SeaMarketRegion(XmlElement xml, Map map, Region parent)
-            : base(xml, map, parent)
+        public SeaMarketRegion(Map map)
+            : base("Sea Market", map, Region.DefaultPriority, m_Bounds)
         {
-        }
-
-        public override void OnRegister()
-        {
-            if (m_Region1 == null)
-            {
-                m_Region1 = this;
-            }
-            else if (m_Region2 == null)
-            {
-                m_Region2 = this;
-            }
+            GoLocation = new Point3D(4550, 2317, -2);
         }
 
         public override bool CheckTravel(Mobile traveller, Point3D p, TravelCheckType type)
@@ -93,11 +86,6 @@ namespace Server.Regions
             }
 
             return base.CheckTravel(traveller, p, type);
-        }
-
-        public override bool AllowHousing(Mobile from, Point3D p)
-        {
-            return false;
         }
 
         #region Pirate Blabbing
@@ -132,6 +120,7 @@ namespace Server.Regions
                     Map map = capt.Map;
 
                     string locArgs;
+                    //string nameArgs;
                     string combine;
 
                     if (Sextant.Format(loc, map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
@@ -247,7 +236,7 @@ namespace Server.Regions
 
             foreach (BaseBoat boat in boats)
             {
-                if (!m_BoatTable.ContainsKey(boat) && !boat.IsMoving && boat.Owner != null && boat.Owner.AccessLevel == AccessLevel.Player)
+                if (!m_BoatTable.ContainsKey(boat) && !boat.IsMoving && boat.Owner != null && boat.Owner.AccessLevel <= AccessLevel.VIP)
                     AddToTable(boat);
             }
 

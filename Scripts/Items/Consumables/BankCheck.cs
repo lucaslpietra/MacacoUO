@@ -64,8 +64,6 @@ namespace Server.Items
 		{
 			Weight = 1.0;
 			Hue = 0x34;
-			LootType = LootType.Blessed;
-
 			m_Worth = worth;
 		}
 
@@ -79,8 +77,6 @@ namespace Server.Items
 				InvalidateProperties();
 			}
 		}
-
-		public override bool DisplayLootType { get { return Core.AOS; } }
 
 		public override int LabelNumber { get { return 1041361; } } // A bank check
 
@@ -116,7 +112,7 @@ namespace Server.Items
 
 			var worth = Core.ML ? m_Worth.ToString("#,0") : m_Worth.ToString();
 
-			list.Add(1060738, worth); // value: ~1_val~
+			list.Add("Vale "+ worth); // value: ~1_val~
 		}
 
 #if NEWPARENT
@@ -220,7 +216,7 @@ namespace Server.Items
 
 			if (box == null || !IsChildOf(box))
 			{
-				from.SendLocalizedMessage(AccountGold.Enabled ? 1080058 : 1047026); 
+				from.SendMessage(AccountGold.Enabled ? "Precisa estar em sua mochila" : "Precisa estar no cofre do banco"); 
 				// This must be in your backpack to use it. : That must be in your bank box to use it.
 				return;
 			}
@@ -278,7 +274,7 @@ namespace Server.Items
 			}
 
 			// Gold was deposited in your account:
-			from.SendLocalizedMessage(1042672, true, deposited.ToString("#,0"));
+			from.SendMessage("O dinheiro foi depositado em sua conta");
 
 			var pm = from as PlayerMobile;
 

@@ -14,7 +14,7 @@ namespace Server.Engines.Plants
 
         protected override void OnTarget(Mobile from, object targeted)
         {
-            if (!this.m_Plant.Deleted && this.m_Plant.PlantStatus < PlantStatus.DecorativePlant && from.InRange(this.m_Plant.GetWorldLocation(), 3))
+            if (!this.m_Plant.Deleted && this.m_Plant.PlantStatus < PlantStatus.PlantaDecorativa && from.InRange(this.m_Plant.GetWorldLocation(), 3))
             {
                 if (!this.m_Plant.IsUsableBy(from))
                 {
@@ -36,7 +36,7 @@ namespace Server.Engines.Plants
                 {
                     PlantItem targ = targeted as PlantItem;
 
-                    if (targ == null || targ.PlantStatus >= PlantStatus.DecorativePlant || targ.PlantStatus <= PlantStatus.BowlOfDirt)
+                    if (targ == null || targ.PlantStatus >= PlantStatus.PlantaDecorativa || targ.PlantStatus <= PlantStatus.Terra)
                     {
                         this.m_Plant.LabelTo(from, 1053070); // You can only pollinate other specially grown plants!
                     }
@@ -82,7 +82,7 @@ namespace Server.Engines.Plants
 
         protected override void OnTargetFinish(Mobile from)
         {
-            if (!this.m_Plant.Deleted && this.m_Plant.PlantStatus < PlantStatus.DecorativePlant && this.m_Plant.PlantStatus != PlantStatus.BowlOfDirt && from.InRange(this.m_Plant.GetWorldLocation(), 3) && this.m_Plant.IsUsableBy(from))
+            if (!this.m_Plant.Deleted && this.m_Plant.PlantStatus < PlantStatus.PlantaDecorativa && this.m_Plant.PlantStatus != PlantStatus.Terra && from.InRange(this.m_Plant.GetWorldLocation(), 3) && this.m_Plant.IsUsableBy(from))
             {
                 from.SendGump(new ReproductionGump(this.m_Plant));
             }

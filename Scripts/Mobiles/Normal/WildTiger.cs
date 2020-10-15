@@ -17,9 +17,9 @@ namespace Server.Mobiles
 
         [Constructable]
         public WildTiger()
-            : this("a wild tiger")
+            : this("tigre")
         {
-            CanRide = false;
+            CanRide = true;
         }
 
         [Constructable]
@@ -88,11 +88,11 @@ namespace Server.Mobiles
         public override double WeaponAbilityChance { get { return 0.5; } }
 
         public override int Meat { get { return 2; } }
-        public override FoodType FavoriteFood { get { return FoodType.Meat; } }	
-		public override int TreasureMapLevel { get { return 1; } }
+        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
 
         public override void GenerateLoot()
         {
+            //this.AddLoot(LootPack.NewRandom(230, 400, 2, 300, 550, 75));
             AddLoot(LootPack.Rich, 1);
         }
 
@@ -157,6 +157,7 @@ namespace Server.Mobiles
             : base("a wild white tiger")
         {
             Hue = 2500;
+            CanRide = true;
         }
 
         public WildWhiteTiger(Serial serial)
@@ -189,6 +190,7 @@ namespace Server.Mobiles
             : base("a wild black tiger")
         {
             Hue = 1175;
+            CanRide = true;
         }
 
         public WildBlackTiger(Serial serial)

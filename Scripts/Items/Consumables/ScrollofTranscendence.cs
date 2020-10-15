@@ -52,6 +52,7 @@ namespace Server.Items
         public ScrollOfTranscendence(SkillName skill, double value)
             : base(skill, value)
         {
+            Name = "Pergaminho de +"+value+" " + skill.ToString();
             ItemID = 0x14EF;
             Hue = 0x490;
         }

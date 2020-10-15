@@ -18,7 +18,7 @@ namespace Server.Items
         {
             get
             {
-                return "white checker";
+                return "peca branca";
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -50,7 +50,7 @@ namespace Server.Items
         {
             get
             {
-                return "black checker";
+                return "peca preta";
             }
         }
         public override void Serialize(GenericWriter writer)

@@ -20,6 +20,7 @@ using Server.SkillHandlers;
 using Server.Engines.CityLoyalty;
 using Server.Services.Virtues;
 using Server.Spells.SkillMasteries;
+using Server.Services;
 
 namespace Server
 {
@@ -44,6 +45,13 @@ namespace Server
                 info.IntScale = 0.0;
                 info.StatTotal = 0.0;
             }
+        }
+
+        public static int Damage(IDamageable m, int damage, DamageType type=DamageType.Melee, Mobile dealer=null)
+        {
+            var ignoreArmor = type == DamageType.Spell || type == DamageType.SpellAOE;
+            var direct = ignoreArmor ? 0 : 1;
+            return Damage(m, dealer, damage, ignoreArmor, 100, 0, 0, 0, 0, 0, direct, false, type);
         }
 
         public static int Damage(IDamageable m, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy)
@@ -96,7 +104,7 @@ namespace Server
             return Damage(m, from, damage, false, phys, fire, cold, pois, nrgy, chaos, direct, false, type);
         }
 
-        public static int Damage(IDamageable damageable, Mobile from, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, bool keepAlive, DamageType type = DamageType.Melee)
+        public static int Damage(IDamageable damageable, Mobile damageDealer, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, bool keepAlive, DamageType type = DamageType.Melee)
         {
             Mobile m = damageable as Mobile;
 
@@ -108,11 +116,135 @@ namespace Server
 
             if (!Core.AOS)
             {
-                if(m != null)
-                    m.Damage(damage, from);
 
+                Shard.Debug("Aplicando Dano" + damage, m);
+                if (ArmorPierce.IsUnderEffects(m))
+                {
+                    Shard.Debug("Armor Pierce", m);
+                    damage += (int)((double)damage * .1);
+                }
+                 
+                #region Skill Mastery
+                //SkillMasterySpell.OnDamage(m, from, type, ref damage);
+                #endregion
+
+                #region Pet Training
+                if (damageDealer is BaseCreature || m is BaseCreature)
+                {
+                    SpecialAbility.CheckCombatTrigger(damageDealer, m, ref damage, type);
+
+                    if (PetTrainingHelper.Enabled)
+                    {
+                        if (damageDealer is BaseCreature && m is BaseCreature)
+                        {
+                            var profile = PetTrainingHelper.GetTrainingProfile((BaseCreature)damageDealer);
+
+                            if (profile != null)
+                            {
+                                profile.CheckProgress((BaseCreature)m);
+                            }
+
+                            profile = PetTrainingHelper.GetTrainingProfile((BaseCreature)m);
+
+                            if (profile != null && 0.3 > Utility.RandomDouble())
+                            {
+                                profile.CheckProgress((BaseCreature)damageDealer);
+                            }
+                        }
+
+                        if (damageDealer is BaseCreature && ((BaseCreature)damageDealer).Controlled && m.Player)
+                        {
+                            damage /= 2;
+                        }
+                    }
+                }
+                #endregion
+
+                if (type <= DamageType.Ranged)
+                {
+                    AttuneWeaponSpell.TryAbsorb(m, ref damage);
+                }
+
+                if (keepAlive && damage > m.Hits)
+                {
+                    damage = m.Hits;
+                }
+
+                Shard.Debug("Dano Base: "+damage, m);
+
+                if (damageDealer is BaseCreature && type <= DamageType.Ranged)
+                {
+                    ((BaseCreature)damageDealer).AlterMeleeDamageTo(m, ref damage);
+                }
+
+                if (m is BaseCreature && type <= DamageType.Ranged)
+                {
+                    ((BaseCreature)m).AlterMeleeDamageFrom(damageDealer, ref damage);
+                }
+
+                if (m is BaseCreature)
+                {
+                    ((BaseCreature)m).OnBeforeDamage(damageDealer, ref damage, type);
+                }
+
+                Shard.Debug("Dano Depois de Alteracoes PvE: " + damage, m);
+
+                if (pois > phys)
+                {
+                    if(CorpseSkinSpell.IsUnderEffects(m))
+                    {
+                        damage += 2;
+                    }
+                }
+
+                // PACTO DE SANGUE
+                Mobile necromanteLinkado = BloodOathSpell.GetBloodOath(damageDealer);
+                if(necromanteLinkado != null)
+                {
+                    // necro tomando o dano
+                    if(necromanteLinkado==m)
+                    {
+                        damage = (int)Math.Round(damage * 1.25);
+
+                        // Alvo toma um pouco tb
+                        damageDealer.SendMessage("O pacto de sangue do necromante causa o dano em voce tambem");
+                        AOS.Damage(damageDealer, damage / 2, DamageType.Spell, m);
+                    } 
+                }
+
+                // PRESSAGIO
+                if (EvilOmenSpell.TryEndEffect(m))
+                {
+                    damage = (int)(damage * 1.25);
+                }
+
+                // WRAITH FORM
+                if (damageDealer != null)
+                {
+                    DoLeech(damage, damageDealer, m);
+                }
+
+                if (m != null)
+                {
+                    var hue = 42;
+                    if(m is PlayerMobile)
+                    {
+                        hue = 32;
+                    }
+                    if(pois > phys)
+                    {
+                        hue = 68;
+                    } else if(ignoreArmor)
+                    {
+                        hue = 48;
+                    }
+                    DamageNumbers.ShowDamage(damage, damageDealer, m, hue);
+                    m.Damage(damage, damageDealer);
+                }
                 return damage;
             }
+
+            return damage;
 
             #region Mondain's Legacy
             if (m != null)
@@ -122,7 +254,7 @@ namespace Server
                     ITalismanProtection prot = i as ITalismanProtection;
 
                     if (prot != null)
-                        damage = prot.Protection.ScaleDamage(from, damage);
+                        damage = prot.Protection.ScaleDamage(damageDealer, damage);
                 });
             }
             #endregion
@@ -160,8 +292,8 @@ namespace Server
             bool ranged = type == DamageType.Ranged;
             BaseQuiver quiver = null;
 
-            if (ranged && from.Race != Race.Gargoyle)
-                quiver = from.FindItemOnLayer(Layer.Cloak) as BaseQuiver;
+            if (ranged && damageDealer.Race != Race.Gargoyle)
+                quiver = damageDealer.FindItemOnLayer(Layer.Cloak) as BaseQuiver;
 
             int totalDamage;
 
@@ -185,7 +317,7 @@ namespace Server
                 }
 
                 if (m != null)
-                    BaseFishPie.ScaleDamage(from, m, ref totalDamage, phys, fire, cold, pois, nrgy, direct);
+                    BaseFishPie.ScaleDamage(m, ref totalDamage, phys, fire, cold, pois, nrgy, direct);
 
                 if (Core.HS && ArmorPierce.IsUnderEffects(m))
                 {
@@ -193,7 +325,7 @@ namespace Server
                 }
 
                 if (totalDamage < 1)
-                    totalDamage = 1;           
+                    totalDamage = 1;
             }
             else if (Core.ML && m is PlayerMobile)
             {
@@ -213,18 +345,15 @@ namespace Server
             // object being damaged is not a mobile, so we will end here
             if (damageable is Item)
             {
-                return damageable.Damage(totalDamage, from);
+                return damageable.Damage(totalDamage, damageDealer);
             }
 
             #region Evil Omen, Blood Oath and reflect physical
-            if (EvilOmenSpell.TryEndEffect(m))
-            {
-                totalDamage = (int)(totalDamage * 1.25);
-            }
+          
 
-            if (from != null && !from.Deleted && from.Alive && !from.IsDeadBondedPet)
+            if (damageDealer != null && !damageDealer.Deleted && damageDealer.Alive && !damageDealer.IsDeadBondedPet)
             {
-                Mobile oath = BloodOathSpell.GetBloodOath(from);
+                Mobile oath = BloodOathSpell.GetBloodOath(damageDealer);
 
                 /* Per EA's UO Herald Pub48 (ML):
                 * ((resist spellsx10)/20 + 10=percentage of damage resisted)
@@ -238,35 +367,35 @@ namespace Server
                     int originalDamage = totalDamage;
                     totalDamage = (int)(totalDamage * 1.2);
 
-                    if (!Core.TOL && totalDamage > 35 && from is PlayerMobile) /* capped @ 35, seems no expansion */
+                    if (!Core.TOL && totalDamage > 35 && damageDealer is PlayerMobile) /* capped @ 35, seems no expansion */
                     {
                         totalDamage = 35;
                     }
 
                     if (Core.ML && m is BaseCreature)
                     {
-                        from.Damage((int)(originalDamage * (1 - (((from.Skills.MagicResist.Value * .5) + 10) / 100))), m);
+                        damageDealer.Damage((int)(originalDamage * (1 - (((damageDealer.Skills.MagicResist.Value * .5) + 10) / 100))), m);
                     }
                     else
                     {
-                        from.Damage(originalDamage, m);
+                        damageDealer.Damage(originalDamage, m);
                     }
                 }
-                else if (!ignoreArmor && from != m)
+                else if (!ignoreArmor && damageDealer != m)
                 {
                     int reflectPhys = Math.Min(105, AosAttributes.GetValue(m, AosAttribute.ReflectPhysical));
 
                     if (reflectPhys != 0)
                     {
-                        if (from is ExodusMinion && ((ExodusMinion)from).FieldActive || from is ExodusOverseer && ((ExodusOverseer)from).FieldActive)
+                        if (damageDealer is ExodusMinion && ((ExodusMinion)damageDealer).FieldActive || damageDealer is ExodusOverseer && ((ExodusOverseer)damageDealer).FieldActive)
                         {
-                            from.FixedParticles(0x376A, 20, 10, 0x2530, EffectLayer.Waist);
-                            from.PlaySound(0x2F4);
+                            damageDealer.FixedParticles(0x376A, 20, 10, 0x2530, EffectLayer.Waist);
+                            damageDealer.PlaySound(0x2F4);
                             m.SendAsciiMessage("Your weapon cannot penetrate the creature's magical barrier");
                         }
                         else
                         {
-                            from.Damage(Scale((damage * phys * (100 - (ignoreArmor ? 0 : m.PhysicalResistance))) / 10000, reflectPhys), m);
+                            damageDealer.Damage(Scale((damage * phys * (100 - (ignoreArmor ? 0 : m.PhysicalResistance))) / 10000, reflectPhys), m);
                         }
                     }
                 }
@@ -287,14 +416,14 @@ namespace Server
             SpiritualityVirtue.GetDamageReduction(m, ref totalDamage);
 
             #region Berserk
-            BestialSetHelper.OnDamage(m, from, ref totalDamage);
+            BestialSetHelper.OnDamage(m, damageDealer, ref totalDamage);
             #endregion
 
             #region Epiphany Set
             EpiphanyHelper.OnHit(m, totalDamage);
             #endregion
 
-            if (type == DamageType.Spell && m != null && Feint.Registry.ContainsKey(m) && Feint.Registry[m].Enemy == from)
+            if (type == DamageType.Spell && m != null && Feint.Registry.ContainsKey(m) && Feint.Registry[m].Enemy == damageDealer)
                 totalDamage -= (int)((double)damage * ((double)Feint.Registry[m].DamageReduction / 100));
 
             if (m.Hidden && Core.ML && type >= DamageType.Spell)
@@ -303,25 +432,25 @@ namespace Server
 
                 if (Utility.Random(100) < chance)
                 {
-                    m.RevealingAction();
+                    m.RevealingAction(false);
                     m.NextSkillTime = Core.TickCount + (12000 - ((int)m.Skills[SkillName.Hiding].Value) * 100);
                 }
             }
 
             #region Skill Mastery
-            SkillMasterySpell.OnDamage(m, from, type, ref totalDamage);
+            SkillMasterySpell.OnDamage(m, damageDealer, type, ref totalDamage);
             #endregion
 
             #region Pet Training
-            if (from is BaseCreature || m is BaseCreature)
+            if (damageDealer is BaseCreature || m is BaseCreature)
             {
-                SpecialAbility.CheckCombatTrigger(from, m, ref totalDamage, type);
+                SpecialAbility.CheckCombatTrigger(damageDealer, m, ref totalDamage, type);
 
                 if (PetTrainingHelper.Enabled)
                 {
-                    if (from is BaseCreature && m is BaseCreature)
+                    if (damageDealer is BaseCreature && m is BaseCreature)
                     {
-                        var profile = PetTrainingHelper.GetTrainingProfile((BaseCreature)from);
+                        var profile = PetTrainingHelper.GetTrainingProfile((BaseCreature)damageDealer);
 
                         if (profile != null)
                         {
@@ -332,11 +461,11 @@ namespace Server
 
                         if (profile != null && 0.3 > Utility.RandomDouble())
                         {
-                            profile.CheckProgress((BaseCreature)from);
+                            profile.CheckProgress((BaseCreature)damageDealer);
                         }
                     }
 
-                    if (from is BaseCreature && ((BaseCreature)from).Controlled && m.Player)
+                    if (damageDealer is BaseCreature && ((BaseCreature)damageDealer).Controlled && m.Player)
                     {
                         totalDamage /= 2;
                     }
@@ -354,19 +483,19 @@ namespace Server
                 totalDamage = m.Hits;
             }
 
-            if (from is BaseCreature && type <= DamageType.Ranged)
+            if (damageDealer is BaseCreature && type <= DamageType.Ranged)
             {
-                ((BaseCreature)from).AlterMeleeDamageTo(m, ref totalDamage);
+                ((BaseCreature)damageDealer).AlterMeleeDamageTo(m, ref totalDamage);
             }
 
             if (m is BaseCreature && type <= DamageType.Ranged)
             {
-                ((BaseCreature)m).AlterMeleeDamageFrom(from, ref totalDamage);
+                ((BaseCreature)m).AlterMeleeDamageFrom(damageDealer, ref totalDamage);
             }
 
             if (m is BaseCreature)
             {
-                ((BaseCreature)m).OnBeforeDamage(from, ref totalDamage, type);
+                ((BaseCreature)m).OnBeforeDamage(damageDealer, ref totalDamage, type);
             }
 
             if (totalDamage <= 0)
@@ -374,17 +503,17 @@ namespace Server
                 return 0;
             }
 
-            if (from != null)
+            if (damageDealer != null)
             {
-                DoLeech(totalDamage, from, m);
+                DoLeech(totalDamage, damageDealer, m);
             }
 
-            totalDamage = m.Damage(totalDamage, from, true, false);
+            totalDamage = m.Damage(totalDamage, damageDealer, true, false);
 
-            if (Core.SA && type == DamageType.Melee && from is BaseCreature &&
+            if (Core.SA && type == DamageType.Melee && damageDealer is BaseCreature &&
                 (m is PlayerMobile || (m is BaseCreature && !((BaseCreature)m).IsMonster)))
             {
-                from.RegisterDamage(totalDamage / 4, m);
+                damageDealer.RegisterDamage(totalDamage / 4, m);
             }
 
             SpiritSpeak.CheckDisrupt(m);
@@ -398,10 +527,10 @@ namespace Server
             if (ManaPhasingOrb.IsInManaPhase(m))
                 ManaPhasingOrb.RemoveFromTable(m);
 
-            SoulChargeContext.CheckHit(from, m, totalDamage);
+            SoulChargeContext.CheckHit(damageDealer, m, totalDamage);
 
             Spells.Mysticism.SleepSpell.OnDamage(m);
-            Spells.Mysticism.PurgeMagicSpell.OnMobileDoDamage(from);
+            Spells.Mysticism.PurgeMagicSpell.OnMobileDoDamage(damageDealer);
             #endregion
 
             BaseCostume.OnDamaged(m);
@@ -428,7 +557,7 @@ namespace Server
             {
                 if (context.Type == typeof(WraithFormSpell))
                 {
-                    int manaLeech = AOS.Scale(damageGiven, Math.Min(target.Mana, (int)from.Skills.SpiritSpeak.Value / 5)); // Wraith form gives 5-20% mana leech
+                    int manaLeech = AOS.Scale(damageGiven, Math.Min(target.Mana, (5 + (int)((15 * from.Skills.SpiritSpeak.Value) / 100)))); // Wraith form gives 5-20% mana leech
 
                     if (manaLeech != 0)
                     {
@@ -457,15 +586,15 @@ namespace Server
         }
 
         #region AOS Status Bar
-        public static int GetStatus( Mobile from, int index )
-		{
-			switch ( index )
-			{
-				case 0: return from.GetMaxResistance( ResistanceType.Physical );
-				case 1: return from.GetMaxResistance( ResistanceType.Fire );
-				case 2: return from.GetMaxResistance( ResistanceType.Cold );
-				case 3: return from.GetMaxResistance( ResistanceType.Poison );
-				case 4: return from.GetMaxResistance( ResistanceType.Energy );
+        public static int GetStatus(Mobile from, int index)
+        {
+            switch (index)
+            {
+                case 0: return from.GetMaxResistance(ResistanceType.Physical);
+                case 1: return from.GetMaxResistance(ResistanceType.Fire);
+                case 2: return from.GetMaxResistance(ResistanceType.Cold);
+                case 3: return from.GetMaxResistance(ResistanceType.Poison);
+                case 4: return from.GetMaxResistance(ResistanceType.Energy);
                 case 5: return Math.Min(45 + BaseArmor.GetRefinedDefenseChance(from), AosAttributes.GetValue(from, AosAttribute.DefendChance));
                 case 6: return 45 + BaseArmor.GetRefinedDefenseChance(from);
                 case 7: return Math.Min(from.Race == Race.Gargoyle ? 50 : 45, AosAttributes.GetValue(from, AosAttribute.AttackChance));
@@ -476,10 +605,10 @@ namespace Server
                 case 12: return Math.Min(6, AosAttributes.GetValue(from, AosAttribute.CastRecovery));
                 case 13: return Math.Min(4, AosAttributes.GetValue(from, AosAttribute.CastSpeed));
                 case 14: return Math.Min(40, AosAttributes.GetValue(from, AosAttribute.LowerManaCost)) + BaseArmor.GetInherentLowerManaCost(from);
-                
-                case 15: return (int)RegenRates.HitPointRegen(from); // HP   REGEN
-                case 16: return (int)RegenRates.StamRegen(from); // Stam REGEN
-                case 17: return (int)RegenRates.ManaRegen(from); // MANA REGEN
+
+                case 15: return RegenRates.HitPointRegen(from); // HP   REGEN
+                case 16: return RegenRates.StamRegen(from); // Stam REGEN
+                case 17: return RegenRates.ManaRegen(from); // MANA REGEN
                 case 18: return Math.Min(105, AosAttributes.GetValue(from, AosAttribute.ReflectPhysical)); // reflect phys
                 case 19: return Math.Min(50, AosAttributes.GetValue(from, AosAttribute.EnhancePotions)); // enhance pots
 
@@ -494,8 +623,8 @@ namespace Server
                 case 26: return AosAttributes.GetValue(from, AosAttribute.BonusHits); // hits inc
                 case 27: return AosAttributes.GetValue(from, AosAttribute.BonusStam); // stam inc
                 case 28: return AosAttributes.GetValue(from, AosAttribute.BonusMana); // mana inc
-				default: return 0;
-			}
+                default: return 0;
+            }
         }
         #endregion
     }
@@ -766,7 +895,7 @@ namespace Server
                     value -= 60;
 
                 if (DivineFurySpell.UnderEffect(m))
-                    value += DivineFurySpell.GetAttackBonus(m);                   
+                    value += DivineFurySpell.GetAttackBonus(m);
 
                 if (BaseWeapon.CheckAnimal(m, typeof(GreyWolf)) || BaseWeapon.CheckAnimal(m, typeof(BakeKitsune)))
                     value += 20; // attacker gets 20% bonus when under Wolf or Bake Kitsune form
@@ -880,6 +1009,20 @@ namespace Server
 
                 //Virtue Artifacts
                 value += AnkhPendant.GetManaRegenModifier(m);
+            }
+            else if (attribute == AosAttribute.BonusDex)
+            {
+                #region City Loyalty
+                if (CityLoyaltySystem.HasTradeDeal(m, TradeDeal.OrderOfEngineers))
+                    value += 3;
+                #endregion
+            }
+            else if (attribute == AosAttribute.BonusStr)
+            {
+                #region City Loyalty
+                if (CityLoyaltySystem.HasTradeDeal(m, TradeDeal.MiningCooperative))
+                    value += 3;
+                #endregion
             }
             #endregion
 
@@ -1363,13 +1506,14 @@ namespace Server
         HitFatigue = 0x10000000,
         HitManaDrain = 0x20000000,
         SplinteringWeapon = 0x40000000,
-        ReactiveParalyze =  0x80000000,
+        ReactiveParalyze = 0x80000000,
     }
 
     public sealed class AosWeaponAttributes : BaseAttributes
     {
         public static bool IsValid(AosWeaponAttribute attribute)
         {
+
             if (!Core.AOS)
             {
                 return false;
@@ -1488,7 +1632,7 @@ namespace Server
 
             if (HitLeechHits > 0)
             {
-                double postcap = (double)HitLeechHits / (double)ItemPropertyInfo.GetMaxIntensity(wep, AosWeaponAttribute.HitLeechHits);
+                double postcap = (double)HitLeechHits / (double)Imbuing.GetPropRange(wep, AosWeaponAttribute.HitLeechHits)[1];
                 if (postcap < 1.0) postcap = 1.0;
 
                 int newhits = (int)((wep.MlSpeed * 2500 / (100 + weaponSpeed)) * postcap);
@@ -1496,13 +1640,13 @@ namespace Server
                 if (wep is BaseRanged)
                     newhits /= 2;
 
-                if(HitLeechHits > newhits)
+                if (HitLeechHits > newhits)
                     HitLeechHits = newhits;
             }
 
             if (HitLeechMana > 0)
             {
-                double postcap = (double)HitLeechMana / (double)ItemPropertyInfo.GetMaxIntensity(wep, AosWeaponAttribute.HitLeechMana);
+                double postcap = (double)HitLeechMana / (double)Imbuing.GetPropRange(wep, AosWeaponAttribute.HitLeechMana)[1];
                 if (postcap < 1.0) postcap = 1.0;
 
                 int newmana = (int)((wep.MlSpeed * 2500 / (100 + weaponSpeed)) * postcap);
@@ -1510,7 +1654,7 @@ namespace Server
                 if (wep is BaseRanged)
                     newmana /= 2;
 
-                if(HitLeechMana > newmana)
+                if (HitLeechMana > newmana)
                     HitLeechMana = newmana;
             }
         }
@@ -1942,14 +2086,12 @@ namespace Server
     [Flags]
     public enum ExtendedWeaponAttribute
     {
-        BoneBreaker     = 0x00000001,
-        HitSwarm        = 0x00000002,
-        HitSparks       = 0x00000004,
-        Bane            = 0x00000008,
-        MysticWeapon    = 0x00000010,
-        AssassinHoned   = 0x00000020,
-        Focus           = 0x00000040,
-        HitExplosion    = 0x00000080
+        BoneBreaker = 0x00000001,
+        HitSwarm = 0x00000002,
+        HitSparks = 0x00000004,
+        Bane = 0x00000008,
+        MysticWeapon = 0x00000010,
+        AssassinHoned = 0x00000020
     }
 
     public sealed class ExtendedWeaponAttributes : BaseAttributes
@@ -1969,7 +2111,7 @@ namespace Server
         {
         }
 
-        public static int GetValue(Mobile m, ExtendedWeaponAttribute attribute)
+        public static int GetValue(Mobile m, AosWeaponAttribute attribute)
         {
             if (!Core.AOS)
                 return 0;
@@ -1987,7 +2129,7 @@ namespace Server
 
                 if (obj is BaseWeapon)
                 {
-                    ExtendedWeaponAttributes attrs = ((BaseWeapon)obj).ExtendedWeaponAttributes;
+                    AosWeaponAttributes attrs = ((BaseWeapon)obj).WeaponAttributes;
 
                     if (attrs != null)
                         value += attrs[attribute];
@@ -2089,32 +2231,6 @@ namespace Server
             set
             {
                 this[ExtendedWeaponAttribute.AssassinHoned] = value;
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int Focus
-        {
-            get
-            {
-                return this[ExtendedWeaponAttribute.Focus];
-            }
-            set
-            {
-                this[ExtendedWeaponAttribute.Focus] = value;
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int HitExplosion
-        {
-            get
-            {
-                return this[ExtendedWeaponAttribute.HitExplosion];
-            }
-            set
-            {
-                this[ExtendedWeaponAttribute.HitExplosion] = value;
             }
         }
     }
@@ -2389,11 +2505,6 @@ namespace Server
 
         public void AddTo(Mobile m)
         {
-            if (Discordance.UnderPVPEffects(m))
-            {
-                return;
-            }
-
             Remove();
 
             for (int i = 0; i < 5; ++i)
@@ -2408,7 +2519,7 @@ namespace Server
                     m_Mods = new List<SkillMod>();
 
                 SkillMod sk = new DefaultSkillMod(skill, true, bonus);
-                sk.ObeyCap = true;
+                sk.ObeyCap = !Shard.POL_STYLE; // passa do cap se for estilo t2a/pol
                 m.AddSkillMod(sk);
                 m_Mods.Add(sk);
             }
@@ -3426,8 +3537,8 @@ namespace Server
 
         public int GetValue(int bitmask)
         {
-            if (!Core.AOS)
-                return 0;
+            //if (!Core.AOS)
+            //    return 0;
 
             uint mask = (uint)bitmask;
 

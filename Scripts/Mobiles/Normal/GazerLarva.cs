@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public GazerLarva()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a gazer larva";
+            this.Name = "magolho jovem";
             this.Body = 778;
             this.BaseSoundID = 377;
 

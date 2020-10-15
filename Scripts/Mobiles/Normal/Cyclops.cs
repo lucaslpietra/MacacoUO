@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public Cyclops()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a cyclopean warrior";
+            this.Name = "ciclope";
             this.Body = 75;
             this.BaseSoundID = 604;
 
@@ -33,6 +33,7 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.MagicResist, 60.3, 105.0);
             this.SetSkill(SkillName.Tactics, 80.1, 100.0);
             this.SetSkill(SkillName.Wrestling, 80.1, 90.0);
+            SetSkill(SkillName.Parry, 80);
 
             this.Fame = 4500;
             this.Karma = -4500;

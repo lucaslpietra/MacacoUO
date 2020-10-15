@@ -542,7 +542,7 @@ namespace Server.Mobiles
             int dist = 4;
             Point3D p = Point3D.Zero;
 
-            IPooledEnumerable eable = map.GetMobilesInRange(Location, dist);
+            IPooledEnumerable eable = this.Map.GetMobilesInRange(this.Location, dist);
 
             foreach (Mobile m in eable)
             {
@@ -583,7 +583,7 @@ namespace Server.Mobiles
 
             Timer.DelayCall(TimeSpan.FromMilliseconds(Utility.RandomMinMax(300, 350) * (_Offsets.Length / 2)), () =>
                 {
-                    eable = map.GetMobilesInRange(this.Location, dist);
+                    eable = this.Map.GetMobilesInRange(this.Location, dist);
 
                     foreach (Mobile m in eable)
                     {
@@ -606,16 +606,16 @@ namespace Server.Mobiles
                                 Movement.Movement.Offset(d, ref x, ref y);
                                 int z = map.GetAverageZ(x, y);
 
-                                if (!map.CanFit(new Point3D(x, y, z), 16, false, false))
+                                if (!this.Map.CanFit(new Point3D(x, y, z), 16, false, false))
                                 {
-                                    m.MoveToWorld(new Point3D(lastx, lasty, map.GetAverageZ(lastx, lasty)), map);
+                                    m.MoveToWorld(new Point3D(lastx, lasty, this.Map.GetAverageZ(lastx, lasty)), this.Map);
                                     AOS.Damage(m, this, Utility.RandomMinMax(100, 150), 0, 0, 0, 0, 100);
                                     break;
                                 }
 
                                 if (range >= 15 && (orx != x || ory != y))
                                 {
-                                    m.MoveToWorld(new Point3D(x, y, z), map);
+                                    m.MoveToWorld(new Point3D(x, y, z), this.Map);
                                     AOS.Damage(m, this, Utility.RandomMinMax(100, 150), 0, 0, 0, 0, 100);
                                 }
                             }
@@ -740,9 +740,10 @@ namespace Server.Mobiles
             SetSkill(SkillName.Meditation, 100.0);
             SetSkill(SkillName.Focus, 100.0);
             SetSkill(SkillName.Spellweaving, 100.0);
-
-            SetAreaEffect(AreaEffect.AuraOfEnergy);
         }
+
+        public override bool HasAura { get { return true; } }
+        public override int AuraEnergyDamage { get { return 100; } }
 
         public IgnisFatalis(Serial serial)
             : base(serial)

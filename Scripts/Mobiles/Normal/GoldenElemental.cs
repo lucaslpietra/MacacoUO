@@ -45,7 +45,7 @@ namespace Server.Mobiles
 
             this.VirtualArmor = 60;
 
-            Item ore = new GoldOre(oreAmount);
+            Item ore = new SilverOre(oreAmount);
             ore.ItemID = 0x19B9;
             this.PackItem(ore);
         }

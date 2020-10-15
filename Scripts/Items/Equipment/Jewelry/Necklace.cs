@@ -94,6 +94,74 @@ namespace Server.Items
         }
     }
 
+    public class GoldNecklaceMagico : BaseNecklace
+    {
+        [Constructable]
+        public GoldNecklaceMagico()
+            : base(0x1088)
+        {
+            Name = "Colar de Ouro Magico";
+            this.SkillBonuses.Skill_1_Name = Utility.RandomSkill();
+            this.SkillBonuses.Skill_1_Value = 1;
+            this.Weight = 0.1;
+        }
+
+        public GoldNecklaceMagico(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class GoldNecklaceBonito : BaseNecklace
+    {
+        [Constructable]
+        public GoldNecklaceBonito()
+            : base(0x1088)
+        {
+            Name = "Colar de Ouro Elegante";
+            switch (Utility.Random(3))
+            {
+                case 0: this.Attributes.BonusStr = 1; break;
+                case 1: this.Attributes.BonusDex = 1; break;
+                case 2: this.Attributes.BonusInt = 1; break;
+            }
+            this.Weight = 0.1;
+        }
+
+        public GoldNecklaceBonito(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
     public class GoldBeadNecklace : BaseNecklace
     {
         [Constructable]
@@ -104,6 +172,74 @@ namespace Server.Items
         }
 
         public GoldBeadNecklace(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class GoldBeadNecklaceMagico : BaseNecklace
+    {
+        [Constructable]
+        public GoldBeadNecklaceMagico()
+            : base(0x1089)
+        {
+            this.Weight = 0.1;
+            Name = "Colar de Bolinhas Magico";
+            this.SkillBonuses.Skill_1_Name = Utility.RandomSkill();
+            this.SkillBonuses.Skill_1_Value = 1;
+        }
+
+        public GoldBeadNecklaceMagico(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class GoldBeadNecklaceBonito : BaseNecklace
+    {
+        [Constructable]
+        public GoldBeadNecklaceBonito()
+            : base(0x1089)
+        {
+            this.Weight = 0.1;
+            Name = "Colar de Bolinhas Elegante";
+            switch (Utility.Random(3))
+            {
+                case 0: this.Attributes.BonusStr = 1; break;
+                case 1: this.Attributes.BonusDex = 1; break;
+                case 2: this.Attributes.BonusInt = 1; break;
+            }
+        }
+
+        public GoldBeadNecklaceBonito(Serial serial)
             : base(serial)
         {
         }

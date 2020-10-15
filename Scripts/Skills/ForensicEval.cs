@@ -1,9 +1,12 @@
 using System;
 using System.Linq;
 using System.Text;
+using Server.Engines.Harvest;
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
+using System.Collections.Generic;
+using Server.Ziden.Traducao;
 
 namespace Server.SkillHandlers
 {
@@ -19,12 +22,65 @@ namespace Server.SkillHandlers
             SkillInfo.Table[(int)SkillName.Forensics].Callback = new SkillUseCallback(OnUse);
         }
 
+      
+        public static bool TellHarvestInformation(Mobile from, HarvestSystem system, object target)
+        {
+            int tileID;
+            Map map;
+            Point3D loc;
+
+            if (!system.GetHarvestDetails(from, null, target, out tileID, out map, out loc))
+            {
+                //from.SendMessage("Este local nao parece ter recursos");
+                return false;
+            }
+
+            var definition = system.GetDefinition(tileID);
+
+            if(definition==null)
+            {
+                Shard.Debug("Definition null");
+                return false;
+            }
+
+            var bank = definition.GetBank(map, loc.X, loc.Y);
+            bool available = (bank != null && bank.Current >= definition.ConsumedPerHarvest);
+
+            if (bank == null)
+            {
+                //.SendMessage("Parece nao haver nenhum tipo de recurso ali");
+                return false;
+            }
+
+            List<Type> harvestables = new List<Type>();
+
+            if (bank.Vein.FallbackResource != null)
+            {
+                foreach (var r in bank.Vein.FallbackResource.Types)
+                {
+                    harvestables.Add(r);
+                }
+            }
+
+            foreach (var r in bank.Vein.PrimaryResource.Types)
+            {
+                harvestables.Add(r);
+            }
+            var str = "Aqui voce poderia encontrar  ";
+            foreach (var t in harvestables)
+            {
+                str += Trads.GetNome(t) + "  ";
+            }
+            from.SendMessage(str);
+            return true;
+        }
+
         public static TimeSpan OnUse(Mobile m)
         {
             m.Target = new ForensicTarget();
             m.RevealingAction();
 
-            m.SendLocalizedMessage(501000); // Show me the crime.
+            m.SendMessage("O que voce gostaria de investigar ?"); // Show me the crime.
 
             return TimeSpan.FromSeconds(1.0);
         }
@@ -32,7 +88,7 @@ namespace Server.SkillHandlers
         public class ForensicTarget : Target
         {
             public ForensicTarget()
-                : base(10, false, TargetFlags.None)
+                : base(10, true, TargetFlags.None)
             {
             }
 
@@ -41,15 +97,18 @@ namespace Server.SkillHandlers
                 double skill = from.Skills[SkillName.Forensics].Value;
                 double minSkill = 30.0;
 
+                from.PublicOverheadMessage(Network.MessageType.Emote, 0, false, "* Investigando *");
+
                 if (target is Corpse)
                 {
+                    Shard.Debug("Corpse");
                     if (skill < minSkill)
                     {
-                        from.SendLocalizedMessage(501003); //You notice nothing unusual.
+                        from.SendMessage("Voce nao ve nada fora do comum"); //You notice nothing unusual.
                         return;
                     }
 
-                    if (from.CheckTargetSkill(SkillName.Forensics, target, minSkill, 55.0))
+                    if (from.CheckTargetSkillMinMax(SkillName.Forensics, target, minSkill, 100))
                     {
                         Corpse c = (Corpse)target;
 
@@ -59,7 +118,7 @@ namespace Server.SkillHandlers
                             c.m_Forensicist = from.Name;
 
                         if (((Body)c.Amount).IsHuman)
-                            from.SendLocalizedMessage(1042751, (c.Killer == null ? "no one" : c.Killer.Name));//This person was killed by ~1_KILLER_NAME~
+                            from.SendMessage("Isto foi morto por " + (c.Killer == null ? "no one" : c.Killer.Name));//This person was killed by ~1_KILLER_NAME~
 
                         if (c.Looters.Count > 0)
                         {
@@ -91,7 +150,7 @@ namespace Server.SkillHandlers
                     {
                         from.SendLocalizedMessage(501003);//You notice nothing unusual.
                     }
-                    else if (from.CheckTargetSkill(SkillName.Forensics, target, 36.0, 100.0))
+                    else if (from.CheckTargetSkillMinMax(SkillName.Forensics, target, 36.0, 100.0))
                     {
                         if (target is PlayerMobile && ((PlayerMobile)target).NpcGuild == NpcGuild.ThievesGuild)
                         {
@@ -111,9 +170,9 @@ namespace Server.SkillHandlers
                 {
                     if (skill < 41.0)
                     {
-                        from.SendLocalizedMessage(501003); //You notice nothing unusual.
+                        from.SendLocalizedMessage("Nada estranho...."); //You notice nothing unusual.
                     }
-                    else if (from.CheckTargetSkill(SkillName.Forensics, target, 41.0, 100.0))
+                    else if (from.CheckTargetSkillMinMax(SkillName.Forensics, target, 41.0, 100.0))
                     {
                         ILockpickable p = (ILockpickable)target;
 
@@ -131,7 +190,7 @@ namespace Server.SkillHandlers
                         from.SendLocalizedMessage(501001);//You cannot determain anything useful.
                     }
                 }
-                else if (Core.SA && target is Item)
+                else if (target is Item)
                 {
                     Item item = (Item)target;
 
@@ -139,9 +198,9 @@ namespace Server.SkillHandlers
                     {
                         ((IForensicTarget)item).OnForensicEval(from);
                     }
-                    else  if (skill < 41.0)
+                    else if (skill < 41.0)
                     {
-                        from.SendLocalizedMessage(501001);//You cannot determain anything useful.
+                        from.SendLocalizedMessage("Voce nao pode ver nada estranho");//You cannot determain anything useful.
                         return;
                     }
 
@@ -152,7 +211,7 @@ namespace Server.SkillHandlers
                         if (honestySocket.HonestyOwner == null)
                             Server.Services.Virtues.HonestyVirtue.AssignOwner(honestySocket);
 
-                        if (from.CheckTargetSkill(SkillName.Forensics, target, 41.0, 100.0))
+                        if (from.CheckTargetSkillMinMax(SkillName.Forensics, target, 41.0, 100.0))
                         {
                             string region = honestySocket.HonestyRegion == null ? "an unknown place" : honestySocket.HonestyRegion;
 
@@ -165,6 +224,15 @@ namespace Server.SkillHandlers
                                 from.SendLocalizedMessage(1151522, region); // You find seeds from a familiar plant stuck to the item which suggests that this item is from ~1_val~.
                             }
                         }
+                    }
+                }
+                else
+                {
+                    if (from.CheckTargetSkillMinMax(SkillName.Forensics, target, 0, 100))
+                    {
+                        if (!ForensicEvaluation.TellHarvestInformation(from, Lumberjacking.System, target))
+                            if (!ForensicEvaluation.TellHarvestInformation(from, Mining.System, target))
+                                from.SendMessage("Nao parece haver recursos neste local");
                     }
                 }
             }

@@ -10,7 +10,7 @@ namespace Server.Items
         {
             Hue = 0x455;
             WeaponAttributes.HitLeechHits = 40;
-            Slayer = SlayerName.Repond;
+            Slayer = SlayerName.Humanoides;
             Attributes.WeaponSpeed = 30;
             Attributes.WeaponDamage = 35;
         }

@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public DireWolf()
             : base(AIType.AI_Melee,FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a dire wolf";
+            Name = "lobo selvagem";
             Body = 23;
             BaseSoundID = 0xE5;
 

@@ -10,7 +10,7 @@ namespace Server.Items
         [Constructable]
         public Lavaliere()
         {
-            Hue = 1194;		
+            Hue = 39;		
             AbsorptionAttributes.EaterKinetic = 20;
             Attributes.DefendChance = 10;
             Resistances.Physical = 15;

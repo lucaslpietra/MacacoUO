@@ -73,7 +73,7 @@ namespace Server.Engines.Plants
                     BaseGump.SendGump(new SeedBoxGump((PlayerMobile)m, this));
             }
 
-            if (m.AccessLevel > AccessLevel.Player)
+            if (m.AccessLevel > AccessLevel.VIP)
                 base.OnDoubleClick(m);
         }
 

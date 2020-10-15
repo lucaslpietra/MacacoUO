@@ -7,16 +7,21 @@ namespace Server.Mobiles
     [TypeAlias("Server.Mobiles.OphidianAvenger")]
     public class OphidianKnight : BaseCreature
     {
-        private static readonly string[] m_Names = new string[]
+        /*
+        public override void OnThink()
         {
-            "an ophidian knight-errant",
-            "an ophidian avenger"
-        };
+            base.OnThink();
+            this.BodyValue = 16;
+            this.Animate(AnimationType.Die, 0);
+            //this.Body = 86;
+        }
+        */
+
         [Constructable]
         public OphidianKnight()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = m_Names[Utility.Random(m_Names.Length)];
+            this.Name = "cavaleiro ophidiano";
             this.Body = 86;
             this.BaseSoundID = 634;
 
@@ -69,6 +74,7 @@ namespace Server.Mobiles
                 return Poison.Lethal;
             }
         }
+        /*
         public override Poison HitPoison
         {
             get
@@ -76,6 +82,7 @@ namespace Server.Mobiles
                 return Poison.Lethal;
             }
         }
+        */
         public override int TreasureMapLevel
         {
             get
@@ -95,7 +102,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 2);
+            this.AddLoot(LootPack.Rich);
         }
 
         public override void Serialize(GenericWriter writer)

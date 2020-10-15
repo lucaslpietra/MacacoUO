@@ -21,7 +21,7 @@ namespace Server.Mobiles
             this.m_Owner = owner;
             this.m_ExpireTime = DateTime.UtcNow + TimeSpan.FromMinutes(1.0);
 
-            this.Name = "a plague spawn";
+            this.Name = "praga";
             this.Hue = Utility.Random(0x11, 15);
 
             switch ( Utility.Random(12) )

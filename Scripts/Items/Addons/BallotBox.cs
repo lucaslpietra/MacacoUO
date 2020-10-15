@@ -115,7 +115,7 @@ namespace Server.Items
         {
             if (!from.InRange(this.GetWorldLocation(), 2))
             {
-                from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
+                from.LocalOverheadMessage(MessageType.Regular, 0x7B2, 1019045); // I can't reach that.
             }
             else
             {
@@ -242,7 +242,7 @@ namespace Server.Items
 
                 if (from.Map != this.m_Box.Map || !from.InRange(this.m_Box.GetWorldLocation(), 2))
                 {
-                    from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
+                    from.LocalOverheadMessage(MessageType.Regular, 0x7B2, 1019045); // I can't reach that.
                     return;
                 }
 
@@ -330,7 +330,7 @@ namespace Server.Items
 
                 if (from.Map != this.m_Box.Map || !from.InRange(this.m_Box.GetWorldLocation(), 2))
                 {
-                    from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
+                    from.LocalOverheadMessage(MessageType.Regular, 0x7B2, 1019045); // I can't reach that.
                     return;
                 }
 
@@ -355,7 +355,7 @@ namespace Server.Items
 
                 if (from.Map != this.m_Box.Map || !from.InRange(this.m_Box.GetWorldLocation(), 2))
                 {
-                    from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
+                    from.LocalOverheadMessage(MessageType.Regular, 0x7B2, 1019045); // I can't reach that.
                     return;
                 }
 

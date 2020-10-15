@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public abstract class BaseScales : Item, ICommodity
     {
-        protected virtual CraftResource DefaultResource { get { return CraftResource.RedScales; } }
+        protected virtual CraftResource DefaultResource { get { return CraftResource.EscamasVermelhas; } }
 
         private CraftResource m_Resource;
         public BaseScales(CraftResource resource)
@@ -108,7 +108,7 @@ namespace Server.Items
 
         [Constructable]
         public RedScales(int amount)
-            : base(CraftResource.RedScales, amount)
+            : base(CraftResource.EscamasVermelhas, amount)
         {
         }
 
@@ -134,7 +134,7 @@ namespace Server.Items
 
     public class YellowScales : BaseScales
     {
-        protected override CraftResource DefaultResource { get { return CraftResource.YellowScales; } }
+        protected override CraftResource DefaultResource { get { return CraftResource.EscamasAmarelas; } }
 
         [Constructable]
         public YellowScales()
@@ -144,7 +144,7 @@ namespace Server.Items
 
         [Constructable]
         public YellowScales(int amount)
-            : base(CraftResource.YellowScales, amount)
+            : base(CraftResource.EscamasAmarelas, amount)
         {
         }
 
@@ -170,7 +170,7 @@ namespace Server.Items
 
     public class BlackScales : BaseScales
     {
-        protected override CraftResource DefaultResource { get { return CraftResource.BlackScales; } }
+        protected override CraftResource DefaultResource { get { return CraftResource.EscamasNegras; } }
 
         [Constructable]
         public BlackScales()
@@ -180,7 +180,7 @@ namespace Server.Items
 
         [Constructable]
         public BlackScales(int amount)
-            : base(CraftResource.BlackScales, amount)
+            : base(CraftResource.EscamasNegras, amount)
         {
         }
 
@@ -206,7 +206,7 @@ namespace Server.Items
 
     public class GreenScales : BaseScales
     {
-        protected override CraftResource DefaultResource { get { return CraftResource.GreenScales; } }
+        protected override CraftResource DefaultResource { get { return CraftResource.EscamasVerdes; } }
 
         [Constructable]
         public GreenScales()
@@ -216,7 +216,7 @@ namespace Server.Items
 
         [Constructable]
         public GreenScales(int amount)
-            : base(CraftResource.GreenScales, amount)
+            : base(CraftResource.EscamasVerdes, amount)
         {
         }
 
@@ -242,7 +242,7 @@ namespace Server.Items
 
     public class WhiteScales : BaseScales
     {
-        protected override CraftResource DefaultResource { get { return CraftResource.WhiteScales; } }
+        protected override CraftResource DefaultResource { get { return CraftResource.EscamasBrancas; } }
 
         [Constructable]
         public WhiteScales()
@@ -252,7 +252,7 @@ namespace Server.Items
 
         [Constructable]
         public WhiteScales(int amount)
-            : base(CraftResource.WhiteScales, amount)
+            : base(CraftResource.EscamasBrancas, amount)
         {
         }
 
@@ -278,7 +278,7 @@ namespace Server.Items
 
     public class BlueScales : BaseScales
     {
-        protected override CraftResource DefaultResource { get { return CraftResource.BlueScales; } }
+        protected override CraftResource DefaultResource { get { return CraftResource.EscamasAzuis; } }
 
         [Constructable]
         public BlueScales()
@@ -288,7 +288,7 @@ namespace Server.Items
 
         [Constructable]
         public BlueScales(int amount)
-            : base(CraftResource.BlueScales, amount)
+            : base(CraftResource.EscamasAzuis, amount)
         {
         }
 

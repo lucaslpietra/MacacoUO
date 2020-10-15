@@ -6,6 +6,7 @@ using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
 using Server.Network;
+using Server.Regions;
 using Server.Spells.Fifth;
 using Server.Spells.Seventh;
 #endregion
@@ -14,6 +15,7 @@ namespace Server.Spells.Ninjitsu
 {
 	public class AnimalForm : NinjaSpell
 	{
+
 		public static void Initialize()
 		{
 			EventSink.Login += OnLogin;
@@ -25,11 +27,17 @@ namespace Server.Spells.Ninjitsu
 
 			if (context != null && context.SpeedBoost)
 			{
-                e.Mobile.SendSpeedControl(SpeedControlType.MountSpeed);
+                if (context.Type == typeof(Llama))
+                    e.Mobile.StealthCorrendo = true;
+                else
+                    e.Mobile.StealthCorrendo = false;
+
+                if(!(e.Mobile.Region is DungeonRegion))
+                    e.Mobile.SendSpeedControl(SpeedControlType.MountSpeed);
 			}
 		}
 
-		private static readonly SpellInfo m_Info = new SpellInfo("Animal Form", null, -1, 9002);
+		private static readonly SpellInfo m_Info = new SpellInfo("Forma Animal", null, -1, 9002);
 
 		public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(1.0); } }
 
@@ -119,7 +127,7 @@ namespace Server.Spells.Ninjitsu
 			{
 				AnimalFormContext context = GetContext(Caster);
 
-				int mana = ScaleMana(RequiredMana);
+				int mana = AjustaMana(RequiredMana);
 				if (mana > Caster.Mana)
 				{
 					Caster.SendLocalizedMessage(1060174, mana.ToString());
@@ -221,6 +229,9 @@ namespace Server.Spells.Ninjitsu
 
 			double ninjitsu = m.Skills.Ninjitsu.Value;
 
+            if (ninjitsu == 100)
+                ninjitsu = 120;
+
 			if (ninjitsu < entry.ReqSkill + 37.5)
 			{
 				double chance = (ninjitsu - entry.ReqSkill) / 37.5;
@@ -231,7 +242,7 @@ namespace Server.Spells.Ninjitsu
 				}
 			}
 
-			m.CheckSkill(SkillName.Ninjitsu, 0.0, 37.5);
+			m.CheckSkillMult(SkillName.Ninjitsu, 0.0, 37.5);
 
 			if (!BaseFormTalisman.EntryEnabled(m, entry.Type))
 			{
@@ -246,19 +257,21 @@ namespace Server.Spells.Ninjitsu
 			m.BodyMod = bodyMod;
 			m.HueMod = hueMod;
 
-			if (entry.SpeedBoost)
+            if (entry.SpeedBoost)
 			{
                 m.SendSpeedControl(SpeedControlType.MountSpeed);
 			}
 
-			SkillMod mod = null;
+      
+            SkillMod mod = null;
+            SkillMod mod2 = null;
 
-			if (entry.StealthBonus)
+            if (entry.StealthBonus)
 			{
 				mod = new DefaultSkillMod(SkillName.Stealth, true, 20.0);
-				mod.ObeyCap = true;
+				mod.ObeyCap = false;
 				m.AddSkillMod(mod);
-			}
+            }
 
 			SkillMod stealingMod = null;
 
@@ -269,11 +282,47 @@ namespace Server.Spells.Ninjitsu
 				m.AddSkillMod(stealingMod);
 			}
 
-			Timer timer = new AnimalFormTimer(m, bodyMod, hueMod);
+
+            Timer timer = new AnimalFormTimer(m, bodyMod, hueMod);
+            var ctx = new AnimalFormContext(timer, mod, entry.SpeedBoost, entry.Type, stealingMod);
+
+            if (entry.Type == typeof(Cat))
+            {
+                var statmod = new StatMod(StatType.Dex, "Forma de Gato", m.Dex/10, TimeSpan.FromMinutes(30));
+                ctx.StatMod = statmod;
+                m.AddStatMod(statmod);
+            }
+
+            else if (entry.Type == typeof(Gorilla))
+            {
+                var statmod = new StatMod(StatType.Str, "Forma de GatoGorila", m.Str/10, TimeSpan.FromMinutes(30));
+                ctx.StatMod = statmod;
+                m.AddStatMod(statmod);
+            }
+
+            if (entry.StealthBonus)
+            {
+                mod2 = new DefaultSkillMod(SkillName.Hiding, true, 20.0);
+                mod2.ObeyCap = false;
+                m.AddSkillMod(mod2);
+                ctx.Mod2 = mod2;
+            }
+
+
+            m.SendMessage(entry.Tooltip);
+         
 			timer.Start();
 
-			AddContext(m, new AnimalFormContext(timer, mod, entry.SpeedBoost, entry.Type, stealingMod));
-			return MorphResult.Success;
+			AddContext(m, ctx);
+
+            // Tirar bonus de speed em DG
+            if (m.Region is DungeonRegion)
+            {
+                Shard.Debug("Bonus velocidade animal off", m);
+                ((PlayerMobile)m).StoreMount();
+            }
+
+            return MorphResult.Success;
 		}
 
 		private static readonly Dictionary<Mobile, AnimalFormContext> m_Table = new Dictionary<Mobile, AnimalFormContext>();
@@ -313,6 +362,7 @@ namespace Server.Spells.Ninjitsu
                     m.SendSpeedControl(SpeedControlType.WalkSpeed);
                 else
                     m.SendSpeedControl(SpeedControlType.Disable);
+                m.StealthCorrendo = false;
 			}
 
 			SkillMod mod = context.Mod;
@@ -322,12 +372,22 @@ namespace Server.Spells.Ninjitsu
 				m.RemoveSkillMod(mod);
 			}
 
+            if(context.Mod2 != null)
+            {
+                m.RemoveSkillMod(context.Mod2);
+            }
+
 			mod = context.StealingMod;
 
 			if (mod != null)
 			{
 				m.RemoveSkillMod(mod);
 			}
+
+            if(context.StatMod != null)
+            {
+                m.RemoveStatMod(context.StatMod.Name);
+            }
 
 			if (resetGraphics)
 			{
@@ -358,6 +418,9 @@ namespace Server.Spells.Ninjitsu
 
 		public static bool UnderTransformation(Mobile m, Type type)
 		{
+            if (m == null)
+                return false;
+
 			AnimalFormContext context = GetContext(m);
 
 			return (context != null && context.Type == type);
@@ -370,11 +433,42 @@ namespace Server.Spells.Ninjitsu
 
 		public class AnimalFormEntry
 		{
+
+            public static int GetAttackSound(Mobile m)
+            {
+                var ctx = AnimalForm.GetContext(m);
+                if(ctx != null)
+                {
+                    if(ctx.Type == typeof(Cat))
+                    {
+                        return 0x69 + 2;
+                    } else if (ctx.Type == typeof(BullFrog))
+                    {
+                        return 0x266 + 2;
+                    }
+                    else if (ctx.Type == typeof(GiantSerpent))
+                    {
+                        return 219 + 2;
+                    }
+                    else if (ctx.Type == typeof(Gorilla))
+                    {
+                        return 0x9E + 2;
+                    }
+                    else if (ctx.Type == typeof(Dog) || ctx.Type == typeof(GreyWolf))
+                    {
+                        return 0xE5 + 2;
+                    } else
+                    {
+                        return 0xE5 + 2;
+                    }
+                }
+                return -1;
+            }
 			private readonly Type m_Type;
 			private readonly string m_Name;
 			private readonly int m_ItemID;
 			private readonly int m_Hue;
-			private readonly int m_Tooltip;
+			private readonly string m_Tooltip;
 			private readonly double m_ReqSkill;
 			private readonly int m_BodyMod;
 			private readonly int m_HueModMin;
@@ -387,7 +481,7 @@ namespace Server.Spells.Ninjitsu
 			public string Name { get { return m_Name; } }
 			public int ItemID { get { return m_ItemID; } }
 			public int Hue { get { return m_Hue; } }
-			public int Tooltip { get { return m_Tooltip; } }
+			public string Tooltip { get { return m_Tooltip; } }
 			public double ReqSkill { get { return m_ReqSkill; } }
 			public int BodyMod { get { return m_BodyMod; } }
 			public int HueMod { get { return Utility.RandomMinMax(m_HueModMin, m_HueModMax); } }
@@ -405,7 +499,7 @@ namespace Server.Spells.Ninjitsu
 				string name,
 				int itemID,
 				int hue,
-				int tooltip,
+				string tooltip,
 				double reqSkill,
 				int bodyMod,
 				int hueModMin,
@@ -431,23 +525,24 @@ namespace Server.Spells.Ninjitsu
 
 		private static readonly AnimalFormEntry[] m_Entries = new[]
 		{
-			new AnimalFormEntry(typeof(Kirin), "kirin", 9632, 0, 1070811, 100.0, 0x84, 0, 0, false, true, false),
-			new AnimalFormEntry(typeof(Unicorn), "unicorn", 9678, 0, 1070812, 100.0, 0x7A, 0, 0, false, true, false),
-			new AnimalFormEntry(typeof(BakeKitsune), "bake-kitsune", 10083, 0, 1070810, 82.5, 0xF6, 0, 0, false, true, false),
-			new AnimalFormEntry(typeof(GreyWolf), "wolf", 9681, 2309, 1070810, 82.5, 0x19, 0x8FD, 0x90E, false, true, false),
-			new AnimalFormEntry(typeof(Llama), "llama", 8438, 0, 1070809, 70.0, 0xDC, 0, 0, false, true, false),
-			new AnimalFormEntry(typeof(ForestOstard), "ostard", 8503, 2212, 1070809, 70.0, 0xDB, 0x899, 0x8B0, false, true, false),
-			new AnimalFormEntry(typeof(BullFrog), "bullfrog", 8496, 2003, 1070807, 50.0, 0x51, 0x7D1, 0x7D6, false, false, false),
-			new AnimalFormEntry(typeof(GiantSerpent), "giant serpent", 9663, 2009, 1070808, 50.0, 0x15, 0x7D1, 0x7E2, false, false, false),
-			new AnimalFormEntry(typeof(Dog), "dog", 8476, 2309, 1070806, 40.0, 0xD9, 0x8FD, 0x90E, false, false, false),
-			new AnimalFormEntry(typeof(Cat), "cat", 8475, 2309, 1070806, 40.0, 0xC9, 0x8FD, 0x90E, false, false, false),
-			new AnimalFormEntry(typeof(Rat), "rat", 8483, 2309, 1070805, 20.0, 0xEE, 0x8FD, 0x90E, true, false, false),
-			new AnimalFormEntry(typeof(Rabbit), "rabbit", 8485, 2309, 1070805, 20.0, 0xCD, 0x8FD, 0x90E, true, false, false),
-			new AnimalFormEntry(typeof(Squirrel), "squirrel", 11671, 0, 0, 20.0, 0x116, 0, 0, false, false, false),
-			new AnimalFormEntry(typeof(Ferret), "ferret", 11672, 0, 1075220, 40.0, 0x117, 0, 0, false, false, true),
-			new AnimalFormEntry(typeof(CuSidhe), "cu sidhe", 11670, 0, 1075221, 60.0, 0x115, 0, 0, false, false, false),
-			new AnimalFormEntry(typeof(Reptalon), "reptalon", 11669, 0, 1075222, 90.0, 0x114, 0, 0, false, false, false),
-            new AnimalFormEntry(typeof(WildWhiteTiger), "white tiger", 38980, 2500, 0, 0, 0x4E7, 0, 0, false, false, false),
+			//new AnimalFormEntry(typeof(Kirin), "kirin", 9632, 0, 1070811, 100.0, 0x84, 0, 0, false, true, false),
+			//new AnimalFormEntry(typeof(Unicorn), "unicorn", 9678, 0, 1070812, 100.0, 0x7A, 0, 0, false, true, false),
+			//new AnimalFormEntry(typeof(BakeKitsune), "bake-kitsune", 10083, 0, 1070810, 82.5, 0xF6, 0, 0, false, true, false),
+            new AnimalFormEntry(typeof(Gorilla), "gorila", 0x20C9, 2309, "+10% Str", 75, 0x1D, 0x8FD, 0x90E, false, false, false),
+            new AnimalFormEntry(typeof(GreyWolf), "lobo", 9681, 2309, "Ataque causa sangramento", 75, 0x19, 0x8FD, 0x90E, false, true, false),
+			new AnimalFormEntry(typeof(Llama), "lhama", 8438, 0, "+Velocidade +Velocidade Stealth", 70.0, 0xDC, 0, 0, false, true, false),
+			//new AnimalFormEntry(typeof(ForestOstard), "ostard", 8503, 2212, "+Velocidade", 70.0, 0xDB, 0x899, 0x8B0, false, true, false),
+			new AnimalFormEntry(typeof(BullFrog), "sapo gigante", 8496, 2003, "-15% Dano & Ataque a distancia ", 65, 0x51, 0x7D1, 0x7D6, false, false, false),
+			new AnimalFormEntry(typeof(GiantSerpent), "serpente", 9663, 2009, "Ataque causa poison", 50.0, 0x15, 0x7D1, 0x7E2, false, true, false),
+			new AnimalFormEntry(typeof(Dog), "cachorro", 8476, 2309, "+Regen Vida", 40.0, 0xD9, 0x8FD, 0x90E, false, true, false),
+			new AnimalFormEntry(typeof(Cat), "gato", 8475, 2309, "+10% Dex", 40.0, 0xC9, 0x8FD, 0x90E, false, true, false),
+			new AnimalFormEntry(typeof(Rat), "rato", 8483, 2309, "+Stealth", 60.0, 0xEE, 0x8FD, 0x90E, true, false, false),
+			new AnimalFormEntry(typeof(Rabbit), "coelho", 8485, 2309, "+Velocidade -50% Dano", 20.0, 0xCD, 0x8FD, 0x90E, false, true, false),
+			new AnimalFormEntry(typeof(Squirrel), "esquilo", 11671, 0, "+Stealing", 20.0, 0x116, 0, 0, false, false, true),
+			//new AnimalFormEntry(typeof(Ferret), "ferret", 11672, 0, 1075220, 40.0, 0x117, 0, 0, false, false, true),
+			//new AnimalFormEntry(typeof(CuSidhe), "cu sidhe", 11670, 0, 1075221, 60.0, 0x115, 0, 0, false, false, false),
+			//new AnimalFormEntry(typeof(Reptalon), "reptalon", 11669, 0, 1075222, 90.0, 0x114, 0, 0, false, false, false),
+            //new AnimalFormEntry(typeof(WildWhiteTiger), "tigre branco", 38980, 2500, "TODO", 0, 0x4E7, 0, 0, false, false, false),
 		};
 
 		public static AnimalFormEntry[] Entries { get { return m_Entries; } }
@@ -548,7 +643,7 @@ namespace Server.Spells.Ninjitsu
 					return;
 				}
 
-				int mana = m_Spell.ScaleMana(m_Spell.RequiredMana);
+				int mana = m_Spell.AjustaMana(m_Spell.RequiredMana);
 				AnimalFormEntry entry = AnimalForm.Entries[entryID];
 
 				if (mana > m_Caster.Mana)
@@ -568,8 +663,9 @@ namespace Server.Spells.Ninjitsu
 					{
 						m_Caster.FixedParticles(0x3728, 10, 13, 2023, EffectLayer.Waist);
 						m_Caster.Mana -= mana;
-						
-						string typename = entry.Name;
+
+
+                        string typename = entry.Name;
 
                         			BuffInfo.AddBuff(m_Caster, new BuffInfo(BuffIcon.AnimalForm, 1060612, 1075823, String.Format("{0}\t{1}", "aeiouy".IndexOf(typename.ToLower()[0]) >= 0 ? "an" : "a", typename)));
 					}
@@ -588,9 +684,11 @@ namespace Server.Spells.Ninjitsu
 
 		public Timer Timer { get { return m_Timer; } }
 		public SkillMod Mod { get { return m_Mod; } }
-		public bool SpeedBoost { get { return m_SpeedBoost; } }
+        public SkillMod Mod2 { get; set; }
+        public bool SpeedBoost { get { return m_SpeedBoost; } }
 		public Type Type { get { return m_Type; } }
 		public SkillMod StealingMod { get { return m_StealingMod; } }
+        public StatMod StatMod { get; set; }
 
 		public AnimalFormContext(Timer timer, SkillMod mod, bool speedBoost, Type type, SkillMod stealingMod)
 		{
@@ -678,7 +776,7 @@ namespace Server.Spells.Ninjitsu
 		{
 			if (m_Mobile.CanBeHarmful(target))
 			{
-				m_Mobile.RevealingAction();
+				m_Mobile.RevealingAction(false);
 				m_Mobile.PlaySound(0x227);
 				Effects.SendMovingEffect(m_Mobile, target, 0x36D4, 5, 0, false, false, 0, 0);
 

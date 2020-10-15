@@ -47,15 +47,6 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(Bolt), 6, Utility.Random(30, 60), 0x1BFB, 0, true));
                 Add(new GenericBuyInfo(typeof(Arrow), 3, Utility.Random(30, 60), 0xF3F, 0, true));
 
-                Add(new GenericBuyInfo(typeof(BlackPearl), 5, 999, 0xF7A, 0)); 
-                Add(new GenericBuyInfo(typeof(Bloodmoss), 5, 999, 0xF7B, 0)); 
-                Add(new GenericBuyInfo(typeof(MandrakeRoot), 3, 999, 0xF86, 0)); 
-                Add(new GenericBuyInfo(typeof(Garlic), 3, 999, 0xF84, 0)); 
-                Add(new GenericBuyInfo(typeof(Ginseng), 3, 999, 0xF85, 0)); 
-                Add(new GenericBuyInfo(typeof(Nightshade), 3, 999, 0xF88, 0)); 
-                Add(new GenericBuyInfo(typeof(SpidersSilk), 3, 999, 0xF8D, 0)); 
-                Add(new GenericBuyInfo(typeof(SulfurousAsh), 3, 999, 0xF8C, 0));
-
                 Add(new GenericBuyInfo(typeof(BreadLoaf), 7, 10, 0x103B, 0, true));
                 Add(new GenericBuyInfo(typeof(Backpack), 15, 20, 0x9B2, 0));
 

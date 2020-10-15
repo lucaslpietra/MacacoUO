@@ -6,24 +6,24 @@ namespace Server.Items
 {
     public enum PotionEffect
     {
-        Nightsight,
-        CureLesser,
-        Cure,
-        CureGreater,
-        Agility,
-        AgilityGreater,
-        Strength,
-        StrengthGreater,
-        PoisonLesser,
-        Poison,
-        PoisonGreater,
-        PoisonDeadly,
-        Refresh,
-        RefreshTotal,
-        HealLesser,
-        Heal,
-        HealGreater,
-        ExplosionLesser,
+        VisaoNoturna,
+        CuraMenor,
+        Cura,
+        CuraMaior,
+        Agilidade,
+        AgilidadeMaior,
+        Forca,
+        ForcaMaior,
+        VenenoFraco,
+        Veneno,
+        VenenoForte,
+        VenenoMortal,
+        Stamina,
+        StaminaTotal,
+        VidaFraca,
+        Vida,
+        VidaForte,
+        ExplosaoFraca,
         Explosion,
         ExplosionGreater,
         Conflagration,
@@ -32,10 +32,10 @@ namespace Server.Items
         MaskOfDeathGreater,	// included in enumeration for compatability if later enabled by OSI
         ConfusionBlast,
         ConfusionBlastGreater,
-        Invisibility,
+        Invisibilidade,
         Parasitic,
         Darkglow,
-		ExplodingTarPotion,
+        ExplodingTarPotion,
         #region TOL Publish 93
         Barrab,
         Jukari,
@@ -43,14 +43,22 @@ namespace Server.Items
         Barako,
         Urali,
         Sakkhra,
-        #endregion,
-        Shatter,
-        FearEssence
+        #endregion
+        Mana,
+        ManaFraca,
+        ManaForte,
+        Inteligencia,
+        InteligenciaMaior,
+        AntiParalize
     }
 
     public abstract class BasePotion : Item, ICraftable, ICommodity
     {
         private PotionEffect m_PotionEffect;
+
+        public virtual double Delay { get { return 0; } }
+
+        public virtual bool OnValidateDrink(Mobile from) { return true; }
 
         public PotionEffect PotionEffect
         {
@@ -76,15 +84,15 @@ namespace Server.Items
         {
             get
             {
-                return (Core.ML);
+                return true;
             }
         }
 
-        public override int LabelNumber
+        public override string DefaultName
         {
             get
             {
-                return 1041314 + (int)this.m_PotionEffect;
+                return "Poção de " + PotionEffect;
             }
         }
 
@@ -93,8 +101,8 @@ namespace Server.Items
         {
             this.m_PotionEffect = effect;
 
-            this.Stackable = Core.ML;
-            this.Weight = 1.0;
+            this.Stackable = true;
+            this.Weight = 0.8;
         }
 
         public BasePotion(Serial serial)
@@ -115,12 +123,14 @@ namespace Server.Items
             Item handOne = m.FindItemOnLayer(Layer.OneHanded);
             Item handTwo = m.FindItemOnLayer(Layer.TwoHanded);
 
+            /*
             if (handTwo is BaseWeapon)
                 handOne = handTwo;
+            */
             if (handTwo is BaseWeapon)
             {
                 BaseWeapon wep = (BaseWeapon)handTwo;
-				
+
                 if (wep.Attributes.BalancedWeapon > 0)
                     return true;
             }
@@ -133,26 +143,74 @@ namespace Server.Items
             if (!this.Movable)
                 return;
 
-            if (!from.BeginAction(this.GetType()))
+            if (from.Paralyzed)
             {
-                from.SendLocalizedMessage(500119); // You must wait to perform another action.
-                return;
+                if(!(this is AntiParaPotion))
+                {
+                    from.SendMessage("Voce nao pode beber esta pocao estando paralizado");
+                    return;
+                }
+                var a1 = from.FindItemOnLayer(Layer.OneHanded);
+                var a2 = from.FindItemOnLayer(Layer.TwoHanded);
+                if (a1 != null || a2 != null)
+                {
+                    from.SendMessage("Voce nao consegue usar a pocao por estar com suas maos ocupadas durante uma paralizia");
+                    return;
+                }
             }
 
-            Timer.DelayCall(TimeSpan.FromMilliseconds(500), () => from.EndAction(this.GetType()));
+            if (!IsChildOf(from.Backpack))
+            {
+                from.SendMessage("Isto precisa estar em sua mochila");
+                return;
+            }
 
             if (from.InRange(this.GetWorldLocation(), 1))
             {
                 if (!this.RequireFreeHand || HasFreeHand(from))
                 {
+                    var reusingExploPot = false;
+                    var hasExploPot = this is BaseExplosionPotion && BaseExplosionPotion.Using.ContainsKey(from);
+                    if (hasExploPot)
+                    {
+                        var exploPot = BaseExplosionPotion.Using[from];
+                        if (exploPot == this)
+                        {
+                            reusingExploPot = true;
+                        }
+                        else
+                        {
+                            exploPot.OnDoubleClick(from);
+                            return;
+                        }
+                    }
+
+                    if (!OnValidateDrink(from))
+                    {
+                        from.SendMessage("Aguarde para beber outra pocao deste tipo");
+                        return;
+                    }
+
+                    if (!reusingExploPot && !from.BeginAction(typeof(BasePotion)))
+                    {
+                        from.SendMessage("Aguarde para beber outra pocao"); // You must wait to perform another action.
+                        return;
+                    }
+
+                    // DELAY GLOBAL DAS POTIONS, 10 segundos
+                    Timer.DelayCall(TimeSpan.FromSeconds(10), () => from.EndAction(typeof(BasePotion)));
+
+                    Shard.Debug("Explo ? " + (this is BaseExplosionPotion), from);
+
                     if (this is BaseExplosionPotion && this.Amount > 1)
                     {
                         BasePotion pot = (BasePotion)Activator.CreateInstance(this.GetType());
 
                         if (pot != null)
                         {
-                            this.Amount--;
+                            Shard.Debug("Begin Action Pot");
 
+                            this.Amount--;
                             if (from.Backpack != null && !from.Backpack.Deleted)
                             {
                                 from.Backpack.DropItem(pot);
@@ -161,12 +219,14 @@ namespace Server.Items
                             {
                                 pot.MoveToWorld(from.Location, from.Map);
                             }
+                            Shard.Debug("Explo target", from);
                             pot.Drink(from);
                         }
                     }
                     else
                     {
                         this.Drink(from);
+                        from.SendMessage("Voce tomou uma pocao de " + this.PotionEffect);
                     }
                 }
                 else
@@ -195,7 +255,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                 case 0:
@@ -214,7 +274,7 @@ namespace Server.Items
         public static void PlayDrinkEffect(Mobile m)
         {
             m.RevealingAction();
-            m.PlaySound(0x2D6);
+            m.PlaySound(0x031);
             m.AddToBackpack(new Bottle());
 
             if (m.Body.IsHuman && !m.Mounted)
@@ -238,7 +298,7 @@ namespace Server.Items
             if (Core.ML && EP > 50 && m.IsPlayer())
                 EP = 50;
 
-            return (EP + skillBonus);
+            return (skillBonus);
         }
 
         public static TimeSpan Scale(Mobile m, TimeSpan v)
@@ -263,9 +323,6 @@ namespace Server.Items
 
         public static int Scale(Mobile m, int v)
         {
-            if (!Core.AOS)
-                return v;
-
             return AOS.Scale(v, 100 + EnhancePotions(m));
         }
 
@@ -284,7 +341,7 @@ namespace Server.Items
 
                 if (pack != null)
                 {
-                    if ((int)this.PotionEffect >= (int)PotionEffect.Invisibility)
+                    if ((int)this.PotionEffect >= (int)PotionEffect.Invisibilidade)
                         return 1;
 
                     List<PotionKeg> kegs = pack.FindItemsByType<PotionKeg>();

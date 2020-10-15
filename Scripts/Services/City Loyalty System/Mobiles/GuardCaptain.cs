@@ -35,7 +35,7 @@ namespace Server.Engines.CityLoyalty
             Blessed = true;
 
             Name = Female ? NameList.RandomName("female") : NameList.RandomName("male");
-            Title = "the guard captain";
+            Title = "o capitao da guarda";
 
             Body = Female ? 0x191 : 0x190;
             HairItemID = Race.RandomHair(Female);
@@ -70,7 +70,7 @@ namespace Server.Engines.CityLoyalty
                 {
                     CitySystem.AwardLove(m, 1000);
 
-                    SayTo(m, 1152250, m.Name); // Thank you, ~1_name~, for your assistance during these difficult times.
+                    SayTo(m, "Obrigado pela ajuda...", m.Name); // Thank you, ~1_name~, for your assistance during these difficult times.
                     raider.Delete();
                 }
             }

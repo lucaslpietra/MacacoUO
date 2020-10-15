@@ -10,7 +10,7 @@ namespace Server.Items
         {	
             Hue = 1150;
             WeaponAttributes.HitHarm = 40;
-            Slayer = SlayerName.DaemonDismissal;
+            Slayer = SlayerName.Demonios;
             WeaponAttributes.HitLowerDefend = 40;
             Attributes.WeaponSpeed = 25;
             Attributes.WeaponDamage = 45;

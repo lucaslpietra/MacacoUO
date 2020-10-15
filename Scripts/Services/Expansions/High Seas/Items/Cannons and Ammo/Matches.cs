@@ -107,18 +107,14 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object obj)
             {
-                if (obj is IShipCannon)
+                if (obj is BaseCannon)
                 {
-                    IShipCannon cannon = (IShipCannon)obj;
+                    BaseCannon cannon = (BaseCannon)obj;
 
                     if (cannon.CanLight)
-                    {
                         cannon.LightFuse(from);
-                    }
                     else
-                    {
                         from.SendLocalizedMessage(1116078); //There is no fuse to light! Prime the cannon first.
-                    }
                 }
             }
         }

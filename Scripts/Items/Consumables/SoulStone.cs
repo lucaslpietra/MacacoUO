@@ -9,7 +9,7 @@ using System.Linq;
 using Server.Engines.Craft;
 
 
-namespace Server.Items
+namespace Server.Items 
 {
     public class SoulStone : Item, ISecurable
     {
@@ -927,8 +927,10 @@ namespace Server.Items
             m_UsesRemaining = usesRemaining;
         }
 
-        public override void AddUsesRemainingProperties(ObjectPropertyList list)
+        public override void GetProperties(ObjectPropertyList list)
         {
+            base.GetProperties(list);
+
             list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
         }
 

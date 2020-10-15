@@ -1,22 +1,17 @@
-using System;
+﻿using System;
 using Server;
 
 namespace Server.Items
 {
     public class Ramrod : Item
     {
-        public override int LabelNumber { get { return 1095838; } } // ramrod
-
         [Constructable]
         public Ramrod()
-            : base(0x4246)
+            : base(Utility.RandomMinMax(16966, 16967))
         {
         }
 
-        public Ramrod(Serial serial)
-            : base(serial)
-        {
-        }
+        public Ramrod(Serial serial) : base(serial) { }
 
         public override void Serialize(GenericWriter writer)
         {

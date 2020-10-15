@@ -23,7 +23,20 @@ namespace Server
             EventSink.CreatureDeath += CheckRecipeDrop;
         }
 
-        private  static readonly DateTime _EndCurrencyWarning = new DateTime(2017, 3, 1, 1, 1, 1);		
+        private  static readonly DateTime _EndCurrencyWarning = new DateTime(2017, 3, 1, 1, 1, 1);
+
+		private static Type[] m_PigmentList = new Type[]
+		{
+			typeof(AnonsBoots),					typeof(AnonsBootsGargoyle),			typeof(AnonsSpellbook),			typeof(BalakaisShamanStaff),
+			typeof(BalakaisShamanStaffGargoyle),typeof(EnchantressCameo),			typeof(GrugorsShield),			typeof(GrugorsShieldGargoyle),
+			typeof(HalawasHuntingBow),			typeof(HalawasHuntingBowGargoyle),	typeof(HawkwindsRobe),			typeof(JumusSacredHide),
+			typeof(JumusSacredHideGargoyle), 	typeof(JuonarsGrimoire), 			typeof(LereisHuntingSpear), 	typeof(LereisHuntingSpearGargoyle), 
+			typeof(MinaxsSandles), 				typeof(MinaxsSandlesGargoyle), 		typeof(MocapotlsObsidianSword),typeof(OzymandiasObi),
+			typeof(OzymandiasObiGargoyle), 		typeof(ShantysWaders), 				typeof(ShantysWadersGargoyle), 	typeof(TotemOfTheTribe),
+			typeof(WamapsBoneEarrings), 		typeof(WamapsBoneEarringsGargoyle), typeof(UnstableTimeRift)
+		};
+		
+		public static Type[] PigmentList{ get{ return m_PigmentList; } }
 
         public static bool FindItem(int x, int y, int z, Map map, Item test)
         {
@@ -87,7 +100,7 @@ namespace Server
 
         public static void OnLogin(LoginEventArgs e)
         {
-            if (e.Mobile is PlayerMobile && e.Mobile.AccessLevel == AccessLevel.Player)
+            if (e.Mobile is PlayerMobile && e.Mobile.AccessLevel <= AccessLevel.VIP)
                 Timer.DelayCall(TimeSpan.FromSeconds(5), () =>
                     {
                         if (!e.Mobile.HasGump(typeof(NewCurrencyHelpGump)))

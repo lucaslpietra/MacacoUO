@@ -7,9 +7,19 @@ namespace Server.Mobiles
 {
     public abstract class BaseHealer : BaseVendor
     {
+
+        public static List<BaseHealer> healers = new List<BaseHealer>();
+
         private static readonly TimeSpan ResurrectDelay = TimeSpan.FromSeconds(2.0);
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         private DateTime m_NextResurrect;
+
+        public override void OnAfterDelete()
+        {
+            healers.Remove(this);
+            base.OnAfterDelete();
+        }
+
         public BaseHealer()
             : base(null)
         {
@@ -21,6 +31,8 @@ namespace Server.Mobiles
                 this.RangePerception = BaseCreature.DefaultRangePerception;
                 this.FightMode = FightMode.Aggressor;
             }
+
+            healers.Add(this);
 
             this.SpeechHue = 0;
 
@@ -56,6 +68,7 @@ namespace Server.Mobiles
         public BaseHealer(Serial serial)
             : base(serial)
         {
+            healers.Add(this);
         }
 
         public override bool IsActiveVendor
@@ -144,8 +157,73 @@ namespace Server.Mobiles
             }
         }
 
+        public static BaseCreature[] GetDeadPets(Mobile from)
+        {
+            List<BaseCreature> pets = new List<BaseCreature>();
+            IPooledEnumerable eable = from.GetMobilesInRange(12);
+
+            foreach (Mobile m in eable)
+            {
+                BaseCreature bc = m as BaseCreature;
+
+                if (!(bc is BaseHire))
+                    continue;
+
+                if (bc != null && bc.IsDeadBondedPet && bc.ControlMaster == from && from.InLOS(bc))
+                    pets.Add(bc);
+            }
+            eable.Free();
+
+  
+            return pets.ToArray();
+        }
+
+        public static int GetResurrectionFee(BaseCreature bc)
+        {
+            return bc.SkillsTotal;
+        }
+
+        private static Dictionary<Mobile, Timer> m_ExpireTable = new Dictionary<Mobile, Timer>();
+
+
+        public static void ResetExpire(Mobile m)
+        {
+            m.Frozen = false;
+            m.CloseGump(typeof(VetResurrectGump));
+
+            if (m_ExpireTable.ContainsKey(m))
+            {
+                Timer t = m_ExpireTable[m];
+
+                if (t != null)
+                    t.Stop();
+
+                m_ExpireTable.Remove(m);
+            }
+        }
+
+        public void OnPetMovement(Mobile m, Point3D oldLocation)
+        {
+            if (this.InRange(m, 3) && !this.InRange(oldLocation, 3) && this.InLOS(m))
+            {
+                BaseCreature[] pets = GetDeadPets(m);
+
+                if (pets.Length > 0)
+                {
+                    m.Frozen = true;
+
+                    m_ExpireTable[m] = Timer.DelayCall(TimeSpan.FromMinutes(1.0), new TimerStateCallback<Mobile>(ResetExpire), m);
+
+                    m.CloseGump(typeof(VetResurrectGump));
+                    m.SendGump(new VetResurrectGump(this, pets));
+                }
+            }
+        }
+
+
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
+            OnPetMovement(m, oldLocation);
             if (!m.Frozen && DateTime.UtcNow >= this.m_NextResurrect && this.InRange(m, 2) && !this.InRange(oldLocation, 2) && this.InLOS(m))
             {
                 if (!m.Alive)

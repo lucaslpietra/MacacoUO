@@ -530,7 +530,7 @@ namespace Server.Commands
 
         public static bool IsEntity(Type t)
         {
-            return t != null && t.GetInterface(m_EntityType.Name) != null;
+            return m_EntityType.IsAssignableFrom(t);
         }
 
         public static bool IsConstructable(ConstructorInfo ctor, AccessLevel accessLevel)

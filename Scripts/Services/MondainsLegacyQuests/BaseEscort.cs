@@ -35,6 +35,7 @@ namespace Server.Engines.Quests
         {
         }
 
+        public override bool OwnerCanRename { get { return false; } }
         public override bool InitialInnocent { get { return true; } }
         public override bool IsInvulnerable { get { return false; } }
         public override bool Commandable { get { return false; } }
@@ -146,6 +147,12 @@ namespace Server.Engines.Quests
             ControlOrder = OrderType.Follow;
             ControlTarget = escorter;
 
+            CantWalk = false;
+            Frozen = false;
+            IsPrisoner = false;
+            RangeHome = 0;
+            Home = Point3D.Zero;
+
             CurrentSpeed = 0.1;
         }
 
@@ -180,7 +187,7 @@ namespace Server.Engines.Quests
             }
             else if (m_DeleteTimer != null)
             {
-                Say(500898); // I am sorry, but I do not wish to go anywhere.
+                Say("Eu to de boinha aqui..."); // I am sorry, but I do not wish to go anywhere.
                 return false;
             }
             else if (Controlled)
@@ -188,7 +195,7 @@ namespace Server.Engines.Quests
                 if (m == ControlMaster)
                     m.SendGump(new MondainQuestGump(Quest, MondainQuestGump.Section.InProgress, false));
                 else
-                    Say(500897); // I am already being led!
+                    Say("Ja estou tendo um escudeiro obrigado"); // I am already being led!
 
                 return false;
             }
@@ -199,14 +206,14 @@ namespace Server.Engines.Quests
             }
             else if (m_EscortTable.ContainsKey(m))
             {
-                Say(500896); // I see you already have an escort.
+                Say("Vejo que ja esta acompanhando alguem"); // I see you already have an escort.
                 return false;
             }
-            else if (m is PlayerMobile && (((PlayerMobile)m).LastEscortTime + m_EscortDelay) >= DateTime.UtcNow)
+            else if (m.AccessLevel <= AccessLevel.VIP && m is PlayerMobile && (((PlayerMobile)m).LastEscortTime + m_EscortDelay) >= DateTime.UtcNow)
             {
                 int minutes = (int)Math.Ceiling(((((PlayerMobile)m).LastEscortTime + m_EscortDelay) - DateTime.UtcNow).TotalMinutes);
 
-                Say("You must rest {0} minute{1} before we set out on this journey.", minutes, minutes == 1 ? "" : "s");
+                Say("Aguarde {0} minuto{1} para embarcar em outra jornada.", minutes, minutes == 1 ? "" : "s");
                 return false;
             }
 
@@ -247,13 +254,13 @@ namespace Server.Engines.Quests
 
                     if (escort != null)
                     {
-                        master.SendLocalizedMessage(1071194); // You have failed your escort quest…
+                        master.SendLocalizedMessage("Voce falhou em levar a pessoa..."); // You have failed your escort quest…
                         master.PlaySound(0x5B3);
                         escort.Fail();
                     }
 
-                    master.SendLocalizedMessage(1042473); // You have lost the person you were escorting.
-                    Say(1005653); // Hmmm.  I seem to have lost my master.
+                    master.SendLocalizedMessage("Voce se perdeu da pessoa que estava levando..."); // You have lost the person you were escorting.
+                    Say("Hmm acho que me perdi..."); // Hmmm.  I seem to have lost my master.
 
                     StopFollow();
                     m_EscortTable.Remove(master);
@@ -298,13 +305,13 @@ namespace Server.Engines.Quests
 
                 if (escort.Region != null && escort.Region.Contains(Location))
                 {
-                    Say(1042809, escorter.Name); // We have arrived! I thank thee, ~1_PLAYER_NAME~! I have no further need of thy services. Here is thy pay.
+                    Say("Ah chegamos ! Muito obrigado "+ escorter.Name); // We have arrived! I thank thee, ~1_PLAYER_NAME~! I have no further need of thy services. Here is thy pay.
 
                     escort.Complete();
 
                     if (Quest.Completed)
                     {
-                        escorter.SendLocalizedMessage(1046258, null, 0x23); // Your quest is complete.		
+                        escorter.SendMessage("Voce completou a missao !");		
 
                         if (QuestHelper.AnyRewards(Quest))
                             escorter.SendGump(new MondainQuestGump(Quest, MondainQuestGump.Section.Rewards, false, true));
@@ -335,23 +342,23 @@ namespace Server.Engines.Quests
 
                             if (pm.CompassionGains >= 5) // have already gained 5 times in one day, can gain no more
                             {
-                                pm.SendLocalizedMessage(1053004); // You must wait about a day before you can gain in compassion again.
+                                //pm.SendLocalizedMessage("Voce precisa aguardar um dia para ganhar mais compaixao"); // You must wait about a day before you can gain in compassion again.
                             }
                             else if (VirtueHelper.Award(pm, VirtueName.Compassion, escort.Compassion, ref gainedPath))
                             {
-                                pm.SendLocalizedMessage(1074949, null, 0x2A);  // You have demonstrated your compassion!  Your kind actions have been noted.
+                                pm.SendLocalizedMessage("Voce demonstrou compaixao");  // You have demonstrated your compassion!  Your kind actions have been noted.
 
                                 if (gainedPath)
-                                    pm.SendLocalizedMessage(1053005); // You have achieved a path in compassion!
-                                else
-                                    pm.SendLocalizedMessage(1053002); // You have gained in compassion.
+                                    pm.SendLocalizedMessage("Voce esta no caminho da compaixao"); // You have achieved a path in compassion!
+                                //else
+                                //    pm.SendLocalizedMessage(1053002); // You have gained in compassion.
 
                                 pm.NextCompassionDay = DateTime.UtcNow + TimeSpan.FromDays(1.0); // in one day CompassionGains gets reset to 0
                                 ++pm.CompassionGains;
                             }
                             else
                             {
-                                pm.SendLocalizedMessage(1053003); // You have achieved the highest path of compassion and can no longer gain any further.
+                                pm.SendLocalizedMessage("Voce chegou ao maximo do caminho da compaixao"); // You have achieved the highest path of compassion and can no longer gain any further.
                             }
                         }
                     }
@@ -359,7 +366,6 @@ namespace Server.Engines.Quests
                     {
                         escorter.PlaySound(Quest.UpdateSound);
                     }
-
                     return true;
                 }
             }
@@ -406,8 +412,8 @@ namespace Server.Engines.Quests
                 Timer.DelayCall(TimeSpan.FromSeconds(3), new TimerCallback(
                 delegate
                 {
-                    escort.Say(500901); // Ack!  My escort has come to haunt me!
-                    owner.SendLocalizedMessage(1071194); // You have failed your escort quest…
+                    escort.Say("AAhhn socorro !!"); // Ack!  My escort has come to haunt me!
+                    owner.SendLocalizedMessage("Voce falhou em sua missao..."); // You have failed your escort quest…
                     owner.PlaySound(0x5B3);
                     escort.Delete();
                 }));

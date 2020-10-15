@@ -8,7 +8,8 @@ namespace Server.Items
         public NorseHelm()
             : base(0x140E)
         {
-            Weight = 5.0;
+            this.Weight = 5.0;
+            this.Name = "Elmo Nordico";
         }
 
         public NorseHelm(Serial serial)
@@ -21,6 +22,13 @@ namespace Server.Items
             get
             {
                 return 4;
+            }
+        }
+        public override int OldDexBonus
+        {
+            get
+            {
+                return -1;
             }
         }
         public override int BaseFireResistance
@@ -103,6 +111,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (this.Weight == 1.0)
+                this.Weight = 5.0;
         }
     }
 }

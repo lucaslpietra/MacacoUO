@@ -43,7 +43,7 @@ namespace Server.Mobiles
 
             VirtualArmor = 58;
 
-            switch (Utility.Random(20))
+            switch (Utility.Random(30))
             {
                 case 0:
                     PackItem(new LichFormScroll());

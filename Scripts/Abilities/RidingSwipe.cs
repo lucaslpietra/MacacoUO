@@ -33,7 +33,7 @@ namespace Server.Items
         {
             if (this.GetSkill(from, SkillName.Bushido) < 50.0)
             {
-                from.SendLocalizedMessage(1070768, "50"); // You need ~1_SKILL_REQUIREMENT~ Bushido skill to perform that attack!
+                from.SendLocalizedMessage("Voce precisa 50 bushido para isto"); // You need ~1_SKILL_REQUIREMENT~ Bushido skill to perform that attack!
                 return false;
             }
 
@@ -44,7 +44,7 @@ namespace Server.Items
         {
             if (!defender.Mounted && !defender.Flying && (!Core.ML || !Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(defender)))
             {
-                attacker.SendLocalizedMessage(1060848); // This attack only works on mounted targets
+                attacker.SendLocalizedMessage("Isto so funciona em alvos montados"); // This attack only works on mounted targets
                 ClearCurrentAbility(attacker);
                 return;
             }
@@ -87,8 +87,8 @@ namespace Server.Items
 
                 if (Server.Items.ParalyzingBlow.IsImmune(defender))	//Does it still do damage?
                 {
-                    attacker.SendLocalizedMessage(1070804); // Your target resists paralysis.
-                    defender.SendLocalizedMessage(1070813); // You resist paralysis.
+                    attacker.SendLocalizedMessage("O alvo resistiu"); // Your target resists paralysis.
+                    defender.SendLocalizedMessage("Voce resistiu ao ataque"); // You resist paralysis.
                 }
                 else
                 {

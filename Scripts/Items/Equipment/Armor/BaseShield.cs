@@ -1,5 +1,7 @@
 using System;
 using Server.Network;
+using Server.Spells.Bushido;
+using Server.Spells.SkillMasteries;
 
 namespace Server.Items
 {
@@ -22,12 +24,11 @@ namespace Server.Items
                 return ArmorMaterialType.Plate;
             }
         }
-
         public override double ArmorRating
         {
             get
             {
-                Mobile m = Parent as Mobile;
+                Mobile m = this.Parent as Mobile;
                 double ar = base.ArmorRating;
 
                 if (m != null)
@@ -36,9 +37,6 @@ namespace Server.Items
                     return ar;
             }
         }
-
-        public int LastParryChance { get; set; }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -58,42 +56,25 @@ namespace Server.Items
                     return;
 
                 // The 15 bonus points to resistances are not applied to shields on OSI.
-                PhysicalBonus = 0;
-                FireBonus = 0;
-                ColdBonus = 0;
-                PoisonBonus = 0;
-                EnergyBonus = 0;
+                this.PhysicalBonus = 0;
+                this.FireBonus = 0;
+                this.ColdBonus = 0;
+                this.PoisonBonus = 0;
+                this.EnergyBonus = 0;
             }
-        }
-
-        public override void AddNameProperties(ObjectPropertyList list)
-        {
-            base.AddNameProperties(list);
-
-            if (Core.EJ && LastParryChance > 0)
-            {
-                list.Add(1158861, LastParryChance.ToString()); // Last Parry Chance: ~1_val~%
-            }
-        }
-
-        public override void OnRemoved(object parent)
-        {
-            LastParryChance = 0;
-
-            base.OnRemoved(parent);
         }
 
         public override int OnHit(BaseWeapon weapon, int damage)
         {
-            if (Core.AOS)
+            if (Core.AOS || Shard.POL_STYLE)
             {
-                if (ArmorAttributes.SelfRepair > Utility.Random(10))
+                if (this.ArmorAttributes.SelfRepair > Utility.Random(10))
                 {
-                    HitPoints += 2;
+                    this.HitPoints += 2;
                 }
                 else
                 {
-                    double halfArmor = ArmorRating / 2.0;
+                    double halfArmor = this.ArmorRating / 2.0;
                     int absorbed = (int)(halfArmor + (halfArmor * Utility.RandomDouble()));
 
                     if (absorbed < 2)
@@ -104,33 +85,33 @@ namespace Server.Items
                     if (weapon.Type == WeaponType.Bashing)
                         wear = (absorbed / 2);
                     else
-                        wear = Utility.Random(2);
+                        wear = Utility.RandomBool() ? Utility.Random(1) : 0;
 
-                    if (wear > 0 && MaxHitPoints > 0)
+                    if (wear > 0 && this.MaxHitPoints > 0)
                     {
-                        if (HitPoints >= wear)
+                        if (this.HitPoints >= wear)
                         {
-                            HitPoints -= wear;
+                            this.HitPoints -= wear;
                             wear = 0;
                         }
                         else
                         {
-                            wear -= HitPoints;
-                            HitPoints = 0;
+                            wear -= this.HitPoints;
+                            this.HitPoints = 0;
                         }
 
                         if (wear > 0)
                         {
-                            if (MaxHitPoints > wear)
+                            if (this.MaxHitPoints > wear)
                             {
-                                MaxHitPoints -= wear;
+                                this.MaxHitPoints -= wear;
 
-                                if (Parent is Mobile)
-                                    ((Mobile)Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                                if (this.Parent is Mobile)
+                                    ((Mobile)this.Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
                             }
                             else
                             {
-                                Delete();
+                                this.Delete();
                             }
                         }
                     }
@@ -140,17 +121,25 @@ namespace Server.Items
             }
             else
             {
-                Mobile owner = Parent as Mobile;
+                Mobile owner = this.Parent as Mobile;
                 if (owner == null)
                     return damage;
 
-                double ar = ArmorRating;
+                double ar = this.ArmorRating;
                 double chance = (owner.Skills[SkillName.Parry].Value - (ar * 2.0)) / 100.0;
+
+                Shard.Debug("Chance base: " + chance);
+                if(weapon is BaseRanged)
+                {
+                    chance += owner.Skills[SkillName.Parry].Value * 0.00002; // Parry +2% chance block ranged qnd GM
+                }
+
+                Shard.Debug("Chance Parry: " + chance, owner);
 
                 if (chance < 0.01)
                     chance = 0.01;
                 /*
-                FORMULA: Displayed AR = ((Parrying Skill * Base AR of Shield) / 200) + 1 
+                FORMULA: Displayed AR = ((Parrying Skill * Base AR of Shield) ÷ 200) + 1 
 
                 FORMULA: % Chance of Blocking = parry skill - (shieldAR * 2)
 
@@ -166,37 +155,77 @@ namespace Server.Items
                     if (damage < 0)
                         damage = 0;
 
+                    Mobile attacker = weapon.Parent as Mobile;
+                    if (weapon != null)
+                    {
+                        Shard.Debug("Arma batendo no escudo: " + weapon.GetType().Name);
+                      
+                        if(attacker != null)
+                            attacker.SendMessage("Seu ataque foi bloqueado");
+                    }
+                     
                     owner.FixedEffect(0x37B9, 10, 16);
+                    owner.Animate(AnimationType.Parry, 0);
+                    var defender = owner;
+                    HonorableExecution.RemovePenalty(defender);
+
+                    if (CounterAttack.IsCountering(defender))
+                    {
+                        if (weapon != null)
+                        {
+                            var combatant = defender.Combatant;
+
+                            defender.FixedParticles(0x3779, 1, 15, 0x158B, 0x0, 0x3, EffectLayer.Waist);
+                            weapon.OnSwing(defender, attacker);
+
+                            if (combatant != null && defender.Combatant != combatant && combatant.Alive)
+                                defender.Combatant = combatant;
+                        }
+
+                        CounterAttack.StopCountering(defender);
+                    }
+
+                    if (Confidence.IsConfident(defender))
+                    {
+                        defender.SendLocalizedMessage(1063117);
+                        // Your confidence reassures you as you successfully block your opponent's blow.
+
+                        double bushido = defender.Skills.Bushido.Value;
+
+                        defender.Hits += Utility.RandomMinMax(1, (int)(bushido / 12)) + MasteryInfo.AnticipateHitBonus(defender) / 10;
+                        defender.Stam += Utility.RandomMinMax(1, (int)(bushido / 5)) + MasteryInfo.AnticipateHitBonus(defender) / 10;
+                    }
+                    SkillMasterySpell.OnParried(attacker, defender);
 
                     if (25 > Utility.Random(100)) // 25% chance to lower durability
                     {
                         int wear = Utility.Random(2);
 
-                        if (wear > 0 && MaxHitPoints > 0)
+                        if (wear > 0 && this.MaxHitPoints > 0)
                         {
-                            if (HitPoints >= wear)
+                            if (this.HitPoints >= wear)
                             {
-                                HitPoints -= wear;
+                                this.HitPoints -= wear;
                                 wear = 0;
                             }
                             else
                             {
-                                wear -= HitPoints;
-                                HitPoints = 0;
+                                wear -= this.HitPoints;
+                                this.HitPoints = 0;
                             }
 
                             if (wear > 0)
                             {
-                                if (MaxHitPoints > wear)
+                                if (this.MaxHitPoints > wear)
                                 {
-                                    MaxHitPoints -= wear;
+                                    this.MaxHitPoints -= wear;
 
-                                    if (Parent is Mobile)
-                                        ((Mobile)Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                                    if (this.Parent is Mobile)
+                                        ((Mobile)this.Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, true, "Seu escudo foi avariado"); // Your equipment is severely damaged.
                                 }
                                 else
                                 {
-                                    Delete();
+                                    this.Delete();
                                 }
                             }
                         }
@@ -236,7 +265,7 @@ namespace Server.Items
             }
             else
             {
-                if (Resource != CraftResource.Heartwood)
+                if (Resource != CraftResource.Eucalipto)
                 {
                     Attributes.SpellChanneling += attrInfo.ShieldSpellChanneling;
                     ArmorAttributes.LowerStatReq += attrInfo.ShieldLowerRequirements;

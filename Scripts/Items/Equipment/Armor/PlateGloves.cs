@@ -11,8 +11,11 @@ namespace Server.Items
         public PlateGloves()
             : base(0x1414)
         {
-            Weight = 2.0;
+            this.Weight = 2.0;
+            this.Name = "Luvas de Metal";
         }
+
+        public override int MaxMageryCircle { get { return 3; } }
 
         public PlateGloves(Serial serial)
             : base(serial)
@@ -24,6 +27,13 @@ namespace Server.Items
             get
             {
                 return 5;
+            }
+        }
+        public override int OldDexBonus
+        {
+            get
+            {
+                return -2;
             }
         }
         public override int BaseFireResistance
@@ -79,14 +89,7 @@ namespace Server.Items
         {
             get
             {
-                return 30;
-            }
-        }
-        public override int OldDexBonus
-        {
-            get
-            {
-                return -2;
+                return 80;
             }
         }
         public override int ArmorBase
@@ -113,6 +116,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (this.Weight == 1.0)
+                this.Weight = 2.0;
         }
     }
 }

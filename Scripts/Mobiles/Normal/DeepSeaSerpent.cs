@@ -47,8 +47,6 @@ namespace Server.Mobiles
                 PackItem(new SulfurousAsh(4));
             else
                 PackItem(new BlackPearl(4));
-
-            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public DeepSeaSerpent(Serial serial)
@@ -57,6 +55,7 @@ namespace Server.Mobiles
         }
 
         public override int TreasureMapLevel { get { return 2; } }
+        public override bool HasBreath { get { return true; } }
         public override int Meat { get { return 10; } }
 		public override int Hides { get { return 10; } }
         public override HideType HideType { get { return HideType.Horned; } }

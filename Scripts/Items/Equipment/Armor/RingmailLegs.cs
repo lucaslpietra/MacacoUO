@@ -9,13 +9,16 @@ namespace Server.Items
         public RingmailLegs()
             : base(0x13F0)
         {
-            Weight = 15.0;
+            this.Weight = 15.0;
+            this.Name = "Calças de Loriga";
         }
 
         public RingmailLegs(Serial serial)
             : base(serial)
         {
         }
+
+        public override int MaxMageryCircle { get { return 6; } }
 
         public override int BasePhysicalResistance
         {
@@ -80,18 +83,11 @@ namespace Server.Items
                 return 20;
             }
         }
-        public override int OldDexBonus
-        {
-            get
-            {
-                return -1;
-            }
-        }
         public override int ArmorBase
         {
             get
             {
-                return 22;
+                return 20;
             }
         }
         public override ArmorMaterialType MaterialType
@@ -99,6 +95,13 @@ namespace Server.Items
             get
             {
                 return ArmorMaterialType.Ringmail;
+            }
+        }
+        public override ArmorMeditationAllowance DefMedAllowance
+        {
+            get
+            {
+                return ArmorMeditationAllowance.Half;
             }
         }
         public override void Serialize(GenericWriter writer)

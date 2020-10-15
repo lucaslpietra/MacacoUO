@@ -4,9 +4,14 @@ namespace Server.Items
 {
     public class StrengthPotion : BaseStrengthPotion
     {
+		public override string DefaultName
+        {
+            get { return "Poção de Força"; }            
+        }
+		
         [Constructable]
         public StrengthPotion()
-            : base(PotionEffect.Strength)
+            : base(PotionEffect.Forca)
         {
         }
 

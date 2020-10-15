@@ -10,6 +10,7 @@ namespace Server.Misc
     public class Aggression
     {
         private static readonly TimeSpan Delay = TimeSpan.FromMinutes(2.0);
+        private static readonly TimeSpan DelayFast = TimeSpan.FromSeconds(30);
         private const string AggressorFormat = "You are attacking {0}!";
         private const string AggressedFormat = "{0} is attacking you!";
         private const int Hue = 0x22;
@@ -141,6 +142,49 @@ namespace Server.Misc
 
                 if ((attacker is PlayerMobile || (attacker is BaseCreature && !((BaseCreature)attacker).IsMonster)) &&
                     (DateTime.UtcNow < info.LastCombatTime + Delay && attacker.LastKilled < info.LastCombatTime))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool CheckHasAggressionFast(Mobile m, bool aggressedOnly = false)
+        {
+            if (Server.Engines.VvV.ViceVsVirtueSystem.HasBattleAggression(m))
+            {
+                return true;
+            }
+
+            var list = m.Aggressed;
+
+            for (int i = 0; i < list.Count; ++i)
+            {
+                AggressorInfo info = list[i];
+                var defender = info.Defender;
+
+                if ((defender is PlayerMobile || (defender is BaseCreature && !((BaseCreature)defender).IsMonster)) &&
+                    (DateTime.UtcNow < info.LastCombatTime + DelayFast && defender.LastKilled < info.LastCombatTime))
+                {
+                    return true;
+                }
+            }
+
+            if (aggressedOnly)
+            {
+                return false;
+            }
+
+            list = m.Aggressors;
+
+            for (int i = 0; i < list.Count; ++i)
+            {
+                AggressorInfo info = list[i];
+                var attacker = info.Attacker;
+
+                if ((attacker is PlayerMobile || (attacker is BaseCreature && !((BaseCreature)attacker).IsMonster)) &&
+                    (DateTime.UtcNow < info.LastCombatTime + DelayFast && attacker.LastKilled < info.LastCombatTime))
                 {
                     return true;
                 }

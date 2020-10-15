@@ -11,7 +11,7 @@ namespace Server.Items
         public FemalePlateChest()
             : base(0x1C04)
         {
-            Weight = 4.0;
+            this.Weight = 4.0;
         }
 
         public FemalePlateChest(Serial serial)
@@ -79,7 +79,7 @@ namespace Server.Items
         {
             get
             {
-                return 45;
+                return 80;
             }
         }
         public override int OldDexBonus
@@ -120,6 +120,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (this.Weight == 1.0)
+                this.Weight = 4.0;
         }
     }
 }

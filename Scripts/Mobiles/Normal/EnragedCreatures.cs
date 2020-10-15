@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public EnragedRabbit(Mobile summoner)
             : base(summoner)
         {
-            this.Name = "a rabbit";
+            this.Name = "coelho";
             this.Body = 0xcd;
         }
 
@@ -52,7 +52,7 @@ namespace Server.Mobiles
         public EnragedHart(Mobile summoner)
             : base(summoner)
         {
-            this.Name = "a great hart";
+            this.Name = "veado grande";
             this.Body = 0xea;
         }
 
@@ -95,7 +95,7 @@ namespace Server.Mobiles
         public EnragedHind(Mobile summoner)
             : base(summoner)
         {
-            this.Name = "a hind";
+            this.Name = "veado";
             this.Body = 0xed;
         }
 
@@ -138,7 +138,7 @@ namespace Server.Mobiles
         public EnragedBlackBear(Mobile summoner)
             : base(summoner)
         {
-            this.Name = "a black bear";
+            this.Name = "urso preto";
             this.Body = 0xd3;
             this.BaseSoundID = 0xa3;
         }
@@ -167,7 +167,7 @@ namespace Server.Mobiles
         public EnragedEagle(Mobile summoner)
             : base(summoner)
         {
-            this.Name = "an eagle";
+            this.Name = "aguia sanguilola";
             this.Body = 0x5;
             this.BaseSoundID = 0x2ee;
         }

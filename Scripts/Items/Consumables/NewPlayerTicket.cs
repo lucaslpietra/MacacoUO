@@ -51,7 +51,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(1041492); // This is half a prize ticket! Double-click this ticket and target any other ticket marked NEW PLAYER and get a prize! This ticket will only work for YOU, so don't give it away!
+            list.Add("Este eh metade de um ticket ! Junte com outro ticket noob de outro jogador e ambos ganham premio !"); // This is half a prize ticket! Double-click this ticket and target any other ticket marked NEW PLAYER and get a prize! This ticket will only work for YOU, so don't give it away!
         }
 
         public override void Serialize(GenericWriter writer)
@@ -77,16 +77,13 @@ namespace Server.Items
                         break;
                     }
             }
-
-            if (this.Name == "a young player ticket")
-                this.Name = null;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
             if (from != this.m_Owner)
             {
-                from.SendLocalizedMessage(501926); // This isn't your ticket! Shame on you! You have to use YOUR ticket.
+                from.SendMessage("Este ticket nao e seu"); // This isn't your ticket! Shame on you! You have to use YOUR ticket.
             }
             else if (!this.IsChildOf(from.Backpack))
             {
@@ -94,7 +91,7 @@ namespace Server.Items
             }
             else
             {
-                from.SendLocalizedMessage(501927); // Target any other ticket marked NEW PLAYER to win a prize.
+                from.SendMessage("Selecione outros tickets para ganhar um premio"); // Target any other ticket marked NEW PLAYER to win a prize.
                 from.Target = new InternalTarget(this);
             }
         }
@@ -112,7 +109,7 @@ namespace Server.Items
             {
                 if (targeted == this.m_Ticket)
                 {
-                    from.SendLocalizedMessage(501928); // You can't target the same ticket!
+                    from.SendMessage("Seria muito facil nao e mesmo ? Voce precisa escolher OUTRO ticket."); // You can't target the same ticket!
                 }
                 else if (targeted is NewPlayerTicket)
                 {
@@ -121,7 +118,7 @@ namespace Server.Items
 
                     if (them == null || them.Deleted)
                     {
-                        from.SendLocalizedMessage(501930); // That is not a valid ticket.
+                        from.SendMessage("Isto nao eh um ticket); // That is not a valid ticket.");
                     }
                     else
                     {
@@ -131,11 +128,11 @@ namespace Server.Items
                 }
                 else if (targeted is Item && ((Item)targeted).ItemID == 0x14F0)
                 {
-                    from.SendLocalizedMessage(501931); // You need to find another ticket marked NEW PLAYER.
+                    from.SendMessage("Precisa encontrar outro ticket"); // You need to find another ticket marked NEW PLAYER.
                 }
                 else
                 {
-                    from.SendLocalizedMessage(501929); // You will need to select a ticket.
+                    from.SendMessage("Selecione um ticket"); // You will need to select a ticket.
                 }
             }
         }
@@ -152,25 +149,25 @@ namespace Server.Items
 
                 this.AddBackground(0, 0, 400, 385, 0xA28);
 
-                this.AddHtmlLocalized(30, 45, 340, 70, 1013011, true, true); // Choose the gift you prefer. WARNING: if you cancel, and your partner does not, you will need to find another matching ticket!
+                this.AddHtml(30, 45, 340, 70, "Escolha seu premio (nao cancele o gump !!)", true, true); // Choose the gift you prefer. WARNING: if you cancel, and your partner does not, you will need to find another matching ticket!
 
                 this.AddButton(46, 128, 0xFA5, 0xFA7, 1, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(80, 130, 320, 35, 1013012, false, false); // A sextant
+                this.AddHtml(80, 130, 320, 35, "Uma espada excepcional de cobre", false, false); // A sextant
 
                 this.AddButton(46, 163, 0xFA5, 0xFA7, 2, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(80, 165, 320, 35, 1013013, false, false); // A coupon for a single hair restyling
+                this.AddHtml(80, 165, 320, 35, "Cupom para Cabelos", false, false); // A coupon for a single hair restyling
 
                 this.AddButton(46, 198, 0xFA5, 0xFA7, 3, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(80, 200, 320, 35, 1013014, false, false); // A spellbook with all 1st - 4th spells.
+                this.AddHtml(80, 200, 320, 35, "Um livro de magias 1-4 ciclos", false, false); // A spellbook with all 1st - 4th spells.
 
                 this.AddButton(46, 233, 0xFA5, 0xFA7, 4, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(80, 235, 320, 35, 1013015, false, false); // A wand of fireworks
+                this.AddHtml(80, 235, 320, 35, "Uma maca excepcional de cobre", false, false); // A wand of fireworks
 
                 this.AddButton(46, 268, 0xFA5, 0xFA7, 5, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(80, 270, 320, 35, 1013016, false, false); // A spyglass
+                this.AddHtml(80, 270, 320, 35, "1000 Moedas de Ouro", false, false); // A spyglass
 
                 this.AddButton(46, 303, 0xFA5, 0xFA7, 6, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(80, 305, 320, 35, 1013017, false, false); // Dyes and a dye tub
+                this.AddHtml(80, 305, 320, 35, "Uma kryss excepcional de cobre", false, false); // Dyes and a dye tub
 
                 this.AddButton(120, 340, 0xFA5, 0xFA7, 0, GumpButtonType.Reply, 0);
                 this.AddHtmlLocalized(154, 342, 100, 35, 1011012, false, false); // CANCEL
@@ -181,7 +178,7 @@ namespace Server.Items
                 if (this.m_Ticket.Deleted)
                     return;
 
-                int number = 0;
+                string number = null;
 
                 Item item = null;
                 Item item2 = null;
@@ -189,29 +186,32 @@ namespace Server.Items
                 switch ( info.ButtonID )
                 {
                     case 1:
-                        item = new Sextant();
-                        number = 1010494;
+                        item = new VikingSword();
+                        ((BaseWeapon)item).Quality = ItemQuality.Exceptional;
+                        ((BaseWeapon)item).Resource = CraftResource.Cobre;
                         break; // A sextant has been placed in your backpack.
                     case 2:
                         item = new HairRestylingDeed();
-                        number = 501933;
+               
                         break; // A coupon for a free hair restyling has been placed in your backpack.
                     case 3:
                         item = new Spellbook(0xFFFFFFFF);
-                        number = 1010495;
+                   
                         break; // A spellbook with all 1st to 4th circle spells has been placed in your backpack.
                     case 4:
-                        item = new FireworksWand();
-                        number = 501935;
+                        item = new Mace();
+                        ((BaseWeapon)item).Quality = ItemQuality.Exceptional;
+                        ((BaseWeapon)item).Resource = CraftResource.Cobre;
+
                         break; // A wand of fireworks has been placed in your backpack.
                     case 5:
-                        item = new Spyglass();
-                        number = 501936;
+                        item = new Gold(1000);
+               
                         break; // A spyglass has been placed in your backpack.
                     case 6:
-                        item = new DyeTub();
-                        item2 = new Dyes();
-                        number = 501937;
+                        item = new Kryss();
+                        ((BaseWeapon)item).Quality = ItemQuality.Exceptional;
+                        ((BaseWeapon)item).Resource = CraftResource.Cobre;
                         break; // The dyes and dye tub have been placed in your backpack.
                 }
 
@@ -219,7 +219,7 @@ namespace Server.Items
                 {
                     this.m_Ticket.Delete();
 
-                    this.m_From.SendLocalizedMessage(number);
+                    this.m_From.SendMessage("Voce pegou seu premio");
                     this.m_From.AddToBackpack(item);
 
                     if (item2 != null)

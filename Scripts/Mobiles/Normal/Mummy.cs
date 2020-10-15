@@ -1,50 +1,59 @@
 using System;
 using Server.Items;
+using Server.Services;
 
 namespace Server.Mobiles
 {
     [CorpseName("a mummy corpse")]
     public class Mummy : BaseCreature
     {
+        public double BandHealPct = 0.15;
+
         [Constructable]
         public Mummy()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.4, 0.8)
         {
-            Name = "a mummy";
-            Body = 154;
-            BaseSoundID = 471;
+            this.Name = "mumia";
+            this.Body = 154;
+            this.BaseSoundID = 471;
 
-            SetStr(346, 370);
-            SetDex(71, 90);
-            SetInt(26, 40);
+            this.SetStr(30, 60);
+            this.SetDex(15, 30);
+            this.SetInt(26, 40);
 
-            SetHits(208, 222);
+            this.SetHits(40, 45);
 
-            SetDamage(13, 23);
+            this.SetDamage(2, 4);
 
-            SetDamageType(ResistanceType.Physical, 40);
-            SetDamageType(ResistanceType.Cold, 60);
+            this.SetDamageType(ResistanceType.Physical, 40);
+            this.SetDamageType(ResistanceType.Cold, 60);
 
-            SetResistance(ResistanceType.Physical, 45, 55);
-            SetResistance(ResistanceType.Fire, 10, 20);
-            SetResistance(ResistanceType.Cold, 50, 60);
-            SetResistance(ResistanceType.Poison, 20, 30);
-            SetResistance(ResistanceType.Energy, 20, 30);
+            this.SetResistance(ResistanceType.Physical, 45, 55);
+            this.SetResistance(ResistanceType.Fire, 10, 20);
+            this.SetResistance(ResistanceType.Cold, 50, 60);
+            this.SetResistance(ResistanceType.Poison, 20, 30);
+            this.SetResistance(ResistanceType.Energy, 20, 30);
 
-            SetSkill(SkillName.MagicResist, 15.1, 40.0);
-            SetSkill(SkillName.Tactics, 35.1, 50.0);
-            SetSkill(SkillName.Wrestling, 35.1, 50.0);
+            this.SetSkill(SkillName.MagicResist, 120.1, 180.0);
+            this.SetSkill(SkillName.Tactics, 35.1, 50.0);
+            this.SetSkill(SkillName.Wrestling, 35.1, 37.0);
 
-            Fame = 4000;
-            Karma = -4000;
+            this.Fame = 2000;
+            this.Karma = -2000;
 
-            VirtualArmor = 50;
+            this.VirtualArmor = 16;
 
-            if (Core.ML && Utility.RandomDouble() < .33)
-                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(3));
+            if (Utility.Chance(1))
+                this.PackItem(Engines.Plants.Seed.RandomPeculiarSeed());
 
-            PackItem(new Garlic(5));
-            PackItem(new Bandage(10));
+            if (Utility.Chance(10))
+                this.PackItem(new CottonSeeds());
+
+            if (Utility.RandomBool())
+                this.PackItem(new Garlic(5));
+            else
+                this.PackItem(new Ginseng(5));
+            this.PackItem(new Bandage(6));
         }
 
         public Mummy(Serial serial)
@@ -52,13 +61,94 @@ namespace Server.Mobiles
         {
         }
 
-		public override int TreasureMapLevel
+        public override int Hides
         {
             get
             {
-                return 1;
+                return Utility.Random(1, 2);
             }
         }
+        public override HideType HideType
+        {
+            get
+            {
+                return HideType.Regular;
+            }
+        }
+
+        public override bool BardImmune
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public override bool AllureImmune
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public override bool Unprovokable
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public override bool Uncalmable
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public override int BloodHue { get { return 862; } set { } }
+
+        public override void OnThink()
+        {
+            base.OnThink();
+            if (IsCooldown("pegabands"))
+                return;
+
+            SetCooldown("pegabands", TimeSpan.FromSeconds(4));
+            var items = this.Map.GetItemsInRange(this.Location, 2);
+            var anexou = false;
+            foreach (var item in items)
+            {
+                if (item.Movable && item is Bandage)
+                {
+                    anexou = true;
+                    item.Consume();
+                }
+            }
+            items.Free();
+            if (anexou)
+            {
+                OverheadMessage("* anexou bandagem *");
+                var cura = (int)(this.HitsMax * BandHealPct);
+                this.Hits += cura;
+                DamageNumbers.ShowDamage(-cura, this, this, 0);
+                this.PlaySound(0x57);
+            }
+        }
+
+        public override void OnDamage(int amount, Mobile from, bool willKill)
+        {
+            if (amount > 5 && Utility.RandomBool())
+            {
+                if(!IsCooldown("pegabands"))
+                    SetCooldown("pegabands", TimeSpan.FromSeconds(4));
+                var bandage = new Bandage();
+                var loc = this.Location;
+                var map = this.Map;
+                Effects.ItemToFloor(this, bandage, Effects.TryGetNearRandomLoc(this), this.Map);
+
+            }
+        }
+
         public override bool BleedImmune
         {
             get
@@ -66,6 +156,7 @@ namespace Server.Mobiles
                 return true;
             }
         }
+
         public override Poison PoisonImmune
         {
             get
@@ -83,11 +174,12 @@ namespace Server.Mobiles
                 return OppositionGroup.FeyAndUndead;
             }
         }
+
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
-            this.AddLoot(LootPack.Gems);
-            this.AddLoot(LootPack.Potions);
+            this.AddLoot(LootPack.Poor);
+            if (Utility.RandomDouble() < 0.02)
+                this.AddLoot(LootPack.Gems);
         }
 
         public override void Serialize(GenericWriter writer)

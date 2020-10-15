@@ -6,13 +6,11 @@ namespace Server.Mobiles
     [CorpseName("a fleshrenderer corpse")]
     public class FleshRenderer : BaseCreature
     {
-        public override bool SupportsRunAnimation { get { return false; } }
-
         [Constructable]
         public FleshRenderer()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a fleshrenderer";
+            Name = "barata carnivora";
             Body = 315;
 
             SetStr(401, 460);
@@ -46,17 +44,12 @@ namespace Server.Mobiles
 
             SetWeaponAbility(WeaponAbility.Dismount);
             SetWeaponAbility(WeaponAbility.ParalyzingBlow);
-
-            ForceActiveSpeed = 0.3;
-            ForcePassiveSpeed = 0.6;
         }
 
         public FleshRenderer(Serial serial)
             : base(serial)
         {
         }
-
-        public override bool CanFlee { get { return false; } }
 
         public override bool IgnoreYoungProtection
         {
@@ -148,6 +141,9 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (BaseSoundID == 660)
+                BaseSoundID = -1;
         }
     }
 }

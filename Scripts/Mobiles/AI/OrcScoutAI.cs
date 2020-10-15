@@ -308,17 +308,7 @@ namespace Server.Mobiles
 
 			if (!m_Mobile.Hidden)
 			{
-				var chance = 0.05;
-
-				if (m_Mobile.Hits < 20)
-				{
-					chance = 0.1;
-				}
-
-				if (m_Mobile.Poisoned)
-				{
-					chance = 0.01;
-				}
+				var chance = 0.5;
 
 				if (Utility.RandomDouble() < chance)
 				{

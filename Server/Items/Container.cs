@@ -148,6 +148,8 @@ namespace Server.Items
             }
         }
 
+        public int PesoMax = 0;
+
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual int MaxWeight
         {
@@ -159,7 +161,9 @@ namespace Server.Items
                 }
                 else
                 {
-                    return DefaultMaxWeight;
+                    if (PesoMax == 0)
+                        PesoMax = DefaultMaxWeight;
+                    return PesoMax;
                 }
             }
         }
@@ -198,11 +202,14 @@ namespace Server.Items
 
         public override bool CheckLift(Mobile from, Item item, ref LRReason reject)
         {
+            /*
             if (!from.IsStaff() && IsDecoContainer)
             {
+               
                 reject = LRReason.CannotLift;
                 return false;
             }
+            */
 
             return base.CheckLift(from, item, ref reject);
         }
@@ -306,12 +313,12 @@ namespace Server.Items
 
         public virtual void SendFullItemsMessage(Mobile to, Item item)
         {
-            to.SendMessage("That container cannot hold more items.");
+            to.SendMessage("Isto ja esta cheio.");
         }
 
         public virtual void SendFullWeightMessage(Mobile to, Item item)
         {
-            to.SendMessage("That container cannot hold more weight.");
+            to.SendMessage("Isto e muito pesado para este container.");
         }
 
         public virtual void SendCantStoreMessage(Mobile to, Item item)
@@ -1630,7 +1637,7 @@ namespace Server.Items
         }
 
         private static int m_GlobalMaxItems = 125;
-        private static int m_GlobalMaxWeight = 400;
+        private static int m_GlobalMaxWeight = 2000;
 
         public static int GlobalMaxItems { get { return m_GlobalMaxItems; } set { m_GlobalMaxItems = value; } }
         public static int GlobalMaxWeight { get { return m_GlobalMaxWeight; } set { m_GlobalMaxWeight = value; } }
@@ -1757,13 +1764,15 @@ namespace Server.Items
             for (int i = 0; i < list.Count; ++i)
             {
                 Item item = list[i];
-
+                Shard.Debug("Tentando stack " + item.Name, from);
                 if (!(item is Container) && item.StackWith(from, dropped, false))
                 {
+                    Shard.Debug("Stakei", from);
                     return true;
                 }
             }
 
+            Shard.Debug("Nao stakei, dropando item " + dropped.Name);
             DropItem(dropped);
 
             return true;
@@ -1801,7 +1810,12 @@ namespace Server.Items
             }
 
             AddItem(dropped);
+            RandomizeLocation(dropped);
+          
+        }
 
+        public void RandomizeLocation(Item dropped)
+        {
             Rectangle2D bounds = dropped.GetGraphicBounds();
             Rectangle2D ourBounds = Bounds;
 

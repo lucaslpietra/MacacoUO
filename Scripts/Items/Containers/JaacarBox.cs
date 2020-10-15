@@ -9,10 +9,10 @@ namespace Server.Items
         public JaacarBox()
             : base()
         {
-            Movable = true;
-            Hue = 1266;
+            this.Movable = true;
+            this.Hue = 1266;
 
-            DropItem(new RecipeScroll(500));
+            this.DropItem(new RecipeScroll(500));
         }
 
         public JaacarBox(Serial serial)

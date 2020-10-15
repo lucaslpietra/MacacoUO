@@ -24,7 +24,7 @@ namespace Server.Spells.First
             return m_Table.ContainsKey(m);
         }
 
-        public static void RemoveEffects(Mobile m, bool removeMod = true)
+        public static bool RemoveEffects(Mobile m, bool removeMod = true)
         {
             if (m_Table.ContainsKey(m))
             {
@@ -41,7 +41,9 @@ namespace Server.Spells.First
                     m.RemoveStatMod("[Magic] Int Curse");
 
                 m_Table.Remove(m);
+                return true;
             }
+            return false;
         }
 
         public override SpellCircle Circle

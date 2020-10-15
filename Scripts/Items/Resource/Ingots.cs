@@ -2,9 +2,9 @@ using System;
 
 namespace Server.Items
 {
-    public abstract class BaseIngot : Item, ICommodity, IResource
+    public abstract class BaseIngot : Item, ICommodity
     {
-        protected virtual CraftResource DefaultResource { get { return CraftResource.Iron; } }
+        protected virtual CraftResource DefaultResource { get { return CraftResource.Ferro; } }
 
         private CraftResource m_Resource;
         public BaseIngot(CraftResource resource)
@@ -15,11 +15,11 @@ namespace Server.Items
         public BaseIngot(CraftResource resource, int amount)
             : base(0x1BF2)
         {
-            Stackable = true;
-            Amount = amount;
-            Hue = CraftResources.GetHue(resource);
+            this.Stackable = true;
+            this.Amount = amount;
+            this.Hue = CraftResources.GetHue(resource);
 
-            m_Resource = resource;
+            this.m_Resource = resource;
         }
 
         public BaseIngot(Serial serial)
@@ -32,12 +32,12 @@ namespace Server.Items
         {
             get
             {
-                return m_Resource;
+                return this.m_Resource;
             }
             set
             {
-                m_Resource = value;
-                InvalidateProperties();
+                this.m_Resource = value;
+                this.InvalidateProperties();
             }
         }
         public override double DefaultWeight
@@ -51,8 +51,8 @@ namespace Server.Items
         {
             get
             {
-                if (m_Resource >= CraftResource.DullCopper && m_Resource <= CraftResource.Valorite)
-                    return 1042684 + (int)(m_Resource - CraftResource.DullCopper);
+                if (this.m_Resource >= CraftResource.Berilo && this.m_Resource <= CraftResource.Quartzo)
+                    return 1042684 + (int)(this.m_Resource - CraftResource.Berilo);
 
                 return 1042692;
             }
@@ -61,7 +61,7 @@ namespace Server.Items
         {
             get
             {
-                return LabelNumber;
+                return this.LabelNumber;
             }
         }
         bool ICommodity.IsDeedable
@@ -77,7 +77,7 @@ namespace Server.Items
 
             writer.Write((int)1); // version
 
-            writer.Write((int)m_Resource);
+            writer.Write((int)this.m_Resource);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -89,12 +89,12 @@ namespace Server.Items
             switch ( version )
             {
                 case 2: // Reset from Resource System
-                    m_Resource = DefaultResource;
+                    this.m_Resource = this.DefaultResource;
                     reader.ReadString();
                     break;
                 case 1:
                     {
-                        m_Resource = (CraftResource)reader.ReadInt();
+                        this.m_Resource = (CraftResource)reader.ReadInt();
                         break;
                     }
                 case 0:
@@ -135,7 +135,7 @@ namespace Server.Items
                                 break;
                         }
 
-                        m_Resource = CraftResources.GetFromOreInfo(info);
+                        this.m_Resource = CraftResources.GetFromOreInfo(info);
                         break;
                     }
             }
@@ -143,25 +143,15 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            if (Amount > 1)
-                list.Add(1050039, "{0}\t#{1}", Amount, 1027154); // ~1_NUMBER~ ~2_ITEMNAME~
+            if(this.Amount == 1)
+                list.Add("Lingote de "+m_Resource);
             else
-                list.Add(1027154); // ingots
+                list.Add(this.Amount+" Lingotes de " + m_Resource);
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-
-            if (!CraftResources.IsStandard(m_Resource))
-            {
-                int num = CraftResources.GetLocalizationNumber(m_Resource);
-
-                if (num > 0)
-                    list.Add(num);
-                else
-                    list.Add(CraftResources.GetName(m_Resource));
-            }
         }
     }
 
@@ -176,7 +166,7 @@ namespace Server.Items
 
         [Constructable]
         public IronIngot(int amount)
-            : base(CraftResource.Iron, amount)
+            : base(CraftResource.Ferro, amount)
         {
         }
 
@@ -201,23 +191,23 @@ namespace Server.Items
     }
 
     [FlipableAttribute(0x1BF2, 0x1BEF)]
-    public class DullCopperIngot : BaseIngot
+    public class BeriloIngot : BaseIngot
     {
-        protected override CraftResource DefaultResource { get { return CraftResource.DullCopper; } }
+        protected override CraftResource DefaultResource { get { return CraftResource.Berilo; } }
 
         [Constructable]
-        public DullCopperIngot()
+        public BeriloIngot()
             : this(1)
         {
         }
 
         [Constructable]
-        public DullCopperIngot(int amount)
-            : base(CraftResource.DullCopper, amount)
+        public BeriloIngot(int amount)
+            : base(CraftResource.Berilo, amount)
         {
         }
 
-        public DullCopperIngot(Serial serial)
+        public BeriloIngot(Serial serial)
             : base(serial)
         {
         }
@@ -238,23 +228,62 @@ namespace Server.Items
     }
 
     [FlipableAttribute(0x1BF2, 0x1BEF)]
-    public class ShadowIronIngot : BaseIngot
+    public class AdamantiumIngot : BaseIngot
     {
-        protected override CraftResource DefaultResource { get { return CraftResource.ShadowIron; } }
+        protected override CraftResource DefaultResource { get { return CraftResource.Adamantium; } }
 
         [Constructable]
-        public ShadowIronIngot()
+        public AdamantiumIngot()
             : this(1)
         {
         }
 
         [Constructable]
-        public ShadowIronIngot(int amount)
-            : base(CraftResource.ShadowIron, amount)
+        public AdamantiumIngot(int amount)
+            : base(CraftResource.Adamantium, amount)
         {
         }
 
-        public ShadowIronIngot(Serial serial)
+        public AdamantiumIngot(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+
+
+    [FlipableAttribute(0x1BF2, 0x1BEF)]
+    public class VibraniumIngot : BaseIngot
+    {
+        protected override CraftResource DefaultResource { get { return CraftResource.Vibranium; } }
+
+        [Constructable]
+        public VibraniumIngot()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public VibraniumIngot(int amount)
+            : base(CraftResource.Vibranium, amount)
+        {
+        }
+
+        public VibraniumIngot(Serial serial)
             : base(serial)
         {
         }
@@ -277,7 +306,7 @@ namespace Server.Items
     [FlipableAttribute(0x1BF2, 0x1BEF)]
     public class CopperIngot : BaseIngot
     {
-        protected override CraftResource DefaultResource { get { return CraftResource.Copper; } }
+        protected override CraftResource DefaultResource { get { return CraftResource.Cobre; } }
 
         [Constructable]
         public CopperIngot()
@@ -287,7 +316,7 @@ namespace Server.Items
 
         [Constructable]
         public CopperIngot(int amount)
-            : base(CraftResource.Copper, amount)
+            : base(CraftResource.Cobre, amount)
         {
         }
 
@@ -349,23 +378,65 @@ namespace Server.Items
     }
 
     [FlipableAttribute(0x1BF2, 0x1BEF)]
-    public class GoldIngot : BaseIngot
+    public class SilverIngot : BaseIngot
     {
-        protected override CraftResource DefaultResource { get { return CraftResource.Gold; } }
+        protected override CraftResource DefaultResource { get { return CraftResource.Dourado; } }
 
         [Constructable]
-        public GoldIngot()
+        public SilverIngot()
             : this(1)
         {
         }
 
         [Constructable]
-        public GoldIngot(int amount)
-            : base(CraftResource.Gold, amount)
+        public SilverIngot(int amount)
+            : base(CraftResource.Dourado, amount)
         {
         }
 
-        public GoldIngot(Serial serial)
+        public SilverIngot(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)1); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+            if (version == 0 && Hue != 0x8A5)
+            {
+                Hue = 0x8A5;
+                this.InvalidateProperties();
+            }   
+        }
+    }
+
+    [FlipableAttribute(0x1BF2, 0x1BEF)]
+    public class NiobioIngot : BaseIngot
+    {
+        protected override CraftResource DefaultResource { get { return CraftResource.Niobio; } }
+
+        [Constructable]
+        public NiobioIngot()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public NiobioIngot(int amount)
+            : base(CraftResource.Niobio, amount)
+        {
+        }
+
+        public NiobioIngot(Serial serial)
             : base(serial)
         {
         }
@@ -386,23 +457,23 @@ namespace Server.Items
     }
 
     [FlipableAttribute(0x1BF2, 0x1BEF)]
-    public class AgapiteIngot : BaseIngot
+    public class LazuritaIngot : BaseIngot
     {
-        protected override CraftResource DefaultResource { get { return CraftResource.Agapite; } }
+        protected override CraftResource DefaultResource { get { return CraftResource.Lazurita; } }
 
         [Constructable]
-        public AgapiteIngot()
+        public LazuritaIngot()
             : this(1)
         {
         }
 
         [Constructable]
-        public AgapiteIngot(int amount)
-            : base(CraftResource.Agapite, amount)
+        public LazuritaIngot(int amount)
+            : base(CraftResource.Lazurita, amount)
         {
         }
 
-        public AgapiteIngot(Serial serial)
+        public LazuritaIngot(Serial serial)
             : base(serial)
         {
         }
@@ -423,60 +494,23 @@ namespace Server.Items
     }
 
     [FlipableAttribute(0x1BF2, 0x1BEF)]
-    public class VeriteIngot : BaseIngot
+    public class QuartzoIngot : BaseIngot
     {
-        protected override CraftResource DefaultResource { get { return CraftResource.Verite; } }
+        protected override CraftResource DefaultResource { get { return CraftResource.Quartzo; } }
 
         [Constructable]
-        public VeriteIngot()
+        public QuartzoIngot()
             : this(1)
         {
         }
 
         [Constructable]
-        public VeriteIngot(int amount)
-            : base(CraftResource.Verite, amount)
+        public QuartzoIngot(int amount)
+            : base(CraftResource.Quartzo, amount)
         {
         }
 
-        public VeriteIngot(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x1BF2, 0x1BEF)]
-    public class ValoriteIngot : BaseIngot
-    {
-        protected override CraftResource DefaultResource { get { return CraftResource.Valorite; } }
-
-        [Constructable]
-        public ValoriteIngot()
-            : this(1)
-        {
-        }
-
-        [Constructable]
-        public ValoriteIngot(int amount)
-            : base(CraftResource.Valorite, amount)
-        {
-        }
-
-        public ValoriteIngot(Serial serial)
+        public QuartzoIngot(Serial serial)
             : base(serial)
         {
         }

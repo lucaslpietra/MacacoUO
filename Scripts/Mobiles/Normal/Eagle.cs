@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public Eagle()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an eagle";
+            this.Name = "aguia";
             this.Body = 5;
             this.BaseSoundID = 0x2EE;
 

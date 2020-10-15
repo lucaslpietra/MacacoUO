@@ -44,6 +44,11 @@ namespace Server
 			}
 		}
 
+        public static bool Chance(int pct)
+        {
+            return Utility.RandomDouble() <= pct / 100;
+        }
+
 		public static void Separate(StringBuilder sb, string value, string separator)
 		{
 			if (sb.Length > 0)
@@ -1184,7 +1189,7 @@ namespace Server
 			SkillName.EvalInt, SkillName.Healing, SkillName.Fishing, SkillName.Forensics, SkillName.Herding, SkillName.Hiding,
 			SkillName.Provocation, SkillName.Inscribe, SkillName.Lockpicking, SkillName.Magery, SkillName.MagicResist,
 			SkillName.Tactics, SkillName.Snooping, SkillName.Musicianship, SkillName.Poisoning, SkillName.Archery,
-			SkillName.SpiritSpeak, SkillName.Stealing, SkillName.Tailoring, SkillName.AnimalTaming, SkillName.TasteID,
+			SkillName.SpiritSpeak, SkillName.Stealing, SkillName.Tailoring, SkillName.AnimalTaming, SkillName.Jewelcrafting,
 			SkillName.Tinkering, SkillName.Tracking, SkillName.Veterinary, SkillName.Swords, SkillName.Macing, SkillName.Fencing,
 			SkillName.Wrestling, SkillName.Lumberjacking, SkillName.Mining, SkillName.Meditation, SkillName.Stealth,
 			SkillName.RemoveTrap, SkillName.Necromancy, SkillName.Focus, SkillName.Chivalry, SkillName.Bushido,
@@ -1369,26 +1374,33 @@ namespace Server
 
 		public static void WriteConsoleColor(ConsoleColor color, string format, params object[] args)
 		{
+            Console.WriteLine(format, args);
+            /*
 			lock (((ICollection)m_ConsoleColors).SyncRoot)
 			{
 				PushColor(color);
 				Console.WriteLine(format, args);
 				PopColor();
 			}
-		}
+            */
+        }
 
         public static void WriteConsoleColor(ConsoleColor color, string str)
         {
+            Console.WriteLine(str);
+            /*
 			lock (((ICollection)m_ConsoleColors).SyncRoot)
 			{
 				PushColor(color);
 				Console.WriteLine(str);
 				PopColor();
 			}
-		}
+            */
+        }
 
 		public static void PushColor(ConsoleColor color)
 		{
+            /*
 			try
 			{
 				lock (((ICollection)m_ConsoleColors).SyncRoot)
@@ -1400,10 +1412,12 @@ namespace Server
 			}
 			catch
 			{ }
+            */
 		}
 
 		public static void PopColor()
 		{
+            /*
 			try
 			{
 				lock (((ICollection)m_ConsoleColors).SyncRoot)
@@ -1413,6 +1427,7 @@ namespace Server
 			}
 			catch
 			{ }
+            */
 		}
 
 		public static bool NumberBetween(double num, int bound1, int bound2, double allowance)

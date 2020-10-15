@@ -5,13 +5,13 @@ namespace Server.Mobiles
 {
     [CorpseName("a frozen ogre lord's corpse")]
     [TypeAlias("Server.Mobiles.ArticOgreLord")]
-    public class ArcticOgreLord : BaseCreature
+    public class ArcticOgreLord : BaseOgre
     {
         [Constructable]
         public ArcticOgreLord()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "an arctic ogre lord";
+            Name = "lord ogro do artico";
             Body = 135;
             BaseSoundID = 427;
 
@@ -55,9 +55,13 @@ namespace Server.Mobiles
                 return Poison.Regular;
             }
         }
-        
-		public override int TreasureMapLevel { get { return 3; } }
-		
+        public override int TreasureMapLevel
+        {
+            get
+            {
+                return 3;
+            }
+        }
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich);

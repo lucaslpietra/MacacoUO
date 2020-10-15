@@ -8,7 +8,8 @@ namespace Server.Items
         public PlateGorget()
             : base(0x1413)
         {
-            Weight = 2.0;
+            this.Weight = 2.0;
+            this.Name = "Gorgel de Metal";
         }
 
         public PlateGorget(Serial serial)
@@ -16,6 +17,13 @@ namespace Server.Items
         {
         }
 
+        public override int OldDexBonus
+        {
+            get
+            {
+                return -1;
+            }
+        }
         public override int BasePhysicalResistance
         {
             get
@@ -76,14 +84,7 @@ namespace Server.Items
         {
             get
             {
-                return 30;
-            }
-        }
-        public override int OldDexBonus
-        {
-            get
-            {
-                return -1;
+                return 80;
             }
         }
         public override int ArmorBase

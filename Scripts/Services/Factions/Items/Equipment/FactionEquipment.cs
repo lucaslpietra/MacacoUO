@@ -273,7 +273,7 @@ namespace Server.Factions
             PlayerState state = PlayerState.Find(from);
 
 
-            return from.AccessLevel > AccessLevel.Player || (state != null && state.Rank.Rank >= MinRank);
+            return from.AccessLevel > AccessLevel.VIP || (state != null && state.Rank.Rank >= MinRank);
         }
     }
 }

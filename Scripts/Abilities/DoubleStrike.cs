@@ -50,8 +50,8 @@ namespace Server.Items
 				return;
 			}
 
-            attacker.SendLocalizedMessage(1060084); // You attack with lightning speed!
-            defender.SendLocalizedMessage(1060085); // Your attacker strikes with lightning speed!
+            attacker.SendLocalizedMessage("Voce atacou na velocidade da luz"); // You attack with lightning speed!
+            defender.SendLocalizedMessage("Seu oponente lhe atacou em uma velocidade rapida"); // Your attacker strikes with lightning speed!
 
             defender.PlaySound(0x3BB);
             defender.FixedEffect(0x37B9, 244, 25);
@@ -59,7 +59,14 @@ namespace Server.Items
 			if (attacker.InLOS(defender))
 			{
 				attacker.RevealingAction();
-				attacker.NextCombatTime = Core.TickCount + (int)weapon.OnSwing(attacker, defender).TotalMilliseconds;
+                if (Shard.TROCA_ARMA_RAPIDA)
+                {
+                    attacker.NextCombatTimes[weapon.GetType()] = Core.TickCount + (int)weapon.OnSwing(attacker, defender).TotalMilliseconds;
+                }
+                else
+                {
+                    attacker.NextCombatTime = Core.TickCount + (int)weapon.OnSwing(attacker, defender).TotalMilliseconds;
+                } 
 			}
 
             weapon.InDoubleStrike = false;

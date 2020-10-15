@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace Server.Items
 {
@@ -14,8 +14,7 @@ namespace Server.Items
         public NougatSwirl(int amount)
             : base(0x4690)
         {
-            Stackable = true;
-            Amount = amount;
+            this.Stackable = true;
         }
 
         public NougatSwirl(Serial serial)

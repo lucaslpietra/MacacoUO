@@ -18,8 +18,8 @@ namespace Server.Items
         public TrainingDummy(int itemID)
             : base(itemID)
         {
-            this.m_MinSkill = -25.0;
-            this.m_MaxSkill = +25.0;
+            this.m_MinSkill = -10;
+            this.m_MaxSkill = 90;
         }
 
         public TrainingDummy(Serial serial)
@@ -98,7 +98,14 @@ namespace Server.Items
             from.Direction = from.GetDirectionTo(this.GetWorldLocation());
             weapon.PlaySwingAnimation(from);
 
-            from.CheckSkill(weapon.Skill, this.m_MinSkill, this.m_MaxSkill);
+            if(!from.IsCooldown("boneco"))
+            {
+                from.SetCooldown("boneco", TimeSpan.FromHours(6));
+                from.SendMessage(78, "Voce pode subir sua skill em bonecos de treino vagarosamente ate 90. Bonecos Avancados, craftados, podem upar mais rapido ate 100.");
+                from.SendMessage(78, "Lembre-se que matando monstros em dungeon skills de combate upam muito mais rapido");
+            }
+            from.CheckSkillMult(weapon.Skill, this.m_MinSkill, this.m_MaxSkill, 0.5);
+            from.CheckSkillMult(SkillName.Tactics, this.m_MinSkill, this.m_MaxSkill, 0.25);
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -106,15 +113,15 @@ namespace Server.Items
             BaseWeapon weapon = from.Weapon as BaseWeapon;
 
             if (weapon is BaseRanged)
-                this.SendLocalizedMessageTo(from, 501822); // You can't practice ranged weapons on this.
+                this.SendLocalizedMessageTo(from, "Voce nao pode praticar arcos nisso"); // You can't practice ranged weapons on this.
             else if (weapon == null || !from.InRange(this.GetWorldLocation(), weapon.MaxRange))
-                this.SendLocalizedMessageTo(from, 501816); // You are too far away to do that.
+                this.SendLocalizedMessageTo(from, "Muito longe"); // You are too far away to do that.
             else if (this.Swinging)
-                this.SendLocalizedMessageTo(from, 501815); // You have to wait until it stops swinging.
+                this.SendLocalizedMessageTo(from, "Aguarde ate o boneco parar de balancar"); // You have to wait until it stops swinging.
             else if (from.Skills[weapon.Skill].Base >= this.m_MaxSkill)
-                this.SendLocalizedMessageTo(from, 501828); // Your skill cannot improve any further by simply practicing with a dummy.
+                this.SendLocalizedMessageTo(from, "Voce nao pode aprender mais contra este boneco"); // Your skill cannot improve any further by simply practicing with a dummy.
             else if (from.Mounted)
-                this.SendLocalizedMessageTo(from, 501829); // You can't practice on this while on a mount.
+                this.SendLocalizedMessageTo(from, "Nao pode praticar montado"); // You can't practice on this while on a mount.
             else
                 this.Use(from, weapon);
         }
@@ -141,13 +148,6 @@ namespace Server.Items
                     {
                         this.m_MinSkill = reader.ReadDouble();
                         this.m_MaxSkill = reader.ReadDouble();
-
-                        if (this.m_MinSkill == 0.0 && this.m_MaxSkill == 30.0)
-                        {
-                            this.m_MinSkill = -25.0;
-                            this.m_MaxSkill = +25.0;
-                        }
-
                         break;
                     }
             }
@@ -155,12 +155,14 @@ namespace Server.Items
             this.UpdateItemID();
         }
 
+        public virtual double Delay { get { return 2.75; } }
+
         private class InternalTimer : Timer
         {
             private readonly TrainingDummy m_Dummy;
             private bool m_Delay = true;
             public InternalTimer(TrainingDummy dummy)
-                : base(TimeSpan.FromSeconds(0.25), TimeSpan.FromSeconds(2.75))
+                : base(TimeSpan.FromSeconds(0.25), TimeSpan.FromSeconds(dummy.Delay))
             {
                 this.m_Dummy = dummy;
                 this.Priority = TimerPriority.FiftyMS;

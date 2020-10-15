@@ -50,6 +50,12 @@ namespace Server.Spells.Second
             }
             else if (this.CheckHSequence(m))
             {
+
+                SpellHelper.CheckReflect((int)Circle, Caster, ref m);
+
+                InternalTimer t = new InternalTimer(this, Caster, m);
+                t.Start();
+                /*
                 SpellHelper.Turn(this.Caster, m);
                 Mobile source = this.Caster;
 
@@ -103,16 +109,78 @@ namespace Server.Spells.Second
                 {
                     SpellHelper.Damage(this, m, damage, 0, 0, 100, 0, 0);
                 }
+                */
             }
 
             this.FinishSequence();
+        }
+
+        private class InternalTimer : Timer
+        {
+            private readonly MagerySpell m_Spell;
+            private readonly IDamageable m_Target;
+            private readonly Mobile m_Attacker;
+            private readonly Mobile Caster;
+
+            public InternalTimer(MagerySpell spell, Mobile attacker, IDamageable target)
+                : base(TimeSpan.FromSeconds(3))
+            {
+                m_Spell = spell;
+                m_Attacker = attacker;
+                m_Target = target;
+                this.Caster = attacker;
+
+                if (m_Spell != null)
+                    m_Spell.StartDelayedDamageContext(attacker, this);
+
+                Priority = TimerPriority.FiftyMS;
+            }
+
+            protected override void OnTick()
+            {
+                Mobile defender = m_Target as Mobile;
+
+                if (m_Attacker.HarmfulCheck(m_Target))
+                {
+                    SpellHelper.Turn(this.Caster, m_Target);
+                    Mobile source = this.Caster;
+
+                    double damage = 0;
+
+                    if (m_Target != null)
+                    {
+                        damage = Utility.Random(1, 8);
+
+                        if (m_Spell.CheckResisted(defender))
+                        {
+                            damage *= 0.75;
+
+                            defender.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
+                        }
+
+                        damage *= m_Spell.GetDamageScalar(defender);
+                    }
+
+                    Caster.MovingParticles(defender, 0x374A, 7, 0, false, false, 5013, 5013, 0x1F1);
+                    defender.FixedParticles(0x374A, 10, 15, 5013, EffectLayer.Waist);
+                    defender.PlaySound(0x1F1);
+
+                    if (damage > 0)
+                    {
+                        SpellHelper.Damage(this.m_Spell, defender, damage, 0, 0, 100, 0, 0);
+                    }
+
+                    if (m_Spell != null)
+                        m_Spell.RemoveDelayedDamageContext(m_Attacker);
+                }
+            }
         }
 
         private class InternalTarget : Target
         {
             private readonly HarmSpell m_Owner;
             public InternalTarget(HarmSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(Spell.RANGE, false, TargetFlags.Harmful)
             {
                 this.m_Owner = owner;
             }

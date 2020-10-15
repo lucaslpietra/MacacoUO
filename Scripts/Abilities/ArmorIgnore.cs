@@ -34,8 +34,8 @@ namespace Server.Items
 
             ClearCurrentAbility(attacker);
 
-            attacker.SendLocalizedMessage(1060076); // Your attack penetrates their armor!
-            defender.SendLocalizedMessage(1060077); // The blow penetrated your armor!
+            attacker.SendLocalizedMessage("Seu ataque ignorou a armadura"); // Your attack penetrates their armor!
+            defender.SendLocalizedMessage("O ataque ignorou sua armadura"); // The blow penetrated your armor!
 
             defender.PlaySound(0x56);
             defender.FixedParticles(0x3728, 200, 25, 9942, EffectLayer.Waist);

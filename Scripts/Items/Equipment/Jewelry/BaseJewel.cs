@@ -10,18 +10,18 @@ namespace Server.Items
     public enum GemType
     {
         None,
-        StarSapphire,
-        Emerald,
-        Sapphire,
+        SafiraEstrela,
+        Esmeralda,
+        Safira,
         Ruby,
-        Citrine,
-        Amethyst,
-        Tourmaline,
-        Amber,
-        Diamond
+        Citrina,
+        Ametista,
+        Turmalina,
+        Ambrosia,
+        Diamante
     }
 
-    public abstract class BaseJewel : Item, ICraftable, ISetItem, IWearableDurability, IResource, IVvVItem, IOwnerRestricted, ITalismanProtection, IFactionItem, IArtifact, ICombatEquipment, IQuality
+    public abstract class BaseJewel : Item, ICraftable, ISetItem, IWearableDurability, IResource, IVvVItem, IOwnerRestricted, ITalismanProtection, IFactionItem, IArtifact, ICombatEquipment
     {
         #region Factions
         private FactionItem m_FactionState;
@@ -167,11 +167,11 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int HitPoints
         {
-            get 
+            get
             {
                 return m_HitPoints;
             }
-            set 
+            set
             {
                 if (value != m_HitPoints && MaxHitPoints > 0)
                 {
@@ -239,11 +239,11 @@ namespace Server.Items
         public NegativeAttributes NegativeAttributes
         {
             get
-            { 
+            {
                 return m_NegativeAttributes;
             }
-            set 
-            { 
+            set
+            {
             }
         }
 
@@ -331,24 +331,24 @@ namespace Server.Items
 
         #region Runic Reforging
         [CommandProperty(AccessLevel.GameMaster)]
-        public ReforgedPrefix ReforgedPrefix 
+        public ReforgedPrefix ReforgedPrefix
         {
-            get { return m_ReforgedPrefix; } 
-            set { m_ReforgedPrefix = value; InvalidateProperties(); } 
+            get { return m_ReforgedPrefix; }
+            set { m_ReforgedPrefix = value; InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ReforgedSuffix ReforgedSuffix 
-        { 
-            get { return m_ReforgedSuffix; } 
+        public ReforgedSuffix ReforgedSuffix
+        {
+            get { return m_ReforgedSuffix; }
             set { m_ReforgedSuffix = value; InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ItemPower ItemPower 
+        public ItemPower ItemPower
         {
             get { return m_ItemPower; }
-            set { m_ItemPower = value; InvalidateProperties(); } 
+            set { m_ItemPower = value; InvalidateProperties(); }
         }
         #endregion
 
@@ -541,7 +541,7 @@ namespace Server.Items
             m_AosAttributes = new AosAttributes(this);
             m_AosResistances = new AosElementAttributes(this);
             m_AosSkillBonuses = new AosSkillBonuses(this);
-            m_Resource = CraftResource.Iron;
+            m_Resource = CraftResource.Ferro;
             m_GemType = GemType.None;
 
             Layer = layer;
@@ -601,9 +601,7 @@ namespace Server.Items
                 }
                 else if (RequiredRace != null && from.Race != RequiredRace && !morph)
                 {
-                    if (RequiredRace == Race.Elf)
-                        from.SendLocalizedMessage(1072203); // Only Elves may use 
-                    else if (RequiredRace == Race.Gargoyle)
+                    if (RequiredRace == Race.Gargoyle)
                         from.SendLocalizedMessage(1111707); // Only gargoyles can wear 
                     else
                         from.SendMessage("Only {0} may use ", RequiredRace.PluralName);
@@ -611,11 +609,11 @@ namespace Server.Items
                     return false;
                 }
             }
-		
+
             return base.CanEquip(from);
         }
 
-        public virtual int OnHit(BaseWeapon weap , int damageTaken)
+        public virtual int OnHit(BaseWeapon weap, int damageTaken)
         {
             if (m_TimesImbued == 0 && m_MaxHitPoints == 0)
                 return damageTaken;
@@ -675,12 +673,71 @@ namespace Server.Items
         public virtual bool CanRepair { get { return m_NegativeAttributes.NoRepair == 0; } }
         #endregion
 
+        public static bool HasCombo(Mobile parent)
+        {
+            var colar = parent.FindItemOnLayer(Layer.Bracelet) as BaseJewel;
+            var anel = parent.FindItemOnLayer(Layer.Ring) as BaseJewel;
+            var brinco = parent.FindItemOnLayer(Layer.Earrings) as BaseJewel;
+
+            if (colar != null && anel != null && brinco != null)
+            {
+                if (colar.GemType != GemType.None && colar.GemType == brinco.GemType && brinco.GemType == anel.GemType)
+                {
+                    if (colar.SkillBonuses.Skill_1_Name == brinco.SkillBonuses.Skill_1_Name && anel.SkillBonuses.Skill_1_Name == brinco.SkillBonuses.Skill_1_Name)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public static int GetNumberComboPieces(Mobile parent, BaseJewel i)
+        {
+            var colar = parent.FindItemOnLayer(Layer.Bracelet) as BaseJewel;
+            var anel = parent.FindItemOnLayer(Layer.Ring) as BaseJewel;
+            var brinco = parent.FindItemOnLayer(Layer.Earrings) as BaseJewel;
+
+            var iguais = 0;
+            if (colar != null)
+            {
+                if (colar.GemType == i.GemType && colar.SkillBonuses.Skill_1_Name == i.SkillBonuses.Skill_1_Name)
+                {
+                    iguais++;
+                }
+            }
+
+            if (anel != null)
+            {
+                if (anel.GemType == i.GemType && anel.SkillBonuses.Skill_1_Name == i.SkillBonuses.Skill_1_Name)
+                {
+                    iguais++;
+                }
+            }
+
+            if (brinco != null)
+            {
+                if (brinco.GemType == i.GemType && brinco.SkillBonuses.Skill_1_Name == i.SkillBonuses.Skill_1_Name)
+                {
+                    iguais++;
+                }
+            }
+            return iguais;
+        }
+
         public override void OnAdded(object parent)
         {
-            if (Core.AOS && parent is Mobile)
+            if (parent is Mobile)
             {
                 Mobile from = (Mobile)parent;
 
+                // Se nao for fechar 3 dnv
+                if (BaseJewel.GetNumberComboPieces(from, this) == 3)
+                {
+                    var stat = this.SkillBonuses.Skill_1_Name;
+                    m_AosSkillBonuses.Skill_1_Value += 3;
+                    from.SendMessage("Voce fechou um combo de joias");
+                }
                 m_AosSkillBonuses.AddTo(from);
 
                 int strBonus = m_AosAttributes.BonusStr;
@@ -700,6 +757,8 @@ namespace Server.Items
                     if (intBonus != 0)
                         from.AddStatMod(new StatMod(StatType.Int, modName + "Int", intBonus, TimeSpan.Zero));
                 }
+
+
 
                 from.CheckStatTimers();
 
@@ -728,11 +787,43 @@ namespace Server.Items
 
         public override void OnRemoved(object parent)
         {
-            if (Core.AOS && parent is Mobile)
+            if (parent is Mobile)
             {
                 Mobile from = (Mobile)parent;
 
-                m_AosSkillBonuses.Remove();
+                var combos = BaseJewel.GetNumberComboPieces(from, this);
+                if (this.m_AosSkillBonuses.Skill_1_Value > 1)
+                {
+                    m_AosSkillBonuses.Remove();
+                    from.SendMessage("Voce desfez o set de joias retirando o item");
+                    this.m_AosSkillBonuses.Skill_1_Value = 1;
+                }
+                else if (combos >= 2)
+                {
+                    var colar = from.FindItemOnLayer(Layer.Bracelet) as BaseJewel;
+                    var anel = from.FindItemOnLayer(Layer.Ring) as BaseJewel;
+                    var brinco = from.FindItemOnLayer(Layer.Earrings) as BaseJewel;
+
+                    if (colar != null && colar.SkillBonuses.Skill_1_Value > 1)
+                    {
+                        colar.m_AosSkillBonuses.Skill_1_Value = 1;
+                    }
+                    if (anel != null && anel.SkillBonuses.Skill_1_Value > 1)
+                    {
+                        anel.m_AosSkillBonuses.Skill_1_Value = 1;
+                    }
+                    if (brinco != null && brinco.SkillBonuses.Skill_1_Value > 1)
+                    {
+                        brinco.m_AosSkillBonuses.Skill_1_Value = 1;
+                    }
+                    from.SendMessage("Voce desfez o set de joias retirando este item");
+                    m_AosSkillBonuses.Remove();
+                }
+                else
+                {
+                    m_AosSkillBonuses.Remove();
+                }
+
 
                 string modName = Serial.ToString();
 
@@ -763,6 +854,15 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
+            if (Name != null && m_GemType != GemType.None)
+            {
+                list.Add(Name + " de " + m_GemType.ToString());
+            }
+            else
+            {
+                base.AddNameProperty(list);
+            }
+            /*
             if (m_ReforgedPrefix != ReforgedPrefix.None || m_ReforgedSuffix != ReforgedSuffix.None)
             {
                 if (m_ReforgedPrefix != ReforgedPrefix.None)
@@ -783,6 +883,7 @@ namespace Server.Items
             {
                 base.AddNameProperty(list);
             }
+            */
         }
 
         private string GetNameString()
@@ -795,21 +896,6 @@ namespace Server.Items
             return name;
         }
 
-        public override void AddCraftedProperties(ObjectPropertyList list)
-        {
-            if (OwnerName != null)
-                list.Add(1153213, OwnerName);
-
-            if (m_Crafter != null)
-                list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
-
-            if (m_Quality == ItemQuality.Exceptional)
-                list.Add(1063341); // exceptional
-
-            if (IsImbued)
-                list.Add(1080418); // (Imbued)
-        }
-
         public override void AddWeightProperty(ObjectPropertyList list)
         {
             base.AddWeightProperty(list);
@@ -820,15 +906,37 @@ namespace Server.Items
 
         public override void AddNameProperties(ObjectPropertyList list)
         {
-            base.AddNameProperties(list);           
+            base.AddNameProperties(list);
+
+            if (OwnerName != null)
+            {
+                list.Add(1153213, OwnerName);
+            }
+
+            if (m_Crafter != null)
+                list.Add("Criado por " + m_Crafter.TitleName); // crafted by ~1_NAME~
+
+
+            if (m_GemType != GemType.None)
+                list.Add("Combine com 3 joias (bracelete anel brinco) da mesma pedra e skill para bonus");
+            else
+                list.Add("Joia sem Pedra Preciosa");
+
+            if (m_AosSkillBonuses.Skill_1_Value > 3)
+            {
+                list.Add("[ Combo ]");
+            }
+
+            if (IsImbued)
+                list.Add(1080418); // (Imbued)            
 
             #region Factions
             FactionEquipment.AddFactionProperties(this, list);
             #endregion
 
             if (m_GorgonLenseCharges > 0)
-                list.Add(1112590, m_GorgonLenseCharges.ToString()); //Gorgon Lens Charges: ~1_val~
-            
+                list.AddTwoValues("Cargas Gorgon", m_GorgonLenseCharges); //Gorgon Lens Charges: ~1_val~         
+
             #region Mondain's Legacy Sets
             if (IsSetItem)
             {
@@ -899,72 +1007,72 @@ namespace Server.Items
 
             if ((prop = m_SAAbsorptionAttributes.ResonanceKinetic) != 0)
                 list.Add(1113695, prop.ToString()); // Kinetic Resonance ~1_val~%
-			
-			if ((prop = m_SAAbsorptionAttributes.CastingFocus) != 0)
+
+            if ((prop = m_SAAbsorptionAttributes.CastingFocus) != 0)
                 list.Add(1113696, prop.ToString()); // Casting Focus ~1_val~%
             #endregion
-			
-			if ((prop = m_AosAttributes.SpellChanneling) != 0)
+
+            if ((prop = m_AosAttributes.SpellChanneling) != 0)
                 list.Add(1060482); // spell channeling
-			
-			if ((prop = m_AosAttributes.NightSight) != 0)
+
+            if ((prop = m_AosAttributes.NightSight) != 0)
                 list.Add(1060441); // night sight
-			
-			if ((prop = m_AosAttributes.BonusStr) != 0)
+
+            if ((prop = m_AosAttributes.BonusStr) != 0)
                 list.Add(1060485, prop.ToString()); // strength bonus ~1_val~
-			
-			if ((prop = m_AosAttributes.BonusDex) != 0)
+
+            if ((prop = m_AosAttributes.BonusDex) != 0)
                 list.Add(1060409, prop.ToString()); // dexterity bonus ~1_val~
-			
-			if ((prop = m_AosAttributes.BonusInt) != 0)
+
+            if ((prop = m_AosAttributes.BonusInt) != 0)
                 list.Add(1060432, prop.ToString()); // intelligence bonus ~1_val~
-			
-			if ((prop = m_AosAttributes.BonusHits) != 0)
+
+            if ((prop = m_AosAttributes.BonusHits) != 0)
                 list.Add(1060431, prop.ToString()); // hit point increase ~1_val~
-			
-			if ((prop = m_AosAttributes.BonusStam) != 0)
+
+            if ((prop = m_AosAttributes.BonusStam) != 0)
                 list.Add(1060484, prop.ToString()); // stamina increase ~1_val~
-			
-			if ((prop = m_AosAttributes.BonusMana) != 0)
+
+            if ((prop = m_AosAttributes.BonusMana) != 0)
                 list.Add(1060439, prop.ToString()); // mana increase ~1_val~
-			
-			if ((prop = m_AosAttributes.RegenHits) != 0)
+
+            if ((prop = m_AosAttributes.RegenHits) != 0)
                 list.Add(1060444, prop.ToString()); // hit point regeneration ~1_val~
-			
-			if ((prop = m_AosAttributes.RegenStam) != 0)
+
+            if ((prop = m_AosAttributes.RegenStam) != 0)
                 list.Add(1060443, prop.ToString()); // stamina regeneration ~1_val~
-			
-			if ((prop = m_AosAttributes.RegenMana) != 0)
+
+            if ((prop = m_AosAttributes.RegenMana) != 0)
                 list.Add(1060440, prop.ToString()); // mana regeneration ~1_val~
-			
-			if ((prop = m_AosAttributes.Luck) != 0)
+
+            if ((prop = m_AosAttributes.Luck) != 0)
                 list.Add(1060436, prop.ToString()); // luck ~1_val~
-			
-			if ((prop = m_AosAttributes.EnhancePotions) != 0)
+
+            if ((prop = m_AosAttributes.EnhancePotions) != 0)
                 list.Add(1060411, prop.ToString()); // enhance potions ~1_val~%
-			
-			if ((prop = m_AosAttributes.ReflectPhysical) != 0)
+
+            if ((prop = m_AosAttributes.ReflectPhysical) != 0)
                 list.Add(1060442, prop.ToString()); // reflect physical damage ~1_val~%
-			
-			if ((prop = m_AosAttributes.AttackChance) != 0)
+
+            if ((prop = m_AosAttributes.AttackChance) != 0)
                 list.Add(1060415, prop.ToString()); // hit chance increase ~1_val~%
-			
-			if ((prop = m_AosAttributes.WeaponSpeed) != 0)
+
+            if ((prop = m_AosAttributes.WeaponSpeed) != 0)
                 list.Add(1060486, prop.ToString()); // swing speed increase ~1_val~%
-			
-			if ((prop = m_AosAttributes.WeaponDamage) != 0)
+
+            if ((prop = m_AosAttributes.WeaponDamage) != 0)
                 list.Add(1060401, prop.ToString()); // damage increase ~1_val~%
-			
-			if ((prop = m_AosAttributes.DefendChance) != 0)
+
+            if ((prop = m_AosAttributes.DefendChance) != 0)
                 list.Add(1060408, prop.ToString()); // defense chance increase ~1_val~%
-			
-			if ((prop = m_AosAttributes.CastRecovery) != 0)
+
+            if ((prop = m_AosAttributes.CastRecovery) != 0)
                 list.Add(1060412, prop.ToString()); // faster cast recovery ~1_val~
 
             if ((prop = m_AosAttributes.CastSpeed) != 0)
                 list.Add(1060413, prop.ToString()); // faster casting ~1_val~
-			
-			if ((prop = m_AosAttributes.SpellDamage) != 0)
+
+            if ((prop = m_AosAttributes.SpellDamage) != 0)
                 list.Add(1060483, prop.ToString()); // spell damage increase ~1_val~%
 
             if ((prop = m_AosAttributes.LowerManaCost) != 0)
@@ -1002,14 +1110,14 @@ namespace Server.Items
         }
 
         public override void OnSingleClick(Mobile from)
-		{
-			base.OnSingleClick(from);
+        {
+            base.OnSingleClick(from);
 
-			if (m_Crafter != null)
-			{
-				LabelTo(from, 1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
-			}
-		}
+            if (m_Crafter != null)
+            {
+                LabelTo(from, 1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+            }
+        }
 
         public override bool DropToWorld(Mobile from, Point3D p)
         {
@@ -1019,7 +1127,7 @@ namespace Server.Items
 
             return drop;
         }
-        
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -1043,7 +1151,7 @@ namespace Server.Items
 
             //Version 7
             writer.Write((bool)m_IsImbued);
-            
+
             // Version 6
             m_NegativeAttributes.Serialize(writer);
 
@@ -1060,7 +1168,7 @@ namespace Server.Items
 
             // Version 4
             writer.WriteEncodedInt((int)m_TimesImbued);
-           
+
             m_SAAbsorptionAttributes.Serialize(writer);
             #endregion
 
@@ -1119,7 +1227,7 @@ namespace Server.Items
                     {
                         if (version == 11)
                             reader.ReadBool();
-						
+
                         _Owner = reader.ReadMobile();
                         _OwnerName = reader.ReadString();
                         goto case 7;
@@ -1140,8 +1248,8 @@ namespace Server.Items
                         m_ReforgedPrefix = (ReforgedPrefix)reader.ReadInt();
                         m_ReforgedSuffix = (ReforgedSuffix)reader.ReadInt();
                         m_ItemPower = (ItemPower)reader.ReadInt();
-						
-                        if(version < 12 && reader.ReadBool())
+
+                        if (version < 12 && reader.ReadBool())
                             m_NegativeAttributes.NoRepair = 1;
                         #endregion
 
@@ -1156,7 +1264,7 @@ namespace Server.Items
                     {
                         #region Stygian Abyss
                         m_TimesImbued = reader.ReadEncodedInt();
-                       
+
                         m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this, reader);
                         #endregion
 
@@ -1246,7 +1354,7 @@ namespace Server.Items
 
             if (version < 2)
             {
-                m_Resource = CraftResource.Iron;
+                m_Resource = CraftResource.Ferro;
                 m_GemType = GemType.None;
             }
         }
@@ -1269,24 +1377,60 @@ namespace Server.Items
             {
                 resourceType = craftItem.Resources.GetAt(1).ItemType;
 
-                if (resourceType == typeof(StarSapphire))
-                    GemType = GemType.StarSapphire;
-                else if (resourceType == typeof(Emerald))
-                    GemType = GemType.Emerald;
-                else if (resourceType == typeof(Sapphire))
-                    GemType = GemType.Sapphire;
-                else if (resourceType == typeof(Ruby))
+                if (resourceType == typeof(DarkSapphire))
+                {
+                    GemType = GemType.SafiraEstrela;
+                    Hue = 1175;
+                }
+
+                else if (resourceType == typeof(PerfectEmerald))
+                {
+                    GemType = GemType.Esmeralda;
+                    Hue = 80;
+                }
+
+                else if (resourceType == typeof(WhitePearl))
+                {
+                    Hue = 1151;
+                    GemType = GemType.Safira;
+                }
+
+                else if (resourceType == typeof(FireRuby))
+                {
+                    Hue = 1358;
                     GemType = GemType.Ruby;
-                else if (resourceType == typeof(Citrine))
-                    GemType = GemType.Citrine;
-                else if (resourceType == typeof(Amethyst))
-                    GemType = GemType.Amethyst;
+                }
+
+                else if (resourceType == typeof(EcruCitrine))
+                {
+                    Hue = 1255;
+                    GemType = GemType.Citrina;
+                }
+
+                else if (resourceType == typeof(Turquoise))
+                {
+                    Hue = 1266;
+                    GemType = GemType.Ametista;
+                }
+
                 else if (resourceType == typeof(Tourmaline))
-                    GemType = GemType.Tourmaline;
-                else if (resourceType == typeof(Amber))
-                    GemType = GemType.Amber;
-                else if (resourceType == typeof(Diamond))
-                    GemType = GemType.Diamond;
+                {
+                    Hue = 1266;
+                    GemType = GemType.Turmalina;
+                }
+
+                else if (resourceType == typeof(BrilliantAmber))
+                {
+                    Hue = 1260;
+                    GemType = GemType.Ambrosia;
+                }
+
+                else if (resourceType == typeof(BlueDiamond))
+                {
+                    Hue = 1366;
+                    GemType = GemType.Diamante;
+                }
+
             }
 
             #region Mondain's Legacy

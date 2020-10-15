@@ -58,7 +58,7 @@ namespace Server.Items
 
                 if (puzzleItem1 != null || puzzleItem2 != null)
 				{
-					from.SendMessage("You already have a puzzle board.");
+					from.SendMessage("Voce ja pegou um puzzle, termine ele primeiro.");
 					return;
 				}
 				
@@ -85,10 +85,10 @@ namespace Server.Items
                     if (!from.Backpack.TryDropItem(from, puzzle, true))
                         puzzle.Delete();
                     else
-                        from.SendMessage("You recieve a puzzle board.");
+                        from.SendMessage("Voce obteve o puzzle.");
                 }
                 else
-                    from.SendMessage("You do not have the required key to get that puzzle board.");
+                    from.SendMessage("Voce precisa da chave magica para acessar os puzzles.");
 			}
 		}
 		

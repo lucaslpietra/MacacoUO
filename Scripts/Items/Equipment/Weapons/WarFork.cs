@@ -12,6 +12,7 @@ namespace Server.Items
             : base(0x1405)
         {
             this.Weight = 9.0;
+            Name = "Garfo de Guerra";
         }
 
         public WarFork(Serial serial)

@@ -13,11 +13,6 @@ namespace Server.Engines.Quests
 
     public abstract class QuestSystem
     {
-        public static void Configure()
-        {
-            EventSink.OnKilledBy += OnKilledBy;
-        }
-
         public static readonly Type[] QuestTypes = new Type[]
         {
             typeof(Doom.TheSummoningQuest),
@@ -201,19 +196,6 @@ namespace Server.Engines.Quests
 
                 if (obj.GetTimerEvent())
                     obj.CheckProgress();
-            }
-        }
-
-        public static void OnKilledBy(OnKilledByEventArgs e)
-        {
-            if (e.KilledBy is PlayerMobile && e.Killed is BaseCreature)
-            {
-                var qs = ((PlayerMobile)e.KilledBy).Quest;
-
-                if (qs != null)
-                {
-                    qs.OnKill((BaseCreature)e.Killed, e.Killed.Corpse);
-                }
             }
         }
 

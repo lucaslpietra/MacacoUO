@@ -4,9 +4,14 @@ namespace Server.Items
 {
     public class DeadlyPoisonPotion : BasePoisonPotion
     {
+		public override string DefaultName
+        {
+            get { return "Poção de Veneno Mortal"; }            
+        }
+		
         [Constructable]
         public DeadlyPoisonPotion()
-            : base(PotionEffect.PoisonDeadly)
+            : base(PotionEffect.VenenoMortal)
         {
         }
 
@@ -26,14 +31,14 @@ namespace Server.Items
         {
             get
             {
-                return 80.0;
+                return 90.0;
             }
         }
         public override double MaxPoisoningSkill
         {
             get
             {
-                return 100.0;
+                return 105.0;
             }
         }
         public override void Serialize(GenericWriter writer)

@@ -10,14 +10,14 @@ namespace Server.Items
         private SkillMod m_SkillMod;
         [Constructable]
         public AncientSmithyHammer(int bonus)
-            : this(bonus, 600)
+            : this(bonus, 30)
         {
         }
 
         [Constructable]
-        public AncientSmithyHammer(int bonus, int uses)
-            : base(uses, 0x13E4)
+        public AncientSmithyHammer(int bonus, int uses) : base(uses, 0x13E4)
         {
+            Name = "Martelo de Ferreiro Magico";
             m_Bonus = bonus;
             Weight = 8.0;
             Layer = Layer.OneHanded;

@@ -12,7 +12,7 @@ namespace Server.Mobiles
 
 		[Constructable]
 		public Barkeeper()
-			: base("the barkeeper")
+			: base("o taverneiro")
 		{ }
 
 		public Barkeeper(Serial serial)

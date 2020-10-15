@@ -15,8 +15,8 @@ namespace Server.Engines.Doom
     {
         public static string[] Msgs = 
         {
-            "You are pinned down by the weight of the boulder!!!", // 0
-            "A speeding rock hits you in the head!", // 1
+            "Voce foi atingido por uma pedra!!!", // 0
+            "Uma pedra muito rapida atinge sua cabeca!", // 1
             "OUCH!"							// 2
         };
         /* font&hue for above msgs. index matches */

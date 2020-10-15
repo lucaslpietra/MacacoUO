@@ -11,6 +11,7 @@ namespace Server.Items
         public GnarledStaff()
             : base(0x13F8)
         {
+            this.Name = "Cajado Torcido";
             this.Weight = 3.0;
         }
 

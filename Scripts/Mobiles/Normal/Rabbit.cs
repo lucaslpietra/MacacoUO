@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public Rabbit()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            Name = "a rabbit";
+            Name = "coelho";
             Body = 205;
 
             if (0.5 >= Utility.RandomDouble())

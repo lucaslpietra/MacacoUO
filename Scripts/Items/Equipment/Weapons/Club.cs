@@ -10,6 +10,7 @@ namespace Server.Items
             : base(0x13B4)
         {
             this.Weight = 9.0;
+            Name = "Porrete";
         }
 
         public Club(Serial serial)

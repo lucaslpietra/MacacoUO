@@ -13,7 +13,7 @@ namespace Server.Mobiles
         public MeerCaptain()
             : base(AIType.AI_Paladin, FightMode.Evil, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a meer captain";
+            this.Name = "capitao explorador";
             this.Body = 773;
 
             this.SetStr(96, 110);

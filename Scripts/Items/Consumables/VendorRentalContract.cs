@@ -21,7 +21,7 @@ namespace Server.Items
         {
             this.Weight = 1.0;
             this.Hue = 0x672;
-
+            Name = "Contrato de Aluguel de Vendedor";
             this.m_Duration = VendorRentalDuration.Instances[0];
             this.m_Price = 1500;
         }
@@ -184,10 +184,6 @@ namespace Server.Items
                 if (house == null || !house.IsOwner(from))
                 {
                     from.SendLocalizedMessage(1062333); // You must be standing inside of a house that you own to make use of this contract.
-                }
-                else if (!house.IsAosRules)
-                {
-                    from.SendMessage("Rental contracts can only be placed in AOS-enabled houses.");
                 }
                 else if (!house.Public)
                 {

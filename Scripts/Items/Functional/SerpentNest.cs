@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using Server.Mobiles;
 using Server.Network;
@@ -15,6 +15,7 @@ namespace Server.Items
         {
             this.Hue = 0x456;
             this.Movable = false;
+            this.Name = "Ninho da serpente";
         }
 
         public SerpentNest(Serial serial)

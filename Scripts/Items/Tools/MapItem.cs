@@ -79,9 +79,11 @@ namespace Server.Items
             m_Facet = map;
 		}
 
-		public virtual void CraftInit( Mobile from )
+        public virtual void CraftInit( Mobile from )
 		{
 		}
+
+        public virtual void SetDisplay(int x, int y) { }
 
         public virtual void SetDisplayByFacet()
         {
@@ -95,7 +97,7 @@ namespace Server.Items
                 SetDisplay(260, 2780, 1280, 4090, 400, 400);
         }
 
-		public void SetDisplay( int x1, int y1, int x2, int y2, int w, int h )
+		public virtual void SetDisplay( int x1, int y1, int x2, int y2, int w, int h )
 		{
 			Width = w;
 			Height = h;

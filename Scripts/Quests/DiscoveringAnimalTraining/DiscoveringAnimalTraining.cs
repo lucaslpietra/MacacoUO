@@ -11,32 +11,34 @@ namespace Server.Engines.Quests
             : base()
         {
             AddObjective(new InternalObjective());
-
-            AddReward(new BaseReward(1157538)); // A step closer to mastering Animal Training.
+            
+            AddReward(new BaseReward("Um passo a frente para ser um domador de animais")); // A step closer to mastering Animal Training.
         }
 
         public override QuestChain ChainID{get {return QuestChain.AnimalTraining; } }
         public override Type NextQuest { get { return typeof(UsingAnimalLoreQuest); } }
 
         /* Discovering Animal Training */
-        public override object Title { get { return 1157527; } }
+        public override object Title { get { return "Descobrindo animais"; } }
 
         /*Years of patience and meticulous study have paid off!  New Animal Training techniques have been discovered!  
          * Animal tamers may now train their pets, teaching them new ways to fight and survive!  The first step is to 
          * tame a creature.  Find a creature in the wild, and using your animal taming skill - tame it!*/
-        public override object Description { get { return 1157528; } }
+        public override object Description { get { return @"Anos de paciência e estudo meticuloso valeram a pena! Novas técnicas de treinamento de animais foram descobertas!
+ Domadores de animais agora podem treinar seus animais de estimação, ensinando-lhes novas maneiras de lutar e sobreviver! O primeiro passo é
+ domar uma criatura. Encontre uma criatura em estado selvagem e, usando sua habilidade de domar animais - domestique-a!
+"; } }
 
         /* The life of an animal trainer is not for everyone, return to an Animal Trainer if you wish to try again. */
-        public override object Refuse { get { return 1157530; } }
+        public override object Refuse { get { return "Tudo bem"; } }
 
         /* Find a creature in the wild, and using the animal taming skill - tame it! */
-        public override object Uncomplete { get { return 1157531; } }
+        public override object Uncomplete { get { return "Encontre uma criatura e use a skill Animal Taming nela !"; } }
 
         /* Well done!  Now that you have your pet it is time to start training! */
-        public override object Complete { get { return 1157532; } }
+        public override object Complete { get { return "Muito bom ! Agora eh a hora de comecar o treinamento !"; } }
 
         public override int AcceptSound { get { return 0x2E8; } }
-        public override int CompleteMessage { get { return 1157539; } } // // You've completed an Animal Training quest! Visit an Animal Trainer to continue!				
 
         public static void CheckTame(PlayerMobile pm)
         {
@@ -68,7 +70,7 @@ namespace Server.Engines.Quests
 
         public class InternalObjective : BaseObjective
         {
-            public override object ObjectiveDescription { get { return 1157529; } } // Tame a Creature
+            public override object ObjectiveDescription { get { return "Dome uma criatura"; } } // Tame a Creature
 
             public InternalObjective()
                 : base(1)
@@ -98,7 +100,7 @@ namespace Server.Engines.Quests
         {
             AddObjective(new InternalObjective());
 
-            AddReward(new BaseReward(1157538)); // A step closer to mastering Animal Training.
+            AddReward(new BaseReward("Um passo mais perto de ser um mestre domador")); // A step closer to mastering Animal Training.
         }
 
         public override QuestChain ChainID { get { return QuestChain.AnimalTraining; } }
@@ -114,16 +116,22 @@ namespace Server.Engines.Quests
          * a single foe, so make sure your pet has fresh adversaries!<br><br>When you are ready to begin the training 
          * process, use the Animal Lore skill on your pet and select "Begin Animal Training."  When your pet has 
          * completed the training process you can teach them new ways to fight and survive!*/
-        public override object Description { get { return 1157533; } }
+        public override object Description { get { return @"Agora que seu animal de estimação é doméstico, você deve iniciar o processo de treinamento. Os animais de estimação treinam enquanto estão envolvidos em
+ combate, e progredirá enquanto eles batalham com outras criaturas. Os animais de estimação treinam melhor contra criaturas selvagens e
+ Aprenda ao máximo as criaturas mais ferozes do reino! Há um limite para o quanto um animal de estimação pode aprender
+ um único inimigo, então verifique se seu animal de estimação tem novos adversários! <br> <br> Quando você estiver pronto para começar o treinamento
+ processo, use a habilidade Animal Lore em seu animal de estimação e selecione 'Iniciar Treinamento'. Quando seu animal de estimação tem
+ completou o processo de treinamento, você pode ensinar-lhes novas maneiras de lutar e sobreviver!
+"; } }
 
         /* The life of an animal trainer is not for everyone, return to an Animal Trainer if you wish to try again. */
-        public override object Refuse { get { return 1157530; } }
+        public override object Refuse { get { return "Uma pena, mas tudo bem"; } }
 
         /* When you are ready to begin the training process, use the Animal Lore skill on your pet and select "Begin Animal Training." */
-        public override object Uncomplete { get { return 1157535; } }
+        public override object Uncomplete { get { return "Use a skill animal lore no seu animal e selecione 'Iniciar Treinamento'"; } }
 
         /* Well done!  Now that your pet has begun the Animal Training process return to the Animal Trainer to learn more about the next steps. */
-        public override object Complete { get { return 1157536; } }
+        public override object Complete { get { return "Muito bom !! Retorne ao domador !"; } }
 
         public override void OnCompleted()
         {
@@ -147,7 +155,7 @@ namespace Server.Engines.Quests
 
         public class InternalObjective : BaseObjective
         {
-            public override object ObjectiveDescription { get { return 1157534; } }
+            public override object ObjectiveDescription { get { return "Use Animal Lore em seu animal e selecione 'Iniciar Treinamento'"; } }
             /*Use the Animal Lore Skill on your pet and select "Begin Animal Training."<br><br> */
 
             public InternalObjective()
@@ -192,7 +200,7 @@ namespace Server.Engines.Quests
         {
             AddObjective(new InternalObjective());
 
-            AddReward(new BaseReward(1157538)); // A step closer to mastering Animal Training.
+            AddReward(new BaseReward("Um passo a ser um mestre domador")); // A step closer to mastering Animal Training.
         }
 
         public override QuestChain ChainID { get { return QuestChain.AnimalTraining; } }
@@ -208,22 +216,30 @@ namespace Server.Engines.Quests
          * pet can learn from a single foe, so make sure your pet has fresh adversaries!  When the "Pet Training Progress"
          * bar is full, your pet is ready to learn new ways to fight and survive.  <br><br>Now you must lead your pet into 
          * the wild and battle it against other creatures!*/
-        public override object Description { get { return 1157540; } }
+        public override object Description { get { return @"Agora que você iniciou o processo de treinamento, é hora de levar seu animal de estimação para a batalha! Animais de estimação treinam enquanto
+ eles estão envolvidos em combate e progredirão enquanto combatem outras criaturas. Animais de estimação treinam melhor contra animais selvagens
+ criaturas, e aprenderá mais com as criaturas mais ferozes do reino! Existe um limite para quanto
+ o animal de estimação pode aprender com um único inimigo, portanto, verifique se ele tem novos adversários! Quando o 'Progresso do treinamento para animais de estimação'
+ a barra está cheia, seu animal de estimação está pronto para aprender novas maneiras de lutar e sobreviver. < br > < br > Agora você deve levar seu animal de estimação para
+ selvagem e batalhe contra outras criaturas!
+"; } }
 
         /* The life of an animal trainer is not for everyone, return to an Animal Trainer if you wish to try again. */
-        public override object Refuse { get { return 1157530; } }
+        public override object Refuse { get { return "Nao tem problema"; } }
 
         /* Lead your pet into the wild and battle it against other creatures until the "Pet Training Progress" bar is full. 
          * Remember Pets train best against wild creatures, and will learn the most from the fiercest creatures in the realm!  
          * There is a limit to how much a pet can learn from a single foe, so make sure your pet has fresh adversaries! */
-        public override object Uncomplete { get { return 1157542; } }
+        public override object Uncomplete { get { return @"Leve seu animal de estimação à natureza e lute contra outras criaturas até que a barra 'Progresso no treinamento do animal de estimação' esteja cheia.
+ Lembre - se de que os animais de estimação treinam melhor contra criaturas selvagens e aprenderão o máximo das criaturas mais ferozes do reino!
+ Há um limite para o quanto um animal de estimação pode aprender com um único inimigo, portanto, verifique se ele tem novos adversários!"; } }
 
         /* Well done!  Now that your pet has begun the Animal Training process return to the Animal Trainer to learn more about the next steps. */
-        public override object Complete { get { return 1157536; } }
+        public override object Complete { get { return "Muito bom !!"; } }
 
         public override void OnCompleted()
         {
-            Owner.SendLocalizedMessage(1157536, null, 0x23); // Well done!  Now that your pet has begun the Animal Training process return to the Animal Trainer to learn more about the next steps.	
+            Owner.SendMessage("Parabens, volte ao treinador para aprender os proximos passos !"); // Well done!  Now that your pet has begun the Animal Training process return to the Animal Trainer to learn more about the next steps.	
             Owner.PlaySound(CompleteSound);
         }
 
@@ -243,7 +259,7 @@ namespace Server.Engines.Quests
 
         public class InternalObjective : BaseObjective
         {
-            public override object ObjectiveDescription { get { return 1157541; } }
+            public override object ObjectiveDescription { get { return "Leve seu animal de estimação à natureza e lute contra outras criaturas até que a barra 'Progresso no treinamento do animal de estimação' esteja cheia."; } }
             /*Lead your pet into the wild and battle it against other creatures until the "Pet Training Progress" bar is full.*/
 
             public InternalObjective()
@@ -288,7 +304,7 @@ namespace Server.Engines.Quests
         {
             AddObjective(new InternalObjective());
 
-            AddReward(new BaseReward(1157538)); // A step closer to mastering Animal Training.
+            AddReward(new BaseReward("Um passo para maestria de treinamento de animais")); // A step closer to mastering Animal Training.
         }
 
         public override QuestChain ChainID { get { return QuestChain.AnimalTraining; } }
@@ -296,7 +312,7 @@ namespace Server.Engines.Quests
         public override bool DoneOnce { get { return true; } }
 
         /* Discovering Animal Training */
-        public override object Title { get { return 1157527; } }
+        public override object Title { get { return "Descobrindo o Treinamento de Animais"; } }
 
         /*Now that your pet has fully trained, it is time to teach it something new!  Use the Animal Lore skill on your pet and select 
          * "Pet Training Options."  The Animal Training menu lists all of the available training properties you can apply to the pet.
@@ -313,23 +329,41 @@ namespace Server.Engines.Quests
          * much during each training level.  As you mix and match properties from the Animal Training menu, the amount of available training
          * points will decrease based on your selections.  Different property selections have different training point costs.  When you are
          * ready to apply a new property to your pet, select "Train Pet" and confirm you are ready to do so!*/
-        public override object Description { get { return 1157545; } }
+        public override object Description { get { return @"Agora que seu animal de estimação foi treinado completamente, é hora de ensinar algo novo! Use a habilidade Animal Lore em seu animal de estimação e selecione
+ 'Opções de treinamento para animais de estimação'. O menu Treinamento de animais lista todas as propriedades de treinamento disponíveis que você pode aplicar ao animal.
+ < br > < br > O painel Categorias mostra a categoria de propriedades disponíveis: < br > < br > Estatísticas e resistências permitem aumentar
+propriedades Stat e Resist individuais do animal de estimação. < br > < br > Aumentar os limites de habilidades mágicas e aumentar os limites de habilidades de combate permitem
+você aumenta o limite de habilidades para várias habilidades mágicas e relacionadas ao combate.Esse processo requer o uso de Power Scrolls
+e apenas aumenta o limite de habilidades, você ainda precisará treinar o animal na habilidade específica através da habilidade tradicional
+Treinamento. < br > < br > Habilidades mágicas permitem que você ofereça habilidades mágicas ao animal de estimação em uma das várias escolas de feitiços<br> < br > Especial
+ As habilidades permitem que você dê ao animal de estimação habilidades especiais, diferentes daquelas tradicionalmente encontradas como movimentos especiais de armas.
+  
+ < br > < br > Movimentos especiais permitem que você faça movimentos especiais ao animal de estimação, semelhantes aos tradicionalmente encontrados como movimentos especiais de armas.
+      
+ < br > < br > As habilidades de efeito de área permitem que você ataque o animal de estimação, mirando em vários adversários dentro de uma área. < br > < br >
+Quando você treina seu animal de estimação, o número de slots de controle requeridos aumentará.O número máximo de slots de controle que qualquer
+ o animal de estimação pode ter 5, no entanto, animais de estimação individuais têm slots de controle máximos para os quais podem ser treinados. < br > < br > Um animal de estimação só pode aprender isso.
+            
+ muito durante cada nível de treinamento.À medida que você mistura e combina propriedades no menu Animal Training, a quantidade de treinamento disponível
+os pontos diminuirão com base nas suas seleções.Diferentes seleções de propriedades têm custos de pontos de treinamento diferentes.Quando você é
+ pronto para aplicar uma nova propriedade ao seu animal de estimação, selecione 'Treinar Animal' e confirme que você está pronto para fazê-lo!
+"; } }
 
         /* The life of an animal trainer is not for everyone, return to an Animal Trainer if you wish to try again. */
-        public override object Refuse { get { return 1157530; } }
+        public override object Refuse { get { return "Sem problemas"; } }
 
         /*Use the Animal Lore skill on your pet and select "Pet Training Options" to mix and match which properties 
              * you will train your pet.  When you are satisfied with the property you have chosen select "Train Pet" 
              * and confirm the training!.*/
-        public override object Uncomplete { get { return 1157546; } }
+        public override object Uncomplete { get { return "Use Animal Lore no seu pet, selecione 'Opcoes de treinamento', faca suas escolhas e clique em 'Treinar Pet'"; } }
 
         /* You have Discovered Animal Training!  Train new pets and mix and match properties to create unique variations of pets to take into 
          * battle!  Good Luck, Animal Trainer! */
-        public override object Complete { get { return 1157547; } }
+        public override object Complete { get { return "Muito bom !!!"; } }
 
         public override void OnCompleted()
         {
-            Owner.SendLocalizedMessage(1157539, null, 0x23); // You've completed an Animal Training quest! Visit an Animal Trainer to continue!						
+            Owner.SendLocalizedMessage("Muito bom ! Voce completou a quest ! Volte ao treinador de animais para mais !"); // You've completed an Animal Training quest! Visit an Animal Trainer to continue!						
             Owner.PlaySound(CompleteSound);
         }
 
@@ -356,10 +390,10 @@ namespace Server.Engines.Quests
 
         public class InternalObjective : BaseObjective
         {
-            public override object ObjectiveDescription { get { return 1157546; } }
-            /*Use the Animal Lore skill on your pet and select "Pet Training Options" to mix and match which properties 
-            * you will train your pet.  When you are satisfied with the property you have chosen select "Train Pet" 
-            * and confirm the training!.*/
+            public override object ObjectiveDescription { get { return @" Use a habilidade Animal Lore em seu animal de estimação e selecione 'Opções de treinamento para animais de estimação' para misturar e combinar quais propriedades
+ você treinará seu animal de estimação. Quando estiver satisfeito com a propriedade que você escolheu, selecione 'Treinar Pet'
+ e confirme o treinamento!"; } }
+
 
             public InternalObjective()
                 : base(1)

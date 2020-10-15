@@ -104,7 +104,7 @@ namespace Server.Engines.NewMagincia
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.AccessLevel > AccessLevel.Player)
+            if (from.AccessLevel > AccessLevel.VIP)
             {
                 from.CloseGump(typeof(LottoTrackingGump));
                 from.CloseGump(typeof(PlotTrackingGump));

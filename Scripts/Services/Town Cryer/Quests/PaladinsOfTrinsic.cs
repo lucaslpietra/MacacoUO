@@ -113,7 +113,7 @@ namespace Server.Engines.Quests
             OnCompleted();
             GiveRewards();
 
-            QuestHelper.Delay(Owner, typeof(PaladinsOfTrinsic), RestartDelay);
+            QuestHelper.DoneQuest(Owner, typeof(PaladinsOfTrinsic), RestartDelay);
         }
     }
 

@@ -14,7 +14,8 @@ namespace Server.Items
             this.Weight = 2.0;
             this.SetHue = 0;
             this.Hue = 0x226;
-			
+            Name = "Gorjel da Honestidade";
+            /*
             this.SetSelfRepair = 5;
 			
             this.SetPhysicalBonus = 5;
@@ -22,6 +23,7 @@ namespace Server.Items
             this.SetColdBonus = 5;
             this.SetPoisonBonus = 5;
             this.SetEnergyBonus = 5;
+            */
         }
 
         public HonestyGorget(Serial serial)

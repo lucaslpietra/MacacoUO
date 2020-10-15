@@ -8,11 +8,11 @@ namespace Server.Mobiles
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         [Constructable]
         public Herbalist()
-            : base("the herbalist")
+            : base("o herbalista")
         { 
             this.SetSkill(SkillName.Alchemy, 80.0, 100.0);
             this.SetSkill(SkillName.Cooking, 80.0, 100.0);
-            this.SetSkill(SkillName.TasteID, 80.0, 100.0);
+            this.SetSkill(SkillName.Jewelcrafting, 80.0, 100.0);
         }
 
         public Herbalist(Serial serial)

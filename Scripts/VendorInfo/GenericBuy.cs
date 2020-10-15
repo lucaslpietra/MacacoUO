@@ -151,14 +151,14 @@ namespace Server.Mobiles
 
                 if (EconomyItem)
                 {
-                    if (m_TotalBought >= BaseVendor.BuyItemChange)
+                    if (TotalBought >= BaseVendor.BuyItemChange)
                     {
-                        ecoInc += m_TotalBought / BaseVendor.BuyItemChange;
+                        ecoInc += TotalBought / BaseVendor.BuyItemChange;
                     }
 
-                    if (m_TotalSold >= BaseVendor.SellItemChange)
+                    if (TotalSold >= BaseVendor.SellItemChange)
                     {
-                        ecoInc -= m_TotalSold / BaseVendor.SellItemChange;
+                        ecoInc -= TotalSold / BaseVendor.SellItemChange;
                     }
                 }
 
@@ -323,11 +323,13 @@ namespace Server.Mobiles
             return EconomyItem;
         }
 
+        public int StockMult = 2;
+
         public virtual void OnRestock()
         {
             if (m_Amount <= 0)
             {
-                m_MaxAmount *= 2;
+                m_MaxAmount *= StockMult;
 
                 if (m_MaxAmount >= 999)
                     m_MaxAmount = 999;
@@ -363,7 +365,7 @@ namespace Server.Mobiles
             return false;
         }
 
-        public void OnBought(Mobile buyer, BaseVendor vendor, IEntity entity, int amount)
+        public void OnBought(BaseVendor vendor, int amount)
         {
             if (EconomyItem)
             {
@@ -375,8 +377,6 @@ namespace Server.Mobiles
                     }
                 }
             }
-
-            EventSink.InvokeValidVendorPurchase(new ValidVendorPurchaseEventArgs(buyer, vendor, entity, m_Price));
         }
 
         public void OnSold(BaseVendor vendor, int amount)

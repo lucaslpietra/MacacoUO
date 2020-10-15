@@ -19,10 +19,10 @@ namespace Server.Engines.Craft
             this.m_System = system;
             this.m_CraftItem = item;
 
-            if (m_Recipes.ContainsKey(id))
-                throw new Exception("Attempting to create recipe with preexisting ID.");
 
-            m_Recipes.Add(id, this);
+            //    throw new Exception("Attempting to create recipe with preexisting ID: "+id);
+            if (!m_Recipes.ContainsKey(id))
+                m_Recipes.Add(id, this);
             m_LargestRecipeID = Math.Max(id, m_LargestRecipeID);
         }
 
@@ -74,7 +74,10 @@ namespace Server.Engines.Craft
             get
             {
                 if (this.m_TD == null)
+                {
                     this.m_TD = new TextDefinition(this.m_CraftItem.NameNumber, this.m_CraftItem.NameString);
+                }
+                   
 
                 return this.m_TD;
             }

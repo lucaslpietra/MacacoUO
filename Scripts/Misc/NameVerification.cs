@@ -1,5 +1,6 @@
 using System;
 using Server.Commands;
+using Server.Mobiles;
 
 namespace Server.Misc
 {
@@ -133,6 +134,7 @@ namespace Server.Misc
 
         public static bool Validate(string name, int minLength, int maxLength, bool allowLetters, bool allowDigits, bool noExceptionsAtStart, int maxExceptions, char[] exceptions, string[] disallowed, string[] startDisallowed)
         {
+
             if (name == null || name.Length < minLength || name.Length > maxLength)
                 return false;
 
@@ -207,6 +209,16 @@ namespace Server.Misc
                     return false;
             }
 
+            foreach (var pl in PlayerMobile.Instances)
+            {
+                if (pl == null || pl.Name == null)
+                    continue;
+
+                if (pl.Name.ToLower() == name.ToLower())
+                {
+                    return false;
+                }
+            }
             return true;
         }
     }

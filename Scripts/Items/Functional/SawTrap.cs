@@ -109,7 +109,7 @@ namespace Server.Items
 
             Spells.SpellHelper.Damage(TimeSpan.FromTicks(1), from, from, Utility.RandomMinMax(5, 15));
 
-            from.LocalOverheadMessage(MessageType.Regular, 0x22, 500853); // You stepped onto a blade trap!
+            from.SendMessage("Voce pisou em uma armadilha de serra");
         }
 
         public override void Serialize(GenericWriter writer)

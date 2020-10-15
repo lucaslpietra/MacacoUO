@@ -12,6 +12,7 @@ namespace Server.Items
             : base(0x13FB)
         {
             this.Weight = 6.0;
+            this.Name = "Machado Grande de Batalha";
         }
 
         public LargeBattleAxe(Serial serial)

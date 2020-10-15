@@ -1,4 +1,6 @@
 using System;
+using Server.Items;
+using Server.Network;
 using Server.SkillHandlers;
 
 namespace Server.Spells.Ninjitsu
@@ -20,14 +22,14 @@ namespace Server.Spells.Ninjitsu
         {
             get
             {
-                return Core.ML ? 40.0 : 20.0;
+                return 40.0;
             }
         }
         public override TextDefinition AbilityMessage
         {
             get
             {
-                return new TextDefinition(1063089);
+                return new TextDefinition("Voce se prepara para apunhalar alguem");
             }
         }// You prepare to Backstab your opponent.
         public override bool ValidatesDuringHit
@@ -39,9 +41,10 @@ namespace Server.Spells.Ninjitsu
         }
         public override double GetDamageScalar(Mobile attacker, Mobile defender)
         {
-            double ninjitsu = attacker.Skills[SkillName.Ninjitsu].Value;
+            if (attacker.Weapon is BaseRanged)
+                return 1;
 
-            return 1.0 + (ninjitsu / 360) + Tracking.GetStalkingBonus(attacker, defender) / 100;
+            return 1.0 + attacker.Skills.Ninjitsu.Value / 200;
         }
 
         public override bool Validate(Mobile from)
@@ -73,11 +76,12 @@ namespace Server.Spells.Ninjitsu
             //Validates before swing
             ClearCurrentMove(attacker);
 
-            attacker.SendLocalizedMessage(1063090); // You quickly stab your opponent as you come out of hiding!
+            attacker.SendMessage("Voce apunhalou o alvo"); // You quickly stab your opponent as you come out of hiding!
 
-            defender.FixedParticles(0x37B9, 1, 5, 0x251D, 0x651, 0, EffectLayer.Waist);						
-
-            attacker.RevealingAction();
+            defender.FixedParticles(0x37B9, 1, 5, 0x251D, 0x651, 0, EffectLayer.Waist);
+            defender.SendMessage(attacker.Name + " te apunhalou !");
+            attacker.RevealingAction(false);
+            attacker.NonlocalOverheadMessage(MessageType.Regular, 0, false, "* apunhalou *");
 
             this.CheckGain(attacker);
         }

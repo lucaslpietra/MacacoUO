@@ -1106,6 +1106,8 @@ namespace Server
 				return;
 			}
             
+			EventSink.InvokeBeforeWorldSave(new BeforeWorldSaveEventArgs());
+
             ++m_Saves;
 
 			NetState.FlushAll();
@@ -1119,13 +1121,13 @@ namespace Server
 
 			if (message)
 			{
-				Broadcast(0x35, true, AccessLevel.Counselor, "The world is saving, please wait.");
+				Broadcast(0x35, true, AccessLevel.Counselor, "Salvando o mundo.");
 			}
 
 			SaveStrategy strategy = SaveStrategy.Acquire();
 			Console.WriteLine("Core: Using {0} save strategy", strategy.Name.ToLowerInvariant());
 
-			Console.WriteLine("World: Saving...");
+			Console.WriteLine("Mundo: Saving...");
 
 			Stopwatch watch = Stopwatch.StartNew();
 
@@ -1146,19 +1148,11 @@ namespace Server
 				Directory.CreateDirectory("Saves/Customs/");
 			}
 
-            try
-            {
-                EventSink.InvokeBeforeWorldSave(new BeforeWorldSaveEventArgs());
-            }
-            catch (Exception e)
-            {
-                throw new Exception("FATAL: Exception in EventSink.BeforeWorldSave", e);
-            }
-
 			if (m_Metrics)
 			{
-				using (SaveMetrics metrics = new SaveMetrics())
+				using ( SaveMetrics metrics = new SaveMetrics() ) {
 					strategy.Save(metrics, permitBackgroundWrite);
+				}
 			}
 			else
 			{
@@ -1170,9 +1164,9 @@ namespace Server
 				EventSink.InvokeWorldSave(new WorldSaveEventArgs(message));
 			}
 			catch (Exception e)
-            {
-                throw new Exception("FATAL: Exception in EventSink.WorldSave", e);
-            }
+			{
+				throw new Exception("World Save event threw an exception.  Save failed!", e);
+			}
 
 			watch.Stop();
 
@@ -1192,19 +1186,12 @@ namespace Server
 
 			if (message)
 			{
-				Broadcast(0x35, true, AccessLevel.Counselor, "World save done in {0:F1} seconds.", watch.Elapsed.TotalSeconds);
+				Broadcast(0x35, true, AccessLevel.Counselor, "Mundo salvo em "+ watch.Elapsed.TotalSeconds + " segundos.");
 			}
 
 			NetState.Resume();
 
-            try
-            {
-                EventSink.InvokeAfterWorldSave(new AfterWorldSaveEventArgs());
-            }
-            catch (Exception e)
-            {
-                throw new Exception("FATAL: Exception in EventSink.AfterWorldSave", e);
-            }
+            EventSink.InvokeAfterWorldSave(new AfterWorldSaveEventArgs());
         }
 
 		internal static List<Type> m_ItemTypes = new List<Type>();

@@ -30,7 +30,7 @@ namespace Server.Multis
 
         public override void AddComponents()
         {
-            AddItem(new Static(0x10ee), 0, 0, 0);
+            //AddItem(new Static(0x10ee), 0, 0, 0);
             AddItem(new Static(0xfac), 0, 7, 0);
 
             switch ( Utility.Random(3) )
@@ -61,13 +61,13 @@ namespace Server.Multis
                 AddMobile(Lizardmen, Utility.RandomMinMax(-7, 7), Utility.RandomMinMax(-7, 7), 0);
             }
 			
-            switch ( Utility.Random(2) )
+            switch ( Utility.Random(1) )
             {
                 case 0:
                     Prisoner = new Noble();
                     break;
                 default:
-                    Prisoner = new SeekerOfAdventure();
+                    Prisoner = new Noble(); //  new SeekerOfAdventure();
                     break;
             }
 

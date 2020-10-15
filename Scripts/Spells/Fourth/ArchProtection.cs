@@ -109,7 +109,7 @@ namespace Server.Spells.Fourth
 
         private static Dictionary<Mobile, Int32> _Table = new Dictionary<Mobile, Int32>();
 
-        private static void AddEntry(Mobile m, Int32 v)
+        public static void AddEntry(Mobile m, Int32 v)
         {
             _Table[m] = v;
         }

@@ -524,7 +524,7 @@ namespace Server.Items
             : base()
         {
             WeaponAttributes.HitDispel = 33;
-            Slayer = SlayerName.Exorcism;
+            Slayer = SlayerName.Exorcismo;
 
             Attributes.WeaponDamage = 40;
             Attributes.WeaponSpeed = 20;
@@ -776,7 +776,7 @@ namespace Server.Items
 
             Attributes.WeaponDamage = 35;
             Attributes.WeaponSpeed = 10;
-            Slayer = SlayerName.SnakesBane;
+            Slayer = SlayerName.Cobras;
         }
 
         public PeasantsBokuto(Serial serial)
@@ -1391,7 +1391,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version == 0 && Slayer == SlayerName.Fey)
+            if (version == 0 && Slayer == SlayerName.Fadas)
                 Slayer = SlayerGroup.Groups[Utility.Random(SlayerGroup.Groups.Length - 1)].Super.Name;
         }
     }

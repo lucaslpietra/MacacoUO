@@ -4,31 +4,42 @@ namespace Server.Items
 {
     public class GreaterHealPotion : BaseHealPotion
     {
+		public override string DefaultName
+        {
+            get { return "Poção de Vida Forte"; }            
+        }
+		
         [Constructable]
         public GreaterHealPotion()
-            : base(PotionEffect.HealGreater)
+            : base(PotionEffect.VidaForte)
         {
+            FiverRatio = true;
         }
 
         public GreaterHealPotion(Serial serial)
             : base(serial)
         {
+            FiverRatio = true;
         }
+
+
 
         public override int MinHeal
         {
             get
             {
-                return (Core.AOS ? 20 : 9);
+                return 5;
             }
         }
+
         public override int MaxHeal
         {
             get
             {
-                return (Core.AOS ? 25 : 30);
+                return 75;
             }
         }
+
         public override double Delay
         {
             get
@@ -36,6 +47,7 @@ namespace Server.Items
                 return 10.0;
             }
         }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

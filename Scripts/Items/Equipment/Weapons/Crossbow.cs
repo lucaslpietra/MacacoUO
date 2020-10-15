@@ -11,6 +11,7 @@ namespace Server.Items
         {
             this.Weight = 7.0;
             this.Layer = Layer.TwoHanded;
+            Name = "Besta";
         }
 
         public Crossbow(Serial serial)
@@ -106,7 +107,7 @@ namespace Server.Items
         {
             get
             {
-                return 43;
+                return 39;
             }
         }
         public override int OldSpeed
@@ -120,7 +121,7 @@ namespace Server.Items
         {
             get
             {
-                return 8;
+                return 16;
             }
         }
         public override int InitMinHits

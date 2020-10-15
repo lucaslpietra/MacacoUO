@@ -1,4 +1,4 @@
-﻿#region References
+#region References
 using System;
 using System.Collections.Generic;
 
@@ -47,15 +47,15 @@ namespace Server.Misc
 			/// <summary>
 			///     Enable assistant negotiator?
 			/// </summary>
-			public static bool Enabled { get; set; }
+			public static bool Enabled { get { return true; } set { } }
 
 			/// <summary>
 			///     When true, this will cause anyone who does not negotiate.
 			///     (include those not running allowed assistants at all) to be disconnected from the server.
 			/// </summary>
-			public static bool KickOnFailure { get; set; }
+			public static bool KickOnFailure { get { return false; } set { } }
 
-			public static Features DisallowedFeatures { get; private set; }
+            public static Features DisallowedFeatures { get; private set; }
 
 			/// <summary>
 			///     How long to wait for a handshake response before showing warning and disconnecting.
@@ -71,7 +71,7 @@ namespace Server.Misc
 
 			static Settings()
 			{
-				Enabled = false;
+				Enabled = true;
 				KickOnFailure = true;
 
 				DisallowedFeatures = Features.None;
@@ -85,8 +85,9 @@ namespace Server.Misc
 
 			public static void Configure()
 			{
-				//DisallowFeature( Features.FilterLight );
-			}
+				DisallowFeature( Features.DequipOnCast);
+                DisallowFeature(Features.PoisonedChecks);
+            }
 
 			public static void DisallowFeature(Features feature)
 			{

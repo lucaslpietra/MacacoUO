@@ -13,7 +13,7 @@ namespace Server.Items
             WeaponAttributes.HitLeechMana = 30;
             WeaponAttributes.HitLeechHits = 30;
             Attributes.WeaponSpeed = 60;
-            Slayer = SlayerName.Repond;
+            Slayer = SlayerName.Humanoides;
         }
 
         public SoulSeeker(Serial serial)

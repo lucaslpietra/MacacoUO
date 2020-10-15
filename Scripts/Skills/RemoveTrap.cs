@@ -62,7 +62,7 @@ namespace Server.SkillHandlers
 
                     from.PlaySound(0x241);
 					
-                    if (from.CheckTargetSkill(SkillName.RemoveTrap, targ, targ.TrapPower, targ.TrapPower + 10))
+                    if (from.CheckTargetSkillMinMax(SkillName.RemoveTrap, targ, targ.TrapPower, targ.TrapPower + 30))
                     {
                         targ.TrapPower = 0;
                         targ.TrapLevel = 0;
@@ -98,7 +98,7 @@ namespace Server.SkillHandlers
                     }
                     else
                     {
-                        if ((Core.ML && isOwner) || (from.CheckTargetSkill(SkillName.RemoveTrap, trap, 80.0, 100.0) && from.CheckTargetSkill(SkillName.Tinkering, trap, 80.0, 100.0)))
+                        if ((Core.ML && isOwner) || (from.CheckTargetSkillMinMax(SkillName.RemoveTrap, trap, 80.0, 100.0) && from.CheckTargetSkillMinMax(SkillName.Tinkering, trap, 80.0, 100.0)))
                         {
                             from.PrivateOverheadMessage(MessageType.Regular, trap.MessageHue, trap.DisarmMessage, from.NetState);
 

@@ -73,9 +73,9 @@ namespace Server.Mobiles
                 m_SeperationStart = DateTime.MinValue;
             }
 
-            int range = 4;
+            int range = (RangeHome / 2);
 
-            if (!InRange(ControlMaster.Location, RangeHome) && InLOS(ControlMaster))
+            if (!InRange(ControlMaster.Location, RangeHome))
             {
                 Point3D loc = Point3D.Zero;
 
@@ -104,8 +104,6 @@ namespace Server.Mobiles
                         SetLocation(loc, true);
                     }
                 }
-
-                return false;
             }
 
             return true;

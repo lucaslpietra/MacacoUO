@@ -39,6 +39,7 @@ namespace Server.Engines.Despise
                         {
                             if (m_Creature.ControlOrder == OrderType.Follow)
                             {
+                                m_Creature.DebugSay("Ataque defensivo");
                                 m_Creature.ControlOrder = OrderType.Attack;
                                 Action = ActionType.Combat;
                             }
@@ -89,11 +90,17 @@ namespace Server.Engines.Despise
                         {
                             if (m_Creature.ControlOrder == OrderType.Follow)
                             {
-                                m_Creature.ControlOrder = OrderType.Attack;
-                                Action = ActionType.Combat;
+                                if(!(m_Creature.ControlMaster is PlayerMobile))
+                                {
+                                    m_Creature.DebugSay("Mudando pra ataque");
+                                    m_Creature.ControlOrder = OrderType.Attack;
+                                    Action = ActionType.Combat;
+                                    break;
+                                }
+                                
                             }
 
-                            break;
+                          
                         }
 
                         if (AcquireFocusMob(m_Creature.RangePerception, m_Creature.FightMode, false, false, true))
@@ -101,8 +108,7 @@ namespace Server.Engines.Despise
                             if (m_Creature.FocusMob == m_Creature.ControlMaster)
                                 break;
 
-                            if (m_Creature.Debug)
-                                m_Creature.DebugSay("I have detected {0}, attacking", m_Creature.FocusMob.Name);
+                            m_Creature.DebugSay("I have detected {0}, attacking", m_Creature.FocusMob.Name);
 
                             m_Creature.ControlOrder = OrderType.Attack;
                             m_Creature.Combatant = m_Creature.FocusMob;
@@ -313,11 +319,15 @@ namespace Server.Engines.Despise
                         {
                             if (m_Creature.ControlOrder == OrderType.Follow)
                             {
-                                m_Creature.ControlOrder = OrderType.Attack;
-                                Action = ActionType.Combat;
+                                if(!(m_Creature.ControlMaster is PlayerMobile))
+                                {
+                                    m_Creature.DebugSay("Atacando...");
+                                    m_Creature.ControlOrder = OrderType.Attack;
+                                    Action = ActionType.Combat;
+                                    break;
+                                }
+                              
                             }
-
-                            break;
                         }
 
                         if (AcquireFocusMob(m_Creature.RangePerception, m_Creature.FightMode, false, false, true))

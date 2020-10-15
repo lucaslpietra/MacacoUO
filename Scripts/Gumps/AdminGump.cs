@@ -477,7 +477,7 @@ namespace Server.Gumps
                         this.AddButtonLabeled(20, 150, this.GetButtonID(3, 600), "Rebuild Categorization");
                         this.AddButtonLabeled(220, 150, this.GetButtonID(3, 601), "Generate Documentation");
 
-                        if (Ultima.Files.MulPath["artlegacymul.uop"] != null || (Ultima.Files.MulPath["art.mul"] != null && Ultima.Files.MulPath["artidx.mul"] != null))
+                        if (ArtData.CheckFile)
                         {
                             this.AddButtonLabeled(20, 180, this.GetButtonID(3, 602), "Rebuild Bounds.bin");
                         }

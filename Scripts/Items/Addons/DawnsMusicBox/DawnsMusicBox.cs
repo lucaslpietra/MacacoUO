@@ -55,7 +55,7 @@ namespace Server.Items
             : base(0x2AF9)
         {
             this.Weight = 1.0;
-
+            Name = "Caixa de Musica Magica";
             this.m_Tracks = new List<MusicName>();
 
             while (this.m_Tracks.Count < 4)
@@ -78,7 +78,7 @@ namespace Server.Items
             {
                 return 1075198;
             }
-        }// Dawn’s Music Box
+        }// Dawnâ€™s Music Box
         public List<MusicName> Tracks
         {
             get

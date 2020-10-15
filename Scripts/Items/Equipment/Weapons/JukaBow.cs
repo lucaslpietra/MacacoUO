@@ -7,18 +7,42 @@ namespace Server.Items
     {
         [Constructable]
         public JukaBow()
-        { }
+        {
+        }
 
         public JukaBow(Serial serial)
             : base(serial)
-        { }
+        {
+        }
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsModified => Slayer != SlayerName.None;
-        public override int AosStrengthReq => 80;
-        public override int AosDexterityReq => 80;
-        public override int OldStrengthReq => 80;
-        public override int OldDexterityReq => 80;
+        public override int AosStrengthReq
+        {
+            get
+            {
+                return 80;
+            }
+        }
+        public override int AosDexterityReq
+        {
+            get
+            {
+                return 80;
+            }
+        }
+        public override int OldStrengthReq
+        {
+            get
+            {
+                return 80;
+            }
+        }
+        public override int OldDexterityReq
+        {
+            get
+            {
+                return 80;
+            }
+        }
 
         public override bool CanEquip(Mobile from)
         {
@@ -31,6 +55,14 @@ namespace Server.Items
             return false;
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsModified
+        {
+            get
+            {
+                return (Hue == 0x453);
+            }
+        }
         public override void OnDoubleClick(Mobile from)
         {
             if (IsModified)
@@ -86,12 +118,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0); // version
+
+            writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
         }
     }

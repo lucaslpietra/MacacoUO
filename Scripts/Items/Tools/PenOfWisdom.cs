@@ -47,8 +47,10 @@ namespace Server.Items
         {
         }
 
-        public override void AddUsesRemainingProperties(ObjectPropertyList list)
+        public override void GetProperties(ObjectPropertyList list)
         {
+            base.GetProperties(list);
+
             list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
         }
 

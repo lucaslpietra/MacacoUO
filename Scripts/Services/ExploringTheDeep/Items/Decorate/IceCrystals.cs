@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Server.Items
 {
@@ -16,7 +16,6 @@ namespace Server.Items
             : base(Utility.RandomList(m_ItemIDs))
         {
             this.Hue = 2729;
-            this.Movable = false;
         }
 
         public IceCrystals(Serial serial)

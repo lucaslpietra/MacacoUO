@@ -8,7 +8,7 @@ namespace Server.Items
     {
         [Constructable]
         public ColoredAnvil()
-            : this(CraftResources.GetHue((CraftResource)Utility.RandomMinMax((int)CraftResource.DullCopper, (int)CraftResource.Valorite)))
+            : this(CraftResources.GetHue((CraftResource)Utility.RandomMinMax((int)CraftResource.Berilo, (int)CraftResource.Quartzo)))
         {
         }
 
@@ -16,6 +16,7 @@ namespace Server.Items
         public ColoredAnvil(int hue)
             : base(0xFAF)
         {
+            Name = "Bigorna Colorida";
             this.Hue = hue;
             this.Weight = 20;
         }

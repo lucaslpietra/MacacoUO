@@ -231,7 +231,7 @@ namespace Server.Gumps
             this.AddImageTiled(10, 374, 500, 20, 0xA40);
             this.AddAlphaRegion(10, 10, 500, 384);
 
-            this.AddHtmlLocalized(14, 12, 500, 20, 1015234, 0x7FFF, false, false); // <center>Polymorph Selection Menu</center>
+            this.AddHtml(14, 12, 500, 20, "Selecao de Polimorfia", 0x7FFF, false, false); // <center>Polymorph Selection Menu</center>
 
             this.AddButton(10, 374, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
             this.AddHtmlLocalized(45, 376, 450, 20, 1060051, 0x7FFF, false, false); // CANCEL
@@ -248,7 +248,7 @@ namespace Server.Gumps
                     if (page > 1)
                     {
                         this.AddButton(400, 374, 0xFA5, 0xFA7, 0, GumpButtonType.Page, page);
-                        this.AddHtmlLocalized(440, 376, 60, 20, 1043353, 0x7FFF, false, false); // Next
+                        this.AddHtml(440, 376, 60, 20, "Proximo", 0x7FFF, false, false); // Next
                     }
 
                     this.AddPage(page);
@@ -256,7 +256,7 @@ namespace Server.Gumps
                     if (page > 1)
                     {
                         this.AddButton(300, 374, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 1);
-                        this.AddHtmlLocalized(340, 376, 60, 20, 1011393, 0x7FFF, false, false); // Back
+                        this.AddHtml(340, 376, 60, 20, "Anterior", 0x7FFF, false, false); // Back
                     }
                 }
 

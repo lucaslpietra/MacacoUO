@@ -126,6 +126,11 @@ namespace Server.Regions
 			BaseGuard useGuard = null;
             IPooledEnumerable eable = focus.GetMobilesInRange(8);
 
+            if(focus is BaseCreature)
+            {
+
+            }
+
             foreach (Mobile m in eable)
 			{
 				if (m is BaseGuard)
@@ -257,7 +262,7 @@ namespace Server.Regions
                     {
                         timer.Stop();
                         m_GuardCandidates.Remove(m);
-                        m.SendLocalizedMessage(502276); // Guards can no longer be called on you.
+                        m.SendMessage("Guardas nao podem mais serem chamados para voce"); // Guards can no longer be called on you.
                     }
                 }
 				else if (timer == null)
@@ -266,7 +271,7 @@ namespace Server.Regions
 					timer.Start();
 
 					m_GuardCandidates[m] = timer;
-					m.SendLocalizedMessage(502275); // Guards can now be called on you!
+					m.SendMessage("Os guardas agora te procuram"); // Guards can now be called on you!
 
 					Map map = m.Map;
 
@@ -275,7 +280,7 @@ namespace Server.Regions
 						Mobile fakeCall = null;
 						double prio = 0.0;
 
-                        IPooledEnumerable eable = m.GetMobilesInRange(8);
+                        IPooledEnumerable eable = m.GetMobilesInRange(10);
 
                         foreach (Mobile v in eable)
 						{
@@ -296,11 +301,11 @@ namespace Server.Regions
 
 						if (fakeCall != null)
 						{
-							fakeCall.Say(Utility.RandomList(1007037, 501603, 1013037, 1013038, 1013039, 1013041, 1013042, 1013043, 1013052));
+							fakeCall.Say("Guaaaardaaas !");
 							MakeGuard(m);
 							timer.Stop();
 							m_GuardCandidates.Remove(m);
-							m.SendLocalizedMessage(502276); // Guards can no longer be called on you.
+							m.SendMessage("Os guardas nao te procuram mais"); // Guards can no longer be called on you.
 						}
 					}
 				}
@@ -319,13 +324,13 @@ namespace Server.Regions
 				return;
 			}
 
-			IPooledEnumerable eable = Map.GetMobilesInRange(p, 14);
+			IPooledEnumerable eable = Map.GetMobilesInRange(p, 8);
 
 			foreach (Mobile m in eable)
 			{
 				if (IsGuardCandidate(m))
 				{
-                    if (m_GuardCandidates.ContainsKey(m) || (!AllowReds && m.Murderer && m.Region.IsPartOf(this)))
+                    if (m_GuardCandidates.ContainsKey(m) || (m.Criminal || (!AllowReds && m.Murderer && m.Region.IsPartOf(this))))
                     {
                         GuardTimer timer = null;
                         m_GuardCandidates.TryGetValue(m, out timer);
@@ -337,14 +342,12 @@ namespace Server.Regions
                         }
 
                         MakeGuard(m);
-                        m.SendLocalizedMessage(502276); // Guards can no longer be called on you.
+                        m.SendLocalizedMessage("Guardas nao te procuram mais"); // Guards can no longer be called on you.
                     }
                     else if (m is BaseCreature && ((BaseCreature)m).IsAggressiveMonster && m.Region.IsPartOf(this))
                     {
                         MakeGuard(m);
                     }
-
-					break;
 				}
 			}
 
@@ -449,7 +452,7 @@ namespace Server.Regions
 			private readonly Dictionary<Mobile, GuardTimer> m_Table;
 
 			public GuardTimer(Mobile m, Dictionary<Mobile, GuardTimer> table)
-				: base(TimeSpan.FromSeconds(15.0))
+				: base(TimeSpan.FromMinutes(1))
 			{
 				Priority = TimerPriority.TwoFiftyMS;
 
@@ -462,7 +465,7 @@ namespace Server.Regions
 				if (m_Table.ContainsKey(m_Mobile))
 				{
 					m_Table.Remove(m_Mobile);
-					m_Mobile.SendLocalizedMessage(502276); // Guards can no longer be called on you.
+					m_Mobile.SendMessage("Guardas nao podem mais ser chamados para voce"); // Guards can no longer be called on you.
 				}
 			}
 		}

@@ -12,6 +12,7 @@ namespace Server.Items
             : base(0x13CB)
         {
             this.Weight = 4.0;
+            this.Name = "Calças de Couro";
         }
 
         public LeatherLegs(Serial serial)

@@ -27,9 +27,12 @@ namespace Server.Items
 
             foreach (PlayerMobile pm in DaughtUsageList.Keys)
             {
-                if (DaughtUsageList[pm] < DateTime.Now + Cooldown)
+                if (DaughtUsageList[pm] != null)
                 {
-                    toRemove.Add(pm);
+                    if (DaughtUsageList[pm] < DateTime.Now + Cooldown)
+                    {
+                        toRemove.Add(pm);
+                    }
                 }
             }
 
@@ -64,7 +67,10 @@ namespace Server.Items
             }
             else
             {
-                by.SendLocalizedMessage(1079263, ((int)((DaughtUsageList[by] + Cooldown)-DateTime.Now).TotalSeconds).ToString());
+                if (DaughtUsageList[by] != null)
+                {
+                    by.SendLocalizedMessage(1079263, ((int)((DaughtUsageList[by] + Cooldown)-DateTime.Now).TotalSeconds).ToString());
+                }
             }
         }
 

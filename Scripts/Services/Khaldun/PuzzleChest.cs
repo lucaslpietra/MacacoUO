@@ -374,7 +374,7 @@ namespace Server.Items
                     {
                         Effects.SendLocationEffect(to, to.Map, 0x113A, 20, 10);
                         to.PlaySound(0x231);
-                        to.LocalOverheadMessage(MessageType.Regular, 0x44, 1010523); // A toxic vapor envelops thee.
+                        to.LocalOverheadMessage(MessageType.Regular, 0x44, false, "Um vapor toxico sai da caixa"); // A toxic vapor envelops thee.
 
                         to.ApplyPoison(to, Poison.Regular);
 
@@ -384,7 +384,7 @@ namespace Server.Items
                     {
                         Effects.SendLocationEffect(to, to.Map, 0x3709, 30);
                         to.PlaySound(0x54);
-                        to.LocalOverheadMessage(MessageType.Regular, 0xEE, 1010524); // Searing heat scorches thy skin.
+                        to.LocalOverheadMessage(MessageType.Regular, 0xEE, false, "A caixa dispara uma chama contra voce"); // Searing heat scorches thy skin.
 
                         AOS.Damage(to, to, Utility.RandomMinMax(10, 40), 0, 100, 0, 0, 0);
 
@@ -393,7 +393,7 @@ namespace Server.Items
                 case 2:
                     {
                         to.PlaySound(0x223);
-                        to.LocalOverheadMessage(MessageType.Regular, 0x62, 1010525); // Pain lances through thee from a sharp metal blade.
+                        to.LocalOverheadMessage(MessageType.Regular, 0x62, false, "A caixa dispara lancas que penetram suas maos"); // Pain lances through thee from a sharp metal blade.
 
                         AOS.Damage(to, to, Utility.RandomMinMax(10, 40), 100, 0, 0, 0, 0);
 
@@ -402,7 +402,7 @@ namespace Server.Items
                 default:
                     {
                         to.BoltEffect(0);
-                        to.LocalOverheadMessage(MessageType.Regular, 0xDA, 1010526); // Lightning arcs through thy body.
+                        to.LocalOverheadMessage(MessageType.Regular, 0xDA, false, "A caixa dispara uma discarga eletrica em voce"); // Lightning arcs through thy body.
 
                         AOS.Damage(to, to, Utility.RandomMinMax(10, 40), 0, 0, 0, 0, 100);
 
@@ -544,9 +544,9 @@ namespace Server.Items
                     }
                     else
                     {
-                        weapon.DamageLevel = (WeaponDamageLevel)Utility.Random(6);
-                        weapon.AccuracyLevel = (WeaponAccuracyLevel)Utility.Random(6);
-                        weapon.DurabilityLevel = (WeaponDurabilityLevel)Utility.Random(6);
+                        weapon.DamageLevel = (WeaponDamageLevel)Utility.Random(5);
+                        weapon.AccuracyLevel = (WeaponAccuracyLevel)Utility.Random(5);
+                        weapon.DurabilityLevel = (WeaponDurabilityLevel)Utility.Random(5);
                     }
 
                     this.DropItem(item);
@@ -566,8 +566,8 @@ namespace Server.Items
                     }
                     else
                     {
-                        armor.ProtectionLevel = (ArmorProtectionLevel)Utility.Random(6);
-                        armor.Durability = (ArmorDurabilityLevel)Utility.Random(6);
+                        armor.ProtectionLevel = (ArmorProtectionLevel)Utility.Random(5);
+                        armor.Durability = (ArmorDurabilityLevel)Utility.Random(5);
                     }
 
                     this.DropItem(item);
@@ -674,12 +674,12 @@ namespace Server.Items
 
                 this.AddImage(62, 20, 0x67);
 
-                this.AddHtmlLocalized(80, 36, 110, 70, 1018309, true, false); // A Puzzle Lock
+                this.AddHtml(80, 36, 110, 70, "Trava de Enigma", true, false); // A Puzzle Lock
 
                 /* Correctly choose the sequence of cylinders needed to open the latch.  Each cylinder
                 * may potentially be used more than once.  Beware!  A false attempt could be deadly!
                 */
-                this.AddHtmlLocalized(214, 26, 270, 90, 1018310, true, true);
+                this.AddHtml(214, 26, 270, 90, "Coloque os cilindros na sequencia correta para abrir a tampa. Cada cilindro pode ser usado mais de uma vez. Atencao, fracassar pode ser letal.", true, true);
 
                 this.AddLeftCylinderButton(62, 130, PuzzleChestCylinder.LightBlue, 10);
                 this.AddLeftCylinderButton(62, 180, PuzzleChestCylinder.Blue, 11);
@@ -694,16 +694,16 @@ namespace Server.Items
                 double lockpicking = from.Skills.Lockpicking.Base;
                 if (lockpicking >= 60.0)
                 {
-                    this.AddHtmlLocalized(160, 125, 230, 24, 1018308, false, false); // Lockpicking hint:
+                    this.AddHtml(160, 125, 230, 24, "Dica de Lockpick:", false, false); // Lockpicking hint:
 
                     this.AddBackground(159, 150, 230, 95, 0x13EC);
 
                     if (lockpicking >= 80.0)
                     {
-                        this.AddHtmlLocalized(165, 157, 200, 40, 1018312, false, false); // In the first slot:
+                        this.AddHtml(165, 157, 200, 40, "Primeiro Slot:", false, false); // In the first slot:
                         this.AddCylinder(350, 165, chest.Solution.First);
 
-                        this.AddHtmlLocalized(165, 197, 200, 40, 1018313, false, false); // Used in unknown slot:
+                        this.AddHtml(165, 197, 200, 40, "Usada em algum slot:", false, false); // Used in unknown slot:
                         this.AddCylinder(350, 200, chest.FirstHint);
 
                         if (lockpicking >= 90.0)
@@ -714,7 +714,7 @@ namespace Server.Items
                     }
                     else
                     {
-                        this.AddHtmlLocalized(165, 157, 200, 40, 1018313, false, false); // Used in unknown slot:
+                        this.AddHtmlLocalized(165, 157, 200, 40, "Usada em algum slot:", false, false); // Used in unknown slot:
                         this.AddCylinder(350, 160, chest.FirstHint);
 
                         if (lockpicking >= 70.0)
@@ -725,7 +725,7 @@ namespace Server.Items
                 PuzzleChestSolution lastGuess = chest.GetLastGuess(from);
                 if (lastGuess != null)
                 {
-                    this.AddHtmlLocalized(127, 249, 170, 20, 1018311, false, false); // Thy previous guess:
+                    this.AddHtml(127, 249, 170, 20, "Ultima Tentativa:", false, false); // Thy previous guess:
 
                     this.AddBackground(290, 247, 115, 25, 0x13EC);
 
@@ -857,12 +857,12 @@ namespace Server.Items
                 this.AddBackground(15, 250, 305, 163, 0x53);
                 this.AddBackground(28, 265, 280, 133, 0xBB8);
 
-                this.AddHtmlLocalized(35, 271, 270, 24, 1018314, false, false); // Thou hast failed to solve the puzzle!
+                this.AddHtml(35, 271, 270, 24, "Voce falhou em resolver o enigma", false, false); // Thou hast failed to solve the puzzle!
 
-                this.AddHtmlLocalized(35, 297, 250, 24, 1018315, false, false); // Correctly placed colors:
+                this.AddHtml(35, 297, 250, 24, "Cores corretas:", false, false); // Correctly placed colors:
                 this.AddLabel(285, 297, 0x44, correctCylinders.ToString());
 
-                this.AddHtmlLocalized(35, 323, 250, 24, 1018316, false, false); // Used colors in wrong slots:
+                this.AddHtml(35, 323, 250, 24, "Cores usadas em slots errados:", false, false); // Used colors in wrong slots:
                 this.AddLabel(285, 323, 0x44, correctColors.ToString());
 
                 this.AddButton(152, 369, 0xFA5, 0xFA7, 0, GumpButtonType.Reply, 0);

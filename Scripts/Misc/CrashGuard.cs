@@ -30,10 +30,8 @@ namespace Server.Misc
             if (SaveBackup)
                 Backup();
 
-            /*if ( Core.Service )
             e.Close = true;
-            else */ if (RestartServer)
-                Restart(e);
+            Environment.Exit(0);
         }
 
         private static void SendEmail(string filePath)

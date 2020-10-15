@@ -24,7 +24,7 @@ namespace Server.Mobiles
 
             SetHits(191, 210);
 
-            SetDamage(16, 22);
+            SetDamage(1, 5);
 
             SetDamageType(ResistanceType.Physical, 75);
             SetDamageType(ResistanceType.Energy, 25);
@@ -36,7 +36,6 @@ namespace Server.Mobiles
             SetResistance(ResistanceType.Energy, 25, 40);
 
             SetSkill(SkillName.EvalInt, 80.1, 90.0);
-            SetSkill(SkillName.Magery, 60.2, 80.0);
             SetSkill(SkillName.Meditation, 50.1, 60.0);
             SetSkill(SkillName.MagicResist, 75.3, 90.0);
             SetSkill(SkillName.Tactics, 20.1, 22.5);
@@ -55,14 +54,6 @@ namespace Server.Mobiles
         public Unicorn(Serial serial)
             : base(serial)
         {
-        }
-
-        public override bool AllowMaleRider
-        {
-            get
-            {
-                return false;
-            }
         }
         public override bool AllowMaleTamer
         {
@@ -178,7 +169,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (!Controlled && Utility.RandomDouble() < 0.3)
+            if (Utility.RandomDouble() < 0.3)
                 c.DropItem(new UnicornRibs());
         }
 

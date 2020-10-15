@@ -8,9 +8,9 @@ namespace Server.Mobiles
     {
         [Constructable]
         public BlackBear()
-            : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a black bear";
+            this.Name = "um urso negro";
             this.Body = 211;
             this.BaseSoundID = 0xA3;
 
@@ -18,10 +18,10 @@ namespace Server.Mobiles
             this.SetDex(56, 75);
             this.SetInt(11, 14);
 
-            this.SetHits(46, 60);
+            this.SetHits(86, 90);
             this.SetMana(0);
 
-            this.SetDamage(4, 10);
+            this.SetDamage(8, 25);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
@@ -39,8 +39,10 @@ namespace Server.Mobiles
             this.VirtualArmor = 24;
 
             this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = 35.1;
+            this.ControlSlots = 3;
+            this.MinTameSkill = 55.0;
+
+            SetSpecialAbility(SpecialAbility.SearingWounds);
         }
 
         public BlackBear(Serial serial)
@@ -59,7 +61,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return 12;
+                return 30;
             }
         }
         public override FoodType FavoriteFood

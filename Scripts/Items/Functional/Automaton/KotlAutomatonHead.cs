@@ -19,7 +19,7 @@ namespace Server.Items
         {
             LootType = LootType.Blessed;
 
-            Resource = CraftResource.Iron;
+            Resource = CraftResource.Ferro;
         }
 
         public override void AddNameProperty(ObjectPropertyList list)
@@ -45,8 +45,6 @@ namespace Server.Items
 
                 Timer.DelayCall(TimeSpan.FromSeconds(3), () =>
                     {
-                        _Activated = false;
-
                         KotlAutomaton automaton = GetAutomaton(from);
 
                         if (automaton.SetControlMaster(from))

@@ -110,7 +110,7 @@ namespace Server.Items
                             TurnedOn = false;
 
                             if (InactiveMessage != 0)
-                                PrivateOverheadMessage(MessageType.Regular, 0x3B2, InactiveMessage, from.NetState);
+                                PrivateOverheadMessage(MessageType.Regular, 0x7B2, InactiveMessage, from.NetState);
                         }
                         else
                         {
@@ -118,7 +118,7 @@ namespace Server.Items
 
                             if (ActiveMessage != 0)
                             {
-                                PrivateOverheadMessage(MessageType.Regular, 0x3B2, ActiveMessage, from.NetState);
+                                PrivateOverheadMessage(MessageType.Regular, 0x7B2, ActiveMessage, from.NetState);
                                 from.PlaySound(84);
                             }
                         }

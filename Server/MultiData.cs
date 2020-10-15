@@ -900,6 +900,8 @@ namespace Server
 
     public class UOPHash
     {
+
+
         public static void BuildChunkIDs(ref Dictionary<ulong, int> chunkIds, ref Dictionary<ulong, int> chunkIds2)
         {
             int maxId;
@@ -928,7 +930,7 @@ namespace Server
             return new string[] { "build/multicollection/{0:000000}.bin", "" };
         }
 
-        private static ulong HashLittle2(string s)
+        public static ulong HashLittle2(string s)
         {
             int length = s.Length;
 
@@ -952,12 +954,12 @@ namespace Server
                 c += ((uint)s[k + 10]) << 16;
                 c += ((uint)s[k + 11]) << 24;
 
-                a -= c; a ^= ((c << 4) | (c >> 28)); c += b;
-                b -= a; b ^= ((a << 6) | (a >> 26)); a += c;
-                c -= b; c ^= ((b << 8) | (b >> 24)); b += a;
-                a -= c; a ^= ((c << 16) | (c >> 16)); c += b;
-                b -= a; b ^= ((a << 19) | (a >> 13)); a += c;
-                c -= b; c ^= ((b << 4) | (b >> 28)); b += a;
+                a -= c; a ^= (c << 4) | (c >> 28); c += b;
+                b -= a; b ^= (a << 6) | (a >> 26); a += c;
+                c -= b; c ^= (b << 8) | (b >> 24); b += a;
+                a -= c; a ^= (c << 16) | (c >> 16); c += b;
+                b -= a; b ^= (a << 19) | (a >> 13); a += c;
+                c -= b; c ^= (b << 4) | (b >> 28); b += a;
 
                 length -= 12;
                 k += 12;
@@ -981,13 +983,13 @@ namespace Server
                     case 1: a += s[k]; break;
                 }
 
-                c ^= b; c -= ((b << 14) | (b >> 18));
-                a ^= c; a -= ((c << 11) | (c >> 21));
-                b ^= a; b -= ((a << 25) | (a >> 7));
-                c ^= b; c -= ((b << 16) | (b >> 16));
-                a ^= c; a -= ((c << 4) | (c >> 28));
-                b ^= a; b -= ((a << 14) | (a >> 18));
-                c ^= b; c -= ((b << 24) | (b >> 8));
+                c ^= b; c -= (b << 14) | (b >> 18);
+                a ^= c; a -= (c << 11) | (c >> 21);
+                b ^= a; b -= (a << 25) | (a >> 7);
+                c ^= b; c -= (b << 16) | (b >> 16);
+                a ^= c; a -= (c << 4) | (c >> 28);
+                b ^= a; b -= (a << 14) | (a >> 18);
+                c ^= b; c -= (b << 24) | (b >> 8);
             }
 
             return ((ulong)b << 32) | c;

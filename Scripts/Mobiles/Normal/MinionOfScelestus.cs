@@ -46,8 +46,6 @@ namespace Server.Mobiles
 
             Fame = 12500;
             Karma = -12500;
-
-            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public override void GenerateLoot()
@@ -56,9 +54,9 @@ namespace Server.Mobiles
             this.AddLoot(LootPack.UltraRich);
         }
 
-		public override int TreasureMapLevel { get { return 4; } }
         public override Poison PoisonImmune { get { return Poison.Parasitic; } }
         public override Poison HitPoison { get { return Poison.Lethal; } }
+        public override bool HasBreath { get { return true; } }
         public override bool TaintedLifeAura { get { return true; } }
         public override bool ReacquireOnMovement { get { return true; } }
         public override bool AcquireOnApproach { get { return true; } }

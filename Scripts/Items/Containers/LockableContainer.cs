@@ -4,8 +4,11 @@ using Server.Network;
 
 namespace Server.Items
 {
-    public abstract class LockableContainer : TrapableContainer, ILockable, ILockpickable, IShipwreckedItem, IResource, IQuality
+    public abstract class LockableContainer : TrapableContainer, ILockable, ILockpickable, IShipwreckedItem, IResource
     {
+
+        public bool CanUseKey { get { return true; } set { } }
+
         private bool m_Locked;
         private int m_LockLevel, m_MaxLockLevel, m_RequiredSkill;
         private uint m_KeyValue;
@@ -413,8 +416,10 @@ namespace Server.Items
             }
         }
 
-        public override void AddCraftedProperties(ObjectPropertyList list)
+        public override void GetProperties(ObjectPropertyList list)
         {
+            base.GetProperties(list);
+
             if (m_PlayerConstructed && m_Crafter != null)
             {
                 list.Add(1050043, m_Crafter.Name); // crafted by ~1_NAME~
@@ -425,7 +430,7 @@ namespace Server.Items
                 list.Add(1060636); // Exceptional
             }
 
-            if (m_Resource > CraftResource.Iron && !CraftResources.IsStandard(m_Resource))
+            if (m_Resource > CraftResource.Ferro && !CraftResources.IsStandard(m_Resource))
             {
                 list.Add(1114057, "#{0}", CraftResources.GetLocalizationNumber(m_Resource)); // ~1_val~
             }
@@ -470,9 +475,9 @@ namespace Server.Items
                 Resource = CraftResources.GetFromType(typeRes);
             }
 
-            if (from.CheckSkill(SkillName.Tinkering, -5.0, 15.0))
+            if (from.CheckSkillMult(SkillName.Tinkering, -5.0, 15.0))
             {
-                from.SendLocalizedMessage(500636); // Your tinker skill was sufficient to make the item lockable.
+                from.SendLocalizedMessage("Sua habilidade de funileiro foi suficiente para fazer isto trancavel"); // Your tinker skill was sufficient to make the item lockable.
 
                 Key key = new Key(KeyType.Copper, Key.RandomValue());
 
@@ -499,7 +504,7 @@ namespace Server.Items
             }
             else
             {
-                from.SendLocalizedMessage(500637); // Your tinker skill was insufficient to make the item lockable.
+                from.SendLocalizedMessage("Voce nao e bom funileiro suficiente para fazer isto trancavel"); // Your tinker skill was insufficient to make the item lockable.
             }
 
             return quality;

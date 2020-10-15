@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public BoneDemon()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a bone demon";
+            Name = "demonio de ossos";
             Body = 308;
             BaseSoundID = 0x48D;
 

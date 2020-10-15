@@ -1,5 +1,6 @@
 using System;
 using Server.Items;
+using Server.Misc.Custom;
 using Server.Spells;
 
 namespace Server.Engines.Craft
@@ -46,7 +47,8 @@ namespace Server.Engines.Craft
         }
 
         private DefInscription()
-            : base(1, 1, 1.25)// base( 1, 1, 3.0 )
+            //: base(1, 1, 1.25)// base( 1, 1, 3.0 )
+            : base(DefBlacksmithy.MIN_ANIM, DefBlacksmithy.MAX_ANIM, DefBlacksmithy.DELAY)
         {
         }
 
@@ -207,6 +209,7 @@ namespace Server.Engines.Craft
             }
 
             AddRes(index, typeof(BlankScroll), 1044377, 1, 1044378);
+            AddRes(index, typeof(Beeswax), 1025154, 1, 1044253);
 
             SetManaReq(index, mana);
         }
@@ -344,7 +347,7 @@ namespace Server.Engines.Craft
             AddSpell(typeof(SummonFireElementalScroll), Reg.Bloodmoss, Reg.MandrakeRoot, Reg.SpidersSilk, Reg.SulfurousAsh);
             AddSpell(typeof(SummonWaterElementalScroll), Reg.Bloodmoss, Reg.MandrakeRoot, Reg.SpidersSilk);
 
-            if (Core.SE)
+            if(Core.AOS)
             {
                 AddNecroSpell(0, 23, 39.6, typeof(AnimateDeadScroll), Reg.GraveDust, Reg.DaemonBlood);
                 AddNecroSpell(1, 13, 19.6, typeof(BloodOathScroll), Reg.DaemonBlood);
@@ -386,6 +389,8 @@ namespace Server.Engines.Craft
             index = AddCraft(typeof(Runebook), 1044294, 1041267, 45.0, 95.0, typeof(BlankScroll), 1044377, 8, 1044378);
             AddRes(index, typeof(RecallScroll), 1044445, 1, 1044253);
             AddRes(index, typeof(GateTravelScroll), 1044446, 1, 1044253);
+            AddRes(index, typeof(Beeswax), 1025154, 5, 1044253);
+            AddRes(index, typeof(EstruturaDeLivro), "Estrutura de Livro", 1, "Voce precisa de uma estrutura de livro");
 
             #region TOL
             if (Core.TOL)
@@ -398,15 +403,21 @@ namespace Server.Engines.Craft
             }
             #endregion
 
-            if (Core.AOS)
-            {
-                AddCraft(typeof(Engines.BulkOrders.BulkOrderBook), 1044294, 1028793, 65.0, 115.0, typeof(BlankScroll), 1044377, 10, 1044378);
-            }
+            index = AddCraft(typeof(Engines.BulkOrders.BulkOrderBook), 1044294, 1028793, 65.0, 115.0, typeof(BlankScroll), 1044377, 10, 1044378);
+            AddRes(index, typeof(Beeswax), 1025154, 5, 1044253);
+            AddRes(index, typeof(EstruturaDeLivro), "Estrutura de Livro", 1, "Voce precisa de uma estrutura de livro");
 
-            if (Core.SE)
-            {
-                AddCraft(typeof(Spellbook), 1044294, 1023834, 50.0, 126, typeof(BlankScroll), 1044377, 10, 1044378);
-            }
+            index = AddCraft(typeof(ElementalBall), 1044294, "Bola de Cristal Elemental", 70.0, 130, typeof(BlankScroll), 1044377, 20, 1044378);
+            AddRes(index, typeof(WhetstoneOfEnervation), "Pedra Elemental Suprema", 1, "Voce precisa de uma pedra elemental suprema");
+
+            index = AddCraft(typeof(Spellbook), 1044294, 1023834, 50.0, 126, typeof(BlankScroll), 1044377, 10, 1044378);
+            AddRes(index, typeof(Beeswax), 1025154, 5, 1044253);
+            AddRes(index, typeof(EstruturaDeLivro), "Estrutura de Livro", 1, "Voce precisa de uma estrutura de livro");
+
+            index = AddCraft(typeof(DragonSpellbook), 1044294, "Livro de Magias Draconico", 80, 100, typeof(BlankScroll), 1044377, 10, 1044378);
+            AddRes(index, typeof(Beeswax), 1025154, 5, 1044253);
+            AddRes(index, typeof(DragonStone), "Pedra Draconica", 5, "Voce nao tem a pedra draconica (jewelcrafting)");
+            AddRes(index, typeof(EstruturaDeLivro), "Estrutura de Livro", 1, "Voce precisa de uma estrutura de livro");
 
             #region Mondain's Legacy	
             if (Core.ML)
@@ -428,6 +439,9 @@ namespace Server.Engines.Craft
             }
             #endregion
 
+            AddCraft(typeof(BlankScroll), 1044294, 1023636, 50.0, 100.0, typeof(WoodPulp), 1113136, 1, 1044378);
+
+
             #region Stygian Abyss
             if (Core.SA)
             {
@@ -441,16 +455,15 @@ namespace Server.Engines.Craft
                 AddRes(index, typeof(WoodPulp), 1113136, 10, 1113289);
                 AddRes(index, typeof(Beeswax), 1025154, 5, 1044253);
 
-                AddCraft(typeof(BlankScroll), 1044294, 1023636, 50.0, 100.0, typeof(WoodPulp), 1113136, 1, 1044378);
 
                 index = AddCraft(typeof(ScrollBinderDeed), 1044294, 1113135, 75.0, 125.0, typeof(WoodPulp), 1113136, 1, 1044253);
                 SetItemHue(index, 1641);
 
                 index = AddCraft(typeof(GargoyleBook100), 1044294, 1113290, 60.0, 100.0, typeof(BlankScroll), 1044377, 40, 1044378);
-                AddRes(index, typeof(Beeswax), 1025154, 2, "You do not have enough beeswax.");
+                AddRes(index, typeof(Beeswax), 1025154, 2, "Voce nao tem cera de abelha suficiente");
 
                 index = AddCraft(typeof(GargoyleBook200), 1044294, 1113291, 72.0, 100.0, typeof(BlankScroll), 1044377, 40, 1044378);
-                AddRes(index, typeof(Beeswax), 1025154, 4, "You do not have enough beeswax.");
+                AddRes(index, typeof(Beeswax), 1025154, 4, "Voce nao tem cera de abelha suficiente");
 
                 AddMysticSpell(1031678, 4, 0.0, typeof(NetherBoltScroll), Reg.SulfurousAsh, Reg.BlackPearl);
                 AddMysticSpell(1031679, 4, 0.0, typeof(HealingStoneScroll), Reg.Bone, Reg.Garlic, Reg.Ginseng, Reg.SpidersSilk);

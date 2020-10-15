@@ -22,17 +22,33 @@ namespace Server.Items
         None
     }
 
+
     public abstract class BaseWand : BaseBashing
     {
+
+        public static int FORTE1 = 0xDF2;
+        public static int FORTE2 = 0xDF3;
+        public static int FRACO1 = 0xDF4;
+        public static int FRACO2 = 0xDF5;
+
         private WandEffect m_WandEffect;
         private int m_Charges;
+
+        public BaseWand(): base(Utility.RandomList(FORTE1, FORTE2, FRACO1, FRACO2))
+        {
+            this.Weight = 1.0;
+            this.Effect = WandEffect.None;
+            this.Name = "Varinha Magica";
+            this.Charges = 0;
+        }
+
         public BaseWand(WandEffect effect, int minCharges, int maxCharges)
             : base(Utility.RandomList(0xDF2, 0xDF3, 0xDF4, 0xDF5))
         {
             this.Weight = 1.0;
             this.Effect = effect;
             this.Charges = Utility.RandomMinMax(minCharges, maxCharges);
-
+            this.Name = "Varinha Magica";
             if (Core.AOS && m_WandEffect < WandEffect.None)
             {
                 this.Attributes.SpellChanneling = 1;
@@ -44,6 +60,11 @@ namespace Server.Items
         public BaseWand(Serial serial)
             : base(serial)
         {
+        }
+
+        public override bool AllowEquipedCast(Mobile from)
+        {
+            return true;
         }
 
         public override WeaponAbility PrimaryAbility
@@ -195,7 +216,7 @@ namespace Server.Items
         {
             if (!from.CanBeginAction(typeof(BaseWand)))
             {
-                from.SendLocalizedMessage(1070860); // You must wait a moment for the wand to recharge.
+                from.SendLocalizedMessage("Aguarde um pouco para varinha recarregar"); // You must wait a moment for the wand to recharge.
                 return;
             }
 
@@ -204,11 +225,11 @@ namespace Server.Items
                 if (this.Charges > 0)
                     this.OnWandUse(from);
                 else
-                    from.SendLocalizedMessage(1019073); // This item is out of charges.
+                    from.SendLocalizedMessage("Este item nao tem mais cargas"); // This item is out of charges.
             }
             else
             {
-                from.SendLocalizedMessage(502641); // You must equip this item to use it.
+                from.SendLocalizedMessage("Voce precisa equipar isto"); // You must equip this item to use it.
             }
         }
 

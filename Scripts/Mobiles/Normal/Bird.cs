@@ -5,37 +5,24 @@ namespace Server.Mobiles
     [CorpseName("a bird corpse")]
     public class Bird : BaseCreature
     {
+        private string[] names = new string[] {
+            "canario", "arara", "periquito", "corvo", "tecoteco","picapau", "bem-te-vi", "andorinha", "pomba", "pombo"
+        };
+
+
         [Constructable]
         public Bird()
-            : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+                    : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            if (Utility.RandomBool())
-            {
-                this.Hue = 0x901;
 
-                switch ( Utility.Random(3) )
-                {
-                    case 0:
-                        this.Name = "a crow";
-                        break;
-                    case 2:
-                        this.Name = "a raven";
-                        break;
-                    case 1:
-                        this.Name = "a magpie";
-                        break;
-                }
-            }
-            else
-            {
-                this.Hue = Utility.RandomBirdHue();
-                this.Name = NameList.RandomName("bird");
-            }
-
+            this.Hue = 0x901;
+            this.Name = names[Utility.Random(names.Length)];
             this.Body = 6;
             this.BaseSoundID = 0x1B;
 
             this.VirtualArmor = Utility.RandomMinMax(0, 6);
+
+            this.IgnoreMobiles = true;
 
             this.SetStr(10);
             this.SetDex(25, 35);
@@ -93,13 +80,18 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
+
+            if (this.Hue == 0)
+                this.Hue = Utility.RandomBirdHue();
         }
     }
 

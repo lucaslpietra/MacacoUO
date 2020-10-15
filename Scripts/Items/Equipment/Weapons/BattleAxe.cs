@@ -13,6 +13,7 @@ namespace Server.Items
         {
             this.Weight = 4.0;
             this.Layer = Layer.TwoHanded;
+            Name = "Machado de batalha";
         }
 
         public BattleAxe(Serial serial)

@@ -10,18 +10,19 @@ namespace Server.Items
         public StaffRing()
             : base(0x108a)
         {
-            Name = "The Staff Ring";
-            Attributes.NightSight = 1;
-            Attributes.AttackChance = 20;
-            Attributes.LowerRegCost = 100;
-            Attributes.LowerManaCost = 100;
-            Attributes.RegenHits = 12;
-            Attributes.RegenStam = 24;
-            Attributes.RegenMana = 18;
-            Attributes.SpellDamage = 30;
-            Attributes.CastRecovery = 6;
-            Attributes.CastSpeed = 4;
-            LootType = LootType.Blessed;
+            this.Weight = 1.0;
+            this.Name = "The Staff Ring";
+            this.Attributes.NightSight = 1;
+            this.Attributes.AttackChance = 20;
+            this.Attributes.LowerRegCost = 100;
+            this.Attributes.LowerManaCost = 100;
+            this.Attributes.RegenHits = 12;
+            this.Attributes.RegenStam = 24;
+            this.Attributes.RegenMana = 18;
+            this.Attributes.SpellDamage = 30;
+            this.Attributes.CastRecovery = 6;
+            this.Attributes.CastSpeed = 4;
+            this.LootType = LootType.Blessed;
         }
 
         public StaffRing(Serial serial)
@@ -33,7 +34,7 @@ namespace Server.Items
         {
             if (from.IsPlayer())
             {
-                from.SendMessage("This item is to only be used by staff members."); 
+                from.SendMessage("Your not a Staff member, you may not wear this Item..."); 
                 this.Delete();
             }
         }
@@ -42,7 +43,7 @@ namespace Server.Items
         {
             if (from.IsPlayer())
             {
-                from.SendMessage("This item is to only be used by staff members."); 
+                from.SendMessage("Your not a Staff member, you may not wear this Item..."); 
                 this.Delete();
             }
             return true;

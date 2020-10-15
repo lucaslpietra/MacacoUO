@@ -57,16 +57,20 @@ namespace Server.Items
             from.Target = new BladedItemTarget(this);
         }
 
-        public override void OnHit(Mobile attacker, IDamageable damageable, double damageBonus)
+        public override void OnHit(Mobile attacker, IDamageable defender, double damageBonus)
         {
-            base.OnHit(attacker, damageable, damageBonus);
+            base.OnHit(attacker, defender, damageBonus);
 
-            if (!Core.AOS && this.Poison != null && this.PoisonCharges > 0 && damageable is Mobile)
+            if (WeaponAbility.GetCurrentAbility(attacker) is InfectiousStrike)
+                return;
+
+            if (!Core.AOS && defender is Mobile && this.Poison != null && this.PoisonCharges > 0)
             {
-                --this.PoisonCharges;
-
-                if (Utility.RandomDouble() >= 0.5) // 50% chance to poison
-                    ((Mobile)damageable).ApplyPoison(attacker, this.Poison);
+                if (Utility.RandomDouble() <= 0.1)
+                {
+                    --this.PoisonCharges;
+                    ((Mobile)defender).ApplyPoison(attacker, this.Poison);
+                }
             }
         }
     }

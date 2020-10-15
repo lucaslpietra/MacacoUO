@@ -46,6 +46,8 @@ namespace Server.Mobiles
             this.Karma = -24000;
 
             this.VirtualArmor = 90;
+
+            this.PackItem(new Longsword());
         }
 
         public ArchDaemon(Serial serial)

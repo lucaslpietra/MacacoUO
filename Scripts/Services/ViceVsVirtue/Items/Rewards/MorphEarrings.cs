@@ -47,16 +47,17 @@ namespace Server.Items
             foreach (Item item in list)
             {
                 bool drop = false;
-
+                /* 
                 if (item is BaseArmor && ((BaseArmor)item).RequiredRace != null && ((BaseArmor)item).RequiredRace != race)
                     drop = true;
                 else if (item is BaseWeapon && ((BaseWeapon)item).RequiredRace != null && ((BaseWeapon)item).RequiredRace != race)
                     drop = true;
+
                 else if (item is BaseJewel && ((BaseJewel)item).RequiredRace != null && ((BaseJewel)item).RequiredRace != race)
                     drop = true;
                 else if (item is BaseClothing && ((BaseClothing)item).RequiredRace != null && ((BaseClothing)item).RequiredRace != race)
                     drop = true;
-
+                */
                 if (drop)
                 {
                     if (!didDrop)

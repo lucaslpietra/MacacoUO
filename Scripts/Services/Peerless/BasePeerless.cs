@@ -273,7 +273,7 @@ namespace Server.Mobiles
                         PackItem(new Taint());
                         break;
                     case 3:
-                        PackItem(new Putrefaction());
+                        PackItem(new Putrefication());
                         break;
                     case 4:
                         PackItem(new Corruption());

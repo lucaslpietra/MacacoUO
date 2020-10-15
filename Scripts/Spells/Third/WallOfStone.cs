@@ -1,6 +1,7 @@
 using System;
 using Server.Misc;
 using Server.Mobiles;
+using Server.Spells.Fifth;
 using Server.Targeting;
 
 namespace Server.Spells.Third
@@ -31,7 +32,7 @@ namespace Server.Spells.Third
             Caster.Target = new InternalTarget(this);
         }
 
-        public void Target(IPoint3D p)
+        public void Target(IPoint3D p, bool isSelf, bool targetOutroPlayer = false)
         {
             if (!Caster.CanSee(p))
             {
@@ -67,31 +68,73 @@ namespace Server.Spells.Third
                     eastToWest = false;
                 }
 
+                if((Caster.Location.X == p.X && Caster.Location.Y == p.Y) || isSelf)
+                {
+                    var north = Caster.Direction.HasFlag(Direction.North);
+                    var south = Caster.Direction.HasFlag(Direction.South);
+                    var east = Caster.Direction.HasFlag(Direction.East);
+                    var west = Caster.Direction.HasFlag(Direction.West);
+
+                    if ((north || south) && (!east && !west))
+                        eastToWest = true;
+                    else
+                        eastToWest = false;
+                }
+
                 Effects.PlaySound(p, Caster.Map, 0x1F6);
 
-                for (int i = -1; i <= 1; ++i)
-                {
-                    Point3D loc = new Point3D(eastToWest ? p.X + i : p.X, eastToWest ? p.Y : p.Y + i, p.Z);
+                //Alteração IDs muro
+                int itemID = eastToWest ? 0x58 : 0x57;
 
-                    if (SpellHelper.CheckWater(loc, Caster.Map) && SpellHelper.CheckField(loc, Caster.Map))
+                int size = 1;
+                if(Caster.Skills.Magery.Value >= 80)
+                {
+                    size = 2;
+                }
+                Field field = new Field();
+                var delay = 0;
+                for (int i = -size; i <= size; ++i)
+                {
+                    if(!targetOutroPlayer)
                     {
-                        Item item = new InternalItem(loc, Caster.Map, Caster);
-                        Effects.SendLocationParticles(item, 0x376A, 9, 10, 5025);
+                        delay += 150;
+                        Timer.DelayCall<int>(TimeSpan.FromMilliseconds(delay), ix => {
+                            Point3D loc = new Point3D(eastToWest ? p.X + ix : p.X, eastToWest ? p.Y : p.Y + ix, p.Z);
+                            if (SpellHelper.CheckWater(loc, Caster.Map) && SpellHelper.CheckField(loc, Caster.Map))
+                            {
+                                InternalItem item = new InternalItem(itemID, loc, Caster.Map, Caster);
+                                field.Add(item);
+                                Effects.SendLocationParticles(item, 0x376A, 9, 10, 5025);
+                            }
+                        }, i);
+                    } else
+                    {
+                        Point3D loc = new Point3D(eastToWest ? p.X + i : p.X, eastToWest ? p.Y : p.Y + i, p.Z);
+                        if (SpellHelper.CheckWater(loc, Caster.Map) && SpellHelper.CheckField(loc, Caster.Map))
+                        {
+                            if (targetOutroPlayer && i == 0)
+                            {
+                                continue;
+                            }
+
+                            InternalItem item = new InternalItem(itemID, loc, Caster.Map, Caster);
+                            field.Add(item);
+                            Effects.SendLocationParticles(item, 0x376A, 9, 10, 5025);
+                        }
                     }
                 }
             }
-
             FinishSequence();
         }
 
         [DispellableField]
-        private class InternalItem : Item
+        private class InternalItem : Item 
         {
             private readonly Mobile m_Caster;
             private Timer m_Timer;
             private DateTime m_End;
-            public InternalItem(Point3D loc, Map map, Mobile caster)
-                : base(0x82)
+            public InternalItem(int itemID, Point3D loc, Map map, Mobile caster)
+                : base(itemID)
             {
                 Movable = false;
 
@@ -102,10 +145,12 @@ namespace Server.Spells.Third
                 if (Deleted)
                     return;
 
-                m_Timer = new InternalTimer(this, TimeSpan.FromSeconds(10.0));
+                var segundos = caster.Skills[SkillName.Magery].Value / 5;
+
+                m_Timer = new InternalTimer(this, TimeSpan.FromSeconds(segundos));
                 m_Timer.Start();
 
-                m_End = DateTime.UtcNow + TimeSpan.FromSeconds(10.0);
+                m_End = DateTime.UtcNow + TimeSpan.FromSeconds(segundos);
             }
 
             public InternalItem(Serial serial)
@@ -117,7 +162,7 @@ namespace Server.Spells.Third
             {
                 get
                 {
-                    return true;
+                    return false;
                 }
             }
             public override void Serialize(GenericWriter writer)
@@ -180,6 +225,9 @@ namespace Server.Spells.Third
             {
                 base.OnAfterDelete();
 
+                if (DispelFieldSpell.fields.ContainsKey(this.Serial))
+                    DispelFieldSpell.fields.Remove(this.Serial);
+
                 if (m_Timer != null)
                     m_Timer.Stop();
             }
@@ -212,8 +260,11 @@ namespace Server.Spells.Third
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is IPoint3D)
-                    m_Owner.Target((IPoint3D)o);
+                if(o is Mobile && o != from) {
+                    m_Owner.Target((IPoint3D)o, o==from, true);
+                } 
+                else if (o is IPoint3D)
+                    m_Owner.Target(((IPoint3D)o).Clone3D(), o==from);
             }
 
             protected override void OnTargetFinish(Mobile from)

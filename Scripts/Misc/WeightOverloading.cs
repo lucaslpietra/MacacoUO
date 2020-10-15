@@ -8,6 +8,7 @@ namespace Server.Misc
 {
     public class WeightOverloading
     {
+
         public const int OverloadAllowance = 4;// We can be four stones overweight without getting fatigued
 
         public static void Initialize()
@@ -18,78 +19,29 @@ namespace Server.Misc
 
         public static void FatigueOnDamage(Mobile m, int damage, DFAlgorithm df)
         {
-            double fatigue = 0.0;
-
-            switch (m.DFA)
-            {
-                case DFAlgorithm.Standard:
-                    {
-                        fatigue = (damage * (m.HitsMax / m.Hits) * ((double)m.Stam / m.StamMax)) - 5;
-                    }
-                    break;
-                case DFAlgorithm.PainSpike:
-                    {
-                        fatigue = (damage * ((m.HitsMax / m.Hits) + ((50.0 + m.Stam) / m.StamMax) - 1.0)) - 5;
-                    }
-                    break;
-            }
-
-            var reduction = BaseArmor.GetInherentStaminaLossReduction(m) + 1;
-
-            if (reduction > 1)
-            {
-                fatigue = fatigue / reduction;
-            }
-
-            if (fatigue > 0)
-            {
-                // On EA, if follows this special rule to reduce the chances of your stamina being dropped to 0
-                if (m.Stam - fatigue <= 10)
-                {
-                    m.Stam -= (int)(fatigue * ((double)m.Hits / (double)m.HitsMax));
-                }
-                else
-                {
-                    m.Stam -= (int)fatigue;
-                }
-            }
+            var stam = damage / 7;
+            m.Stam -= stam;
+            return;
         }
 
         public static void EventSink_Movement(MovementEventArgs e)
         {
             Mobile from = e.Mobile;
+            if (!from.Player)
+                return;
 
             if (!from.Alive || from.IsStaff())
                 return;
 
-            if (!from.Player)
-            {
-                return;
-            }
+            int maxWeight = from.MaxWeight + OverloadAllowance;// 4
+            int myWeight = (Mobile.BodyWeight + from.TotalWeight);
+            int pctPeso = myWeight * 100 / maxWeight;
 
-            int maxWeight = from.MaxWeight + OverloadAllowance;
-            int overWeight = (Mobile.BodyWeight + from.TotalWeight) - maxWeight;
-
-            if (overWeight > 0)
-            {
-                from.Stam -= GetStamLoss(from, overWeight, (e.Direction & Direction.Running) != 0);
-
-                if (from.Stam == 0)
-                {
-                    from.SendLocalizedMessage(500109); // You are too fatigued to move, because you are carrying too much weight!
-                    e.Blocked = true;
-                    return;
-                }
-            }
-
-            if (!Core.SA && ((from.Stam * 100) / Math.Max(from.StamMax, 1)) < 10)
-            {
-                --from.Stam;
-            }
+            Shard.Debug("Pct Peso: " + pctPeso+" MAX = "+from.MaxWeight, from);
 
             if (from.Stam == 0)
             {
-                from.SendLocalizedMessage(from.Mounted ? 500108 : 500110); // Your mount is too fatigued to move. : You are too fatigued to move.
+                from.SendMessage("Voce esta muito fadigado para se mover"); // Your mount is too fatigued to move. : You are too fatigued to move.
                 e.Blocked = true;
                 return;
             }
@@ -98,25 +50,72 @@ namespace Server.Misc
 
             if (pm != null)
             {
-                int amt = Core.SA ? 10 : (from.Mounted ? 48 : 16);
+                if (pctPeso <= 99)
+                    return;
 
-                if ((++pm.StepsTaken % amt) == 0)
-                    --from.Stam;
+                /*
+                 *   int passos = 2;
+
+                if (pctPeso < 50 && pctPeso > 35)
+                    passos = (int)(passos / 1.3);
+                else if(pctPeso < 75)
+                    passos = (int)(passos / 15);
+                else if(pctPeso < 90)
+                    passos = (int)(passos / 20);
+                else 
+                    passos = 1;
+
+                if ((++pm.StepsTaken % passos) == 0)
+                */
+                --from.Stam;
             }
         }
 
-        public static int GetStamLoss(Mobile from, int overWeight, bool running)
+        /*
+        public static int GetStamLoss(Mobile from, int percent, bool running)
         {
-            int loss = 5 + (overWeight / 25);
+            if (percent < 25)
+            {
+                return 0;
+            }
+            else if (percent < 50)
+            {
+                if (new Random().Next(100) < 2)
+                {
 
-            if (from.Mounted)
-                loss /= 3;
+                    return 1;
+                }
+            }
+            else if (percent < 75)
+            {
+                if (new Random().Next(100) < 10)
+                {
 
-            if (running)
-                loss *= 2;
+                    return 1;
+                }
+            }
+            else if (percent < 90)
+            {
+                if (new Random().Next(100) < 50)
+                {
 
-            return loss;
+                    return 1;
+                }
+            }
+            else if (percent < 100)
+            {
+                return 1;
+            }
+            else
+            {
+                // over 8
+
+                return 2;
+            }
+
+            return 0;
         }
+        */
 
         public static bool IsOverloaded(Mobile m)
         {

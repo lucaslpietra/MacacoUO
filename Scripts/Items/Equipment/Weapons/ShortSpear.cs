@@ -12,6 +12,7 @@ namespace Server.Items
             : base(0x1403)
         {
             this.Weight = 4.0;
+            Name = "Lanca Curta";
         }
 
         public ShortSpear(Serial serial)
@@ -79,14 +80,14 @@ namespace Server.Items
         {
             get
             {
-                return 4;
+                return 8;
             }
         }
         public override int OldMaxDamage
         {
             get
             {
-                return 32;
+                return 36;
             }
         }
         public override int OldSpeed

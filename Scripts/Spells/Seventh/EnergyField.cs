@@ -2,6 +2,7 @@ using System;
 using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
+using Server.Spells.Fifth;
 using Server.Targeting;
 
 namespace Server.Spells.Seventh
@@ -70,7 +71,8 @@ namespace Server.Spells.Seventh
                     eastToWest = false;
                 }
 
-                Effects.PlaySound(p, Caster.Map, 0x20B);
+                //Effects.PlaySound(p, Caster.Map, 0x20B);
+                Effects.PlaySound(p, Caster.Map, 0x211);
 
                 TimeSpan duration;
 
@@ -82,8 +84,10 @@ namespace Server.Spells.Seventh
                 Point3D pnt = new Point3D(p);
                 int itemID = eastToWest ? 0x3946 : 0x3956;
 
+                Field f = new Field();
+
                 if (SpellHelper.CheckField(pnt, Caster.Map))
-                    new InternalItem(itemID, pnt, Caster, Caster.Map, duration);
+                    f.Add(new InternalItem(itemID, pnt, Caster, Caster.Map, duration));
 
                 for (int i = 1; i <= 2; ++i)
                 {
@@ -93,13 +97,13 @@ namespace Server.Spells.Seventh
                         SpellHelper.AdjustField(ref point, Caster.Map, 16, false);
 
                         if (SpellHelper.CheckField(point, Caster.Map))
-                            new InternalItem(itemID, point, Caster, Caster.Map, duration);
+                            f.Add(new InternalItem(itemID, point, Caster, Caster.Map, duration));
 
                         point = new Point3D(eastToWest ? pnt.X + -index : pnt.X, eastToWest ? pnt.Y : pnt.Y + -index, pnt.Z);
                         SpellHelper.AdjustField(ref point, Caster.Map, 16, false);
 
                         if (SpellHelper.CheckField(point, Caster.Map))
-                            new InternalItem(itemID, point, Caster, Caster.Map, duration);
+                            f.Add(new InternalItem(itemID, point, Caster, Caster.Map, duration));
                     }, i);
                 }
             }
@@ -178,6 +182,9 @@ namespace Server.Spells.Seventh
             public override void OnAfterDelete()
             {
                 base.OnAfterDelete();
+
+                if (DispelFieldSpell.fields.ContainsKey(this.Serial))
+                    DispelFieldSpell.fields.Remove(this.Serial);
 
                 if (m_Timer != null)
                     m_Timer.Stop();

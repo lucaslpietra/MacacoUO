@@ -45,14 +45,12 @@ namespace Server.Spells.Third
                 IDamageable source = Caster;
                 IDamageable target = m;
 
-                SpellHelper.Turn(Caster, m);
-
                 if (SpellHelper.CheckReflect((int)Circle, ref source, ref target))
                 {
                     Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
                         {
                             source.MovingParticles(target, 0x36D4, 7, 0, false, true, 9502, 4019, 0x160);
-                            source.PlaySound(Core.AOS ? 0x15E : 0x44B);
+                            source.PlaySound(0x15E);
                         });
                 }
 
@@ -68,7 +66,7 @@ namespace Server.Spells.Third
 
                     if (CheckResisted((Mobile)m))
                     {
-                        damage *= 0.75;
+                        damage *= 0.7;
 
                         ((Mobile)m).SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                     }
@@ -79,7 +77,7 @@ namespace Server.Spells.Third
                 if (damage > 0)
                 {
                     Caster.MovingParticles(m, 0x36D4, 7, 0, false, true, 9502, 4019, 0x160);
-                    Caster.PlaySound(Core.AOS ? 0x15E : 0x44B);
+                    Caster.PlaySound(0x160);
 
                     SpellHelper.Damage(this, target, damage, 0, 100, 0, 0, 0);
                 }
@@ -92,7 +90,7 @@ namespace Server.Spells.Third
         {
             private readonly FireballSpell m_Owner;
             public InternalTarget(FireballSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(Spell.RANGE, false, TargetFlags.Harmful)
             {
                 m_Owner = owner;
             }

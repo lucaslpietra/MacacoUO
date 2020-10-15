@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Server.Items;
 using Server.Targeting;
 
 namespace Server.Spells.Sixth
@@ -43,6 +44,8 @@ namespace Server.Spells.Sixth
 
                 List<Mobile> targets = new List<Mobile>();
 
+                Caster.PlaySound(0x1FD);
+
                 Map map = Caster.Map;
 
                 if (map != null)
@@ -54,7 +57,7 @@ namespace Server.Spells.Sixth
                         if ((m is Mobiles.ShadowKnight && (m.X != p.X || m.Y != p.Y)) || !SkillHandlers.DetectHidden.CanDetect(Caster, m))
                             continue;
 
-                        if (m.Hidden && (m.IsPlayer() || Caster.AccessLevel > m.AccessLevel) && CheckDifficulty(Caster, m))
+                        if (m.Hidden && CheckDifficulty(Caster, m))
                             targets.Add(m);
                     }
 
@@ -66,7 +69,6 @@ namespace Server.Spells.Sixth
                     Mobile m = targets[i];
 
                     m.RevealingAction();
-
                     m.FixedParticles(0x375A, 9, 20, 5049, EffectLayer.Head);
                     m.PlaySound(0x1FD);
                 }
@@ -81,7 +83,7 @@ namespace Server.Spells.Sixth
         private static bool CheckDifficulty(Mobile from, Mobile m)
         {
             // Reveal always reveals vs. invisibility spell 
-            if (!Core.AOS || InvisibilitySpell.HasTimer(m))
+            if (InvisibilitySpell.HasTimer(m) || InvisibilityPotion.HasTimer(m))
                 return true;
 
             int magery = from.Skills[SkillName.Magery].Fixed;
@@ -104,7 +106,7 @@ namespace Server.Spells.Sixth
         {
             private readonly RevealSpell m_Owner;
             public InternalTarget(RevealSpell owner)
-                : base(Core.ML ? 10 : 12, true, TargetFlags.None)
+                : base(Spell.RANGE, true, TargetFlags.None)
             {
                 m_Owner = owner;
             }

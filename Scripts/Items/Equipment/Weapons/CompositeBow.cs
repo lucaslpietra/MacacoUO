@@ -10,6 +10,7 @@ namespace Server.Items
             : base(0x26C2)
         {
             this.Weight = 5.0;
+            Name = "Arco Composto";
         }
 
         public CompositeBow(Serial serial)
@@ -98,28 +99,28 @@ namespace Server.Items
         {
             get
             {
-                return 15;
+                return 20;
             }
         }
         public override int OldMaxDamage
         {
             get
             {
-                return 17;
+                return 30;
             }
         }
         public override int OldSpeed
         {
             get
             {
-                return 25;
+                return 27;
             }
         }
         public override int DefMaxRange
         {
             get
             {
-                return 10;
+                return 16;
             }
         }
         public override int InitMinHits

@@ -9,16 +9,13 @@ namespace Server.Items
 {
     public delegate void InstrumentPickedCallback(Mobile from, BaseInstrument instrument);
 
-    public abstract class BaseInstrument : Item, ISlayer, IQuality, IResource
+    public abstract class BaseInstrument : Item, ICraftable, ISlayer, IQuality, IResource
     {
-        public static readonly double MaxBardingDifficulty = 160.0;
-
         private int m_WellSound, m_BadlySound;
         private SlayerName m_Slayer, m_Slayer2;
         private ItemQuality m_Quality;
         private Mobile m_Crafter;
         private int m_UsesRemaining;
-        private CraftResource m_Resource;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int SuccessSound
@@ -107,30 +104,18 @@ namespace Server.Items
             }
         }
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public CraftResource Resource
-        {
-            get { return m_Resource; }
-            set
-            {
-                m_Resource = value;
-                Hue = CraftResources.GetHue(m_Resource);
-                InvalidateProperties();
-            }
-        }
-
         public virtual int InitMinUses
         {
             get
             {
-                return 350;
+                return 450;
             }
         }
         public virtual int InitMaxUses
         {
             get
             {
-                return 450;
+                return 650;
             }
         }
 
@@ -181,12 +166,27 @@ namespace Server.Items
             {
                 return m_ReplenishesCharges;
             }
-            set 
+            set
             {
                 if (value != m_ReplenishesCharges && value)
                     m_LastReplenished = DateTime.UtcNow;
 
-                m_ReplenishesCharges = value; 
+                m_ReplenishesCharges = value;
+            }
+        }
+
+        private CraftResource m_Resource;
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CraftResource Resource
+        {
+            get { return m_Resource; }
+            set
+            {
+                UnscaleUses();
+                m_Resource = value;
+                Hue = CraftResources.GetHue(m_Resource);
+                InvalidateProperties();
+                ScaleUses();
             }
         }
 
@@ -253,10 +253,13 @@ namespace Server.Items
 
         public int GetUsesScalar()
         {
+            var q = 40;
             if (m_Quality == ItemQuality.Exceptional)
-                return 200;
+                return q += 50;
 
-            return 100;
+            if(Resource != CraftResource.None)
+                q += ((int)this.Resource - 301) * 20;
+            return q;
         }
 
         public void ConsumeUse(Mobile from)
@@ -343,14 +346,7 @@ namespace Server.Items
             if (bc == null)
                 return false;
 
-            var profile = bc.AbilityProfile;
-
-            if (profile != null)
-            {
-                return profile.HasAbility(SpecialAbility.DragonBreath);
-            }
-
-            return false;
+            return bc.HasBreath;
         }
 
         public static bool IsPoisonImmune(BaseCreature bc)
@@ -377,14 +373,14 @@ namespace Server.Items
             - Radiation or Aura Damage (Heat, Cold etc.)
             - Summoning Undead
             */
-            double val = (targ.HitsMax * 1.6) + targ.StamMax + targ.ManaMax;
+            double val = (targ.HitsMax * 0.9) + targ.StamMax + targ.ManaMax;
 
-            val += targ.SkillsTotal / 10;
+            val += targ.SkillsTotal / 20;
 
             BaseCreature bc = targ as BaseCreature;
 
             if (IsMageryCreature(bc))
-                val += 100;
+                val += 200;
 
             if (IsFireBreathingCreature(bc))
                 val += 100;
@@ -398,15 +394,17 @@ namespace Server.Items
             val += GetPoisonLevel(bc) * 20;
 
             if (val > 700)
-                val = 700 + (int)((val - 700) * (3.0 / 11));
+                val = 700;
 
             val /= 10;
 
             if (bc != null && bc.IsParagon)
                 val += 40.0;
 
-            if (Core.SE && val > MaxBardingDifficulty)
-                val = MaxBardingDifficulty;
+            if (val > 200)
+                val = 200;
+
+            Shard.Debug("Peace Diff: " + val);
 
             return val;
         }
@@ -416,7 +414,7 @@ namespace Server.Items
             double val = GetBaseDifficulty(targ);
 
             if (m_Quality == ItemQuality.Exceptional)
-                val -= 5.0; // 10%
+                val -= 10.0; // 10%
 
             if (m_Slayer != SlayerName.None)
             {
@@ -425,9 +423,9 @@ namespace Server.Items
                 if (entry != null)
                 {
                     if (entry.Slays(targ))
-                        val -= 10.0; // 20%
+                        val -= 20.0; // 20%
                     else if (entry.Group.OppositionSuperSlays(targ))
-                        val += 10.0; // -20%
+                        val += 20.0; // -20%
                 }
             }
 
@@ -438,9 +436,9 @@ namespace Server.Items
                 if (entry != null)
                 {
                     if (entry.Slays(targ))
-                        val -= 10.0; // 20%
+                        val -= 20.0; // 20%
                     else if (entry.Group.OppositionSuperSlays(targ))
-                        val += 10.0; // -20%
+                        val += 20.0; // -20%
                 }
             }
 
@@ -481,26 +479,20 @@ namespace Server.Items
             UsesRemaining = Utility.RandomMinMax(InitMinUses, InitMaxUses);
         }
 
-        public override void AddCraftedProperties(ObjectPropertyList list)
-        {
-            if (m_Crafter != null)
-                list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
-
-            if (m_Quality == ItemQuality.Exceptional)
-                list.Add(1060636); // exceptional
-        }
-
-        public override void AddUsesRemainingProperties(ObjectPropertyList list)
-        {
-            list.Add(1060584, UsesRemaining.ToString()); // uses remaining: ~1_val~
-        }
-
         public override void GetProperties(ObjectPropertyList list)
         {
             int oldUses = m_UsesRemaining;
             CheckReplenishUses(false);
 
             base.GetProperties(list);
+
+            if (m_Crafter != null)
+                list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+
+            if (m_Quality == ItemQuality.Exceptional)
+                list.Add(1060636); // exceptional
+
+            list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
 
             if (m_ReplenishesCharges)
                 list.Add(1070928); // Replenish Charges
@@ -509,24 +501,14 @@ namespace Server.Items
             {
                 SlayerEntry entry = SlayerGroup.GetEntryByName(m_Slayer);
                 if (entry != null)
-                    list.Add(entry.Title);
+                    list.AddTwoValues("Encantador de:", m_Slayer.ToString());
             }
 
             if (m_Slayer2 != SlayerName.None)
             {
                 SlayerEntry entry = SlayerGroup.GetEntryByName(m_Slayer2);
                 if (entry != null)
-                    list.Add(entry.Title);
-            }
-
-            if (!CraftResources.IsStandard(m_Resource))
-            {
-                int num = CraftResources.GetLocalizationNumber(m_Resource);
-
-                if (num > 0)
-                    list.Add(num);
-                else
-                    list.Add(CraftResources.GetName(m_Resource));
+                    list.AddTwoValues("Encantador de:", m_Slayer2.ToString());
             }
 
             if (m_UsesRemaining != oldUses)
@@ -597,8 +579,7 @@ namespace Server.Items
 
             writer.Write((int)4); // version
 
-            writer.Write((int)m_Resource);
-
+            writer.Write((int)Resource);
             writer.Write(m_ReplenishesCharges);
             if (m_ReplenishesCharges)
                 writer.Write(m_LastReplenished);
@@ -621,13 +602,11 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 4:
-                    {
-                        m_Resource = (CraftResource)reader.ReadInt();
-                        goto case 3;
-                    }
+                    Resource = (CraftResource)reader.ReadInt();
+                    goto case 3;
                 case 3:
                     {
                         m_ReplenishesCharges = reader.ReadBool();
@@ -649,7 +628,7 @@ namespace Server.Items
 
                         m_WellSound = reader.ReadEncodedInt();
                         m_BadlySound = reader.ReadEncodedInt();
-					
+
                         break;
                     }
                 case 1:
@@ -707,7 +686,7 @@ namespace Server.Items
 
         public static bool CheckMusicianship(Mobile m)
         {
-            m.CheckSkill(SkillName.Musicianship, 0.0, 120.0);
+            m.CheckSkillMult(SkillName.Musicianship, 0.0, 120.0);
 
             return ((m.Skills[SkillName.Musicianship].Value / 100) > Utility.RandomDouble());
         }
@@ -720,6 +699,8 @@ namespace Server.Items
         public void PlayInstrumentBadly(Mobile from)
         {
             from.PlaySound(m_BadlySound);
+            from.SendMessage("Voce toca o instrumento muito mal");
+            from.OverheadMessage("* tocando mal *");
         }
 
         #region ICraftable Members
@@ -731,14 +712,24 @@ namespace Server.Items
             if (makersMark)
                 Crafter = from;
 
-            if (!craftItem.ForceNonExceptional)
+            CraftResource thisResource = CraftResources.GetFromType(typeRes);
+            Hue = CraftResources.GetHue(thisResource);
+
+            if(Quality == ItemQuality.Exceptional && thisResource == CraftResource.Carmesim)
             {
-                if (typeRes == null)
-                    typeRes = craftItem.Resources.GetAt(0).ItemType;
-
-                Resource = CraftResources.GetFromType(typeRes);
+                if(Utility.RandomBool())
+                {
+                    Slayer = BaseRunicTool.GetRandomSlayer();
+                    from.SendMessage("Voce fez um instrumento perfeito !");
+                }
+            } else if(thisResource != CraftResource.None)
+            {
+                if(!from.IsCooldown("ttwood"))
+                {
+                    from.SetCooldown("ttwood");
+                    from.SendMessage(78, "Voce fez um instrumento com uma madeira nobre, dando mais durabilidade ao instrumento. Dizem que instrumentos excecionais de Carmesim sao excepcionalmente uteis.");
+                }
             }
-
             return quality;
         }
         #endregion

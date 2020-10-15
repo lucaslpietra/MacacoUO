@@ -2,16 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    /// <summary>
-    /// This special move represents a significant change to the use of poisons in Age of Shadows.
-    /// Now, only certain weapon types — those that have Infectious Strike as an available special move — will be able to be poisoned.
-    /// Targets will no longer be poisoned at random when hit by poisoned weapons.
-    /// Instead, the wielder must use this ability to deliver the venom.
-    /// While no skill in Poisoning is directly required to use this ability, being knowledgeable in the application and use of toxins
-    /// will allow a character to use Infectious Strike at reduced mana cost and with a chance to inflict more deadly poison on his victim.
-    /// With this change, weapons will no longer be corroded by poison.
-    /// Level 5 poison will be possible when using this special move.
-    /// </summary>
+
     public class InfectiousStrike : WeaponAbility
     {
         public InfectiousStrike()
@@ -33,7 +24,7 @@ namespace Server.Items
         
         public override SkillName GetSecondarySkill(Mobile from)
         {
-            return SkillName.Poisoning;
+            return SkillName.Tactics;
         }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
@@ -52,7 +43,7 @@ namespace Server.Items
 
             if (p == null || weapon.PoisonCharges <= 0)
             {
-                attacker.SendLocalizedMessage(1061141); // Your weapon must have a dose of poison to perform an infectious strike!
+                attacker.SendLocalizedMessage("Sua arma precisa estar envenenada"); // Your weapon must have a dose of poison to perform an infectious strike!
                 return;
             }
 
@@ -62,10 +53,10 @@ namespace Server.Items
             // Skill Masteries
             int noChargeChance = Server.Spells.SkillMasteries.MasteryInfo.NonPoisonConsumeChance(attacker);
 
-            if (noChargeChance == 0 || noChargeChance < Utility.Random(100))
+            if (noChargeChance == 0 || noChargeChance < Utility.Random(100) || Utility.RandomDouble() < attacker.Skills[SkillName.Poisoning].Value/200)
                 --weapon.PoisonCharges;
             else
-                attacker.SendLocalizedMessage(1156095); // Your mastery of poisoning allows you to use your poison charge without consuming it.
+                attacker.SendLocalizedMessage("Sua maestria permitiu voce usar o veneno sem consumir ele"); // Your mastery of poisoning allows you to use your poison charge without consuming it.
 
             // Infectious strike special move now uses poisoning skill to help determine potency 
             int maxLevel = 0;
@@ -93,8 +84,14 @@ namespace Server.Items
             if (p.Level > maxLevel) // If they don't have enough Poisoning Skill for the potion strength, lower it.
                 p = Poison.GetPoison(maxLevel);
 
-            if ((attacker.Skills[SkillName.Poisoning].Value / 100.0) > Utility.RandomDouble())
+            if (p != null)
+                Shard.Debug("Poison level " + p.Level + " - Max Level " + maxLevel);
+            else
+                Shard.Debug("Poison Null");
+
+            if ((attacker.Skills[SkillName.Poisoning].Value / 150.0) > Utility.RandomDouble())
             {
+          
             	if (p !=null && p.Level + 1 <= maxLevel)
             	{
             		int level = p.Level + 1;
@@ -104,8 +101,8 @@ namespace Server.Items
 	                {
                  	   p = newPoison;
 
- 	                   attacker.SendLocalizedMessage(1060080); // Your precise strike has increased the level of the poison by 1
- 	                   defender.SendLocalizedMessage(1060081); // The poison seems extra effective!
+ 	                   attacker.SendLocalizedMessage("Seu golpe preciso aumentou o nivel do veneno"); // Your precise strike has increased the level of the poison by 1
+ 	                   defender.SendLocalizedMessage("O veneno ficou mais forte"); // The poison seems extra effective!
 	                }
             	}
             }
@@ -115,8 +112,8 @@ namespace Server.Items
 
             if (defender.ApplyPoison(attacker, p) != ApplyPoisonResult.Immune)
             {
-                attacker.SendLocalizedMessage(1008096, true, defender.Name); // You have poisoned your target : 
-                defender.SendLocalizedMessage(1008097, false, attacker.Name); //  : poisoned you!
+                attacker.SendLocalizedMessage("Voce envenenou o alvo"); // You have poisoned your target : 
+                defender.SendLocalizedMessage("Voce foi envenenado"); //  : poisoned you!
             }
         }
     }

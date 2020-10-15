@@ -24,7 +24,7 @@ namespace Server.Spells.Seventh
         }
 
         public PolymorphSpell(Mobile caster, Item scroll)
-            : this(caster,scroll,0)
+            : this(caster, scroll, 0)
         {
         }
 
@@ -52,10 +52,10 @@ namespace Server.Spells.Seventh
         {
             if (Caster.Flying)
             {
-            Caster.SendLocalizedMessage(1113415); // You cannot use this ability while flying.
-            return false;
+                Caster.SendLocalizedMessage(1113415); // You cannot use this ability while flying.
+                return false;
             }
-            else 
+            else
             if (Factions.Sigil.ExistsOn(this.Caster))
             {
                 this.Caster.SendLocalizedMessage(1010521); // You cannot polymorph while you have a Town Sigil
@@ -78,24 +78,14 @@ namespace Server.Spells.Seventh
             }
             else if (!this.Caster.CanBeginAction(typeof(PolymorphSpell)))
             {
-                if (Core.ML)
-                    EndPolymorph(this.Caster);
-                else 
-                    this.Caster.SendLocalizedMessage(1005559); // This spell is already in effect.
+                EndPolymorph(this.Caster);
                 return false;
             }
             else if (this.m_NewBody == 0)
             {
-                Gump gump;
-                if (Core.SE)
-                    gump = new NewPolymorphGump(this.Caster, this.Scroll);
-                else
-                    gump = new PolymorphGump(this.Caster, this.Scroll);
-
-                this.Caster.SendGump(gump);
+                this.Caster.SendGump(new NewPolymorphGump(this.Caster, this.Scroll));
                 return false;
             }
-
             return true;
         }
 
@@ -103,19 +93,16 @@ namespace Server.Spells.Seventh
         {
             if (Caster.Flying)
             {
-            Caster.SendLocalizedMessage(1113415); // You cannot use this ability while flying.
+                Caster.SendLocalizedMessage(1113415); // You cannot use this ability while flying.
             }
-            else 
+            else
             if (Factions.Sigil.ExistsOn(this.Caster))
             {
                 this.Caster.SendLocalizedMessage(1010521); // You cannot polymorph while you have a Town Sigil
             }
             else if (!this.Caster.CanBeginAction(typeof(PolymorphSpell)))
             {
-                if (Core.ML)
-                    EndPolymorph(this.Caster);
-                else
-                    this.Caster.SendLocalizedMessage(1005559); // This spell is already in effect.
+                EndPolymorph(this.Caster);
             }
             else if (TransformationSpellHelper.UnderTransformation(this.Caster))
             {
@@ -164,7 +151,7 @@ namespace Server.Spells.Seventh
                             Timer t = new InternalTimer(this.Caster);
 
                             m_Timers[this.Caster] = t;
-                            
+
                             BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Polymorph, 1075824, 1075823, t.Delay, Caster, String.Format("{0}\t{1}", GetArticleCliloc(m_NewBody), GetFormCliloc(m_NewBody))));
 
                             t.Start();
@@ -179,7 +166,7 @@ namespace Server.Spells.Seventh
 
             this.FinishSequence();
         }
-        
+
         private static TextDefinition GetArticleCliloc(int body)
         {
             if (body == 0x11 || body == 0x01)
@@ -222,7 +209,7 @@ namespace Server.Spells.Seventh
 
                 BaseArmor.ValidateMobile(m);
                 BaseClothing.ValidateMobile(m);
-                
+
                 BuffInfo.RemoveBuff(m, BuffIcon.Polymorph);
             }
         }
@@ -235,7 +222,7 @@ namespace Server.Spells.Seventh
             {
                 this.m_Owner = owner;
 
-                int val = (int)owner.Skills[SkillName.Magery].Value;
+                var val = owner.Skills[SkillName.Magery].Value + owner.Skills[SkillName.Meditation].Value + owner.Skills[SkillName.Inscribe].Value;
 
                 if (val > 120)
                     val = 120;

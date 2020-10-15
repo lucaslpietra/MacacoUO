@@ -1,4 +1,4 @@
-﻿using Server;
+using Server;
 using System;
 using Server.Multis;
 using Server.Mobiles;
@@ -121,7 +121,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (m_Galleon == null || from.AccessLevel > AccessLevel.Player)
+            if (m_Galleon == null || from.AccessLevel > AccessLevel.VIP)
                 base.OnDoubleClick(from);
             else if (!m_Galleon.Contains(from))
             {

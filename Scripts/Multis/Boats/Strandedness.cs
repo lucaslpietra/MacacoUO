@@ -100,7 +100,7 @@ namespace Server.Misc
 		{
 			Map map = from.Map;
 
-			if ( map == null || from.AccessLevel > AccessLevel.Player )
+			if ( map == null || from.AccessLevel > AccessLevel.VIP )
 				return false;
 
             BaseBoat boat = BaseBoat.FindBoatAt(from, map);

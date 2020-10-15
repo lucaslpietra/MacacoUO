@@ -9,7 +9,8 @@ namespace Server.Items
         public StuddedLegs()
             : base(0x13DA)
         {
-            Weight = 5.0;
+            this.Weight = 5.0;
+            this.Name = "Calças de Couro Reforçado";
         }
 
         public StuddedLegs(Serial serial)
@@ -118,6 +119,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (this.Weight == 3.0)
+                this.Weight = 5.0;
         }
     }
 }

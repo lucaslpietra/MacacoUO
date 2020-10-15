@@ -1,4 +1,4 @@
-﻿using Server;
+using Server;
 using System;
 using Server.Multis;
 using Server.Items;
@@ -85,7 +85,7 @@ namespace Server.Regions
 
         public override bool OnBeginSpellCast(Mobile m, ISpell s)
         {
-            if(m.AccessLevel == AccessLevel.Player) {
+            if(m.AccessLevel <= AccessLevel.VIP) {
                 if (s is Server.Spells.Sixth.MarkSpell || s is Server.Spells.Fourth.RecallSpell || s is Server.Spells.Seventh.GateTravelSpell
                 || s is Server.Spells.Chivalry.SacredJourneySpell)
                 return false;

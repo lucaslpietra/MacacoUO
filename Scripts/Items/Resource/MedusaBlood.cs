@@ -14,6 +14,7 @@ namespace Server.Items
         public MedusaBlood(int amount)
             : base(0x2DB6)
         {
+            this.Name = "Sangue da Medusa";
             this.Stackable = true;
             this.Amount = amount;
         }

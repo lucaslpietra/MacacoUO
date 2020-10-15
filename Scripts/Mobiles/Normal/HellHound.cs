@@ -47,7 +47,6 @@ namespace Server.Mobiles
             MinTameSkill = 85.5;
 
             PackItem(new SulfurousAsh(5));
-            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public HellHound(Serial serial)
@@ -55,6 +54,13 @@ namespace Server.Mobiles
         {
         }
 
+        public override bool HasBreath
+        {
+            get
+            {
+                return true;
+            }
+        }// fire breath enabled
         public override int Meat
         {
             get

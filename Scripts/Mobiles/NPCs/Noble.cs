@@ -1,14 +1,15 @@
 using System;
+using Server.Engines.Quests;
 using Server.Items;
 
 namespace Server.Mobiles
 {
-    public class Noble : BaseEscortable
+    public class Noble : TownEscortable
     {
         [Constructable]
         public Noble()
         {
-            this.Title = "the noble";
+            this.Title = "o nobre";
 
             this.SetSkill(SkillName.Parry, 80.0, 100.0);
             this.SetSkill(SkillName.Swords, 80.0, 100.0);
@@ -19,21 +20,7 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-
-        public override bool CanTeach
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool ClickTitle
-        {
-            get
-            {
-                return false;
-            }
-        }// Do not display 'the noble' when single-clicking
+        // Do not display 'the noble' when single-clicking
         public override void InitOutfit()
         {
             if (this.Female)

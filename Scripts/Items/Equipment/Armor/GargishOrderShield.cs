@@ -12,7 +12,7 @@ namespace Server.Items
             : base(0x422A)
         {
             if (!Core.AOS)
-                this.LootType = LootType.Newbied;
+                this.LootType = LootType.Blessed;
             //Weight = 7.0;
         }
 

@@ -11,6 +11,7 @@ namespace Server.Items
             : base(0x1B7B)
         {
             this.Weight = 6.0;
+            this.Name = "Escudo de Metal";
         }
 
         public MetalShield(Serial serial)

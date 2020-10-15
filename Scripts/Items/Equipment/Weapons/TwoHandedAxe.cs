@@ -12,6 +12,7 @@ namespace Server.Items
             : base(0x1443)
         {
             this.Weight = 8.0;
+            this.Name = "Machado de Duas Maos";
         }
 
         public TwoHandedAxe(Serial serial)

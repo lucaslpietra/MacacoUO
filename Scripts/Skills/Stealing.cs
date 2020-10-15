@@ -12,6 +12,8 @@ using Server.Spells.Ninjitsu;
 using Server.Spells.Seventh;
 using Server.Targeting;
 using Server.Engines.VvV;
+using Server.Regions;
+using Server.Scripts.Custom.Items;
 #endregion
 
 namespace Server.SkillHandlers
@@ -27,7 +29,7 @@ namespace Server.SkillHandlers
 
         public static event ItemStolenEventHandler ItemStolen;
 
-		public static readonly bool ClassicMode = false;
+		public static readonly bool ClassicMode = true;
 		public static readonly bool SuspendOnMurder = false;
 
 		public static bool IsInGuild(Mobile m)
@@ -58,39 +60,72 @@ namespace Server.SkillHandlers
 
 				object root = toSteal.RootParent;
 
-				StealableArtifactsSpawner.StealableInstance si = null;
+				StealableArtifactsSpawner.StealableInstance stealable = null;
 				if (toSteal.Parent == null || !toSteal.Movable)
 				{
-					si = toSteal is AddonComponent ? StealableArtifactsSpawner.GetStealableInstance(((AddonComponent)toSteal).Addon) : StealableArtifactsSpawner.GetStealableInstance(toSteal);
+					stealable = toSteal is AddonComponent ? StealableArtifactsSpawner.GetStealableInstance(((AddonComponent)toSteal).Addon) : StealableArtifactsSpawner.GetStealableInstance(toSteal);
 				}
+
+                var canSteal = toSteal is BaseDecorationArtifact || toSteal is DecoRelPor;
+                if(!toSteal.Movable && canSteal && toSteal.GetRegion() is DungeonRegion )
+                {
+                    if(m_Thief.Skills[SkillName.Stealing].Value < 100)
+                    {
+                        m_Thief.SendMessage("Voce nao tem habilidade suficiente para isto");
+                    } else
+                    {
+                        m_Thief.SendMessage("Voce roubou o artefato");
+                        m_Thief.RevealingAction();
+                        m_Thief.OverheadMessage("* roubou *");
+
+                        var bixos = m_Thief.FindCreaturesInRange(m_Thief.Map, 12);
+                        foreach (var bixo in bixos)
+                        {
+                            Shard.Debug("Combat " + (bixo.Combatant == null));
+                            if(bixo is BaseCreature && bixo.Combatant == null && !(((BaseCreature)bixo).ControlMaster is PlayerMobile))
+                            {
+                                bixo.OverheadMessage("!");
+                                bixo.Combatant = m_Thief;
+                            }
+                        }
+                        toSteal.Movable = true;
+                        return toSteal;
+                    }
+                }
+
+                if(root == null)
+                {
+                    m_Thief.SendMessage("Voce estranhamente nao pode roubar isto");
+                    return null;
+                }
 
 				if (!IsEmptyHanded(m_Thief))
 				{
-					m_Thief.SendLocalizedMessage(1005584); // Both hands must be free to steal.
+					m_Thief.SendLocalizedMessage("Suas maos precisam estar vazias para roubar"); // Both hands must be free to steal.
 				}
 				else if (root is Mobile && ((Mobile)root).Player && !IsInGuild(m_Thief))
 				{
-					m_Thief.SendLocalizedMessage(1005596); // You must be in the thieves guild to steal from other players.
+					m_Thief.SendLocalizedMessage("Voce precisa fazer parte da confraria dos ladinos para roubar"); // You must be in the thieves guild to steal from other players.
 				}
 				else if (SuspendOnMurder && root is Mobile && ((Mobile)root).Player && IsInGuild(m_Thief) && m_Thief.Kills > 0)
 				{
-					m_Thief.SendLocalizedMessage(502706); // You are currently suspended from the thieves guild.
+					m_Thief.SendLocalizedMessage("Voce esta suspendido da confraria dos ladinos"); // You are currently suspended from the thieves guild.
 				}
 				else if (root is BaseVendor && ((BaseVendor)root).IsInvulnerable)
 				{
-					m_Thief.SendLocalizedMessage(1005598); // You can't steal from shopkeepers.
+					m_Thief.SendLocalizedMessage("Nao pode roubar vendedores... (ainda)..."); // You can't steal from shopkeepers.
 				}
 				else if (root is PlayerVendor)
 				{
-					m_Thief.SendLocalizedMessage(502709); // You can't steal from vendors.
+					m_Thief.SendLocalizedMessage("Voce nao pode roubar isto"); // You can't steal from vendors.
 				}
 				else if (!m_Thief.CanSee(toSteal))
 				{
-					m_Thief.SendLocalizedMessage(500237); // Target can not be seen.
+					m_Thief.SendLocalizedMessage("Voce nao pode ver isto"); // Target can not be seen.
 				}
 				else if (m_Thief.Backpack == null || !m_Thief.Backpack.CheckHold(m_Thief, toSteal, false, true))
 				{
-					m_Thief.SendLocalizedMessage(1048147); // Your backpack can't hold anything else.
+					m_Thief.SendLocalizedMessage("Sua mochila esta muito cheia"); // Your backpack can't hold anything else.
 				}
 				#region Sigils
 				else if (toSteal is Sigil)
@@ -102,56 +137,56 @@ namespace Server.SkillHandlers
 
 					if (!m_Thief.InRange(toSteal.GetWorldLocation(), 1))
 					{
-						m_Thief.SendLocalizedMessage(502703); // You must be standing next to an item to steal it.
+						m_Thief.SendLocalizedMessage("Voce precisa estar proximo do item"); // You must be standing next to an item to steal it.
 					}
 					else if (root != null) // not on the ground
 					{
-						m_Thief.SendLocalizedMessage(502710); // You can't steal that!
+						m_Thief.SendLocalizedMessage("Isto nao"); // You can't steal that!
 					}
 					else if (faction != null)
 					{
 						if (!m_Thief.CanBeginAction(typeof(IncognitoSpell)))
 						{
-							m_Thief.SendLocalizedMessage(1010581); //	You cannot steal the sigil when you are incognito
+							m_Thief.SendLocalizedMessage("Voce nao pode fazer isso com incognito"); //	You cannot steal the sigil when you are incognito
 						}
 						else if (DisguiseTimers.IsDisguised(m_Thief))
 						{
-							m_Thief.SendLocalizedMessage(1010583); //	You cannot steal the sigil while disguised
+							m_Thief.SendLocalizedMessage("Nao pode estar disfarcado"); //	You cannot steal the sigil while disguised
 						}
 						else if (!m_Thief.CanBeginAction(typeof(PolymorphSpell)))
 						{
-							m_Thief.SendLocalizedMessage(1010582); //	You cannot steal the sigil while polymorphed				
+							m_Thief.SendLocalizedMessage("Nao pode estar polimorfizado"); //	You cannot steal the sigil while polymorphed				
 						}
 						else if (TransformationSpellHelper.UnderTransformation(m_Thief))
 						{
-							m_Thief.SendLocalizedMessage(1061622); // You cannot steal the sigil while in that form.
+							m_Thief.SendLocalizedMessage("Nao pode estar transformado"); // You cannot steal the sigil while in that form.
 						}
 						else if (AnimalForm.UnderTransformation(m_Thief))
 						{
-							m_Thief.SendLocalizedMessage(1063222); // You cannot steal the sigil while mimicking an animal.
+							m_Thief.SendLocalizedMessage("Nao pode estar transformado"); // You cannot steal the sigil while mimicking an animal.
 						}
 						else if (pl.IsLeaving)
 						{
-							m_Thief.SendLocalizedMessage(1005589); // You are currently quitting a faction and cannot steal the town sigil
+							m_Thief.SendLocalizedMessage("Voce esta saindo de uma faction nao pode fazer isto"); // You are currently quitting a faction and cannot steal the town sigil
 						}
 						else if (sig.IsBeingCorrupted && sig.LastMonolith.Faction == faction)
 						{
-							m_Thief.SendLocalizedMessage(1005590); //	You cannot steal your own sigil
+							m_Thief.SendLocalizedMessage("Vai roubar seu proprio?"); //	You cannot steal your own sigil
 						}
 						else if (sig.IsPurifying)
 						{
-							m_Thief.SendLocalizedMessage(1005592); // You cannot steal this sigil until it has been purified
+							m_Thief.SendLocalizedMessage("Sigilo purificado"); // You cannot steal this sigil until it has been purified
 						}
-						else if (m_Thief.CheckTargetSkill(SkillName.Stealing, toSteal, 80.0, 80.0))
+						else if (m_Thief.CheckTargetSkillMinMax(SkillName.Stealing, toSteal, 0, 0))
 						{
 							if (Sigil.ExistsOn(m_Thief))
 							{
-								m_Thief.SendLocalizedMessage(1010258);
+								m_Thief.SendLocalizedMessage("Voce ja tem um sigilo");
 									//	The sigil has gone back to its home location because you already have a sigil.
 							}
 							else if (m_Thief.Backpack == null || !m_Thief.Backpack.CheckHold(m_Thief, sig, false, true))
 							{
-								m_Thief.SendLocalizedMessage(1010259); //	The sigil has gone home because your backpack is full
+								m_Thief.SendLocalizedMessage("Sua mochila esta cheia"); //	The sigil has gone home because your backpack is full
 							}
 							else
 							{
@@ -160,7 +195,7 @@ namespace Server.SkillHandlers
 									sig.GraceStart = DateTime.UtcNow; // begin grace period
 								}
 
-								m_Thief.SendLocalizedMessage(1010586); // YOU STOLE THE SIGIL!!!   (woah, calm down now)
+								m_Thief.SendLocalizedMessage("VOCE ROUBOU O SIGILO !!! (eita, muita calma nessa hora)"); // YOU STOLE THE SIGIL!!!   (woah, calm down now)
 
 								if (sig.LastMonolith != null && sig.LastMonolith.Sigil != null)
 								{
@@ -191,43 +226,43 @@ namespace Server.SkillHandlers
 
                     if (!m_Thief.InRange(toSteal.GetWorldLocation(), 1))
                     {
-                        m_Thief.SendLocalizedMessage(502703); // You must be standing next to an item to steal it.
+                        m_Thief.SendLocalizedMessage("Precisa estar proximo"); // You must be standing next to an item to steal it.
                     }
                     else if (root != null) // not on the ground
                     {
-                        m_Thief.SendLocalizedMessage(502710); // You can't steal that!
+                        m_Thief.SendLocalizedMessage("Nao pode roubar isto"); // You can't steal that!
                     }
                     else if (entry != null)
                     {
                         if (!m_Thief.CanBeginAction(typeof(IncognitoSpell)))
                         {
-                            m_Thief.SendLocalizedMessage(1010581); //	You cannot steal the sigil when you are incognito
+                            m_Thief.SendLocalizedMessage("Nao pode roubar o sigilo neste estado"); //	You cannot steal the sigil when you are incognito
                         }
                         else if (DisguiseTimers.IsDisguised(m_Thief))
                         {
-                            m_Thief.SendLocalizedMessage(1010583); //	You cannot steal the sigil while disguised
+                            m_Thief.SendLocalizedMessage("Nao pode roubar o sigilo neste estado"); //	You cannot steal the sigil while disguised
                         }
                         else if (!m_Thief.CanBeginAction(typeof(PolymorphSpell)))
                         {
-                            m_Thief.SendLocalizedMessage(1010582); //	You cannot steal the sigil while polymorphed				
+                            m_Thief.SendLocalizedMessage("Nao pode roubar o sigilo neste estado"); //	You cannot steal the sigil while polymorphed				
                         }
                         else if (TransformationSpellHelper.UnderTransformation(m_Thief))
                         {
-                            m_Thief.SendLocalizedMessage(1061622); // You cannot steal the sigil while in that form.
+                            m_Thief.SendLocalizedMessage("Nao pode roubar o sigilo neste estado"); // You cannot steal the sigil while in that form.
                         }
                         else if (AnimalForm.UnderTransformation(m_Thief))
                         {
-                            m_Thief.SendLocalizedMessage(1063222); // You cannot steal the sigil while mimicking an animal.
+                            m_Thief.SendLocalizedMessage("Nao pode roubar o sigilo neste estado"); // You cannot steal the sigil while mimicking an animal.
                         }
-                        else if (m_Thief.CheckTargetSkill(SkillName.Stealing, toSteal, 100.0, 120.0))
+                        else if (m_Thief.CheckTargetSkillMinMax(SkillName.Stealing, toSteal, 100.0, 120.0))
                         {
                             if (m_Thief.Backpack == null || !m_Thief.Backpack.CheckHold(m_Thief, sig, false, true))
                             {
-                                m_Thief.SendLocalizedMessage(1010259); //	The sigil has gone home because your backpack is full
+                                m_Thief.SendLocalizedMessage("Mochila cheia"); //	The sigil has gone home because your backpack is full
                             }
                             else
                             {
-                                m_Thief.SendLocalizedMessage(1010586); // YOU STOLE THE SIGIL!!!   (woah, calm down now)
+                                m_Thief.SendLocalizedMessage("VOCE ROUBOU O SIGILO !! Muita calma agora !"); // YOU STOLE THE SIGIL!!!   (woah, calm down now)
 
                                 sig.OnStolen(entry);
 
@@ -246,43 +281,43 @@ namespace Server.SkillHandlers
                 }
                 #endregion
 
-                else if (si == null && (toSteal.Parent == null || !toSteal.Movable) && !ItemFlags.GetStealable(toSteal))
+                else if (stealable == null && (toSteal.Parent == null || !toSteal.Movable) && !ItemFlags.GetStealable(toSteal))
 				{
-					m_Thief.SendLocalizedMessage(502710); // You can't steal that!
+					m_Thief.SendLocalizedMessage("Nao pode roubar isto"); // You can't steal that!
 				}
-				else if ((toSteal.LootType == LootType.Newbied || toSteal.CheckBlessed(root)) && !ItemFlags.GetStealable(toSteal))
+				else if ((toSteal.LootType == LootType.Blessed || toSteal.CheckBlessed(root)) && !ItemFlags.GetStealable(toSteal))
 				{
-					m_Thief.SendLocalizedMessage(502710); // You can't steal that!
+					m_Thief.SendLocalizedMessage("Nao pode roubar isto"); // You can't steal that!
 				}
-				else if (Core.AOS && si == null && toSteal is Container && !ItemFlags.GetStealable(toSteal))
+				else if (Core.AOS && stealable == null && toSteal is Container && !ItemFlags.GetStealable(toSteal))
 				{
-					m_Thief.SendLocalizedMessage(502710); // You can't steal that!
+					m_Thief.SendLocalizedMessage("Nao pode roubar isto"); // You can't steal that!
 				}
 				else if (!m_Thief.InRange(toSteal.GetWorldLocation(), 1))
 				{
-					m_Thief.SendLocalizedMessage(502703); // You must be standing next to an item to steal it.
+					m_Thief.SendLocalizedMessage("Muito longe"); // You must be standing next to an item to steal it.
 				}
-				else if (si != null && m_Thief.Skills[SkillName.Stealing].Value < 100.0)
+				else if (stealable != null && m_Thief.Skills[SkillName.Stealing].Value < 100.0)
 				{
-					m_Thief.SendLocalizedMessage(1060025, "", 0x66D); // You're not skilled enough to attempt the theft of this item.
+					m_Thief.SendLocalizedMessage("Precisa de mais skill"); // You're not skilled enough to attempt the theft of this item.
 				}
 				else if (toSteal.Parent is Mobile)
 				{
-					m_Thief.SendLocalizedMessage(1005585); // You cannot steal items which are equiped.
+					m_Thief.SendLocalizedMessage("Nao pode usar items equipados, ainda..."); // You cannot steal items which are equiped.
 				}
 				else if (root == m_Thief)
 				{
-					m_Thief.SendLocalizedMessage(502704); // You catch yourself red-handed.
+					m_Thief.SendLocalizedMessage("Voce pegou voce mesmo tentando roubar voce mesmo. Mas hein ?"); // You catch yourself red-handed.
 				}
 				else if (root is Mobile && ((Mobile)root).IsStaff())
 				{
-					m_Thief.SendLocalizedMessage(502710); // You can't steal that!
+					m_Thief.SendLocalizedMessage("Nao pode roubar isto"); // You can't steal that!
 				}
 				else if (root is Mobile && !m_Thief.CanBeHarmful((Mobile)root))
 				{ }
 				else if (root is Corpse)
 				{
-					m_Thief.SendLocalizedMessage(502710); // You can't steal that!
+					m_Thief.SendLocalizedMessage("Nao pode roubar isto"); // You can't steal that!
 				}
 				else
 				{
@@ -290,7 +325,7 @@ namespace Server.SkillHandlers
 
 					if (w > 10)
 					{
-						m_Thief.SendMessage("That is too heavy to steal.");
+						m_Thief.SendMessage("Isto e muito pesado para roubar.");
 					}
 					else
 					{
@@ -314,7 +349,7 @@ namespace Server.SkillHandlers
 								int pileWeight = (int)Math.Ceiling(toSteal.Weight * toSteal.Amount);
 								pileWeight *= 10;
 
-								if (m_Thief.CheckTargetSkill(SkillName.Stealing, toSteal, pileWeight - 22.5, pileWeight + 27.5))
+								if (m_Thief.CheckTargetSkillMinMax(SkillName.Stealing, toSteal, pileWeight - 22.5, pileWeight + 27.5))
 								{
 									stolen = toSteal;
 								}
@@ -324,7 +359,7 @@ namespace Server.SkillHandlers
 								int pileWeight = (int)Math.Ceiling(toSteal.Weight * amount);
 								pileWeight *= 10;
 
-								if (m_Thief.CheckTargetSkill(SkillName.Stealing, toSteal, pileWeight - 22.5, pileWeight + 27.5))
+								if (m_Thief.CheckTargetSkillMinMax(SkillName.Stealing, toSteal, pileWeight - 22.5, pileWeight + 27.5))
 								{
 									stolen = Mobile.LiftItemDupe(toSteal, toSteal.Amount - amount);
 
@@ -340,7 +375,7 @@ namespace Server.SkillHandlers
 							int iw = (int)Math.Ceiling(w);
 							iw *= 10;
 
-							if (m_Thief.CheckTargetSkill(SkillName.Stealing, toSteal, iw - 22.5, iw + 27.5))
+							if (m_Thief.CheckTargetSkillMinMax(SkillName.Stealing, toSteal, iw - 22.5, iw + 27.5))
 							{
 								stolen = toSteal;
 							}
@@ -353,11 +388,11 @@ namespace Server.SkillHandlers
 
                             if (root is FillableContainer)
                             {
-                                caught = (Utility.Random((int)(skillValue / 2.5)) == 0); // 1 of 48 chance at 120
+                                caught = (Utility.Random((int)(skillValue / 5)) == 0); // 1 of 48 chance at 120
                             }
                             else
                             {
-                                caught = (skillValue < Utility.Random(150));
+                                caught = (skillValue < Utility.Random(200));
                             }
                         }
                         else
@@ -367,7 +402,7 @@ namespace Server.SkillHandlers
 
                         if (stolen != null)
 						{
-							m_Thief.SendLocalizedMessage(502724); // You succesfully steal the item.
+							m_Thief.SendLocalizedMessage("Voce roubou o item"); // You succesfully steal the item.
 
 							ItemFlags.SetTaken(stolen, true);
 							ItemFlags.SetStealable(stolen, false);
@@ -375,15 +410,15 @@ namespace Server.SkillHandlers
 
                             InvokeItemStoken(new ItemStolenEventArgs(stolen, m_Thief));
 
-							if (si != null)
+							if (stealable != null)
 							{
 								toSteal.Movable = true;
-								si.Item = null;
+								//stealable.Item = null;
 							}
 						}
 						else
 						{
-							m_Thief.SendLocalizedMessage(502723); // You fail to steal the item.
+							m_Thief.SendLocalizedMessage("Voce falhou em roubar o item"); // You fail to steal the item.
 						}
 					}
 				}
@@ -394,6 +429,8 @@ namespace Server.SkillHandlers
 			protected override void OnTarget(Mobile from, object target)
 			{
 				from.RevealingAction();
+
+                
 
 				Item stolen = null;
 				object root = null;
@@ -425,8 +462,14 @@ namespace Server.SkillHandlers
 				}
 				else
 				{
-					m_Thief.SendLocalizedMessage(502710); // You can't steal that!
+					m_Thief.SendLocalizedMessage("Voce nao pode roubar isto"); // You can't steal that!
 				}
+
+                if (root is BaseCreature)
+                {
+                    ((BaseCreature)root).Combatant = from;
+                    ((BaseCreature)root).OverheadMessage("!!");
+                }       
 
 				if (stolen != null)
 				{
@@ -467,7 +510,7 @@ namespace Server.SkillHandlers
 							m_Thief.CriminalAction(false);
 						}
 
-						string message = String.Format("You notice {0} trying to steal from {1}.", m_Thief.Name, mobRoot.Name);
+						string message = String.Format("Voce reparou {0} tentando roubar {1}.", m_Thief.Name, mobRoot.Name);
 
 						foreach (NetState ns in m_Thief.GetClientsInRange(8))
 						{
@@ -486,8 +529,9 @@ namespace Server.SkillHandlers
 				if (root is Mobile && ((Mobile)root).Player && m_Thief is PlayerMobile && IsInnocentTo(m_Thief, (Mobile)root) &&
 					!IsInGuild((Mobile)root))
 				{
-					PlayerMobile pm = (PlayerMobile)m_Thief;
-
+                    PlayerMobile pm = (PlayerMobile)m_Thief;
+                    if(!((Mobile)root).Criminal && !(root is BaseCreature))
+                        pm.CriminalAction(false);
 					pm.PermaFlags.Add((Mobile)root);
 					pm.Delta(MobileDelta.Noto);
 				}
@@ -513,14 +557,14 @@ namespace Server.SkillHandlers
 		{
 			if (!IsEmptyHanded(m))
 			{
-				m.SendLocalizedMessage(1005584); // Both hands must be free to steal.
+				m.SendLocalizedMessage("Suas maos precisam estar livres"); // Both hands must be free to steal.
 			}
 			else
 			{
 				m.Target = new StealingTarget(m);
 				m.RevealingAction();
 
-				m.SendLocalizedMessage(502698); // Which item do you want to steal?
+				m.SendLocalizedMessage("Que item deseja roubar?"); // Which item do you want to steal?
 			}
 
 			return TimeSpan.FromSeconds(10.0);
@@ -602,11 +646,11 @@ namespace Server.SkillHandlers
 				{
 					if (si.m_Victim.AddToBackpack(si.m_Stolen))
 					{
-						si.m_Victim.SendLocalizedMessage(1010464); // the item that was stolen is returned to you.
+						si.m_Victim.SendLocalizedMessage("O item roubado foi retornado a voce"); // the item that was stolen is returned to you.
 					}
 					else
 					{
-						si.m_Victim.SendLocalizedMessage(1010463); // the item that was stolen from you falls to the ground.
+						si.m_Victim.SendLocalizedMessage("O item roubado cai no chao"); // the item that was stolen from you falls to the ground.
 					}
 
 					si.m_Expires = DateTime.UtcNow; // such a hack

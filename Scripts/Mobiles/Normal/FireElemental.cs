@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public FireElemental()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a fire elemental";
+            this.Name = "elemental do fogo";
             this.Body = 15;
             this.BaseSoundID = 838;
 
@@ -43,7 +43,7 @@ namespace Server.Mobiles
             this.VirtualArmor = 40;
             this.ControlSlots = 4;
 
-            this.PackItem(new SulfurousAsh(3));
+            this.PackItem(new SulfurousAsh(10));
 
             this.AddItem(new LightSource());
         }
@@ -98,6 +98,9 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (this.BaseSoundID == 274)
+                this.BaseSoundID = 838;
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Server.Items
         public EnhancedBandage(int amount)
             : base(amount)
         {
+            Name = "Bandagem Medica";
             Hue = 0x8A5;
         }
 

@@ -168,7 +168,7 @@ namespace Server.Engines.Harvest
         {
             get
             {
-                return this.m_PlaceAtFeetIfFull;
+                return true;
             }
             set
             {

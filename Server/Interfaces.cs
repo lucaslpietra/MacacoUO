@@ -70,7 +70,7 @@ namespace Server
 		void OnCasterKilled();
 		void OnConnectionChanged();
 		bool OnCasterMoving(Direction d);
-        bool CheckMovement(Mobile caster);
+        bool DoStep(Mobile caster);
 		bool OnCasterEquiping(Item item);
 		bool OnCasterUsingObject(object o);
 		bool OnCastInTown(Region r);

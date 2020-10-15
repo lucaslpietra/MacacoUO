@@ -1,5 +1,6 @@
 using System;
 using Server.Gumps;
+using Server.Regions;
 using Server.Targeting;
 
 namespace Server.Spells.Eighth
@@ -25,7 +26,9 @@ namespace Server.Spells.Eighth
                 return SpellCircle.Eighth;
             }
         }
-        
+
+        public override int SkillNeeded { get { return 80; } }
+
         public override void OnCast()
         {
             this.Caster.Target = new InternalTarget(this);
@@ -33,6 +36,9 @@ namespace Server.Spells.Eighth
 
         public void Target(Mobile m)
         {
+
+            var region = Region.Find(m.Location, m.Map) as HouseRegion;
+
             if (!this.Caster.CanSee(m))
             {
                 this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
@@ -49,7 +55,7 @@ namespace Server.Spells.Eighth
             {
                 this.Caster.SendLocalizedMessage(501041); // Target is not dead.
             }
-            else if (!this.Caster.InRange(m, 1))
+            else if (!this.Caster.InRange(m, 6))
             {
                 this.Caster.SendLocalizedMessage(501042); // Target is not close enough.
             }
@@ -66,6 +72,10 @@ namespace Server.Spells.Eighth
             {
                 this.Caster.SendLocalizedMessage(1010395); // The veil of death in this area is too strong and resists thy efforts to restore life.
             }
+            else if (region != null)
+            {
+                this.Caster.SendMessage("Voce nao pode ressuscitar o alvo dentro de uma casa"); // The veil of death in this area is too strong and resists thy efforts to restore life.
+            }
             else if (this.CheckBSequence(m, true))
             {
                 SpellHelper.Turn(this.Caster, m);
@@ -73,8 +83,8 @@ namespace Server.Spells.Eighth
                 m.PlaySound(0x214);
                 m.FixedEffect(0x376A, 10, 16);
 
-                m.CloseGump(typeof(ResurrectGump));
                 m.SendGump(new ResurrectGump(m, this.Caster));
+                //m.Resurrect();
             }
 
             this.FinishSequence();
@@ -84,7 +94,7 @@ namespace Server.Spells.Eighth
         {
             private readonly ResurrectionSpell m_Owner;
             public InternalTarget(ResurrectionSpell owner)
-                : base(1, false, TargetFlags.Beneficial)
+                : base(Spell.RANGE / 2, false, TargetFlags.Beneficial)
             {
                 this.m_Owner = owner;
             }

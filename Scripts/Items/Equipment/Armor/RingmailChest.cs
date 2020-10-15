@@ -9,7 +9,8 @@ namespace Server.Items
         public RingmailChest()
             : base(0x13EC)
         {
-            Weight = 15.0;
+            this.Weight = 15.0;
+            this.Name = "Peitoral de Loriga";
         }
 
         public RingmailChest(Serial serial)
@@ -80,18 +81,11 @@ namespace Server.Items
                 return 20;
             }
         }
-        public override int OldDexBonus
-        {
-            get
-            {
-                return -2;
-            }
-        }
         public override int ArmorBase
         {
             get
             {
-                return 22;
+                return 20;
             }
         }
         public override ArmorMaterialType MaterialType
@@ -99,6 +93,13 @@ namespace Server.Items
             get
             {
                 return ArmorMaterialType.Ringmail;
+            }
+        }
+        public override ArmorMeditationAllowance DefMedAllowance
+        {
+            get
+            {
+                return ArmorMeditationAllowance.Half;
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -111,6 +112,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (this.Weight == 1.0)
+                this.Weight = 15.0;
         }
     }
 }

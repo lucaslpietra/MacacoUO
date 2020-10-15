@@ -11,8 +11,20 @@ namespace Server.Engines.VvV
 
         public static void Configure()
         {
+            Shard.Debug("=== CONFIGURANDO TRETOPOLIS ====");
             Infos = new Dictionary<VvVCity, CityInfo>();
+            Infos[VvVCity.Tretonia] = new CityInfo(
+             "Tretonia",
 
+             // SIGILS
+             new Point3D[] { new Point3D(1398, 1789, -26), new Point3D(1487, 1718, 46), new Point3D(1561, 1834, 0)},
+
+              // ALTARS
+             new Point3D[] { new Point3D(1398, 1789, -26), new Point3D(1487, 1718, 46), new Point3D(1561, 1834, 0) },
+             new Rectangle2D(1368, 1954, 20, 20),
+
+             new Point3D(1354, 1933, 0));
+            /*
             Infos[VvVCity.Britain] = new CityInfo(
                 "Britain",
                 new Point3D[] { new Point3D(1453, 1554, 30), new Point3D(1462, 1650, 10), new Point3D(1514, 1640, 20), new Point3D(1490, 1740, 0) },
@@ -68,6 +80,7 @@ namespace Server.Engines.VvV
                 new Point3D[] { new Point3D(631, 883, 0), new Point3D(650, 976, 0), new Point3D(299, 1010, 0) },
                 new Rectangle2D(628, 857, 12, 12),
                 new Point3D(638, 858, 0));
+                */
         }
 
         public string Name { get; set; }

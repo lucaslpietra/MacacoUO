@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Felladrin.Automations;
 using Server.ContextMenus;
 using Server.Engines.PartySystem;
 using Server.Engines.Quests;
@@ -93,9 +93,6 @@ namespace Server.Items
 
         private List<Mobile> m_Aggressors;
         // Anyone from this list will be able to loot this corpse; we attacked them, or they attacked us when we were freely attackable
-
-        private List<Item> m_HasLooted;
-        // Keeps a list of items that have been dragged from corpse. This prevents Loot Event Handler from triggering from the same item more than once.
 
         private string m_CorpseName;
         // Value of the CorpseNameAttribute attached to the owner when he died -or- null if the owner had no CorpseNameAttribute; use "the remains of ~name~"
@@ -199,14 +196,6 @@ namespace Server.Items
 
             if (InstancedCorpse && HasAssignedInstancedLoot)
             {
-                if (item.GetBounce() != null)
-                {
-                    if (m_HasLooted == null)
-                        m_HasLooted = new List<Item>();
-
-                    m_HasLooted.Add(item);
-                }
-
                 AssignInstancedLoot(item);
             }
         }
@@ -233,8 +222,8 @@ namespace Server.Items
                 m_InstancedItems = new Dictionary<Item, InstancedItemInfo>();
             }
 
-            var stackables = new List<Item>();
-            var unstackables = new List<Item>();
+            var m_Stackables = new List<Item>();
+            var m_Unstackables = new List<Item>();
 
             foreach (var item in items.Where(i => !m_InstancedItems.ContainsKey(i)))
             {
@@ -242,11 +231,11 @@ namespace Server.Items
                 {
                     if (item.Stackable)
                     {
-                        stackables.Add(item);
+                        m_Stackables.Add(item);
                     }
                     else
                     {
-                        unstackables.Add(item);
+                        m_Unstackables.Add(item);
                     }
                 }
             }
@@ -263,9 +252,10 @@ namespace Server.Items
             }
 
             //stackables first, for the remaining stackables, have those be randomly added after
-            for (int i = 0; i < stackables.Count; i++)
+
+            for (int i = 0; i < m_Stackables.Count; i++)
             {
-                Item item = stackables[i];
+                Item item = m_Stackables[i];
 
                 if (item.Amount >= attackers.Count)
                 {
@@ -294,29 +284,26 @@ namespace Server.Items
                     }
                     else
                     {
-                        unstackables.Add(item);
+                        m_Unstackables.Add(item);
                     }
                 }
                 else
                 {
                     //What happens in this case?  TEMP FOR NOW UNTIL OSI VERIFICATION:  Treat as Single Item.
-                    unstackables.Add(item);
+                    m_Unstackables.Add(item);
                 }
             }
 
-            for (int i = 0; i < unstackables.Count; i++)
+            for (int i = 0; i < m_Unstackables.Count; i++)
             {
                 Mobile m = attackers[i % attackers.Count];
-                Item item = unstackables[i];
+                Item item = m_Unstackables[i];
 
                 if (!m_InstancedItems.ContainsKey(item))
                 {
                     m_InstancedItems.Add(item, new InstancedItemInfo(item, m));
                 }
             }
-
-            ColUtility.Free(stackables);
-            ColUtility.Free(unstackables);
         }
 
         public void AddCarvedItem(Item carved, Mobile carver)
@@ -473,6 +460,11 @@ namespace Server.Items
 
         public static string GetCorpseName(Mobile m)
         {
+            if (m.Name != null)
+            {
+                return "Corpo de " + m.Name;
+            }
+
             XmlData x = (XmlData)XmlAttach.FindAttachment(m, typeof(XmlData), "CorpseName");
 
             if (x != null)
@@ -489,6 +481,7 @@ namespace Server.Items
                     return bc.CorpseNameOverride;
                 }
             }
+
 
             Type t = m.GetType();
 
@@ -510,6 +503,39 @@ namespace Server.Items
         public static void Initialize()
         {
             Mobile.CreateCorpseHandler += Mobile_CreateCorpseHandler;
+        }
+
+        private static Random rnd = new Random();
+
+        public override void OnDelete()
+        {
+            if (this.Owner is PlayerMobile)
+            {
+                for (var xx = 0; xx < this.Items.Count; xx++)
+                {
+                    var item = this.Items[xx];
+                    if (Utility.RandomBool() && BaseTreasureChestMod.Tesouros.Count > 0)
+                    {
+                        var tesouro = BaseTreasureChestMod.Tesouros[Utility.Random(BaseTreasureChestMod.Tesouros.Count)];
+                        tesouro.AddItem(item);
+                    }
+                }
+            }
+            if (this.Owner != null)
+            {
+                if(this.Owner is PlayerMobile)
+                    this.Owner.SendMessage("Seu corpo se decompos. Seus items se tornaram historia, e podem ser encontrados em tesouros pelo mundo.");
+                else if(this.Owner is BaseCreature)
+                {
+                    var bc = (BaseCreature)this.Owner;
+                    if(bc.ControlMaster is PlayerMobile && !bc.Summoned && bc.IsDeadPet && bc is IMount)
+                    {
+                        bc.ControlMaster.SendMessage(78, "Sua montaria " + bc.Name + " se foi.");
+                        bc.Delete();
+                    }
+                }
+            }
+            base.OnDelete();
         }
 
         public static Container Mobile_CreateCorpseHandler(
@@ -538,7 +564,7 @@ namespace Server.Items
                 {
                     Item item = initialContent[i];
 
-                    if (Core.AOS && owner.Player && item.Parent == owner.Backpack)
+                    if (owner.Player && item.Parent == owner.Backpack)
                     {
                         c.AddItem(item);
                     }
@@ -547,7 +573,7 @@ namespace Server.Items
                         c.DropItem(item);
                     }
 
-                    if (owner.Player && Core.AOS)
+                    if (owner.Player)
                     {
                         c.SetRestoreInfo(item, item.Location);
                     }
@@ -558,7 +584,7 @@ namespace Server.Items
                     c.AssignInstancedLoot();
                     c.HasAssignedInstancedLoot = true;
                 }
-                else if (Core.AOS)
+                else
                 {
                     PlayerMobile pm = owner as PlayerMobile;
 
@@ -628,7 +654,7 @@ namespace Server.Items
             SetFlag(CorpseFlag.NoBones, !owner.Player);
 
             // Flagging looters as criminal can happen by default
-            SetFlag(CorpseFlag.LootCriminal, true);
+            SetFlag(CorpseFlag.LootCriminal, owner.Player);
 
             m_Looters = new List<Mobile>();
             m_EquipItems = equipItems;
@@ -1046,18 +1072,12 @@ namespace Server.Items
                 return false;
             }
 
-            var canLoot = CanLoot(from, item);
-
-            if (m_HasLooted == null)
-                m_HasLooted = new List<Item>();
-
-            if (canLoot && !m_HasLooted.Contains(item))
+            if (DivideGold.Divide(from, item))
             {
-                m_HasLooted.Add(item);
-                EventSink.InvokeCorpseLoot(new CorpseLootEventArgs(from, this, item));
+                return false;
             }
 
-            return canLoot;
+            return CanLoot(from, item);
         }
 
         public override void OnItemUsed(Mobile from, Item item)
@@ -1085,8 +1105,22 @@ namespace Server.Items
             //}
         }
 
+
+
         public override void OnItemLifted(Mobile from, Item item)
         {
+
+            if(this.Owner is PlayerMobile && from is PlayerMobile)
+            {
+                if(item.Name != null)
+                {
+                    from.OverheadMessage("* pegou " + item.NameSemAcento + " *");
+                } else
+                {
+                    from.OverheadMessage("* pegou " + item.GetType().Name + " *");
+                }
+            }
+
             base.OnItemLifted(from, item);
 
             if (item != this && from != m_Owner)
@@ -1215,16 +1249,19 @@ namespace Server.Items
             {
                 if (m_Owner == null || !m_Owner.Player)
                 {
-                    from.SendLocalizedMessage(1005036); // Looting this monster corpse will be a criminal act!
+                    from.SendMessage(38, "[ATENCAO] Este loot nao pertence a voce. Lootear este corpo te deixara criminoso(a)"); // Looting this monster corpse will be a criminal act!
                 }
                 else
                 {
-                    from.SendLocalizedMessage(1005038); // Looting this corpse will be a criminal act!
+                    from.SendMessage(38, "[ATENCAO] Este loot nao pertence a voce. Lootear este corpo te deixara criminoso(a)"); // Looting this corpse will be a criminal act!
                 }
             }
 
             return true;
         }
+
+        private bool looteando = false;
+
 
         public virtual void Open(Mobile from, bool checkSelfLoot)
         {
@@ -1233,103 +1270,128 @@ namespace Server.Items
                 #region Self Looting
                 bool selfLoot = (checkSelfLoot && (from == m_Owner));
 
+                if (selfLoot && GetFlag(CorpseFlag.Carved) == true)
+                    selfLoot = false;
+
+                if (looteando == true)
+                {
+                    if(from==this.Owner)
+                    {
+                        from.SendMessage("Voce esta pegando seus pertences, aguarde alguns segundos");
+                        return;
+                    }
+                }
+
                 if (selfLoot)
                 {
-                    SetFlag(CorpseFlag.SelfLooted, true);
+                    looteando = true;
+                    from.OverheadMessage("* pegando pertences *");
+                    from.Animate(AnimationType.Fidget, 0);
 
-                    var items = new List<Item>(Items);
-
-                    bool gathered = false;
-
-                    for (int k = 0; k < EquipItems.Count; ++k)
+                    Timer.DelayCall(TimeSpan.FromSeconds(3), () =>
                     {
-                        Item item2 = EquipItems[k];
-
-                        if (!items.Contains(item2) && item2.IsChildOf(from.Backpack))
+                        looteando = false;
+                        if (from == null || !from.Alive || this.Deleted)
                         {
-                            items.Add(item2);
-                            gathered = true;
-                        }
-                    }
-
-                    bool didntFit = false;
-
-                    Container pack = from.Backpack;
-
-                    bool checkRobe = true;
-
-                    for (int i = 0; !didntFit && i < items.Count; ++i)
-                    {
-                        Item item = items[i];
-                        Point3D loc = item.Location;
-
-                        if ((item.Layer == Layer.Hair || item.Layer == Layer.FacialHair) || !item.Movable)
-                        {
-                            continue;
-                        }
-
-                        if (checkRobe)
-                        {
-                            DeathRobe robe = from.FindItemOnLayer(Layer.OuterTorso) as DeathRobe;
-
-                            if (robe != null)
+                            if(from != null)
                             {
-                                if (Core.SA)
-                                {
-                                    robe.Delete();
-                                }
-                                else
-                                {
-                                    Map map = from.Map;
+                                from.SendMessage("Seu corpo se foi");
+                            }
+                            return;
+                        }
 
-                                    if (map != null && map != Map.Internal)
-                                    {
-                                        robe.MoveToWorld(from.Location, map);
-                                    }
-                                }
+                        if (from.GetDistance(this) > 3)
+                        {
+                            from.SendMessage("Voce esta muito longe para pegar seus pertences");
+                            return;
+                        }
+                        Shard.Debug("Autolooteando", from);
+                        SetFlag(CorpseFlag.SelfLooted, true);
+
+                        var items = new List<Item>(Items);
+
+                        bool gathered = false;
+
+                        for (int k = 0; k < EquipItems.Count; ++k)
+                        {
+                            Item item2 = EquipItems[k];
+
+                            if (!items.Contains(item2) && item2.IsChildOf(from.Backpack))
+                            {
+                                items.Add(item2);
+                                gathered = true;
                             }
                         }
 
-                        if (m_EquipItems.Contains(item) && from.EquipItem(item))
-                        {
-                            gathered = true;
-                        }
-                        else if (pack != null && pack.CheckHold(from, item, false, true))
-                        {
-                            item.Location = loc;
-                            pack.AddItem(item);
-                            gathered = true;
-                        }
-                        else
-                        {
-                            didntFit = true;
-                        }
-                    }
+                        bool didntFit = false;
 
-                    if (gathered && !didntFit)
-                    {
-                        SetFlag(CorpseFlag.Carved, true);
+                        Container pack = from.Backpack;
 
-                        if (ItemID == 0x2006)
+                        bool checkRobe = true;
+
+                        for (int i = 0; !didntFit && i < items.Count; ++i)
                         {
-                            ProcessDelta();
-                            SendRemovePacket();
-                            ItemID = Utility.Random(0xECA, 9); // bone graphic
-                            Hue = 0;
-                            ProcessDelta();
+                            Item item = items[i];
+                            Point3D loc = item.Location;
+
+                            if ((item.Layer == Layer.Hair || item.Layer == Layer.FacialHair) || !item.Movable)
+                            {
+                                continue;
+                            }
+
+                            if (checkRobe)
+                            {
+                                DeathRobe robe = from.FindItemOnLayer(Layer.OuterTorso) as DeathRobe;
+
+                                if (robe != null)
+                                {
+                                    robe.Delete();
+                                }
+                            }
+
+                            if (m_EquipItems.Contains(item) && from.EquipItem(item))
+                            {
+                                gathered = true;
+                            }
+                            else if (pack != null && pack.CheckHold(from, item, false, true))
+                            {
+                                item.Location = loc;
+                                pack.AddItem(item);
+                                gathered = true;
+                            }
+                            else
+                            {
+                                didntFit = true;
+                            }
                         }
 
-                        from.PlaySound(0x3E3);
-                        from.SendLocalizedMessage(1062471); // You quickly gather all of your belongings.
-                        items.Clear();
-                        m_EquipItems.Clear();
-                        return;
-                    }
+                        if (gathered && !didntFit)
+                        {
+                            SetFlag(CorpseFlag.Carved, true);
 
-                    if (gathered && didntFit)
-                    {
-                        from.SendLocalizedMessage(1062472); // You gather some of your belongings. The rest remain on the corpse.
-                    }
+                            if (ItemID == 0x2006)
+                            {
+                                ProcessDelta();
+                                SendRemovePacket();
+                                ItemID = Utility.Random(0xECA, 9); // bone graphic
+                                Hue = 0;
+                                ProcessDelta();
+                            }
+
+                            from.PlaySound(0x3E3);
+                            from.OverheadMessage("* pegou pertences *");
+                            from.SendLocalizedMessage("Voce pegou seus pertences"); // You quickly gather all of your belongings.
+                            items.Clear();
+                            m_EquipItems.Clear();
+                            return;
+                        }
+
+                        if (gathered && didntFit)
+                        {
+                            from.SendLocalizedMessage("Voce pegou alguns de seus pertences o resto ficou no corpo"); // You gather some of your belongings. The rest remain on the corpse.
+                        }
+                    });
+                    return;
                 }
                 #endregion
 
@@ -1410,7 +1472,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            Open(from, Core.AOS);
+            Open(from, true);
 
             if (m_Owner == from)
             {
@@ -1436,12 +1498,12 @@ namespace Server.Items
                 }
                 else
                 {
-                    list.Add(1046414, Name); // the remains of ~1_NAME~
+                    list.Add("Corpo de "+ Name); // the remains of ~1_NAME~
                 }
             }
             else // Bone form
             {
-                list.Add(1046414, Name); // the remains of ~1_NAME~
+                list.Add("Restos mortais de "+ Name); // the remains of ~1_NAME~
             }
         }
 
@@ -1502,14 +1564,14 @@ namespace Server.Items
             else if (((Body)Amount).IsHuman && ItemID == 0x2006)
             {
                 new Blood(0x122D).MoveToWorld(Location, Map);
-
-                new Torso().MoveToWorld(Location, Map);
-                new LeftLeg().MoveToWorld(Location, Map);
-                new LeftArm().MoveToWorld(Location, Map);
-                new RightLeg().MoveToWorld(Location, Map);
-                new RightArm().MoveToWorld(Location, Map);
+                //new Torso().MoveToWorld(Location, Map);
+                //new LeftLeg().MoveToWorld(Location, Map);
+                //new LeftArm().MoveToWorld(Location, Map);
+                //new RightLeg().MoveToWorld(Location, Map);
+                //new RightArm().MoveToWorld(Location, Map);
                 new Head(dead.Name).MoveToWorld(Location, Map);
-
+                dead.SendMessage("Sua cabeca foi arrancada");
+                from.OverheadMessage("* corta a cabeca *");
                 SetFlag(CorpseFlag.Carved, true);
 
                 ProcessDelta();
@@ -1529,7 +1591,7 @@ namespace Server.Items
             }
             else
             {
-                from.SendLocalizedMessage(500485); // You see nothing useful to carve from the corpse.
+                from.SendMessage("Nada de util neste corpo"); // You see nothing useful to carve from the corpse.
             }
 
             return true;
@@ -1543,12 +1605,6 @@ namespace Server.Items
             {
                 if (PlayerCorpses.Count == 0)
                     PlayerCorpses = null;
-            }
-
-            if (m_HasLooted != null)
-            {
-                ColUtility.Free(m_HasLooted);
-                m_HasLooted = null;
             }
         }
 

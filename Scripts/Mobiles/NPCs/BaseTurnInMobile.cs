@@ -21,8 +21,6 @@ namespace Server.Mobiles
         public virtual int TurnInLocalization { get { return 0; } }
         public virtual int ClaimLocalization { get { return 1155593; } } // Claim Rewards
 
-        public virtual bool IsShrineHealer { get { return true; } }
-
         public virtual int TurnInPoints { get { return 1; } }
 
         public BaseTurnInMobile(string title)
@@ -45,20 +43,13 @@ namespace Server.Mobiles
         public abstract bool IsRedeemableItem(Item item);
         public abstract void SendRewardGump(Mobile m);
 
-        public virtual void AwardPoints(PlayerMobile pm, Item item, int points)
+        public virtual void AwardPoints(PlayerMobile pm, int points)
         {
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
-            if (IsShrineHealer)
-            {
-                base.GetContextMenuEntries(from, list);
-            }
-            else
-            {
-                list.Add(new PaperdollEntry(this));
-            }
+            base.GetContextMenuEntries(from, list);
 
             if (from is PlayerMobile)
             {
@@ -94,14 +85,6 @@ namespace Server.Mobiles
             public override void OnClick()
             {
                 m_Mobile.SendGump(new TurnInGump(m_Vendor, m_Buttons));
-            }
-
-            public override void OnClickDisabled()
-            {
-                if (m_Vendor != null && m_Vendor.CancelLocalization > 0)
-                {
-                    m_Vendor.LocalOverheadMessage(MessageType.Regular, 0x3B2, m_Vendor.CancelLocalization);
-                }
             }
         }
 
@@ -151,6 +134,7 @@ namespace Server.Mobiles
     public class TurnInGump : BaseImageTileButtonsGump
     {
         private BaseTurnInMobile m_Collector;
+
         public BaseTurnInMobile Collector { get { return m_Collector; } }
 
         public TurnInGump(BaseTurnInMobile collector, IEnumerable<ItemTileButtonInfo> buttons)
@@ -168,9 +152,9 @@ namespace Server.Mobiles
             if (!(pm != null && item.IsChildOf(pm.Backpack) && pm.InRange(this.m_Collector.Location, 7)))
                 return;
 
-            m_Collector.AwardPoints(pm, item, m_Collector.TurnInPoints);
-
             item.Delete();
+
+            m_Collector.AwardPoints(pm, m_Collector.TurnInPoints);
 
             IEnumerable<ItemTileButtonInfo> buttons = m_Collector.FindRedeemableItems(pm);
 

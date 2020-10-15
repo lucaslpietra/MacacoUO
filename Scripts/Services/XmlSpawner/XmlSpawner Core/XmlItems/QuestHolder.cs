@@ -52,7 +52,7 @@ namespace Server.Items
 
 		public override void OnSnoop(Mobile from)
 		{
-			if (from.AccessLevel > AccessLevel.Player)
+			if (from.AccessLevel > AccessLevel.VIP)
 			{
 				from.CloseGump(typeof(XmlQuestStatusGump));
 

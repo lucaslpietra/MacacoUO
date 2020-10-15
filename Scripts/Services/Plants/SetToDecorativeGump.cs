@@ -74,7 +74,7 @@ namespace Server.Engines.Plants
 				}
 				case 3: // Ok
 				{
-					m_Plant.PlantStatus = PlantStatus.DecorativePlant;
+					m_Plant.PlantStatus = PlantStatus.PlantaDecorativa;
 					m_Plant.LabelTo( from, 1053077 ); // You prune the plant. This plant will no longer produce resources or seeds, but will require no upkeep.
 
                     if (!m_Plant.RequiresUpkeep || m_Plant.MaginciaPlant)

@@ -19,8 +19,6 @@ namespace Server.Items
                 ItemID = 0x2B6E;
                 Weight = 2.0;
                 StrRequirement = 10;
-
-                MeditationAllowance = ArmorMeditationAllowance.All;
             }
         }
 
@@ -36,7 +34,7 @@ namespace Server.Items
         public override int BaseEnergyResistance { get { return 15; } }
 
         public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Dragon; } }
-        public override CraftResource DefaultResource { get { return CraftResource.Iron; } }
+        public override CraftResource DefaultResource { get { return CraftResource.Ferro; } }
 
         public override int InitMinHits { get { return 255; } }
         public override int InitMaxHits { get { return 255; } }
@@ -44,18 +42,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.WriteEncodedInt(1); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadEncodedInt();
-
-            if(version == 0 && ItemID == 0x2B6E)
-            {
-                MeditationAllowance = ArmorMeditationAllowance.All;
-            }
         }
     }
 }

@@ -9,7 +9,8 @@ namespace Server.Items
         public LeatherCap()
             : base(0x1DB9)
         {
-            Weight = 2.0;
+            this.Weight = 2.0;
+            this.Name = "Capuz de Couro";
         }
 
         public LeatherCap(Serial serial)
@@ -118,6 +119,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (this.Weight == 1.0)
+                this.Weight = 2.0;
         }
     }
 }

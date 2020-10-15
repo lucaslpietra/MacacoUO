@@ -31,7 +31,7 @@ namespace Server.Items
 
                         var socket = item.GetSocket<SlayerSocket>();
 
-                        if (socket == null || socket.Slayer != SlayerName.Silver)
+                        if (socket == null || socket.Slayer != SlayerName.Undeads)
                         {
                             if (slayer.Slayer != SlayerName.None && slayer.Slayer2 != SlayerName.None)
                             {
@@ -39,7 +39,7 @@ namespace Server.Items
                             }
                             else
                             {
-                                item.AttachSocket(new SlayerSocket(SlayerName.Silver, TimeSpan.FromHours(1)));
+                                item.AttachSocket(new SlayerSocket(SlayerName.Undeads, TimeSpan.FromHours(1)));
 
                                 Delete();
 

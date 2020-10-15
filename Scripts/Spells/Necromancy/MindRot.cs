@@ -24,7 +24,7 @@ namespace Server.Spells.Necromancy
         {
             get
             {
-                return TimeSpan.FromSeconds(1.75);
+                return TimeSpan.FromSeconds(2);
             }
         }
         public override double RequiredSkill
@@ -41,10 +41,10 @@ namespace Server.Spells.Necromancy
                 return 17;
             }
         }
-        public static void ClearMindRotScalar(Mobile m)
+        public static bool ClearMindRotScalar(Mobile m)
         {
             if (!m_Table.ContainsKey(m))
-                return;
+                return false;
 
             BuffInfo.RemoveBuff(m, BuffIcon.Mindrot);
             MRBucket tmpB = (MRBucket)m_Table[m];
@@ -52,6 +52,7 @@ namespace Server.Spells.Necromancy
             tmpT.Stop();
             m_Table.Remove(m);
             m.SendLocalizedMessage(1060872); // Your mind feels normal again.
+            return true;
         }
 
         public static bool HasMindRotScalar(Mobile m)
@@ -116,10 +117,32 @@ namespace Server.Spells.Necromancy
 
             m.PlaySound(0x1FB);
             m.PlaySound(0x258);
-            m.FixedParticles(0x373A, 1, 17, 9903, 15, 4, EffectLayer.Head);
+
+            Caster.MovingParticles(
+                 m,//IEntity to
+                 0x373A,//int itemID,
+                 10, // int speed,
+                 17, // int duration,
+                 false, // bool fixedDirection,
+                 false, // bool explodes,
+                 15, // int hue,
+                 9915, // int renderMode,
+                 9915, // int effect,
+                 0, // int explodeEffect,
+                 0x160, // int explodeSound,
+                 0 // unkw
+            );
+
+            //m.FixedParticles(0x373A, 1, 17, 9903, 15, 4, EffectLayer.Head);
+
+            if (CheckResisted(m, 6))
+            {
+                m.SendMessage("Voce sente seu corpo resistindo a magia");
+                return;
+            }
 
             TimeSpan duration = TimeSpan.FromSeconds(((((GetDamageSkill(Caster) - GetResistSkill(m)) / 5.0) + 20.0) * (m.Player ? 1.0 : 2.0)) * strength);
-            m.CheckSkill(SkillName.MagicResist, 0.0, 120.0);	//Skill check for gain
+            m.CheckSkillMult(SkillName.MagicResist, 0.0, 120.0);	//Skill check for gain
 
             if (m.Player)
                 SetMindRotScalar(Caster, m, 1.25 * strength, duration);

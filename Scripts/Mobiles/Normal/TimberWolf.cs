@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public TimberWolf()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a timber wolf";
+            this.Name = "lobo marrom";
             this.Body = 225;
             this.BaseSoundID = 0xE5;
 

@@ -8,7 +8,7 @@ namespace Server.Items
         private static readonly Hashtable m_Table = new Hashtable();
         [Constructable]
         public InvisibilityPotion()
-            : base(0xF0A, PotionEffect.Invisibility)
+            : base(0xF0A, PotionEffect.Invisibilidade)
         {
             this.Hue = 0x48D;
         }
@@ -33,11 +33,11 @@ namespace Server.Items
             m.Hidden = true;
 		
             BuffInfo.RemoveBuff(m, BuffIcon.HidingAndOrStealth);
-            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Invisibility, 1075825, TimeSpan.FromSeconds(30.0d), m));	//Invisibility/Invisible
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Invisibility, 1075825, TimeSpan.FromSeconds(120), m));	//Invisibility/Invisible
 			
             RemoveTimer(m);
 
-            m_Table[m] = Timer.DelayCall(TimeSpan.FromSeconds(30), new TimerStateCallback(EndHide_Callback), m);
+            m_Table[m] = Timer.DelayCall(TimeSpan.FromSeconds(120), new TimerStateCallback(EndHide_Callback), m);
         }
 
         public static void EndHide(Mobile m)
@@ -83,7 +83,7 @@ namespace Server.Items
             }
 			
             this.Consume();
-            Timer.DelayCall(TimeSpan.FromSeconds(2), new TimerStateCallback(Hide_Callback), from);			
+            Timer.DelayCall(TimeSpan.FromSeconds(0.5), new TimerStateCallback(Hide_Callback), from);			
             PlayDrinkEffect(from);
         }
 

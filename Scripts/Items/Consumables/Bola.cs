@@ -18,6 +18,7 @@ namespace Server.Items
         public Bola(int amount)
             : base(0x26AC)
         {
+            Name = "Boleadeira";
             Weight = 4.0;
             Stackable = true;
             Amount = amount;
@@ -32,19 +33,19 @@ namespace Server.Items
         {
             if (!IsChildOf(from.Backpack))
             {
-                this.PrivateOverheadMessage(MessageType.Regular, 946, 1040019, from.NetState); // The bola must be in your pack to use it.
+                from.SendMessage("Precisa estar em sua mochila"); // The bola must be in your pack to use it.
             }
             else if (!from.CanBeginAction(typeof(Bola)))
             {
-                this.PrivateOverheadMessage(MessageType.Regular, 946, 1049624, from.NetState); // // You have to wait a few moments before you can use another bola!
+                from.SendMessage("Aguarde para usar outra boleadeira"); // // You have to wait a few moments before you can use another bola!
             }
             else if (from.Target is BolaTarget)
             {
-                this.PrivateOverheadMessage(MessageType.Regular, 946, 1049631, from.NetState); // This bola is already being used.
+                from.SendMessage("Ja estou usando isto"); // This bola is already being used.
             }
             else if (from.Mounted)
             {
-                this.PrivateOverheadMessage(MessageType.Regular, 946, 1042053, from.NetState); // You can't use this while on a mount!
+                from.SendMessage("Voce nao pode usar isto montado"); // You can't use this while on a mount!
             }
             else if (from.Flying)
             {
@@ -52,27 +53,24 @@ namespace Server.Items
             }
             else if (AnimalForm.UnderTransformation(from))
             {
-                this.PrivateOverheadMessage(MessageType.Regular, 946, 1070902, from.NetState); // You can't use this while in an animal form!
+                from.SendMessage("Nao posso usar isto nesta forma"); // You can't use this while in an animal form!
             }
             else
             {
                 EtherealMount.StopMounting(from);
 
-                if (Core.AOS)
-                {
-                    Item one = from.FindItemOnLayer(Layer.OneHanded);
-                    Item two = from.FindItemOnLayer(Layer.TwoHanded);
+                Item one = from.FindItemOnLayer(Layer.OneHanded);
+                Item two = from.FindItemOnLayer(Layer.TwoHanded);
 
-                    if (one != null)
-                        from.AddToBackpack(one);
+                if (one != null)
+                    from.AddToBackpack(one);
 
-                    if (two != null)
-                        from.AddToBackpack(two);
-                }
+                if (two != null)
+                    from.AddToBackpack(two);
+
 
                 from.Target = new BolaTarget(this);
-                from.LocalOverheadMessage(MessageType.Emote, 201, 1049632); // * You begin to swing the bola...*
-                from.NonlocalOverheadMessage(MessageType.Emote, 201, 1049633, from.Name); // ~1_NAME~ begins to menacingly swing a bola...
+                from.OverheadMessage("* girando uma boleadeira *");
             }
         }
 
@@ -129,7 +127,7 @@ namespace Server.Items
 
                 if (to is Neira || to is ChaosDragoon || to is ChaosDragoonElite)
                 {
-                    to.PrivateOverheadMessage(MessageType.Regular, 946, 1042047, from.NetState); // You fail to knock the rider from its mount.
+                    to.SendMessage("Voce falhou ao derrubar da montaria"); // You fail to knock the rider from its mount.
                 }
                 else
                 {
@@ -137,10 +135,8 @@ namespace Server.Items
                     {
                         to.Damage(Utility.RandomMinMax(10, 20), from);
 
-                        if (from.Flying)
-                            to.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1113590, from.Name); // You have been grounded by ~1_NAME~!
-                        else
-                            to.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1049623, from.Name); // You have been knocked off of your mount by ~1_NAME~!
+                        to.OverheadMessage("* caiu *");
+                        to.SendMessage("Voce foi derrubado do cavalo por uma boleadeira de " + from.Name);
 
                         BaseMount.Dismount(to);
 
@@ -152,9 +148,6 @@ namespace Server.Items
 
         private static bool CheckHit(Mobile to, Mobile from)
         {
-            if (!Core.TOL)
-                return true;
-
             double toChance = Math.Min(45 + BaseArmor.GetRefinedDefenseChance(to),
                                        AosAttributes.GetValue(to, AosAttribute.DefendChance)) + 1;
             double fromChance = AosAttributes.GetValue(from, AosAttribute.AttackChance) + 1;
@@ -163,7 +156,7 @@ namespace Server.Items
 
             if (Utility.RandomDouble() < hitChance)
             {
-                if (BaseWeapon.CheckParry(to))
+                if (BaseWeapon.CheckParry(to, from))
                 {
                     to.FixedEffect(0x37B9, 10, 16);
                     to.Animate(AnimationType.Parry, 0);
@@ -173,7 +166,7 @@ namespace Server.Items
                 return true;
             }
 
-            to.NonlocalOverheadMessage(MessageType.Emote, 0x3B2, false, "*miss*");
+            to.NonlocalOverheadMessage(MessageType.Emote, 0x3B2, false, "* errou *");
             return false;
         }
 

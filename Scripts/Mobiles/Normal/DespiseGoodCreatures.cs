@@ -25,13 +25,15 @@ namespace Server.Engines.Despise
             Karma = GetKarmaGood;
 
             Power = powerLevel;
-            SetMagicalAbility(MagicalAbility.Discordance);
         }
 
         protected override BaseAI ForcedAI { get { return new DespiseMeleeAI(this); } }
         public override int StrStart { get { return Utility.RandomMinMax(65, 75); } }
         public override int DexStart { get { return Utility.RandomMinMax(100, 110); } }
         public override int IntStart { get { return Utility.RandomMinMax(100, 110); } }
+
+        public override bool CanDiscord { get { return true; } }
+        public override TimeSpan DiscordInterval { get { return TimeSpan.FromSeconds(45); } }
 
         public override Mobile GetBardTarget(bool creaturesOnly = false)
         {
@@ -98,7 +100,7 @@ namespace Server.Engines.Despise
         [Constructable]
         public ForestNymph(int powerLevel) : base(AIType.AI_Mage, FightMode.Evil)
         {
-            Name = "Forest Nymph";
+            Name = "Ninfa da Floresta";
             Body = 266;
             BaseSoundID = 0x467;
 
@@ -139,7 +141,7 @@ namespace Server.Engines.Despise
         [Constructable]
         public DespiseUnicorn(int powerLevel) : base(AIType.AI_Melee, FightMode.Evil)
         {
-            Name = "Unicorn";
+            Name = "Unicornio";
             Body = 0x7A;
             BaseSoundID = 0x4BC;
 
@@ -297,7 +299,7 @@ namespace Server.Engines.Despise
         [Constructable]
         public DivineGuardian(int powerLevel) : base(AIType.AI_Melee, FightMode.Evil)
         {
-            Name = "Divine Guardian";
+            Name = "guardiao divino";
             Body = 123;
             BaseSoundID = 0x2F7;
 
@@ -350,7 +352,7 @@ namespace Server.Engines.Despise
         [Constructable]
         public Dendrite(int powerLevel) : base(AIType.AI_Melee, FightMode.Evil)
         {
-            Name = "Dendrite";
+            Name = "dendrite";
             Body = 301;
 
             Fame = GetFame;
@@ -423,7 +425,7 @@ namespace Server.Engines.Despise
         [Constructable]
         public Fairy(int powerLevel) : base(AIType.AI_Melee, FightMode.Evil)
         {
-            Name = "Fairy";
+            Name = "fada";
             Body = 0x108;
             BaseSoundID = 0x467;
 

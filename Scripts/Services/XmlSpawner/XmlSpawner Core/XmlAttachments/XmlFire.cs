@@ -85,7 +85,7 @@ namespace Server.Engines.XmlSpawner2
 		{
 			base.OnMovement(e);
 		    
-			if(e.Mobile == null || e.Mobile.AccessLevel > AccessLevel.Player) return;
+			if(e.Mobile == null || e.Mobile.AccessLevel > AccessLevel.VIP) return;
 
 			if(AttachedTo is Item && (((Item)AttachedTo).Parent == null) && Utility.InRange( e.Mobile.Location, ((Item)AttachedTo).Location, proximityrange ))
 			{

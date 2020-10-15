@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
 using Server.Network;
+using Server.Scripts.Custom.Items;
+using Server.Ziden;
 
 namespace Server.Mobiles
 {
     [CorpseName("a medusa corpse")]
-    public class Medusa : BaseSABoss, ICarvable
+    public class Medusa : BaseCreature, ICarvable
     {
         private List<Mobile> m_TurnedToStone = new List<Mobile>();
         public List<Mobile> AffectedMobiles { get { return m_TurnedToStone; } }
@@ -22,16 +24,16 @@ namespace Server.Mobiles
 
         [Constructable]
         public Medusa()
-            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.1, 0.2)
+            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.05, 0.1)
         {
             Name = "Medusa";
             Body = 728;
 
-            SetStr(1235, 1391);
+            SetStr(700, 700);
             SetDex(128, 139);
             SetInt(537, 664);
 
-            SetHits(60000);
+            SetHits(15000);
 
             SetDamage(21, 28);
 
@@ -52,13 +54,15 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 120.0);
             SetSkill(SkillName.Tactics, 111.9, 134.5);
             SetSkill(SkillName.Wrestling, 119.7, 128.9);
+            SetSkill(SkillName.DetectHidden, 119.7, 128.9);
 
             Fame = 22000;
             Karma = -22000;
 
             VirtualArmor = 60;
 
-            PackItem(new Arrow(Utility.RandomMinMax(100, 200)));
+            PackItem(new Arrow(Utility.RandomMinMax(200, 600)));
+            PackItem(new Bolt(Utility.RandomMinMax(200, 600)));
 
             IronwoodCompositeBow Bow = new IronwoodCompositeBow();
             Bow.Movable = false;
@@ -67,22 +71,18 @@ namespace Server.Mobiles
             m_Scales = Utility.RandomMinMax(1, 2) + 7;
 
             SetWeaponAbility(WeaponAbility.MortalStrike);
-            SetSpecialAbility(SpecialAbility.VenomousBite);
+            //SetSpecialAbility(SpecialAbility.VenomousBite);
+
+            AddItem(Carnage.GetRandomPS(105));
+            if (Utility.RandomBool())
+                AddItem(Carnage.GetRandomPS(110));
+
+         
         }
 
         public Medusa(Serial serial)
             : base(serial)
         {
-        }
-
-        public override Type[] UniqueSAList
-        {
-            get { return new Type[] { typeof(Slither), typeof(IronwoodCompositeBow), typeof(Venom), typeof(PetrifiedSnake), typeof(StoneDragonsTooth) }; }
-        }
-
-        public override Type[] SharedSAList
-        {
-            get { return new Type[] { typeof(SummonersKilt) }; }
         }
 
         public override bool IgnoreYoungProtection { get { return true; } }
@@ -102,6 +102,7 @@ namespace Server.Mobiles
             int amount = Utility.Random(5) + 1;
 
             corpse.DropItem(new MedusaDarkScales(amount));
+            corpse.DropItem(new EscamaMagica());
 
             if(0.20 > Utility.RandomDouble())
                 corpse.DropItem(new MedusaBlood());
@@ -148,7 +149,7 @@ namespace Server.Mobiles
             IPooledEnumerable eable = this.GetMobilesInRange(12);
             foreach (Mobile m in eable)
             {
-                if ( m == null || m == this || m_TurnedToStone.Contains(m) || !CanBeHarmful(m) || !InLOS(m) || m.AccessLevel > AccessLevel.Player)
+                if ( m == null || m == this || m_TurnedToStone.Contains(m) || !CanBeHarmful(m) || !InLOS(m) || m.AccessLevel > AccessLevel.VIP)
                     continue;
 
                 //Pets
@@ -273,7 +274,7 @@ namespace Server.Mobiles
             {
                 case LenseType.None: return 0;
                 case LenseType.Enhanced: return 100;
-                case LenseType.Regular: return 50;
+                case LenseType.Regular: return 80;
                 case LenseType.Limited: return 15;
             }
 
@@ -345,9 +346,9 @@ namespace Server.Mobiles
                 if (CheckBlockGaze(target))
                 {
                     if (GorgonLense.TotalCharges(target) == 0)
-                        target.SendLocalizedMessage(1112600); // Your lenses crumble. You are no longer protected from Medusa's gaze!
+                        target.SendLocalizedMessage("Sua protecao gorgona se desfaz"); // Your lenses crumble. You are no longer protected from Medusa's gaze!
                     else
-                        target.SendLocalizedMessage(1112599); //Your Gorgon Lens deflect Medusa's petrifying gaze!
+                        target.SendLocalizedMessage("Sua protecao gorgona evita que a medusa te petrifique"); //Your Gorgon Lens deflect Medusa's petrifying gaze!
                 }
                 else
                 {
@@ -379,9 +380,9 @@ namespace Server.Mobiles
                     BaseCreature.Summon(clone, false, this, loc, 0, TimeSpan.FromMinutes(90));
 
                     if (target is BaseCreature && !((BaseCreature)target).Summoned && ((BaseCreature)target).GetMaster() != null)
-                        ((BaseCreature)target).GetMaster().SendLocalizedMessage(1113281, null, 43); // Your pet has been petrified!
+                        ((BaseCreature)target).GetMaster().SendLocalizedMessage("Seus pets foram petrificados"); // Your pet has been petrified!
                     else
-                        target.SendLocalizedMessage(1112768); // You have been turned to stone!!!
+                        target.SendLocalizedMessage("Voce foi petrificado"); // You have been turned to stone!!!
 
                     new GazeTimer(target, clone, this, Utility.RandomMinMax(5, 10)).Start();
                     m_GazeDelay = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(45, 75));
@@ -510,7 +511,7 @@ namespace Server.Mobiles
                 {
                     if (targ != null && targ.Player)
                     {
-                        targ.SendLocalizedMessage(1112767, null, 43); // Medusa releases one of the petrified creatures!!
+                        targ.SendLocalizedMessage("A medusa libera uma de suas criaturas petrificadas"); // Medusa releases one of the petrified creatures!!
                         targ.Combatant = targ;
                     }
 
@@ -532,16 +533,36 @@ namespace Server.Mobiles
             }
         }
 
+
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.SuperBoss, 8);
+            AddLoot(LootPack.OldSuperBoss);
+
         }
 
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
 
-            if (Utility.RandomDouble() < 0.025)
+            var wind = new LobsterMount();
+            wind.MoveToWorld(c.Location, c.Map);
+            wind.OverheadMessage("* se transformou *");
+            wind.OverheadMessage("[2H Para Domar]");
+            Timer.DelayCall(TimeSpan.FromHours(2), () =>
+            {
+                if (wind.Deleted || !wind.Alive || wind.ControlMaster != null || wind.Map == Map.Internal)
+                {
+                    return;
+                }
+                wind.Delete();
+            });
+
+            c.DropItem(new DecoRelPor());
+            c.DropItem(new DecoRelPor());
+
+            GolemMecanico.JorraOuro(c.Location, c.Map, 350);
+
+            if (Utility.RandomDouble() < 0.075)
                 c.DropItem(new MedusaStatue());
         }
 
@@ -615,7 +636,7 @@ namespace Server.Mobiles
                     m_Medusa.RemoveAffectedMobiles(target);
 
                     if (target is BaseCreature && !((BaseCreature)target).Summoned && ((BaseCreature)target).GetMaster() != null)
-                        ((BaseCreature)target).GetMaster().SendLocalizedMessage(1113285, null, 43); // Beware! A statue of your pet has been created!
+                        ((BaseCreature)target).GetMaster().SendLocalizedMessage("Uma estatua foi criada"); // Beware! A statue of your pet has been created!
 
                     BuffInfo.RemoveBuff(target, BuffIcon.MedusaStone);
                 }
@@ -637,7 +658,7 @@ namespace Server.Mobiles
                             {
                                 m.Send(new RemoveMobile(clone));
                                 m.NetState.Send(MobileIncoming.Create(m.NetState, m, clone));
-                                m.SendLocalizedMessage(1112767); // Medusa releases one of the petrified creatures!!
+                                m.SendLocalizedMessage("A medusa libera uma de suas craituras de pedra"); // Medusa releases one of the petrified creatures!!
                             }
 
                             if (d < dist)

@@ -78,16 +78,6 @@ namespace Server.Mobiles
             PackGold( 400, 600 );            
 		}
 
-        public override void OnKilledBy(Mobile m)
-        {
-            base.OnKilledBy(m);
-
-            if (Utility.RandomDouble() < 0.1)
-            {
-                ExodusChest.GiveRituelItem(m);
-            }
-        }
-
         public override bool CanBeParagon { get { return false; } }
         public override bool InitialInnocent { get { return true; } }
         public override Poison PoisonImmune{ get{ return Poison.Lethal; } }

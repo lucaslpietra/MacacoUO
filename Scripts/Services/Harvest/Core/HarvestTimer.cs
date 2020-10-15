@@ -13,7 +13,7 @@ namespace Server.Engines.Harvest
         private readonly int m_Count;
         private int m_Index;
         public HarvestTimer(Mobile from, Item tool, HarvestSystem system, HarvestDefinition def, object toHarvest, object locked)
-            : base(TimeSpan.Zero, def.EffectDelay)
+            : base(TimeSpan.FromSeconds(0.5), def.EffectDelay) 
         {
             this.m_From = from;
             this.m_Tool = tool;

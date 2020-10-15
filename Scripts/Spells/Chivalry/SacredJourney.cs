@@ -3,6 +3,7 @@ using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Network;
+using Server.Spells.Third;
 using Server.Targeting;
 
 namespace Server.Spells.Chivalry
@@ -13,14 +14,14 @@ namespace Server.Spells.Chivalry
             "Sacred Journey", "Sanctum Viatas",
             -1,
             9002);
-
         private readonly RunebookEntry m_Entry;
         private readonly Runebook m_Book;
-
         public SacredJourneySpell(Mobile caster, Item scroll)
             : this(caster, scroll, null, null)
         {
         }
+
+        public override bool PunishSpellMovementIfRepeated { get { return false; } }
 
         public SacredJourneySpell(Mobile caster, Item scroll, RunebookEntry entry, Runebook book)
             : base(caster, scroll, m_Info)
@@ -40,14 +41,14 @@ namespace Server.Spells.Chivalry
         {
             get
             {
-                return 15.0;
+                return 30.0;
             }
         }
         public override int RequiredMana
         {
             get
             {
-                return 10;
+                return 9;
             }
         }
         public override int RequiredTithing
@@ -75,20 +76,11 @@ namespace Server.Spells.Chivalry
         {
             if (m_Entry == null)
             {
-                Caster.SendLocalizedMessage(501029); // Select Marked item.
+                Caster.SendMessage("Seleciona runa, livro, local ou criatura para se mover.");
                 Caster.Target = new InternalTarget(this);
-            }
+            } 
             else
-            {
-                if (m_Entry.Type == RecallRuneType.Ship)
-                {
-                    Effect(m_Entry.Galleon);
-                }
-                else
-                {
-                    Effect(m_Entry.Location, m_Entry.Map, true, false);
-                }
-            }
+                Effect(m_Entry.Location, m_Entry.Map, true, m_Entry.Galleon != null);
         }
 
         public override bool CheckCast()
@@ -101,43 +93,13 @@ namespace Server.Spells.Chivalry
                 Caster.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
                 return false;
             }
-            else if (Caster.Criminal)
+            else if (Server.Misc.WeightOverloading.IsOverloaded(Caster))
             {
-                Caster.SendLocalizedMessage(1005561, "", 0x22); // Thou'rt a criminal and cannot escape so easily.
-                return false;
-            }
-            else if (SpellHelper.CheckCombat(Caster))
-            {
-                Caster.SendLocalizedMessage(1061282); // You cannot use the Sacred Journey ability to flee from combat.
-                return false;
-            }
-            else if (Misc.WeightOverloading.IsOverloaded(Caster))
-            {
-                Caster.SendLocalizedMessage(502359, "", 0x22); // Thou art too encumbered to move.
+                Caster.SendMessage("Voce esta muito pesado"); // Thou art too encumbered to move.
                 return false;
             }
 
             return SpellHelper.CheckTravel(Caster, TravelCheckType.RecallFrom);
-        }
-
-        public void Effect(BaseGalleon galleon)
-        {
-            if (galleon == null)
-            {
-                Caster.SendLocalizedMessage(1116767); // The ship could not be located.
-            }
-            else if (galleon.Map == Map.Internal)
-            {
-                Caster.SendLocalizedMessage(1149569); // That ship is in dry dock.
-            }
-            else if (!galleon.HasAccess(Caster))
-            {
-                Caster.SendLocalizedMessage(1116617); // You do not have permission to board this ship.
-            }
-            else
-            {
-                Effect(galleon.GetMarkedLocation(), galleon.Map, false, true);
-            }
         }
 
         public void Effect(Point3D loc, Map map, bool checkMulti, bool isboatkey = false)
@@ -149,6 +111,10 @@ namespace Server.Spells.Chivalry
             else if (map == null || (!Core.AOS && Caster.Map != map))
             {
                 Caster.SendLocalizedMessage(1005569); // You can not recall to another facet.
+            }
+            else if (Caster.Criminal)
+            {
+                Caster.SendLocalizedMessage("Voce nao pode usar isto enquanto esta criminoso"); // Thou'rt a criminal and cannot escape so easily.
             }
             else if (!SpellHelper.CheckTravel(Caster, TravelCheckType.RecallFrom))
             {
@@ -172,7 +138,11 @@ namespace Server.Spells.Chivalry
             {
                 Caster.SendLocalizedMessage(1061282); // You cannot use the Sacred Journey ability to flee from combat.
             }
-            else if (Misc.WeightOverloading.IsOverloaded(Caster))
+            else if (SpellHelper.CheckCombat(Caster))
+            {
+                Caster.SendMessage("Voce esta em combate"); // You cannot use the Sacred Journey ability to flee from combat.
+            }
+            else if (Server.Misc.WeightOverloading.IsOverloaded(Caster))
             {
                 Caster.SendLocalizedMessage(502359, "", 0x22); // Thou art too encumbered to move.
             }
@@ -188,7 +158,7 @@ namespace Server.Spells.Chivalry
             {
                 Caster.SendLocalizedMessage(502412); // There are no charges left on that item.
             }
-            else if (Engines.CityLoyalty.CityTradeSystem.HasTrade(Caster))
+            else if (Server.Engines.CityLoyalty.CityTradeSystem.HasTrade(Caster))
             {
                 Caster.SendLocalizedMessage(1151733); // You cannot do that while carrying a Trade Order.
             }
@@ -212,9 +182,8 @@ namespace Server.Spells.Chivalry
         private class InternalTarget : Target
         {
             private readonly SacredJourneySpell m_Owner;
-
             public InternalTarget(SacredJourneySpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.None)
+                : base(8, true, TargetFlags.None)
             {
                 m_Owner = owner;
             }
@@ -226,40 +195,18 @@ namespace Server.Spells.Chivalry
                     RecallRune rune = (RecallRune)o;
 
                     if (rune.Marked)
-                    {
-                        if (rune.Type == RecallRuneType.Ship)
-                        {
-                            m_Owner.Effect(rune.Galleon);
-                        }
-                        else
-                        {
-                            m_Owner.Effect(rune.Target, rune.TargetMap, true);
-                        }
-                    }
+                        m_Owner.Effect(rune.Target, rune.TargetMap, true);
                     else
-                    {
                         from.SendLocalizedMessage(501805); // That rune is not yet marked.
-                    }
                 }
                 else if (o is Runebook)
                 {
                     RunebookEntry e = ((Runebook)o).Default;
 
                     if (e != null)
-                    {
-                        if (e.Type == RecallRuneType.Ship)
-                        {
-                            m_Owner.Effect(e.Galleon);
-                        }
-                        else
-                        {
-                            m_Owner.Effect(e.Location, e.Map, true);
-                        }
-                    }
+                        m_Owner.Effect(e.Location, e.Map, true);
                     else
-                    {
                         from.SendLocalizedMessage(502354); // Target is not marked.
-                    }
                 }
                 else if (o is Key && ((Key)o).KeyValue != 0 && ((Key)o).Link is BaseBoat)
                 {
@@ -275,16 +222,36 @@ namespace Server.Spells.Chivalry
                     HouseRaffleDeed deed = (HouseRaffleDeed)o;
 
                     m_Owner.Effect(deed.PlotLocation, deed.PlotFacet, true);
-                }
-                else if (o is Engines.NewMagincia.WritOfLease)
+                } else if(o is IPoint3D)
                 {
-                    Engines.NewMagincia.WritOfLease lease = (Engines.NewMagincia.WritOfLease)o;
+                    TeleportSpell.Teleporta(from, (IPoint3D)o);
+                    from.Mana -= 9;
+                }
+
+                #region High Seas
+                else if (o is ShipRune && ((ShipRune)o).Galleon != null)
+                {
+                    BaseGalleon galleon = ((ShipRune)o).Galleon;
+
+                    if (!galleon.Deleted && galleon.Map != null && galleon.HasAccess(from))
+                        m_Owner.Effect(galleon.GetMarkedLocation(), galleon.Map, false, true);
+                    else
+                        from.Send(new MessageLocalized(from.Serial, from.Body, MessageType.Regular, 0x3B2, 3, 502357, from.Name, "")); // I can not recall from that object.
+                }
+                #endregion
+
+                #region New Magincia
+                else if (o is Server.Engines.NewMagincia.WritOfLease)
+                {
+                    Server.Engines.NewMagincia.WritOfLease lease = (Server.Engines.NewMagincia.WritOfLease)o;
 
                     if (lease.RecallLoc != Point3D.Zero && lease.Facet != null && lease.Facet != Map.Internal)
                         m_Owner.Effect(lease.RecallLoc, lease.Facet, false);
                     else
                         from.Send(new MessageLocalized(from.Serial, from.Body, MessageType.Regular, 0x3B2, 3, 502357, from.Name, "")); // I can not recall from that object.
                 }
+                #endregion
+
                 else
                 {
                     from.Send(new MessageLocalized(from.Serial, from.Body, MessageType.Regular, 0x3B2, 3, 502357, from.Name, "")); // I can not recall from that object.

@@ -9,6 +9,7 @@ namespace Server.Items
             : base(0x2774)
         {
             this.Weight = 7.0;
+            this.Name = "Cota de Malha";
         }
 
         public ChainHatsuburi(Serial serial)

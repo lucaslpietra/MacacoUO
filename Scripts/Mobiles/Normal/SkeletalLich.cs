@@ -11,7 +11,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public SkeletalLich() : base( AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4 )
 		{
-			Name = "a skeletal lich";
+			Name = "lich esqueletico";
 			Body = 309;
 			Hue = 1345;
 			BaseSoundID = 0x48D;
@@ -20,7 +20,7 @@ namespace Server.Mobiles
 			SetDex( 75 );
 			SetInt( 151, 200 );
 
-			SetHits( 1200 );
+			SetHits( 500 );
 			SetStam( 150 );
 			SetMana( 0 );
 
@@ -47,7 +47,7 @@ namespace Server.Mobiles
 			Karma = -6000;
 
             VirtualArmor = 40; 
-            SetWeaponAbility(WeaponAbility.Dismount);
+            SetWeaponAbility(WeaponAbility.BleedAttack);
 		}
 
 		public override void GenerateLoot()

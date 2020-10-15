@@ -10,12 +10,15 @@ namespace Server.Items
             : base(0x13BE)
         {
             this.Weight = 7.0;
+            this.Name = "Calcas de Malha";
         }
 
         public ChainLegs(Serial serial)
             : base(serial)
         {
         }
+
+        public override int MaxMageryCircle { get { return 5; } }
 
         public override int BasePhysicalResistance
         {
@@ -24,34 +27,15 @@ namespace Server.Items
                 return 4;
             }
         }
-        public override int BaseFireResistance
+
+        public override int OldDexBonus
         {
             get
             {
-                return 4;
+                return -1;
             }
         }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 4;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 2;
-            }
-        }
+
         public override int InitMinHits
         {
             get
@@ -66,25 +50,12 @@ namespace Server.Items
                 return 60;
             }
         }
-        public override int AosStrReq
-        {
-            get
-            {
-                return 60;
-            }
-        }
+
         public override int OldStrReq
         {
             get
             {
-                return 20;
-            }
-        }
-        public override int OldDexBonus
-        {
-            get
-            {
-                return -3;
+                return 60;
             }
         }
         public override int ArmorBase

@@ -7,7 +7,7 @@ namespace Server.Items
         [Constructable]
         public SilverEtchedMace()
         {
-            this.Slayer = SlayerName.Exorcism;
+            this.Slayer = SlayerName.Exorcismo;
         }
 
         public SilverEtchedMace(Serial serial)

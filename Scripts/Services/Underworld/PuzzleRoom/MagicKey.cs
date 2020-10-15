@@ -102,16 +102,16 @@ namespace Server.Items
                 AddBackground(0, 0, 297, 115, 9200);
 
                 AddImageTiled(5, 10, 285, 25, 2624);
-                AddHtmlLocalized(10, 15, 275, 25, 1113390, 0x7FFF, false, false); // Puzzle Room Timer
+                AddHtml(10, 15, 275, 25, "Timer", false, false); // Puzzle Room Timer
 
                 AddImageTiled(5, 40, 285, 40, 2624);
-                AddHtmlLocalized(10, 40, 275, 40, 1113391, 0x7FFF, false, false); // Click CANCEL to read the instruction book or OK to start the timer now.
+                AddHtml(10, 40, 275, 40, "Clique Cancelar para ler as instrucoes", false, false); // Click CANCEL to read the instruction book or OK to start the timer now.
 
                 AddButton(5, 85, 4017, 4018, 0, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(40, 87, 80, 25, 1011012, 0x7FFF, false, false);   //CANCEL
+                AddHtml(40, 87, 80, 25, "Cancelar", false, false);   //CANCEL
 
                 AddButton(215, 85, 4023, 4024, 1, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(250, 87, 80, 25, 1006044, 0x7FFF, false, false);  //OK
+                AddHtml(250, 87, 80, 25, "Ok", false, false);  //OK
 			}
 
             public override void OnResponse(Server.Network.NetState state, RelayInfo info)
@@ -126,7 +126,7 @@ namespace Server.Items
                     key.Movable = true;
                     key.StartTimer();
 
-                    from.SendLocalizedMessage(1113389); // As long as you carry this key, you will be granted access to the Puzzle Room.
+                    from.SendMessage("Enquanto tiver esta chave voce pode entrar na sala dos puzzles"); // As long as you carry this key, you will be granted access to the Puzzle Room.
                 }
             }
 		}

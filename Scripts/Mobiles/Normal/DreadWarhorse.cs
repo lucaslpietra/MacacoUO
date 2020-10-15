@@ -51,7 +51,7 @@ namespace Server.Mobiles
 
             Tamable = true;
             ControlSlots = 3;
-            MinTameSkill = 108.0;
+            MinTameSkill = 100.0;
         }
 
         public DreadWarhorse(Serial serial)

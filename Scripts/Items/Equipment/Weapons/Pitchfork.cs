@@ -9,7 +9,8 @@ namespace Server.Items
         public Pitchfork()
             : base(0xE87)
         {
-            Weight = 11.0;
+            this.Weight = 11.0;
+            Name = "Garfo do Fazendeiro";
         }
 
         public Pitchfork(Serial serial)
@@ -111,13 +112,18 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
+
+            if (this.Weight == 10.0)
+                this.Weight = 11.0;
         }
     }
 }

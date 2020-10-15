@@ -19,7 +19,7 @@ namespace Server.SkillHandlers
 
         public static TimeSpan OnUse(Mobile m)
         {
-            m.SendLocalizedMessage(1011350); // What do you wish to track?
+            m.SendLocalizedMessage("O que deseja procurar ?"); // What do you wish to track?
 
             m.CloseGump(typeof(TrackWhatGump));
             m.CloseGump(typeof(TrackWhoGump));
@@ -32,6 +32,18 @@ namespace Server.SkillHandlers
         {
             TrackingInfo info = new TrackingInfo(tracker, target);
             m_Table[tracker] = info;
+        }
+
+        private static TrackingInfo _info = null;
+        public static bool IsTracking(Mobile tracker, Mobile target)
+        {
+            TrackingInfo info = null;
+            m_Table.TryGetValue(tracker, out info);
+
+            if (info == null || info.m_Target != target || info.m_Map != target.Map)
+                return false;
+
+            return true;
         }
 
         public static double GetStalkingBonus(Mobile tracker, Mobile target)
@@ -47,12 +59,9 @@ namespace Server.SkillHandlers
 
             double bonus = Math.Sqrt((xDelta * xDelta) + (yDelta * yDelta));
 
-            m_Table.Remove(tracker);	//Reset as of Pub 40, counting it as bug for Core.SE.
+            // m_Table.Remove(tracker);	//Reset as of Pub 40, counting it as bug for Core.SE.
 
-            if (Core.ML)
-                return Math.Min(bonus, 10 + tracker.Skills.Tracking.Value / 10);
-
-            return bonus;
+            return Math.Min(bonus, 10 + tracker.Skills.Tracking.Value / 10);
         }
 
         public static void ClearTrackingInfo(Mobile tracker)
@@ -84,7 +93,7 @@ namespace Server.SkillHandlers
             : base(20, 30)
         {
             this.m_From = from;
-            this.m_Success = from.CheckSkill(SkillName.Tracking, 0.0, 21.1);
+            this.m_Success = from.CheckSkillMult(SkillName.Tracking, 0.0, 21.1);
 
             this.AddPage(0);
 
@@ -186,9 +195,11 @@ namespace Server.SkillHandlers
 
             TrackTypeDelegate check = m_Delegates[type];
 
-            from.CheckSkill(SkillName.Tracking, 21.1, 100.0); // Passive gain
+            from.CheckSkillMult(SkillName.Tracking, 21.1, 100.0, 5); // Passive gain
 
-            int range = 10 + (int)(from.Skills[SkillName.Tracking].Value / 10);
+            int range = 1 + (int)(from.Skills[SkillName.Tracking].Value / 2);
+            if (from.Skills[SkillName.Tracking].Value >= 100)
+                range += 50;
 
             List<Mobile> list = new List<Mobile>();
             IPooledEnumerable eable = from.GetMobilesInRange(range);
@@ -196,8 +207,9 @@ namespace Server.SkillHandlers
             foreach (Mobile m in eable)
             {
                 // Ghosts can no longer be tracked 
-                if (m != from && (!Core.AOS || m.Alive) && (!m.Hidden || m.IsPlayer() || from.AccessLevel > m.AccessLevel) && check(m) && CheckDifficulty(from, m))
-                    list.Add(m);
+                if (m != from && m.Alive && check(m))
+                    if(!m.Hidden || from.Skills.Tracking.Value >= 80)
+                        list.Add(m);
             }
             eable.Free();
 
@@ -206,16 +218,16 @@ namespace Server.SkillHandlers
                 list.Sort(new InternalSorter(from));
 
                 from.SendGump(new TrackWhoGump(from, list, range));
-                from.SendLocalizedMessage(1018093); // Select the one you would like to track.
+                from.SendLocalizedMessage("Selecione quem deseja perseguir"); // Select the one you would like to track.
             }
             else
             {
                 if (type == 0)
-                    from.SendLocalizedMessage(502991); // You see no evidence of animals in the area.
+                    from.SendLocalizedMessage("Voce nao encontra nada..."); // You see no evidence of animals in the area.
                 else if (type == 1)
-                    from.SendLocalizedMessage(502993); // You see no evidence of creatures in the area.
+                    from.SendLocalizedMessage("Voce nao encontra nada"); // You see no evidence of creatures in the area.
                 else
-                    from.SendLocalizedMessage(502995); // You see no evidence of people in the area.
+                    from.SendLocalizedMessage("Nenhum sinal de pessoas por aqui"); // You see no evidence of people in the area.
             }
         }
 
@@ -229,8 +241,9 @@ namespace Server.SkillHandlers
 
                 this.m_From.QuestArrow = new TrackArrow(this.m_From, m, this.m_Range * 2);
 
-                if (Core.SE)
-                    Tracking.AddInfo(this.m_From, m);
+                this.m_From.OverheadMessage("* rastreando *");
+
+                Tracking.AddInfo(this.m_From, m);
             }
         }
 
@@ -289,7 +302,7 @@ namespace Server.SkillHandlers
 
         private static bool IsPlayer(Mobile m)
         {
-            return m.Player;
+            return m.Player && m.AccessLevel <= AccessLevel.VIP;
         }
 
         private class InternalSorter : IComparer<Mobile>
@@ -308,6 +321,7 @@ namespace Server.SkillHandlers
                     return -1;
                 else if (y == null)
                     return 1;
+
 
                 return this.m_From.GetDistanceToSqrt(x).CompareTo(this.m_From.GetDistanceToSqrt(y));
             }

@@ -92,7 +92,7 @@ namespace Server.Items
 			Attributes.LowerManaCost = 10;
 			Attributes.LowerRegCost = 10;
 			
-			Slayer = Utility.RandomBool() ? SlayerName.Dinosaur : SlayerName.Myrmidex;
+			Slayer = Utility.RandomBool() ? SlayerName.Dinossauros : SlayerName.Myrmidex;
 		}
 		
 		public AnonsSpellbook(Serial serial) : base(serial)
@@ -553,7 +553,7 @@ namespace Server.Items
 		public LereisHuntingSpear() 
 		{
 			WeaponAttributes.HitCurse = 10;
-			Slayer = SlayerName.ReptilianDeath;
+			Slayer = SlayerName.Repteis;
 			WeaponAttributes.HitLeechMana = 80;
 			Attributes.AttackChance = 20;
 			Attributes.WeaponSpeed = 30;
@@ -595,7 +595,7 @@ namespace Server.Items
 		public LereisHuntingSpearGargoyle() 
 		{
 			WeaponAttributes.HitCurse = 10;
-			Slayer = SlayerName.ReptilianDeath;
+			Slayer = SlayerName.Repteis;
 			WeaponAttributes.HitLeechMana = 80;
 			Attributes.AttackChance = 20;
 			Attributes.WeaponSpeed = 30;

@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Server.Gumps;
 using Server.Multis;
 using Server.Network;
@@ -26,6 +25,7 @@ namespace Server.Items
         {
             Weight = 1.0;
             LootType = LootType.Blessed;
+            Name = "Ferramenta de Decoracao";
         }
 
         public InteriorDecorator(Serial serial)
@@ -174,17 +174,6 @@ namespace Server.Items
                 OnTarget(from, targeted);
             }
 
-            private static Type[] m_KingsCollectionTypes = new Type[]
-            {
-                typeof(BirdLamp),    typeof(DragonLantern),
-                typeof(KoiLamp),   typeof(TallLamp)
-            };
-
-            private static bool IsKingsCollection(Item item)
-            {
-                return m_KingsCollectionTypes.Any(t => t == item.GetType());
-            }
-
             protected override void OnTarget(Mobile from, object targeted)
             {
                 if (m_Decorator.Command == DecorateCommand.GetHue)
@@ -210,11 +199,7 @@ namespace Server.Items
 
                     bool isDecorableComponent = false;
 
-                    if (m_Decorator.Command == DecorateCommand.Turn && IsKingsCollection(item))
-                    {
-                        isDecorableComponent = true;
-                    }
-                    else if (item is AddonComponent || item is AddonContainerComponent || item is BaseAddonContainer)
+                    if (item is AddonComponent || item is AddonContainerComponent || item is BaseAddonContainer)
                     {
                         object addon = null;
                         int count = 0;
@@ -251,10 +236,6 @@ namespace Server.Items
                             if (attributes.Length > 0)
                                 isDecorableComponent = true;
                         }
-                    }
-                    else if (item is Banner && m_Decorator.Command != DecorateCommand.Turn)
-                    {
-                        isDecorableComponent = true;
                     }
 
                     if (house == null || !house.IsCoOwner(from))

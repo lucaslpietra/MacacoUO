@@ -57,7 +57,7 @@ namespace Server.Items
             {
                 from.FixedEffect(0x375A, 10, 15);
                 from.PlaySound(0x1E7);
-                from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 501774); // You swallow the fish whole!
+                from.PrivateOverheadMessage("Comeu o peixe magico"); // You swallow the fish whole!
                 this.Delete();
             }
         }
@@ -104,13 +104,14 @@ namespace Server.Items
                 return StatType.Int;
             }
         }
-        public override int LabelNumber
+        public override string DefaultName
         {
             get
             {
-                return 1041073;
+                return "Peixe Brilhante";
             }
-        }// prized fish
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -156,11 +157,11 @@ namespace Server.Items
                 return StatType.Dex;
             }
         }
-        public override int LabelNumber
+        public override string DefaultName
         {
             get
             {
-                return 1041074;
+                return "Peixe Milagroso";
             }
         }// wondrous fish
         public override void Serialize(GenericWriter writer)
@@ -208,13 +209,14 @@ namespace Server.Items
                 return StatType.Str;
             }
         }
-        public override int LabelNumber
+        public override string DefaultName
         {
             get
             {
-                return 1041075;
+                return "Peixe Realmente Raro";
             }
-        }// truly rare fish
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -246,13 +248,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
+        public override string DefaultName
         {
             get
             {
-                return 1041076;
+                return "Peixe Peculiar";
             }
-        }// highly peculiar fish
+        }
+
         public override bool Apply(Mobile from)
         {
             from.Stam += 10;

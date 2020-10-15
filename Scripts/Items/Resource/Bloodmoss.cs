@@ -14,6 +14,7 @@ namespace Server.Items
         public Bloodmoss(int amount)
             : base(0xF7B, amount)
         {
+
         }
 
         public Bloodmoss(Serial serial)
@@ -39,7 +40,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -47,6 +48,8 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+            if (version == 0)
+                Name = null;
         }
     }
 }

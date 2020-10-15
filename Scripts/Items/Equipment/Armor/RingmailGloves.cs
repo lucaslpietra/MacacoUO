@@ -11,8 +11,12 @@ namespace Server.Items
         public RingmailGloves()
             : base(0x13EB)
         {
-            Weight = 2.0;
+            this.Weight = 2.0;
+            this.Name = "Luvas de Loriga";
+            this.Hue = 993;
         }
+
+        public override int MaxMageryCircle { get { return 6; } }
 
         public RingmailGloves(Serial serial)
             : base(serial)
@@ -54,6 +58,13 @@ namespace Server.Items
                 return 3;
             }
         }
+        public override ArmorMeditationAllowance DefMedAllowance
+        {
+            get
+            {
+                return ArmorMeditationAllowance.Half;
+            }
+        }
         public override int InitMinHits
         {
             get
@@ -82,18 +93,11 @@ namespace Server.Items
                 return 20;
             }
         }
-        public override int OldDexBonus
-        {
-            get
-            {
-                return -1;
-            }
-        }
         public override int ArmorBase
         {
             get
             {
-                return 22;
+                return 18;
             }
         }
         public override ArmorMaterialType MaterialType
@@ -113,6 +117,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (this.Weight == 1.0)
+                this.Weight = 2.0;
         }
     }
 }

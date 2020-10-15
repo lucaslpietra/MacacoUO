@@ -78,7 +78,13 @@ namespace Server.Items
 			}
 		}
 
-		public virtual bool RetainDeedHue {  get  { return Hue != 0 && CraftResources.GetHue(Resource) != Hue; } }
+		public virtual bool RetainDeedHue
+        { 
+            get 
+            {
+                return Hue != 0 && CraftResources.GetHue(Resource) != Hue;
+            }
+        }
 
 		public virtual void OnChop(Mobile from)
 		{

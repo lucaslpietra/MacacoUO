@@ -10,15 +10,15 @@ namespace Server.Mobiles
         public PoisonElemental()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a poison elemental";
+            this.Name = "elemental do veneno";
             this.Body = 162;
             this.BaseSoundID = 263;
 
-            this.SetStr(426, 515);
-            this.SetDex(166, 185);
-            this.SetInt(361, 435);
+            this.SetStr(80, 88);
+            this.SetDex(80, 88);
+            this.SetInt(80, 88);
 
-            this.SetHits(256, 309);
+            this.SetHits(50, 80);
 
             this.SetDamage(12, 18);
 
@@ -32,9 +32,9 @@ namespace Server.Mobiles
             this.SetResistance(ResistanceType.Energy, 40, 50);
 
             this.SetSkill(SkillName.EvalInt, 80.1, 95.0);
-            this.SetSkill(SkillName.Magery, 80.1, 95.0);
+            this.SetSkill(SkillName.Magery, 40, 60);
             this.SetSkill(SkillName.Meditation, 80.2, 120.0);
-            this.SetSkill(SkillName.Poisoning, 90.1, 100.0);
+            this.SetSkill(SkillName.Poisoning, 40, 60);
             this.SetSkill(SkillName.MagicResist, 85.2, 115.0);
             this.SetSkill(SkillName.Tactics, 80.1, 100.0);
             this.SetSkill(SkillName.Wrestling, 70.1, 90.0);
@@ -44,7 +44,7 @@ namespace Server.Mobiles
 
             this.VirtualArmor = 70;
 
-            this.PackItem(new Nightshade(4));
+            this.PackItem(new Nightshade(15));
             this.PackItem(new LesserPoisonPotion());
         }
 
@@ -90,7 +90,6 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich);
             this.AddLoot(LootPack.Rich);
             this.AddLoot(LootPack.MedScrolls);
         }

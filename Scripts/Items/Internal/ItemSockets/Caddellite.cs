@@ -26,6 +26,7 @@ namespace Server.Items
 
         public static void Initialize()
         {
+            EventSink.ResourceHarvestSuccess += OnHarvest;
             EventSink.Login += OnLogin;
         }
 
@@ -70,33 +71,40 @@ namespace Server.Items
             return PointsSystem.Khaldun.InSeason && item is ICaddelliteTool && SpellHelper.IsAnyT2A(from.Map, from.Location);
         }
 
-        public static void OnHarvest(Mobile from, Item tool, HarvestSystem system, Item resource)
+        public static void OnHarvest(ResourceHarvestSuccessEventArgs e)
         {
-            if(IsCaddellite(from, tool))
+            if(IsCaddellite(e.Harvester, e.Tool))
             {
-                if (resource != null)
+                if (e.Resource != null)
                 {
-                    resource.AttachSocket(new Caddellite());
+                    e.Resource.AttachSocket(new Caddellite());
                 }
 
-                if (0.005 > Utility.RandomDouble())
+                if (e.BonusResource != null)
                 {
-                    if (from != null)
+                    e.BonusResource.AttachSocket(new Caddellite());
+                }
+                else if (0.005 > Utility.RandomDouble())
+                {
+                    var system = e.HarvestSystem as HarvestSystem;
+                    var m = e.Harvester;
+
+                    if (m != null)
                     {
                         if (system == Fishing.System)
                         {
-                            from.SendLocalizedMessage(1158664); // You discover a meteorite entangled in your line!
+                            m.SendLocalizedMessage(1158664); // You discover a meteorite entangled in your line!
                         }
                         else if (system == Mining.System)
                         {
-                            from.SendLocalizedMessage(1158663); // You discover a meteorite in the dirt!
+                            m.SendLocalizedMessage(1158663); // You discover a meteorite in the dirt!
                         }
                         else if (system == Lumberjacking.System)
                         {
-                            from.SendLocalizedMessage(1158665); // You discover a meteorite in the tree!
+                            m.SendLocalizedMessage(1158665); // You discover a meteorite in the tree!
                         }
 
-                        from.AddToBackpack(new Meteorite());
+                        m.AddToBackpack(new Meteorite());
                     }
                 }
             }

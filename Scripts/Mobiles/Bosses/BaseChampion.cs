@@ -11,18 +11,24 @@ namespace Server.Mobiles
         public BaseChampion(AIType aiType)
             : this(aiType, FightMode.Closest)
         {
+
         }
 
         public BaseChampion(AIType aiType, FightMode mode)
             : base(aiType, mode, 18, 1, 0.1, 0.2)
         {
+            AddItem(Decos.RandomDeco());
+            AddItem(Decos.RandomDeco());
+            AddItem(Decos.RandomDeco());
+
+            AddItem(new Item(0x12D9)); // estatua
         }
 
         public BaseChampion(Serial serial)
             : base(serial)
         {
         }
-		public override bool CanBeParagon { get { return false; } }
+        public override bool CanBeParagon { get { return false; } }
         public abstract ChampionSkullType SkullType { get; }
         public abstract Type[] UniqueList { get; }
         public abstract Type[] SharedList { get; }
@@ -66,22 +72,22 @@ namespace Server.Mobiles
 
                     int chance = 0;
 
-                    switch( VirtueHelper.GetLevel(prot, VirtueName.Justice) )
+                    switch (VirtueHelper.GetLevel(prot, VirtueName.Justice))
                     {
                         case VirtueLevel.Seeker:
-                            chance = 60;
+                            chance = 5;
                             break;
                         case VirtueLevel.Follower:
-                            chance = 80;
+                            chance = 10;
                             break;
                         case VirtueLevel.Knight:
-                            chance = 100;
+                            chance = 20;
                             break;
                     }
 
                     if (chance > Utility.Random(100))
                     {
-						PowerScroll powerScroll = CreateRandomPowerScroll();
+                        PowerScroll powerScroll = CreateRandomPowerScroll();
 
                         prot.SendLocalizedMessage(1049368); // You have been rewarded for your dedication to Justice!
 
@@ -115,6 +121,10 @@ namespace Server.Mobiles
 
         public virtual Item GetArtifact()
         {
+            if (Shard.POL_STYLE)
+            {
+                return this.CreateArtifact(this.DecorativeList);
+            }
             double random = Utility.RandomDouble();
             if (0.05 >= random)
                 return this.CreateArtifact(this.UniqueList);
@@ -131,7 +141,7 @@ namespace Server.Mobiles
                 return null;
 
             int random = Utility.Random(list.Length);
-			
+
             Type type = list[random];
 
             Item artifact = Loot.Construct(type);
@@ -150,6 +160,8 @@ namespace Server.Mobiles
             if (this.Map != Map.Felucca)
                 return;
 
+            Shard.Debug("Dropando Powerscrolls");
+
             List<Mobile> toGive = new List<Mobile>();
             List<DamageStore> rights = GetLootingRights();
 
@@ -160,6 +172,8 @@ namespace Server.Mobiles
                 if (ds.m_HasRight && InRange(ds.m_Mobile, 100) && ds.m_Mobile.Map == this.Map)
                     toGive.Add(ds.m_Mobile);
             }
+
+            Shard.Debug("Pessoas pra ganhar PS: " + toGive);
 
             if (toGive.Count == 0)
                 return;
@@ -184,6 +198,8 @@ namespace Server.Mobiles
                     //No delay on Valor gains
                 }
             }
+
+            Shard.Debug("QTD Powerscrolls: " + ChampionSystem.PowerScrollAmount);
 
             // Randomize - PowerScrolls
             for (int i = 0; i < toGive.Count; ++i)
@@ -237,13 +253,14 @@ namespace Server.Mobiles
         {
             if (CanGivePowerscrolls && !NoKillAwards)
             {
+                Shard.Debug("Dando Power Scrols !!!");
                 this.GivePowerScrolls();
 
                 if (this.NoGoodies)
                     return base.OnBeforeDeath();
-
-				GoldShower.DoForChamp(Location, Map);
             }
+
+            GoldShower.DoForChamp(Location, Map);
 
             return base.OnBeforeDeath();
         }
@@ -272,7 +289,7 @@ namespace Server.Mobiles
                         c.DropItem(new ChampionSkull(this.SkullType));
                 }
 
-                if(Core.SA)
+                if (Core.SA)
                     RefinementComponent.Roll(c, 3, 0.10);
             }
 
@@ -284,12 +301,12 @@ namespace Server.Mobiles
             int level;
             double random = Utility.RandomDouble();
 
-            if (0.05 >= random)
-                level = 20;
-            else if (0.4 >= random)
-                level = 15;
+            if (0.03 >= random)
+                level = 115;
+            else if (0.2 >= random)
+                level = 110;
             else
-                level = 10;
+                level = 105;
 
             return PowerScroll.CreateRandomNoCraft(level, level);
         }

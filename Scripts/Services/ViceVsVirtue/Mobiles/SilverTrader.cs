@@ -20,7 +20,7 @@ namespace Server.Engines.VvV
         public override void InitSBInfo() { }
 
         [Constructable]
-        public SilverTrader() : base("the Silver Trader")
+        public SilverTrader() : base("o comerciante de Pratinhas")
         {
         }
 
@@ -39,7 +39,7 @@ namespace Server.Engines.VvV
         {
             Robe robe = new Robe();
             robe.ItemID = 0x2684;
-            robe.Name = "a robe";
+            robe.Name = "Sobretudo Lindao";
 
             SetWearable(robe, 1109);
 
@@ -49,21 +49,10 @@ namespace Server.Engines.VvV
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-            list.Add(1155513); // Vice vs Virtue Reward Vendor
+            list.Add("Vendedor de Pratinhas"); // Vice vs Virtue Reward Vendor
         }
 
         private DateTime _NextSpeak;
-
-        public override void OnMovement(Mobile m, Point3D oldLocation)
-        {
-            base.OnMovement(m, oldLocation);
-
-            if (_NextSpeak < DateTime.UtcNow && ViceVsVirtueSystem.IsVvV(m) && InRange(m.Location, 6) && m.Race == Race.Gargoyle)
-            {
-                SayTo(m, 1155534); // I will convert your human artifacts to gargoyle versions if you hand them to me.
-                _NextSpeak = DateTime.UtcNow + TimeSpan.FromSeconds(25);
-            }
-        }
 
         public override void OnDoubleClick(Mobile m)
         {
@@ -75,7 +64,7 @@ namespace Server.Engines.VvV
                 }
                 else
                 {
-                    SayTo(m, 1155585); // You have no silver to trade with. Join Vice vs Virtue and return to me.
+                    SayTo(m, "Voce nao tem pratinhas. Participe da guerra infinita para conseguir !"); // You have no silver to trade with. Join Vice vs Virtue and return to me.
                 }
             }
         }
@@ -87,7 +76,7 @@ namespace Server.Engines.VvV
 
             foreach (CollectionItem item in VvVRewards.Rewards)
             {
-                if (item.Tooltip == 0)
+                if (item.Tooltip == 0 && item.TooltipStr==null)
                 {
                     if (Backpack.GetAmount(item.Type) > 0)
                     {
@@ -104,7 +93,7 @@ namespace Server.Engines.VvV
                     if (i != null)
                     {
                         if (i is IOwnerRestricted)
-                            ((IOwnerRestricted)i).OwnerName = "Your Player Name";
+                            ((IOwnerRestricted)i).OwnerName = "Nome do Jogador";
 
                         if (i is IVvVItem)
                             ((IVvVItem)i).IsVvVItem = true;

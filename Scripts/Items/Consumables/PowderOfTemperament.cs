@@ -20,6 +20,7 @@ namespace Server.Items
         public PowderOfTemperament(int charges)
             : base(4102)
         {
+            Name = "Po de refinamento";
             Weight = 1.0;
             Hue = 2419;
             UsesRemaining = charges;
@@ -84,8 +85,10 @@ namespace Server.Items
             }
         }
 
-        public override void AddUsesRemainingProperties(ObjectPropertyList list)
+        public override void GetProperties(ObjectPropertyList list)
         {
+            base.GetProperties(list);
+
             list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
         }
 
@@ -122,7 +125,7 @@ namespace Server.Items
             {
                 if (m_Powder.Deleted || m_Powder.UsesRemaining <= 0)
                 {
-                    from.SendLocalizedMessage(1049086); // You have used up your powder of temperament.
+                    from.SendMessage("Acabou..."); // You have used up your powder of temperament.
                     return;
                 }
 
@@ -134,11 +137,12 @@ namespace Server.Items
 
                     if (!Server.Engines.Craft.Repair.AllowsRepair(item, null) || (item is BaseJewel && !CanPOFJewelry))
                     {
-                        from.SendLocalizedMessage(1049083); // You cannot use the powder on that item.
+                        from.SendMessage("Apenas pode usar em items que tenham durabilidade"); // You cannot use the powder on that item.
                         return;
                     }
 
                     #region SA
+                    /*
                     if (item is BaseWeapon)
                     {
                         if (((BaseWeapon)item).Attributes.Brittle > 0 || ((BaseWeapon)item).NegativeAttributes.Brittle > 0)
@@ -172,6 +176,7 @@ namespace Server.Items
                         from.SendLocalizedMessage(1149799); //That cannot be used on brittle items.
                         return;
                     }
+                    */
                     #endregion
 
                     if (targeted is IDurability)
@@ -180,7 +185,7 @@ namespace Server.Items
 
                         if (!wearable.CanFortify)
                         {
-                            from.SendLocalizedMessage(1049083); // You cannot use the powder on that item.
+                            from.SendMessage("Apenas pode usar em items que tenham durabilidade"); // You cannot use the powder on that item.
                             return;
                         }
 
@@ -222,14 +227,15 @@ namespace Server.Items
 
                                     if (wearable.MaxHitPoints > origMaxHP)
                                     {
-                                        from.SendLocalizedMessage(1049084); // You successfully use the powder on the item.
+                                        from.PlayAttackAnimation();
+                                        from.SendMessage("Voce aplicou o pozinho de refinamento no item"); // You successfully use the powder on the item.
                                         from.PlaySound(0x247);
 
                                         --m_Powder.UsesRemaining;
 
                                         if (m_Powder.UsesRemaining <= 0)
                                         {
-                                            from.SendLocalizedMessage(1049086); // You have used up your powder of fortifying.
+                                            from.SendMessage("Seu po de refinamento acabou"); // You have used up your powder of fortifying.
                                             m_Powder.Delete();
                                         }
 
@@ -245,18 +251,18 @@ namespace Server.Items
                                     {
                                         wearable.MaxHitPoints = origMaxHP;
                                         wearable.HitPoints = origCurHP;
-                                        from.SendLocalizedMessage(1049085); // The item cannot be improved any further.
+                                        from.SendMessage("O item nao pode ser melhorado"); // The item cannot be improved any further.
                                     }
                                 }
                                 else
                                 {
-                                    from.SendLocalizedMessage(1049085); // The item cannot be improved any further.
+                                    from.SendMessage("O item nao pode ser melhorado");  // The item cannot be improved any further.
                                     wearable.ScaleDurability();
                                 }
                             }
                             else
                             {
-                                from.SendLocalizedMessage(1049083); // You cannot use the powder on that item.
+                                from.SendMessage("Nao posso usar nisso"); // You cannot use the powder on that item.
                             }
                         }
                         else

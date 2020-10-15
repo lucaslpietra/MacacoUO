@@ -13,13 +13,15 @@ namespace Server.Items
             this.LootType = LootType.Blessed;
             this.Weight = 1.0;
             this.Hue = 0x226;
-			
+            Name = "Botas do Sacrificio";
+            /*
             this.SetSelfRepair = 5;			
             this.SetPhysicalBonus = 5;
             this.SetFireBonus = 5;
             this.SetColdBonus = 5;
             this.SetPoisonBonus = 5;
             this.SetEnergyBonus = 5;
+            */
         }
 
         public SacrificeSollerets(Serial serial)

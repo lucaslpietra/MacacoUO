@@ -42,10 +42,10 @@ namespace Server.Items
 				count += MoonGen(PMList.Trammel);
 			}
 
-			count += MoonGen(PMList.Felucca);
-			count += MoonGen(PMList.Ilshenar);
-			count += MoonGen(PMList.Malas);
-			count += MoonGen(PMList.Tokuno);
+			//count += MoonGen(PMList.Felucca);
+			//count += MoonGen(PMList.Ilshenar);
+			//count += MoonGen(PMList.Malas);
+			//count += MoonGen(PMList.Tokuno);
 			count += MoonGen(PMList.TerMur);
 
 			World.Broadcast(0x35, true, "{0} moongates generated.", count);
@@ -116,7 +116,7 @@ namespace Server.Items
 			}
 		}
 		
-		public override int LabelNumber {get {return 1076082;} } // Moongate
+		public override string DefaultName { get { return "Moongate"; } }
 
 		public override bool HandlesOnMovement { get { return true; } }
 		public override bool ForceShowProperties { get { return true; } }
@@ -371,15 +371,11 @@ namespace Server.Items
 			new[]
 			{
 				new PMEntry(new Point3D(850, 3525, -38), 1113603), // Royal City
-				Core.TOL
-					? new PMEntry(new Point3D(719, 1863, 40), 1156262)
-					: new PMEntry(new Point3D(926, 3989, -36), 1112572) // Valley of Eodon
-				// Holy City
 			});
 
 		public static readonly PMList[] UORLists = {Trammel, Felucca};
 		public static readonly PMList[] UORListsYoung = {Trammel};
-		public static readonly PMList[] LBRLists = {Trammel, Felucca, Ilshenar};
+		public static readonly PMList[] LBRLists = {TerMur};
 		public static readonly PMList[] LBRListsYoung = {Trammel, Ilshenar};
 		public static readonly PMList[] AOSLists = {Trammel, Felucca, Ilshenar, Malas};
 		public static readonly PMList[] AOSListsYoung = {Trammel, Ilshenar, Malas};
@@ -611,7 +607,7 @@ namespace Server.Items
 				}
 
 				AddButton(10, 35 + (i * 25), 2117, 2118, 0, GumpButtonType.Page, Array.IndexOf(m_Lists, checkLists[i]) + 1);
-				AddHtmlLocalized(30, 35 + (i * 25), 150, 20, checkLists[i].Number, false, false);
+				AddHtml(30, 35 + (i * 25), 150, 20, "Mundo", false, false);
 			}
 
 			for (var i = 0; i < m_Lists.Length; ++i)
@@ -719,14 +715,21 @@ namespace Server.Items
 			AddPage(index + 1);
 
 			AddButton(10, 35 + (offset * 25), 2117, 2118, 0, GumpButtonType.Page, index + 1);
-			AddHtmlLocalized(30, 35 + (offset * 25), 150, 20, list.SelNumber, false, false);
+			//AddHtmlLocalized(30, 35 + (offset * 25), 150, 20, list.SelNumber, false, false);
 
 			var entries = list.Entries;
 
 			for (var i = 0; i < entries.Length; ++i)
 			{
 				AddRadio(200, 35 + (i * 25), 210, 211, false, (index * 100) + i);
-				AddHtmlLocalized(225, 35 + (i * 25), 150, 20, entries[i].Number, false, false);
+                if(entries[i].Number == 1113603)
+                {
+                    AddHtml(225, 35 + (i * 25), 150, 20, "Cidade Real", false, false);
+                } else
+                {
+                    AddHtmlLocalized(225, 35 + (i * 25), 150, 20, entries[i].Number, false, false);
+                }
+				
 			}
 		}
 	}

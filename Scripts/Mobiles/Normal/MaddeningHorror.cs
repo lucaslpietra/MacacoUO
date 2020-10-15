@@ -1,5 +1,5 @@
 using System;
-using Server.Items;
+using System.Collections;
 
 namespace Server.Mobiles
 {
@@ -51,14 +51,6 @@ namespace Server.Mobiles
         public MaddeningHorror(Serial serial)
             : base(serial)
         {
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-            
-            if (0.2 > Utility.RandomDouble())
-                c.DropItem(new VileTentacles());
         }
 
         public override int GetIdleSound()

@@ -45,7 +45,7 @@ namespace Server.Mobiles
 
             VirtualArmor = 20;
 
-            Item ore = new DullCopperOre(oreAmount);
+            Item ore = new BeriloOre(oreAmount);
             ore.ItemID = 0x19B9;
             PackItem(ore);
         }
@@ -90,7 +90,7 @@ namespace Server.Mobiles
 
             foreach (Mobile m in eable)
             {
-                if (m != this && m.Alive && m.AccessLevel == AccessLevel.Player && 
+                if (m != this && m.Alive && m.AccessLevel <= AccessLevel.VIP && 
                     (m is PlayerMobile || (m is BaseCreature && !((BaseCreature)m).IsMonster)))
                 {
                     list.Add(m);

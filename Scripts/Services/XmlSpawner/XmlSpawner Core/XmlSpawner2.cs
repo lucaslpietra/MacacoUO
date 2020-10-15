@@ -124,8 +124,8 @@ namespace Server.Mobiles
 		public static AccessLevel SmartSpawnAccessLevel = AccessLevel.Player;
 
 		// define the default values used in making spawners
-		private static TimeSpan defMinDelay = TimeSpan.FromMinutes(5);
-		private static TimeSpan defMaxDelay = TimeSpan.FromMinutes(10);
+		private static TimeSpan defMinDelay = TimeSpan.FromMinutes(15);
+		private static TimeSpan defMaxDelay = TimeSpan.FromMinutes(50);
 		private static TimeSpan defMinRefractory = TimeSpan.FromMinutes(0);
 		private static TimeSpan defMaxRefractory = TimeSpan.FromMinutes(0);
 		private static TimeSpan defTODStart = TimeSpan.FromMinutes(0);
@@ -6319,7 +6319,10 @@ public static void _TraceEnd(int index)
 							}
 
 
-							if (SpawnMap == Map.Internal) bad_spawner = true;
+                            if (SpawnMap == Map.Internal || SpawnMap == Map.Felucca)
+                            {
+                                bad_spawner = true;
+                            }
 
 							// Try load the IsRelativeHomeRange (default to true)
 							bool SpawnIsRelativeHomeRange = true;
@@ -10030,6 +10033,7 @@ public static void _TraceEnd(int index)
 		// if a non-null mob argument is passed, then check the canswim and cantwalk props to determine valid placement
 		public bool CanFit(int x, int y, int z, int height, bool checkBlocksFit, bool checkMobiles, bool requireSurface, Mobile mob)
 		{
+
 			Map map = this.Map;
 
 			if (DebugThis)
@@ -10175,7 +10179,7 @@ public static void _TraceEnd(int index)
 				{
 					Mobile m = mobs[i];
 
-					if (m.Location.X == x && m.Location.Y == y && (m.AccessLevel == AccessLevel.Player || !m.Hidden))
+					if (m.Location.X == x && m.Location.Y == y && (m.AccessLevel <= AccessLevel.VIP || !m.Hidden))
 						if ((m.Z + 16) > z && (z + height) > m.Z)
 							return false;
 				}
@@ -10198,7 +10202,7 @@ public static void _TraceEnd(int index)
 			if (!Region.Find(new Point3D(x, y, z), this.Map).AllowSpawn())
 				return false;
 
-			return Map.CanFit(x, y, z, 16, false, true, true, mob);
+			return CanFit(x, y, z, 16, false, true, true, mob);
 		}
 
 		public bool HasRegionPoints(Region r)

@@ -10,17 +10,17 @@ namespace Server.Mobiles
         public Skeleton()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a skeleton";
+            this.Name = "esqueleto";
             this.Body = Utility.RandomList(50, 56);
             this.BaseSoundID = 0x48D;
 
-            this.SetStr(56, 80);
+            this.SetStr(40, 80);
             this.SetDex(56, 75);
             this.SetInt(16, 40);
 
-            this.SetHits(34, 48);
+            this.SetHits(25, 30);
 
-            this.SetDamage(3, 7);
+            this.SetDamage(2, 7);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
@@ -30,16 +30,18 @@ namespace Server.Mobiles
             this.SetResistance(ResistanceType.Poison, 25, 35);
             this.SetResistance(ResistanceType.Energy, 5, 15);
 
-            this.SetSkill(SkillName.MagicResist, 45.1, 60.0);
+            this.SetSkill(SkillName.MagicResist, 35.1, 60.0);
             this.SetSkill(SkillName.Tactics, 45.1, 60.0);
             this.SetSkill(SkillName.Wrestling, 45.1, 55.0);
 
             this.Fame = 450;
             this.Karma = -450;
 
-            this.VirtualArmor = 16;
+            this.VirtualArmor = 0;
 
-            switch ( Utility.Random(5))
+            PackItem(new Bone());
+
+            switch ( Utility.Random(25))
             {
                 case 0:
                     this.PackItem(new BoneArms());
@@ -71,6 +73,15 @@ namespace Server.Mobiles
                 return true;
             }
         }
+
+        public override bool HasBlood { get { return false; } }
+
+        public override void OnDamage(int amount, Mobile from, bool willKill)
+        {
+            if(Utility.Random(0, 10)==1)
+                Effects.ItemToFloor(this, new Bone(), Effects.TryGetNearRandomLoc(this), this.Map);
+        }
+
         public override Poison PoisonImmune
         {
             get
@@ -88,14 +99,35 @@ namespace Server.Mobiles
                 return OppositionGroup.FeyAndUndead;
             }
         }
+
+        public override void OnThink()
+        {
+            base.OnThink();
+            if (this.Combatant != null)
+            {
+                if(!IsCooldown("bonethrow"))
+                {
+                    if(this.Combatant is PlayerMobile)
+                    {
+                        var player = (PlayerMobile)this.Combatant;
+                        var dist = player.GetDistanceToSqrt(this.Location);
+                        if (dist <= 3 || dist >= 9 || !this.InLOS(player))
+                        {
+                            return;
+                        }
+                        SetCooldown("bonethrow", TimeSpan.FromSeconds(10));
+                        this.MovingParticles(player, 0xF7E, 9, 0, false, false, 9502, 4019, 0x160);
+                        AOS.Damage(player, 1+Utility.Random(2), 0, 0, 0, 0, 0);
+                        PublicOverheadMessage(Network.MessageType.Regular, 0, false, "* joga um osso *");
+                    }
+                   
+                 
+                }
+            }
+        }
         
         public override bool IsEnemy(Mobile m)
         {
-            if(Region.IsPartOf("Haven Island"))
-            {
-                return false;
-            }
-            
             return base.IsEnemy(m);
         }
         

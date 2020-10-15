@@ -60,7 +60,6 @@ namespace Server.Engines.VvV
                     case 3: type = VvVTrapType.Blade; break;
                     case 4: type = VvVTrapType.Explosion; break;
                 }
-
                 item = new VvVTrapKit(type);
             }
             else if (citem.Type == typeof(VvVRobe) || citem.Type == typeof(VvVHairDye))
@@ -85,7 +84,7 @@ namespace Server.Engines.VvV
                 }
                 else
                 {
-                    if (User.AccessLevel == AccessLevel.Player)
+                    if (User.AccessLevel <= AccessLevel.VIP)
                         PointsSystem.ViceVsVirtue.DeductPoints(User, citem.Points);
 
                     User.SendLocalizedMessage(1073621); // Your reward has been placed in your backpack.

@@ -9,7 +9,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public WarAlligator() : base(AIType.AI_Melee)
 		{
-			Name = "a war alligator";
+			Name = "jacare de guerra";
 			Body = 0xCA;
             BaseSoundID = 660;
 		}
@@ -17,7 +17,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public WarAlligator(int level, bool voidSpawn) : base(AIType.AI_Melee, level, voidSpawn)
 		{
-			Name = "a war alligator";
+			Name = "jacare de guerra";
 			Body = 0xCA;
             BaseSoundID = 660;
 		}
@@ -45,7 +45,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public MagmaLizard() : base(AIType.AI_Melee)
 		{
-			Name = "a magma lizard";
+			Name = "lagarto de lava";
 			Body = 0xCE;
             Hue = Utility.RandomList(0x647, 0x650, 0x659, 0x662, 0x66B, 0x674);
             BaseSoundID = 0x5A;
@@ -54,7 +54,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public MagmaLizard(int level, bool voidSpawn) : base(AIType.AI_Melee, level, voidSpawn)
 		{
-			Name = "a magma lizard";
+			Name = "lagarto de lava";
 			Body = 0xCE;
             Hue = Utility.RandomList(0x647, 0x650, 0x659, 0x662, 0x66B, 0x674);
             BaseSoundID = 0x5A;
@@ -83,7 +83,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public ViciousDrake() : base(AIType.AI_Melee)
 		{
-			Name = "a vicious drake";
+			Name = "gragonete nervosa";
 			Body = Utility.RandomList(60, 61);
             BaseSoundID = 362;
 		}
@@ -91,7 +91,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public ViciousDrake(int level, bool voidSpawn) : base(AIType.AI_Melee, level, voidSpawn)
 		{
-			Name = "a vicious drake";
+			Name = "gragonete nervosa";
 			Body = Utility.RandomList(60, 61);
             BaseSoundID = 362;
 		}
@@ -119,7 +119,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public CorruptedWyvern() : base(AIType.AI_Mage)
 		{
-			Name = "a corrupted wyvern";
+			Name = "wyvern corrompido";
 			Body = 62;
             BaseSoundID = 362;
 		}
@@ -127,7 +127,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public CorruptedWyvern(int level, bool voidSpawn) : base(AIType.AI_Mage, level, voidSpawn)
 		{
-			Name = "a corrupted wyvern";
+			Name = "wyvern corrompido";
 			Body = 62;
             BaseSoundID = 362;
 		}
@@ -156,7 +156,7 @@ namespace Server.Mobiles
         public CovetousWyrm()
             : base(AIType.AI_Necro)
 		{
-			Name = "a covetous wyrm";
+			Name = "draco etereo";
 			Body = 106;
             BaseSoundID = 362;
 		}
@@ -164,7 +164,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public CovetousWyrm(int level, bool voidSpawn) : base(AIType.AI_Mage, level, voidSpawn)
 		{
-			Name = "a covetous wyrm";
+			Name = "draco etereo";
 			Body = 106;
             BaseSoundID = 362;
 		}

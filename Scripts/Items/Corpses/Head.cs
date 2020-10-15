@@ -62,6 +62,13 @@ namespace Server.Items
                 this.m_HeadType = value;
             }
         }
+
+        public override void AddNameProperties(ObjectPropertyList list)
+        {
+            list.Add("Cabeca de " + this.m_PlayerName);
+            base.AddNameProperties(list);
+        }
+
         public override string DefaultName
         {
             get

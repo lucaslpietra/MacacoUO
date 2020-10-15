@@ -11,13 +11,24 @@ namespace Server.Items
         public RecipeScroll(Recipe r)
             : this(r.ID)
         {
+            var skill = RecipeScrollDefinition.RecipeSkillNameConvert(r.CraftSystem.MainSkill);
+            Name = "pergaminho de receita de "+skill.ToString();
         }
 
         [Constructable]
         public RecipeScroll(int recipeID)
             : base(0x2831)
         {
-            this.m_RecipeID = recipeID;
+            if(Recipe.Recipes.ContainsKey(recipeID))
+            {
+                var recipe = Recipe.Recipes[recipeID];
+                var skill = RecipeScrollDefinition.RecipeSkillNameConvert(recipe.CraftSystem.MainSkill);
+                Name = "pergaminho de receita de " + skill.ToString();
+                this.m_RecipeID = recipeID;
+            } else
+            {
+                Name = "Receita Desconhecida " + recipeID;
+            }
         }
 
         public RecipeScroll(Serial serial)
@@ -25,13 +36,6 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074560;
-            }
-        }// recipe scroll
         [CommandProperty(AccessLevel.GameMaster)]
         public int RecipeID
         {
@@ -45,6 +49,7 @@ namespace Server.Items
                 this.InvalidateProperties();
             }
         }
+
         public Recipe Recipe
         {
             get
@@ -63,6 +68,8 @@ namespace Server.Items
 
             if (r != null)
                 list.Add(1049644, r.TextDefinition.ToString()); // [~1_stuff~]
+            else
+                list.Add("[ Receita Desconhecida ]");
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -81,23 +88,13 @@ namespace Server.Items
 
                 if (!pm.HasRecipe(r))
                 {
-                    bool allRequiredSkills = true;
-                    double chance = r.CraftItem.GetSuccessChance(from, null, r.CraftSystem, false, ref allRequiredSkills);
-
-                    if (allRequiredSkills && chance >= 0.0)
-                    {
-                        pm.SendLocalizedMessage(1073451, r.TextDefinition.ToString()); // You have learned a new recipe: ~1_RECIPE~
-                        pm.AcquireRecipe(r);
-                        this.Delete();
-                    }
-                    else
-                    {
-                        pm.SendLocalizedMessage(1044153); // You don't have the required skills to attempt this item.
-                    }
+                    pm.SendMessage(78, "Voce aprendeu a receita. Digite .receitas para ver as receitas"); // You have learned a new recipe: ~1_RECIPE~
+                    pm.AcquireRecipe(r);
+                    this.Delete();
                 }
                 else
                 {
-                    pm.SendLocalizedMessage(1073427); // You already know this recipe.
+                    pm.SendMessage("Voce ja conhece esta receita, digite .receitas para ver suas receitas"); // You already know this recipe.
                 }
             }
         }
@@ -117,7 +114,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch( version )
+            switch (version)
             {
                 case 0:
                     {
@@ -130,7 +127,7 @@ namespace Server.Items
     }
 
     public class DoomRecipeScroll : RecipeScroll
-    {  
+    {
         [Constructable]
         public DoomRecipeScroll()
             : base(Utility.RandomList(355, 356, 456, 585))

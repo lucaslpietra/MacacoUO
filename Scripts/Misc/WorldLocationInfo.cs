@@ -169,11 +169,6 @@ namespace Server
 			},
 		};
 
-        public static string GetLocationString(IEntity e)
-        {
-            return GetLocationString(e.Location, e.Map);
-        }
-
         public static string GetLocationString(Point3D p, Map map)
         {
             Region r = Region.Find(p, map);

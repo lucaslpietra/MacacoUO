@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using Server;
 using System.Collections.Generic;
 using Server.Engines.Harvest;
 
 namespace Server.Items
 {
-
     public class NiterDeposit : Item
     {
         public enum NiterSize
@@ -80,7 +79,7 @@ namespace Server.Items
             Mobile from = (Mobile)os[0];
             Item tool = (Item)os[1];
 
-            if (from != null && from.CheckSkill(SkillName.Mining, 60.0, 100.0))
+            if (from != null && from.CheckSkillMult(SkillName.Mining, 60.0, 100.0))
             {
                 Container pack = from.Backpack;
                 int count = 1;

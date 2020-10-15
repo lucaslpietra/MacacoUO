@@ -90,8 +90,8 @@ namespace Server.Mobiles
 
         public override void OnSuccessfulBulkOrderReceive(Mobile from)
         {
-            if (Core.SE && from is PlayerMobile)
-                ((PlayerMobile)from).NextTailorBulkOrder = TimeSpan.Zero;
+            //if (Core.SE && from is PlayerMobile)
+            //    ((PlayerMobile)from).NextTailorBulkOrder = TimeSpan.Zero;
         }
 
         #endregion

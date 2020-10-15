@@ -12,6 +12,7 @@ namespace Server.Items
             : base(0x143E)
         {
             this.Weight = 16.0;
+            Name = "Alabarda";
         }
 
         public Halberd(Serial serial)
@@ -101,6 +102,13 @@ namespace Server.Items
             get
             {
                 return 31;
+            }
+        }
+        public override int DefMaxRange
+        {
+            get
+            {
+                return 2;
             }
         }
         public override int InitMaxHits

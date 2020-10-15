@@ -144,7 +144,7 @@ namespace Server.Spells.Mysticism
             SpellHelper.Damage(null, TimeSpan.Zero, from, caster, damage, 0, 0, 0, 0, 0, DFAlgorithm.Standard, 100, 0);
         }
 
-        public static void RemoveFromList(Mobile from)
+        public static bool RemoveFromList(Mobile from)
         {
             if (m_Table.ContainsKey(from) && m_Table[from].Count > 0)
             {
@@ -163,12 +163,15 @@ namespace Server.Spells.Mysticism
                     foreach (SpellPlagueTimer Ttimer in kvp.Value)
                     {
                         if (Ttimer.Caster == caster)
-                            return;
+                            return true;
                     }
                 }
 
                 BuffInfo.RemoveBuff(caster, BuffIcon.SpellPlague);
+
+                return true;
             }
+            return false;
         }
 
         public class InternalTarget : Target

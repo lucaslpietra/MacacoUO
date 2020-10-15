@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Server.Mobiles;
 using Server.Network;
 
 namespace Server.Gumps
@@ -10,6 +13,8 @@ namespace Server.Gumps
         public static readonly LocationTree Ilshenar = new LocationTree("ilshenar.xml", Map.Ilshenar);
         public static readonly LocationTree Malas = new LocationTree("malas.xml", Map.Malas);
         public static readonly LocationTree Tokuno = new LocationTree("tokuno.xml", Map.Tokuno);
+
+        public static readonly LocationTree CampingPoints = new LocationTree("campingPoints.xml", Map.Felucca);
         #region SA
         public static readonly LocationTree TerMur = new LocationTree("termur.xml", Map.TerMur);
         #endregion
@@ -96,14 +101,96 @@ namespace Server.Gumps
                 from.SendGump(new GoGump(0, from, tree, branch));
         }
 
+        public static void DisplayToCampfire(Mobile from)
+        {
+            ParentNode branch = null;
+
+            if (branch == null)
+                branch = CampingPoints.Root;
+
+            if (branch != null)
+                from.SendGump(new GoGump(0, from, CampingPoints, branch, true));
+        }
+
         private readonly LocationTree m_Tree;
         private readonly ParentNode m_Node;
         private readonly int m_Page;
+        private bool camp = false;
 
-        private GoGump(int page, Mobile from, LocationTree tree, ParentNode node)
+        private static List<ChildNode> GetChildren(ParentNode node, List<ChildNode> childList)
+        {
+            foreach (var children in node.Children)
+            {
+                if (children is ParentNode)
+                {
+                    GetChildren((ParentNode)children, childList);
+                }
+                else if (children is ChildNode)
+                {
+                    childList.Add((ChildNode)children);
+                }
+            }
+            return childList;
+        }
+
+        public static List<ChildNode> GetAllChildsCamping()
+        {
+            List<ChildNode> allChilds = new List<ChildNode>();
+            var tree = GoGump.CampingPoints.Root;
+            foreach (var children in tree.Children)
+            {
+                if (children is ParentNode)
+                {
+                    GetChildren((ParentNode)children, allChilds);
+                }
+                else if (children is ChildNode)
+                {
+                    allChilds.Add((ChildNode)children);
+                }
+            }
+            return allChilds;
+        }
+
+        public static void DiscoverLocation(PlayerMobile from)
+        {
+            var discobertas = from.CampfireLocations.Split(';').ToList();
+            var childs = GetAllChildsCamping();
+
+            double menorDist = 999999999999999999;
+
+            ChildNode prox = null;
+
+            foreach (var loc in childs)
+            {
+
+                var distancia = from.GetDistanceToSqrt(loc.Location);
+                if (distancia < 500)
+                {
+                    if (distancia < menorDist)
+                    {
+                        menorDist = distancia;
+                        prox = loc;
+                    }
+                }
+
+            }
+            if (prox != null)
+            {
+                if (discobertas.Contains(prox.Name))
+                {
+                    return;
+                }
+                from.CampfireLocations += prox.Name + ";";
+                from.Emote("Local de Camping Descoberto: " + prox.Name);
+            }
+        }
+
+        private GoGump(int page, Mobile from, LocationTree tree, ParentNode node, bool campfire = false)
             : base(50, 50)
         {
             from.CloseGump(typeof(GoGump));
+
+            this.camp = campfire;
 
             tree.LastBranch[from] = node;
 
@@ -178,10 +265,10 @@ namespace Server.Gumps
                     this.AddLabel(x + NextLabelOffsetX, y + NextLabelOffsetY, TextHue, "Next");
             }
 
+            var campsLiberados = ((PlayerMobile)from).CampfireLocations.Split(';').ToList();
+
             for (int i = 0, index = page * EntryCount; i < EntryCount && index < node.Children.Length; ++i, ++index)
             {
-                x = BorderSize + OffsetSize;
-                y += EntryHeight + OffsetSize;
 
                 object child = node.Children[index];
                 string name = "";
@@ -190,6 +277,14 @@ namespace Server.Gumps
                     name = ((ParentNode)child).Name;
                 else if (child is ChildNode)
                     name = ((ChildNode)child).Name;
+
+                if (name != "Camping" && camp && !campsLiberados.Contains(name))
+                {
+                    continue; 
+                }
+  
+                x = BorderSize + OffsetSize;
+                y += EntryHeight + OffsetSize;
 
                 this.AddImageTiled(x, y, EntryWidth, EntryHeight, EntryGumpID);
                 this.AddLabelCropped(x + TextOffsetX, y, EntryWidth - TextOffsetX, EntryHeight, TextHue, name);
@@ -207,51 +302,83 @@ namespace Server.Gumps
         {
             Mobile from = state.Mobile;
 
-            switch ( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 1:
                     {
                         if (this.m_Node.Parent != null)
-                            from.SendGump(new GoGump(0, from, this.m_Tree, this.m_Node.Parent));
+                            from.SendGump(new GoGump(0, from, this.m_Tree, this.m_Node.Parent, camp));
 
                         break;
                     }
                 case 2:
                     {
                         if (this.m_Page > 0)
-                            from.SendGump(new GoGump(this.m_Page - 1, from, this.m_Tree, this.m_Node));
+                            from.SendGump(new GoGump(this.m_Page - 1, from, this.m_Tree, this.m_Node, camp));
 
                         break;
                     }
                 case 3:
                     {
                         if ((this.m_Page + 1) * EntryCount < this.m_Node.Children.Length)
-                            from.SendGump(new GoGump(this.m_Page + 1, from, this.m_Tree, this.m_Node));
+                            from.SendGump(new GoGump(this.m_Page + 1, from, this.m_Tree, this.m_Node, camp));
 
                         break;
                     }
                 default:
                     {
                         int index = info.ButtonID - 4;
-
                         if (index >= 0 && index < this.m_Node.Children.Length)
                         {
                             object o = this.m_Node.Children[index];
 
                             if (o is ParentNode)
                             {
-                                from.SendGump(new GoGump(0, from, this.m_Tree, (ParentNode)o));
+                                from.SendGump(new GoGump(0, from, this.m_Tree, (ParentNode)o, camp));
                             }
                             else
                             {
                                 ChildNode n = (ChildNode)o;
+                                if (camp)
+                                {
+                                    var timer = new CampingTimer(from, this.m_Tree, n.Location);
+                                    timer.Start();
+                                }
+                                else
+                                {
+                                    from.MoveToWorld(n.Location, this.m_Tree.Map);
+                                }
 
-                                from.MoveToWorld(n.Location, this.m_Tree.Map);
+
                             }
                         }
 
                         break;
                     }
+            }
+        }
+
+        public class CampingTimer : Timer
+        {
+            private Mobile player;
+            LocationTree locTree;
+            Point3D point;
+            public CampingTimer(Mobile player, LocationTree locTree, Point3D point)
+                : base(TimeSpan.FromSeconds(Core.AOS ? 3.0 : 2.5))
+            {
+                this.locTree = locTree;
+                this.point = point;
+                this.player = player;
+                Priority = TimerPriority.FiftyMS;
+                player.Freeze(TimeSpan.FromSeconds(3));
+                player.SendMessage("Voce esta indo ao seu destino");
+            }
+
+            protected override void OnTick()
+            {
+                BaseCreature.TeleportPets(player, point, locTree.Map);
+                player.MoveToWorld(point, locTree.Map);
+                player.SendMessage("Voce chegou ao seu destino");
             }
         }
     }

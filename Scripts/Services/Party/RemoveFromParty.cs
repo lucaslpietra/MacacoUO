@@ -22,7 +22,7 @@ namespace Server.ContextMenus
                 return;
 
             if (this.m_From == this.m_Target)
-                this.m_From.SendLocalizedMessage(1005446); // You may only remove yourself from a party if you are not the leader.
+                this.m_From.SendMessage("Voce so pode remover a si mesmo se nao for o lider"); // You may only remove yourself from a party if you are not the leader.
             else
                 p.Remove(this.m_Target);
         }

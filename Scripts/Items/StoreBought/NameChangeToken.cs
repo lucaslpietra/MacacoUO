@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using Server.Mobiles;
 using Server.Gumps;
@@ -8,8 +8,8 @@ namespace Server.Items
 {
     public class NameChangeToken : Item, IPromotionalToken
     {
-        public override int LabelNumber { get { return 1070997; } } // a promotional token
-        public TextDefinition ItemName { get { return 1075247; } } // name change
+        public override string DefaultName { get { return "Token de Nome"; } } // a promotional token
+        public TextDefinition ItemName { get { return "Permite trocar de Nome"; } } // name change
 
         public Type GumpType { get { return typeof(NameChangeConfirmGump); } }
 
@@ -37,7 +37,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(1070998, ItemName.ToString()); // Use this to redeem<br>Your ~1_PROMO~ : name change
+            list.Add("Troque o nome de seu personagem"); // Use this to redeem<br>Your ~1_PROMO~ : name change
         }
 
         public NameChangeToken(Serial serial)
@@ -74,18 +74,18 @@ namespace Server.Items
             AddImageTiled(5, 5, 281, 20, 2702);
             AddImageTiled(5, 30, 281, 120, 2702);
 
-            AddHtmlLocalized(8, 5, 279, 20, 1075241, 0x7FFF, false, false); // Change your character's name
+            AddHtml(8, 5, 279, 20, "Trocar de Nome", 0x7FFF, false, false); // Change your character's name
 
-            AddHtmlLocalized(8, 30, 279, 16, 1075242, 0x7FFF, false, false); // Enter your new name (16 characters max, English characters only):
+            AddHtml(8, 30, 279, 16, "Digite seu novo nome (16 letras max)", 0x7FFF, false, false); // Enter your new name (16 characters max, English characters only):
             AddImageTiled(8, 50, 276, 20, 0xDB0);
             AddTextEntry(9, 50, 275, 20, 0, 0, "");
-            AddHtmlLocalized(8, 70, 279, 80, 1075561, 0x7FFF, false, false); // Clicking OK will permanently change your character's name. Reversing this requires the purchase of an additional name change token. For more details, <A HREF="http://store2.origin.com/store/ea/en_US/DisplayProductDetailsPage/productID.244034900">visit our web site</A>.
+            AddHtml(8, 70, 279, 80, "Clicando em OK voce trocara de nome", 0x7FFF, false, false); // Clicking OK will permanently change your character's name. Reversing this requires the purchase of an additional name change token. For more details, <A HREF="http://store2.origin.com/store/ea/en_US/DisplayProductDetailsPage/productID.244034900">visit our web site</A>.
 
             AddButton(5, 152, 0xFB1, 0xFB3, 0, GumpButtonType.Reply, 0);
             AddHtmlLocalized(40, 152, 100, 20, 1011012, 0x7FFF, false, false); // CANCEL
 
             AddButton(126, 152, 0xFB7, 0xFB9, 1, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(160, 152, 120, 20, 1075243, 0x7FFF, false, false); // Change my name!
+            AddHtml(160, 152, 120, 20, "Trocar de nome", 0x7FFF, false, false); // Change my name!
         }
 
         public override void OnResponse(RelayInfo info)
@@ -100,22 +100,22 @@ namespace Server.Items
 
                     if (string.IsNullOrEmpty(text))
                     {
-                        User.SendLocalizedMessage(1075245); // Your name cannot be blank.
+                        User.SendMessage("Nome nao pode estar em branco"); // Your name cannot be blank.
                     }
                     else if (text.Length > 16)
                     {
-                        User.SendLocalizedMessage(1075244); // That name is too long.
+                        User.SendMessage("Muito longo"); // That name is too long.
                     }
                     else if (!NameVerification.Validate(text, 2, 16, true, false, true, 1, NameVerification.SpaceDashPeriodQuote))
                     {
-                        User.SendLocalizedMessage(1075246); // That name is not valid.
+                        User.SendMessage("Nome invalido"); // That name is not valid.
                     }
                     else
                     {
                         User.Name = text;
                         Token.Delete();
 
-                        User.SendMessage("You have successfully changed your name."); // TODO: Message?
+                        User.SendMessage("Voce trocou seu nome."); // TODO: Message?
                     }
                 }
             }

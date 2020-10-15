@@ -79,9 +79,9 @@ namespace Server.Engines.CannedEvil
 			m_HarrowerGoldPiles = Config.Get("Champions.HarrowerGoldPiles", 75);
 			m_HarrowerGoldMinAmount = Config.Get("Champions.HarrowerGoldMin", 5000);
 			m_HarrowerGoldMaxAmount = Config.Get("Champions.HarrowerGoldMax", 10000);
-			m_PowerScrollAmount = Config.Get("Champions.PowerScrolls", 6);
-			m_StatScrollAmount = Config.Get("Champions.StatScrolls", 16);
-			m_ScrollChance = Config.Get("Champions.ScrollChance", 0.1d) / 100.0d;
+            m_PowerScrollAmount = 6;//Config.Get("Champions.PowerScrolls", 6);
+            m_StatScrollAmount = 0; // Config.Get("Champions.StatScrolls", 16);
+            m_ScrollChance = Config.Get("Champions.ScrollChance", 0.1d) / 100.0d;
 			m_TranscendenceChance = Config.Get("Champions.TranscendenceChance", 50.0d) / 100.0d;
 			int rank2 = Config.Get("Champions.Rank2RedSkulls", 5);
 			int rank3 = Config.Get("Champions.Rank3RedSkulls", 10);
@@ -97,10 +97,10 @@ namespace Server.Engines.CannedEvil
 				else
 					m_Rank[i] = 3;
 			}
-			m_MaxKill[0] = Config.Get("Champions.Rank1MaxKills", 256);
-			m_MaxKill[1] = Config.Get("Champions.Rank2MaxKills", 128);
-			m_MaxKill[2] = Config.Get("Champions.Rank3MaxKills", 64);
-			m_MaxKill[3] = Config.Get("Champions.Rank4MaxKills", 32);
+            m_MaxKill[0] = 64; // Config.Get("Champions.Rank1MaxKills", 256);
+            m_MaxKill[1] = 64; // Config.Get("Champions.Rank2MaxKills", 128);
+            m_MaxKill[2] = 32; // Config.Get("Champions.Rank3MaxKills", 64);
+            m_MaxKill[3] = 16; // Config.Get("Champions.Rank4MaxKills", 32);
 			EventSink.WorldLoad += EventSink_WorldLoad;
 			EventSink.WorldSave += EventSink_WorldSave;
 		}

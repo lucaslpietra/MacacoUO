@@ -16,18 +16,11 @@ namespace Server.Regions
 
         public override bool OnBeginSpellCast(Mobile m, ISpell s)
         {
-            if (m.IsPlayer())
+            if ((s is GateTravelSpell || s is RecallSpell || s is MarkSpell || s is SacredJourneySpell) && m.IsPlayer())
             {
-                if (s is MarkSpell)
-                {
-                    m.SendLocalizedMessage(501802); // Thy spell doth not appear to work...
-                    return false;
-                }
-                else if (s is GateTravelSpell || s is RecallSpell || s is SacredJourneySpell)
-                {
-                    m.SendLocalizedMessage(501035); // You cannot teleport from here to the destination.
-                    return false;
-                }
+                m.SendLocalizedMessage(501802); // Thy spell doth not appear to work...
+				
+                return false;
             }
 			
             return base.OnBeginSpellCast(m, s);

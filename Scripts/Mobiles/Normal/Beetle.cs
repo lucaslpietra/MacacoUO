@@ -18,7 +18,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public Beetle()
-            : this("a giant beetle")
+            : this("besouro gigante")
         {
         }
 
@@ -192,7 +192,7 @@ namespace Server.Mobiles
         {
             base.OnAfterTame(tamer);
 
-            if (Owners.Count == 0 && PetTrainingHelper.Enabled)
+            if (PetTrainingHelper.Enabled)
             {
                 SetInt(500);
             }

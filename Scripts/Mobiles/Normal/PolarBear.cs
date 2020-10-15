@@ -4,13 +4,13 @@ namespace Server.Mobiles
 {
     [CorpseName("a polar bear corpse")]
     [TypeAlias("Server.Mobiles.Polarbear")]
-    public class PolarBear : BaseCreature
+    public class PolarBear : BaseMount
     {
         [Constructable]
         public PolarBear()
-            : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base("urso polar", 0x20E1, 0x3EC5, AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a polar bear";
+            this.Name = "urso polar";
             this.Body = 213;
             this.BaseSoundID = 0xA3;
 
@@ -41,7 +41,7 @@ namespace Server.Mobiles
 
             this.Tamable = true;
             this.ControlSlots = 1;
-            this.MinTameSkill = 35.1;
+            this.MinTameSkill = 70;
         }
 
         public PolarBear(Serial serial)

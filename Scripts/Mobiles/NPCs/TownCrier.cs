@@ -481,28 +481,20 @@ namespace Server.Mobiles
 
             InitStats(100, 100, 25);
 
-            Title = "the town crier";
+            Title = "o jornalista";
             Hue = Utility.RandomSkinHue();
 
             if (!Core.AOS)
                 NameHue = 0x35;
 
-            if (Female = Utility.RandomBool())
-            {
-                Body = 0x191;
-                Name = NameList.RandomName("female");
-            }
-            else
-            {
-                Body = 0x190;
-                Name = NameList.RandomName("male");
-            }
+            Body = 0x190;
+            Name = NameList.RandomName("male");
 
             AddItem(new FancyShirt(Utility.RandomBlueHue()));
 
             Item skirt;
 
-            switch ( Utility.Random(2) )
+            switch (Utility.Random(2))
             {
                 case 0:
                     skirt = new Skirt();
@@ -521,7 +513,7 @@ namespace Server.Mobiles
 
             Item boots;
 
-            switch ( Utility.Random(2) )
+            switch (Utility.Random(2))
             {
                 case 0:
                     boots = new Boots();

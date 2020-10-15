@@ -43,6 +43,12 @@ namespace Server.Misc
             new CityInfo("Vesper", "The Ironwood Inn",	1075080, 2771,	976,	0, Map.Felucca)
         };
 
+        private static readonly CityInfo[] Cidades = new CityInfo[]
+        {
+           // new CityInfo("Pau no Cu", "Pau no Cu", 1136, 1924, 6, Map.Felucca),
+           new CityInfo("Galven", "Galven", 1319, 1385, 0, Map.Felucca)
+        };
+
         private static readonly CityInfo[] StartingCities = new CityInfo[]
         {
             new CityInfo("New Haven",	"New Haven Bank",	1150168, 3503,	2574,	14),
@@ -227,7 +233,7 @@ namespace Server.Misc
                     {
                         from.SendMessage("Your IP address does not match that which created this account.  A page has been entered into the help system on your behalf.");
 
-                        from.SendLocalizedMessage(501234, "", 0x35); /* The next available Counselor/Game Master will respond as soon as possible.
+                        from.SendMessage(78, "Alguem logo lhe respondera a pergunta"); /* The next available Counselor/Game Master will respond as soon as possible.
                         * Please check your Journal for messages every few minutes.
                         */
 
@@ -283,6 +289,11 @@ namespace Server.Misc
                     e.State.Account = acct = CreateAccount(e.State, un, pw);
                     e.Accepted = acct == null ? false : acct.CheckAccess(e.State);
 
+                    Shard.Debug("Conta ? " + (acct == null));
+                    if(acct != null)
+                    {
+                        Shard.Debug("Acesso correto ?" + acct.CheckAccess(e.State));
+                    }
                     if (!e.Accepted)
                         e.RejectReason = ALRReason.BadComm;
                 }
@@ -387,6 +398,7 @@ namespace Server.Misc
                 e.State.Account = acct;
                 e.Accepted = true;
 
+                /*
                 if(Siege.SiegeShard)
                 {
                     e.CityInfo = SiegeStartingCities;
@@ -403,6 +415,8 @@ namespace Server.Misc
                 {
                     e.CityInfo = StartingCitiesSA;
                 }
+                */
+                e.CityInfo = Cidades;
             }
 
             if (!e.Accepted)
@@ -438,6 +452,7 @@ namespace Server.Misc
             if (acct == null)
             {
                 state.Dispose();
+                Shard.Debug("Delete request sem conta, desconectando");
             }
             else if (index < 0 || index >= acct.Length)
             {
@@ -491,10 +506,18 @@ namespace Server.Misc
             return false;
         }
 
-        private static Account CreateAccount(NetState state, string un, string pw)
+        public static bool Valid(string un, string pw)
         {
             if (un.Length == 0 || pw.Length == 0)
-                return null;
+                return false;
+
+            /*
+            if (un.Length > 30 || pw.Length > 30)
+                return false;
+
+            if (un.Length < 5 || pw.Length < 8)
+                return false;
+            */
 
             bool isSafe = !(un.StartsWith(" ") || un.EndsWith(" ") || un.EndsWith("."));
 
@@ -505,7 +528,17 @@ namespace Server.Misc
                 isSafe = (pw[i] >= 0x20 && pw[i] < 0x7F);
 
             if (!isSafe)
+                return false;
+            return true;
+        }
+
+        private static Account CreateAccount(NetState state, string un, string pw)
+        {
+            if (!Valid(un, pw))
+            {
+                Shard.Debug("Conta nao pode ser criada, login/senha pequenos/grandes demais ou com caracteres invalidos");
                 return null;
+            }
 
             if (!CanCreate(state.Address))
             {
@@ -520,7 +553,7 @@ namespace Server.Misc
             Utility.PopColor();
 
             Account a = new Account(un, pw);
-
+            Shard.Debug("Conta criada: " + a.Username);
             return a;
         }
     }

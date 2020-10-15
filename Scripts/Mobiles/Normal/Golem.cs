@@ -46,7 +46,7 @@ namespace Server.Mobiles
         public Golem(bool summoned, double scalar)
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.4, 0.8)
         {               
-            Name = "a golem";
+            Name = "golem mecanico";
             Body = 752;
 
             SetStr((int)(251 * scalar), (int)(350 * scalar));
@@ -94,8 +94,6 @@ namespace Server.Mobiles
             SetResistance(ResistanceType.Energy, 30, 45);
 
             ControlSlots = 3;
-
-            SetSpecialAbility(SpecialAbility.ColossalBlow);
         }
 
         public virtual void SpawnPackItems()
@@ -108,8 +106,8 @@ namespace Server.Mobiles
             if (0.15 > Utility.RandomDouble())
                 PackItem(new ClockworkAssembly());
 
-            if (0.2 > Utility.RandomDouble())
-                PackItem(new ArcaneGem());
+            //if (0.2 > Utility.RandomDouble())
+            //    PackItem(new ArcaneGem());
 
             if (0.25 > Utility.RandomDouble())
                 PackItem(new Gears());
@@ -121,15 +119,16 @@ namespace Server.Mobiles
         }
 
         public override bool IsScaredOfScaryThings { get { return false; } }
-        public override bool IsScaryToPets { get { return !Controlled; } }
+        public override bool IsScaryToPets { get { return true; } }
         public override bool IsBondable { get { return false; } }
         public override FoodType FavoriteFood { get { return FoodType.None; } }
         public override bool CanBeDistracted { get { return false; } }
         public override bool DeleteOnRelease { get { return true; } }
         public override bool AutoDispel { get { return !Controlled; } }
         public override bool BleedImmune { get { return true; } }
-        public override bool BardImmune { get { return !Core.AOS || !Controlled; } }
+        public override bool BardImmune { get { return !Core.AOS || Controlled; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
+        public override bool DoesColossalBlow { get { return true; } }
 
         public override void OnDeath(Container c)
         {

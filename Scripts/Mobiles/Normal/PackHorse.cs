@@ -12,7 +12,7 @@ namespace Server.Mobiles
         public PackHorse()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            Name = "a pack horse";
+            Name = "cavalo de carga";
             Body = 291;
             BaseSoundID = 0xA8;
 

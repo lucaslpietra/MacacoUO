@@ -59,7 +59,7 @@ namespace Server.Spells.First
             private readonly NightSightSpell m_Spell;
 
             public NightSightTarget(NightSightSpell spell)
-                : base(12, false, TargetFlags.Beneficial)
+                : base(Spell.RANGE, false, TargetFlags.Beneficial)
             {
                 m_Spell = spell;
             }

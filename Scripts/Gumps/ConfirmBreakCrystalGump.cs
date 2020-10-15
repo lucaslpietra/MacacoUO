@@ -32,7 +32,7 @@ namespace Server.Gumps
                 else
                 {			
                     summon.MoveToWorld(from.Location, from.Map);
-                    summon.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 502799, from.NetState); // It seems to accept you as master.
+                    summon.PrivateOverheadMessage(MessageType.Regular, 0x7B2, 502799, from.NetState); // It seems to accept you as master.
 
                     summon.IsBonded = true;
                     from.SendLocalizedMessage(1049666); // Your pet has bonded with you!

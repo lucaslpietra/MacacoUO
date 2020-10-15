@@ -15,7 +15,7 @@ namespace Server.Mobiles
 		public Revenant(Mobile caster, Mobile target, TimeSpan duration)
 			: base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.18, 0.36)
 		{
-			Name = "a revenant";
+			Name = "espirito vil";
 			Body = 400;
 			Hue = 1;
 
@@ -66,6 +66,7 @@ namespace Server.Mobiles
 		}
 
 		public Revenant(Serial serial)
+
 			: base(serial)
 		{ }
 

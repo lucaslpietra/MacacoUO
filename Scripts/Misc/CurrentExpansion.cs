@@ -15,7 +15,7 @@ namespace Server
 		[CallPriority(Int32.MinValue)]
 		public static void Configure()
 		{
-			Core.Expansion = Expansion;
+			Core.Expansion = Expansion.LBR;
 
 			AccountGold.Enabled = Core.TOL;
 			AccountGold.ConvertOnBank = true;
@@ -24,10 +24,13 @@ namespace Server
             
 			TownCryerSystem.Enabled = Core.TOL;
 
-			ObjectPropertyList.Enabled = Core.AOS;
+			ObjectPropertyList.Enabled = true;
+            PacketHandlers.SingleClickProps = false;
+
+            Mobile.EquipItemDelay = -1;
 
             Mobile.InsuranceEnabled = Core.AOS && !Siege.SiegeShard;
-			Mobile.VisibleDamageType = Core.AOS ? VisibleDamageType.Related : VisibleDamageType.None;
+			Mobile.VisibleDamageType = VisibleDamageType.None;
 			Mobile.GuildClickMessage = !Core.AOS;
 			Mobile.AsciiClickMessage = !Core.AOS;
 
@@ -43,7 +46,7 @@ namespace Server
 				PacketHandlers.SingleClickProps = true; // single click for everything is overriden to check object property list
 			}
 
-			Mobile.ActionDelay = Core.TOL ? 500 : Core.AOS ? 1000 : 500;
+            Mobile.EquipItemDelay = 0; // Core.TOL ? 500 : Core.AOS ? 1000 : 500;
 			Mobile.AOSStatusHandler = AOS.GetStatus;
 		}
 	}

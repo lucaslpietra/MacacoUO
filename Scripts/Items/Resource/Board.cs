@@ -3,7 +3,7 @@ using System;
 namespace Server.Items
 {
     [FlipableAttribute( 0x1BD7, 0x1BDA )]
-	public class BaseWoodBoard : Item, ICommodity, IResource
+	public class BaseWoodBoard : Item, ICommodity
 	{
 		private CraftResource m_Resource;
 
@@ -18,14 +18,14 @@ namespace Server.Items
 		{ 
 			get
 			{
-				if ( m_Resource >= CraftResource.OakWood && m_Resource <= CraftResource.YewWood )
-					return 1075052 + ( (int)m_Resource - (int)CraftResource.OakWood );
+				if ( m_Resource >= CraftResource.Carvalho && m_Resource <= CraftResource.Mogno )
+					return 1075052 + ( (int)m_Resource - (int)CraftResource.Carvalho );
 
 				switch ( m_Resource )
 				{
-					case CraftResource.Bloodwood: return 1075055;
-					case CraftResource.Frostwood: return 1075056;
-					case CraftResource.Heartwood: return 1075062;	//WHY Osi.  Why?
+					case CraftResource.Carmesim: return 1075055;
+					case CraftResource.Gelo: return 1075056;
+					case CraftResource.Eucalipto: return 1075062;	//WHY Osi.  Why?
 				}
 
 				return LabelNumber;
@@ -42,7 +42,7 @@ namespace Server.Items
 
 		[Constructable]
 		public BaseWoodBoard( int amount )
-			: this( CraftResource.RegularWood, amount )
+			: this( CraftResource.Cedro, amount )
 		{
 		}
 
@@ -62,29 +62,22 @@ namespace Server.Items
 		{
 			Stackable = true;
 			Amount = amount;
-
+            Weight = 0.1;
 			m_Resource = resource;
 			Hue = CraftResources.GetHue( resource );
 		}
 
-		public override void GetProperties( ObjectPropertyList list )
-		{
-			base.GetProperties( list );
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            if (this.Amount == 1)
+                list.Add("Tabua de " + m_Resource);
+            else
+                list.Add(this.Amount+" Tabuas de " + m_Resource);
+        }
 
-			if ( !CraftResources.IsStandard( m_Resource ) )
-			{
-				int num = CraftResources.GetLocalizationNumber( m_Resource );
 
-				if ( num > 0 )
-					list.Add( num );
-				else
-					list.Add( CraftResources.GetName( m_Resource ) );
-			}
-		}
 
-		
-
-		public override void Serialize( GenericWriter writer )
+        public override void Serialize( GenericWriter writer )
 		{
 			base.Serialize( writer );
 
@@ -112,11 +105,10 @@ namespace Server.Items
 					}
 			}
 
-			if ( (version == 0 && Weight == 0.1) || ( version <= 2 && Weight == 2 ) )
-				Weight = -1;
+            Weight = 0.1;
 
 			if ( version <= 1 )
-				m_Resource = CraftResource.RegularWood;
+				m_Resource = CraftResource.Cedro;
 		}
 	}
 	
@@ -130,7 +122,7 @@ namespace Server.Items
 
 		[Constructable]
 		public Board(int amount)
-			: base(CraftResource.RegularWood, amount)
+			: base(CraftResource.Cedro, amount)
 		{
 		}
 
@@ -165,7 +157,7 @@ namespace Server.Items
 
         [Constructable]
         public HeartwoodBoard(int amount)
-            : base(CraftResource.Heartwood, amount)
+            : base(CraftResource.Eucalipto, amount)
         {
         }
 
@@ -199,7 +191,7 @@ namespace Server.Items
 
         [Constructable]
         public BloodwoodBoard(int amount)
-            : base(CraftResource.Bloodwood, amount)
+            : base(CraftResource.Carmesim, amount)
         {
         }
 
@@ -233,7 +225,7 @@ namespace Server.Items
 
         [Constructable]
         public FrostwoodBoard(int amount)
-            : base(CraftResource.Frostwood, amount)
+            : base(CraftResource.Gelo, amount)
         {
         }
 
@@ -267,7 +259,7 @@ namespace Server.Items
 
         [Constructable]
         public OakBoard(int amount)
-            : base(CraftResource.OakWood, amount)
+            : base(CraftResource.Carvalho, amount)
         {
         }
 
@@ -301,7 +293,7 @@ namespace Server.Items
 
         [Constructable]
         public AshBoard(int amount)
-            : base(CraftResource.AshWood, amount)
+            : base(CraftResource.Pinho, amount)
         {
         }
 
@@ -335,7 +327,7 @@ namespace Server.Items
 
         [Constructable]
         public YewBoard(int amount)
-            : base(CraftResource.YewWood, amount)
+            : base(CraftResource.Mogno, amount)
         {
         }
 

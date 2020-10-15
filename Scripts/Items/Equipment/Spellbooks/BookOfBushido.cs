@@ -8,18 +8,20 @@ namespace Server.Items
         public BookOfBushido()
             : this((ulong)0x3F)
         {
+            this.Layer = Layer.OneHanded;
         }
 
         [Constructable]
         public BookOfBushido(ulong content)
             : base(content, 0x238C)
         {
-            this.Layer = (Core.ML ? Layer.OneHanded : Layer.Invalid);
+            this.Layer = Layer.OneHanded;
         }
 
         public BookOfBushido(Serial serial)
             : base(serial)
         {
+            this.Layer = Layer.OneHanded;
         }
 
         public override SpellbookType SpellbookType
@@ -56,8 +58,6 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version == 0 && Core.ML)
-                this.Layer = Layer.OneHanded;
         }
     }
 }

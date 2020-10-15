@@ -9,7 +9,7 @@ namespace Server.Multis
     {
         public static void Initialize()
         {
-            Timer.DelayCall(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), OnTick);
+            Timer.DelayCall(TimeSpan.FromMinutes(30), TimeSpan.FromSeconds(30), OnTick);
         }
 
         public static List<BaseCamp> _Camps = new List<BaseCamp>();
@@ -56,7 +56,7 @@ namespace Server.Multis
             m_Items = new List<Item>();
             m_Mobiles = new List<Mobile>();
 
-            Visible = false;
+            Visible = true;
 
             CheckAddComponents();
             _Camps.Add(this);
@@ -240,12 +240,14 @@ namespace Server.Multis
 
             for (int i = 0; i < m_Mobiles.Count; ++i)
             {
-                BaseCreature bc = (BaseCreature)m_Mobiles[i];
-
-                if (!bc.IsPrisoner)
-                    m_Mobiles[i].Delete();
-                else if (m_Mobiles[i].CantWalk)
-                    m_Mobiles[i].Delete();
+                if(m_Mobiles[i] is BaseCreature)
+                {
+                    BaseCreature bc = (BaseCreature)m_Mobiles[i];
+                    if (!bc.IsPrisoner)
+                        m_Mobiles[i].Delete();
+                    else if (m_Mobiles[i].CantWalk)
+                        m_Mobiles[i].Delete();
+                } 
             }
 
             m_Items.Clear();
@@ -259,7 +261,7 @@ namespace Server.Multis
             ((TreasureLevel1)Treasure1).Locked = false;
             AddItem(Treasure1, 2, 2, 0);
 
-            Treasure2 = new TreasureLevel3();
+            Treasure2 = new TreasureLevel2();
             AddItem(Treasure2, -2, -2, 0);
 		}
 

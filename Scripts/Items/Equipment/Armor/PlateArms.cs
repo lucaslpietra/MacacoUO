@@ -11,8 +11,11 @@ namespace Server.Items
         public PlateArms()
             : base(0x1410)
         {
-            Weight = 5.0;
+            this.Weight = 5.0;
+            this.Name = "Ombreiras de Metal";
         }
+
+        public override int MaxMageryCircle { get { return 3; } }
 
         public PlateArms(Serial serial)
             : base(serial)
@@ -79,6 +82,13 @@ namespace Server.Items
         {
             get
             {
+                return 75;
+            }
+        }
+        public override int ArmorBase
+        {
+            get
+            {
                 return 40;
             }
         }
@@ -87,13 +97,6 @@ namespace Server.Items
             get
             {
                 return -2;
-            }
-        }
-        public override int ArmorBase
-        {
-            get
-            {
-                return 40;
             }
         }
         public override ArmorMaterialType MaterialType
@@ -113,6 +116,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (this.Weight == 1.0)
+                this.Weight = 5.0;
         }
     }
 }

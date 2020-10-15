@@ -12,6 +12,7 @@ namespace Server.Items
             : base(0xF5E)
         {
             this.Weight = 6.0;
+            Name = "Espada Bastarda";
         }
 
         public Broadsword(Serial serial)

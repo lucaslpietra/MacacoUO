@@ -10,11 +10,11 @@ namespace Server.Mobiles
         public Cursed()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Title = "the Cursed";
+            this.Title = "o amaldicoado";
 
             this.Hue = Utility.RandomMinMax(0x8596, 0x8599);
             this.Body = 0x190;
-            this.Name = NameList.RandomName("male");
+            this.Name = NameList.RandomName("male")+"te" +" Nebroso";
             this.BaseSoundID = 471;
 
             this.AddItem(new ShortPants(Utility.RandomNeutralHue()));
@@ -83,17 +83,20 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Meager);
+            //AddLoot( LootPack.Miscellaneous );
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
         }
     }

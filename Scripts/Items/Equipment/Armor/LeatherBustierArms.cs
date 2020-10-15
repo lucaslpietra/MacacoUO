@@ -12,6 +12,7 @@ namespace Server.Items
             : base(0x1C0A)
         {
             this.Weight = 1.0;
+            this.Name = "Bustiê de Couro";
         }
 
         public LeatherBustierArms(Serial serial)

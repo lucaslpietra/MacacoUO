@@ -11,7 +11,7 @@ namespace Server.Items
             this.Hue = hue;
             this.Weight = 1.0;
             this.Movable = false;
-            this.LootType = LootType.Newbied;
+            this.LootType = LootType.Blessed;
             this.Layer = Layer.OuterTorso;
 
             this.m_AccessLevel = level;

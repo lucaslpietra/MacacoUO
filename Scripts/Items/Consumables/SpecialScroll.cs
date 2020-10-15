@@ -17,12 +17,13 @@ namespace Server.Items
         {
             get
             {
-                return m_InheritsItem;
+                return this.m_InheritsItem;
             }
         }
         #endregion
 
-        public abstract int Message { get; }
+        public virtual string MessageStr { get { return null; } }
+        public virtual int Message { get { return 0; } }
         public virtual int Title
         {
             get
@@ -35,11 +36,11 @@ namespace Server.Items
         public SpecialScroll(SkillName skill, double value)
             : base(0x14F0)
         {
-            LootType = LootType.Cursed;
-            Weight = 1.0;
+            this.LootType = LootType.Cursed;
+            this.Weight = 1.0;
 
-            m_Skill = skill;
-            Value = value;
+            this.m_Skill = skill;
+            this.m_Value = value;
         }
 
         public SpecialScroll(Serial serial)
@@ -52,11 +53,11 @@ namespace Server.Items
         {
             get
             {
-                return m_Skill;
+                return this.m_Skill;
             }
             set
             {
-                m_Skill = value;
+                this.m_Skill = value;
             }
         }
 
@@ -65,24 +66,22 @@ namespace Server.Items
         {
             get
             {
-                return m_Value;
+                return this.m_Value;
             }
             set
             {
-                m_Value = value;
-
-                m_Value = (double)Math.Floor(m_Value * 10) / 10.0;
+                this.m_Value = value;
             }
         }
 
         public virtual string GetNameLocalized()
         {
-            return String.Concat("#", AosSkillBonuses.GetLabel(m_Skill).ToString());
+            return String.Concat("#", AosSkillBonuses.GetLabel(this.m_Skill).ToString());
         }
 
         public virtual string GetName()
         {
-            int index = (int)m_Skill;
+            int index = (int)this.m_Skill;
             SkillInfo[] table = SkillInfo.Table;
 
             if (index >= 0 && index < table.Length)
@@ -93,10 +92,10 @@ namespace Server.Items
 
         public virtual bool CanUse(Mobile from)
         {
-            if (Deleted)
+            if (this.Deleted)
                 return false;
 
-            if (!IsChildOf(from.Backpack))
+            if (!this.IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                 return false;
@@ -111,7 +110,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!CanUse(from))
+            if (!this.CanUse(from))
                 return;
 
             from.CloseGump(typeof(SpecialScroll.InternalGump));
@@ -122,10 +121,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write((int)1); // version
 
-            writer.Write((int)m_Skill);
-            writer.Write((double)m_Value);
+            writer.Write((int)this.m_Skill);
+            writer.Write((double)this.m_Value);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -136,36 +135,30 @@ namespace Server.Items
 
             switch ( version )
             {
-                case 2:
                 case 1:
                     {
-                        m_Skill = (SkillName)reader.ReadInt();
-                        m_Value = reader.ReadDouble();
+                        this.m_Skill = (SkillName)reader.ReadInt();
+                        this.m_Value = reader.ReadDouble();
                         break;
                     }
                 case 0:
                     {
-                        m_InheritsItem = true;
+                        this.m_InheritsItem = true;
 
                         if (!(this is StatCapScroll))
-                            m_Skill = (SkillName)reader.ReadInt();
+                            this.m_Skill = (SkillName)reader.ReadInt();
                         else
-                            m_Skill = SkillName.Alchemy;
+                            this.m_Skill = SkillName.Alchemy;
 
                         if (this is ScrollOfAlacrity)
-                            m_Value = 0.0;
+                            this.m_Value = 0.0;
                         else if (this is StatCapScroll)
-                            m_Value = (double)reader.ReadInt();
+                            this.m_Value = (double)reader.ReadInt();
                         else
-                            m_Value = reader.ReadDouble();
+                            this.m_Value = reader.ReadDouble();
 
                         break;
                     }
-            }
-
-            if (version == 1)
-            {
-                m_Value = (double)Math.Floor(m_Value * 10) / 10.0;
             }
         }
 
@@ -177,41 +170,47 @@ namespace Server.Items
             public InternalGump(Mobile mobile, SpecialScroll scroll)
                 : base(25, 50)
             {
-                m_Mobile = mobile;
-                m_Scroll = scroll;
+                this.m_Mobile = mobile;
+                this.m_Scroll = scroll;
 
-                AddPage(0);
+                this.AddPage(0);
 
-                AddBackground(25, 10, 420, 200, 5054);
+                this.AddBackground(25, 10, 420, 200, 5054);
 
-                AddImageTiled(33, 20, 401, 181, 2624);
-                AddAlphaRegion(33, 20, 401, 181);
+                this.AddImageTiled(33, 20, 401, 181, 2624);
+                this.AddAlphaRegion(33, 20, 401, 181);
 
-                AddHtmlLocalized(40, 48, 387, 100, m_Scroll.Message, true, true);
+                if(this.m_Scroll.MessageStr != null)
+                {
+                    this.AddHtml(40, 48, 387, 100, this.m_Scroll.MessageStr, true, true);
+                } else
+                {
+                    this.AddHtmlLocalized(40, 48, 387, 100, this.m_Scroll.Message, true, true);
+                }
+               
 
-                AddHtmlLocalized(125, 148, 200, 20, 1049478, 0xFFFFFF, false, false); // Do you wish to use this scroll?
+                this.AddHtml(125, 148, 200, 20, "Voce quer usar o pergaminho?", 0xFFFFFF, false, false); // Do you wish to use this scroll?
 
-                AddButton(100, 172, 4005, 4007, 1, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(135, 172, 120, 20, 1046362, 0xFFFFFF, false, false); // Yes
+                this.AddButton(100, 172, 4005, 4007, 1, GumpButtonType.Reply, 0);
+                this.AddHtml(135, 172, 120, 20, "Sim", 0xFFFFFF, false, false); // Yes
 
-                AddButton(275, 172, 4005, 4007, 0, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(310, 172, 120, 20, 1046363, 0xFFFFFF, false, false); // No
+                this.AddButton(275, 172, 4005, 4007, 0, GumpButtonType.Reply, 0);
+                this.AddHtml(310, 172, 120, 20, "Nao", 0xFFFFFF, false, false); // No
 
-                if (m_Scroll.Title != 0)
-                    AddHtmlLocalized(40, 20, 260, 20, m_Scroll.Title, 0xFFFFFF, false, false);
+                if (this.m_Scroll.Title != 0)
+                    this.AddHtmlLocalized(40, 20, 260, 20, this.m_Scroll.Title, 0xFFFFFF, false, false);
                 else
-                    AddHtml(40, 20, 260, 20, m_Scroll.DefaultTitle, false, false);
+                    this.AddHtml(40, 20, 260, 20, this.m_Scroll.DefaultTitle, false, false);
 
-                if (m_Scroll is StatCapScroll)
-                    AddHtmlLocalized(310, 20, 120, 20, 1038019, 0xFFFFFF, false, false); // Power
-                else
-                    AddHtmlLocalized(310, 20, 120, 20, AosSkillBonuses.GetLabel(m_Scroll.Skill), 0xFFFFFF, false, false);
+
+               this.AddHtml(310, 20, 120, 20, "Poder", 0xFFFFFF, false, false); // Power
+               
             }
 
             public override void OnResponse(NetState state, RelayInfo info)
             {
                 if (info.ButtonID == 1)
-                    m_Scroll.Use(m_Mobile);
+                    this.m_Scroll.Use(this.m_Mobile);
             }
         }
     }

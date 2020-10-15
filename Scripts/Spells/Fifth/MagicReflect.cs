@@ -1,3 +1,4 @@
+using Server.Network;
 using System;
 using System.Collections;
 
@@ -25,7 +26,7 @@ namespace Server.Spells.Fifth
                 return SpellCircle.Fifth;
             }
         }
-        public static void EndReflect(Mobile m)
+        public static bool EndReflect(Mobile m)
         {
             if (m_Table.Contains(m))
             {
@@ -39,7 +40,9 @@ namespace Server.Spells.Fifth
 
                 m_Table.Remove(m);
                 BuffInfo.RemoveBuff(m, BuffIcon.MagicReflection);
+                return true;
             }
+            return false;
         }
 
         public override bool CheckCast()
@@ -57,98 +60,40 @@ namespace Server.Spells.Fifth
                 this.Caster.SendLocalizedMessage(1005385); // The spell will not adhere to you at this time.
                 return false;
             }
-
             return true;
         }
 
         public override void OnCast()
         {
-            if (Core.AOS)
+            if (this.Caster.MagicDamageAbsorb > 0)
             {
-                /* The magic reflection spell decreases the caster's physical resistance, while increasing the caster's elemental resistances.
-                * Physical decrease = 25 - (Inscription/20).
-                * Elemental resistance = +10 (-20 physical, +10 elemental at GM Inscription)
-                * The magic reflection spell has an indefinite duration, becoming active when cast, and deactivated when re-cast.
-                * Reactive Armor, Protection, and Magic Reflection will stay onóeven after logging out, even after dyingóuntil you ìturn them offî by casting them again. 
-                */
-                if (this.CheckSequence())
-                {
-                    Mobile targ = this.Caster;
-
-                    ResistanceMod[] mods = (ResistanceMod[])m_Table[targ];
-
-                    if (mods == null)
-                    {
-                        targ.PlaySound(0x1E9);
-                        targ.FixedParticles(0x375A, 10, 15, 5037, EffectLayer.Waist);
-
-                        int physiMod = -25 + (int)(targ.Skills[SkillName.Inscribe].Value / 20);
-                        int otherMod = 10;
-
-                        mods = new ResistanceMod[5]
-                        {
-                            new ResistanceMod(ResistanceType.Physical, physiMod),
-                            new ResistanceMod(ResistanceType.Fire, otherMod),
-                            new ResistanceMod(ResistanceType.Cold, otherMod),
-                            new ResistanceMod(ResistanceType.Poison,	otherMod),
-                            new ResistanceMod(ResistanceType.Energy,	otherMod)
-                        };
-
-                        m_Table[targ] = mods;
-
-                        for (int i = 0; i < mods.Length; ++i)
-                            targ.AddResistanceMod(mods[i]);
-
-                        string buffFormat = String.Format("{0}\t+{1}\t+{1}\t+{1}\t+{1}", physiMod, otherMod);
-
-                        BuffInfo.AddBuff(targ, new BuffInfo(BuffIcon.MagicReflection, 1075817, buffFormat, true));
-                    }
-                    else
-                    {
-                        targ.PlaySound(0x1ED);
-                        targ.FixedParticles(0x375A, 10, 15, 5037, EffectLayer.Waist);
-
-                        m_Table.Remove(targ);
-
-                        for (int i = 0; i < mods.Length; ++i)
-                            targ.RemoveResistanceMod(mods[i]);
-
-                        BuffInfo.RemoveBuff(targ, BuffIcon.MagicReflection);
-                    }
-                }
-
-                this.FinishSequence();
+                this.Caster.SendLocalizedMessage(1005559); // This spell is already in effect.
             }
-            else
+            else if (!this.Caster.CanBeginAction(typeof(DefensiveSpell)))
             {
-                if (this.Caster.MagicDamageAbsorb > 0)
+                this.Caster.SendLocalizedMessage(1005385); // The spell will not adhere to you at this time.
+            }
+            else if (this.CheckSequence())
+            {
+                if (this.Caster.BeginAction(typeof(DefensiveSpell)))
                 {
-                    this.Caster.SendLocalizedMessage(1005559); // This spell is already in effect.
+                    int skills = (int)(this.Caster.Skills[SkillName.Magery].Value + (this.Caster.Skills[SkillName.Inscribe].Value/2));
+                    var value = (int)(5 + (skills / 200) * 7.0) + Utility.Random(4) - 2;
+
+                    this.Caster.MagicDamageAbsorb = value;
+                    this.Caster.FixedParticles(0x375A, 10, 15, 5037, EffectLayer.Waist);
+                    this.Caster.PlaySound(0x1E9);
+                    //this.Caster.LocalOverheadMessage(MessageType.Regular, 0, false, "MRPower )
+
+                    //this.Caster.PrivateOverheadMessage("MR Power: " + value * 10 + "%");
+                    this.Caster.SendMessage("Voc√™ tem " + value + " c√≠rculos de reflex√£o m√°gica.");
                 }
-                else if (!this.Caster.CanBeginAction(typeof(DefensiveSpell)))
+                else
                 {
                     this.Caster.SendLocalizedMessage(1005385); // The spell will not adhere to you at this time.
                 }
-                else if (this.CheckSequence())
-                {
-                    if (this.Caster.BeginAction(typeof(DefensiveSpell)))
-                    {
-                        int value = (int)(this.Caster.Skills[SkillName.Magery].Value + this.Caster.Skills[SkillName.Inscribe].Value);
-                        value = (int)(8 + (value / 200) * 7.0);//absorb from 8 to 15 "circles"
-
-                        this.Caster.MagicDamageAbsorb = value;
-
-                        this.Caster.FixedParticles(0x375A, 10, 15, 5037, EffectLayer.Waist);
-                        this.Caster.PlaySound(0x1E9);
-                    }
-                    else
-                    {
-                        this.Caster.SendLocalizedMessage(1005385); // The spell will not adhere to you at this time.
-                    }
-                }
-
-                this.FinishSequence();
             }
+            this.FinishSequence();
         }
 
         #region SA

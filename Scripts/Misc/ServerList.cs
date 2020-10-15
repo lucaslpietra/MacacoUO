@@ -42,12 +42,14 @@ namespace Server.Misc
         */
 
 		public static readonly string Address = Config.Get("Server.Address", default(string));
+        public static readonly string Address2 = Config.Get("Server.Address2", default(string));
 
-		public static readonly bool AutoDetect = Config.Get("Server.AutoDetect", true);
+        public static readonly bool AutoDetect = Config.Get("Server.AutoDetect", true);
 
 		public static string ServerName = Config.Get("Server.Name", "My Shard");
+        public static string ServerName2 = Config.Get("Server.Name2", "My Shard");
 
-		private static IPAddress _PublicAddress;
+        private static IPAddress _PublicAddress;
 
 		private static readonly Regex _AddressPattern = new Regex(@"([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})");
 
@@ -125,7 +127,10 @@ namespace Server.Misc
 				}
 
 				Utility.PopColor();
-			}
+			} else
+            {
+                Console.WriteLine("Sem endereco publico - portas fechadas");
+            }
 		}
 
 		private static void Resolve(string addr, out IPAddress outValue)

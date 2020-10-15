@@ -29,7 +29,7 @@ namespace Server.Spells.Ninjitsu
         {
             get
             {
-                return new TextDefinition(1063099);
+                return new TextDefinition("Voce se prepara para um ataque com seu KI");
             }
         }// Your Ki Attack must be complete within 2 seconds for the damage bonus!
         public static double GetBonus(Mobile from)
@@ -53,8 +53,12 @@ namespace Server.Spells.Ninjitsu
         public override void OnUse(Mobile from)
         {
             if (!this.Validate(from))
+            {
+                Shard.Debug("NOP");
                 return;
+            }
 
+            from.OverheadMessage("* carregando ki *");
             KiAttackInfo info = new KiAttackInfo(from);
             info.m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(2.0), new TimerStateCallback(EndKiAttack), info);
 
@@ -65,21 +69,15 @@ namespace Server.Spells.Ninjitsu
         {
             if (from.Hidden && from.AllowedStealthSteps > 0)
             {
-                from.SendLocalizedMessage(1063127); // You cannot use this ability while in stealth mode.
+                from.SendMessage("Voce nao pode usar isto escondido"); // You cannot use this ability while in stealth mode.
                 return false;
             }
-
-            if (Core.ML)
+            BaseRanged ranged = from.Weapon as BaseRanged;
+            if (ranged != null)
             {
-                BaseRanged ranged = from.Weapon as BaseRanged;
-
-                if (ranged != null)
-                {
-                    from.SendLocalizedMessage(1075858); // You can only use this with melee attacks.
-                    return false;
-                }
+                from.SendMessage("Voce apenas pode fazer isto com ataques fisicos"); // You can only use this with melee attacks.
+                return false;
             }
-
             return base.Validate(from);
         }
 
@@ -87,7 +85,6 @@ namespace Server.Spells.Ninjitsu
         {
             if (attacker.Hidden)
                 return 1.0;
-
             return 1.0 + GetBonus(attacker) / 10;
         }
 
@@ -135,7 +132,7 @@ namespace Server.Spells.Ninjitsu
                 info.m_Timer.Stop();
 
             ClearCurrentMove(info.m_Mobile);
-            info.m_Mobile.SendLocalizedMessage(1063102); // You failed to complete your Ki Attack in time.
+            info.m_Mobile.SendMessage("Voce nao conseguiu fazer o ataque de KI a tempo"); // You failed to complete your Ki Attack in time.
 
             m_Table.Remove(info.m_Mobile);
         }

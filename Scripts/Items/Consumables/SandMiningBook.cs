@@ -5,12 +5,11 @@ namespace Server.Items
 {
     public class SandMiningBook : Item
     {
-        public override int LabelNumber { get { return 1153531; } } // Find Glass-Quality Sand
-
         [Constructable]
         public SandMiningBook()
             : base(0xFF4)
         {
+            Name = "Manual Minerar Areia";
             Weight = 2.0;
         }
 
@@ -49,18 +48,19 @@ namespace Server.Items
             {
                 pm.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
-            else if (pm.Skills[SkillName.Mining].Base < 100.0)
+
+            else if (pm.Skills[SkillName.Mining].Base < 60)
             {
-                pm.SendLocalizedMessage(1080041); // Only a Grandmaster Miner can learn from this book.
+                pm.SendLocalizedMessage("Voce precisa de 60 mining para aprender isto"); // Only a Grandmaster Miner can learn from this book.
             }
             else if (pm.SandMining)
             {
-                pm.SendLocalizedMessage(1080066); // You have already learned this information.
+                pm.SendLocalizedMessage("Voce ja aprendeu isso"); // You have already learned this information.
             }
             else
             {
                 pm.SandMining = true;
-                pm.SendLocalizedMessage(1111701); // You have learned how to mine fine sand.  Target sand areas when mining to look for fine sand.
+                pm.SendLocalizedMessage("Voce aprendeu a minerar areia"); // You have learned how to mine fine sand.  Target sand areas when mining to look for fine sand.
 
                 Delete();
             }

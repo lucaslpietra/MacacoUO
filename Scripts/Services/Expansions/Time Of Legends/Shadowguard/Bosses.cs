@@ -17,7 +17,7 @@ namespace Server.Engines.Shadowguard
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsLastBoss { get; set; }
 
-		private DateTime _NextSummon;
+		public DateTime _NextSummon;
 		
 		public virtual Type[] SummonTypes { get { return null; } }
 		public virtual Type[] ArtifactDrops { get { return _ArtifactTypes; } }
@@ -213,14 +213,13 @@ namespace Server.Engines.Shadowguard
 		public virtual void Summon()
 		{
             int max = MaxSummons;
-            var map = Map;
 
             ShadowguardEncounter inst = ShadowguardController.GetEncounter(this.Location, this.Map);
 
             if(inst != null)
                 max += inst.PartySize() * 2;
 
-			if(map == null || this.SummonTypes == null || this.SummonTypes.Length == 0 || TotalSummons() > max)
+			if(this.Map == null || this.SummonTypes == null || this.SummonTypes.Length == 0 || TotalSummons() > max)
 				return;
 				
 			int count = Utility.RandomList(1, 2, 2, 2, 3, 3, 4, 5);
@@ -236,9 +235,9 @@ namespace Server.Engines.Shadowguard
 				{
 					int x = Utility.RandomMinMax(p.X - 3, p.X + 3);
 					int y = Utility.RandomMinMax(p.Y - 3, p.Y + 3);
-					int z = map.GetAverageZ(x, y);
+					int z = this.Map.GetAverageZ(x, y);
 					
-					if(map.CanSpawnMobile(x, y, z))
+					if(this.Map.CanSpawnMobile(x, y, z))
 					{
 						p = new Point3D(x, y, z);
 						break;
@@ -249,7 +248,7 @@ namespace Server.Engines.Shadowguard
 				
 				if(spawn != null)
 				{
-					spawn.MoveToWorld(p, map);
+					spawn.MoveToWorld(p, this.Map);
 					spawn.Team = this.Team;
 					spawn.SummonMaster = this;
 					
@@ -666,7 +665,7 @@ namespace Server.Engines.Shadowguard
             {
                 Mobile m = Combatant as Mobile;
 
-                if (InRange(m.Location, 10) && !InRange(m.Location, 2) && m.Alive && this.CanBeHarmful(m, false) && m.AccessLevel == AccessLevel.Player)
+                if (InRange(m.Location, 10) && !InRange(m.Location, 2) && m.Alive && this.CanBeHarmful(m, false) && m.AccessLevel <= AccessLevel.VIP)
                 {
                     if (_NextTeleport < DateTime.UtcNow)
                     {

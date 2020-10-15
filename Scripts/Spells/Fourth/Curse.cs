@@ -63,14 +63,29 @@ namespace Server.Spells.Fourth
 
         public static void RemoveEffect(Mobile m)
         {
-            if(!WeakenSpell.IsUnderEffects(m))
+            RemoveEffectBool(m);
+        }
+
+        public static bool RemoveEffectBool(Mobile m)
+        {
+            bool c = false;
+            if (!WeakenSpell.IsUnderEffects(m))
+            {
                 m.RemoveStatMod("[Magic] Str Curse");
+            }
 
             if(!ClumsySpell.IsUnderEffects(m))
+            {
                 m.RemoveStatMod("[Magic] Dex Curse");
+            }
+             
 
             if(!FeeblemindSpell.IsUnderEffects(m))
+            {
                 m.RemoveStatMod("[Magic] Int Curse");
+
+            }
+               
 
             BuffInfo.RemoveBuff(m, BuffIcon.Curse);
 
@@ -82,9 +97,13 @@ namespace Server.Spells.Fourth
                     t.Stop();
                 
                 m_UnderEffect.Remove(m);
+                c = true;
             }
+           
             
             m.UpdateResistances();
+            return c;
+          
         }
 
         public static bool UnderEffect(Mobile m)

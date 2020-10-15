@@ -1,3 +1,11 @@
+/*
+ * Created by SharpDevelop.
+ * User: Sharon
+ * Date: 5/27/2015
+ * Time: 4:54 AM
+ * 
+ * To change this template use Tools | Options | Coding | Edit Standard Headers.
+ */
 using System;
 using Server.Items;
 using Server.Targeting;
@@ -29,12 +37,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
         }
     }

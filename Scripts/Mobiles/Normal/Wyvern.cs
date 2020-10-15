@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Wyvern()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a wyvern";
+            this.Name = "wyvern";
             this.Body = 62;
             this.BaseSoundID = 362;
 
@@ -18,9 +18,9 @@ namespace Server.Mobiles
             this.SetDex(153, 172);
             this.SetInt(51, 90);
 
-            this.SetHits(125, 141);
+            this.SetHits(400, 500);
 
-            this.SetDamage(8, 19);
+            this.SetDamage(12, 22);
 
             this.SetDamageType(ResistanceType.Physical, 50);
             this.SetDamageType(ResistanceType.Poison, 50);

@@ -10,9 +10,10 @@ namespace Server.Items
             : base()
         {
             this.Hue = 0x96E;
-            this.Attributes.BonusStr = 10;
-            this.Attributes.BonusInt = this.IntOrDexPropertyValue;
-            this.Attributes.BonusDex = this.IntOrDexPropertyValue;
+            Name = "Capacete Orc Maligno";
+            this.Attributes.BonusStr = 5;
+            //this.Attributes.BonusInt = this.IntOrDexPropertyValue;
+            //this.Attributes.BonusDex = this.IntOrDexPropertyValue;
         }
 
         public EvilOrcHelm(Serial serial)
@@ -46,10 +47,12 @@ namespace Server.Items
         }
         public override bool OnEquip(Mobile from)
         {
+            /*
             if (from.RawInt > from.RawDex)
                 this.Attributes.BonusDex = 0;
             else
                 this.Attributes.BonusInt = 0;
+                */
 			
             Titles.AwardKarma(from, -22, true);
 
@@ -60,11 +63,13 @@ namespace Server.Items
         {
             base.OnRemoved(parent);
 
+            /*
             if (parent is Mobile)
             {
                 this.Attributes.BonusInt = this.IntOrDexPropertyValue;
                 this.Attributes.BonusDex = this.IntOrDexPropertyValue;
             }
+            */
         }
 
         public override void Serialize(GenericWriter writer)

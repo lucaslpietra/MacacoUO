@@ -47,7 +47,7 @@ namespace Server.Spells.Fourth
             else if (CheckHSequence(m))
             {
                 Mobile source = Caster;
-                SpellHelper.Turn(Caster, m.Location);
+                // SpellHelper.Turn(Caster, m.Location);
 
                 SpellHelper.CheckReflect((int)Circle, ref source, ref m);
 
@@ -59,11 +59,11 @@ namespace Server.Spells.Fourth
                 }
                 else if (mob != null)
                 {
-                    damage = Utility.Random(12, 9);
+                    damage = Utility.Random(12, 16);
 
                     if (CheckResisted(mob))
                     {
-                        damage *= 0.75;
+                        damage *= 0.55;
 
                         mob.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                     }

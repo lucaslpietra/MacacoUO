@@ -8,7 +8,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public Nightmare()
-            : this("a nightmare")
+            : this("pesadelo")
         {
         }
 
@@ -16,40 +16,40 @@ namespace Server.Mobiles
         public Nightmare(string name)
             : base(name, 0x74, 0x3EA7, AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            BaseSoundID = Core.AOS ? 0xA8 : 0x16A;
+            this.BaseSoundID = Core.AOS ? 0xA8 : 0x16A;
 
-            SetStr(496, 525);
-            SetDex(86, 105);
-            SetInt(86, 125);
+            this.SetStr(100, 120);
+            this.SetDex(86, 105);
+            this.SetInt(86, 125);
 
-            SetHits(298, 315);
+            this.SetHits(80, 100);
 
-            SetDamage(16, 22);
+            this.SetDamage(16, 22);
 
-            SetDamageType(ResistanceType.Physical, 40);
-            SetDamageType(ResistanceType.Fire, 40);
-            SetDamageType(ResistanceType.Energy, 20);
+            this.SetDamageType(ResistanceType.Physical, 40);
+            this.SetDamageType(ResistanceType.Fire, 40);
+            this.SetDamageType(ResistanceType.Energy, 20);
 
-            SetResistance(ResistanceType.Physical, 55, 65);
-            SetResistance(ResistanceType.Fire, 30, 40);
-            SetResistance(ResistanceType.Cold, 30, 40);
-            SetResistance(ResistanceType.Poison, 30, 40);
-            SetResistance(ResistanceType.Energy, 20, 30);
+            this.SetResistance(ResistanceType.Physical, 55, 65);
+            this.SetResistance(ResistanceType.Fire, 30, 40);
+            this.SetResistance(ResistanceType.Cold, 30, 40);
+            this.SetResistance(ResistanceType.Poison, 30, 40);
+            this.SetResistance(ResistanceType.Energy, 20, 30);
 
-            SetSkill(SkillName.EvalInt, 10.4, 50.0);
-            SetSkill(SkillName.Magery, 10.4, 50.0);
-            SetSkill(SkillName.MagicResist, 85.3, 100.0);
-            SetSkill(SkillName.Tactics, 97.6, 100.0);
-            SetSkill(SkillName.Wrestling, 80.5, 92.5);
+            this.SetSkill(SkillName.EvalInt, 10.4, 50.0);
+            this.SetSkill(SkillName.Magery, 10.4, 50.0);
+            this.SetSkill(SkillName.MagicResist, 85.3, 100.0);
+            this.SetSkill(SkillName.Tactics, 97.6, 100.0);
+            this.SetSkill(SkillName.Wrestling, 80.5, 92.5);
 
-            Fame = 14000;
-            Karma = -14000;
+            this.Fame = 14000;
+            this.Karma = -14000;
 
-            VirtualArmor = 60;
+            this.VirtualArmor = 60;
 
-            Tamable = true;
-            ControlSlots = 2;
-            MinTameSkill = 95.1;
+            this.Tamable = true;
+            this.ControlSlots = 2;
+            this.MinTameSkill = 95.1;
 
 			switch (Utility.Random(12))
             {
@@ -90,8 +90,7 @@ namespace Server.Mobiles
             if (Utility.RandomDouble() < 0.05)
                 Hue = 1910;
 
-            PackItem(new SulfurousAsh(Utility.RandomMinMax(3, 5)));
-            SetSpecialAbility(SpecialAbility.DragonBreath);
+            this.PackItem(new SulfurousAsh(Utility.RandomMinMax(3, 5)));
         }
 
         public Nightmare(Serial serial)
@@ -99,6 +98,13 @@ namespace Server.Mobiles
         {
         }
 
+        public override bool HasBreath
+        {
+            get
+            {
+                return true;
+            }
+        }// fire breath enabled
         public override int Meat
         {
             get
@@ -136,15 +142,15 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.Rich);
-            AddLoot(LootPack.Average);
-            AddLoot(LootPack.LowScrolls);
-            AddLoot(LootPack.Potions);
+            this.AddLoot(LootPack.Rich);
+            this.AddLoot(LootPack.Average);
+            this.AddLoot(LootPack.LowScrolls);
+            this.AddLoot(LootPack.Potions);
         }
 
         public override int GetAngerSound()
         {
-            if (!Controlled)
+            if (!this.Controlled)
                 return 0x16A;
 
             return base.GetAngerSound();
@@ -162,6 +168,11 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (Core.AOS && this.BaseSoundID == 0x16A)
+                this.BaseSoundID = 0xA8;
+            else if (!Core.AOS && this.BaseSoundID == 0xA8)
+                this.BaseSoundID = 0x16A;
         }
     }
 }

@@ -81,10 +81,10 @@ namespace Server.Network
 
 	public sealed class DamagePacket : Packet
 	{
-		public DamagePacket(IEntity entity, int amount)
+		public DamagePacket(IDamageable damageable, int amount)
 			: base(0x0B, 7)
 		{
-            m_Stream.Write(entity.Serial);
+            m_Stream.Write(damageable.Serial);
 
 			if (amount > 0xFFFF)
 			{
@@ -2518,43 +2518,31 @@ m_Stream.Write( (int) renderMode );
 		}
 	}
 
-	public sealed class SkillUpdate : Packet
-	{
-		public SkillUpdate(Skills skills)
-			: base(0x3A)
-		{
-			EnsureCapacity(6 + (skills.Length * 9));
+    public sealed class SkillUpdate : Packet
+    {
+        public SkillUpdate(Skills skills)
+            : base(0x3A)
+        {
+            EnsureCapacity(6 + (skills.Length * 9));
 
-			m_Stream.Write((byte)0x02); // type: absolute, capped
+            m_Stream.Write((byte)0x02); // type: absolute, capped
 
-			for (int i = 0; i < skills.Length; ++i)
-			{
-				Skill s = skills[i];
+            for (int i = 0; i < skills.Length; ++i)
+            {
+                Skill s = skills[i];
 
-				double v = s.NonRacialValue;
-				int uv = (int)(v * 10);
+                m_Stream.Write((ushort)(s.Info.SkillID + 1));
+                m_Stream.Write((ushort)(s.Value*10));
+                m_Stream.Write((ushort)s.GetExp());
+                m_Stream.Write((byte)s.Lock);
+                m_Stream.Write((ushort)s.CapFixedPoint);
+            }
 
-				if (uv < 0)
-				{
-					uv = 0;
-				}
-				else if (uv >= 0x10000)
-				{
-					uv = 0xFFFF;
-				}
+            m_Stream.Write((short)0); // terminate
+        }
+    }
 
-				m_Stream.Write((ushort)(s.Info.SkillID + 1));
-				m_Stream.Write((ushort)uv);
-				m_Stream.Write((ushort)s.BaseFixedPoint);
-				m_Stream.Write((byte)s.Lock);
-				m_Stream.Write((ushort)s.CapFixedPoint);
-			}
-
-			m_Stream.Write((short)0); // terminate
-		}
-	}
-
-	public sealed class Sequence : Packet
+    public sealed class Sequence : Packet
 	{
 		public Sequence(int num)
 			: base(0x7B, 2)
@@ -2569,34 +2557,31 @@ m_Stream.Write( (int) renderMode );
 			: base(0x3A)
 		{
 			EnsureCapacity(13);
-
-			double v = skill.NonRacialValue;
-			int uv = (int)(v * 10);
-
-			if (uv < 0)
-			{
-				uv = 0;
-			}
-			else if (uv >= 0x10000)
-			{
-				uv = 0xFFFF;
-			}
-
 			m_Stream.Write((byte)0xDF); // type: delta, capped
 			m_Stream.Write((ushort)skill.Info.SkillID);
-			m_Stream.Write((ushort)uv);
-			m_Stream.Write((ushort)skill.BaseFixedPoint);
-			m_Stream.Write((byte)skill.Lock);
+			m_Stream.Write((ushort)(skill.Value*10));
+            m_Stream.Write((ushort)skill.GetExp());
+            m_Stream.Write((byte)skill.Lock);
 			m_Stream.Write((ushort)skill.CapFixedPoint);
-			/*m_Stream.Write( (short) skill.Info.SkillID );
-	m_Stream.Write( (short) (skill.Value * 10.0) );
-	m_Stream.Write( (short) (skill.Base * 10.0) );
-	m_Stream.Write( (byte) skill.Lock );
-	m_Stream.Write( (short) skill.CapFixedPoint );*/
-		}
+         
+        }
 	}
 
-	public sealed class LaunchBrowser : Packet
+    public sealed class ExpChange : Packet
+    {
+        public ExpChange(Skill skill, double exp)
+            : base(0x01)
+        {
+            EnsureCapacity(5);
+            exp = Math.Round(exp, 1) * 10;
+            Shard.Debug("Enviando exp " + exp);
+
+            m_Stream.Write((short)skill.Info.SkillID);
+            m_Stream.Write((ushort)exp);
+        }
+    }
+
+    public sealed class LaunchBrowser : Packet
 	{
 		public LaunchBrowser(string url)
 			: base(0xA5)
@@ -2647,13 +2632,13 @@ m_Stream.Write( (int) renderMode );
 
 				if (p == null)
 				{
-					cache[index] = p = new MessageLocalized(Serial.MinusOne, -1, MessageType.Regular, 0x3B2, 3, number, "System", "");
+					cache[index] = p = new MessageLocalized(Serial.MinusOne, -1, MessageType.Regular, 0x488, 3, number, "System", "");
 					p.SetStatic();
 				}
 			}
 			else
 			{
-				p = new MessageLocalized(Serial.MinusOne, -1, MessageType.Regular, 0x3B2, 3, number, "System", "");
+				p = new MessageLocalized(Serial.MinusOne, -1, MessageType.Regular, 0x488, 3, number, "System", "");
 			}
 
 			return p;
@@ -2674,7 +2659,7 @@ m_Stream.Write( (int) renderMode );
 
 			if (hue == 0)
 			{
-				hue = 0x3B2;
+				hue = 0xB7;
 			}
 
 			EnsureCapacity(50 + (args.Length * 2));
@@ -3202,7 +3187,6 @@ m_Stream.Write( (int) renderMode );
 			{
 				p = new PlayMusic(name);
 			}
-
 			return p;
 		}
 
@@ -3584,7 +3568,8 @@ m_Stream.Write( (int) renderMode );
 			}
 			else
 			{
-				type = Core.AOS ? 4 : 3;
+                //type = Core.AOS ? 4 : 3;
+                type = 5;
 				EnsureCapacity(88);
 			}
 
@@ -3627,10 +3612,10 @@ m_Stream.Write( (int) renderMode );
 
 			if (type >= 4)
 			{
-				m_Stream.Write((short)m.FireResistance); // Fire
-				m_Stream.Write((short)m.ColdResistance); // Cold
-				m_Stream.Write((short)m.PoisonResistance); // Poison
-				m_Stream.Write((short)m.EnergyResistance); // Energy
+				m_Stream.Write((short)0); // Fire
+				m_Stream.Write((short)0); // Cold
+				m_Stream.Write((short)0); // Poison
+				m_Stream.Write((short)0); // Energy
 				m_Stream.Write((short)m.Luck); // Luck
 
 				IWeapon weapon = m.Weapon;
@@ -3695,7 +3680,8 @@ m_Stream.Write( (int) renderMode );
             }
             else
             {
-                type = Core.AOS ? 4 : 3;
+                // type = Core.AOS ? 4 : 3;
+                type = 5;
                 EnsureCapacity(88);
             }
 

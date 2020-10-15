@@ -23,7 +23,7 @@ namespace Server.Mobiles
     public class XmlSpawnerSkillCheck
     {
         // alternate skillcheck hooks to replace those in SkillCheck.cs
-        public static bool Mobile_SkillCheckLocation( Mobile from, SkillName skillName, double minSkill, double maxSkill )
+        public static bool Mobile_SkillCheckLocation( Mobile from, SkillName skillName, double minSkill, double maxSkill, double mult =1 )
 		{
 			Skill skill = from.Skills[skillName];
 
@@ -31,7 +31,7 @@ namespace Server.Mobiles
 				return false;
 
 			// call the default skillcheck handler
-            bool success = SkillCheck.Mobile_SkillCheckLocation(  from,  skillName,  minSkill,  maxSkill );
+            bool success = SkillCheck.Mobile_SkillCheckLocation(  from,  skillName,  minSkill,  maxSkill, mult );
 
             // call the xmlspawner skillcheck handler
 			CheckSkillUse(from, skill, success);
@@ -39,7 +39,7 @@ namespace Server.Mobiles
 			return success;
 		}
 
-		public static bool Mobile_SkillCheckDirectLocation( Mobile from, SkillName skillName, double chance )
+		public static bool Mobile_SkillCheckDirectLocation( Mobile from, SkillName skillName, double chance, double mult = 1 )
 		{
 			Skill skill = from.Skills[skillName];
 
@@ -47,7 +47,7 @@ namespace Server.Mobiles
 				return false;
 
             // call the default skillcheck handler
-            bool success = SkillCheck.Mobile_SkillCheckDirectLocation(  from,  skillName,  chance );
+            bool success = SkillCheck.Mobile_SkillCheckDirectLocation(  from,  skillName,  chance, mult );
             
             // call the xmlspawner skillcheck handler
 			CheckSkillUse(from, skill, success);
@@ -55,7 +55,7 @@ namespace Server.Mobiles
 			return success;
 		}
 		
-		public static bool Mobile_SkillCheckTarget( Mobile from, SkillName skillName, object target, double minSkill, double maxSkill )
+		public static bool Mobile_SkillCheckTarget( Mobile from, SkillName skillName, object target, double minSkill, double maxSkill, double mult = 1)
 		{
 			Skill skill = from.Skills[skillName];
 
@@ -63,7 +63,7 @@ namespace Server.Mobiles
 				return false;
 
             // call the default skillcheck handler
-            bool success = SkillCheck.Mobile_SkillCheckTarget(  from,  skillName,  target,  minSkill,  maxSkill );
+            bool success = SkillCheck.Mobile_SkillCheckTarget(  from,  skillName,  target,  minSkill,  maxSkill, mult );
 
             // call the xmlspawner skillcheck handler
 			CheckSkillUse(from, skill, success);
@@ -71,7 +71,7 @@ namespace Server.Mobiles
 			return success;
 		}
 
-		public static bool Mobile_SkillCheckDirectTarget( Mobile from, SkillName skillName, object target, double chance )
+		public static bool Mobile_SkillCheckDirectTarget( Mobile from, SkillName skillName, object target, double chance, double mult )
 		{
 			Skill skill = from.Skills[skillName];
 
@@ -79,7 +79,7 @@ namespace Server.Mobiles
 				return false;
 
             // call the default skillcheck handler
-            bool success = SkillCheck.Mobile_SkillCheckDirectTarget(  from,  skillName,  target,  chance );
+            bool success = SkillCheck.Mobile_SkillCheckDirectTarget(  from,  skillName,  target,  chance , mult);
             
             // call the xmlspawner skillcheck handler
             CheckSkillUse(from, skill, success);

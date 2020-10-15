@@ -15,7 +15,7 @@ namespace Server.Bounds
 		[Description("GenBounds")]
 		public static void GenBounds_OnCommand(CommandEventArgs e)
 		{
-			if(Ultima.Files.MulPath["artlegacymul.uop"] != null || (Ultima.Files.MulPath["art.mul"] != null && Ultima.Files.MulPath["artidx.mul"] != null))
+			if(ArtData.CheckFile)
 			{	
 				Utility.PushColor(ConsoleColor.Yellow);
 				Console.Write("Generating Bounds.bin...");
@@ -27,9 +27,9 @@ namespace Server.Bounds
 			
 				int xMin, yMin, xMax, yMax;
 						
-					for ( int i = 0; i < Ultima.Art.GetMaxItemID(); ++i )
+					for ( int i = 0; i < ArtData.GetMaxItemID(); ++i )
 					{
-						Ultima.Art.Measure(Item.GetBitmap(i), out xMin, out yMin, out xMax, out yMax);
+                        ArtData.Measure(Item.GetBitmap(i), out xMin, out yMin, out xMax, out yMax);
 						
 						bin.Write((ushort)xMin);
 						bin.Write((ushort)yMin);

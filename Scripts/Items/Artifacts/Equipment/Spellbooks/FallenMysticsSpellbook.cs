@@ -25,7 +25,7 @@ namespace Server.Items
             Attributes.CastRecovery = 1;
             Attributes.CastSpeed = 1;		
             Attributes.SpellDamage = 10;
-            Slayer = SlayerName.Fey;
+            Slayer = SlayerName.Fadas;
         }
 
         public FallenMysticsSpellbook(Serial serial)

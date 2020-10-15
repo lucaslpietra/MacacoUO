@@ -134,9 +134,9 @@ namespace Server.Guilds
             : base(pm, g, list, currentComparer, ascending, filter, startNumber,
             new InfoField<Guild>[]
             {
-                new InfoField<Guild>(1062954, 280, GuildDiplomacyGump.NameComparer.Instance), //Guild Name
-                new InfoField<Guild>(1062957, 50,	GuildDiplomacyGump.AbbrevComparer.Instance), //Abbrev
-                new InfoField<Guild>(1062958, 120, new GuildDiplomacyGump.StatusComparer(g))//Guild Title
+                new InfoField<Guild>("Nome", 280, GuildDiplomacyGump.NameComparer.Instance), //Guild Name
+                new InfoField<Guild>("Tag", 50,	GuildDiplomacyGump.AbbrevComparer.Instance), //Abbrev
+                new InfoField<Guild>("Titulo", 120, new GuildDiplomacyGump.StatusComparer(g))//Guild Title
             })
         {
             this.m_Display = display;
@@ -148,7 +148,7 @@ namespace Server.Guilds
         {
             base.PopulateGump();
 
-            this.AddHtmlLocalized(431, 43, 110, 26, 1062978, 0xF, false, false); // Diplomacy			
+            this.AddHtml(431, 43, 110, 26, "Diplomacia", 0xF, false, false); // Diplomacy			
         }
 
         protected override TextDefinition[] GetValuesFor(Guild g, int aryLength)
@@ -158,18 +158,18 @@ namespace Server.Guilds
             defs[0] = (g == this.guild) ? Color(g.Name, 0x006600) : g.Name;
             defs[1] = g.Abbreviation;
 
-            defs[2] = 3000085; //Peace
+            defs[2] = "Paz"; //Peace
 
             if (this.guild.IsAlly(g))
             {
                 if (this.guild.Alliance.Leader == g)
-                    defs[2] = 1063237; // Alliance Leader
+                    defs[2] = "Lider"; // Alliance Leader
                 else
-                    defs[2] = 1062964; // Ally
+                    defs[2] = "Aliado"; // Ally
             }
             else if (this.guild.IsWar(g))
             {
-                defs[2] = 3000086; // War
+                defs[2] = "Guerra"; // War
             }
 
             return defs;
@@ -214,7 +214,7 @@ namespace Server.Guilds
             {
                 this.AddBackground(350, 148 + itemNumber * 28, 200, 26, 0x2486);
                 this.AddButton(355, 153 + itemNumber * 28, 0x845, 0x846, 8, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(380, 151 + itemNumber * 28, 160, 26, 1063083, 0x0, false, false); // Advanced Search
+                this.AddHtmlLocalized(380, 151 + itemNumber * 28, 160, 26, 1063083, false, false); // Advanced Search
             }
         }
 

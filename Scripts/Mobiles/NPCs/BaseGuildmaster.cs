@@ -12,7 +12,7 @@ namespace Server.Mobiles
         public BaseGuildmaster(string title)
             : base(title)
         {
-            this.Title = String.Format("the {0} {1}", title, this.Female ? "guildmistress" : "guildmaster");
+            this.Title = String.Format("{0} {1}", title, this.Female ? "mestra da guilda" : "mestre da guilda");
         }
 
         public BaseGuildmaster(Serial serial)
@@ -38,7 +38,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return 500;
+                return 10000;
             }
         }
         public virtual TimeSpan JoinAge

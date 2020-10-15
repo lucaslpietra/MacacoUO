@@ -12,7 +12,7 @@ namespace Server.Spells.Ninjitsu
     {
         private static readonly Dictionary<Mobile, int> m_CloneCount = new Dictionary<Mobile, int>();
         private static readonly SpellInfo m_Info = new SpellInfo(
-            "Mirror Image", null,
+            "Clones", null,
             -1,
             9002);
         public MirrorImage(Mobile caster, Item scroll)
@@ -31,7 +31,7 @@ namespace Server.Spells.Ninjitsu
         {
             get
             {
-                return Core.ML ? 20.0 : 40.0;
+                return 20.0;
             }
         }
         public override int RequiredMana
@@ -83,22 +83,22 @@ namespace Server.Spells.Ninjitsu
         {
             if (Caster.Mounted)
             {
-                Caster.SendLocalizedMessage(1063132); // You cannot use this ability while mounted.
+                Caster.SendMessage("Voce nao pode usar esta habilidade montado"); // You cannot use this ability while mounted.
                 return false;
             }
             else if ((Caster.Followers + 1) > Caster.FollowersMax)
             {
-                Caster.SendLocalizedMessage(1063133); // You cannot summon a mirror image because you have too many followers.
+                Caster.SendMessage("Voce ja tem muitos seguidores"); // You cannot summon a mirror image because you have too many followers.
                 return false;
             }
             else if (TransformationSpellHelper.UnderTransformation(Caster, typeof(HorrificBeastSpell)))
             {
-                Caster.SendLocalizedMessage(1061091); // You cannot cast that spell in this form.
+                Caster.SendMessage("Voce nao pode fazer isto nesta forma"); // You cannot cast that spell in this form.
                 return false;
             }
             else if (Caster.Flying)
             {
-                Caster.SendLocalizedMessage(1113415); // You cannot use this ability while flying.
+                Caster.SendMessage("Nao pode fazer isto voando"); // You cannot use this ability while flying.
                 return false;
             }
 
@@ -114,22 +114,22 @@ namespace Server.Spells.Ninjitsu
         {
             base.OnBeginCast();
 
-            Caster.SendLocalizedMessage(1063134); // You begin to summon a mirror image of yourself.
+            Caster.SendMessage("Voce comeca a fazer uma imagem de si mesmo"); // You begin to summon a mirror image of yourself.
         }
 
         public override void OnCast()
         {
             if (Caster.Mounted)
             {
-                Caster.SendLocalizedMessage(1063132); // You cannot use this ability while mounted.
+                Caster.SendMessage("Voce nao pode usar esta habilidade montado"); // You cannot use this ability while mounted.
             }
             else if ((Caster.Followers + 1) > Caster.FollowersMax)
             {
-                Caster.SendLocalizedMessage(1063133); // You cannot summon a mirror image because you have too many followers.
+                Caster.SendMessage("Voce tem muitos seguidores"); // You cannot summon a mirror image because you have too many followers.
             }
             else if (TransformationSpellHelper.UnderTransformation(Caster, typeof(HorrificBeastSpell)))
             {
-                Caster.SendLocalizedMessage(1061091); // You cannot cast that spell in this form.
+                Caster.SendMessage("Voce nao pode usar a magia nesta forma"); // You cannot cast that spell in this form.
             }
             else if (CheckSequence())
             {
@@ -156,8 +156,8 @@ namespace Server.Spells.Ninjitsu
 
                     if (clone != null && clone.Summoned && clone.SummonMaster == defender)
                     {
-                        attacker.SendLocalizedMessage(1063141); // Your attack has been diverted to a nearby mirror image of your target!
-                        defender.SendLocalizedMessage(1063140); // You manage to divert the attack onto one of your nearby mirror images.
+                        attacker.SendMessage("Seu ataque foi absorvido por uma imagem espelhada"); // Your attack has been diverted to a nearby mirror image of your target!
+                        defender.SendMessage("Uma imagem sua absorveu o ataque"); // You manage to divert the attack onto one of your nearby mirror images.
                         break;
                     }
                 }

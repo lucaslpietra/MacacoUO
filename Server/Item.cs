@@ -542,7 +542,7 @@ namespace Server
         /// <summary>
         ///     Unstealable. Unlootable, unless owned by a murderer.
         /// </summary>
-        Newbied = 1,
+        // Blessed = 1,
 
         /// <summary>
         ///     Unstealable. Unlootable, always.
@@ -672,6 +672,26 @@ namespace Server
 
     public class Item : IEntity, IHued, IComparable<Item>, ISerializable, ISpawnable
     {
+        [CommandProperty(AccessLevel.GameMaster)]
+        public virtual bool PartyLoot { get; set; }
+
+        public String BoundTo = null;
+
+        public string NameSemAcento { get { return removerAcentos(this.Name); } }
+
+        public static string removerAcentos(string texto)
+        {
+            string comAcentos = "ÁÂÀÃáâàãÉÊÈéêèÍÌíìÓÔÒÕóôòõÚúûùÇç";
+            string semAcentos = "AAAAaaaaEEEeeeIIiiOOOOooooUuuuCc";
+
+            for (int i = 0; i < comAcentos.Length; i++)
+            {
+                texto = texto.Replace(comAcentos[i].ToString(), semAcentos[i].ToString());
+            }
+            return texto;
+        }
+
+
         #region Customs Framework
         private List<BaseModule> m_Modules = new List<BaseModule>();
 
@@ -759,12 +779,20 @@ namespace Server
         private Map m_Map;
         private LootType m_LootType;
         private DateTime m_LastMovedTime;
+        private DateTime m_BlessedUntil = DateTime.MinValue;
         private Direction m_Direction;
         private LightType m_Light;
+        //private bool m_HonestyItem;
+        //private string m_HonestyRegion;
+        //private Mobile m_HonestyOwner;
+        //private Timer m_HonestyTimer;
+        //private DateTime m_HonestyPickup;
+        //private Boolean m_HonestyTimerTicking;
         #endregion
 
         private ItemDelta m_DeltaFlags;
         private ImplFlag m_Flags;
+
 
         #region Packet caches
         private Packet m_WorldPacket;
@@ -856,7 +884,7 @@ namespace Server
                 }
             }
         }
-        
+
         private byte m_GridLocation = 0;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -1059,7 +1087,7 @@ namespace Server
         {
             try
             {
-                return Ultima.Art.GetStatic(itemID);
+                return ArtData.GetStatic(itemID);
             }
             catch
             {
@@ -1076,7 +1104,7 @@ namespace Server
 
         public static void Measure(Bitmap bmp, out int xMin, out int yMin, out int xMax, out int yMax)
         {
-            Ultima.Art.Measure(bmp, out xMin, out yMin, out xMax, out yMax);
+            ArtData.Measure(bmp, out xMin, out yMin, out xMax, out yMax);
         }
 
         public static Rectangle MeasureBound(Bitmap bmp)
@@ -1179,6 +1207,8 @@ namespace Server
         /// <returns>True if the trade is allowed, false if not.</returns>
         public virtual bool AllowSecureTrade(Mobile from, Mobile to, Mobile newOwner, bool accepted)
         {
+            if (BoundTo != null)
+                return false;
             return true;
         }
 
@@ -1255,25 +1285,58 @@ namespace Server
             }
         }
 
+        public int GetBlessedExpiryDays()
+        {
+            if (BlessedUntil.Year < 2000 || BlessedUntil == DateTime.MinValue || BlessedUntil == BaseTime || BlessedUntil == DateTime.MaxValue)
+                return -1;
+
+            var dias = (int)(BlessedUntil - DateTime.UtcNow).TotalDays;
+            if (dias < 0)
+            {
+                Shard.Debug("Item " + this.Name + " cabou o tempo de noob");
+                LootType = LootType.Regular;
+            }
+            return dias;
+        }
+
         /// <summary>
         ///     Overridable. Adds the loot type of this item to the given <see cref="ObjectPropertyList" />. By default, this will be either 'blessed', 'cursed', or 'insured'.
         /// </summary>
         public virtual void AddLootTypeProperty(ObjectPropertyList list)
         {
-            if (DisplayLootType)
-            {               
-                if (m_LootType == LootType.Blessed)
+            if (Shard.WARSHARD)
+                return;
+
+            if (PartyLoot)
+            {
+                list.Add("Loot de Grupo");
+            }
+
+            if (m_LootType == LootType.Blessed)
+            {
+
+                var dias = GetBlessedExpiryDays();
+                if (dias < 0)
                 {
-                    list.Add(1038021); // blessed
+                    list.Add("Pertence Pessoal"); // blessed
                 }
-                else if (m_LootType == LootType.Cursed)
+                else
                 {
-                    list.Add(1049643); // cursed
+                    list.Add("Pertence Pessoal por " + (dias + 1) + " dias");
                 }
-                else if (Insured)
-                {
-                    list.Add(1061682); // <b>insured</b>
-                }
+            }
+            else if (m_LootType == LootType.Cursed)
+            {
+                list.Add("Amaldicoado"); // cursed
+            }
+            else if (Insured)
+            {
+                list.Add(1061682); // <b>insured</b>
+            }
+
+            if (BoundTo != null)
+            {
+                list.Add("Pertence a " + BoundTo);
             }
         }
 
@@ -1340,6 +1403,26 @@ namespace Server
         }
 
         /// <summary>
+        ///     Overridable. Displays cliloc 1072788-1072789.
+        /// </summary>
+        public virtual void AddWeightProperty(ObjectPropertyList list)
+        {
+            if (Weight == 0)
+                return;
+
+            int weight = PileWeight + TotalWeight;
+
+            if (weight == 1)
+            {
+                list.Add(1072788, weight.ToString()); //Weight: ~1_WEIGHT~ stone
+            }
+            else
+            {
+                list.Add(1072789, weight.ToString()); //Weight: ~1_WEIGHT~ stones
+            }
+        }
+
+        /// <summary>
         ///     Overridable. Adds header properties. By default, this invokes <see cref="AddNameProperty" />,
         ///     <see
         ///         cref="AddBlessedForProperty" />
@@ -1361,52 +1444,23 @@ namespace Server
                 AddLockedDownProperty(list);
             }
 
-            AddCraftedProperties(list);
-            AddLootTypeProperty(list);
-            AddUsesRemainingProperties(list);
-            AddWeightProperty(list);
+            Mobile blessedFor = BlessedFor;
 
-            AppendChildNameProperties(list);
+            if (blessedFor != null && !blessedFor.Deleted)
+            {
+                AddBlessedForProperty(list, blessedFor);
+            }
+
+            AddLootTypeProperty(list);
+
+            if (DisplayWeight)
+            {
+                AddWeightProperty(list);
+            }
 
             if (QuestItem)
             {
                 AddQuestItemProperty(list);
-            }
-        }
-
-        /// <summary>
-        /// Overrideable, used to add crafted by, excpetional, etc properties to items
-        /// </summary>
-        /// <param name="list"></param>
-        public virtual void AddCraftedProperties(ObjectPropertyList list)
-        {
-        }
-
-        /// <summary>
-        /// Overrideable, used for IUsesRemaining UsesRemaining property
-        /// </summary>
-        /// <param name="list"></param>
-        public virtual void AddUsesRemainingProperties(ObjectPropertyList list)
-        {
-        }
-
-        /// <summary>
-        ///     Overridable. Displays cliloc 1072788-1072789.
-        /// </summary>
-        public virtual void AddWeightProperty(ObjectPropertyList list)
-        {
-            if (DisplayWeight && Weight > 0)
-            {
-                int weight = PileWeight + TotalWeight;
-
-                if (weight == 1)
-                {
-                    list.Add(1072788, weight.ToString()); //Weight: ~1_WEIGHT~ stone
-                }
-                else
-                {
-                    list.Add(1072789, weight.ToString()); //Weight: ~1_WEIGHT~ stones
-                }
             }
         }
 
@@ -1441,6 +1495,20 @@ namespace Server
         {
             list.Add(1062203, "{0}", m.Name); // Blessed for ~1_NAME~
         }
+
+        /*public virtual void AddHonestyProperty(ObjectPropertyList list)
+        {
+            if (HonestyItem)
+            {
+                if (m_HonestyPickup != DateTime.MinValue)
+                {
+                    int minutes = (int)(m_HonestyPickup + TimeSpan.FromHours(3) - DateTime.UtcNow).TotalMinutes;
+                    list.Add(1151914, minutes.ToString()); // Minutes remaining for credit: ~1_val~
+                }
+
+                list.Add(1151520); // lost item (Return to gain Honesty)
+            }
+        }*/
 
         public virtual void AddItemSocketProperties(ObjectPropertyList list)
         {
@@ -1480,6 +1548,8 @@ namespace Server
             }
 
             AddItemPowerProperties(list);
+
+            AppendChildNameProperties(list);
         }
 
         /// <summary>
@@ -1987,6 +2057,11 @@ namespace Server
         public bool Deleted { get { return GetFlag(ImplFlag.Deleted); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime BlessedUntil { get; set; }
+
+        public static DateTime BaseTime { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public LootType LootType
         {
             get { return m_LootType; }
@@ -1995,11 +2070,7 @@ namespace Server
                 if (m_LootType != value)
                 {
                     m_LootType = value;
-
-                    if (DisplayLootType)
-                    {
-                        InvalidateProperties();
-                    }
+                    InvalidateProperties();
                 }
             }
         }
@@ -2026,13 +2097,15 @@ namespace Server
         [CommandProperty(AccessLevel.Decorator)]
         public virtual TimeSpan DecayTime { get { return TimeSpan.FromMinutes(m_DDT.TotalMinutes * DecayMultiplier); } }
 
+        public bool Movivel { get { return Movable && IsLockedDown;  } }
+
         [CommandProperty(AccessLevel.Decorator)]
         public virtual bool Decays
         {
             get
             {
                 // TODO: Make item decay an option on the spawner
-                return DefaultDecaySetting && Movable && Visible && !HonestyItem/* && Spawner == null*/;
+                return DefaultDecaySetting && Movable && Visible && !HonestyItem && (!(this.RootParent is Item) || ((Item)this.RootParent).Movivel)/* && Spawner == null*/;
             }
         }
 
@@ -2100,11 +2173,13 @@ namespace Server
         {
             if (item == this || item.GetType() != GetType())
             {
+                Shard.Debug("Type diferente", from);
                 return false;
             }
 
             if (!item.Stackable || !Stackable)
             {
+                Shard.Debug("Nao stacka", from);
                 return false;
             }
 
@@ -2115,16 +2190,19 @@ namespace Server
 
             if ((!item.StackIgnoreItemID || !StackIgnoreItemID) && item.ItemID != ItemID)
             {
+                Shard.Debug("Stack ignore id", from);
                 return false;
             }
 
             if ((!item.StackIgnoreHue || !StackIgnoreHue) && item.Hue != Hue)
             {
+                Shard.Debug("Stack ignore hue", from);
                 return false;
             }
 
             if ((!item.StackIgnoreName || !StackIgnoreName) && item.Name != Name)
             {
+                Shard.Debug("Nome diferente " + item.Name + " - " + Name, from);
                 return false;
             }
 
@@ -2137,7 +2215,7 @@ namespace Server
             {
                 return false;
             }
-            else  if (Sockets != null && item.Sockets != null)
+            else if (Sockets != null && item.Sockets != null)
             {
                 if (Sockets.Any(s => !item.HasSocket(s.GetType())))
                 {
@@ -2155,6 +2233,13 @@ namespace Server
 
         public virtual bool OnDragDrop(Mobile from, Item dropped)
         {
+            if (BoundTo != null)
+            {
+                if (Parent is Container || (Parent is Mobile && ((Mobile)Parent).Name != BoundTo))
+                {
+                    return false;
+                }
+            }
             if (Parent is Container)
             {
                 return ((Container)Parent).OnStackAttempt(from, this, dropped);
@@ -2261,8 +2346,11 @@ namespace Server
                     GetProperties(m_PropertyList);
                     AppendChildProperties(m_PropertyList);
 
-                    m_PropertyList.Terminate();
-                    m_PropertyList.SetStatic();
+                    if (m_PropertyList != null)
+                    {
+                        m_PropertyList.Terminate();
+                        m_PropertyList.SetStatic();
+                    }
                 }
 
                 return m_PropertyList;
@@ -2615,20 +2703,29 @@ namespace Server
 
         public virtual void Serialize(GenericWriter writer)
         {
-            writer.Write(14); // version
+            writer.Write(17); // version
+
+            // 17
+            writer.Write(PartyLoot);
+
+            // 16
+            writer.Write(BoundTo);
+
+            // 15
+            writer.WriteDeltaTime(BlessedUntil);
 
             // 14
             writer.Write(Sockets != null ? Sockets.Count : 0);
-			
-			if(Sockets != null)
-			{
-				foreach(var socket in Sockets)
-				{
-					ItemSocket.Save(socket, writer);
-				}
-			}
 
-			// 13: Merge sync
+            if (Sockets != null)
+            {
+                foreach (var socket in Sockets)
+                {
+                    ItemSocket.Save(socket, writer);
+                }
+            }
+
+            // 13: Merge sync
             // 12: Light no longer backed by Direction
 
             // 11
@@ -3020,6 +3117,7 @@ namespace Server
 
         public static int SecureFlag { get { return m_SecureFlag; } set { m_SecureFlag = value; } }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public bool IsLockedDown
         {
             get { return GetTempFlag(m_LockedDownFlag); }
@@ -3117,21 +3215,30 @@ namespace Server
         public virtual void Deserialize(GenericReader reader)
         {
             int version = reader.ReadInt();
-
             SetLastMoved();
 
             switch (version)
             {
+                case 17:
+                    PartyLoot = reader.ReadBool();
+                    goto case 16;
+                case 16:
+                    BoundTo = reader.ReadString();
+                    goto case 15;
+                case 15:
+                    BlessedUntil = reader.ReadDeltaTime();
+
+                    goto case 14;
                 case 14:
                     var socketCount = reader.ReadInt();
 
-                    for(int i = 0; i < socketCount; i++)
+                    for (int i = 0; i < socketCount; i++)
                     {
                         ItemSocket.Load(this, reader);
                     }
 
-                    goto case 13;
-				case 13:
+                    goto case 11;
+                case 13:
                 case 12:
                 case 11:
                     m_GridLocation = reader.ReadByte();
@@ -3185,7 +3292,7 @@ namespace Server
                         {
                             m_Light = (LightType)reader.ReadByte();
                         }
-                        else if(version < 12)
+                        else if (version < 12)
                         {
                             m_Light = (LightType)m_Direction;
                         }
@@ -3198,6 +3305,16 @@ namespace Server
                         if (GetSaveFlag(flags, SaveFlag.LootType))
                         {
                             m_LootType = (LootType)reader.ReadByte();
+                            if (Shard.WARSHARD)
+                            {
+                                m_LootType = LootType.Blessed;
+                            }
+                            else
+                            {
+                                GetBlessedExpiryDays();
+                            }
+
+
                         }
 
                         int x = 0, y = 0, z = 0;
@@ -3569,7 +3686,10 @@ namespace Server
                 case 1:
                     {
                         m_LootType = (LootType)reader.ReadByte(); //m_Newbied = reader.ReadBool();
-
+                        if (Shard.WARSHARD)
+                        {
+                            m_LootType = LootType.Blessed;
+                        }
                         goto case 0;
                     }
                 case 0:
@@ -3721,7 +3841,7 @@ namespace Server
                 state.Send(OPLPacket);
             }
         }
-        
+
         protected virtual Packet GetWorldPacketFor(NetState state)
         {
             if (state.HighSeas)
@@ -4372,13 +4492,6 @@ namespace Server
                 Spawner.Remove(this);
                 Spawner = null;
             }
-
-            var region = Region.Find(GetWorldLocation(), Map);
-
-            if (region != null)
-            {
-                region.OnDelete(this);
-            }
         }
 
         public virtual void OnParentDeleted(object parent)
@@ -4450,6 +4563,12 @@ namespace Server
 
             FreeCache();
         }
+
+        public void PublicOverheadMessage(string text, int hue = 0)
+        {
+            PublicOverheadMessage(MessageType.Regular, 0, true, text);
+        }
+
 
         public void PublicOverheadMessage(MessageType type, int hue, bool ascii, string text)
         {
@@ -4523,6 +4642,12 @@ namespace Server
 
                 eable.Free();
             }
+        }
+
+        public void PrivateMessage(string msg, Mobile from, int hue = 0)
+        {
+            if (from.NetState != null)
+                PrivateOverheadMessage(MessageType.Regular, hue, true, msg, from.NetState);
         }
 
         public void PrivateOverheadMessage(MessageType type, int hue, int number, NetState state, string args = "")
@@ -4619,7 +4744,7 @@ namespace Server
                 module.Delete();
             }
 
-            if(Sockets != null)
+            if (Sockets != null)
             {
                 Sockets.IterateReverse(socket =>
                 {
@@ -4665,6 +4790,12 @@ namespace Server
 
         public virtual bool OnDragLift(Mobile from)
         {
+            /*
+            if(!this.IsChildOf(from.Backpack))
+            {
+                from.PublicOverheadMessage(MessageType.Emote, 0, false, "* pegou "+this.Name +" *");
+            }
+            */
             return true;
         }
 
@@ -4722,7 +4853,7 @@ namespace Server
 
         #region Location Location Location!
         public virtual void OnLocationChange(Point3D oldLocation)
-        { 
+        {
             var items = Items;
 
             if (items == null)
@@ -4746,7 +4877,7 @@ namespace Server
                     o.OnParentLocationChange(oldLocation);
                 }
             }
-		}
+        }
 
         public virtual void OnParentLocationChange(Point3D oldLocation)
         { }
@@ -4858,7 +4989,7 @@ namespace Server
                     int oldPileWeight = PileWeight;
 
                     m_ItemID = value;
-                    
+
                     ReleaseWorldPackets();
 
                     int newPileWeight = PileWeight;
@@ -5581,6 +5712,11 @@ namespace Server
             to.Send(new MessageLocalized(Serial, ItemID, MessageType.Regular, 0x3B2, 3, number, "", ""));
         }
 
+        public void SendLocalizedMessageTo(Mobile to, string number)
+        {
+            this.PrivateOverheadMessage(MessageType.Regular, 0, true, number, to.NetState);
+        }
+
         public void SendLocalizedMessageTo(Mobile to, int number, string args)
         {
             if (Deleted || !to.CanSee(this))
@@ -6139,7 +6275,13 @@ namespace Server
 
         public virtual bool CheckBlessed(Mobile m)
         {
-            if (m_LootType == LootType.Blessed || (Mobile.InsuranceEnabled && Insured))
+            if (Shard.WARSHARD)
+                return true;
+
+            if (m == null)
+                return true;
+
+            if (m.IsPlayer() && m_LootType == LootType.Blessed || (Mobile.InsuranceEnabled && Insured))
             {
                 return true;
             }
@@ -6149,7 +6291,7 @@ namespace Server
 
         public virtual bool CheckNewbied()
         {
-            return (m_LootType == LootType.Newbied);
+            return (m_LootType == LootType.Blessed);
         }
 
         public virtual bool IsStandardLoot()
@@ -6176,9 +6318,25 @@ namespace Server
 
         public Item()
         {
+            if (!BypassInitialization)
+                InitializeItem();
+        }
+
+        public Item(bool register = true)
+        {
+            if (register)
+                InitializeItem();
+            else
+                Shard.Debug("Criando item sem inicializar " + this.GetType().Name);
+        }
+
+        public static bool BypassInitialization = false;
+
+        public void InitializeItem()
+        {
             m_Serial = Serial.NewItem;
             m_Map = Map.Internal;
-            
+
             m_Light = LightType.Empty;
 
             m_Amount = 1;
@@ -6199,7 +6357,7 @@ namespace Server
                 m_TypeRef = World.m_ItemTypes.Count - 1;
             }
 
-            Timer.DelayCall(EventSink.InvokeItemCreated, new ItemCreatedEventArgs(this));
+            EventSink.InvokeItemCreated(new ItemCreatedEventArgs(this));
         }
 
         [Constructable]
@@ -6255,29 +6413,16 @@ namespace Server
         public List<ItemSocket> Sockets { get; private set; }
 
         public void AttachSocket(ItemSocket socket)
-		{
-			if(Sockets == null)
-			{
-				Sockets = new List<ItemSocket>();
-			}
-
-			Sockets.Add(socket);
-			socket.Owner = this;
-			
-			InvalidateProperties();
-		}
-
-        public bool RemoveSocket<T>()
         {
-            var socket = GetSocket(typeof(T));
-
-            if (socket != null)
+            if (Sockets == null)
             {
-                RemoveItemSocket(socket);
-                return true;
+                Sockets = new List<ItemSocket>();
             }
 
-            return false;
+            Sockets.Add(socket);
+            socket.Owner = this;
+
+            InvalidateProperties();
         }
 
         public void RemoveItemSocket(ItemSocket socket)
@@ -6288,7 +6433,6 @@ namespace Server
             }
 
             Sockets.Remove(socket);
-            socket.OnRemoved();
 
             if (Sockets.Count == 0)
             {
@@ -6297,26 +6441,26 @@ namespace Server
 
             InvalidateProperties();
         }
-		
-		public T GetSocket<T>() where T : ItemSocket
-		{
+
+        public T GetSocket<T>() where T : ItemSocket
+        {
             if (Sockets == null)
             {
                 return null;
             }
 
-			return Sockets.FirstOrDefault(s => s.GetType() == typeof(T)) as T;
-		}
-		
-		public T GetSocket<T>(Func<T, bool> predicate) where T : ItemSocket
-		{
+            return Sockets.FirstOrDefault(s => s.GetType() == typeof(T)) as T;
+        }
+
+        public T GetSocket<T>(Func<T, bool> predicate) where T : ItemSocket
+        {
             if (Sockets == null)
             {
                 return null;
             }
 
-			return Sockets.FirstOrDefault(s => s.GetType() == typeof(T) && (predicate == null || predicate(s as T))) as T;
-		}
+            return Sockets.FirstOrDefault(s => s.GetType() == typeof(T) && (predicate == null || predicate(s as T))) as T;
+        }
 
         public ItemSocket GetSocket(Type type)
         {
@@ -6329,14 +6473,14 @@ namespace Server
         }
 
         public bool HasSocket<T>()
-		{
+        {
             if (Sockets == null)
             {
                 return false;
             }
 
             return Sockets.Any(s => s.GetType() == typeof(T));
-		}
+        }
 
         public bool HasSocket(Type t)
         {
@@ -6351,71 +6495,73 @@ namespace Server
     }
 
     public class ItemSocket
-	{
-		[CommandProperty(AccessLevel.GameMaster)]
-		public Item Owner { get; set; }
-		
-		[CommandProperty(AccessLevel.GameMaster)]
-		public DateTime Expires { get; set; }
-		
-		public virtual TimeSpan TickDuration { get { return TimeSpan.FromMinutes(1); } }
-		
-		public Timer Timer { get; set; }
+    {
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Item Owner { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime Expires { get; set; }
+
+        public virtual TimeSpan TickDuration { get { return TimeSpan.FromMinutes(1); } }
+
+        public Timer Timer { get; set; }
 
         public ItemSocket()
             : this(TimeSpan.Zero)
         {
         }
-		
-		public ItemSocket(TimeSpan duration)
-		{
-			if(duration != TimeSpan.Zero)
-			{
-				Expires = DateTime.UtcNow + duration;
-				
-				BeginTimer();
-			}
-		}
-		
-		protected void BeginTimer()
-		{
-			EndTimer();
-			
-			Timer = Timer.DelayCall(TickDuration, TickDuration, OnTick);
+
+        public ItemSocket(TimeSpan duration)
+        {
+            if (duration != TimeSpan.Zero)
+            {
+                Expires = DateTime.UtcNow + duration;
+
+                BeginTimer();
+            }
+        }
+
+        protected void BeginTimer()
+        {
+            EndTimer();
+
+            Timer = Timer.DelayCall(TickDuration, TickDuration, OnTick);
             Timer.Start();
-		}
-		
-		protected void EndTimer()
-		{
-			if(Timer != null)
-			{
-				Timer.Stop();
-				Timer = null;
-			}
-		}
-		
-		protected virtual void OnTick()
-		{
-			if(Expires < DateTime.UtcNow || Owner.Deleted)
-			{
-				Remove();
-			}
-		}
-		
-		public virtual void Remove()
-		{
-			EndTimer();
-			
-			Owner.RemoveItemSocket(this);
-		}
-		
-		public virtual void OnRemoved()
-		{
-		}
-		
-		public virtual void GetProperties(ObjectPropertyList list)
-		{
-		}
+        }
+
+        protected void EndTimer()
+        {
+            if (Timer != null)
+            {
+                Timer.Stop();
+                Timer = null;
+            }
+        }
+
+        protected virtual void OnTick()
+        {
+            if (Expires < DateTime.UtcNow || Owner.Deleted)
+            {
+                Remove();
+            }
+        }
+
+        public virtual void Remove()
+        {
+            EndTimer();
+
+            Owner.RemoveItemSocket(this);
+
+            OnRemoved();
+        }
+
+        public virtual void OnRemoved()
+        {
+        }
+
+        public virtual void GetProperties(ObjectPropertyList list)
+        {
+        }
 
         public virtual void OnOwnerDuped(Item newItem)
         {
@@ -6451,43 +6597,43 @@ namespace Server
         {
         }
 
-		public virtual void Serialize(GenericWriter writer)
-		{
-			writer.Write(0);
-			
-			writer.Write(Expires);
-		}
-		
-		public virtual void Deserialize(Item owner, GenericReader reader)
-		{
-			reader.ReadInt(); // version
-			
-			Expires = reader.ReadDateTime();
-			
-			if(Expires != DateTime.MinValue)
-			{
-				if(Expires < DateTime.UtcNow)
-				{
-					return;
-				}
-				else
-				{
-					BeginTimer();
-				}
-			}
-			
-			owner.AttachSocket(this);
-		}
-		
-		public static void Save(ItemSocket socket, GenericWriter writer)
-		{
-			writer.Write(socket.GetType().Name);
-			socket.Serialize(writer);
-		}
-		
-		public static void Load(Item item, GenericReader reader)
-		{
-			var typeName = ScriptCompiler.FindTypeByName(reader.ReadString());
+        public virtual void Serialize(GenericWriter writer)
+        {
+            writer.Write(0);
+
+            writer.Write(Expires);
+        }
+
+        public virtual void Deserialize(Item owner, GenericReader reader)
+        {
+            reader.ReadInt(); // version
+
+            Expires = reader.ReadDateTime();
+
+            if (Expires != DateTime.MinValue)
+            {
+                if (Expires < DateTime.UtcNow)
+                {
+                    return;
+                }
+                else
+                {
+                    BeginTimer();
+                }
+            }
+
+            owner.AttachSocket(this);
+        }
+
+        public static void Save(ItemSocket socket, GenericWriter writer)
+        {
+            writer.Write(socket.GetType().Name);
+            socket.Serialize(writer);
+        }
+
+        public static void Load(Item item, GenericReader reader)
+        {
+            var typeName = ScriptCompiler.FindTypeByName(reader.ReadString());
             var socket = Activator.CreateInstance(typeName) as ItemSocket;
 
             socket.Deserialize(item, reader);

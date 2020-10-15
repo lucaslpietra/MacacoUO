@@ -10,7 +10,9 @@ namespace Server.Items
         [Constructable]
 		public SolesOfProvidence()
 		{
+            Name = "Sandalia da Sorte";
             Attributes.Luck = 80;
+            Attributes.BonusDex = 1;
             Hue = 1177;
 		}
 

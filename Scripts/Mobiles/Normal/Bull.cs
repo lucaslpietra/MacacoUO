@@ -9,21 +9,21 @@ namespace Server.Mobiles
         public Bull()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a bull";
+            this.Name = "touro";
             this.Body = Utility.RandomList(0xE8, 0xE9);
             this.BaseSoundID = 0x64;
 
             if (0.5 >= Utility.RandomDouble())
                 this.Hue = 0x901;
 
-            this.SetStr(77, 111);
+            this.SetStr(150, 111);
             this.SetDex(56, 75);
             this.SetInt(47, 75);
 
             this.SetHits(50, 64);
             this.SetMana(0);
 
-            this.SetDamage(4, 9);
+            this.SetDamage(20, 35);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 

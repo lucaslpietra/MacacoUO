@@ -181,7 +181,7 @@ namespace Server.Mobiles
 
             foreach (Mobile m in eable)
             {
-                if (m.Player && m.AccessLevel == AccessLevel.Player && m.Alive)
+                if (m.Player && m.AccessLevel <= AccessLevel.VIP && m.Alive)
                     list.Add(m);
             }
 
@@ -340,7 +340,8 @@ namespace Server.Mobiles
 
         public override bool OnBeforeDeath()
         {
-            RestoreBody();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
             return base.OnBeforeDeath();
         }

@@ -11,7 +11,7 @@ namespace Server.Items
         public ValkyriesGlaive()
         {
 			Attributes.SpellChanneling = 1;
-			Slayer = SlayerName.Silver;
+			Slayer = SlayerName.Undeads;
 			WeaponAttributes.HitFireball = 40;
 			Attributes.BonusStr = 5;
 			Attributes.WeaponSpeed = 20;

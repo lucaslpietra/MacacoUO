@@ -7,7 +7,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public FrenziedOstard()
-            : this("a frenzied ostard")
+            : this("ostard artico")
         {
         }
 
@@ -15,7 +15,9 @@ namespace Server.Mobiles
         public FrenziedOstard(string name)
             : base(name, 0xDA, 0x3EA4, AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Hue = Utility.RandomHairHue() | 0x8000;
+            //this.Hue = Utility.RandomHairHue() | 0x8000;
+            //Alterada para cor padrão do OA
+            this.Hue = 0;
 
             this.BaseSoundID = 0x275;
 
@@ -44,7 +46,7 @@ namespace Server.Mobiles
 
             this.Tamable = true;
             this.ControlSlots = 1;
-            this.MinTameSkill = 77.1;
+            this.MinTameSkill = 85;
         }
 
         public FrenziedOstard(Serial serial)

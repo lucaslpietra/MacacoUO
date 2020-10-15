@@ -203,12 +203,15 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int MaxArcaneCharges
         {
-            get { return m_MaxArcaneCharges; }
+            get
+            {
+                return this.m_MaxArcaneCharges;
+            }
             set
             {
-                m_MaxArcaneCharges = value;
-                InvalidateProperties();
-                Update();
+                this.m_MaxArcaneCharges = value;
+                this.InvalidateProperties();
+                this.Update();
             }
         }
 
@@ -217,55 +220,58 @@ namespace Server.Items
         {
             get
             {
-                return m_CurArcaneCharges;
+                return this.m_CurArcaneCharges;
             }
             set
             {
-                m_CurArcaneCharges = value;
-                InvalidateProperties();
-                Update();
+                this.m_CurArcaneCharges = value;
+                this.InvalidateProperties();
+                this.Update();
             }
         }
-
-        public int TempHue { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsArcane
         {
             get
             {
-                return m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0;
+                return (this.m_MaxArcaneCharges > 0 && this.m_CurArcaneCharges >= 0);
             }
         }
 
-        public override void AddCraftedProperties(ObjectPropertyList list)
+        public override void OnSingleClick(Mobile from)
         {
-            base.AddCraftedProperties(list);
+            base.OnSingleClick(from);
 
-            if (IsArcane)
-                list.Add(1061837, "{0}\t{1}", m_CurArcaneCharges, m_MaxArcaneCharges); // arcane charges: ~1_val~ / ~2_val~
+            if (this.IsArcane)
+                this.LabelTo(from, 1061837, String.Format("{0}\t{1}", this.m_CurArcaneCharges, this.m_MaxArcaneCharges));
         }
 
         public void Update()
         {
-            if (IsArcane)
-                ItemID = 0x26AF;
-            else if (ItemID == 0x26AF)
-                ItemID = 0x1711;
+            if (this.IsArcane)
+                this.ItemID = 0x26AF;
+            else if (this.ItemID == 0x26AF)
+                this.ItemID = 0x1711;
 
-            if (IsArcane && CurArcaneCharges == 0)
-            {
-                TempHue = Hue;
-                Hue = 0;
-            }
+            if (this.IsArcane && this.CurArcaneCharges == 0)
+                this.Hue = 0;
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (this.IsArcane)
+                list.Add(1061837, "{0}\t{1}", this.m_CurArcaneCharges, this.m_MaxArcaneCharges); // arcane charges: ~1_val~ / ~2_val~
         }
 
         public void Flip()
         {
-            if (ItemID == 0x1711)
-                ItemID = 0x1712;
-            else if (ItemID == 0x1712)
-                ItemID = 0x1711;
+            if (this.ItemID == 0x1711)
+                this.ItemID = 0x1712;
+            else if (this.ItemID == 0x1712)
+                this.ItemID = 0x1711;
         }
 
         #endregion
@@ -288,7 +294,7 @@ namespace Server.Items
         public ThighBoots(int hue)
             : base(0x1711, hue)
         {
-            Weight = 4.0;
+            this.Weight = 4.0;
         }
 
         public ThighBoots(Serial serial)
@@ -299,14 +305,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)2); // version
 
-            if (IsArcane)
+            writer.Write((int)1); // version
+
+            if (this.IsArcane)
             {
                 writer.Write(true);
-                writer.Write(TempHue);
-                writer.Write((int)m_CurArcaneCharges);
-                writer.Write((int)m_MaxArcaneCharges);
+                writer.Write((int)this.m_CurArcaneCharges);
+                writer.Write((int)this.m_MaxArcaneCharges);
             }
             else
             {
@@ -317,27 +323,20 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
 
-            switch (version)
+            switch ( version )
             {
-                case 2:
-                    {
-                        if (reader.ReadBool())
-                        {
-                            TempHue = reader.ReadInt();
-                            m_CurArcaneCharges = reader.ReadInt();
-                            m_MaxArcaneCharges = reader.ReadInt();
-                        }
-
-                        break;
-                    }
                 case 1:
                     {
                         if (reader.ReadBool())
                         {
-                            m_CurArcaneCharges = reader.ReadInt();
-                            m_MaxArcaneCharges = reader.ReadInt();
+                            this.m_CurArcaneCharges = reader.ReadInt();
+                            this.m_MaxArcaneCharges = reader.ReadInt();
+
+                            if (this.Hue == 2118)
+                                this.Hue = ArcaneGem.DefaultArcaneHue;
                         }
 
                         break;
@@ -587,6 +586,7 @@ namespace Server.Items
         public ElvenBoots(int hue)
             : base(0x2FC4, hue)
         {
+            Name = "Botas Elficas";
             this.Weight = 2.0;
         }
 
@@ -598,6 +598,68 @@ namespace Server.Items
         public override bool Dye(Mobile from, DyeTub sender)
         {
             return false;
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.WriteEncodedInt(0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadEncodedInt();
+        }
+    }
+
+
+    [Alterable(typeof(DefTailoring), typeof(LeatherTalons))]
+    [FlipableAttribute(0x2FC4, 0x317A)]
+    public class BotaSebosa : ElvenBoots
+    {
+        public override CraftResource DefaultResource
+        {
+            get
+            {
+                return CraftResource.CouroSpinned;
+            }
+        }
+
+        public override Race RequiredRace
+        {
+            get
+            {
+                return Race.Elf;
+            }
+        }
+
+        [Constructable]
+        public BotaSebosa()
+            : this(788)
+        {
+        }
+
+        [Constructable]
+        public BotaSebosa(int hue)
+            : base(hue)
+        {
+            Name = "Botas Sebosas";
+            this.Weight = 2.0;
+        }
+
+        public BotaSebosa(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override int BaseDexBonus { get { return 1; } }
+
+        public override bool Dye(Mobile from, DyeTub sender)
+        {
+            return true;
         }
 
         public override void Serialize(GenericWriter writer)

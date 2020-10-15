@@ -15,7 +15,7 @@ namespace Server.Mobiles
         public WaterElemental()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a water elemental";
+            this.Name = "elemental da agua";
             this.Body = 16;
             this.BaseSoundID = 278;
 
@@ -36,7 +36,7 @@ namespace Server.Mobiles
             this.SetResistance(ResistanceType.Energy, 5, 10);
 
             this.SetSkill(SkillName.EvalInt, 60.1, 75.0);
-            this.SetSkill(SkillName.Magery, 60.1, 75.0);
+            this.SetSkill(SkillName.Magery, 70, 80);
             this.SetSkill(SkillName.MagicResist, 100.1, 115.0);
             this.SetSkill(SkillName.Tactics, 50.1, 70.0);
             this.SetSkill(SkillName.Wrestling, 50.1, 70.0);
@@ -54,6 +54,54 @@ namespace Server.Mobiles
         public WaterElemental(Serial serial)
             : base(serial)
         {
+        }
+
+        public override void OnBeforeDamage(Mobile from, ref int totalDamage, DamageType type)
+        {
+
+            if (from == null)
+                return;
+
+            if (!this.Alive)
+                return;
+
+            if (type != DamageType.Melee)
+                return;
+
+            bool bonus = false;
+            base.OnBeforeDamage(from, ref totalDamage, type);
+            var arma = from.FindItemOnLayer(Layer.OneHanded);
+            if (arma != null && arma is BaseSword)
+            {
+                totalDamage += 10;
+                bonus = true;
+            }
+
+            arma = from.FindItemOnLayer(Layer.TwoHanded);
+            if (arma != null && arma is BaseSword)
+            {
+                bonus = true;
+                totalDamage += 10;
+            }
+
+            if (!bonus)
+            {
+                totalDamage /= 10;
+                if (!from.IsCooldown("dicabas2"))
+                {
+                    from.SetCooldown("dicabas2", TimeSpan.FromMinutes(10));
+                    from.SendMessage("Seu ataque nao foi muito efetivo por conta do tipo de sua arma");
+
+                }
+            }
+            else if (bonus)
+            {
+                if (!from.IsCooldown("dicabas"))
+                {
+                    from.SetCooldown("dicabas", TimeSpan.FromMinutes(10));
+                    from.SendMessage("Sua arma foi muito efetiva contra " + this.Name);
+                }
+            }
         }
 
         public override double DispelDifficulty

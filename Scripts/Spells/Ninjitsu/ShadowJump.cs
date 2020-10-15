@@ -9,7 +9,7 @@ namespace Server.Spells.Ninjitsu
     public class Shadowjump : NinjaSpell
     {
         private static readonly SpellInfo m_Info = new SpellInfo(
-            "Shadowjump", null,
+            "Salto das Sombras", null,
             -1,
             9002);
         public Shadowjump(Mobile caster, Item scroll)
@@ -50,7 +50,7 @@ namespace Server.Spells.Ninjitsu
             PlayerMobile pm = this.Caster as PlayerMobile; // IsStealthing should be moved to Server.Mobiles
             if (!pm.IsStealthing)
             {
-                this.Caster.SendLocalizedMessage(1063087); // You must be in stealth mode to use this ability.
+                this.Caster.SendMessage("Voce precisa estar em stealth para usar isto"); // You must be in stealth mode to use this ability.
                 return false;
             }
 
@@ -64,7 +64,7 @@ namespace Server.Spells.Ninjitsu
 
         public override void OnCast()
         {
-            this.Caster.SendLocalizedMessage(1063088); // You prepare to perform a Shadowjump.
+            this.Caster.SendMessage("Voce prepara um pulo das sombras"); // You prepare to perform a Shadowjump.
             this.Caster.Target = new InternalTarget(this);
         }
 
@@ -82,11 +82,11 @@ namespace Server.Spells.Ninjitsu
 
             if (!pm.IsStealthing)
             {
-                this.Caster.SendLocalizedMessage(1063087); // You must be in stealth mode to use this ability.
+                this.Caster.SendMessage("Voce precisa estar em stealth para usar isto"); // You must be in stealth mode to use this ability.
             }
             else if (Factions.Sigil.ExistsOn(this.Caster))
             {
-                this.Caster.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
+                this.Caster.SendMessage("Voce nao pode fazer isto carregando um sigilo"); // You can't do that while carrying the sigil.
             }
             else if (Server.Misc.WeightOverloading.IsOverloaded(this.Caster))
             {
@@ -97,15 +97,15 @@ namespace Server.Spells.Ninjitsu
             }
             else if (map == null || !map.CanSpawnMobile(p.X, p.Y, p.Z))
             {
-                this.Caster.SendLocalizedMessage(502831); // Cannot teleport to that spot.
+                this.Caster.SendMessage("Voce nao pode teleportar ali"); // Cannot teleport to that spot.
             }
             else if (SpellHelper.CheckMulti(to, map, true, 5))
             {
-                this.Caster.SendLocalizedMessage(502831); // Cannot teleport to that spot.
+                this.Caster.SendMessage("Voce nao pode teleportar ali");// Cannot teleport to that spot.
             }
             else if (Region.Find(to, map).GetRegion(typeof(HouseRegion)) != null)
             {
-                this.Caster.SendLocalizedMessage(502829); // Cannot teleport to that spot.
+                this.Caster.SendMessage("Voce nao pode teleportar ali");// Cannot teleport to that spot.
             }
             else if (this.CheckSequence())
             {

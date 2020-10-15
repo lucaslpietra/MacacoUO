@@ -41,12 +41,15 @@ namespace Server.Spells.Third
 
                 SpellHelper.CheckReflect((int)Circle, Caster, ref m);
 
-                if (m.Spell != null)
-                    m.Spell.OnCasterHurt();
+                // Poison nao da disturb
+                //if (m.Spell != null)
+                //    m.Spell.OnCasterHurt();
 
                 m.Paralyzed = false;
 
-                if (CheckResisted(m) || Server.Spells.Mysticism.StoneFormSpell.CheckImmunity(m))
+                var bypassresist = Utility.RandomDouble() < (0.15 + Caster.Skills[SkillName.Poisoning].Value * 0.075);
+
+                if (!bypassresist && CheckResisted(m) || Server.Spells.Mysticism.StoneFormSpell.CheckImmunity(m))
                 {
                     m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                 }
@@ -103,20 +106,21 @@ namespace Server.Spells.Third
 
                         if (total >= 200.0 && 1 > Utility.Random(10))
                             level = 3;
-                        else if (total > (Core.AOS ? 170.1 : 170.0))
+                        else if (total >  170.0)
                             level = 2;
-                        else if (total > (Core.AOS ? 130.1 : 130.0))
+                        else if (total > 130.0)
                             level = 1;
                         else
                             level = 0;
                     }
+                    var p = Poison.GetPoison(level);
+                    Shard.Debug("Toca "+p, m);
+                    var result = m.ApplyPoison(Caster, p);
 
-                    m.ApplyPoison(Caster, Poison.GetPoison(level));
+                    Shard.Debug("Poison Result: " + result.ToString(), m);
                 }
-
-                m.FixedParticles(0x374A, 10, 15, 5021, EffectLayer.Waist);
+                Caster.MovingParticles(m, 0x374A, 12, 10, false, false, 9502, 0x374A, 0x205);
                 m.PlaySound(0x205);
-
                 HarmfulSpell(m);
             }
 
@@ -128,7 +132,7 @@ namespace Server.Spells.Third
             private readonly PoisonSpell m_Owner;
 
             public InternalTarget(PoisonSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(Spell.RANGE, false, TargetFlags.Harmful)
             {
                 m_Owner = owner;
             }

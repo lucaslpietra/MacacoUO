@@ -10,17 +10,20 @@ namespace Server.Items
         public HonorLegs()
             : base(0x2B06)
         {
+            Name = "Calcas da Honra";
             this.LootType = LootType.Blessed;
             this.Weight = 9.0;
             this.SetHue = 0;
             this.Hue = 0x226;
-			
+
+            /*
             this.SetSelfRepair = 5;			
             this.SetPhysicalBonus = 5;
             this.SetFireBonus = 5;
             this.SetColdBonus = 5;
             this.SetPoisonBonus = 5;
             this.SetEnergyBonus = 5;
+            */
         }
 
         public HonorLegs(Serial serial)

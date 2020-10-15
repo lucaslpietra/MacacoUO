@@ -8,7 +8,13 @@ namespace Server.Items
     #region Reward Clothing
     public class ZooMemberBonnet : Bonnet
     {
-        public override int LabelNumber { get { return 1073221; } }// Britannia Royal Zoo Member
+        public override int LabelNumber
+        {
+            get
+            {
+                return 1073221;
+            }
+        }// Britannia Royal Zoo Member
 
         [Constructable]
         public ZooMemberBonnet()
@@ -27,22 +33,36 @@ namespace Server.Items
         {
         }
 
+        public override bool Dye(Mobile from, DyeTub sender)
+        {
+            from.SendLocalizedMessage(sender.FailMessage);
+            return false;
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
         }
     }
 
     public class ZooMemberFloppyHat : FloppyHat
     {
-        public override int LabelNumber { get { return 1073221; } }// Britannia Royal Zoo Member
+        public override int LabelNumber
+        {
+            get
+            {
+                return 1073221;
+            }
+        }// Britannia Royal Zoo Member
 
         [Constructable]
         public ZooMemberFloppyHat()
@@ -61,22 +81,36 @@ namespace Server.Items
         {
         }
 
+        public override bool Dye(Mobile from, DyeTub sender)
+        {
+            from.SendLocalizedMessage(sender.FailMessage);
+            return false;
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
         }
     }
 
     public class LibraryFriendFeatheredHat : FeatheredHat
     {
-        public override int LabelNumber { get { return 1073347; } }// Friends of the Library Feathered Hat
+        public override int LabelNumber
+        {
+            get
+            {
+                return 1073347;
+            }
+        }// Friends of the Library Feathered Hat
 
         [Constructable]
         public LibraryFriendFeatheredHat()
@@ -94,16 +128,24 @@ namespace Server.Items
             : base(serial)
         {
         }
-       
+
+        public override bool Dye(Mobile from, DyeTub sender)
+        {
+            from.SendLocalizedMessage(sender.FailMessage);
+            return false;
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
         }
     }
@@ -637,6 +679,7 @@ namespace Server.Items
         public ClothNinjaHood(Serial serial)
             : base(serial)
         {
+            Name = "Gorro de Ninja";
         }
 
         public override void Serialize(GenericWriter writer)
@@ -724,6 +767,15 @@ namespace Server.Items
         public FlowerGarland(Serial serial)
             : base(serial)
         {
+            
+        }
+
+        public override string DefaultName
+        {
+            get
+            {
+                return "Coroa de flores";
+            }
         }
 
         public override void Serialize(GenericWriter writer)
@@ -1152,6 +1204,103 @@ namespace Server.Items
         }
 
         public Bandana(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class MagicalBearMask : BaseHat, IRepairable
+    {
+
+        public override int BasePhysicalResistance
+        {
+            get
+            {
+                return 5;
+            }
+        }
+        public override int BaseFireResistance
+        {
+            get
+            {
+                return 3;
+            }
+        }
+        public override int BaseColdResistance
+        {
+            get
+            {
+                return 8;
+            }
+        }
+        public override int BasePoisonResistance
+        {
+            get
+            {
+                return 4;
+            }
+        }
+        public override int BaseEnergyResistance
+        {
+            get
+            {
+                return 4;
+            }
+        }
+
+        public override int InitMinHits
+        {
+            get
+            {
+                return 20;
+            }
+        }
+        public override int InitMaxHits
+        {
+            get
+            {
+                return 30;
+            }
+        }
+
+        [Constructable]
+        public MagicalBearMask()
+            : this(0)
+        {
+        }
+
+        [Constructable]
+        public MagicalBearMask(int hue)
+            : base(0x1545, hue)
+        {
+            Name = "Mascara Magica de Urso";
+        }
+
+        public override int BaseIntBonus { get { return 5; } }
+
+        public CraftSystem RepairSystem { get { return DefTailoring.CraftSystem; } }
+
+        public override bool Dye(Mobile from, DyeTub sender)
+        {
+            from.SendLocalizedMessage(sender.FailMessage);
+            return false;
+        }
+
+        public MagicalBearMask(Serial serial)
             : base(serial)
         {
         }
@@ -2107,6 +2256,7 @@ namespace Server.Items
         public WizardsHat(Serial serial)
             : base(serial)
         {
+            Name = "Chapeu de Mago";
         }
 
         public override void Serialize(GenericWriter writer)
@@ -2211,17 +2361,20 @@ namespace Server.Items
         public MagicWizardsHat()
             : this(0)
         {
+            this.Name = "Chapeu Magico";
         }
 
         [Constructable]
         public MagicWizardsHat(int hue)
             : base(0x1718, hue)
         {
+            this.Name = "Chapeu Magico";
         }
 
         public MagicWizardsHat(Serial serial)
             : base(serial)
         {
+            this.Name = "Chapeu Magico";
         }
 
         public override void Serialize(GenericWriter writer)

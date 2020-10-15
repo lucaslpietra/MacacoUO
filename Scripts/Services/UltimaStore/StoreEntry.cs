@@ -8,6 +8,7 @@ namespace Server.Engines.UOStore
         public Type ItemType { get; private set; }
         public TextDefinition[] Name { get; private set; }
         public int Tooltip { get; private set; }
+        public string TooltipStr { get; private set; }
         public int GumpID { get; private set; }
         public int ItemID { get; private set; }
         public int Hue { get; private set; }
@@ -21,11 +22,28 @@ namespace Server.Engines.UOStore
             : this(itemType, new[] { name }, tooltip, itemID, gumpID, hue, cost, cat, constructor)
         { }
 
+        public StoreEntry(Type itemType, TextDefinition name, string tooltip, int itemID, int gumpID, int hue, int cost, StoreCategory cat, Func<Mobile, StoreEntry, Item> constructor = null)
+           : this(itemType, new[] { name }, tooltip, itemID, gumpID, hue, cost, cat, constructor)
+        { }
+
         public StoreEntry(Type itemType, TextDefinition[] name, int tooltip, int itemID, int gumpID, int hue, int cost, StoreCategory cat, Func<Mobile, StoreEntry, Item> constructor = null)
         {
             ItemType = itemType;
             Name = name;
             Tooltip = tooltip;
+            ItemID = itemID;
+            GumpID = gumpID;
+            Hue = hue;
+            Price = cost;
+            Category = cat;
+            Constructor = constructor;
+        }
+
+        public StoreEntry(Type itemType, TextDefinition[] name, string tooltip, int itemID, int gumpID, int hue, int cost, StoreCategory cat, Func<Mobile, StoreEntry, Item> constructor = null)
+        {
+            ItemType = itemType;
+            Name = name;
+            TooltipStr = tooltip;
             ItemID = itemID;
             GumpID = gumpID;
             Hue = hue;

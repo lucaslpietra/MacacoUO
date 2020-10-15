@@ -1,24 +1,23 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Server;
+using Server.ContextMenus;
 using Server.Gumps;
 using Server.Items;
 using Server.Multis;
-using Server.ContextMenus;
 using Server.Network;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Server.Engines.Plants
 {
-	public enum PlantStatus
+    public enum PlantStatus
 	{
-		BowlOfDirt		= 0,
-		Seed			= 1,
-		Sapling			= 2,
-		Plant			= 4,
-		FullGrownPlant	= 7,
-		DecorativePlant = 10,
-		DeadTwigs		= 11,
+		Terra		= 0,
+		Sementinha			= 1,
+		Plantinha			= 2,
+		Planta			= 4,
+		PlantaCrescida	= 7,
+		PlantaDecorativa = 10,
+		GalhosMortos		= 11,
 
 		Stage1			= 1,
 		Stage2			= 2,
@@ -72,11 +71,11 @@ namespace Server.Engines.Plants
 
         public override void OnSingleClick( Mobile from )
 		{
-			if ( m_PlantStatus >= PlantStatus.DeadTwigs )
+			if ( m_PlantStatus >= PlantStatus.GalhosMortos )
 				LabelTo( from, LabelNumber );
-			else if ( m_PlantStatus >= PlantStatus.DecorativePlant )
+			else if ( m_PlantStatus >= PlantStatus.PlantaDecorativa )
 				LabelTo( from, 1061924 ); // a decorative plant
-			else if ( m_PlantStatus >= PlantStatus.FullGrownPlant )
+			else if ( m_PlantStatus >= PlantStatus.PlantaCrescida )
 				LabelTo( from, PlantTypeInfo.GetInfo( m_PlantType ).Name );
 			else
 				LabelTo( from, 1029913 ); // plant bowl
@@ -88,7 +87,7 @@ namespace Server.Engines.Plants
 			get { return m_PlantStatus; }
 			set
 			{
-				if ( m_PlantStatus == value || value < PlantStatus.BowlOfDirt || value > PlantStatus.DeadTwigs )
+				if ( m_PlantStatus == value || value < PlantStatus.Terra || value > PlantStatus.GalhosMortos )
 					return;
 
 				double ratio;
@@ -99,7 +98,7 @@ namespace Server.Engines.Plants
 
 				m_PlantStatus = value;
 
-				if ( m_PlantStatus >= PlantStatus.DecorativePlant )
+				if ( m_PlantStatus >= PlantStatus.PlantaDecorativa )
 				{
 					m_PlantSystem = null;
 				}
@@ -110,7 +109,7 @@ namespace Server.Engines.Plants
 
 					int hits = (int)( m_PlantSystem.MaxHits * ratio );
 
-					if ( hits == 0 && m_PlantStatus > PlantStatus.BowlOfDirt )
+					if ( hits == 0 && m_PlantStatus > PlantStatus.Terra )
 						m_PlantSystem.Hits = hits + 1;
 					else
 						m_PlantSystem.Hits = hits;
@@ -180,7 +179,7 @@ namespace Server.Engines.Plants
 		[CommandProperty( AccessLevel.GameMaster )]
 		public bool IsGrowable
 		{
-			get { return m_PlantStatus >= PlantStatus.BowlOfDirt && m_PlantStatus <= PlantStatus.Stage9; }
+			get { return m_PlantStatus >= PlantStatus.Terra && m_PlantStatus <= PlantStatus.Stage9; }
 		}
 
 		[CommandProperty( AccessLevel.GameMaster )]
@@ -202,16 +201,19 @@ namespace Server.Engines.Plants
 		[Constructable]
 		public PlantItem() : this( 0x1602, false )
 		{
+            this.Name = "Vaso de Plantas";
 		}
 
         [Constructable]
         public PlantItem(int itemID) : this(itemID, false)
         {
+            this.Name = "Vaso de Plantas";
         }
 
         [Constructable]
         public PlantItem(bool fertileDirt) : this(0x1602, fertileDirt)
         {
+            this.Name = "Vaso de Plantas";
         }
 
 		[Constructable]
@@ -219,11 +221,13 @@ namespace Server.Engines.Plants
 		{
 			Weight = 1.0;
 
-			m_PlantStatus = PlantStatus.BowlOfDirt;
+			m_PlantStatus = PlantStatus.Terra;
 			m_PlantSystem = new PlantSystem( this, fertileDirt );
 			m_Level = SecureLevel.Owner;
 
-			m_Instances.Add( this );
+            this.Name = "Vaso de Plantas";
+
+            m_Instances.Add( this );
 		}
 
 		public PlantItem( Serial serial ) : base( serial )
@@ -234,7 +238,7 @@ namespace Server.Engines.Plants
 		{
 			base.GetContextMenuEntries( from, list );
 
-            if (m_PlantStatus != PlantStatus.DecorativePlant)
+            if (m_PlantStatus != PlantStatus.PlantaDecorativa)
             {
                 SetSecureLevelEntry.AddTo(from, this, list);
             }
@@ -242,11 +246,11 @@ namespace Server.Engines.Plants
 
 		public int GetLocalizedPlantStatus()
 		{
-			if ( m_PlantStatus >= PlantStatus.Plant )
+			if ( m_PlantStatus >= PlantStatus.Planta )
 				return 1060812; // plant
-			else if ( m_PlantStatus >= PlantStatus.Sapling )
+			else if ( m_PlantStatus >= PlantStatus.Plantinha )
 				return 1023305; // sapling
-			else if ( m_PlantStatus >= PlantStatus.Seed )
+			else if ( m_PlantStatus >= PlantStatus.Sementinha )
 				return 1060810; // seed
 			else
 				return 1026951; // dirt
@@ -259,17 +263,17 @@ namespace Server.Engines.Plants
 
 		private void Update()
 		{
-			if ( m_PlantStatus >= PlantStatus.DeadTwigs )
+			if ( m_PlantStatus >= PlantStatus.GalhosMortos )
 			{
 				ItemID = 0x1B9D;
 				Hue = PlantHueInfo.GetInfo( m_PlantHue ).Hue;
 			}
-			else if ( m_PlantStatus >= PlantStatus.FullGrownPlant )
+			else if ( m_PlantStatus >= PlantStatus.PlantaCrescida )
 			{
 				ItemID = PlantTypeInfo.GetInfo( m_PlantType ).ItemID;
 				Hue = PlantHueInfo.GetInfo( m_PlantHue ).Hue;
 			}
-			else if ( m_PlantStatus >= PlantStatus.Plant )
+			else if ( m_PlantStatus >= PlantStatus.Planta )
 			{
 				ItemID = GreenBowlID;
 				Hue = 0;
@@ -285,11 +289,11 @@ namespace Server.Engines.Plants
 
 		public override void AddNameProperty( ObjectPropertyList list )
 		{
-			if ( m_PlantStatus >= PlantStatus.DeadTwigs )
+			if ( m_PlantStatus >= PlantStatus.GalhosMortos )
 			{
 				base.AddNameProperty( list );
 			}
-			else if ( m_PlantStatus < PlantStatus.Seed )
+			else if ( m_PlantStatus < PlantStatus.Sementinha )
 			{
 				string args;
 
@@ -305,11 +309,11 @@ namespace Server.Engines.Plants
 				PlantTypeInfo typeInfo = PlantTypeInfo.GetInfo( m_PlantType );
 				PlantHueInfo hueInfo = PlantHueInfo.GetInfo( m_PlantHue );
 
-				if ( m_PlantStatus >= PlantStatus.DecorativePlant )
+				if ( m_PlantStatus >= PlantStatus.PlantaDecorativa )
 				{
 					list.Add( typeInfo.GetPlantLabelDecorative( hueInfo ), String.Format( "#{0}\t#{1}", hueInfo.Name, typeInfo.Name ) );
 				}
-				else if ( m_PlantStatus >= PlantStatus.FullGrownPlant )
+				else if ( m_PlantStatus >= PlantStatus.PlantaCrescida )
 				{
 					list.Add( typeInfo.GetPlantLabelFullGrown( hueInfo ), String.Format( "#{0}\t#{1}\t#{2}", m_PlantSystem.GetLocalizedHealth(), hueInfo.Name, typeInfo.Name ) );
 				}
@@ -326,7 +330,7 @@ namespace Server.Engines.Plants
 					{
 						args += String.Format( "\t#{0}\t#{1}\t#{2}", hueInfo.Name, typeInfo.Name, GetLocalizedPlantStatus() );
 
-						if ( m_PlantStatus == PlantStatus.Plant )
+						if ( m_PlantStatus == PlantStatus.Planta )
 							list.Add( typeInfo.GetPlantLabelPlant( hueInfo ), args );
 						else
 							list.Add( typeInfo.GetPlantLabelSeed( hueInfo ), args );
@@ -349,7 +353,7 @@ namespace Server.Engines.Plants
 
 		public override void OnDoubleClick( Mobile from )
 		{
-			if ( m_PlantStatus >= PlantStatus.DecorativePlant )
+			if ( m_PlantStatus >= PlantStatus.PlantaDecorativa )
 				return;
 
 			Point3D loc = this.GetWorldLocation();
@@ -371,7 +375,7 @@ namespace Server.Engines.Plants
 
 		public virtual bool PlantSeed( Mobile from, Seed seed )
 		{
-			if ( m_PlantStatus >= PlantStatus.FullGrownPlant )
+			if ( m_PlantStatus >= PlantStatus.PlantaCrescida )
 			{
 				LabelTo( from, 1061919 ); // You must use a seed on some prepared soil!
 			}
@@ -379,7 +383,7 @@ namespace Server.Engines.Plants
 			{
 				LabelTo( from, CantUseLocalization ); // The bowl of dirt must be in your pack, or you must lock it down.
 			}
-			else if ( m_PlantStatus != PlantStatus.BowlOfDirt )
+			else if ( m_PlantStatus != PlantStatus.Terra )
 			{
                 if(RequiresUpkeep && !MaginciaPlant)
 				    from.SendLocalizedMessage( 1080389, "#" + GetLocalizedPlantStatus().ToString() ); // This bowl of dirt already has a ~1_val~ in it!
@@ -398,11 +402,11 @@ namespace Server.Engines.Plants
 
 				seed.Consume();
 
-				PlantStatus = PlantStatus.Seed;
+				PlantStatus = PlantStatus.Sementinha;
 
 				m_PlantSystem.Reset( false );
 
-				LabelTo( from, OnPlantLocalization ); // You plant the seed in the bowl of dirt.
+				LabelTo( from, OnPlantLocalization ); // Voce plantou a semente in the bowl of dirt.
                 return true;
 			}
 
@@ -411,23 +415,23 @@ namespace Server.Engines.Plants
 
 		public virtual void Die()
 		{
-			if ( m_PlantStatus >= PlantStatus.FullGrownPlant )
+			if ( m_PlantStatus >= PlantStatus.PlantaCrescida )
 			{
-				PlantStatus = PlantStatus.DeadTwigs;
+				PlantStatus = PlantStatus.GalhosMortos;
 			}
 			else
 			{
-				PlantStatus = PlantStatus.BowlOfDirt;
+				PlantStatus = PlantStatus.Terra;
 				m_PlantSystem.Reset( true );
 			}
 		}
 
 		public void Pour( Mobile from, Item item )
 		{
-			if ( m_PlantStatus >= PlantStatus.DeadTwigs )
+			if ( m_PlantStatus >= PlantStatus.GalhosMortos )
 				return;
 
-			if ( m_PlantStatus == PlantStatus.DecorativePlant )
+			if ( m_PlantStatus == PlantStatus.PlantaDecorativa )
 			{
 				LabelTo( from, 1053049 ); // This is a decorative plant, it does not need watering!
 				return;
@@ -509,7 +513,7 @@ namespace Server.Engines.Plants
 
 		public bool ApplyPotion( PotionEffect effect, bool testOnly, out int message )
 		{
-			if ( m_PlantStatus >= PlantStatus.DecorativePlant )
+			if ( m_PlantStatus >= PlantStatus.PlantaDecorativa )
 			{
 				message = 1053049; // This is a decorative plant, it does not need watering!
 				return false;
@@ -521,7 +525,7 @@ namespace Server.Engines.Plants
                 return false;
             }
 
-			if ( m_PlantStatus == PlantStatus.BowlOfDirt )
+			if ( m_PlantStatus == PlantStatus.Terra )
 			{
 				message = 1053066; // You should only pour potions on a plant or seed!
 				return false;
@@ -529,36 +533,36 @@ namespace Server.Engines.Plants
 
 			bool full = false;
 
-			if ( effect == PotionEffect.PoisonGreater || effect == PotionEffect.PoisonDeadly )
+			if ( effect == PotionEffect.VenenoForte || effect == PotionEffect.VenenoMortal )
 			{
 				if ( m_PlantSystem.IsFullPoisonPotion )
 					full = true;
 				else if ( !testOnly )
 					m_PlantSystem.PoisonPotion++;
 			}
-			else if ( effect == PotionEffect.CureGreater )
+			else if ( effect == PotionEffect.CuraMaior )
 			{
 				if ( m_PlantSystem.IsFullCurePotion )
 					full = true;
 				else if ( !testOnly )
 					m_PlantSystem.CurePotion++;
 			}
-			else if ( effect == PotionEffect.HealGreater )
+			else if ( effect == PotionEffect.VidaForte )
 			{
 				if ( m_PlantSystem.IsFullHealPotion )
 					full = true;
 				else if ( !testOnly )
 					m_PlantSystem.HealPotion++;
 			}
-			else if ( effect == PotionEffect.StrengthGreater )
+			else if ( effect == PotionEffect.ForcaMaior )
 			{
 				if ( m_PlantSystem.IsFullStrengthPotion )
 					full = true;
 				else if ( !testOnly )
 					m_PlantSystem.StrengthPotion++;
 			}
-			else if ( effect == PotionEffect.PoisonLesser || effect == PotionEffect.Poison || effect == PotionEffect.CureLesser || effect == PotionEffect.Cure ||
-				effect == PotionEffect.HealLesser || effect == PotionEffect.Heal ||	effect == PotionEffect.Strength )
+			else if ( effect == PotionEffect.VenenoFraco || effect == PotionEffect.Veneno || effect == PotionEffect.CuraMenor || effect == PotionEffect.Cura ||
+				effect == PotionEffect.VidaFraca || effect == PotionEffect.Vida ||	effect == PotionEffect.Forca )
 			{
 				message = 1053068; // This potion is not powerful enough to use on a plant!
 				return false;
@@ -594,7 +598,7 @@ namespace Server.Engines.Plants
 			writer.Write( (int) m_PlantHue );
 			writer.Write( (bool) m_ShowType );
 
-			if ( m_PlantStatus < PlantStatus.DecorativePlant )
+			if ( m_PlantStatus < PlantStatus.PlantaDecorativa )
 				m_PlantSystem.Save( writer );
 		}
 
@@ -622,7 +626,7 @@ namespace Server.Engines.Plants
 					m_PlantHue = (PlantHue)reader.ReadInt();
 					m_ShowType = reader.ReadBool();
 
-					if ( m_PlantStatus < PlantStatus.DecorativePlant )
+					if ( m_PlantStatus < PlantStatus.PlantaDecorativa )
 						m_PlantSystem = new PlantSystem( this, reader );
 
 					if ( version < 2 && PlantHueInfo.IsCrossable( m_PlantHue ) )

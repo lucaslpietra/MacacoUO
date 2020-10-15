@@ -31,11 +31,6 @@ namespace Server.Engines.Shadowguard
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRoof { get { return Index >= 13; } }
 
-        public override string ToString()
-        {
-            return "...";
-        }
-
         public ShadowguardInstance(ShadowguardController controller, Point3D center, Rectangle2D bounds, int index)
         {
             Controller = controller;

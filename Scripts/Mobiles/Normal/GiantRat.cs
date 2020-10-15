@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public GiantRat()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a giant rat";
+            this.Name = "rato gigante";
             this.Body = 0xD7;
             this.BaseSoundID = 0x188;
 

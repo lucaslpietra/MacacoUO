@@ -4,20 +4,31 @@ using Server.Mobiles;
 
 namespace Server
 {
-    public class CollectionItem 
+    public class CollectionItem
     {
-        private readonly Type m_Type;
-        private readonly int m_ItemID;
-        private readonly int m_X;
-        private readonly int m_Y;
-        private readonly int m_Width;
-        private readonly int m_Height;
-        private readonly int m_Tooltip;
-        private readonly int m_Hue;
-        private readonly double m_Points;
-        private readonly bool m_QuestItem;
+        private  Type m_Type;
+        private  int m_ItemID;
+        private  int m_X;
+        private  int m_Y;
+        private  int m_Width;
+        private  int m_Height;
+        private  int m_Tooltip;
+        private  int m_Hue;
+        private  double m_Points;
+        private  bool m_QuestItem;
+        private  string m_Stringtip;
+
+        public CollectionItem(Type type, int itemID, string tooltip, int hue, double points, bool questitem = false)
+        {
+            Setup(type, itemID, 0, hue, points, questitem, tooltip);
+        }
 
         public CollectionItem(Type type, int itemID, int tooltip, int hue, double points, bool questitem = false)
+        {
+            Setup(type, itemID, tooltip, hue, points, questitem);
+        }
+
+        public void Setup(Type type, int itemID, int tooltip, int hue, double points, bool questitem = false, string tt=null)
         {
             m_Type = type;
             m_ItemID = itemID;
@@ -25,6 +36,7 @@ namespace Server
             m_Hue = hue;
             m_Points = points;
             m_QuestItem = questitem;
+            m_Stringtip = tt;
 
             Rectangle2D rec;
 
@@ -63,6 +75,7 @@ namespace Server
         public int Width { get { return m_Width; } }
         public int Height { get { return m_Height; } }
         public int Tooltip { get { return m_Tooltip; } }
+        public string TooltipStr { get { return m_Stringtip; } }
         public int Hue { get { return m_Hue; } }
         public double Points { get { return m_Points; } }
         public bool QuestItem { get { return m_QuestItem; } }
@@ -96,7 +109,7 @@ namespace Server
     }
 
     public class CollectionTitle : CollectionItem
-    { 
+    {
         private readonly object m_Title;
 
         public CollectionTitle(object title, int tooltip, double points)
@@ -115,8 +128,8 @@ namespace Server
                     to.SendLocalizedMessage(1073625, "#" + (int)m_Title); // The title "~1_TITLE~" has been bestowed upon you. 
                 else if (m_Title is string)
                     to.SendLocalizedMessage(1073625, (string)m_Title); // The title "~1_TITLE~" has been bestowed upon you. 
-					
-                to.AddCollectionPoints(collection.CollectionID, (int)Points * -1);				
+
+                to.AddCollectionPoints(collection.CollectionID, (int)Points * -1);
             }
             else
                 to.SendLocalizedMessage(1073626); // You already have that title!
@@ -137,11 +150,11 @@ namespace Server
 
         public override bool Validate(PlayerMobile from, Item item)
         {
-            TreasureMap map = item as TreasureMap;
-			
-            if (map != null && map.Level == m_Level)
+            TreasureMap map = (TreasureMap)item;
+
+            if (map.Level == m_Level)
                 return true;
-			
+
             return false;
         }
     }
@@ -160,11 +173,11 @@ namespace Server
 
         public override bool Validate(PlayerMobile from, Item item)
         {
-            Spellbook spellbook = item as Spellbook;
-			
-            if (spellbook != null && spellbook.SpellbookType == m_Type && spellbook.Content == 0)
+            Spellbook spellbook = (Spellbook)item;
+
+            if (spellbook.SpellbookType == m_Type && spellbook.Content == 0)
                 return true;
-			
+
             return false;
         }
     }

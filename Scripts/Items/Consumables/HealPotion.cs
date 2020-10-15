@@ -6,27 +6,29 @@ namespace Server.Items
     {
         [Constructable]
         public HealPotion()
-            : base(PotionEffect.Heal)
+            : base(PotionEffect.Vida)
         {
+            FiverRatio = true;
         }
 
         public HealPotion(Serial serial)
             : base(serial)
         {
+            FiverRatio = true;
         }
 
         public override int MinHeal
         {
             get
             {
-                return (Core.AOS ? 13 : 6);
+                return 5;
             }
         }
         public override int MaxHeal
         {
             get
             {
-                return (Core.AOS ? 16 : 20);
+                return 20;
             }
         }
         public override double Delay

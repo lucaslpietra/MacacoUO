@@ -66,26 +66,55 @@ namespace Server.Spells.Necromancy
                     Effects.PlaySound(this.Caster.Location, map, 0x10B);
                     Effects.SendLocationParticles(EffectItem.Create(this.Caster.Location, map, EffectItem.DefaultDuration), 0x37CC, 1, 40, 97, 3, 9917, 0);
 
-                    foreach (var id in AcquireIndirectTargets(Caster.Location, Core.ML ? 4 : 5))
+                    foreach (var id in AcquireIndirectTargets(Caster.Location, 5))
                     {
                         Mobile m = id as Mobile;
+
+                        if (m!=null && m.IsControlledBy(this.Caster))
+                            continue;
 
                         this.Caster.DoHarmful(id);
 
                         if (m != null)
                         {
-                            m.FixedParticles(0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255);
+                            //m.FixedParticles(0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255);
+                            Caster.MovingParticles(
+                                m,//IEntity to
+                                0x374A,//int itemID,
+                                10, // int speed,
+                                17, // int duration,
+                                true, // bool fixedDirection,
+                                true, // bool explodes,
+                                97, // int hue,
+                                9502, // int renderMode,
+                                9502, // int effect,
+                                9502, // int explodeEffect,
+                                0x160, // int explodeSound,
+                                0 // unkw
+                                );
                         }
                         else
                         {
                             Effects.SendLocationParticles(id, 0x374A, 1, 30, 97, 3, 9502, 0);
                         }
 
-                        double damage = Utility.RandomMinMax(30, 35);
+                        double damage = Utility.RandomMinMax(20, 30);
+                        damage *= GetDamageScalar(m);
+
                         int karma = m != null ? m.Karma / 100 : 0;
 
                         damage *= 300 + karma + (this.GetDamageSkill(this.Caster) * 10);
                         damage /= 1000;
+                        damage *= 0.75;
+
+                        if(m != null)
+                        {
+                            if (CheckResisted(m, 7))
+                            {
+                                m.SendMessage("Voce sente seu corpo resistindo a magia");
+                                damage *= 0.75;
+                            }
+                        }
 
                         int sdiBonus;
 
@@ -112,6 +141,9 @@ namespace Server.Spells.Necromancy
                         damage *= (100 + sdiBonus);
                         damage /= 100;
 
+                        var mobile = (Mobile)id;
+                        mobile.Freeze(TimeSpan.FromSeconds(2));
+                        mobile.SendMessage("A aura gelida te causa calafrios e seu corpo congela");
                         SpellHelper.Damage(this, id, damage, 0, 0, 100, 0, 0);
                     }
                 }

@@ -38,6 +38,12 @@ namespace Server.Items
             return dropped is GorgonLense && ((GorgonLense)dropped).LenseType == m_LenseType && base.WillStack(from, dropped);
         }
 
+        public override void AddNameProperties(ObjectPropertyList list)
+        {
+            base.AddNameProperties(list);
+            list.Add("Use em um elmo ou colar para proteger contra petrificacao");
+        }
+
         public override void OnAfterDuped(Item newItem)
         {
             if (newItem is GorgonLense)

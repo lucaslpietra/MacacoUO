@@ -9,12 +9,12 @@ namespace Server.Mobiles
         public TavaraSewel()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Title = "the Cursed";
+            this.Title = "a amaldicoada";
 
             this.Hue = 0x8838;
             this.Female = true;
             this.Body = 0x191;
-            this.Name = "Tavara Sewel";
+            this.Name = "Janete Nebrosa";
 
             this.AddItem(new Kilt(0x59C));
             this.AddItem(new Sandals(0x599));

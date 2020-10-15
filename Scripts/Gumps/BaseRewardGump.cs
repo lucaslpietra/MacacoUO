@@ -14,12 +14,10 @@ namespace Server.Gumps
         public PlayerMobile User { get; private set; }
         public int Page { get; private set; }
         public int Title { get; private set; }
+        public string TitleString { get; set; }
 
         public double Points { get; protected set; }
         public List<CollectionItem> Collection { get; protected set; }
-
-        public virtual int PointsName { get { return 1072843; } } // Your Reward Points:
-        public virtual int RewardLabel { get { return 1072844; } } // Please Choose a Reward:
 
         public BaseRewardGump(Mobile owner, PlayerMobile user, List<CollectionItem> col, int title, double points = -1.0)
             : base(50, 50)
@@ -56,14 +54,58 @@ namespace Server.Gumps
                 Points = points;
 
 			AddHtmlLocalized(70, 35, 270, 20, Title, 0x1, false, false);
-            AddHtmlLocalized(50, 65, 150, 20, PointsName, 0x1, false, false);
+            AddHtml(50, 65, 150, 20, "Seus pontos:", 0x1, false, false); // Your Reward Points:
             AddPoints();		
             AddImageTiled(35, 85, 270, 2, 0x23C5);			
-            AddHtmlLocalized(35, 90, 270, 20, RewardLabel, 0x1, false, false);
+            AddHtml(35, 90, 270, 20, "Escolha uma recompensa:", 0x1, false, false); // Please Choose a Reward:
 
             while (Collection != null && Index < Collection.Count)
                 DisplayRewardPage();
 		}
+
+        public BaseRewardGump(Mobile owner, PlayerMobile user, List<CollectionItem> col, string title, double points = -1.0)
+        : base(50, 50)
+        {
+            user.CloseGump(typeof(BaseRewardGump));
+
+            Owner = owner;
+            User = user;
+            Collection = col;
+            TitleString = title;
+
+            Closable = true;
+            Disposable = true;
+            Dragable = true;
+            Resizable = false;
+
+            AddPage(0);
+
+            AddImage(0, 0, 0x1F40);
+            AddImageTiled(20, 37, 300, 308, 0x1F42);
+            AddImage(20, 325, 0x1F43);
+            AddImage(35, 8, 0x39);
+            AddImageTiled(65, 8, 257, 10, 0x3A);
+            AddImage(290, 8, 0x3B);
+            AddImage(32, 33, 0x2635);
+            AddImageTiled(70, 55, 230, 2, 0x23C5);
+
+            Index = 0;
+            Page = 1;
+
+            if (points == -1)
+                Points = GetPoints(user);
+            else
+                Points = points;
+
+            AddHtml(70, 35, 270, 20, TitleString, 0x1, false, false);
+            AddHtml(50, 65, 150, 20, "Seus pontos:", 0x1, false, false); // Your Reward Points:
+            AddPoints();
+            AddImageTiled(35, 85, 270, 2, 0x23C5);
+            AddHtml(35, 90, 270, 20, "Escolha uma recompensa:", 0x1, false, false); // Please Choose a Reward:
+
+            while (Collection != null && Index < Collection.Count)
+                DisplayRewardPage();
+        }
 
         public virtual int GetYOffset(int id)
         {
@@ -91,7 +133,17 @@ namespace Server.Gumps
 				if (Points >= item.Points)
                 {
                     AddButton(35, offset + (int)(height / 2) - 5, 0x837, 0x838, 200 + Index, GumpButtonType.Reply, 0);
-                    AddTooltip(item.Tooltip);
+                    //AddItemProperty(item.s)
+                    if (item.TooltipStr != null)
+                    {
+                        Shard.Debug("Adicionando TT String " + item.TooltipStr);
+                        Add(new GumpTooltipStr(item.TooltipStr));
+                    }
+                    else if(item.Tooltip > 0)
+                    {
+                        AddTooltip(item.Tooltip);
+                    }
+                    
                 }
 				
 				int y = offset - item.Y;
@@ -110,10 +162,17 @@ namespace Server.Gumps
 
                 if (i != null)
                     AddItemProperty(i.Serial);
+                else if (item.TooltipStr != null)
+                {
+                    Shard.Debug("Adicionando TT String 2" + item.TooltipStr);
+                    Add(new GumpTooltipStr(item.TooltipStr));
+                }
                 else if (item.Tooltip > 0)
+                {
                     AddTooltip(item.Tooltip);
+                }
 
-                AddLabel(80 + max, offset + (int)(height / 2) - 10, Points >= item.Points ? 0x64 : 0x21, item.Points.ToString("N0"));
+                AddLabel(65 + max, offset + (int)(height / 2) - 10, Points >= item.Points ? 0x64 : 0x21, item.Points.ToString());
 
                 offset += GetYOffset(item.ItemID) + height;
                 Index++;
@@ -127,7 +186,7 @@ namespace Server.Gumps
             if (Page > 1)
             {
                 AddButton(150, 335, 0x15E3, 0x15E7, 0, GumpButtonType.Page, Page - 1);
-                AddHtmlLocalized(170, 335, 60, 20, 1074880, 0x1, false, false); // Previous			
+                AddHtml(170, 335, 60, 20, "Anterior", 0x1, false, false); // Previous			
             }
 
             Page++;
@@ -135,7 +194,7 @@ namespace Server.Gumps
             if (Index < Collection.Count)
             {
                 AddButton(300, 335, 0x15E1, 0x15E5, 0, GumpButtonType.Page, Page);
-                AddHtmlLocalized(240, 335, 60, 20, 1072854, 0x1, false, false); // <div align=right>Next</div>
+                AddHtml(240, 335, 60, 20, "<div align=right>Proximo</div>", 0x1, false, false); // <div align=right>Next</div>
             }
 		}
 		
@@ -153,7 +212,7 @@ namespace Server.Gumps
 					from.SendGump(new aConfirmRewardGump(Owner, item, info.ButtonID - 200, OnConfirmed));
 				}
 				else
-					from.SendLocalizedMessage(1073122); // You don't have enough points for that!
+					from.SendMessage("Voce nao tem pontos suficientes"); // You don't have enough points for that!
 			}
 		}
 
@@ -179,7 +238,7 @@ namespace Server.Gumps
 
                     User.SendLocalizedMessage(1073621); // Your reward has been placed in your backpack.
                     RemovePoints(citem.Points);
-                    User.PlaySound(0x5A7);
+                    User.PlaySound(0x5A8);
                 }
             }
         }

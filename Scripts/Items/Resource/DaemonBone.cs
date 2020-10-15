@@ -15,6 +15,7 @@ namespace Server.Items
         public DaemonBone(int amount)
             : base(0xF80, amount)
         {
+            Name = "Osso Demoniaco";
         }
 
         public DaemonBone(Serial serial)

@@ -816,7 +816,7 @@ namespace Server.Items
         }
     }
 
-    public abstract class BaseBeverage : Item, IHasQuantity, ICraftable, IResource, IQuality
+    public abstract class BaseBeverage : Item, IHasQuantity, ICraftable, IResource
     {
         private BeverageType m_Content;
         private int m_Quantity;
@@ -1014,7 +1014,7 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            if (_Resource > CraftResource.Iron)
+            if (_Resource > CraftResource.Ferro)
             {
                 list.Add(1053099, "#{0}\t{1}", CraftResources.GetLocalizationNumber(_Resource), String.Format("#{0}", LabelNumber.ToString())); // ~1_oretype~ ~2_armortype~
             }
@@ -1028,14 +1028,6 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (ShowQuantity)
-            {
-                list.Add(GetQuantityDescription());
-            }
-        }
-
-        public override void AddCraftedProperties(ObjectPropertyList list)
-        {
             if (_Crafter != null)
             {
                 list.Add(1050043, _Crafter.TitleName); // crafted by ~1_NAME~
@@ -1044,6 +1036,11 @@ namespace Server.Items
             if (_Quality == ItemQuality.Exceptional)
             {
                 list.Add(1060636); // Exceptional
+            }
+
+            if (ShowQuantity)
+            {
+                list.Add(GetQuantityDescription());
             }
         }
 
@@ -1559,8 +1556,9 @@ namespace Server.Items
                 if (!Fillable || !ValidateUse(from, true))
                     return;
 
+                PrivateOverheadMessage(MessageType.Regular, 0, true, "Colocar o que aqui ?", from.NetState);
                 from.BeginTarget(-1, true, TargetFlags.None, new TargetCallback(Fill_OnTarget));
-                SendLocalizedMessageTo(from, 500837); // Fill from what?
+                //SendLocalizedMessage(from, "Colocar o que aqui?"); // Fill from what?
             }
             else if (Pourable && ValidateUse(from, true))
             {

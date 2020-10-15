@@ -119,7 +119,12 @@ namespace Server.Items
         public override void OnHit(Mobile attacker, IDamageable defender, double damageBonus)
         {
             base.OnHit(attacker, defender, damageBonus);
-
+            if (Utility.RandomDouble() <= 0.15)
+            {
+                --this.PoisonCharges;
+                ((Mobile)defender).ApplyPoison(attacker, this.Poison);
+            }
+            /*
             if (!Core.AOS && defender is Mobile && (attacker.Player || attacker.Body.IsHuman) && this.Layer == Layer.TwoHanded && (attacker.Skills[SkillName.Anatomy].Value / 400.0) >= Utility.RandomDouble())
             {
                 StatMod mod = ((Mobile)defender).GetStatMod("Concussion");
@@ -133,6 +138,7 @@ namespace Server.Items
                     attacker.PlaySound(0x11C);
                 }
             }
+            */
         }
     }
 }

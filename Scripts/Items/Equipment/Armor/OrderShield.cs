@@ -11,10 +11,11 @@ namespace Server.Items
         public OrderShield()
             : base(0x1BC4)
         {
-            if (!Core.AOS)
-                LootType = LootType.Newbied;
+            Name = "Escudo da Ordem";
+            //if (!Core.AOS)
+            //    this.LootType = LootType.Blessed;
 
-            Weight = 7.0;
+            this.Weight = 7.0;
         }
 
         public OrderShield(Serial serial)
@@ -82,19 +83,33 @@ namespace Server.Items
         {
             get
             {
-                return 30;
+                return 25;
             }
         }
-		
-		public override void Serialize(GenericWriter writer)
+
+        public override int OldStrReq
         {
-            base.Serialize(writer);
-            writer.Write((int)0);//version
+            get
+            {
+                return 100;
+            }
         }
+
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
+
+            if (this.Weight == 6.0)
+                this.Weight = 7.0;
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0);//version
         }
 
         public override bool OnEquip(Mobile from)
@@ -110,6 +125,8 @@ namespace Server.Items
 
         public virtual bool Validate(Mobile m)
         {
+            return true;
+
             if (Core.AOS || m == null || !m.Player || m.IsStaff())
                 return true;
 

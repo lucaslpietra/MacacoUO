@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public UnfrozenMummy()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.4, 0.8)
         {
-            this.Name = "an unfrozen mummy";
+            this.Name = "mumia congelada";
             this.Body = 0x9B;
             this.Hue = 0x480;
             this.BaseSoundID = 0x1D7;
@@ -43,9 +43,11 @@ namespace Server.Mobiles
             this.Fame = 25000;
             this.Karma = -25000;
 
+            AddItem(new EnhancedBandage(2));
+
             for (int i = 0; i < Utility.RandomMinMax(0, 2); i++)
             {
-                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                //this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
         }
 
@@ -67,7 +69,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.Gems, 5);
+            this.AddLoot(LootPack.UltraRich, 1);
             AddLoot( LootPack.Parrot );
             AddLoot(LootPack.HighScrolls, 2);
             AddLoot(LootPack.MedScrolls);

@@ -208,7 +208,7 @@ namespace Server.Engines.VoidPool
 				CurrentScore = new Dictionary<Mobile, long>();
 				Waves = new List<WaveInfo>();
 				
-				Region.SendRegionMessage(1152527, 0x2B); // The battle for the Void Pool is beginning now!
+				Region.SendRegionMessage("A batalha do vazio esta iniciando"); // The battle for the Void Pool is beginning now!
 
                 if (WaypointACount != WaypointsA.Count || WaypointBCount != WaypointsB.Count)
                     Generate.AddWaypoints();
@@ -244,7 +244,7 @@ namespace Server.Engines.VoidPool
             int toSpawn = (int)Math.Ceiling(Math.Max(5, Math.Sqrt(Wave) * 2) * 1.5);
 			List<BaseCreature> creatures = new List<BaseCreature>();
 
-            for (int i = 0; i < toSpawn; i++)
+			for(int i = 0; i < toSpawn; i++)
 			{
 				Point3D start = i % 2 == 0 ? StartPoint1 : StartPoint2;
 				
@@ -296,28 +296,8 @@ namespace Server.Engines.VoidPool
 					});
 				}
 			}
-
-            var gate1 = new VoidPoolGate();
-            gate1.MoveToWorld(StartPoint1, Map);
-            Effects.PlaySound(StartPoint1, Map, 0x20E);
-
-            var gate2 = new VoidPoolGate();
-            gate2.MoveToWorld(StartPoint2, Map);
-            Effects.PlaySound(StartPoint2, Map, 0x20E);
-
-            Timer.DelayCall(TimeSpan.FromSeconds(toSpawn * .80), () =>
-            {
-                Effects.SendLocationParticles(EffectItem.Create(gate1.Location, gate1.Map, EffectItem.DefaultDuration), 0x376A, 9, 20, 5042);
-                Effects.PlaySound(gate1.GetWorldLocation(), gate1.Map, 0x201);
-
-                Effects.SendLocationParticles(EffectItem.Create(gate2.Location, gate2.Map, EffectItem.DefaultDuration), 0x376A, 9, 20, 5042);
-                Effects.PlaySound(gate2.GetWorldLocation(), gate2.Map, 0x201);
-
-                gate1.Delete();
-                gate2.Delete();
-            });
-
-            Waves.Add(new WaveInfo(Wave, creatures));
+			
+			Waves.Add(new WaveInfo(Wave, creatures));
 			NextWave = GetNextWaveTime();
 		}
 
@@ -387,7 +367,7 @@ namespace Server.Engines.VoidPool
             if(0.5 > Utility.RandomDouble())
 			    PoolHits--;
 
-			Region.SendRegionMessage(1152529); // The Void Pool walls have been damaged! Defend the Void Pool!
+			Region.SendRegionMessage("Os muros do fim foram danificados ! Defenda o vazio !"); // The Void Pool walls have been damaged! Defend the Void Pool!
 
             Item item = GetNearestVoidPoolWall(damager);
 
@@ -407,13 +387,13 @@ namespace Server.Engines.VoidPool
 		
 		public void EndInvasion()
 		{
-			Region.SendRegionMessage(1152530); // Cora's forces have destroyed the Void Pool walls. The battle is lost!
+			Region.SendRegionMessage("As forcas de Cora destruiram os muros do vazio"); // Cora's forces have destroyed the Void Pool walls. The battle is lost!
 	
             VoidPoolStats.OnInvasionEnd(this /*CurrentScore, Wave*/);
 			
 			NextStart = DateTime.UtcNow + TimeSpan.FromMinutes(RestartSpan);
 			
-			Region.SendRegionMessage(1152526, RestartSpan.ToString()); // The battle for the Void Pool will begin in ~1_VALUE~ minutes.
+			Region.SendRegionMessage("A batalha comeraca em "+ RestartSpan.ToString()+" minutos"); // The battle for the Void Pool will begin in ~1_VALUE~ minutes.
 			
 			List<Mobile> list = Region.GetPlayers();
 
@@ -422,7 +402,7 @@ namespace Server.Engines.VoidPool
 				
 			foreach(Mobile m in list.Where(m => CurrentScore.ContainsKey(m)))
             {
-                m.SendLocalizedMessage(1152650, String.Format("{0}\t{1}\t{2}\t{3}", GetTotalWaves(m), Wave.ToString(), Wave.ToString(), CurrentScore[m])); 
+                m.SendMessage(String.Format("Durante a luta voce lutou com {0} de \t{1} inimigos. No final voce lutou contra \t{2}. Sua pontuacao foi de \t{3}", GetTotalWaves(m), Wave.ToString(), Wave.ToString(), CurrentScore[m])); 
 				// During the battle, you helped fight back ~1_COUNT~ out of ~2_TOTAL~ waves of enemy forces. Your final wave was ~3_MAX~. Your total score for the battle was ~4_SCORE~ points.
 
                 if (m is PlayerMobile)
@@ -445,7 +425,7 @@ namespace Server.Engines.VoidPool
             if (Waves == null)
                 return;
 
-            Waves.ForEach(info =>
+            Waves.ForEach((Action<WaveInfo>)(info =>
             {
                 if (info.Creatures.Contains(killed))
                 {
@@ -478,7 +458,7 @@ namespace Server.Engines.VoidPool
                     {
                         foreach (Mobile m in info.Credit.Where(m => m.Region == this.Region && m is PlayerMobile))
                         {
-                            double award = Math.Max(0, this.Map == Map.Felucca ? Stage * 2 : Stage);
+                            double award = Math.Max(0, this.Map == Server.Map.Felucca ? Stage * 2 : Stage);
 
                             if (award > 0)
                             {
@@ -494,7 +474,7 @@ namespace Server.Engines.VoidPool
                     if (killed.Corpse != null && !killed.Corpse.Deleted)
                         ((Corpse)killed.Corpse).BeginDecay(TimeSpan.FromMinutes(1));
                 }
-            });
+            }));
 		}
 
         public void ClearSpawners()
@@ -591,7 +571,7 @@ namespace Server.Engines.VoidPool
 		public static Type[][] SpawnTable = new Type[][]
 		{
 			new Type[] { typeof(DaemonMongbat), 		typeof(GargoyleAssassin), 	typeof(CovetousDoppleganger), 	typeof(LesserOni),       typeof(CovetousFireDaemon) },
-			new Type[] { typeof(LizardmanWitchdoctor), 	typeof(OrcFootSoldier), 	typeof(RatmanAssassin),         typeof(OgreBoneCrusher), typeof(TitanRockHunter) },
+			new Type[] { typeof(LizardmanWitchdoctor), 	typeof(OrcFootSoldier), 	typeof(RatmanAssassin),         typeof(TitanRockHunter) },
 			new Type[] { typeof(AngeredSpirit), 		typeof(BoneSwordSlinger), 	typeof(VileCadaver), 	        typeof(DiseasedLich), 	 typeof(CovetousRevenant) },
 			new Type[] { typeof(WarAlligator), 			typeof(MagmaLizard), 		typeof(ViciousDrake), 	        typeof(CorruptedWyvern), typeof(CovetousWyrm) },
 			new Type[] { typeof(CovetousEarthElemental),typeof(CovetousWaterElemental), typeof(VortexElemental),    typeof(SearingElemental),typeof(VenomElemental) },
@@ -691,7 +671,6 @@ namespace Server.Engines.VoidPool
                     WaypointsB = new List<WayPoint>();
 
                     Active = reader.ReadBool();
-                    NextStart = DateTime.UtcNow;
 
                     int counta = reader.ReadInt();
                     int countb = reader.ReadInt();
@@ -723,34 +702,6 @@ namespace Server.Engines.VoidPool
             Timer.DelayCall(TimeSpan.FromSeconds(10), () => { ClearSpawn(); ClearSpawners(); } );
         }
 	}
-
-    public class VoidPoolGate : Static
-    {
-        public VoidPoolGate()
-            : base(0xF6C)
-        {
-            Light = LightType.Circle300;
-        }
-
-        public VoidPoolGate(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-            writer.Write(0);
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-            reader.ReadInt();
-
-            Delete();
-        }
-    }
 }
 
 /*

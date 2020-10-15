@@ -9,7 +9,8 @@ namespace Server.Items
         public FemaleStuddedChest()
             : base(0x1C02)
         {
-            Weight = 6.0;
+            this.Weight = 6.0;
+            this.Name = "Peitoral Feminino de Couro Reforçado";
         }
 
         public FemaleStuddedChest(Serial serial)
@@ -125,6 +126,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (this.Weight == 1.0)
+                this.Weight = 6.0;
         }
     }
 }

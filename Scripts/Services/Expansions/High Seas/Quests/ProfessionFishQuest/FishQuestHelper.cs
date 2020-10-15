@@ -1,4 +1,4 @@
-using Server;
+﻿using Server;
 using System;
 using System.Collections.Generic;
 using System.Collections;
@@ -315,7 +315,7 @@ namespace Server.Engines.Quests
 
             foreach (BaseBoat boat in BaseBoat.Boats) 
             {
-                if (boat.Owner == from && !boat.IsRowBoat)
+                if (boat.Owner == from && !(boat is RowBoat))
                     boats.Add(boat);
             }
 

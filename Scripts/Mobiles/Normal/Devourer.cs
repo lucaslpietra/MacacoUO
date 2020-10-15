@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public Devourer()
             : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a devourer of souls";
+            Name = "devorador de almas";
             Body = 303;
             BaseSoundID = 357;
 
@@ -65,13 +65,6 @@ namespace Server.Mobiles
             get
             {
                 return 3;
-            }
-        }
-		public override int TreasureMapLevel
-        {
-            get
-            {
-                return 4;
             }
         }
         public override void GenerateLoot()

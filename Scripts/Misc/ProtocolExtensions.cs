@@ -13,7 +13,7 @@ namespace Server.Misc
             PacketHandlers.Register(0xF0, 0, false, new OnPacketReceive(DecodeBundledPacket));
 
             Register(0x00, true, new OnPacketReceive(QueryPartyLocations));
-            Register(0x01, true, new OnPacketReceive(QueryGuildsLocations));
+            //Register(0x01, true, new OnPacketReceive(QueryGuildsLocations));
         }
 
         public static void QueryPartyLocations(NetState state, PacketReader pvSrc)
@@ -78,6 +78,7 @@ namespace Server.Misc
                 }
                 else if (ph.Ingame && state.Mobile.Deleted)
                 {
+                    Shard.Debug("Mobile deletede no bundled packet ", state.Mobile);
                     state.Dispose();
                 }
                 else

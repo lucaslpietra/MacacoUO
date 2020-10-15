@@ -52,7 +52,7 @@ namespace Server.Engines.NewMagincia
 
         public static void ViewLottos_OnCommand(CommandEventArgs e)
         {
-            if (e.Mobile.AccessLevel > AccessLevel.Player)
+            if (e.Mobile.AccessLevel > AccessLevel.VIP)
             {
                 e.Mobile.CloseGump(typeof(LottoTrackingGump));
                 e.Mobile.SendGump(new LottoTrackingGump());

@@ -6,7 +6,7 @@ namespace Server.Items
     {
         [Constructable]
         public PoisonPotion()
-            : base(PotionEffect.Poison)
+            : base(PotionEffect.Veneno)
         {
         }
 
@@ -26,14 +26,14 @@ namespace Server.Items
         {
             get
             {
-                return 30.0;
+                return 50.0;
             }
         }
         public override double MaxPoisoningSkill
         {
             get
             {
-                return 70.0;
+                return 80.0;
             }
         }
         public override void Serialize(GenericWriter writer)

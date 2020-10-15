@@ -14,10 +14,7 @@ namespace Server.Engines.Doom
     {
         public static void Initialize()
         {
-            if (Core.SA)
-            {
                 new GaryRegion();
-            }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -760,7 +757,7 @@ namespace Server.Engines.Doom
             SetInt(150);
             SetDex(150);
 
-            SetWearable(new Robe(0x204F), 0x85);
+            SetWearable(new StaffRobe(), 0x85);
 
             HairItemID = 8253;
             FacialHairItemID = 8267;

@@ -10,8 +10,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             this.Body = 0x190;
-            this.Name = "Zealot of Khaldun";
-            this.Title = "the Knight";
+            this.Name = "Cavaleiro das Sombras";
             this.Hue = 0;
 
             this.SetStr(351, 400);

@@ -1,3 +1,4 @@
+
 using System;
 
 namespace Server.Mobiles
@@ -9,7 +10,7 @@ namespace Server.Mobiles
         public Pig()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a pig";
+            this.Name = "um porco";
             this.Body = 0xCB;
             this.BaseSoundID = 0xC4;
 

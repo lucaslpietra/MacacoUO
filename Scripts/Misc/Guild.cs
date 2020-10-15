@@ -14,7 +14,6 @@ using Server.Targeting;
 
 namespace Server.Guilds
 {
-
 	#region Ranks
 	[Flags]
 	public enum RankFlags
@@ -625,9 +624,15 @@ namespace Server.Guilds
 			{
 				new WarTimer().Start();
 			}
-		}
+            CommandSystem.Register("guilda", AccessLevel.Player, new CommandEventHandler(Gcmd));
+        }
 
-		public WarTimer()
+        public static void Gcmd(CommandEventArgs e)
+        {
+            Guild.OpenGuildGump((PlayerMobile)e.Mobile);
+        }
+
+        public WarTimer()
 			: base(InternalDelay, InternalDelay)
 		{
 			Priority = TimerPriority.FiveSeconds;
@@ -760,15 +765,20 @@ namespace Server.Guilds
 				return;
 			}
 
-			if (pm.Guild == null)
-			{
-				pm.SendGump(new CreateGuildGump(pm));
-			}
-			else
-			{
-				pm.SendGump(new GuildInfoGump(pm, pm.Guild as Guild));
-			}
+            OpenGuildGump(pm);
 		}
+
+        public static void OpenGuildGump(PlayerMobile pm)
+        {
+            if (pm.Guild == null)
+            {
+                pm.SendGump(new CreateGuildGump(pm));
+            }
+            else
+            {
+                pm.SendGump(new GuildInfoGump(pm, pm.Guild as Guild));
+            }
+        }
 
 		public static void EventSink_CreateGuild(CreateGuildEventArgs args)
 		{
@@ -776,9 +786,11 @@ namespace Server.Guilds
 		}
 		#endregion
 
-		public static bool NewGuildSystem { get { return Core.SE; } }
+		public static bool NewGuildSystem { get { return true; } }
 
-		public static readonly int RegistrationFee = 25000;
+        public static readonly int RegistrationFee = 25000;
+
+        //100000;
 		public static readonly int AbbrevLimit = 4;
 		public static readonly int NameLimit = 40;
 		public static readonly int MajorityPercentage = 66;
@@ -1584,9 +1596,7 @@ namespace Server.Guilds
 				m_Members.Add(m);
 				m.Guild = this;
 
-                EventSink.InvokeJoinGuild(new JoinGuildEventArgs(m, this));
-
-                if (!NewGuildSystem)
+				if (!NewGuildSystem)
 				{
 					m.GuildFealty = m_Leader;
 				}

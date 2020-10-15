@@ -26,7 +26,7 @@ namespace Server.Engines.VvV
         public VvVBattle Battle { get; set; }
 
         [Constructable]
-        public VvVPriest(VvVType type, VvVBattle battle) : base(type == VvVType.Vice ? "the Priest of Vice" : "the Priest of Virtue")
+        public VvVPriest(VvVType type, VvVBattle battle) : base(type == VvVType.Vice ? "o Padre da Ordem" : "o Padre do Caos")
         {
             this.VvVType = type;
             Battle = battle;
@@ -66,7 +66,7 @@ namespace Server.Engines.VvV
         {
             Robe robe = new Robe();
             robe.ItemID = 19357;
-            robe.Name = this.VvVType == VvVType.Virtue ? "Robe of Virtue" : "Robe of Vice";
+            robe.Name = this.VvVType == VvVType.Virtue ? "Sobretudo da Ordem" : "Sobretudo do Caos";
 
             Timer.DelayCall<Item>(TimeSpan.FromSeconds(1), item =>
                 {

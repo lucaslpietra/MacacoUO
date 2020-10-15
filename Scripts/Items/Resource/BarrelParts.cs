@@ -3,7 +3,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class BarrelLid : Item, IResource, IQuality
+    public class BarrelLid : Item, IResource
     {
         private CraftResource _Resource;
         private ItemQuality _Quality;
@@ -21,11 +21,13 @@ namespace Server.Items
         public BarrelLid()
             : base(0x1DB8)
         {
-            Weight = 2;
+            this.Weight = 2;
         }
 
-        public override void AddCraftedProperties(ObjectPropertyList list)
+        public override void GetProperties(ObjectPropertyList list)
         {
+            base.GetProperties(list);
+
             if (_Quality == ItemQuality.Exceptional)
             {
                 list.Add(1060636); // Exceptional
@@ -82,7 +84,7 @@ namespace Server.Items
     }
 
     [FlipableAttribute(0x1EB1, 0x1EB2, 0x1EB3, 0x1EB4)]
-    public class BarrelStaves : Item, IResource, IQuality
+    public class BarrelStaves : Item, IResource
     {
         private CraftResource _Resource;
         private ItemQuality _Quality;
@@ -100,11 +102,13 @@ namespace Server.Items
         public BarrelStaves()
             : base(0x1EB1)
         {
-            Weight = 1;
+            this.Weight = 1;
         }
 
-        public override void AddCraftedProperties(ObjectPropertyList list)
+        public override void GetProperties(ObjectPropertyList list)
         {
+            base.GetProperties(list);
+
             if (_Quality == ItemQuality.Exceptional)
             {
                 list.Add(1060636); // Exceptional
@@ -160,7 +164,7 @@ namespace Server.Items
         }
     }
 
-    public class BarrelHoops : Item, IResource, IQuality
+    public class BarrelHoops : Item, IResource
     {
         private CraftResource _Resource;
         private ItemQuality _Quality;
@@ -178,11 +182,13 @@ namespace Server.Items
         public BarrelHoops()
             : base(0x1DB7)
         {
-            Weight = 5;
+            this.Weight = 5;
         }
 
-        public override void AddCraftedProperties(ObjectPropertyList list)
+        public override void GetProperties(ObjectPropertyList list)
         {
+            base.GetProperties(list);
+
             if (_Quality == ItemQuality.Exceptional)
             {
                 list.Add(1060636); // Exceptional
@@ -249,7 +255,7 @@ namespace Server.Items
         }
     }
 
-    public class BarrelTap : Item, IResource, IQuality
+    public class BarrelTap : Item, IResource
     {
         private CraftResource _Resource;
         private ItemQuality _Quality;
@@ -267,11 +273,13 @@ namespace Server.Items
         public BarrelTap()
             : base(0x1004)
         {
-            Weight = 1;
+            this.Weight = 1;
         }
 
-        public override void AddCraftedProperties(ObjectPropertyList list)
+        public override void GetProperties(ObjectPropertyList list)
         {
+            base.GetProperties(list);
+
             if (_Quality == ItemQuality.Exceptional)
             {
                 list.Add(1060636); // Exceptional

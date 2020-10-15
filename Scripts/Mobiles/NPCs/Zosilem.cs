@@ -6,16 +6,14 @@ using Server.Engines.BulkOrders;
 
 namespace Server.Engines.Quests
 {
-    public class Zosilem : MondainQuester, ITierQuester
+    public class Zosilem : MondainQuester
     {
-        public TierQuestInfo TierInfo { get { return TierQuestInfo.Zosilem; } }
-
         [Constructable]
         public Zosilem()
             : base("Zosilem", "the Alchemist")
         {
             SetSkill(SkillName.Alchemy, 85.0, 100.0);
-            SetSkill(SkillName.TasteID, 65.0, 88.0);
+            SetSkill(SkillName.Jewelcrafting, 65.0, 88.0);
         }
 
         public Zosilem(Serial serial)
@@ -25,7 +23,7 @@ namespace Server.Engines.Quests
 
         public override Type[] Quests
         {
-            get { return new Type[] { }; }
+            get { return new Type[] { typeof(DabblingontheDarkSide) }; }
         }
 
         #region Bulk Orders
@@ -43,8 +41,8 @@ namespace Server.Engines.Quests
 
         public override void OnSuccessfulBulkOrderReceive(Mobile from)
         {
-            if (from is PlayerMobile)
-                ((PlayerMobile)from).NextAlchemyBulkOrder = TimeSpan.Zero;
+            //if (from is PlayerMobile)
+            //    ((PlayerMobile)from).NextAlchemyBulkOrder = TimeSpan.Zero;
         }
 
         #endregion
@@ -80,19 +78,19 @@ namespace Server.Engines.Quests
 
         private static Type[][] m_PileTypes = new Type[][]
             {
-                new Type[] {typeof(DullCopperIngot),  typeof(PileofInspectedDullCopperIngots) },
-                new Type[] {typeof(ShadowIronIngot),  typeof(PileofInspectedShadowIronIngots) },
+                new Type[] {typeof(BeriloIngot),  typeof(PileofInspectedDullCopperIngots) },
+                new Type[] {typeof(VibraniumIngot),  typeof(PileofInspectedShadowIronIngots) },
                 new Type[] {typeof(BronzeIngot),      typeof(PileofInspectedBronzeIngots) },
-                new Type[] {typeof(GoldIngot),        typeof(PileofInspectedGoldIngots) },
-                new Type[] {typeof(AgapiteIngot),     typeof(PileofInspectedAgapiteIngots) },
-                new Type[] {typeof(VeriteIngot),      typeof(PileofInspectedVeriteIngots) },
-                new Type[] {typeof(ValoriteIngot),    typeof(PileofInspectedValoriteIngots) }
+                new Type[] {typeof(SilverIngot),        typeof(PileofInspectedGoldIngots) },
+                new Type[] {typeof(NiobioIngot),     typeof(PileofInspectedAgapiteIngots) },
+                new Type[] {typeof(LazuritaIngot),      typeof(PileofInspectedVeriteIngots) },
+                new Type[] {typeof(QuartzoIngot),    typeof(PileofInspectedValoriteIngots) }
             };
 
         private static object[][] m_KegTypes = new object[][]
             {
-                new object[] {PotionEffect.RefreshTotal,  typeof(InspectedKegofTotalRefreshment) },
-                new object[] {PotionEffect.PoisonGreater, typeof(InspectedKegofGreaterPoison) }
+                new object[] {PotionEffect.StaminaTotal,  typeof(InspectedKegofTotalRefreshment) },
+                new object[] {PotionEffect.VenenoForte, typeof(InspectedKegofGreaterPoison) }
             };
 
         private const int NeededIngots = 20;

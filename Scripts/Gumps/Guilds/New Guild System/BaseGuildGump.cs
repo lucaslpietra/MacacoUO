@@ -105,13 +105,13 @@ namespace Server.Guilds
             this.AddBackground(0, 0, 600, 440, 0x24AE);
             this.AddBackground(66, 40, 150, 26, 0x2486);
             this.AddButton(71, 45, 0x845, 0x846, 1, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(96, 43, 110, 26, 1063014, 0x0, false, false); // My Guild
+            this.AddHtml(96, 43, 110, 26, "Minha Guilda", 0xF, false, false); // My Guild
             this.AddBackground(236, 40, 150, 26, 0x2486);
             this.AddButton(241, 45, 0x845, 0x846, 2, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(266, 43, 110, 26, 1062974, 0x0, false, false); // Guild Roster
+            this.AddHtml(266, 43, 110, 26, "Integrantes", 0xF, false, false); // Guild Roster
             this.AddBackground(401, 40, 150, 26, 0x2486);
             this.AddButton(406, 45, 0x845, 0x846, 3, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(431, 43, 110, 26, 1062978, 0x0, false, false); // Diplomacy
+            this.AddHtml(431, 43, 110, 26, "Diplomacia", 0xF, false, false); // Diplomacy
             this.AddPage(1);
         }
 

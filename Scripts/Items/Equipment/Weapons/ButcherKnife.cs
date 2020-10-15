@@ -12,6 +12,7 @@ namespace Server.Items
             : base(0x13F6)
         {
             this.Weight = 1.0;
+            Name = "Punhal";
         }
 
         public ButcherKnife(Serial serial)
@@ -86,14 +87,14 @@ namespace Server.Items
         {
             get
             {
-                return 14;
+                return 10;
             }
         }
         public override int OldSpeed
         {
             get
             {
-                return 40;
+                return 58;
             }
         }
         public override int InitMinHits

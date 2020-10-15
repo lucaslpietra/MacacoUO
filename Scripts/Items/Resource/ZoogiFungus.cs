@@ -17,6 +17,7 @@ namespace Server.Items
             this.Stackable = true;
             this.Weight = 0.1;
             this.Amount = amount;
+            Name = "Fungo de Formiga";
         }
 
         public ZoogiFungus(Serial serial)

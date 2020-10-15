@@ -679,9 +679,12 @@ namespace Server.Engines.Quests
                     // player complete quest
                 case (int)Buttons.Complete:
                     if (!m_Offer && m_Section == Section.Complete)
-                    { 
+                    {
                         if (!m_Quest.Completed)
+                        {
+                            Shard.Debug("Quest nao completada ", m_From);
                             m_From.SendLocalizedMessage(1074861); // You do not have everything you need!
+                        }
                         else
                         {
                             if (QuestHelper.TryDeleteItems(m_Quest))

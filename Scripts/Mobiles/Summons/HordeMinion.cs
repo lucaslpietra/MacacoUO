@@ -27,7 +27,7 @@ namespace Server.Mobiles
 
 		public HordeMinionFamiliar()
 		{
-			Name = "a horde minion";
+			Name = "minion";
 			Body = 776;
 			BaseSoundID = 0x39D;
 

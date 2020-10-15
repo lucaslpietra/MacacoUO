@@ -10,11 +10,20 @@ namespace Server.Items
         {
         }
 
+        public override void OnDoubleClick(Mobile from)
+        {
+            if(this.LootType != LootType.Blessed)
+            {
+                from.SendMessage(78, "Para transformar o livro em pertence pessoal (nb) leve-o para o Capetinha na cripta do Lich");
+            }
+            base.OnDoubleClick(from);
+        }
+
         [Constructable]
         public NecromancerSpellbook(ulong content)
             : base(content, 0x2253)
         {
-            this.Layer = (Core.ML ? Layer.OneHanded : Layer.Invalid);
+            this.Layer = Layer.OneHanded;
         }
 
         public NecromancerSpellbook(Serial serial)
@@ -55,9 +64,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (version == 0 && Core.ML)
-                this.Layer = Layer.OneHanded;
         }
     }
 

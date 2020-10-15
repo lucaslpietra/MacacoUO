@@ -1,5 +1,6 @@
 #region References
 using Server.Network;
+using System;
 #endregion
 
 namespace Server
@@ -24,6 +25,21 @@ namespace Server
 
 	public static class Effects
 	{
+        public static Point3D TryGetNearRandomLoc(Mobile m)
+        {
+            var location = m.Location;
+            var map = m.Map;
+            bool validLocation = false;
+            Point3D loc = Point3D.Zero;
+            for (int j = 0; !validLocation && j < 10; ++j)
+            {
+                loc = new Point3D(location.X + (Utility.Random(0, 3) - 2), location.Y + (Utility.Random(0, 3) - 2), location.Z);
+                loc.Z = map.GetAverageZ(loc.X, loc.Y);
+                validLocation = map.CanFit(loc, 16, false, false);
+            }
+            return validLocation ? loc : location;
+        }
+
 		private static ParticleSupportType m_ParticleSupportType = ParticleSupportType.Detect;
 
 		public static ParticleSupportType ParticleSupportType { get { return m_ParticleSupportType; } set { m_ParticleSupportType = value; } }
@@ -125,7 +141,7 @@ namespace Server
 
 					if (boltEffect == null)
 					{
-                        if (Core.SA && hue == 0)
+                        if (hue == 0)
                         {
                             boltEffect = Packet.Acquire(new BoltEffectNew(e));
                         }
@@ -337,6 +353,20 @@ namespace Server
 
 			//SendPacket( target.Location, target.Map, new TargetParticleEffect( target, itemID, speed, duration, hue, renderMode, effect, (int)layer, unknown ) );
 		}
+
+        public static void ItemToFloor(Mobile source, Item item, Point3D target, Map map)
+        {
+            var id = item.ItemID;
+            item.ItemID = 1; // No Draw
+
+            item.OnBeforeSpawn(target, map);
+            item.MoveToWorld(target, map);
+            item.OnAfterSpawn();
+
+            Effects.SendMovingEffect(source, item, id, 7, 10, true, false, item.Hue, 0);
+
+            Timer.DelayCall(TimeSpan.FromMilliseconds(500), b => b.ItemID = id, item);
+        }
 
 		public static void SendMovingEffect(
 			IEntity from, IEntity to, int itemID, int speed, int duration, bool fixedDirection, bool explodes)

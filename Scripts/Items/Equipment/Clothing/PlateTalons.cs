@@ -41,7 +41,7 @@ namespace Server.Items
         {
             get
             {
-                return CraftResource.Iron;
+                return CraftResource.Ferro;
             }
         }
         public override void Serialize(GenericWriter writer)

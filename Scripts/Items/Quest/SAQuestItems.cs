@@ -404,6 +404,7 @@ namespace Server.Items
         {
             Stackable = true;
             Amount = amount;
+            Name = "Couro de Lobo Rabanastre";
 
             Hue = 248;
         }
@@ -455,7 +456,7 @@ namespace Server.Items
         {
             Stackable = true;
             Amount = amount;
-
+            Name = "Moeda da Sorte";
             Hue = 1174;
         }
 
@@ -504,7 +505,7 @@ namespace Server.Items
                         ((FountainOfFortune)c.Addon).OnTarget(from, m_Coin);
                 }
                 else
-                    from.SendLocalizedMessage(1113369); // That is not sacred waters. Try looking in the Underworld.
+                    from.SendLocalizedMessage("Talvez voce possa jogar isto em alguma fonte da sorte."); // That is not sacred waters. Try looking in the Underworld.
             }
         }
 
@@ -631,6 +632,7 @@ namespace Server.Items
         public RelicFragment(int amount)
             : base(0x2DB3)
         {
+            Name = "Fragmento de Reliquia";
             Stackable = true;
             Amount = amount;
         }

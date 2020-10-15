@@ -20,7 +20,7 @@ namespace Server.Accounting
 	[PropertyObject]
 	public class Account : IAccount, IComparable, IComparable<Account>
 	{
-		public static readonly TimeSpan YoungDuration = TimeSpan.FromHours(40.0);
+		public static readonly TimeSpan YoungDuration = TimeSpan.FromHours(50.0);
 		public static readonly TimeSpan InactiveDuration = TimeSpan.FromDays(180.0);
 		public static readonly TimeSpan EmptyInactiveDuration = TimeSpan.FromDays(30.0);
 
@@ -306,7 +306,7 @@ namespace Server.Accounting
 			LastLogin = Utility.GetXMLDateTime(Utility.GetText(node["lastLogin"], null), DateTime.UtcNow);
 
 			TotalCurrency = Utility.GetXMLDouble(Utility.GetText(node["totalCurrency"], "0"), 0);
-            Sovereigns = Utility.GetXMLInt32(Utility.GetText(node["sovereigns"], "0"), 0);
+            MoedasMagicas = Utility.GetXMLInt32(Utility.GetText(node["sovereigns"], "0"), 0);
 
 			m_Mobiles = LoadMobiles(node);
 			m_Comments = LoadComments(node);
@@ -1168,10 +1168,10 @@ namespace Server.Accounting
 
 				if (message > 0)
 				{
-					m.SendLocalizedMessage(message);
+					m.SendMessage("Voce nao eh mais um novato por ter skills muito altas");
 				}
 
-				m.SendLocalizedMessage(1019039);
+				m.SendMessage(78, "Por deixar de ser um novato, os monstros te atacarao e os limites de PK / PVP nao sao mais aplicaveis");
 				// You are no longer considered a young player of Ultima Online, and are no longer subject to the limitations and benefits of being in that caste.
 			}
 		}
@@ -1198,6 +1198,8 @@ namespace Server.Accounting
 		public bool HasAccess(IPAddress ipAddress)
 		{
 			var level = AccountHandler.LockdownLevel;
+
+            Shard.Debug("Level minimo pra logar no shard:" + level);
 
 			if (level >= AccessLevel.Counselor)
 			{
@@ -1455,7 +1457,7 @@ namespace Server.Accounting
 			xml.WriteEndElement();
 
             xml.WriteStartElement("sovereigns");
-            xml.WriteString(XmlConvert.ToString(Sovereigns));
+            xml.WriteString(XmlConvert.ToString(MoedasMagicas));
             xml.WriteEndElement();
 
             if (SecureAccounts != null)
@@ -1546,14 +1548,14 @@ namespace Server.Accounting
 
 			if (!m.Young || !acc.Young)
 			{
-				return;
+                return;
 			}
 
 			var ts = YoungDuration - acc.TotalGameTime;
 			var hours = Math.Max((int)ts.TotalHours, 0);
 
 			m.SendAsciiMessage(
-				"You will enjoy the benefits and relatively safe status of a young player for {0} more hour{1}.",
+				"Voce sera um novato por mais {0} hora{1}.",
 				hours,
 				hours != 1 ? "s" : "");
 		}
@@ -1629,11 +1631,7 @@ namespace Server.Accounting
 				return false;
 			}
 
-            double oldAmount = TotalCurrency;
-            TotalCurrency += amount;
-
-            EventSink.InvokeAccountGoldChange(new AccountGoldChangeEventArgs(this, oldAmount, TotalCurrency));
-
+			TotalCurrency += amount;
 			return true;
 		}
 
@@ -1698,11 +1696,8 @@ namespace Server.Accounting
 				return false;
 			}
 
-            double oldAmount = TotalCurrency;
 			TotalCurrency -= amount;
-
-            EventSink.InvokeAccountGoldChange(new AccountGoldChangeEventArgs(this, oldAmount, TotalCurrency));
-            return true;
+			return true;
 		}
 
 		/// <summary>
@@ -1919,37 +1914,37 @@ namespace Server.Accounting
         ///     Sovereigns which can be used at the shard owners disposal. On EA, they are used for curerncy with the Ultima Store
         /// </summary>
         [CommandProperty(AccessLevel.Administrator, true)]
-        public int Sovereigns { get; private set; }
+        public int MoedasMagicas { get; private set; }
 
-        public void SetSovereigns(int amount)
+        public void SetMoedasMagicas(int amount)
         {
-            Sovereigns = amount;
+            MoedasMagicas = amount;
         }
 
-        public bool DepositSovereigns(int amount)
+        public bool DepositarMoedasMagicas(int amount)
         {
             if (amount <= 0)
             {
                 return false;
             }
 
-            Sovereigns += amount;
+            MoedasMagicas += amount;
             return true;
         }
 
-        public bool WithdrawSovereigns(int amount)
+        public bool SacarMoedasMagicas(int amount)
         {
             if (amount <= 0)
             {
                 return true;
             }
 
-            if (amount > Sovereigns)
+            if (amount > MoedasMagicas)
             {
                 return false;
             }
 
-            Sovereigns -= amount;
+            MoedasMagicas -= amount;
             return true;
         }
         #endregion

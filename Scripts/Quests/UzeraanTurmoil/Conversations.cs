@@ -37,7 +37,8 @@ namespace Server.Engines.Quests.Haven
                 * context menu will give you options to cancel your quest and review
                 * various quest information.<BR><BR>
                 */
-                return 1049092;
+                return @"Bem vindo a Rhodes! Vejo que e novo por aqui, que tal uma ajuda ?
+                         Voce pode obter itens e dinheiro matando monstros ou trabalhando.";
             }
         }
         public override void OnRead()

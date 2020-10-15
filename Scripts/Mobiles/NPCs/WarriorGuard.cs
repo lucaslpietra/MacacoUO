@@ -20,7 +20,7 @@ namespace Server.Mobiles
 			: base(target)
 		{
 			InitStats(1000, 1000, 1000);
-			Title = "the guard";
+			Title = "o guarda";
 
 			SpeechHue = Utility.RandomDyedHue();
 
@@ -145,12 +145,12 @@ namespace Server.Mobiles
 
 					if (oldFocus != null && !oldFocus.Alive)
 					{
-						Say("Thou hast suffered thy punishment, scoundrel.");
+						Say("Voce sempre sofrera as consequencias pelos seus crimes, criatura do mal.");
 					}
 
 					if (value != null)
 					{
-						Say(500131); // Thou wilt regret thine actions, swine!
+						Say("O crime nao compensa, seu mal trapilho"); // Thou wilt regret thine actions, swine!
 					}
 
 					if (m_AttackTimer != null)
@@ -324,7 +324,9 @@ namespace Server.Mobiles
 
 					if (target is BaseCreature)
 					{
-						((BaseCreature)target).NoKillAwards = true;
+                        if (((BaseCreature)target).LootingRights != null)
+                            ((BaseCreature)target).LootingRights.Clear();
+                        ((BaseCreature)target).NoKillAwards = true;
 					}
 
 					target.Damage(target.HitsMax, m_Owner);

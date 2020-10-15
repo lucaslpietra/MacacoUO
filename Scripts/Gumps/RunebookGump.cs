@@ -21,16 +21,16 @@ namespace Server.Gumps
             for (int i = 0; i < 16; ++i)
             {
                 string desc;
-                if (i < Book.Entries.Count)
-                    desc = GetName(((RunebookEntry)Book.Entries[i]).Description);
+                if (i < m_Book.Entries.Count)
+                    desc = GetName(((RunebookEntry)m_Book.Entries[i]).Description);
                 else
                     desc = "Empty";
 
                 Intern(desc, false);
             }
 
-            Intern(Book.CurCharges.ToString(), false);
-            Intern(Book.MaxCharges.ToString(), false);
+            Intern(m_Book.CurCharges.ToString(), false);
+            Intern(m_Book.MaxCharges.ToString(), false);
 
             Intern("Drop Rune", true);
             Intern("Rename Book", true);
@@ -38,11 +38,23 @@ namespace Server.Gumps
 
             for (int i = 0; i < 16; ++i)
             {
-                if (i < Book.Entries.Count)
+                if (i < m_Book.Entries.Count)
                 {
-                    RunebookEntry e = (RunebookEntry)Book.Entries[i];
+                    RunebookEntry e = (RunebookEntry)m_Book.Entries[i];
 
-                    Intern(GetLocation(e), false);
+                    // Location labels
+                    int xLong = 0, yLat = 0;
+                    int xMins = 0, yMins = 0;
+                    bool xEast = false, ySouth = false;
+
+                    if (Sextant.Format(e.Location, e.Map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
+                    {
+                        Intern(String.Format("{0}o {1}'{2}, {3}o {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W"), false);
+                    }
+                    else
+                    {
+                        Intern("Nowhere", false);
+                    }
                 }
                 else
                 {
@@ -51,7 +63,9 @@ namespace Server.Gumps
             }
         }
 
-        public Runebook Book { get; }
+        private Runebook m_Book;
+
+        public Runebook Book { get { return m_Book; } }
 
         public static int GetMapHue(Map map)
         {
@@ -77,31 +91,6 @@ namespace Server.Gumps
                 return "(indescript)";
 
             return name;
-        }
-
-        public static string GetLocation(RunebookEntry e)
-        {
-            string loc;
-
-            // Location labels
-            int xLong = 0, yLat = 0;
-            int xMins = 0, yMins = 0;
-            bool xEast = false, ySouth = false;
-
-            if (e.Type == RecallRuneType.Ship)
-            {
-                loc = string.Format("Aboard {0}", e.Description.Substring(e.Description.IndexOf(",") + 2));
-            }
-            else if (Sextant.Format(e.Location, e.Map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
-            {
-                loc = string.Format("{0}o {1}'{2}, {3}o {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
-            }
-            else
-            {
-                loc = "Nowhere";
-            }
-
-            return loc;
         }
 
         private void AddBackground()
@@ -134,11 +123,11 @@ namespace Server.Gumps
                 AddButton(xOffset, 187, gumpID, gumpID, 0, GumpButtonType.Page, 6 + i);
 
             // Charges
-            AddHtmlIntern(140, 40, 80, 18, 0, false, false);    // Charges:	
-            AddHtmlIntern(300, 40, 100, 18, 1, false, false);   // Max Charges:	
+            AddHtmlIntern(140, 40, 80, 18, 0, false, false);                        // Charges:	
+            AddHtmlIntern(300, 40, 100, 18, 1, false, false);                       // Max Charges:	
 
-            AddHtmlIntern(220, 40, 30, 18, 18, false, false);   // Charges
-            AddHtmlIntern(400, 40, 30, 18, 19, false, false);   // Max charges
+            AddHtmlIntern(220, 40, 30, 18, 18, false, false);                       // Charges
+            AddHtmlIntern(400, 40, 30, 18, 19, false, false); 						// Max charges
         }
 
         private void AddIndex()
@@ -151,7 +140,7 @@ namespace Server.Gumps
             AddHtmlLocalized(158, 22, 100, 18, 1011299, false, false); // Rename book
 
             // List of entries
-            List<RunebookEntry> entries = Book.Entries;
+            List<RunebookEntry> entries = m_Book.Entries;
 
             for (int i = 0; i < 16; ++i)
             {
@@ -182,7 +171,7 @@ namespace Server.Gumps
 
         private void AddDetails(int index, int half)
         {
-            List<RunebookEntry> entries = Book.Entries;
+            List<RunebookEntry> entries = m_Book.Entries;
 
             if (entries.Count != 0)
             {
@@ -191,22 +180,29 @@ namespace Server.Gumps
 
                 if (index < 16)
                 {
-                    if (Book.Entries.ElementAtOrDefault(index) != null)
+                    if (m_Book.Entries.ElementAtOrDefault(index) != null)
                     {
-                        RunebookEntry e = (RunebookEntry)Book.Entries[index];
+                        RunebookEntry e = (RunebookEntry)m_Book.Entries[index];
 
                         // Description label
                         AddLabelCroppedIntern(145 + (half * 160), 60, 115, 17, GetMapHue(e.Map), index + 2);
 
-                        // Location label
-                        AddHtmlIntern(135 + (half * 160), 80, 130, 38, index + 23, false, false);
+                        // Location labels
+                        int xLong = 0, yLat = 0;
+                        int xMins = 0, yMins = 0;
+                        bool xEast = false, ySouth = false;
+
+                        if (Sextant.Format(e.Location, e.Map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
+                        {
+                            AddLabelIntern(135 + (half * 160), 80, 0, index + 23);
+                        }
 
                         // Drop rune button
                         AddButton(135 + (half * 160), 115, 2437, 2438, 200 + index, GumpButtonType.Reply, 0);
                         AddHtmlLocalized(150 + (half * 160), 115, 100, 18, 1011298, false, false); // Drop rune
 
                         // Set as default button
-                        int defButtonID = e != Book.Default ? 2361 : 2360;
+                        int defButtonID = e != m_Book.Default ? 2361 : 2360;
 
                         AddButton(160 + (half * 140), 20, defButtonID, defButtonID, 300 + index, GumpButtonType.Reply, 0);
                         AddHtmlLocalized(175 + (half * 140), 15, 100, 18, 1011300, false, false); // Set default
@@ -216,7 +212,7 @@ namespace Server.Gumps
                         AddLabelIntern(145 + (half * 160), 60, 0, index + 2);
                     }
 
-                    if (Core.AOS)
+                    if (true)
                     {
                         AddButton(135 + (half * 160), 140, 2103, 2104, 50 + index, GumpButtonType.Reply, 0);
                         AddHtmlLocalized(150 + (half * 160), 136, 110, 20, 1062722, false, false); // Recall
@@ -225,7 +221,7 @@ namespace Server.Gumps
                         AddHtmlLocalized(150 + (half * 160), 154, 110, 20, 1062723, false, false); // Gate Travel
 
                         AddButton(135 + (half * 160), 176, 2103, 2104, 75 + index, GumpButtonType.Reply, 0);
-                        AddHtmlLocalized(150 + (half * 160), 172, 110, 20, 1062724, false, false); // Sacred Journey
+                        AddHtml(150 + (half * 160), 172, 110, 20, "Jornada Sagrada", false, false); // Sacred Journey
                     }
                     else
                     {
@@ -243,13 +239,13 @@ namespace Server.Gumps
             : base(150, 200)
         {
             TypeID = 0x59;
-            Book = book;
+            m_Book = book;
 
             PrecompileStringTable();
             AddBackground();
             AddIndex();
 
-            if (Book.Entries.Count != 0)
+            if (m_Book.Entries.Count != 0)
             {
                 for (int page = 0; page < 8; ++page)
                 {
@@ -318,28 +314,13 @@ namespace Server.Gumps
             }
         }
 
-        public void SendLocationMessage(RunebookEntry e, Mobile from)
-        {
-            if (e.Type == RecallRuneType.Ship)
-                return;
-
-            int xLong = 0, yLat = 0;
-            int xMins = 0, yMins = 0;
-            bool xEast = false, ySouth = false;
-
-            if (Sextant.Format(e.Location, e.Map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
-            {
-                from.SendAsciiMessage(string.Format("{0}o {1}'{2}, {3}o {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W"));
-            }
-        }
-
         public override void OnResponse(NetState state, RelayInfo info)
         {
             Mobile from = state.Mobile;
 
-            if (Book.Deleted || !from.InRange(Book.GetWorldLocation(), (Core.ML ? 3 : 1)) || !Multis.DesignContext.Check(from))
+            if (m_Book.Deleted || !from.InRange(m_Book.GetWorldLocation(), (Core.ML ? 3 : 1)) || !Multis.DesignContext.Check(from))
             {
-                Book.Openers.Remove(from);
+                m_Book.Openers.Remove(from);
                 return;
             }
 
@@ -347,17 +328,17 @@ namespace Server.Gumps
 
             if (buttonID == 0) // Close
             {
-                Book.Openers.Remove(from);
+                m_Book.Openers.Remove(from);
             }
             else if (buttonID == 1) // Rename book
             {
-                if (Book.CheckAccess(from) && Book.Movable != false)
+                if (m_Book.CheckAccess(from) && m_Book.Movable != false)
                 {
-                    from.Prompt = new InternalPrompt(Book);
+                    from.Prompt = new InternalPrompt(m_Book);
                 }
                 else
                 {
-                    Book.Openers.Remove(from);
+                    m_Book.Openers.Remove(from);
 
                     from.SendLocalizedMessage(502413); // That cannot be done while the book is locked down.
                 }
@@ -370,48 +351,56 @@ namespace Server.Gumps
                 if (type == 0 || type == 1)
                     index = buttonID - 10;
 
-                if (Book.Entries.ElementAtOrDefault(index) != null)
+                if (m_Book.Entries.ElementAtOrDefault(index) != null)
                 {
-                    if (index >= 0 && index < Book.Entries.Count)
+                    if (index >= 0 && index < m_Book.Entries.Count)
                     {
-                        RunebookEntry e = (RunebookEntry)Book.Entries[index];
+                        RunebookEntry e = (RunebookEntry)m_Book.Entries[index];
 
                         switch (type)
                         {
                             case 0:
                             case 1: // Use charges
                                 {
-                                    if (Book.CurCharges <= 0)
+                                    if (m_Book.CurCharges <= 0)
                                     {
                                         from.CloseGump(typeof(RunebookGump));
-                                        from.SendGump(new RunebookGump(from, Book));
+                                        from.SendGump(new RunebookGump(from, m_Book));
 
-                                        from.SendLocalizedMessage(502412); // There are no charges left on that item.
+                                        from.SendLocalizedMessage("Sem Cargas - use pergaminhos de recall para recarga"); // There are no charges left on that item.
                                     }
                                     else
                                     {
-                                        SendLocationMessage(e, from);
+                                        int xLong = 0, yLat = 0;
+                                        int xMins = 0, yMins = 0;
+                                        bool xEast = false, ySouth = false;
 
-                                        Book.OnTravel();
-                                        new RecallSpell(from, Book, e, Book).Cast();
+                                        if (Sextant.Format(e.Location, e.Map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
+                                        {
+                                            string location = String.Format("{0}o {1}'{2}, {3}o {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
+                                            from.SendMessage(location);
+                                        }
 
-                                        Book.Openers.Remove(from);
+                                        m_Book.OnTravel();
+                                        new RecallSpell(from, m_Book, e, m_Book).Cast();
+
+                                        m_Book.Openers.Remove(from);
                                     }
 
                                     break;
                                 }
                             case 8: // Drop rune
                                 {
-                                    if (Book.CheckAccess(from) && Book.Movable != false)
+                                    if (m_Book.CheckAccess(from) && m_Book.Movable != false)
                                     {
-                                        Book.DropRune(from, e, index);
+                                        m_Book.DropRune(from, e, index);
 
                                         from.CloseGump(typeof(RunebookGump));
-                                        from.SendGump(new RunebookGump(from, Book));
+                                        from.SendGump(new RunebookGump(from, m_Book));
                                     }
                                     else
                                     {
-                                        Book.Openers.Remove(from);
+                                        m_Book.Openers.Remove(from);
 
                                         from.SendLocalizedMessage(502413); // That cannot be done while the book is locked down.
                                     }
@@ -420,16 +409,16 @@ namespace Server.Gumps
                                 }
                             case 12: // Set default
                                 {
-                                    if (Book.CheckAccess(from))
+                                    if (m_Book.CheckAccess(from))
                                     {
-                                        Book.Default = e;
+                                        m_Book.Default = e;
 
                                         from.CloseGump(typeof(RunebookGump));
-                                        from.SendGump(new RunebookGump(from, Book));
+                                        from.SendGump(new RunebookGump(from, m_Book));
 
                                         from.SendLocalizedMessage(502417, "", 0x35); // New default location set.
 
-                                        Book.Openers.Remove(from);
+                                        m_Book.Openers.Remove(from);
                                     }
                                     else
                                     {
@@ -442,9 +431,17 @@ namespace Server.Gumps
                                 {
                                     if (HasSpell(from, 31))
                                     {
-                                        SendLocationMessage(e, from);
+                                        int xLong = 0, yLat = 0;
+                                        int xMins = 0, yMins = 0;
+                                        bool xEast = false, ySouth = false;
 
-                                        Book.OnTravel();
+                                        if (Sextant.Format(e.Location, e.Map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
+                                        {
+                                            string location = String.Format("{0}o {1}'{2}, {3}o {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
+                                            from.SendMessage(location);
+                                        }
+
+                                        m_Book.OnTravel();
                                         new RecallSpell(from, null, e, null).Cast();
                                     }
                                     else
@@ -452,7 +449,7 @@ namespace Server.Gumps
                                         from.SendLocalizedMessage(500015); // You do not have that spell!
                                     }
 
-                                    Book.Openers.Remove(from);
+                                    m_Book.Openers.Remove(from);
 
                                     break;
                                 }
@@ -460,9 +457,17 @@ namespace Server.Gumps
                                 {
                                     if (HasSpell(from, 51))
                                     {
-                                        SendLocationMessage(e, from);
+                                        int xLong = 0, yLat = 0;
+                                        int xMins = 0, yMins = 0;
+                                        bool xEast = false, ySouth = false;
 
-                                        Book.OnTravel();
+                                        if (Sextant.Format(e.Location, e.Map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
+                                        {
+                                            string location = String.Format("{0}o {1}'{2}, {3}o {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
+                                            from.SendMessage(location);
+                                        }
+
+                                        m_Book.OnTravel();
                                         new GateTravelSpell(from, null, e).Cast();
                                     }
                                     else
@@ -470,7 +475,7 @@ namespace Server.Gumps
                                         from.SendLocalizedMessage(500015); // You do not have that spell!
                                     }
 
-                                    Book.Openers.Remove(from);
+                                    m_Book.Openers.Remove(from);
 
                                     break;
                                 }
@@ -478,9 +483,17 @@ namespace Server.Gumps
                                 {
                                     if (HasSpell(from, 209))
                                     {
-                                        SendLocationMessage(e, from);
+                                        int xLong = 0, yLat = 0;
+                                        int xMins = 0, yMins = 0;
+                                        bool xEast = false, ySouth = false;
 
-                                        Book.OnTravel();
+                                        if (Sextant.Format(e.Location, e.Map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
+                                        {
+                                            string location = String.Format("{0}o {1}'{2}, {3}o {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
+                                            from.SendMessage(location);
+                                        }
+
+                                        m_Book.OnTravel();
                                         new SacredJourneySpell(from, null, e, null).Cast();
                                     }
                                     else
@@ -488,7 +501,7 @@ namespace Server.Gumps
                                         from.SendLocalizedMessage(500015); // You do not have that spell!
                                     }
 
-                                    Book.Openers.Remove(from);
+                                    m_Book.Openers.Remove(from);
 
                                     break;
                                 }
@@ -499,13 +512,13 @@ namespace Server.Gumps
                     }
                     else
                     {
-                        Book.Openers.Remove(from);
+                        m_Book.Openers.Remove(from);
                     }
                 }
                 else
                 {
                     from.SendLocalizedMessage(502423); // This place in the book is empty.
-                    Book.Openers.Remove(from);
+                    m_Book.Openers.Remove(from);
                 }
             }
         }

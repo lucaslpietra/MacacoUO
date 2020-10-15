@@ -14,18 +14,18 @@ namespace Server.Mobiles
 
         [Constructable]
         public BladeSpirits(bool summoned)
-            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.3, 0.6)
+            : base(AIType.AI_Berserk, FightMode.Closest, 10, 1, 0.3, 0.6)
         {
-            this.Name = "a blade spirit";
+            this.Name = "espirito de laminas";
             this.Body = 574;
 
-            bool weak = summoned && Siege.SiegeShard;
+            bool weak = summoned;
 
             this.SetStr(weak ? 100 : 150);
             this.SetDex(weak ? 100 : 150);
             this.SetInt(100);
 
-            this.SetHits((Core.SE && !weak) ? 160 : 80);
+            this.SetHits(80);
             this.SetStam(250);
             this.SetMana(0);
 
@@ -48,9 +48,11 @@ namespace Server.Mobiles
             this.Fame = 0;
             this.Karma = 0;
 
-            this.VirtualArmor = 40;
-            this.ControlSlots = (Core.SE) ? 2 : 1;
+            this.VirtualArmor = 0;
+            this.ControlSlots = 2;
         }
+
+        public bool Manda = false;
 
         public BladeSpirits(Serial serial)
             : base(serial)
@@ -75,7 +77,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return 0.0;
+                return 40.0;
             }
         }
         public override double DispelFocus
@@ -85,6 +87,8 @@ namespace Server.Mobiles
                 return 20.0;
             }
         }
+        public override bool Commandable { get { return Manda; } }
+
         public override bool BleedImmune
         {
             get
@@ -146,6 +150,19 @@ namespace Server.Mobiles
             }
 
             base.OnThink();
+        }
+
+        public override bool AlwaysMurderer
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public override bool IsEnemy(Mobile m)
+        {
+            return true;
         }
 
         public override void Serialize(GenericWriter writer)

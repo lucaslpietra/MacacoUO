@@ -78,7 +78,7 @@ namespace Server.Mobiles
 				}
 
 				if (m_toDisarm != null && m_toDisarm.IsChildOf(c.Backpack) && m_Mobile.NextSkillTime <= Core.TickCount &&
-					(m_toDisarm.LootType != LootType.Blessed && m_toDisarm.LootType != LootType.Newbied))
+					(m_toDisarm.LootType != LootType.Blessed && m_toDisarm.LootType != LootType.Blessed))
 				{
 					m_Mobile.DebugSay("Trying to steal from combatant.");
 					m_Mobile.UseSkill(SkillName.Stealing);

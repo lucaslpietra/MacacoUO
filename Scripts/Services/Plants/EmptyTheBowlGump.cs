@@ -8,8 +8,6 @@ namespace Server.Engines.Plants
     {
         private readonly PlantItem m_Plant;
 
-        public bool IsOtherPlant => m_Plant != null && m_Plant is MaginciaPlantItem || m_Plant is RaisedGardenPlantItem;
-
         public EmptyTheBowlGump(PlantItem plant)
             : base(20, 20)
         {
@@ -17,14 +15,7 @@ namespace Server.Engines.Plants
 
             DrawBackground();
 
-            if (IsOtherPlant)
-            {
-                AddHtmlLocalized(90, 70, 130, 20, 1150439, 0x1FE7, false, false); // Abandon this plot?
-            }
-            else
-            {
-                AddHtmlLocalized(100, 70, 100, 20, 1053045, 0x1FE7, false, false); // Empty the bowl?
-            }
+            AddLabel(90, 70, 0x44, "Empty the bowl?");
 
             DrawPicture();
 
@@ -40,9 +31,9 @@ namespace Server.Engines.Plants
         {
             Mobile from = sender.Mobile;
 
-            if (info.ButtonID == 0 || m_Plant.Deleted || m_Plant.PlantStatus >= PlantStatus.DecorativePlant)
+            if (info.ButtonID == 0 || m_Plant.Deleted || m_Plant.PlantStatus >= PlantStatus.PlantaDecorativa)
                 return;
-
+			
             if (info.ButtonID == 3 && !from.InRange(m_Plant.GetWorldLocation(), 3))
             {
                 from.LocalOverheadMessage(MessageType.Regular, 0x3E9, 500446); // That is too far away.
@@ -55,7 +46,7 @@ namespace Server.Engines.Plants
                 return;
             }
 
-            switch (info.ButtonID)
+            switch ( info.ButtonID )
             {
                 case 1: // Cancel
                     {
@@ -75,25 +66,22 @@ namespace Server.Engines.Plants
                     {
                         PlantBowl bowl = null;
 
-                        if (!IsOtherPlant)
+                        if (m_Plant.RequiresUpkeep)
                         {
-                            if (m_Plant.RequiresUpkeep)
+                            bowl = new PlantBowl();
+
+                            if (!from.PlaceInBackpack(bowl))
                             {
-                                bowl = new PlantBowl();
+                                bowl.Delete();
 
-                                if (!from.PlaceInBackpack(bowl))
-                                {
-                                    bowl.Delete();
+                                m_Plant.LabelTo(from, 1053047); // You cannot empty a bowl with a full pack!
+                                from.SendGump(new MainPlantGump(m_Plant));
 
-                                    m_Plant.LabelTo(from, 1053047); // You cannot empty a bowl with a full pack!
-                                    from.SendGump(new MainPlantGump(m_Plant));
-
-                                    break;
-                                }
+                                break;
                             }
                         }
 
-                        if (m_Plant.PlantStatus != PlantStatus.BowlOfDirt && m_Plant.PlantStatus < PlantStatus.Plant)
+                        if (m_Plant.PlantStatus != PlantStatus.Terra && m_Plant.PlantStatus < PlantStatus.Planta)
                         {
                             Seed seed = new Seed(m_Plant.PlantType, m_Plant.PlantHue, m_Plant.ShowType);
 
@@ -133,23 +121,12 @@ namespace Server.Engines.Plants
 
         private void DrawPicture()
         {
-            if (IsOtherPlant)
-            {
-                AddItem(90, 100, 0x913);
-
-                if (m_Plant.PlantStatus != PlantStatus.BowlOfDirt && m_Plant.PlantStatus < PlantStatus.Plant)
-                    AddItem(160, 105, 0xDCF); // Seed
-            }
-            else
-            {
-                AddItem(90, 100, 0x1602);
-                AddItem(160, 100, 0x15FD);
-
-                if (m_Plant.PlantStatus != PlantStatus.BowlOfDirt && m_Plant.PlantStatus < PlantStatus.Plant)
-                    AddItem(156, 130, 0xDCF); // Seed
-            }
-
+            AddItem(90, 100, 0x1602);
             AddImage(140, 102, 0x15E1);
+            AddItem(160, 100, 0x15FD);
+
+            if (m_Plant.PlantStatus != PlantStatus.Terra && m_Plant.PlantStatus < PlantStatus.Planta)
+                AddItem(156, 130, 0xDCF); // Seed
         }
     }
 }

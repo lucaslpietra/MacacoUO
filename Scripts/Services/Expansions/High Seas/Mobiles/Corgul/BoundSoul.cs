@@ -1,4 +1,4 @@
-﻿using Server;
+using Server;
 using System;
 
 namespace Server.Mobiles
@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public BoundSoul()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a bound soul";
+            Name = "alma penada";
             Body = 0x3CA;
             Hue = 0x4001;
 
@@ -51,8 +51,6 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-		
-		public override int TreasureMapLevel { get { return 3; } }
 
         public override void Serialize(GenericWriter writer)
         {

@@ -343,6 +343,7 @@ namespace Server.Commands.Generic
                     {
                         Mobile owner = this.m_Item.RootParent as Mobile;
 
+                        
                         if (owner != null && (owner.Map != null && owner.Map != Map.Internal) && !BaseCommand.IsAccessible(this.m_From, owner) /* !m_From.CanSee( owner )*/)
                         {
                             this.m_From.SendMessage("You can not get what you can not see.");

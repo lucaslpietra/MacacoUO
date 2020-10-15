@@ -15,7 +15,7 @@ namespace Server.Engines.VoidPool
             : base(AIType.AI_Vendor, FightMode.None, 2, 1, 0.5, 2)
         {
             Name = "Vela";
-            Title = "the sorceress";
+            Title = "a feiticeira";
             Blessed = true;
 
             SetStr(110);

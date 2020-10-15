@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Server.Commands;
 using Server.Factions;
+using Server.Gumps;
 using Server.Network;
 using Server.Targeting;
 
@@ -90,7 +91,7 @@ namespace Server.Engines.PartySystem
         public static void ListenToParty_OnCommand(CommandEventArgs e)
         {
             e.Mobile.BeginTarget(-1, false, TargetFlags.None, new TargetCallback(ListenToParty_OnTarget));
-            e.Mobile.SendMessage("Target a partied player.");
+            e.Mobile.SendMessage("Selecione alguem em grupo.");
         }
 
         public static void ListenToParty_OnTarget(Mobile from, object obj)
@@ -126,11 +127,11 @@ namespace Server.Engines.PartySystem
                 Mobile m = from.LastKiller;
 
                 if (m == from)
-                    p.SendPublicMessage(from, "I killed myself !!");
+                    p.SendPublicMessage(from, "Me matei !!");
                 else if (m == null)
-                    p.SendPublicMessage(from, "I was killed !!");
+                    p.SendPublicMessage(from, "Fui morto !!");
                 else
-                    p.SendPublicMessage(from, String.Format("I was killed by {0} !!", m.Name));
+                    p.SendPublicMessage(from, String.Format("Fui morto por {0} !!", m.Name));
             }
         }
 
@@ -171,8 +172,8 @@ namespace Server.Engines.PartySystem
 
             if (ourFaction != null && theirFaction != null && ourFaction != theirFaction)
             {
-                from.SendLocalizedMessage(1008088); // You cannot have players from opposing factions in the same party!
-                target.SendLocalizedMessage(1008093); // The party cannot have members from opposing factions.
+                from.SendMessage("Voce nao pode convidar de outras factions"); // You cannot have players from opposing factions in the same party!
+                target.SendMessage("Voce nao pode convidar de outras factions"); // The party cannot have members from opposing factions.
                 return;
             }
 
@@ -185,11 +186,13 @@ namespace Server.Engines.PartySystem
                 p.Candidates.Add(target);
 
             //  : You are invited to join the party. Type /accept to join or /decline to decline the offer.
-            target.Send(new MessageLocalizedAffix(target.NetState, Serial.MinusOne, -1, MessageType.Label, 0x3B2, 3, 1008089, "", AffixType.Prepend | AffixType.System, from.Name, ""));
+            //target.Send(new MessageLocalizedAffix(target.NetState, Serial.MinusOne, -1, MessageType.Label, 0x3B2, 3, 1008089, "", AffixType.Prepend | AffixType.System, from.Name, ""));
+            target.CloseGump(typeof(GumpConvite));
+            target.SendGump(new GumpConvite(from, target));
 
-            from.SendLocalizedMessage(1008090); // You have invited them to join the party.
+            from.SendMessage("Voce chamou o jogador para um grupo"); // You have invited them to join the party.
 
-            target.Send(new PartyInvitation(from));
+            //target.Send(new PartyInvitation(from));
             target.Party = from;
 
             DeclineTimer.Start(target, from);
@@ -250,7 +253,7 @@ namespace Server.Engines.PartySystem
             //  : joined the party.
             SendToAll(new MessageLocalizedAffix(Serial.MinusOne, -1, MessageType.Label, 0x3B2, 3, 1008094, "", AffixType.Prepend | AffixType.System, from.Name, ""));
 
-            from.SendLocalizedMessage(1005445); // You have been added to the party.
+            from.SendMessage("Voce entrou no grupo"); // You have been added to the party.
 
             m_Candidates.Remove(from);
             Add(from);
@@ -259,9 +262,9 @@ namespace Server.Engines.PartySystem
         public void OnDecline(Mobile from, Mobile leader)
         {
             //  : Does not wish to join the party.
-            leader.SendLocalizedMessage(1008091, false, from.Name);
+            leader.SendMessage("Nao quis entrar no grupo");
 
-            from.SendLocalizedMessage(1008092); // You notify them that you do not wish to join the party.
+            from.SendMessage("Okay"); // You notify them that you do not wish to join the party.
 
             m_Candidates.Remove(from);
             from.Send(new PartyEmptyList(from));
@@ -297,10 +300,9 @@ namespace Server.Engines.PartySystem
                         m.Party = null;
                         m.Send(new PartyEmptyList(m));
 
-                        m.SendLocalizedMessage(1005451); // You have been removed from the party.
+                        m.SendMessage("Voce foi removido do grupo"); // You have been removed from the party.
 
                         SendToAll(new PartyRemoveMember(m, this));
-                        SendToAll(1005452); // A player has been removed from your party.
 
                         break;
                     }

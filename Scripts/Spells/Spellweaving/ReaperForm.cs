@@ -90,17 +90,14 @@ namespace Server.Spells.Spellweaving
         }
         public static void Initialize()
         {
-            if (!Core.SA)
-            {
-                EventSink.Login += new LoginEventHandler(OnLogin);
-            }
+            EventSink.Login += new LoginEventHandler(OnLogin);
         }
 
         public static void OnLogin(LoginEventArgs e)
         {
             TransformContext context = TransformationSpellHelper.GetContext(e.Mobile);
 
-            if (context != null && context.Type == typeof(ReaperFormSpell))
+            if (context != null && context.Type == typeof(ReaperFormSpell) && !Core.SA)
                 e.Mobile.SendSpeedControl(SpeedControlType.WalkSpeed);
         }
 
@@ -118,11 +115,7 @@ namespace Server.Spells.Spellweaving
 
         public override void RemoveEffect(Mobile m)
         {
-            if (!Core.SA)
-            {
-                m.SendSpeedControl(SpeedControlType.Disable);
-            }
-
+            m.SendSpeedControl(SpeedControlType.Disable);
             BuffInfo.RemoveBuff(m, BuffIcon.ReaperForm);
         }
     }

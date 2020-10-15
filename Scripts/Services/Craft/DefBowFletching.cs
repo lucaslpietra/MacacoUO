@@ -62,9 +62,20 @@ namespace Server.Engines.Craft
         }
 
         private DefBowFletching()
-            : base(1, 1, 1.25)// base( 1, 2, 1.7 )
+            //: base(1, 1, 1.25)// base( 1, 2, 1.7 )
+            : base(DefBlacksmithy.MIN_ANIM, DefBlacksmithy.MAX_ANIM, DefBlacksmithy.DELAY)
         {
         }
+
+        public override void PlayCraftEffect(Mobile from)
+        {
+            // no animation
+            //if ( from.Body.Type == BodyType.Human && !from.Mounted )
+            //	from.Animate( 9, 5, 1, true, false, 0 );
+            from.PlayAttackAnimation(); //Adicionada animação
+            from.PlaySound(0x23D);
+        }
+
 
         public override int CanCraft(Mobile from, ITool tool, Type itemType)
         {
@@ -78,13 +89,7 @@ namespace Server.Engines.Craft
             return 0;
         }
 
-        public override void PlayCraftEffect(Mobile from)
-        {
-            // no animation
-            //if ( from.Body.Type == BodyType.Human && !from.Mounted )
-            //	from.Animate( 33, 5, 1, true, false, 0 );
-            from.PlaySound(0x55);
-        }
+      
 
         public override int PlayEndingEffect(Mobile from, bool failed, bool lostMaterial, bool toolBroken, int quality, bool makersMark, CraftItem item)
         {
@@ -106,7 +111,7 @@ namespace Server.Engines.Craft
                     return 1044156; // You create an exceptional quality item and affix your maker's mark.
                 else if (quality == 2)
                     return 1044155; // You create an exceptional quality item.
-                else 
+                else
                     return 1044154; // You create the item.
             }
         }
@@ -132,8 +137,8 @@ namespace Server.Engines.Craft
 
             this.AddCraft(typeof(Kindling), 1044457, 1023553, 0.0, 00.0, typeof(Board), 1044041, 1, 1044351);
 
-            index = this.AddCraft(typeof(Shaft), 1044457, 1027124, 0.0, 40.0, typeof(Board), 1044041, 1, 1044351);
-            this.SetUseAllRes(index, true);
+            index = this.AddCraft(typeof(Shaft), 1044457, 1027124, 0.0, 65.0, typeof(Board), 1044041, 10, 1044351);
+            //this.SetUseAllRes(index, true);
 
             // Ammunition
             index = this.AddCraft(typeof(Arrow), 1044565, 1023903, 0.0, 40.0, typeof(Shaft), 1044560, 1, 1044561);
@@ -146,31 +151,27 @@ namespace Server.Engines.Craft
 
             if (Core.SE)
             {
-                index = AddCraft(typeof(FukiyaDarts), 1044565, 1030246, 50.0, 73.8, typeof(Board), 1044041, 1, 1044351);
+                index = AddCraft(typeof(FukiyaDarts), 1044565, 1030246, 50.0, 90.0, typeof(Board), 1044041, 1, 1044351);
                 this.SetUseAllRes(index, true);
             }
 
             // Weapons
+            this.AddCraft(typeof(PraticeBow), 1044566, 1025042, 30.0, 70.0, typeof(Board), 1044041, 20, 1044351);
             this.AddCraft(typeof(Bow), 1044566, 1025042, 30.0, 70.0, typeof(Board), 1044041, 7, 1044351);
             this.AddCraft(typeof(Crossbow), 1044566, 1023919, 60.0, 100.0, typeof(Board), 1044041, 7, 1044351);
-            this.AddCraft(typeof(HeavyCrossbow), 1044566, 1025117, 80.0, 120.0, typeof(Board), 1044041, 10, 1044351);
+            this.AddCraft(typeof(HeavyCrossbow), 1044566, 1025117, 70.0, 120.0, typeof(Board), 1044041, 10, 1044351);
 
-            if (Core.AOS)
-            {
-                this.AddCraft(typeof(CompositeBow), 1044566, 1029922, 70.0, 110.0, typeof(Board), 1044041, 7, 1044351);
-                this.AddCraft(typeof(RepeatingCrossbow), 1044566, 1029923, 90.0, 130.0, typeof(Board), 1044041, 10, 1044351);
-            }
+            index = this.AddCraft(typeof(CompositeBow), 1044566, 1029922, 65.0, 139.0, typeof(Board), 1044041, 8, 1044351);
+            this.AddRes(index, typeof(Cloth), "Pano", 5, "Voce precisa de Pano para fazer isto");
 
-            if (Core.SE)
-            {
-                index = AddCraft(typeof(Yumi), 1044566, 1030224, 90.0, 130.0, typeof(Board), 1044041, 10, 1044351);
-            }
+            this.AddCraft(typeof(RepeatingCrossbow), 1044566, 1029923, 90.0, 130.0, typeof(Board), 1044041, 10, 1044351);
+            index = AddCraft(typeof(Yumi), 1044566, 1030224, 70.0, 110.0, typeof(Board), 1044041, 10, 1044351);
+
 
             #region Mondain's Legacy
             if (Core.ML)
             {
                 index = AddCraft(typeof(ElvenCompositeLongbow), 1044566, 1031562, 95.0, 145.0, typeof(Board), 1044041, 20, 1044351);
-
                 index = AddCraft(typeof(MagicalShortbow), 1044566, 1031551, 85.0, 135.0, typeof(Board), 1044041, 15, 1044351);
 
                 index = AddCraft(typeof(BlightGrippedLongbow), 1044566, 1072907, 75.0, 125.0, typeof(Board), 1044041, 20, 1044351);
@@ -182,7 +183,7 @@ namespace Server.Engines.Craft
 
                 index = AddCraft(typeof(FaerieFire), 1044566, 1072908, 75.0, 125.0, typeof(Board), 1044041, 20, 1044351);
                 AddRes(index, typeof(LardOfParoxysmus), 1032681, 1, 1053098);
-                AddRes(index, typeof(Putrefaction), 1032678, 10, 1053098);
+                AddRes(index, typeof(Putrefication), 1032678, 10, 1053098);
                 AddRes(index, typeof(Taint), 1032679, 10, 1053098);
                 AddRecipe(index, (int)BowRecipes.FaerieFire);
                 ForceNonExceptional(index);
@@ -197,7 +198,7 @@ namespace Server.Engines.Craft
                 index = AddCraft(typeof(MischiefMaker), 1044566, 1072910, 75.0, 125.0, typeof(Board), 1044041, 15, 1044351);
                 AddRes(index, typeof(DreadHornMane), 1032682, 1, 1053098);
                 AddRes(index, typeof(Corruption), 1032676, 10, 1053098);
-                AddRes(index, typeof(Putrefaction), 1032678, 10, 1053098);
+                AddRes(index, typeof(Putrefication), 1032678, 10, 1053098);
                 AddRecipe(index, (int)BowRecipes.MischiefMaker);
                 ForceNonExceptional(index);
 
@@ -255,9 +256,10 @@ namespace Server.Engines.Craft
             this.AddSubRes(typeof(FrostwoodBoard), 1072649, 95.0, 1044041, 1072652);
             #endregion
 
+            this.Resmelt = true;
             this.MarkOption = true;
-            this.Repair = Core.AOS;
-			this.CanEnhance = Core.ML;
+            this.Repair = true;
+            this.CanEnhance = Core.ML;
         }
     }
 }

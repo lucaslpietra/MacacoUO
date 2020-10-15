@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using Server.Mobiles;
 using Server.Gumps;
@@ -7,8 +7,8 @@ namespace Server.Items
 {
     public class GenderChangeToken : Item, IPromotionalToken
     {
-        public override int LabelNumber { get { return 1070997; } } // a promotional token
-        public TextDefinition ItemName { get { return 1075252; } } // gender change
+        public override string DefaultName { get { return "Token de Sexo"; } } // a promotional token
+        public TextDefinition ItemName { get { return "Permite Trocar de Sexo"; } } // gender change
 
         public Type GumpType { get { return typeof(GenderChangeConfirmGump); } }
 
@@ -114,7 +114,7 @@ namespace Server.Items
             from.FacialHairItemID = _BeardID;
             from.HairItemID = _HairID;
 
-            from.SendMessage("You are now a {0}.", from.Female ? "woman" : "man"); // TODO: Message?
+            from.SendMessage("Voce agora e {0}.", from.Female ? "uma mulher" : "um homem"); // TODO: Message?
             Delete();
         }
 
@@ -122,7 +122,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(1070998, ItemName.ToString()); // Use this to redeem<br>Your ~1_PROMO~ : gender change
+            list.Add("Permite trocar de sexo"); // Use this to redeem<br>Your ~1_PROMO~ : gender change
         }
 
         public GenderChangeToken(Serial serial)
@@ -159,15 +159,15 @@ namespace Server.Items
             AddImageTiled(5, 5, 281, 20, 2702);
             AddImageTiled(5, 30, 281, 100, 2702);
 
-            AddHtmlLocalized(8, 5, 279, 20, 1075249, 0x7FFF, false, false); // Change your character's gender.
+            AddHtml(8, 5, 279, 20, "Troque o genero do seu personagem", 0x7FFF, false, false); // Change your character's gender.
 
             AddButton(5, 132, 0xFB1, 0xFB3, 0, GumpButtonType.Reply, 0);
             AddHtmlLocalized(40, 132, 100, 20, 1011012, 0x7FFF, false, false); // CANCEL
 
-            AddHtmlLocalized(8, 30, 279, 124, User.Female ? 1075254 : 1075253, 0x7FFF, false, false); // Click OK to change your gender to female. This change is permanent. Reversing this requires the purchase of an additional gender change token. For more details, <A HREF="http://www.uo.com/genderchange.html">visit our web site</A>.
+            AddHtml(8, 30, 279, 124, User.Female ? "Trocar para masculino" : "Trocar para feminino", 0x7FFF, false, false); // Click OK to change your gender to female. This change is permanent. Reversing this requires the purchase of an additional gender change token. For more details, <A HREF="http://www.uo.com/genderchange.html">visit our web site</A>.
 
             AddButton(126, 132, 0xFB7, 0xFB9, 1, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(160, 132, 120, 20, User.Female ? 1075251 : 1075250, 0x7FFF, false, false); // Make me a woman!
+            AddHtml(160, 132, 120, 20, User.Female ? "Quero ser homem!" : "Quero ser mulher!", 0x7FFF, false, false); // Make me a woman!
         }
 
         public override void OnResponse(RelayInfo info)

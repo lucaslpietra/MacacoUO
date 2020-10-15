@@ -12,7 +12,7 @@ namespace Server.Items
             : base()
         {
             Hue = 1410;			
-            Slayer = SlayerName.Fey;
+            Slayer = SlayerName.Fadas;
             WeaponAttributes.HitFireball = 40;
             WeaponAttributes.HitLowerDefend = 30;	
             Attributes.BonusDex = 5;

@@ -1,3 +1,5 @@
+//By: Monolith - 10/10/2011
+
 using System;
 using Server.Mobiles;
 
@@ -23,10 +25,11 @@ namespace Server.Items
 				
                 if (player.AbyssEntry)
                 {
+                    m.SendMessage("You Enter the Stygian Abyss");
                     return base.OnMoveOver(m);
                 }
                 else
-					player.SendLocalizedMessage(1077196); // You may not enter this area.				
+                    m.SendMessage("You have not obtained entry to the Abyss");				
             }
             return true;
         }

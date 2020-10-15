@@ -8,7 +8,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public FireSteed()
-            : this("a fire steed")
+            : this("mustang de fogo")
         {
         }
 
@@ -45,12 +45,10 @@ namespace Server.Mobiles
 
             Tamable = true;
             ControlSlots = 2;
-            MinTameSkill = 106.0;
+            MinTameSkill = 105.0;
 
             PackItem(new SulfurousAsh(Utility.RandomMinMax(151, 300)));
             PackItem(new Ruby(Utility.RandomMinMax(16, 30)));
-
-            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public FireSteed(Serial serial)
@@ -58,6 +56,13 @@ namespace Server.Mobiles
         {
         }
 
+        public override bool HasBreath
+        {
+            get
+            {
+                return true;
+            }
+        }// fire breath enabled
         public override FoodType FavoriteFood
         {
             get
@@ -85,6 +90,9 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (BaseSoundID <= 0)
+                BaseSoundID = 0xA8;
 
             if (version < 1)
             {

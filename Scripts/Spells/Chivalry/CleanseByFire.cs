@@ -64,11 +64,11 @@ namespace Server.Spells.Chivalry
         {
             if (!m.Poisoned)
             {
-                this.Caster.SendLocalizedMessage(1060176); // That creature is not poisoned!
+                this.Caster.SendMessage("Isto nao esta envenenado"); // That creature is not poisoned!
             }
             else if (this.CheckBSequence(m))
             {
-                SpellHelper.Turn(this.Caster, m);
+                //SpellHelper.Turn(this.Caster, m);
 
                 /* Cures the target of poisons, but causes the caster to be burned by fire damage for 13-55 hit points.
                 * The amount of fire damage is lessened if the caster has high Karma.
@@ -87,14 +87,14 @@ namespace Server.Spells.Chivalry
                         if (m.CurePoison(this.Caster))
                         {
                             if (this.Caster != m)
-                                this.Caster.SendLocalizedMessage(1010058); // You have cured the target of all poisons!
+                                this.Caster.SendMessage("Voce curou os venenos do alvo"); // You have cured the target of all poisons!
 
-                            m.SendLocalizedMessage(1010059); // You have been cured of all poisons.
+                            m.SendMessage("Voce foi curado do veneno"); // You have been cured of all poisons.
                         }
                     }
                     else
                     {
-                        m.SendLocalizedMessage(1010060); // You have failed to cure your target!
+                        m.SendMessage("Voce falhou em curar o veneno"); // You have failed to cure your target!
                     }
                 }
 
@@ -107,14 +107,14 @@ namespace Server.Spells.Chivalry
 
                 this.Caster.PlaySound(0x208);
                 this.Caster.FixedParticles(0x3709, 1, 30, 9934, 0, 7, EffectLayer.Waist);
+                Caster.MovingParticles(m, 0x3709, 7, 0, false, false, 9502, 0x3709, 0x1F2);
 
                 int damage = 50 - this.ComputePowerValue(4);
 
-                // TODO: Should caps be applied?
-                if (damage < 13)
-                    damage = 13;
-                else if (damage > 55)
-                    damage = 55;
+                if (damage < 10)
+                    damage = 10;
+                else if (damage > 50)
+                    damage = 50;
 
                 AOS.Damage(this.Caster, this.Caster, damage, 0, 100, 0, 0, 0, true);
             }
@@ -126,7 +126,7 @@ namespace Server.Spells.Chivalry
         {
             private readonly CleanseByFireSpell m_Owner;
             public InternalTarget(CleanseByFireSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Beneficial)
+                : base(14, false, TargetFlags.Beneficial)
             {
                 this.m_Owner = owner;
             }

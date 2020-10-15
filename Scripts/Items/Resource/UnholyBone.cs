@@ -10,10 +10,11 @@ namespace Server.Items
         public UnholyBone()
             : base(0xF7E)
         {
-            Movable = false;
-            Hue = 0x497;
-            m_Timer = new SpawnTimer(this);
-            m_Timer.Start();
+            this.Movable = false;
+            this.Hue = 0x497;
+
+            this.m_Timer = new SpawnTimer(this);
+            this.m_Timer.Start();
         }
 
         public UnholyBone(Serial serial)
@@ -34,8 +35,11 @@ namespace Server.Items
             Effects.SendLocationEffect(this.GetWorldLocation(), this.Map, 0x3728, 10, 10, 0, 0);
 
             if (0.3 > Utility.RandomDouble())
-            {          
-                from.SendLocalizedMessage(1114322); // You destroy the bone pile.
+            {
+                if (this.ItemID == 0xF7E)
+                    from.SendMessage("You destroy the bone.");
+                else
+                    from.SendMessage("You destroy the bone pile.");
 
                 Gold gold = new Gold(25, 100);
 
@@ -46,7 +50,10 @@ namespace Server.Items
             }
             else
             {
-                from.SendLocalizedMessage(1114323); // You damage the bone pile.
+                if (this.ItemID == 0xF7E)
+                    from.SendMessage("You damage the bone.");
+                else
+                    from.SendMessage("You damage the bone pile.");
             }
 
             return true;

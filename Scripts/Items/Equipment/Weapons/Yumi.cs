@@ -9,8 +9,9 @@ namespace Server.Items
         public Yumi()
             : base(0x27A5)
         {
-            Weight = 8.0;
-            Layer = Layer.TwoHanded;
+            Name = "Arco Longo";
+            this.Weight = 9.0;
+            this.Layer = Layer.TwoHanded;
         }
 
         public Yumi(Serial serial)
@@ -92,14 +93,14 @@ namespace Server.Items
         {
             get
             {
-                return 35;
+                return 70;
             }
         }
         public override int OldMinDamage
         {
             get
             {
-                return 18;
+                return 12;
             }
         }
         public override int OldMaxDamage
@@ -113,14 +114,14 @@ namespace Server.Items
         {
             get
             {
-                return 25;
+                return 30;
             }
         }
         public override int DefMaxRange
         {
             get
             {
-                return 10;
+                return 16;
             }
         }
         public override int InitMinHits
@@ -147,13 +148,18 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
+
+            if (this.Weight == 7.0)
+                this.Weight = 6.0;
         }
     }
 }

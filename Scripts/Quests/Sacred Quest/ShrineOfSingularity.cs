@@ -41,7 +41,7 @@ namespace Server.Items
 
                 QuestOfSingularity quest = GetSingularityQuest(pm);
 
-                if (HasDelay(pm) && pm.AccessLevel == AccessLevel.Player)
+                if (HasDelay(pm) && pm.AccessLevel <= AccessLevel.VIP)
                     pm.PublicOverheadMessage(MessageType.Regular, 0x47E, 1112685); // You need more time to contemplate the Book of Circles before trying again.
                 else if (pm.AbyssEntry)
                     pm.SendLocalizedMessage(1112697);  //You enter a state of peaceful contemplation, focusing on the meaning of Singularity.

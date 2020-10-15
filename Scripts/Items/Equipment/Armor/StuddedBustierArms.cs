@@ -9,7 +9,8 @@ namespace Server.Items
         public StuddedBustierArms()
             : base(0x1C0C)
         {
-            Weight = 1.0;
+            this.Weight = 1.0;
+            this.Name = "Bustiê de Couro Reforçado";
         }
 
         public StuddedBustierArms(Serial serial)

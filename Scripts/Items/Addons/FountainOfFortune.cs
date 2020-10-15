@@ -68,19 +68,23 @@ namespace Server.Items
 			
 			if(IsCoolingDown(from))
 			{
-                from.SendLocalizedMessage(1113368); // You already made a wish today. Try again tomorrow!
+                from.SendLocalizedMessage("Voce ja fez um desejo hoje, volte amanha"); // You already made a wish today. Try again tomorrow!
 				return false;
 			}
+
+            from.PlayAttackAnimation();
+            from.OverheadMessage("* jogou uma moeda da sorte *");
+            this.PublicOverheadMessage(Network.MessageType.Regular, 0, true, "* gluff *");
 			
 			if(.20 >= Utility.RandomDouble())
 			{
 				Item item = null;
-				switch(Utility.Random(4))
+				switch(Utility.Random(3))
 				{
 					case 0: item = new SolesOfProvidence(); break;
 					case 1: item = new GemologistsSatchel(); break;
-					case 2: item = new RelicFragment(5); break;
-					case 3: item = new EnchantedEssence(5); break;
+					case 2: item = new RelicFragment(1); break;
+					//case 3: item = new EnchantedEssence(5); break;
 				}
 				
 				if(from.Backpack == null || !from.Backpack.TryDropItem(from, item, false))
@@ -92,27 +96,27 @@ namespace Server.Items
 				{
 					case 0:
 						from.AddStatMod(new StatMod(StatType.Str, "FoF_Str", 10, TimeSpan.FromMinutes(60)));
-                        from.SendLocalizedMessage(1113373); // You suddenly feel stronger!
+                        from.SendLocalizedMessage("Voce se sente mais forte !"); // You suddenly feel stronger!
 						break;
 					case 1:
                         from.AddStatMod(new StatMod(StatType.Dex, "FoF_Dex", 10, TimeSpan.FromMinutes(60)));
-                        from.SendLocalizedMessage(1113374); // You suddenly feel more agile!
+                        from.SendLocalizedMessage("Voce se sente mais agil !"); // You suddenly feel more agile!
 						break;
 					case 2:
                         from.AddStatMod(new StatMod(StatType.Int, "FoF_Int", 10, TimeSpan.FromMinutes(60)));
-						from.SendLocalizedMessage(1113371); // You suddenly feel wiser!
+						from.SendLocalizedMessage("Voce se sente mais esperto !"); // You suddenly feel wiser!
 						break;
 					case 3:
                         m_LuckTable[from] = DateTime.UtcNow + TimeSpan.FromMinutes(60);
-                        from.SendLocalizedMessage(1079551); // Your luck just improved!
+                        from.SendLocalizedMessage("Voce se sente mais sortudo !"); // Your luck just improved!
 						break;
                     case 4:
                         m_SpecialProtection[from] = DateTime.UtcNow + TimeSpan.FromMinutes(60);
-                        from.SendLocalizedMessage(1113375); // You suddenly feel less vulnerable!
+                        from.SendLocalizedMessage("Voce se sente menos vulneravel"); // You suddenly feel less vulnerable!
                         break;
                     case 5:
                         m_BalmBoost[from] = DateTime.UtcNow + TimeSpan.FromMinutes(60);
-                        from.SendLocalizedMessage(1113372); // The duration of your balm has been increased by an hour!
+                        from.SendLocalizedMessage("A duracao do seu bonus da fonte aumentou uma hora !"); // The duration of your balm has been increased by an hour!
                         break;
 				}
 
@@ -220,7 +224,7 @@ namespace Server.Items
                     m_LuckTable.Remove(m);
 
                     if (m.NetState != null)
-                        m.SendLocalizedMessage(1079552); //Your luck just ran out.
+                        m.SendLocalizedMessage("A sua sorte acabou"); //Your luck just ran out.
                 });
 
             remove.Clear();

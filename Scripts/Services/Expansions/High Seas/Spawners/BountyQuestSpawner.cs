@@ -464,7 +464,7 @@ namespace Server.Engines.Quests
                 hold.DropItem(new LightGrapeshot(Utility.RandomMinMax(7, 10)));
                 hold.DropItem(new HeavyPowderCharge(Utility.RandomMinMax(7, 10)));
                 hold.DropItem(new LightPowderCharge(Utility.RandomMinMax(7, 10)));
-                hold.DropItem(new FuseCord(Utility.RandomMinMax(7, 10)));
+                hold.DropItem(new Fusecord(Utility.RandomMinMax(7, 10)));
 
                 if (.10 >= Utility.RandomDouble())
                     hold.DropItem(new SmugglersCache());
@@ -499,6 +499,26 @@ namespace Server.Engines.Quests
                     hold.DropItem(steaks);
                 }
 
+                /*if (0.10 > Utility.RandomDouble())
+                {
+                    Item item = null;
+                    switch (Utility.Random(6))
+                    {
+                        case 0: item = new LightScatterShot(); break;
+                        case 1: item = new HeavyScatterShot(); break;
+                        case 2: item = new LightFragShot(); break;
+                        case 3: item = new HeavyFragShot(); break;
+                        case 4: item = new LightHotShot(); break;
+                        case 5: item = new HeavyHotShot(); break;
+                    }
+
+                    if (item != null)
+                    {
+                        item.Amount = Utility.RandomMinMax(2, 10);
+                        hold.DropItem(item);
+                    }
+                }*/
+
                 hold.DropItem(new Gold(Utility.RandomMinMax(5000, 25000)));
 
                 if (0.50 > Utility.RandomDouble())
@@ -527,15 +547,15 @@ namespace Server.Engines.Quests
                         break;
                     case 1:
                         if (Utility.RandomBool())
-                            hold.DropItem(new DullCopperOre(Utility.RandomMinMax(40, 50)));
+                            hold.DropItem(new BeriloOre(Utility.RandomMinMax(40, 50)));
                         else
-                            hold.DropItem(new DullCopperIngot(Utility.RandomMinMax(40, 50)));
+                            hold.DropItem(new BeriloIngot(Utility.RandomMinMax(40, 50)));
                         break;
                     case 2:
                         if (Utility.RandomBool())
-                            hold.DropItem(new ShadowIronOre(Utility.RandomMinMax(40, 50)));
+                            hold.DropItem(new VibraniumOre(Utility.RandomMinMax(40, 50)));
                         else
-                            hold.DropItem(new ShadowIronIngot(Utility.RandomMinMax(40, 50)));
+                            hold.DropItem(new VibraniumIngot(Utility.RandomMinMax(40, 50)));
                         break;
                     case 3:
                         if (Utility.RandomBool())
@@ -551,21 +571,21 @@ namespace Server.Engines.Quests
                         break;
                     case 5:
                         if (Utility.RandomBool())
-                            hold.DropItem(new AgapiteOre(Utility.RandomMinMax(40, 50)));
+                            hold.DropItem(new NiobioOre(Utility.RandomMinMax(40, 50)));
                         else
-                            hold.DropItem(new AgapiteIngot(Utility.RandomMinMax(40, 50)));
+                            hold.DropItem(new NiobioIngot(Utility.RandomMinMax(40, 50)));
                         break;
                     case 6:
                         if (Utility.RandomBool())
-                            hold.DropItem(new VeriteOre(Utility.RandomMinMax(40, 50)));
+                            hold.DropItem(new LazuritaOre(Utility.RandomMinMax(40, 50)));
                         else
-                            hold.DropItem(new VeriteIngot(Utility.RandomMinMax(40, 50)));
+                            hold.DropItem(new LazuritaIngot(Utility.RandomMinMax(40, 50)));
                         break;
                     case 7:
                         if (Utility.RandomBool())
-                            hold.DropItem(new ValoriteOre(Utility.RandomMinMax(40, 50)));
+                            hold.DropItem(new QuartzoOre(Utility.RandomMinMax(40, 50)));
                         else
-                            hold.DropItem(new ValoriteIngot(Utility.RandomMinMax(40, 50)));
+                            hold.DropItem(new QuartzoIngot(Utility.RandomMinMax(40, 50)));
                         break;
                 }
 
@@ -643,32 +663,10 @@ namespace Server.Engines.Quests
                 //Rares
                 if (0.8 > Utility.RandomDouble())
                 {
-                    Item deed;
-
                     if (Utility.RandomBool())
-                    {
-                        if (Core.EJ)
-                        {
-                            deed = new CarronadeDeed();
-                        }
-                        else
-                        {
-                            deed = new HeavyShipCannonDeed();
-                        }
-                    }
+                        hold.DropItem(new HeavyShipCannonDeed());
                     else
-                    {
-                        if (Core.EJ)
-                        {
-                            deed = new CulverinDeed();
-                        }
-                        else
-                        {
-                            deed = new LightShipCannonDeed();
-                        }
-                    }
-
-                    hold.DropItem(deed);
+                        hold.DropItem(new LightShipCannonDeed());
                 }
 
                 if (0.025 > Utility.RandomDouble())
@@ -680,23 +678,6 @@ namespace Server.Engines.Quests
                 }
 
                 RefinementComponent.Roll(hold, 3, 0.25);
-
-                if (Server.Engines.Points.PointsSystem.RisingTide.Enabled)
-                {
-                    if (0.25 > Utility.RandomDouble())
-                    {
-                        hold.DropItem(new MaritimeCargo());
-
-                        if (0.1 > Utility.RandomDouble())
-                        {
-                            hold.DropItem(new MaritimeCargo());
-                        }
-                    }
-                    else if (0.25 > Utility.RandomDouble())
-                    {
-                        hold.DropItem(new MaritimeCargo());
-                    }
-                }
             }
         }
 
@@ -788,7 +769,7 @@ namespace Server.Engines.Quests
 
         public override void OnDoubleClick(Mobile from)
         {
-            if(from.AccessLevel > AccessLevel.Player)
+            if(from.AccessLevel > AccessLevel.VIP)
                 from.SendGump(new PropertiesGump(from, this));
         }
 

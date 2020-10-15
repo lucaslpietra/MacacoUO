@@ -5,12 +5,13 @@ namespace Server.Items
 {
     public abstract class BaseRewardTitleDeed : Item
     {
-        public override int LabelNumber { get { return 1155604; } } // A Deed for a Reward Title
+
         public abstract TextDefinition Title { get; }
 
         public BaseRewardTitleDeed()
             : base(5360)
         {
+            Name = "Escritura de Titulo";
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -27,7 +28,8 @@ namespace Server.Items
                              Title.String != null && pm.AddRewardTitle(Title.String))
                         {
 
-                            pm.SendLocalizedMessage(1155605, Title.ToString());  //Thou hath been bestowed the title ~1_TITLE~!
+                            pm.SendMessage("Voce agora tem o titulo " + Title.ToString());   //Thou hath been bestowed the title ~1_TITLE~!
+                            pm.SendMessage("Digite .titulo para alterar seu titulo");
                             Delete();
                         }
                         else

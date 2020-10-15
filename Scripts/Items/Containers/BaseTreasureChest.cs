@@ -92,6 +92,7 @@ namespace Server.Items
                 }
             }
         }
+
         public override bool IsDecoContainer
         {
             get
@@ -99,6 +100,7 @@ namespace Server.Items
                 return false;
             }
         }
+
         public override string DefaultName
         {
             get
@@ -109,6 +111,7 @@ namespace Server.Items
                 return "a treasure chest";
             }
         }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

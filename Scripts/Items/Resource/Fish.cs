@@ -14,6 +14,7 @@ namespace Server.Items
         public Fish(int amount)
             : base(Utility.Random(0x09CC, 4))
         {
+            Name = "Peixe";
             this.Stackable = true;
             this.Weight = 1.0;
             this.Amount = amount;

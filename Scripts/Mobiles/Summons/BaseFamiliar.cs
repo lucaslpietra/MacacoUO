@@ -1,8 +1,6 @@
 #region References
 using System.Collections.Generic;
 using System;
-using System.Linq;
-
 using Server.ContextMenus;
 using Server.Items;
 using Server.Spells.Necromancy;
@@ -48,7 +46,7 @@ namespace Server.Mobiles
 
 		public override bool BardImmune { get { return true; } }
 		public override Poison PoisonImmune { get { return Poison.Lethal; } }
-		public override bool Commandable { get { return false; } }
+		public override bool Commandable { get { return false; } } 
 		public override bool PlayerRangeSensitive { get { return false; } }
         public override bool CanDetectHidden { get { return false; } }
 
@@ -80,9 +78,9 @@ namespace Server.Mobiles
                 m_SeperationStart = DateTime.MinValue;
             }
 
-            int range = 4;
+            int range = (RangeHome / 2);
 
-            if (!InRange(ControlMaster.Location, RangeHome) && InLOS(ControlMaster))
+            if (!InRange(ControlMaster.Location, RangeHome))
             {
                 Point3D loc = Point3D.Zero;
 
@@ -111,8 +109,6 @@ namespace Server.Mobiles
                         SetLocation(loc, true);
                     }
                 }
-
-                return false;
             }
 
             return true;
@@ -211,6 +207,9 @@ namespace Server.Mobiles
 				Effects.SendLocationParticles(
 					EffectItem.Create(Location, Map, EffectItem.DefaultDuration), 0x3728, 1, 13, 2100, 3, 5042, 0);
 				PlaySound(0x201);
+                var items = new List<Item>(Backpack.Items);
+                foreach (var item in items)
+                    item.MoveToWorld(this.Location, this.Map);
 				Delete();
 			}
 		}
@@ -238,14 +237,6 @@ namespace Server.Mobiles
             if (check != null && check is BaseFamiliar && check.Weapon != null && check.InRange(defender.Location, check.Weapon.MaxRange))
             {
                 check.Weapon.OnSwing(check, defender);
-            }
-
-            if (attacker is PlayerMobile)
-            {
-                foreach (var ts in ((PlayerMobile)attacker).AllFollowers.Where(m => m is BaseTalismanSummon && m.InRange(defender.Location, m.Weapon.MaxRange)))
-                {
-                    ts.Weapon.OnSwing(ts, defender);
-                }
             }
         }
 

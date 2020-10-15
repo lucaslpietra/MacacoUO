@@ -1,6 +1,7 @@
 using System;
 
 using Server.Gumps;
+using Server.Misc.Custom;
 using Server.Mobiles;
 
 namespace Server.ContextMenus
@@ -26,14 +27,13 @@ namespace Server.ContextMenus
             }
             else
             {
-                Owner.From.BankBox.Open();
+                var m = Owner.From;
+
+                BankLevels.OpenBank(Owner.From);
 
                 if (Core.TOL && Owner.From is PlayerMobile)
-				{
-					Owner.From.CloseGump(typeof (BankerGump));
                     Owner.From.SendGump(new BankerGump((PlayerMobile)Owner.From));
-            	}
-			}
+            }
         }
     }
 }

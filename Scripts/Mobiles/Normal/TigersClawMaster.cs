@@ -10,20 +10,20 @@ namespace Server.Mobiles
         public TigersClawMaster()
             : base()
         {
-            Name = "Black Order Master";
-            Title = "of the Serpent's Fang Sect";
-            SetStr(440, 460);
-            SetDex(400, 415);
-            SetInt(200, 215);
+            this.Name = "Black Order Master";
+            this.Title = "of the Serpent's Fang Sect";
+            this.SetStr(440, 460);
+            this.SetDex(400, 415);
+            this.SetInt(200, 215);
 
-            SetHits(850, 875);
+            this.SetHits(850, 875);
 
-            SetDamage(15, 20);
+            this.SetDamage(15, 20);
 
-            Fame = 25000;
-            Karma = -25000;
+            this.Fame = 25000;
+            this.Karma = -25000;
 
-            VirtualArmor = 60;
+            this.VirtualArmor = 60;
         }
 
         public TigersClawMaster(Serial serial)
@@ -31,12 +31,23 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool AlwaysMurderer { get { return true; } }
-        public override bool ShowFameTitle { get { return false; } }
-		
+        public override bool AlwaysMurderer
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public override bool ShowFameTitle
+        {
+            get
+            {
+                return false;
+            }
+        }
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.AosFilthyRich, 6);
+            this.AddLoot(LootPack.AosFilthyRich, 6);
         }
 
         public override void OnDeath(Container c)
@@ -51,13 +62,15 @@ namespace Server.Mobiles
 
         public override void Serialize(GenericWriter writer)
         {
-            base.Serialize(writer);			
+            base.Serialize(writer);
+			
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
-            base.Deserialize(reader);			
+            base.Deserialize(reader);
+			
             int version = reader.ReadInt();
         }
     }

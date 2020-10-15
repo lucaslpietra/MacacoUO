@@ -24,13 +24,15 @@ namespace Server.Engines.VvV
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime LastStolen { get; set; }
 
-        public override int LabelNumber { get { return 1123391; } } // Sigil
         public override bool HandlesOnMovement { get { return !Visible; } }
         public bool CheckWhenHidden { get { return true; } }
 
         public VvVSigil(VvVBattle battle, Point3D home)
             : base(0x99C7)
         {
+
+            Name = "Sigilo";
+
             Battle = battle;
             Visible = false;
 
@@ -57,7 +59,7 @@ namespace Server.Engines.VvV
         {
             if (LastStolen == DateTime.MinValue)
             {
-                from.SendLocalizedMessage(1005225); // You must use the stealing skill to pick up the sigil
+                from.SendLocalizedMessage("Voce precisa usar Stealing no sigilo"); // You must use the stealing skill to pick up the sigil
                 return false;
             }
 
@@ -104,21 +106,20 @@ namespace Server.Engines.VvV
             if (!ViceVsVirtueSystem.IsVvV(m))
                 return false;
 
-            return Utility.Random(100) <= m.Skills[SkillName.DetectHidden].Value;
+            return Utility.Random(100) <= 30;
         }
 
         public virtual void OnRevealed(Mobile m)
         {
             Visible = true;
+            PublicOverheadMessage(MessageType.Regular, 0, true, "* revelado *");
         }
 
         public virtual bool CheckPassiveDetect(Mobile m)
         {
             if (m.InRange(this.Location, 4))
             {
-                int skill = (int)m.Skills[SkillName.DetectHidden].Value;
-
-                if (skill >= 80 && Utility.Random(300) < skill)
+                if (Utility.Random(300) < 20)
                     return true;
             }
 

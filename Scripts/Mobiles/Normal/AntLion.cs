@@ -56,10 +56,10 @@ namespace Server.Mobiles
             switch (Utility.Random(4))
             {
                 case 0:
-                    orepile = new DullCopperOre();
+                    orepile = new BeriloOre();
                     break;
                 case 1:
-                    orepile = new ShadowIronOre();
+                    orepile = new VibraniumOre();
                     break;
                 case 2:
                     orepile = new CopperOre();
@@ -83,10 +83,15 @@ namespace Server.Mobiles
 					case 1: PackItem( new UnknownMageSkeleton() ); break;
 					case 2: PackItem( new UnknownRogueSkeleton() ); break;
 				}
-			}
-
-            SetSpecialAbility(SpecialAbility.DragonBreath);
+			}					
         }
+
+        public override bool HasBreath { get { return true; } }
+        public override int BreathPoisonDamage { get { return 100; } }
+        public override int BreathFireDamage { get { return 0; } }
+        public override int BreathEffectHue { get { return 0x3F; } }
+        public override int BreathEffectSound { get { return 0; } }
+        public override int BreathAngerSound { get { return 0; } }
 
         public override void OnThink()
         {

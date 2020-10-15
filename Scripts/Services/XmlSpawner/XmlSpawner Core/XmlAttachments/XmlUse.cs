@@ -275,7 +275,7 @@ namespace Server.Engines.XmlSpawner2
 
         private void ReportError(Mobile mob, string status_str)
         {
-            if (status_str != null && mob != null && !mob.Deleted && mob is PlayerMobile && mob.AccessLevel > AccessLevel.Player)
+            if (status_str != null && mob != null && !mob.Deleted && mob is PlayerMobile && mob.AccessLevel > AccessLevel.VIP)
             {
                 mob.SendMessage(33, String.Format("{0}:{1}", Name, status_str));
             }

@@ -53,7 +53,7 @@ namespace Server.Gumps
 		public override void AppendTo( IGumpWriter disp )
 		{
 			disp.AppendLayout( m_LayoutName );
-			disp.AppendLayout( m_Number );
+            disp.AppendLayout( m_Number );
         }
 	}
 }

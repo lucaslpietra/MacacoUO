@@ -5,30 +5,26 @@ namespace Server.Items
 {
     public class Charcoal : Item, ICommodity
     {
-        public override int LabelNumber { get { return 1116303; } } // charcoal
+        public override int LabelNumber { get { return 1116303; } }
 
         TextDefinition ICommodity.Description { get { return LabelNumber; } }
         bool ICommodity.IsDeedable { get { return true; } }
 
         [Constructable]
-        public Charcoal()
-            : this(1)
+        public Charcoal() : this(1)
         {
         }
 
         [Constructable]
-        public Charcoal(int amount)
-            : base(0x423A)
+        public Charcoal(int amount) : base(16954)
         {
+            Name = "Carvao";
             Stackable = true;
             Amount = amount;
-            Hue = 1190;
+            Hue = 1457;
         }
 
-        public Charcoal(Serial serial)
-            : base(serial)
-        {
-        }
+        public Charcoal(Serial serial) : base(serial) { }
 
         public override void Serialize(GenericWriter writer)
         {

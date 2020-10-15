@@ -6,6 +6,8 @@ namespace Server.Items
     [Flipable(0x971C, 0x9821)]
     public class AdvancedTrainingDummy : TrainingDummy
     {
+        public virtual double Delay { get { return 2.5; } }
+
         [Constructable]
         public AdvancedTrainingDummy() : this(0x971C)
         {
@@ -14,8 +16,8 @@ namespace Server.Items
         [Constructable]
         public AdvancedTrainingDummy(int itemID) : base(itemID)
         {
-            MinSkill = -25.0;
-            MaxSkill = +60.0;
+            MinSkill = -50;
+            MaxSkill = 100;
         }
 
         public override void UpdateItemID()

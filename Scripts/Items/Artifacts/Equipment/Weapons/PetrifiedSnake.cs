@@ -13,7 +13,7 @@ namespace Server.Items
         {		
             Hue = 460;		
             AbsorptionAttributes.EaterPoison = 20;	
-            Slayer = SlayerName.ReptilianDeath;
+            Slayer = SlayerName.Repteis;
             WeaponAttributes.HitMagicArrow = 30;
             WeaponAttributes.HitLowerDefend = 30;		
             Attributes.WeaponSpeed = 30;

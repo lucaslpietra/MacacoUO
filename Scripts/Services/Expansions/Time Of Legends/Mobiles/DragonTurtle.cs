@@ -49,8 +49,7 @@ namespace Server.Mobiles
 			Karma = -11000;
 
             SetWeaponAbility(WeaponAbility.Dismount);
-            SetSpecialAbility(SpecialAbility.DragonBreath);
-        }
+		}
 
 		public override void GenerateLoot()
         {
@@ -60,6 +59,7 @@ namespace Server.Mobiles
 		public override int Meat{ get{ return 1; } }
 		public override int Hides{ get{ return 33; } }
         public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies; } }
+        public override bool HasBreath { get { return true; } }
         public override bool TeleportsTo { get { return true; } }
         public override TimeSpan TeleportDuration { get { return TimeSpan.FromSeconds(30); } }
         public override int TeleportRange { get { return 10; } }

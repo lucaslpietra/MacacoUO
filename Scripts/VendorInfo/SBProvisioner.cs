@@ -79,7 +79,7 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(Garlic), 3, 20, 0xF84, 0));
                 Add(new GenericBuyInfo(typeof(Ginseng), 3, 20, 0xF85, 0));
 
-                Add(new GenericBuyInfo(typeof(Bottle), 5, 20, 0xF0E, 0, true));
+                Add(new GenericBuyInfo(typeof(Bottle), 10, 20, 0xF0E, 0, true));
 
                 Add(new GenericBuyInfo(typeof(RedBook), 15, 20, 0xFF1, 0));
                 Add(new GenericBuyInfo(typeof(BlueBook), 15, 20, 0xFF2, 0));
@@ -91,15 +91,14 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(Bedroll), 5, 20, 0xA59, 0));
                 Add(new GenericBuyInfo(typeof(Kindling), 2, 20, 0xDE1, 0, true));
 
-                Add(new GenericBuyInfo("1041205", typeof(Multis.SmallBoatDeed), 10177, 20, 0x14F2, 0));
+                //Add(new GenericBuyInfo("1041205", typeof(Multis.SmallBoatDeed), 10177, 20, 0x14F2, 0));
 
                 Add(new GenericBuyInfo("1041060", typeof(HairDye), 60, 20, 0xEFF, 0));
 
                 Add(new GenericBuyInfo("1016450", typeof(Chessboard), 2, 20, 0xFA6, 0));
                 Add(new GenericBuyInfo("1016449", typeof(CheckerBoard), 2, 20, 0xFA6, 0));
                 Add(new GenericBuyInfo(typeof(Backgammon), 2, 20, 0xE1C, 0));
-                if (Core.AOS)
-                    Add(new GenericBuyInfo(typeof(Engines.Mahjong.MahjongGame), 6, 20, 0xFAA, 0));
+                Add(new GenericBuyInfo(typeof(Engines.Mahjong.MahjongGame), 6, 20, 0xFAA, 0));
                 Add(new GenericBuyInfo(typeof(Dices), 2, 20, 0xFA7, 0));
 
                 if (Core.AOS)
@@ -108,8 +107,7 @@ namespace Server.Mobiles
                     Add(new GenericBuyInfo(typeof(LargeBagBall), 3, 20, 0x2257, 0));
                 }
 
-                if (!Guild.NewGuildSystem)
-                    Add(new GenericBuyInfo("1041055", typeof(GuildDeed), 12450, 20, 0x14F0, 0));
+                //Add(new GenericBuyInfo("1041055", typeof(GuildDeed), 12450, 20, 0x14F0, 0));
 
                 if (Core.ML)
                     Add(new GenericBuyInfo("1079931", typeof(SalvageBag), 1255, 20, 0xE76, Utility.RandomBlueHue()));

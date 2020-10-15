@@ -1,0 +1,58 @@
+#region References
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+
+using Server.Commands.Generic;
+using Server.Engines.BulkOrders;
+using Server.Items;
+using Server.Misc;
+using Server.Network;
+#endregion
+
+namespace Server.Commands
+{
+    public class GoldHour
+    {
+        public static double GOLD_MULT = 0;
+
+        public static void Initialize()
+        {
+            CommandSystem.Register("goldhour", AccessLevel.Administrator, OnAction);
+        }
+
+        [Usage("Action")]
+        private static void OnAction(CommandEventArgs e)
+        {
+            var horas = 1;
+            if(e.Arguments.Count() > 0)
+                horas = e.GetInt32(0);
+
+
+            if (GOLD_MULT > 0)
+            {
+                e.Mobile.SendMessage("Ja tem um bonus ativo");
+                return;
+            }
+
+            GOLD_MULT = 1.5;
+
+            var str = horas + "hora";
+            if (horas > 1)
+                str += "s";
+
+            Anuncio.Anuncia("GOLDHOUR !! Bonus de GOLD por " + str);
+
+            Timer.DelayCall(TimeSpan.FromHours(horas), () => {
+                GOLD_MULT = 0;
+                Anuncio.Anuncia("O GoldHour Terminou !");
+            });
+
+            
+        }
+    }
+}

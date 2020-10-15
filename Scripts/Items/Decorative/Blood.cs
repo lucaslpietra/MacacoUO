@@ -53,7 +53,7 @@ namespace Server.Items
             private readonly Blood m_Blood;
 
             public InternalTimer(Blood blood)
-                : base(blood.DecayTime)
+                : base(TimeSpan.FromSeconds(30))
             {
                 Priority = TimerPriority.OneSecond;
 

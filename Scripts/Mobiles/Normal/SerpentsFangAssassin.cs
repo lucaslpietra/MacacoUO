@@ -93,6 +93,8 @@ namespace Server.Mobiles
 
             if (Utility.RandomDouble() < 0.3)
                 c.DropItem(new SerpentFangSectBadge());
+            if (Utility.RandomDouble() < 0.05)
+                c.DropItem(new SerpentFangKey());
         }
 
         public override void Serialize(GenericWriter writer)

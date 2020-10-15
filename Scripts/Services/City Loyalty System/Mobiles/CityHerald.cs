@@ -73,7 +73,7 @@ namespace Server.Engines.CityLoyalty
             Blessed = true;
 
             Name = Female ? NameList.RandomName("female") : NameList.RandomName("male");
-            Title = "the city herald";
+            Title = "o conselheiro";
 
             Body = Female ? 0x191 : 0x190;
             HairItemID = Race.RandomHair(Female);
@@ -139,7 +139,7 @@ namespace Server.Engines.CityLoyalty
                                 {
                                     CityLoyaltySystem.GetCityInstance(Herald.City).AddToTreasury(from, amount, true);
 
-                                    Herald.SayTo(from, 1152926); // The City thanks you for your generosity!
+                                    Herald.SayTo(from, "Obrigado pela generosidade"); // The City thanks you for your generosity!
                                 }
                                 else
                                     from.SendLocalizedMessage(1155867); // The amount entered is invalid. Verify that there are sufficient funds to complete this transaction.
@@ -159,7 +159,7 @@ namespace Server.Engines.CityLoyalty
         {
             if (!String.IsNullOrEmpty(_Announcement))
             {
-                PublicOverheadMessage(MessageType.Regular, 0x3B2, 502976); // Hear ye! Hear ye!
+                OverheadMessage("Extra, Extra !"); // Hear ye! Hear ye!
                 Timer.DelayCall(TimeSpan.FromSeconds(3), () =>
                     {
                         PublicOverheadMessage(MessageType.Regular, 0x3B2, false, _Announcement);

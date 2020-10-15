@@ -19,11 +19,11 @@ namespace Server.Guilds
             this.PopulateGump();
         }
 
-        public void AddButtonAndBackground(int x, int y, int buttonID, int locNum)
+        public void AddButtonAndBackground(int x, int y, int buttonID, string locNum)
         {
             this.AddBackground(x, y, 225, 26, 0x2486);
             this.AddButton(x + 5, y + 5, 0x845, 0x846, buttonID, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(x + 30, y + 3, 185, 26, locNum, 0x0, false, false);
+            this.AddHtml(x + 30, y + 3, 185, 26, locNum,  false, false);
         }
 
         public override void PopulateGump()
@@ -43,12 +43,12 @@ namespace Server.Guilds
             this.AddPage(0);
 
             this.AddBackground(0, 0, 520, 335, 0x242C);
-            this.AddHtmlLocalized(20, 15, 480, 26, 1062975, 0x0, false, false); // <div align=center><i>Guild Relationship</i></div>
+            this.AddHtml(20, 15, 480, 26, "<div align=center><i>Relacoes</i></div>",  false, false); // <div align=center><i>Guild Relationship</i></div>
             this.AddImageTiled(20, 40, 480, 2, 0x2711);
-            this.AddHtmlLocalized(20, 50, 120, 26, 1062954, 0x0, true, false); // <i>Guild Name</i>
+            this.AddHtml(20, 50, 120, 26, "Nome",  true, false); // <i>Guild Name</i>
             this.AddHtml(150, 53, 360, 26, this.m_Other.Name, false, false);
 
-            this.AddHtmlLocalized(20, 80, 120, 26, 1063025, 0x0, true, false); // <i>Alliance</i>
+            this.AddHtml(20, 80, 120, 26, "Alianca",  true, false); // <i>Alliance</i>
 
             if (otherAlliance != null)
             {
@@ -66,7 +66,7 @@ namespace Server.Guilds
                 */
             }
 
-            this.AddHtmlLocalized(20, 110, 120, 26, 1063139, 0x0, true, false); // <i>Abbreviation</i>
+            this.AddHtml(20, 110, 120, 26, "Tag",  true, false); // <i>Abbreviation</i>
             this.AddHtml(150, 113, 120, 26, this.m_Other.Abbreviation, false, false);
 
             string kills = "0/0";
@@ -102,92 +102,92 @@ namespace Server.Guilds
                     otherKills = Color(String.Format("{0}/{1}", otherWar.Kills, otherWar.MaxKills), 0x990000);
             }
 
-            this.AddHtmlLocalized(280, 110, 120, 26, 1062966, 0x0, true, false); // <i>Your Kills</i>
+            this.AddHtml(280, 110, 120, 26, "Seus Kills",  true, false); // <i>Your Kills</i>
             this.AddHtml(410, 113, 120, 26, kills, false, false);
 
-            this.AddHtmlLocalized(20, 140, 120, 26, 1062968, 0x0, true, false); // <i>Time Remaining</i>
+            this.AddHtml(20, 140, 120, 26, "Tempo Restante:",  true, false); // <i>Time Remaining</i>
             this.AddHtml(150, 143, 120, 26, time, false, false);
 
-            this.AddHtmlLocalized(280, 140, 120, 26, 1062967, 0x0, true, false); // <i>Their Kills</i>
+            this.AddHtml(280, 140, 120, 26, "Kills Deles:",  true, false); // <i>Their Kills</i>
             this.AddHtml(410, 143, 120, 26, otherKills, false, false);
 
             this.AddImageTiled(20, 172, 480, 2, 0x2711);
 
-            int number = 1062973;// <div align=center>You are at peace with this guild.</div>
+            string number = "Voce esta em paz com eles";// <div align=center>You are at peace with this guild.</div>
 			
             if (PendingWar)
             {
                 if (war.WarRequester)
                 {
-                    number = 1063027; // <div align=center>You have challenged this guild to war!</div>
+                    number = "Chamou pra treta"; // <div align=center>You have challenged this guild to war!</div>
                 }
                 else
                 {
-                    number = 1062969; // <div align=center>This guild has challenged you to war!</div>
+                    number = "Esta guilda te chamou pra treta"; // <div align=center>This guild has challenged you to war!</div>
 
-                    this.AddButtonAndBackground(20, 260, 5, 1062981); // Accept Challenge
-                    this.AddButtonAndBackground(275, 260, 6, 1062983); //Modify Terms
+                    this.AddButtonAndBackground(20, 260, 5, "Aceitar"); // Accept Challenge
+                    this.AddButtonAndBackground(275, 260, 6, "Mudar termos"); //Modify Terms
                 }
 
-                this.AddButtonAndBackground(20, 290, 7, 1062982); // Dismiss Challenge
+                this.AddButtonAndBackground(20, 290, 7, "Negar"); // Dismiss Challenge
             }
             else if (ActiveWar)
             {
-                number = 1062965; // <div align=center>You are at war with this guild!</div>
-                this.AddButtonAndBackground(20, 290, 8, 1062980); // Surrender
+                number = "Voce esta em guerra com eles"; // <div align=center>You are at war with this guild!</div>
+                this.AddButtonAndBackground(20, 290, 8, "Render-se"); // Surrender
             }
             else if (alliance != null && alliance == otherAlliance) //alliance, Same Alliance
             {
                 if (alliance.IsMember(this.guild) && alliance.IsMember(this.m_Other))	//Both in Same alliance, full members
                 {
-                    number = 1062970; // <div align=center>You are allied with this guild.</div>
+                    number = "Voce eh aliado deles"; // <div align=center>You are allied with this guild.</div>
 
                     if (alliance.Leader == this.guild)
                     {
-                        this.AddButtonAndBackground(20, 260, 12, 1062984); // Remove Guild from Alliance
-                        this.AddButtonAndBackground(275, 260, 13, 1063433); // Promote to Alliance Leader	//Note: No 'confirmation' like the other leader guild promotion things
+                        this.AddButtonAndBackground(20, 260, 12, "Remover guilda da alianca"); // Remove Guild from Alliance
+                        this.AddButtonAndBackground(275, 260, 13, "Promover a lider"); // Promote to Alliance Leader	//Note: No 'confirmation' like the other leader guild promotion things
                         //Remove guild from alliance	//Promote to Alliance Leader
                     }
 
                     //Show roster, Centered, up
-                    this.AddButtonAndBackground(148, 215, 10, 1063164); //Show Alliance Roster
+                    this.AddButtonAndBackground(148, 215, 10, "Mostrar Membros"); //Show Alliance Roster
                     //Leave Alliance
-                    this.AddButtonAndBackground(20, 290, 11, 1062985); // Leave Alliance
+                    this.AddButtonAndBackground(20, 290, 11, "Sair da Alianca"); // Leave Alliance
                 }
                 else if (alliance.Leader == this.guild && alliance.IsPendingMember(this.m_Other))
                 {
-                    number = 1062971; // <div align=center>You have requested an alliance with this guild.</div>
+                    number = "Voce pediu alianca com eles"; // <div align=center>You have requested an alliance with this guild.</div>
 
                     //Show Alliance Roster, Centered, down.
-                    this.AddButtonAndBackground(148, 245, 10, 1063164); //Show Alliance Roster
+                    this.AddButtonAndBackground(148, 245, 10, "Mostrar Membros da Alianca"); //Show Alliance Roster
                     //Withdraw Request
-                    this.AddButtonAndBackground(20, 290, 14, 1062986); // Withdraw Request
+                    this.AddButtonAndBackground(20, 290, 14, "Retirar pedido"); // Withdraw Request
 
                     this.AddHtml(150, 83, 360, 26, Color(alliance.Name, 0x99), false, false);
                 }
                 else if (alliance.Leader == this.m_Other && alliance.IsPendingMember(this.guild))
                 {
-                    number = 1062972; // <div align=center>This guild has requested an alliance.</div>
+                    number = "Esta guilda pediu alianca com voce"; // <div align=center>This guild has requested an alliance.</div>
 
                     //Show alliance Roster, top
-                    this.AddButtonAndBackground(148, 215, 10, 1063164); //Show Alliance Roster
+                    this.AddButtonAndBackground(148, 215, 10, "Mostrar membros da alianca"); //Show Alliance Roster
                     //Deny Request
                     //Accept Request
-                    this.AddButtonAndBackground(20, 260, 15, 1062988); // Deny Request
-                    this.AddButtonAndBackground(20, 290, 16, 1062987); // Accept Request
+                    this.AddButtonAndBackground(20, 260, 15, "Negar"); // Deny Request
+                    this.AddButtonAndBackground(20, 290, 16, "Aceitar"); // Accept Request
 
                     this.AddHtml(150, 83, 360, 26, Color(alliance.Name, 0x99), false, false);
                 }
             }
             else
             {
-                this.AddButtonAndBackground(20, 260, 2, 1062990); // Request Alliance 
-                this.AddButtonAndBackground(20, 290, 1, 1062989); // Declare War!
+                this.AddButtonAndBackground(20, 260, 2, "Pedir Alianca"); // Request Alliance 
+                this.AddButtonAndBackground(20, 290, 1, "Declarar Guerra"); // Declare War!
             }
 
-            this.AddButtonAndBackground(275, 290, 0, 3000091); //Cancel
+            this.AddButtonAndBackground(275, 290, 0, "Cancelar"); //Cancel
 
-            this.AddHtmlLocalized(20, 180, 480, 30, number, 0x0, true, false);
+            this.AddHtml(20, 180, 480, 30, number,  true, false);
             this.AddImageTiled(20, 245, 480, 2, 0x2711);
         }
 
@@ -471,7 +471,7 @@ namespace Server.Guilds
                     {
                         if (!playerRank.GetFlag(RankFlags.AllianceControl))
                         {
-                            pm.SendLocalizedMessage(1063436); // You don't have permission to negotiate an alliance.
+                            pm.SendMessage("Sem Permissao"); // You don't have permission to negotiate an alliance.
                         }
                         else if (alliance != null && alliance.IsMember(this.guild))
                         {
@@ -488,11 +488,11 @@ namespace Server.Guilds
                     {
                         if (!playerRank.GetFlag(RankFlags.AllianceControl))
                         {
-                            pm.SendLocalizedMessage(1063436); // You don't have permission to negotiate an alliance.
+                            pm.SendMessage("Sem permissao"); // You don't have permission to negotiate an alliance.
                         }
                         else if (alliance != null && alliance.Leader != this.guild)
                         {
-                            pm.SendLocalizedMessage(1063239, String.Format("{0}\t{1}", this.guild.Name, alliance.Name)); // ~1_val~ is not the leader of the ~2_val~ alliance.
+                            pm.SendMessage("Esta pessoa nao eh o lider"); // ~1_val~ is not the leader of the ~2_val~ alliance.
                         }
                         else if (alliance != null && alliance.IsMember(this.guild) && alliance.IsMember(this.m_Other))
                         {
@@ -508,16 +508,15 @@ namespace Server.Guilds
                     {
                         if (!playerRank.GetFlag(RankFlags.AllianceControl))
                         {
-                            pm.SendLocalizedMessage(1063436); // You don't have permission to negotiate an alliance.
+                            pm.SendMessage("Sem permissao"); // You don't have permission to negotiate an alliance.
                         }
                         else if (alliance != null && alliance.Leader != this.guild)
                         {
-                            pm.SendLocalizedMessage(1063239, String.Format("{0}\t{1}", this.guild.Name, alliance.Name)); // ~1_val~ is not the leader of the ~2_val~ alliance.
+                            pm.SendMessage(String.Format("{0} nao eh o lider de \t{1}", this.guild.Name, alliance.Name)); // ~1_val~ is not the leader of the ~2_val~ alliance.
                         }
                         else if (alliance != null && alliance.IsMember(this.guild) && alliance.IsMember(this.m_Other))
                         { 
-                            pm.SendLocalizedMessage(1063434, String.Format("{0}\t{1}", this.m_Other.Name, alliance.Name)); // ~1_val~ is now the leader of ~2_val~.
-
+                            pm.SendMessage(String.Format("{0} agora eh o lider de \t{1}", this.m_Other.Name, alliance.Name)); // ~1_val~ is now the leader of ~2_val~.
                             alliance.Leader = this.m_Other;
                         }
                         break;
@@ -526,12 +525,12 @@ namespace Server.Guilds
                     {
                         if (!playerRank.GetFlag(RankFlags.AllianceControl))
                         {
-                            pm.SendLocalizedMessage(1063436); // You don't have permission to negotiate an alliance.
+                            pm.SendMessage("Sem permissao"); // You don't have permission to negotiate an alliance.
                         }
                         else if (alliance != null && alliance.Leader == this.guild && alliance.IsPendingMember(this.m_Other))
                         {
                             this.m_Other.Alliance = null;
-                            pm.SendLocalizedMessage(1070752); // The proposal has been updated.
+                            pm.SendMessage("Atualizado"); // The proposal has been updated.
                         }
                         break;
                     }
@@ -539,11 +538,11 @@ namespace Server.Guilds
                     {
                         if (!playerRank.GetFlag(RankFlags.AllianceControl))
                         {
-                            pm.SendLocalizedMessage(1063436); // You don't have permission to negotiate an alliance.
+                            pm.SendMessage("Sem permissao"); // You don't have permission to negotiate an alliance.
                         }
                         else if (alliance != null && otherAlliance != null && alliance.Leader == this.m_Other && otherAlliance.IsPendingMember(this.guild))
                         {
-                            pm.SendLocalizedMessage(1070752); // The proposal has been updated.
+                            pm.SendMessage("Atualizado"); // The proposal has been updated.
                             //m_Other.GuildMessage( 1070782 ); // ~1_val~ has responded to your proposal.	//Per OSI commented out.
 
                             this.guild.Alliance = null;
@@ -554,11 +553,11 @@ namespace Server.Guilds
                     {
                         if (!playerRank.GetFlag(RankFlags.AllianceControl))
                         {
-                            pm.SendLocalizedMessage(1063436); // You don't have permission to negotiate an alliance.
+                            pm.SendMessage("Sem Permissao"); // You don't have permission to negotiate an alliance.
                         }
                         else if (otherAlliance != null && otherAlliance.Leader == this.m_Other && otherAlliance.IsPendingMember(this.guild))
                         {
-                            pm.SendLocalizedMessage(1070752); // The proposal has been updated.
+                            pm.SendMessage("Atualizado"); // The proposal has been updated.
 
                             otherAlliance.TurnToMember(this.m_Other); //No need to verify it's in the guild or already a member, the function does this
 
@@ -583,43 +582,43 @@ namespace Server.Guilds
 
             if (!playerRank.GetFlag(RankFlags.AllianceControl))
             {
-                pm.SendLocalizedMessage(1070747); // You don't have permission to create an alliance.
+                pm.SendMessage("Sem permissao"); // You don't have permission to create an alliance.
             }
             else if (Faction.Find(this.guild.Leader) != Faction.Find(this.m_Other.Leader))
             {
                 //Notes about this: OSI only cares/checks when proposing, you can change your faction all you want later.  
-                pm.SendLocalizedMessage(1070758); // You cannot propose an alliance to a guild with a different faction allegiance.
+                pm.SendMessage("Voce nao pode aliar a alguem de outra faction"); // You cannot propose an alliance to a guild with a different faction allegiance.
             }
             else if (otherAlliance != null)
             {
                 if (otherAlliance.IsPendingMember(this.m_Other))
-                    pm.SendLocalizedMessage(1063416, this.m_Other.Name); // ~1_val~ is currently considering another alliance proposal.
+                    pm.SendMessage(this.m_Other.Name+" esta considerando outra alianca"); // ~1_val~ is currently considering another alliance proposal.
                 else
-                    pm.SendLocalizedMessage(1063426, this.m_Other.Name); // ~1_val~ already belongs to an alliance.
+                    pm.SendMessage("Ja percence a uma alianca"); // ~1_val~ already belongs to an alliance.
             }
             else if (this.m_Other.AcceptedWars.Count > 0 || this.m_Other.PendingWars.Count > 0)
             {
-                pm.SendLocalizedMessage(1063427, this.m_Other.Name); // ~1_val~ is currently involved in a guild war.
+                pm.SendMessage("Esta envolvido em uma guerra"); // ~1_val~ is currently involved in a guild war.
             }
             else if (this.guild.AcceptedWars.Count > 0 || this.guild.PendingWars.Count > 0)
             {
-                pm.SendLocalizedMessage(1063427, this.guild.Name); // ~1_val~ is currently involved in a guild war.
+                pm.SendMessage("Esta envolvido em uma guerra"); // ~1_val~ is currently involved in a guild war.
             }
             else
             {
                 string name = Utility.FixHtml(text.Trim());
 
                 if (!BaseGuildGump.CheckProfanity(name))
-                    pm.SendLocalizedMessage(1070886); // That alliance name is not allowed.
+                    pm.SendMessage("Nome negado"); // That alliance name is not allowed.
                 else if (name.Length > Guild.NameLimit)
-                    pm.SendLocalizedMessage(1070887, Guild.NameLimit.ToString()); // An alliance name cannot exceed ~1_val~ characters in length.
+                    pm.SendMessage("Nome muito grande"); // An alliance name cannot exceed ~1_val~ characters in length.
                 else if (AllianceInfo.Alliances.ContainsKey(name.ToLower()))
-                    pm.SendLocalizedMessage(1063428); // That alliance name is not available.
+                    pm.SendMessage("Nome indisponivel"); // That alliance name is not available.
                 else
                 {
-                    pm.SendLocalizedMessage(1070750, this.m_Other.Name); // An invitation to join your alliance has been sent to ~1_val~.
+                    pm.SendMessage("Convite enviado"); // An invitation to join your alliance has been sent to ~1_val~.
 
-                    this.m_Other.GuildMessage(1070780, this.guild.Name); // ~1_val~ has proposed an alliance.
+                    this.m_Other.GuildTextMessage(this.guild.Name+ " propos uma Alianca !"); // ~1_val~ has proposed an alliance.
 					
                     new AllianceInfo(this.guild, name, this.m_Other);
                 }

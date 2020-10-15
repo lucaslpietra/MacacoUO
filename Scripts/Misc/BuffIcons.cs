@@ -10,7 +10,7 @@ namespace Server
         {
             get
             {
-                return Core.ML;
+                return true;
             }
         }
 
@@ -370,6 +370,7 @@ namespace Server
         HumilityDebuff = 0x467,
         Spirituality,
         Humility,
+        Intelligence,
         // Skill Masteries
         Rampage,
         Stagger, // Debuff

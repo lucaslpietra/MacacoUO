@@ -10,9 +10,10 @@ namespace Server.Items
         public Pickaxe()
             : base(0xE86)
         {
-            Weight = 11.0;
-            UsesRemaining = 50;
-            ShowUsesRemaining = true;
+            this.Weight = 11.0;
+            this.UsesRemaining = 250;
+ 
+            Name = "Picareta";
         }
 
         public Pickaxe(Serial serial)
@@ -131,13 +132,16 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
+            this.ShowUsesRemaining = true;
         }
     }
 }

@@ -217,23 +217,23 @@ namespace Server.Engines.MiniChamps
                 new MiniChampLevelInfo // Level 1
                 (
                     new MiniChampTypeInfo(5, typeof(Wraith)),
-                    new MiniChampTypeInfo(10, typeof(Spectre)),
+                    new MiniChampTypeInfo(5, typeof(Spectre)),
                     new MiniChampTypeInfo(5, typeof(Shade)),
-                    new MiniChampTypeInfo(30, typeof(Skeleton)),
-                    new MiniChampTypeInfo(20, typeof(Zombie))
+                    new MiniChampTypeInfo(15, typeof(Skeleton)),
+                    new MiniChampTypeInfo(10, typeof(Zombie))
                 ),
                 new MiniChampLevelInfo // Level 2
                 (
-                    new MiniChampTypeInfo(5, typeof(BoneMagi)),
-                    new MiniChampTypeInfo(10, typeof(SkeletalMage)),
-                    new MiniChampTypeInfo(10, typeof(BoneKnight)),
-                    new MiniChampTypeInfo(10, typeof(SkeletalKnight)),
-                    new MiniChampTypeInfo(10, typeof(WailingBanshee))
+                    new MiniChampTypeInfo(2, typeof(BoneMagi)),
+                    new MiniChampTypeInfo(5, typeof(SkeletalMage)),
+                    new MiniChampTypeInfo(5, typeof(BoneKnight)),
+                    new MiniChampTypeInfo(5, typeof(SkeletalKnight)),
+                    new MiniChampTypeInfo(5, typeof(WailingBanshee))
                 ),
                 new MiniChampLevelInfo // Level 3
                 (
-                    new MiniChampTypeInfo(5, typeof(SkeletalLich)),
-                    new MiniChampTypeInfo(20, typeof(RottingCorpse))
+                    new MiniChampTypeInfo(1, typeof(SkeletalLich)),
+                    new MiniChampTypeInfo(15, typeof(RottingCorpse))
                 ),
                 new MiniChampLevelInfo // Renowned
                 (

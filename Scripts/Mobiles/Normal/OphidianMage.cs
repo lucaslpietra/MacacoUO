@@ -7,16 +7,13 @@ namespace Server.Mobiles
     [TypeAlias("Server.Mobiles.OphidianShaman")]
     public class OphidianMage : BaseCreature
     {
-        private static readonly string[] m_Names = new string[]
-        {
-            "an ophidian apprentice mage",
-            "an ophidian shaman"
-        };
+        public override bool IsSmart { get { return false; } }
+
         [Constructable]
         public OphidianMage()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = m_Names[Utility.Random(m_Names.Length)];
+            this.Name = "mago ophidiano";
             this.Body = 85;
             this.BaseSoundID = 639;
 
@@ -36,8 +33,8 @@ namespace Server.Mobiles
             this.SetResistance(ResistanceType.Poison, 40, 50);
             this.SetResistance(ResistanceType.Energy, 35, 45);
 
-            this.SetSkill(SkillName.EvalInt, 85.1, 100.0);
-            this.SetSkill(SkillName.Magery, 85.1, 100.0);
+            this.SetSkill(SkillName.EvalInt, 0, 20);
+            this.SetSkill(SkillName.Magery, 40, 50);
             this.SetSkill(SkillName.MagicResist, 75.0, 97.5);
             this.SetSkill(SkillName.Tactics, 65.0, 87.5);
             this.SetSkill(SkillName.Wrestling, 20.2, 60.0);

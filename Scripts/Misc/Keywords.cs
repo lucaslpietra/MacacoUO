@@ -10,9 +10,10 @@ namespace Server.Misc
         public static void Initialize()
         {
             // Register our speech handler
-            EventSink.Speech += EventSink_Speech;
+            // EventSink.Speech += EventSink_Speech;
         }
 
+        
         public static void EventSink_Speech(SpeechEventArgs args)
         {
             Mobile from = args.Mobile;
@@ -47,15 +48,6 @@ namespace Server.Misc
                             if (from is PlayerMobile && ((PlayerMobile)from).Young && !from.HasGump(typeof(RenounceYoungGump)))
                             {
                                 from.SendGump(new RenounceYoungGump());
-                            }
-
-                            break;
-                        }
-                    case 0x6: // guild
-                        {
-                            if (from is PlayerMobile && from.Guild != null)
-                            {
-                                ((PlayerMobile)from).SendGump(new GuildInfoGump((PlayerMobile)from, from.Guild as Guild));
                             }
 
                             break;

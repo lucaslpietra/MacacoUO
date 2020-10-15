@@ -249,16 +249,11 @@ namespace Server.Items
             base.GetProperties(list);
 
             if (m_IsRewardItem)
-                list.Add(VeteranRewardCliloc);	
-        }
+                list.Add(VeteranRewardCliloc);
 
-        public override void AddUsesRemainingProperties(ObjectPropertyList list)
-        {
             if (ShowUsesRemaining)
-            {
-                list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
-            }
-        }   
+                list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~			
+        }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -590,6 +585,7 @@ namespace Server.Items
         public MetalContainerEngraver()
             : base(0x1EB8, 1)
         {
+            Name = "Entalhador de Nomes de Baus";
         }
 
         public MetalContainerEngraver(Serial serial)
@@ -603,7 +599,7 @@ namespace Server.Items
             {
                 return new Type[]
                 {
-                    typeof(ParagonChest), typeof(MetalChest), typeof(MetalGoldenChest), typeof(MetalBox)
+                    typeof(ParagonChest), typeof(MetalChest), typeof(MetalGoldenChest)
                 };
             }
         }

@@ -11,7 +11,7 @@ namespace Server.Factions
             : base(town, faction, "the Bottle Seller")
         {
             this.SetSkill(SkillName.Alchemy, 85.0, 100.0);
-            this.SetSkill(SkillName.TasteID, 65.0, 88.0);
+            this.SetSkill(SkillName.Jewelcrafting, 65.0, 88.0);
         }
 
         public FactionBottleVendor(Serial serial)
@@ -81,7 +81,7 @@ namespace Server.Factions
             public InternalBuyInfo()
             {
                 for (int i = 0; i < 5; ++i)
-                    this.Add(new GenericBuyInfo(typeof(Bottle), 5, 20, 0xF0E, 0));
+                    this.Add(new GenericBuyInfo(typeof(Bottle), 10, 20, 0xF0E, 0));
             }
         }
 

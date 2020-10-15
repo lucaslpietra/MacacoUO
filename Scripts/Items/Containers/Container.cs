@@ -157,7 +157,26 @@ namespace Server.Items
 
             ItemFlags.SetTaken(dropped, true);
 
-            EventSink.InvokeContainerDroppedTo(new ContainerDroppedToEventArgs(from, this, dropped));
+            var honestySocket = dropped.GetSocket<HonestyItemSocket>();
+
+            if (honestySocket != null && honestySocket.HonestyPickup == DateTime.MinValue)
+            {
+                honestySocket.HonestyPickup = DateTime.UtcNow;
+                honestySocket.StartHonestyTimer();
+
+                if (honestySocket.HonestyOwner == null)
+                    Server.Services.Virtues.HonestyVirtue.AssignOwner(honestySocket);
+
+                from.SendLocalizedMessage(1151536); // You have three hours to turn this item in for Honesty credit, otherwise it will cease to be a quest item.
+            }
+
+            if (Siege.SiegeShard && this != from.Backpack && from is PlayerMobile && ((PlayerMobile)from).BlessedItem != null && ((PlayerMobile)from).BlessedItem == dropped)
+            {
+                ((PlayerMobile)from).BlessedItem = null;
+                dropped.LootType = LootType.Regular;
+
+                from.SendLocalizedMessage(1075292, dropped.Name != null ? dropped.Name : "#" + dropped.LabelNumber.ToString()); // ~1_NAME~ has been unblessed.
+            }
 
             if (!EnchantedHotItemSocket.CheckDrop(from, this, dropped))
                 return false;
@@ -198,7 +217,26 @@ namespace Server.Items
 
             ItemFlags.SetTaken(item, true);
 
-            EventSink.InvokeContainerDroppedTo(new ContainerDroppedToEventArgs(from, this, item));
+            var honestySocket = item.GetSocket<HonestyItemSocket>();
+
+            if (honestySocket != null && honestySocket.HonestyPickup == DateTime.MinValue)
+            {
+                honestySocket.HonestyPickup = DateTime.UtcNow;
+                honestySocket.StartHonestyTimer();
+
+                if (honestySocket.HonestyOwner == null)
+                    Server.Services.Virtues.HonestyVirtue.AssignOwner(honestySocket);
+
+                from.SendLocalizedMessage(1151536); // You have three hours to turn this item in for Honesty credit, otherwise it will cease to be a quest item.
+            }
+
+            if (Siege.SiegeShard && this != from.Backpack && from is PlayerMobile && ((PlayerMobile)from).BlessedItem != null && ((PlayerMobile)from).BlessedItem == item)
+            {
+                ((PlayerMobile)from).BlessedItem = null;
+                item.LootType = LootType.Regular;
+
+                from.SendLocalizedMessage(1075292, item.Name != null ? item.Name : "#" + item.LabelNumber.ToString()); // ~1_NAME~ has been unblessed.
+            }
 
             if (!EnchantedHotItemSocket.CheckDrop(from, this, item))
                 return false;
@@ -717,6 +755,7 @@ namespace Server.Items
             : base(0xE7F)
         {
             Weight = 15.0;
+            this.Name = "Barril de Pocoes";
         }
 
         public Keg(Serial serial)
@@ -837,40 +876,6 @@ namespace Server.Items
             : base(0x9A9)
         {
             Weight = 2.0;
-        }
-
-        /// <summary>
-        /// Due to popular demand, ServUO will be reproducing an EA bug that was never fixed.
-        /// </summary>
-        /// <param name="from"></param>
-        /// <returns></returns>
-        public override bool CheckLocked(Mobile from)
-        {
-            if (ItemID != 0xE7E)
-            {
-                return base.CheckLocked(from);
-            }
-
-            if (Locked && TrapType == TrapType.DartTrap && from.InRange(GetWorldLocation(), 2))
-            {
-                int damage;
-                var p = GetWorldLocation();
-                var map = Map;
-
-                if (TrapLevel > 0)
-                    damage = Utility.RandomMinMax(5, 15) * TrapLevel;
-                else
-                    damage = TrapPower;
-
-                AOS.Damage(from, damage, 100, 0, 0, 0, 0);
-
-                from.LocalOverheadMessage(Network.MessageType.Regular, 0x62, 502998); // A dart imbeds itself in your flesh!
-                Effects.PlaySound(p, map, 0x223);
-
-                return true;
-            }
-
-            return base.CheckLocked(from);
         }
 
         public SmallCrate(Serial serial)
@@ -1001,6 +1006,7 @@ namespace Server.Items
         public MetalChest(Serial serial)
             : base(serial)
         {
+            Name = "Bau de Metal";
         }
 
         public override void Serialize(GenericWriter writer)

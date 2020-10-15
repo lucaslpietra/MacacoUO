@@ -119,7 +119,7 @@ namespace Server.Engines.Craft
         {
             get
             {
-                return m_DoNotColor;
+                return false;
             }
             set
             {
@@ -130,7 +130,7 @@ namespace Server.Engines.Craft
         {
             get
             {
-                return m_MarkOption;
+                return CraftMarkOption.PromptForMark; //m_MarkOption;
             }
             set
             {
@@ -276,7 +276,7 @@ namespace Server.Engines.Craft
         private static List<CraftContext> Contexts = new List<CraftContext>();
 
         public static CraftSystem[] Systems { get { return _Systems; } }
-        private static CraftSystem[] _Systems = new CraftSystem[11];
+        private static CraftSystem[] _Systems = new CraftSystem[12];
 
         public static void Configure()
         {
@@ -285,12 +285,13 @@ namespace Server.Engines.Craft
             _Systems[2] = DefBowFletching.CraftSystem;
             _Systems[3] = DefCarpentry.CraftSystem;
             _Systems[4] = DefCartography.CraftSystem;
-            _Systems[5] = DefCooking.CraftSystem;
+            _Systems[5] = DefCookingExp.CraftSystem;
             _Systems[6] = DefGlassblowing.CraftSystem;
             _Systems[7] = DefInscription.CraftSystem;
             _Systems[8] = DefMasonry.CraftSystem;
             _Systems[9] = DefTailoring.CraftSystem;
             _Systems[10] = DefTinkering.CraftSystem;
+            _Systems[11] = DefJewelcrafting.CraftSystem;
 
             EventSink.WorldSave += OnSave;
             EventSink.WorldLoad += OnLoad;

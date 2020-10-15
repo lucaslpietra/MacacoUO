@@ -1,4 +1,5 @@
 using System;
+using Server.Items;
 using Server.Mobiles;
 using Server.Network;
 using Server.Targeting;
@@ -20,7 +21,7 @@ namespace Server.Spells.Chivalry
         {
             get
             {
-                return TimeSpan.FromSeconds(1.5);
+                return TimeSpan.FromSeconds(2);
             }
         }
         public override double RequiredSkill
@@ -66,27 +67,36 @@ namespace Server.Spells.Chivalry
         {
             if (!this.Caster.InRange(m, 2))
             {
-                this.Caster.SendLocalizedMessage(1060178); // You are too far away to perform that action!
+                this.Caster.SendMessage("Voce esta muito longe"); // You are too far away to perform that action!
             }
             else if (m is BaseCreature && ((BaseCreature)m).IsAnimatedDead)
             {
-                this.Caster.SendLocalizedMessage(1061654); // You cannot heal that which is not alive.
+                this.Caster.SendMessage("Alvo morto"); // You cannot heal that which is not alive.
             }
             else if (m.IsDeadBondedPet)
             {
-                this.Caster.SendLocalizedMessage(1060177); // You cannot heal a creature that is already dead!
+                this.Caster.SendMessage("Alvo morto"); // You cannot heal a creature that is already dead!
             }
             else if (m.Hits >= m.HitsMax)
             {
-                this.Caster.SendLocalizedMessage(500955); // That being is not damaged!
+                this.Caster.SendMessage("O alvo nao esta danificado"); // That being is not damaged!
             }
-            else if (m.Poisoned || Server.Items.MortalStrike.IsWounded(m))
+            else if (Server.Items.MortalStrike.IsWounded(m))
             {
                 this.Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2, (this.Caster == m) ? 1005000 : 1010398);
             }
+            else if (m.Poisoned)
+            {
+                this.Caster.SendMessage("O alvo nao pode ser curado enquanto esta envenenado");
+            }
+            /*else if (BleedAttack.IsBleeding(m))
+            {
+                this.Caster.SendMessage("O alvo nao pode ser curado enquanto esta sangrando");
+            }
+            */
             else if (this.CheckBSequence(m))
             {
-                SpellHelper.Turn(this.Caster, m);
+                //SpellHelper.Turn(this.Caster, m);
 
                 /* Heals the target for 7 to 39 points of damage.
                 * The caster's Karma affects the amount of damage healed.
@@ -100,16 +110,20 @@ namespace Server.Spells.Chivalry
                 else if (toHeal > 39)
                     toHeal = 39;
 
-                if ((m.Hits + toHeal) > m.HitsMax)
-                    toHeal = m.HitsMax - m.Hits;
+                //if ((m.Hits + toHeal) > m.HitsMax)
+                //    toHeal = m.HitsMax - m.Hits;
 
                 //m.Hits += toHeal;	//Was previosuly due to the message
                 //m.Heal( toHeal, Caster, false );
                 SpellHelper.Heal(toHeal, m, this.Caster, false);
 
-                m.SendLocalizedMessage(1060203, toHeal.ToString()); // You have had ~1_HEALED_AMOUNT~ hit points of damage healed.
+                //m.SendLocalizedMessage(1060203, toHeal.ToString()); // You have had ~1_HEALED_AMOUNT~ hit points of damage healed.
 
                 m.PlaySound(0x202);
+                if(Caster != m)
+                {
+                    Caster.MovingParticles(m, 0x3779, 7, 0, false, false, 9502, 0x3779, 0x1F2);
+                }
                 m.FixedParticles(0x376A, 1, 62, 9923, 3, 3, EffectLayer.Waist);
                 m.FixedParticles(0x3779, 1, 46, 9502, 5, 3, EffectLayer.Waist);
             }

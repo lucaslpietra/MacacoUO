@@ -7,7 +7,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public ForestOstard()
-            : this("a forest ostard")
+            : this("ostard da floresta")
         {
         }
 
@@ -41,7 +41,7 @@ namespace Server.Mobiles
 
             this.Tamable = true;
             this.ControlSlots = 1;
-            this.MinTameSkill = 29.1;
+            this.MinTameSkill = 85;
         }
 
         public ForestOstard(Serial serial)

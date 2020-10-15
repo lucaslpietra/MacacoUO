@@ -20,25 +20,22 @@ namespace Server.Misc
         [CallPriority(10)]
         public static void Configure()
         {
-            Mobile.DefaultHitsRate = TimeSpan.FromSeconds(11.0);
-            Mobile.DefaultStamRate = TimeSpan.FromSeconds(7.0);
-            Mobile.DefaultManaRate = TimeSpan.FromSeconds(7.0);
+            Mobile.DefaultHitsRate = TimeSpan.FromSeconds(6.0);
+            Mobile.DefaultStamRate = TimeSpan.FromSeconds(20.0);
+            Mobile.DefaultManaRate = TimeSpan.FromSeconds(9.0);
 
             Mobile.ManaRegenRateHandler = new RegenRateHandler(Mobile_ManaRegenRate);
+            Mobile.StamRegenRateHandler = new RegenRateHandler(Mobile_StamRegenRate);
+            Mobile.HitsRegenRateHandler = new RegenRateHandler(Mobile_HitsRegenRate);
 
-            if (Core.AOS)
-            {
-                Mobile.StamRegenRateHandler = new RegenRateHandler(Mobile_StamRegenRate);
-                Mobile.HitsRegenRateHandler = new RegenRateHandler(Mobile_HitsRegenRate);
-            }
         }
 
         public static double GetArmorOffset(Mobile from)
         {
             double rating = 0.0;
 
-            if (!Core.AOS)
-                rating += GetArmorMeditationValue(from.ShieldArmor as BaseArmor);
+            //if (!Core.AOS) - Removida influência do escudo no rate
+            //rating += GetArmorMeditationValue(from.ShieldArmor as BaseArmor);
 
             rating += GetArmorMeditationValue(from.NeckArmor as BaseArmor);
             rating += GetArmorMeditationValue(from.HandArmor as BaseArmor);
@@ -86,25 +83,17 @@ namespace Server.Misc
 
             CheckBonusSkill(from, from.Stam, from.StamMax, SkillName.Focus);
 
-            double bonus = from.Skills[SkillName.Focus].Value * 0.1;
+            int bonus = (int)(from.Skills[SkillName.Focus].Value * 0.1);
 
             bonus += StamRegen(from);
 
-            if (Core.SA)
-            {
-                double rate = 1.0 / (1.42 + (bonus / 100));
+            bonus = (int)(bonus * 0.75);
 
-                if (from is BaseCreature && ((BaseCreature)from).IsMonster)
-                {
-                    rate *= 1.95;
-                }
+            var regen = TimeSpan.FromSeconds(1.0 / (0.15 * (2 + bonus)));
 
-                return TimeSpan.FromSeconds(rate);
-            }
-            else
-            {
-                return TimeSpan.FromSeconds(1.0 / (0.1 * (2 + bonus)));
-            }
+            Shard.Debug("Stam regen: " + regen.TotalSeconds + " Bonus " + bonus, from);
+
+            return regen;
         }
 
         private static TimeSpan Mobile_ManaRegenRate(Mobile from)
@@ -112,12 +101,11 @@ namespace Server.Misc
             if (from.Skills == null)
                 return Mobile.DefaultManaRate;
 
-            if (!from.Meditating)
-                CheckBonusSkill(from, from.Mana, from.ManaMax, SkillName.Meditation);
+            CheckBonusSkill(from, from.Mana, from.ManaMax, SkillName.Meditation);
 
             double rate;
             double armorPenalty = GetArmorOffset(from);
-
+            Shard.Debug("Armor Penalty " + armorPenalty);
             if (Core.ML)
             {
                 double med = from.Skills[SkillName.Meditation].Value;
@@ -178,7 +166,8 @@ namespace Server.Misc
             }
             else
             {
-                double medPoints = (from.Int + from.Skills[SkillName.Meditation].Value) * 0.5;
+                var focus = from.Skills[SkillName.Focus].Value / 10;
+                double medPoints = (from.Int + from.Skills[SkillName.Meditation].Value + focus) * 0.5;
 
                 if (medPoints <= 0)
                     rate = 7.0;
@@ -191,8 +180,16 @@ namespace Server.Misc
 
                 rate += armorPenalty;
 
-                if (from.Meditating)
-                    rate *= 0.5;
+                if (!from.Meditating)
+                    rate *= 2;
+
+                if (CheckTransform(from, typeof(VampiricEmbraceSpell)))
+                    rate -= 0.15;
+                else if (CheckTransform(from, typeof(LichFormSpell)))
+                    rate -= 0.35;
+
+                if (from is PlayerMobile)
+                    Shard.Debug("Meditation Rate: " + rate, from);
 
                 if (rate < 0.5)
                     rate = 0.5;
@@ -208,9 +205,9 @@ namespace Server.Misc
             return TimeSpan.FromSeconds(rate);
         }
 
-        public static double HitPointRegen(Mobile from)
+        public static int HitPointRegen(Mobile from)
         {
-            double points = AosAttributes.GetValue(from, AosAttribute.RegenHits);
+            int points = AosAttributes.GetValue(from, AosAttribute.RegenHits);
 
             if (from is BaseCreature)
                 points += ((BaseCreature)from).DefaultHitsRegen;
@@ -227,8 +224,8 @@ namespace Server.Misc
             if (CheckTransform(from, typeof(HorrificBeastSpell)))
                 points += 20;
 
-            if (CheckAnimal(from, typeof(Dog)) || CheckAnimal(from, typeof(Cat)))
-                points += from.Skills[SkillName.Ninjitsu].Fixed / 30;
+            if (CheckAnimal(from, typeof(Dog)))
+                points += from.Skills[SkillName.Ninjitsu].Fixed / 100;
 
             // Skill Masteries - goes after cap
             points += RampageSpell.GetBonus(from, RampageSpell.BonusType.HitPointRegen);
@@ -242,9 +239,9 @@ namespace Server.Misc
             return points;
         }
 
-        public static double StamRegen(Mobile from)
+        public static int StamRegen(Mobile from)
         {
-            double points = AosAttributes.GetValue(from, AosAttribute.RegenStam);
+            int points = AosAttributes.GetValue(from, AosAttribute.RegenStam);
 
             if (from is BaseCreature)
                 points += ((BaseCreature)from).DefaultStamRegen;
@@ -257,6 +254,9 @@ namespace Server.Misc
 
             if (Core.ML && from is PlayerMobile)
                 points = Math.Min(points, 24);
+
+            //if (CheckAnimal(from, typeof(Dog)))
+            //    points += from.Skills[SkillName.Ninjitsu].Fixed / 30;
 
             // Skill Masteries - goes after cap
             points += RampageSpell.GetBonus(from, RampageSpell.BonusType.StamRegen);
@@ -271,9 +271,9 @@ namespace Server.Misc
             return points;
         }
 
-        public static double ManaRegen(Mobile from)
+        public static int ManaRegen(Mobile from)
         {
-            double points = AosAttributes.GetValue(from, AosAttribute.RegenMana);
+            int points = AosAttributes.GetValue(from, AosAttribute.RegenMana);
 
             if (from is BaseCreature)
                 points += ((BaseCreature)from).DefaultManaRegen;
@@ -295,12 +295,12 @@ namespace Server.Misc
             return points;
         }
 
-        public static double GetArmorMeditationValue(BaseArmor ar)
+        private static double GetArmorMeditationValue(BaseArmor ar)
         {
             if (ar == null || ar.ArmorAttributes.MageArmor != 0 || ar.Attributes.SpellChanneling != 0)
                 return 0.0;
 
-            switch ( ar.MeditationAllowance )
+            switch (ar.MeditationAllowance)
             {
                 default:
                 case ArmorMeditationAllowance.None:

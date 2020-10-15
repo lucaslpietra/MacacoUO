@@ -15,6 +15,7 @@ namespace Server.Items
         public Gears(int amount)
             : base(0x1053)
         {
+            Name = "Engrenagem";
             this.Stackable = true;
             this.Amount = amount;
             this.Weight = 1.0;

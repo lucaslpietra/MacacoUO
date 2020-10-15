@@ -1,3 +1,4 @@
+using Server.Regions;
 using System;
 
 namespace Server.Items
@@ -24,6 +25,15 @@ namespace Server.Items
             get
             {
                 return true;
+            }
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            if(from.Region is DungeonRegion)
+            {
+                from.SendMessage("Talvez algum ladino possa roubar isto...");
             }
         }
         public override void GetProperties(ObjectPropertyList list)

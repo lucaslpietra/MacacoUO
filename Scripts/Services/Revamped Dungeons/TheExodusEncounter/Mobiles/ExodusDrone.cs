@@ -11,15 +11,15 @@ namespace Server.Mobiles
         [Constructable]
         public ExodusDrone() : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Exodus Drone";
+            this.Name = "drone goblinico";
             this.Body = 0x2F4;
             this.Hue = 0xA92;
-            this.SetStr(554, 650);
+            this.SetStr(300, 400);
             this.SetDex(77, 85);
             this.SetInt(64, 85);
 
             this.SetHits(332, 389);
-            this.SetDamage(13, 19);
+            this.SetDamage(5, 8);
 
             this.SetDamageType(ResistanceType.Physical, 50);
             this.SetDamageType(ResistanceType.Energy, 50);
@@ -38,9 +38,11 @@ namespace Server.Mobiles
             this.Karma = -18000;
             this.VirtualArmor = 65;
 
-            this.PackItem(new PowerCrystal());
-            this.PackItem(new ArcaneGem());
-            this.PackItem(new ClockworkAssembly());
+            if(Utility.RandomDouble() > 0.1)
+                this.PackItem(new PowerCrystal());
+
+            if (Utility.RandomDouble() > 0.1)
+                this.PackItem(new ClockworkAssembly());
 
             this.m_FieldActive = this.CanUseField;
         }
@@ -48,16 +50,11 @@ namespace Server.Mobiles
         public override void OnKilledBy(Mobile m)
         {
             base.OnKilledBy(m);
-
-            if (Utility.RandomDouble() < 0.1)
-            {
-                ExodusChest.GiveRituelItem(m);
-            }
         }
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average);
+            this.AddLoot(LootPack.Rich);
         }
 
         public ExodusDrone(Serial serial) : base(serial)
@@ -120,7 +117,7 @@ namespace Server.Mobiles
 
                 this.PlaySound(0x2F4);
 
-                attacker.SendAsciiMessage("Your weapon cannot penetrate the creature's magical barrier");
+                attacker.SendAsciiMessage("Sua arma penetra a barreira magica da criatura");
             }
 
             if (attacker != null && attacker.Alive && attacker.Weapon is BaseRanged && 0.4 > Utility.RandomDouble())

@@ -10,7 +10,7 @@ namespace Server.Mobiles
 		public GiantTurkey()
             : base( AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4 )
 		{
-			Name = "a giant turkey";
+			Name = "peru gigante";
 			Body = 1026;
 			BaseSoundID = 0x66A;
 
@@ -18,10 +18,10 @@ namespace Server.Mobiles
             SetDex(170, 260);
             SetInt(430, 560);
 
-            SetHits(25000);
+            SetHits(2000);
             SetMana(1000);
 
-            SetDamage(20, 30);
+            SetDamage(10, 25);
 
             SetDamageType(ResistanceType.Physical, 100);
 
@@ -43,10 +43,10 @@ namespace Server.Mobiles
             SetWeaponAbility(WeaponAbility.Dismount);
         }
 
-        public override int Meat { get { return 1; } }
+        public override int Meat { get { return 30; } }
         public override MeatType MeatType { get { return MeatType.Bird; } }
         public override FoodType FavoriteFood { get { return FoodType.GrainsAndHay; } }
-        public override int Feathers { get { return 25; } }
+        public override int Feathers { get { return 300; } }
 
         public override void GenerateLoot()
         {

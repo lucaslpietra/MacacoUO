@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Scorpion()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a scorpion";
+            Name = "escorpiao gigante";
             Body = 48;
             BaseSoundID = 397;
 

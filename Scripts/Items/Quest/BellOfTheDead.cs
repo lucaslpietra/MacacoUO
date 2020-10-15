@@ -106,7 +106,7 @@ namespace Server.Engines.Quests.Doom
             }
             else if (m_Dragon != null && !m_Dragon.Deleted && !m_Dragon.Controlled)
             {
-                from.SendLocalizedMessage(1050017); // The ferryman has recently been summoned already.  You decide against ringing the bell again so soon.
+                from.SendLocalizedMessage("O dragao ainda esta vivo na dungeon, mate-o !"); // The ferryman has recently been summoned already.  You decide against ringing the bell again so soon.
             }
             else if (!m_Summoning)
             {
@@ -128,7 +128,7 @@ namespace Server.Engines.Quests.Doom
             }
             else if (m_Dragon != null && !m_Dragon.Deleted && !m_Dragon.Controlled)
             {
-                from.SendLocalizedMessage(1050017); // The ferryman has recently been summoned already.  You decide against ringing the bell again so soon.
+                from.SendLocalizedMessage("O dragao ainda esta vivo na dungeon, mate-o !"); // The ferryman has recently been summoned already.  You decide against ringing the bell again so soon.
             }
             else if (m_Summoning)
             {

@@ -9,7 +9,8 @@ namespace Server.Items
         public DragonHelm()
             : base(0x2645)
         {
-            Weight = 5.0;
+            this.Weight = 5.0;
+            this.Name = "Elmo do Dragao";
         }
 
         public DragonHelm(Serial serial)
@@ -91,7 +92,7 @@ namespace Server.Items
         {
             get
             {
-                return 40;
+                return 45;
             }
         }
         public override ArmorMaterialType MaterialType
@@ -105,7 +106,7 @@ namespace Server.Items
         {
             get
             {
-                return CraftResource.RedScales;
+                return CraftResource.EscamasVermelhas;
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -118,6 +119,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (this.Weight == 1.0)
+                this.Weight = 5.0;
         }
     }
 }

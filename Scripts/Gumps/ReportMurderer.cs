@@ -33,6 +33,12 @@ namespace Server.Gumps
 
         public static void EventSink_PlayerDeath(PlayerDeathEventArgs e)
         {
+            if (Shard.WARSHARD)
+                return;
+
+            if (e.Mobile.Region != null && e.Mobile.Region.IsPartOf("Tretonia"))
+                return;
+
             Mobile m = e.Mobile;
 
             List<Mobile> killers = new List<Mobile>();
@@ -82,11 +88,6 @@ namespace Server.Gumps
                 Titles.AwardKarma(g, karmaAward, true);
 
                 Server.Items.XmlQuest.RegisterKill(m, g);
-
-                if (killers.Contains(g))
-                {
-                    EventSink.InvokePlayerMurdered(new PlayerMurderedEventArgs(g, m));
-                }
             }
 
             if (m is PlayerMobile && ((PlayerMobile)m).NpcGuild == NpcGuild.ThievesGuild)
@@ -132,12 +133,12 @@ namespace Server.Gumps
                             if (killer is PlayerMobile)
                             {
                                 PlayerMobile pk = (PlayerMobile)killer;
-                                pk.ResetKillTime();
-                                pk.SendLocalizedMessage(1049067);//You have been reported for murder!
+                                //pk.ResetKillTime();
+                                pk.SendLocalizedMessage("Voce foi reportado por assassinato");//You have been reported for murder!
 
                                 if (pk.Kills == 5)
                                 {
-                                    pk.SendLocalizedMessage(502134);//You are now known as a murderer!
+                                    pk.SendLocalizedMessage("Voce eh um fora da lei agora");//You are now known as a murderer!
 
                                     CheckMurderer(pk);
                                 }
@@ -162,16 +163,16 @@ namespace Server.Gumps
 
         public static void CheckMurderer(Mobile m)
         {
-            if (m.AccessLevel == AccessLevel.Player && m.Murderer && SpellHelper.RestrictRedTravel && m.Map != null && m.Map.Rules != MapRules.FeluccaRules)
+            if (m.AccessLevel <= AccessLevel.VIP && m.Murderer && SpellHelper.RestrictRedTravel && m.Map != null && m.Map.Rules != MapRules.FeluccaRules)
             {
-                Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+                Timer.DelayCall(TimeSpan.FromSeconds(1), (TimerCallback)(() =>
                 {
                     if (m.NetState != null)
                     {
-                        m.MoveToWorld(Map.Felucca.GetSpawnPosition(new Point3D(1458, 844, 5), 5), Map.Felucca);
+                        m.MoveToWorld((Point3D)Map.Felucca.GetSpawnPosition(new Point3D(1458, 844, 5), 5), (Map)Map.Felucca);
                         m.SendLocalizedMessage(1005524, "", 0x22); // Murderers aren't allowed here, you are banished!
                     }
-                });
+                }));
             }
         }
 
@@ -198,10 +199,10 @@ namespace Server.Gumps
             AddHtmlLocalized(260, 254, 300, 140, 1049066, false, false); // Would you like to report...
 
             AddButton(260, 300, 0xFA5, 0xFA7, 1, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(300, 300, 300, 50, 1046362, false, false); // Yes
+            AddHtml(300, 300, 300, 50, "Sim", false, false); // Yes
 
             AddButton(360, 300, 0xFA5, 0xFA7, 2, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(400, 300, 300, 50, 1046363, false, false); // No
+            AddHtml(400, 300, 300, 50, "Nao", false, false); // No
         }
 
         private class GumpTimer : Timer

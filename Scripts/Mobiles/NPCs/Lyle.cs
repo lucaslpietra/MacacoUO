@@ -36,7 +36,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return 1075543;
+                return "Voce sabe algo sobre inscription ? Bom eu nao sei, e preciso de pergaminhos de recall para minhas jornadas. Poderia me conseguir alguns ?";
             }
         }
         /* Hmm, thought I had your interest there for a moment. It's not everyday you see a book made from real 
@@ -45,7 +45,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return 1075546;
+                return "Awn achei que voce ajudaria.";
             }
         }
         /* Inscribing... yes, you'll need a scribe's pen, some reagents, some blank scroll, and of course your own 
@@ -54,7 +54,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return 1075547;
+                return "Voce precisara ir a loja do escriba para conseguir escrever tal pergaminho... Ou compra-los!";
             }
         }
         /* Ha! Finally! I've had a rune to the waterfalls near Justice Isle that I've been wanting to use for the 
@@ -64,7 +64,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return 1075548;
+                return "Yay finalmente, muito obrigado !";
             }
         }
         public override void Serialize(GenericWriter writer)

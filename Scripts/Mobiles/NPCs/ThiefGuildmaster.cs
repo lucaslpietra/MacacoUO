@@ -7,7 +7,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public ThiefGuildmaster()
-            : base("thief")
+            : base("o mestre da guilda dos ladinos")
         {
             this.SetSkill(SkillName.DetectHidden, 75.0, 98.0);
             this.SetSkill(SkillName.Hiding, 65.0, 88.0);
@@ -36,14 +36,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return Siege.SiegeShard ? TimeSpan.FromDays(0.0) : TimeSpan.FromDays(7.0);
+                return Siege.SiegeShard ? TimeSpan.FromDays(0.0) : TimeSpan.FromDays(14.0);
             }
         }
         public override TimeSpan JoinGameAge
         {
             get
             {
-                return Siege.SiegeShard ? TimeSpan.FromDays(0.0) : TimeSpan.FromDays(2.0);
+                return Siege.SiegeShard ? TimeSpan.FromDays(0.0) : TimeSpan.FromDays(5.0);
             }
         }
         public override void InitOutfit()
@@ -60,17 +60,17 @@ namespace Server.Mobiles
         {
             if (pm.Young && !Siege.SiegeShard)
             {
-                this.SayTo(pm, 502089); // You cannot be a member of the Thieves' Guild while you are Young.
+                this.SayTo(pm, "Voce nao pode se tornar membro se ainda for jovem"); // You cannot be a member of the Thieves' Guild while you are Young.
                 return false;
             }
             else if (pm.Kills > 0)
             {
-                this.SayTo(pm, 501050); // This guild is for cunning thieves, not oafish cutthroats.
+                this.SayTo(pm, "Somos uma guilda de ladinos nao de assassinos"); // This guild is for cunning thieves, not oafish cutthroats.
                 return false;
             }
             else if (pm.Skills[SkillName.Stealing].Base < 60.0 && !Siege.SiegeShard)
             {
-                this.SayTo(pm, 501051); // You must be at least a journeyman pickpocket to join this elite organization.
+                this.SayTo(pm, "Voce nao me parece um ladino bom o suficiente, treine suas skills de furto."); // You must be at least a journeyman pickpocket to join this elite organization.
                 return false;
             }
 
@@ -79,7 +79,7 @@ namespace Server.Mobiles
 
         public override void SayWelcomeTo(Mobile m)
         {
-            this.SayTo(m, 1008053); // Welcome to the guild! Stay to the shadows, friend.
+            this.SayTo(m, "Bem vindo a guilda dos ladinos"); // Welcome to the guild! Stay to the shadows, friend.
         }
 
         public override bool HandlesOnSpeech(Mobile from)
@@ -94,14 +94,14 @@ namespace Server.Mobiles
         {
             Mobile from = e.Mobile;
 
-            if (!e.Handled && from is PlayerMobile && from.InRange(this.Location, 2) && e.HasKeyword(0x1F)) // *disguise*
+            if (!e.Handled && from is PlayerMobile && from.InRange(this.Location, 2) && (e.HasKeyword(0x1F) || e.Speech.Contains("disfarce"))) // *disguise*
             {
                 PlayerMobile pm = (PlayerMobile)from;
 
                 if (pm.NpcGuild == NpcGuild.ThievesGuild)
-                    this.SayTo(from, 501839); // That particular item costs 700 gold pieces.
+                    this.SayTo(from, "700 ouros por favor"); // That particular item costs 700 gold pieces.
                 else
-                    this.SayTo(from, 501838); // I don't know what you're talking about.
+                    this.SayTo(from, "Nao sei do que voce esta falando."); // I don't know what you're talking about.
 
                 e.Handled = true;
             }

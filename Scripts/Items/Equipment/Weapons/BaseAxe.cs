@@ -26,7 +26,7 @@ namespace Server.Items
         {
             get
             {
-                return 0x232;
+                return 0x23B;
             }
         }
 
@@ -34,7 +34,7 @@ namespace Server.Items
         {
             get
             {
-                return 0x23A;
+                return 0x232;
             }
         }
 
@@ -91,7 +91,17 @@ namespace Server.Items
             if (!(HarvestSystem is Mining))
                 from.SendLocalizedMessage(1010018); // What do you want to use this item on?
 
-            HarvestSystem.BeginHarvesting(from, this);
+            if (from.FindItemOnLayer(Layer.OneHanded) == this ||
+                   from.FindItemOnLayer(Layer.TwoHanded) == this)
+            {
+                HarvestSystem.BeginHarvesting(from, this);
+            }
+            else
+            {
+                from.ClearHands();
+                from.EquipItem(this);
+                HarvestSystem.BeginHarvesting(from, this);
+            }
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -144,6 +154,19 @@ namespace Server.Items
         {
             base.OnHit(attacker, defender, damageBonus);
 
+            if (WeaponAbility.GetCurrentAbility(attacker) is InfectiousStrike)
+                return;
+
+            if (!Core.AOS && defender is Mobile && this.Poison != null && this.PoisonCharges > 0)
+            {
+                if (Utility.RandomDouble() <= 0.08)
+                {
+                    --this.PoisonCharges;
+                    ((Mobile)defender).ApplyPoison(attacker, this.Poison);
+                }
+            }
+
+            /*
             if (!Core.AOS && defender is Mobile && (attacker.Player || attacker.Body.IsHuman) && Layer == Layer.TwoHanded && (attacker.Skills[SkillName.Anatomy].Value / 400.0) >= Utility.RandomDouble())
             {
                 StatMod mod = ((Mobile)defender).GetStatMod("Concussion");
@@ -157,6 +180,7 @@ namespace Server.Items
                     attacker.PlaySound(0x308);
                 }
             }
+            */
         }
     }
 }

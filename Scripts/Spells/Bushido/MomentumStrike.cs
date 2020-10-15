@@ -103,7 +103,7 @@ namespace Server.Spells.Bushido
 
         public override void CheckGain(Mobile m)
         {
-            m.CheckSkill(this.MoveSkill, this.RequiredSkill, 120.0);
+            m.CheckSkillMult(this.MoveSkill, this.RequiredSkill, 120.0);
         }
     }
 }

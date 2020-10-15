@@ -44,7 +44,7 @@ namespace Server.Items
 
             if (Utility.RandomBool())
             {
-                DropItem(new GoldIngot(level * 100));
+                DropItem(new SilverIngot(level * 100));
             }
             else
             {

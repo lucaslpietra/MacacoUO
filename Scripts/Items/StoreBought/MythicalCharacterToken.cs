@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using Server.Gumps;
 using Server.Mobiles;
@@ -8,8 +8,7 @@ namespace Server.Items
 {
     public class MythicCharacterToken : Item, IPromotionalToken
     {
-        public override int LabelNumber { get { return 1070997; } } // a promotional token
-        public TextDefinition ItemName { get { return 1152353; } } // Mythic Character Token
+        public TextDefinition ItemName { get { return "Token de Skills Epico"; } } // Mythic Character Token
 
         public Type GumpType { get { return typeof(MythicCharacterToken.InternalGump); } }
 
@@ -24,16 +23,7 @@ namespace Server.Items
         {
             if (m is PlayerMobile && IsChildOf(m.Backpack))
             {
-                if (m.Skills.Total > 2000)
-                {
-                    m.SendLocalizedMessage(1152368); // You cannot use this token on this character because you have over 200 skill points. If you 
-                    // don’t have a way to lower your skill point total, you will have to use this Mythic Character
-                    // Token on another character.
-                }
-                else
-                {
-                    BaseGump.SendGump(new InternalGump((PlayerMobile)m, this));
-                }
+                BaseGump.SendGump(new InternalGump((PlayerMobile)m, this));
             }
         }
 
@@ -41,7 +31,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(1070998, ItemName.ToString()); // Use this to redeem<br>Your ~1_PROMO~
+            list.Add("Coloca 5 skills a sua escolha em 90.0"); // Use this to redeem<br>Your ~1_PROMO~
         }
 
         public MythicCharacterToken(Serial serial)
@@ -120,10 +110,10 @@ namespace Server.Items
                 AddImageTiled(10, 480, 480, 22, 2624);
                 AddAlphaRegion(10, 480, 480, 22);
 
-                AddHtmlLocalized(0, 12, Width, 20, 1152352, White, false, false); // <center>Mythic Character Skill Selection</center>
+                AddHtml(0, 12, Width, 20, " <center>Token de Skills Epico</center>", White, false, false); // <center>Mythic Character Skill Selection</center>
 
-                AddHtmlLocalized(0, 45, Width / 3, 20, 1152354, Yellow, false, false); // <CENTER>Set Attributes</CENTER>
-                AddHtmlLocalized(0, 65, Width / 3, 20, 1152355, User.StatCap.ToString(), Beige, false, false); // <CENTER>Total Must Equal ~1_VAL~
+                AddHtml(0, 45, Width / 3, 20, "<CENTER>Atributos</CENTER>", Yellow, false, false); // <CENTER>Set Attributes</CENTER>
+                AddHtml(0, 65, Width / 3, 20, "<CENTER>Cap Max: "+User.StatCap.ToString()+"</CENTER>", Beige, false, false); // <CENTER>Total Must Equal ~1_VAL~
 
                 AddBackground(11, 85, 80, 20, 3000);
                 AddBackground(11, 106, 80, 20, 3000);
@@ -137,7 +127,7 @@ namespace Server.Items
                 AddHtmlLocalized(98, 106, 100, 20, 3000113, White, false, false); // Dexterity
                 AddHtmlLocalized(98, 127, 100, 20, 3000112, White, false, false); // Intelligence
 
-                AddHtmlLocalized(0, 170, Width / 3, 20, 1152356, Yellow, false, false); // <CENTER>Selected Skills</CENTER>
+                AddHtml(0, 170, Width / 3, 20, "Skills Escolhidas", Yellow, false, false); // <CENTER>Selected Skills</CENTER>
 
                 AddButton(10, Height - 30, 4017, 4018, 0, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(42, Height - 30, 100, 20, 1153439, White, false, false); // CANCEL
@@ -155,7 +145,13 @@ namespace Server.Items
 
                 if (HasAllFive)
                 {
-                    AddHtmlLocalized(Width / 3, 65, ((Width / 3) * 2) - 15, Height - 100, 1152358, LightGreen, false, false);
+                    var s = @"Por favor, confirme que você deseja definir seus atributos conforme indicado na área superior esquerda desta janela.
+Se você deseja alterar esses valores, edite-os e clique no botão EDITAR abaixo. <br> <br> Confirme se
+você deseja definir as cinco habilidades selecionadas à esquerda para 90,0. Se você deseja fazer alterações, clique no ícone
+Botão [X] ao lado do nome de uma habilidade para removê-lo da lista. <br> <br> Se tiver certeza de que deseja aplicar o nome selecionado
+habilidades e atributos, clique no botão CONTINUAR abaixo. <br> <br> Se você deseja abortar a aplicação do
+Mythic Character Token, clique no botão CANCELAR abaixo.";
+                    AddHtml(Width / 3, 65, ((Width / 3) * 2) - 15, Height - 100, s, LightGreen, false, false);
                     /*Please confirm that you wish to set your attributes as indicated in the upper left area of this window. 
                     If you wish to change these values, edit them and click the EDIT button below.<br><br>Please confirm that 
                     you wish to set the five skills selected on the left to 90.0 skill. If you wish to make changes, click the 
@@ -164,14 +160,14 @@ namespace Server.Items
                     Mythic Character Token, click the CANCEL button below.*/
 
                     AddButton(Width / 3, Height - 100, 4005, 4007, 2500, GumpButtonType.Reply, 0);
-                    AddHtmlLocalized((Width / 3) + 32, Height - 100, 100, 20, 1150647, White, false, false); // EDIT
+                    AddHtml((Width / 3) + 32, Height - 100, 100, 20, "Editar", White, false, false); // EDIT
 
                     AddButton(Width / 3, Height - 120, 4005, 4007, 2501, GumpButtonType.Reply, 0);
-                    AddHtmlLocalized((Width / 3) + 32, Height - 120, 100, 20, 1011011, White, false, false); // CONTINUE
+                    AddHtml((Width / 3) + 32, Height - 120, 100, 20, "Continuar", White, false, false); // CONTINUE
                 }
                 else
                 {
-                    AddHtmlLocalized(Width / 3, 45, (Width / 3) * 2, 20, 1152357, White, false, false); // <CENTER>Select Five Skills to Advance</CENTER>
+                    AddHtml(Width / 3, 45, (Width / 3) * 2, 20, "<CENTER>Selecione 5 skills</CENTER>", White, false, false); // <CENTER>Select Five Skills to Advance</CENTER>
 
                     AddPage(1);
 
@@ -229,7 +225,7 @@ namespace Server.Items
                         SetStats(info);
                         if ((Str + Dex + Int) != User.StatCap)
                         {
-                            User.SendLocalizedMessage(1152359); // Your Strength, Dexterity, and Intelligence values do not add up to the total indicated in 
+                            User.SendMessage("Sua forca, destreza e int ultrapassam o limite do cap."); // Your Strength, Dexterity, and Intelligence values do not add up to the total indicated in 
                             // the upper left area of this window. Before continuing, you must adjust these values so 
                             // their total adds up to exactly the displayed value. Please edit your desired attribute 
                             // values and click the EDIT button below to continue.

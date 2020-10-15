@@ -215,6 +215,9 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
 
             this.m_FieldActive = this.CanUseField;
+
+            if (this.Name == "Exodus Overseer")
+                this.Name = "exodus overseer";
         }
     }
 }

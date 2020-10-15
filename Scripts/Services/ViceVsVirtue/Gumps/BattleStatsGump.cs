@@ -28,14 +28,14 @@ namespace Server.Engines.VvV
 
             AddBackground(0, 0, 500, 500, 9380);
 
-            AddHtmlLocalized(0, 40, 500, 20, 1154645, "#1154945", Color16, false, false); // The Battle between Vice and Virtue has ended!
-            AddHtml(40, 65, 420, 20, String.Format("<basefont color=#B22222>{0} [{1}] has won the battle!", leader.Guild.Name, leader.Guild.Abbreviation), false, false);
+            AddHtml(0, 40, 500, 20, "<CENTER>Fim da Guerra Infinita</CENTER>", Color16, false, false); // The Battle between Vice and Virtue has ended!
+            AddHtml(40, 65, 420, 20, String.Format("<basefont color=#B22222>{0} [{1}] Ganhou a batalha!", leader.Guild.Name, leader.Guild.Abbreviation), false, false);
 
             int y = 90;
 
             if (leader.Guild.Alliance != null)
             {
-                AddHtml(40, y, 420, 20, String.Format("<basefont color=#B22222>The {0} Alliance has won the battle!", leader.Guild.Alliance.Name), false, false);
+                AddHtml(40, y, 420, 20, String.Format("<basefont color=#B22222>A Alianca {0} ganhou a batalha!", leader.Guild.Alliance.Name), false, false);
                 y += 25;
             }
 
@@ -51,34 +51,34 @@ namespace Server.Engines.VvV
                 score = entry.Score;
             }*/
 
-            AddHtmlLocalized(40, y, 420, 20, 1154947, team.Silver.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Color16, false, false); // Total Silver Points: ~1_val~
+            AddHtml(40, y, 420, 20, "Pratinhas Totais: "+ team.Silver.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Color16, false, false); // Total Silver Points: ~1_val~
             y += 25;
 
-            AddHtmlLocalized(40, y, 420, 20, 1154948, team.Score.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Color16, false, false); // Total Score: ~1_val~
+            AddHtml(40, y, 420, 20, "Pontos Totais: "+ team.Score.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Color16, false, false); // Total Score: ~1_val~
             y += 25;
 
-            AddHtmlLocalized(40, y, 420, 20, 1154949, team.Kills.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Color16, false, false);
+            AddHtml(40, y, 420, 20, "Kills: "+ team.Kills.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Color16, false, false);
             y += 25;
 
-            AddHtmlLocalized(40, y, 420, 20, 1154950, team.Assists.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Color16, false, false);
+            AddHtml(40, y, 420, 20, "Assists: "+ team.Assists.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Color16, false, false);
             y += 25;
 
-            AddHtmlLocalized(40, y, 420, 20, 1154951, team.Deaths.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Color16, false, false);
+            AddHtml(40, y, 420, 20, "Mortes: "+ team.Deaths.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Color16, false, false);
             y += 25;
 
-            AddHtmlLocalized(40, y, 420, 20, 1154952, team.Stolen.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Color16, false, false);
+            AddHtml(40, y, 420, 20, "Roubados: "+ team.Stolen.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Color16, false, false);
             y += 25;
 
-            AddHtmlLocalized(40, y, 420, 20, 1154953, team.ReturnedSigils.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Color16, false, false);
+            AddHtml(40, y, 420, 20, "Retornados: "+ team.ReturnedSigils.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Color16, false, false);
             y += 25;
 
-            AddHtmlLocalized(40, y, 420, 20, 1154954, team.ViceReturned.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Color16, false, false);
+            AddHtml(40, y, 420, 20, "Caos Retornados: "+ team.ViceReturned.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Color16, false, false);
             y += 25;
 
-            AddHtmlLocalized(40, y, 420, 20, 1154955, team.VirtueReturned.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Color16, false, false);
+            AddHtml(40, y, 420, 20, "Ordem Retornados: "+ team.VirtueReturned.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Color16, false, false);
             y += 25;
 
-            AddHtmlLocalized(40, y, 420, 20, 1154956, team.Disarmed.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Color16, false, false);
+            AddHtml(40, y, 420, 20, "Desarmados: "+ team.Disarmed.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Color16, false, false);
             y += 25;
         }
     }

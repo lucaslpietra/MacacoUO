@@ -4,6 +4,11 @@ namespace Server.Items
 {
     public class ExplosionPotion : BaseExplosionPotion
     {
+		public override string DefaultName
+        {
+            get { return "Poção de Explosão"; }            
+        }
+		
         [Constructable]
         public ExplosionPotion()
             : base(PotionEffect.Explosion)
@@ -19,14 +24,14 @@ namespace Server.Items
         {
             get
             {
-                return 10;
+                return 5;
             }
         }
         public override int MaxDamage
         {
             get
             {
-                return 20;
+                return 12;
             }
         }
         public override void Serialize(GenericWriter writer)

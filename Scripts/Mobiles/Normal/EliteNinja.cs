@@ -4,6 +4,7 @@ using Server.Items;
 using Server.ContextMenus;
 using Server.Misc;
 using Server.Network;
+using Server.Gumps.Newbie;
 
 namespace Server.Mobiles
 {
@@ -19,17 +20,17 @@ namespace Server.Mobiles
 		{
 			SpeechHue = Utility.RandomDyedHue();
 			Hue = Utility.RandomSkinHue();
-			Name = "an elite ninja";
+			Name = "ninja vil";
 
 			Body = ( this.Female = Utility.RandomBool() ) ? 0x191 : 0x190;
 
-			SetHits( 251, 350 );
+			SetHits( 200, 350 );
 
-			SetStr( 126, 225 );
+			SetStr( 90, 120 );
 			SetDex( 81, 95 );
 			SetInt( 151, 165 );
 
-			SetDamage( 12, 20 );
+			SetDamage( 2, 15 );
 
 			SetDamageType( ResistanceType.Physical, 65 );
 			SetDamageType( ResistanceType.Fire, 15 );
@@ -50,19 +51,21 @@ namespace Server.Mobiles
 			SetSkill( SkillName.Macing, 95.0, 120.0 );
 			SetSkill( SkillName.Swords, 95.0, 120.0 );
 
-			SetSkill( SkillName.Ninjitsu, 95.0, 120.0 );
+			SetSkill( SkillName.Ninjitsu, 60, 70 );
             SetSkill( SkillName.Hiding, 100.0);
             SetSkill( SkillName.Stealth, 120.0 );
 
 			Fame = 8500;
 			Karma = -8500;
 
+            /*
             LeatherNinjaBelt belt = new LeatherNinjaBelt();
             belt.UsesRemaining = 20;
             belt.Poison = Poison.Greater;
             belt.PoisonCharges = 20;
             belt.Movable = false;
             AddItem(belt);
+            */
 
             int amount = Skills[SkillName.Ninjitsu].Value >= 100 ? 2 : 1;
 
@@ -76,34 +79,41 @@ namespace Server.Mobiles
                 PackItem(f);
             }
 
-			AddItem( new NinjaTabi() );
+            AddItem( new NinjaTabi() );
 			AddItem( new LeatherNinjaJacket());
 			AddItem( new LeatherNinjaHood());
 			AddItem( new LeatherNinjaPants());
 			AddItem( new LeatherNinjaMitts());
 			
-			if( Utility.RandomDouble() < 0.33 )
+			if( Utility.RandomDouble() < 0.13 )
 				PackItem( new SmokeBomb() );
 
-            if (Utility.RandomBool())
-                PackItem(new Tessen());
-            else
-                PackItem(new Wakizashi());
+            if(Utility.RandomDouble() < 0.05)
+            {
+                if (Utility.RandomBool())
+                    PackItem(new Tessen());
+                else
+                    PackItem(new Wakizashi());
 
-            if (Utility.RandomBool())
-                PackItem(new Nunchaku());
-            else
-                PackItem(new Daisho());
+                if (Utility.RandomBool())
+                    PackItem(new Nunchaku());
+                else
+                    PackItem(new Daisho());
 
-            if (Utility.RandomBool())
-                PackItem(new Sai());
-            else
-                PackItem(new Tekagi());
+                if (Utility.RandomBool())
+                    PackItem(new Sai());
+                else
+                    PackItem(new Tekagi());
 
-            if (Utility.RandomBool())
-                PackItem(new Kama());
-            else
+                if (Utility.RandomBool())
+                    PackItem(new Kama());
+                else
+                    PackItem(new Katana());
+            } else
+            {
                 PackItem(new Katana());
+            }
+          
 
 			Utility.AssignRandomHair( this );
             ChangeWeapon();
@@ -112,14 +122,12 @@ namespace Server.Mobiles
 		public override void OnDeath( Container c )
 		{
 			base.OnDeath( c );
-			c.DropItem( new BookOfNinjitsu() );
 		}
 
 		public override bool BardImmune{ get{ return true; } }
 
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.FilthyRich );
 			AddLoot( LootPack.Rich );
 			AddLoot( LootPack.Gems, 2 );
 		}

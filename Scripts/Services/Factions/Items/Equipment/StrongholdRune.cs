@@ -91,7 +91,7 @@ namespace Server.Factions
 
                 m.SendLocalizedMessage(1094706); // Your faction stronghold rune has disappeared.
 
-                if (m.AccessLevel == AccessLevel.Player)
+                if (m.AccessLevel <= AccessLevel.VIP)
                     Delete();
 
                 AddToCooldown(m);

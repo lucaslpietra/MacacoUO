@@ -1,8 +1,6 @@
+using Server;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-
-using Server;
 using Server.Mobiles;
 using Server.Items;
 using Server.Spells;
@@ -14,8 +12,7 @@ namespace Server.Engines.VoidPool
 	{
 		private static Rectangle2D[] Bounds = new Rectangle2D[]
 		{
-            new Rectangle2D(5383, 1960, 236, 80),
-			new Rectangle2D(5429, 1948, 12, 10),
+			new Rectangle2D(5383, 1948, 234, 95),
 		};
 		
 		public VoidPoolController Controller { get; private set; }
@@ -27,34 +24,26 @@ namespace Server.Engines.VoidPool
 		
 		public void SendRegionMessage(int localization)
 		{
-            foreach (var m in GetEnumeratedMobiles().Where(m => m.Player))
-            {
-                m.SendLocalizedMessage(localization);
-            }
+			List<Mobile> list = GetPlayers();
+			list.ForEach(m => m.SendLocalizedMessage(localization));
+			list.Clear();
+			list.TrimExcess();
 		}
-
-        public void SendRegionMessage(int localization, int hue)
-        {
-            foreach (var m in GetEnumeratedMobiles().Where(m => m.Player))
-            {
-                m.SendLocalizedMessage(localization, "", hue);
-            }
-        }
-
-        public void SendRegionMessage(int localization, string args)
+		
+		public void SendRegionMessage(int localization, string args)
 		{
-            foreach (var m in GetEnumeratedMobiles().Where(m => m.Player))
-            {
-                m.SendLocalizedMessage(localization, args);
-            }
-        }
+			List<Mobile> list = GetPlayers();
+			list.ForEach(m => m.SendLocalizedMessage(localization, args));
+			list.Clear();
+			list.TrimExcess();
+		}
 
         public void SendRegionMessage(string message)
         {
-            foreach (var m in GetEnumeratedMobiles().Where(m => m.Player))
-            {
-                m.SendMessage(0x25, message);
-            }
+            List<Mobile> list = GetPlayers();
+            list.ForEach(m => m.SendMessage(0x25, message));
+            list.Clear();
+            list.TrimExcess();
         }
 		
 		public override void OnDeath(Mobile m)
@@ -84,7 +73,7 @@ namespace Server.Engines.VoidPool
                                 if (pack == null || !pack.TryDropItem(mob, artifact, false))
                                     mob.BankBox.DropItem(artifact);
 
-                                mob.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
+                                mob.SendMessage("Voce obteve um artefato por ajudar no combate"); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
                             }
                         }
                     }
@@ -96,13 +85,13 @@ namespace Server.Engines.VoidPool
 		
 		public override bool OnDoubleClick(Mobile m, object o)
 		{
-			if(o is Corpse && m.AccessLevel == AccessLevel.Player)
+			if(o is Corpse && m.AccessLevel <= AccessLevel.VIP)
 			{
 				Corpse c = o as Corpse;
 				
 				if(c.Owner == null || (c.Owner is CovetousCreature && ((CovetousCreature)c.Owner).VoidSpawn))
 				{
-					c.LabelTo(m, 1152684); // There is no loot on the corpse.
+					c.LabelTo(m, "Nao tem nada no corpo"); // There is no loot on the corpse.
 					return false;
 				}
 			}
@@ -122,7 +111,7 @@ namespace Server.Engines.VoidPool
 
         public override bool CheckTravel(Mobile m, Point3D newLocation, TravelCheckType travelType)
         {
-            if (m.AccessLevel > AccessLevel.Player)
+            if (m.AccessLevel > AccessLevel.VIP)
                 return true;
 
             switch (travelType)

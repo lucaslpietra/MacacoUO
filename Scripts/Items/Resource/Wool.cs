@@ -18,6 +18,7 @@ namespace Server.Items
             this.Stackable = true;
             this.Weight = 4.0;
             this.Amount = amount;
+            this.Name = "Pilha de La";
         }
 
         public Wool(Serial serial)
@@ -30,11 +31,11 @@ namespace Server.Items
 
         public static void OnSpun(ISpinningWheel wheel, Mobile from, int hue)
         {
-            Item item = new DarkYarn(3);
+            Item item = new DarkYarn(2);
             item.Hue = hue;
 
             from.AddToBackpack(item);
-            from.SendLocalizedMessage(1010576); // You put the balls of yarn in your backpack.
+            from.SendMessage("Voce coloca as bolas de la na sua mochila"); // You put the balls of yarn in your backpack.
         }
 
         public override void Serialize(GenericWriter writer)

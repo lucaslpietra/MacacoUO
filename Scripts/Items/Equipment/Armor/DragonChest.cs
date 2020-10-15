@@ -9,7 +9,8 @@ namespace Server.Items
         public DragonChest()
             : base(0x2641)
         {
-            Weight = 10.0;
+            this.Weight = 10.0;
+            this.Name = "Peitoral do Dragao";
         }
 
         public DragonChest(Serial serial)
@@ -91,7 +92,7 @@ namespace Server.Items
         {
             get
             {
-                return 40;
+                return 45;
             }
         }
         public override ArmorMaterialType MaterialType
@@ -105,7 +106,7 @@ namespace Server.Items
         {
             get
             {
-                return CraftResource.RedScales;
+                return CraftResource.EscamasVermelhas;
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -118,6 +119,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (this.Weight == 1.0)
+                this.Weight = 15.0;
         }
     }
 }

@@ -106,7 +106,7 @@ namespace Server.Items
         {
             get
             {
-                return 56;
+                return 45;
             }
         }
         public override int OldSpeed
@@ -120,7 +120,7 @@ namespace Server.Items
         {
             get
             {
-                return 8;
+                return 14;
             }
         }
         public override int InitMinHits

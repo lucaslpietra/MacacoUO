@@ -53,8 +53,8 @@ namespace Server.Engines.Craft
         {
             if (item == null)
                 return EnhanceResult.BadItem;
-			
-			if (item is GargishNecklace || item is GargishEarrings)
+
+            if (item is GargishNecklace || item is GargishEarrings)
                 return EnhanceResult.BadItem;
 
             if (!item.IsChildOf(from.Backpack))
@@ -86,13 +86,14 @@ namespace Server.Engines.Craft
                 return EnhanceResult.None;
             }
 
+
             CraftItem craftItem = craftSystem.CraftItems.SearchFor(item.GetType());
 
             if (IsSpecial(item, craftSystem))
             {
                 craftItem = craftSystem.CraftItems.SearchForSubclass(item.GetType());
             }
-            
+
             if (craftItem == null || craftItem.Resources.Count == 0)
             {
                 return EnhanceResult.BadItem;
@@ -104,7 +105,9 @@ namespace Server.Engines.Craft
             #endregion
 
             bool allRequiredSkills = false;
-            if (craftItem.GetSuccessChance(from, resType, craftSystem, false, ref allRequiredSkills) <= 0.0)
+            var chance = craftItem.GetSuccessChance(from, resType, craftSystem, false, ref allRequiredSkills);
+            Shard.Debug("Chance enhance: " + chance + " pro tipo " + resType);
+            if (chance <= 0.0)
                 return EnhanceResult.NoSkill;
 
             CraftResourceInfo info = CraftResources.GetInfo(resource);
@@ -154,7 +157,7 @@ namespace Server.Engines.Craft
             {
                 BaseWeapon weapon = (BaseWeapon)item;
 
-                if(weapon.ExtendedWeaponAttributes.AssassinHoned > 0)
+                if (weapon.ExtendedWeaponAttributes.AssassinHoned > 0)
                     return EnhanceResult.BadItem;
 
                 baseChance = 20;
@@ -272,11 +275,6 @@ namespace Server.Engines.Craft
                         if (!craftItem.ConsumeRes(from, resType, craftSystem, ref resHue, ref maxAmount, ConsumeType.All, ref resMessage))
                             return EnhanceResult.NoResources;
 
-                        if (craftItem.CaddelliteCraft)
-                        {
-                            Caddellite.TryInfuse(from, item, craftSystem);
-                        }
-
                         if (item is IResource)
                             ((IResource)item).Resource = resource;
 
@@ -290,7 +288,7 @@ namespace Server.Engines.Craft
                             if (hue > 0)
                                 w.Hue = hue;
                         }
-                        else if (item is BaseArmor)
+                        else if (item is BaseArmor)	//Sanity
                         {
                             ((BaseArmor)item).DistributeMaterialBonus(attributes);
                         }
@@ -352,24 +350,19 @@ namespace Server.Engines.Craft
                     {
                         from.Target = new InternalTarget(craftSystem, tool, res.ItemType, resource);
 
-                        if (user.NextEnhanceSuccess)
-                        {
-                            from.SendLocalizedMessage(1149869, "100"); // Target an item to enhance with the properties of your selected material (Success Rate: ~1_VAL~%).
-                        }
-                        else
-                        {
-                            from.SendLocalizedMessage(1061004); // Target an item to enhance with the properties of your selected material.
-                        }
+
+                        from.SendMessage("Selecione um item que deseja refinar com " + resource.ToString()); // Target an item to enhance with the properties of your selected material.
+
                     }
                     else
                     {
-                        from.SendGump(new CraftGump(from, craftSystem, tool, 1061010)); // You must select a special material in order to enhance an item with its properties.
+                        from.SendGump(new CraftGump(from, craftSystem, tool, "Voce precisa escolher um recurso color para refinar")); // You must select a special material in order to enhance an item with its properties.
                     }
                 }
             }
             else
             {
-                from.SendGump(new CraftGump(from, craftSystem, tool, 1061010)); // You must select a special material in order to enhance an item with its properties.
+                from.SendGump(new CraftGump(from, craftSystem, tool, "Voce precisa escolher um recurso color para refinar")); // You must select a special material in order to enhance an item with its properties.
             }
         }
 
@@ -422,8 +415,8 @@ namespace Server.Engines.Craft
                         case EnhanceResult.NoSkill:
                             message = 1044153;
                             break; // You don't have the required skills to attempt this item.
-                        case EnhanceResult.Enchanted: 
-                            message = 1080131; 
+                        case EnhanceResult.Enchanted:
+                            message = 1080131;
                             break; // You cannot enhance an item that is currently enchanted.
                     }
 

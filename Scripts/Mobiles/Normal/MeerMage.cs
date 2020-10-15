@@ -13,14 +13,14 @@ namespace Server.Mobiles
         public MeerMage()
             : base(AIType.AI_Spellweaving, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            Name = "a meer mage";
+            Name = "mago da peste";
             Body = 770;
 
             SetStr(171, 200);
             SetDex(126, 145);
             SetInt(276, 305);
 
-            SetHits(103, 120);
+            SetHits(300, 300);
 
             SetDamage(24, 26);
 
@@ -106,7 +106,7 @@ namespace Server.Mobiles
             if (t != null)
             {
                 if (message)
-                    m.PublicOverheadMessage(Network.MessageType.Emote, m.SpeechHue, true, "* The open flame begins to scatter the swarm of insects *");
+                    m.PublicOverheadMessage(Network.MessageType.Emote, m.SpeechHue, true, "* os insetos se distanciam *");
 
                 t.Stop();
                 m_Table.Remove(m);
@@ -199,11 +199,11 @@ namespace Server.Mobiles
                             rabid.FocusMob = combatant;
                             rabid.MoveToWorld(loc, combatant.Map);
                         }
-                        Say(1071932); //Creatures of the forest, I call to thee!  Aid me in the fight against all that is evil!
+                        Say("Criaturas da floresta, eu chamo a vos!"); //Creatures of the forest, I call to thee!  Aid me in the fight against all that is evil!
                     }
                     else if (combatant.Player)
                     {
-                        Say(true, "I call a plague of insects to sting your flesh!");
+                        Say(true, "Venham insetos ! Atormentem esta criatura !");
                         m_Table[combatant] = Timer.DelayCall(TimeSpan.FromSeconds(0.5), TimeSpan.FromSeconds(7.0), new TimerStateCallback(DoEffect), new object[] { combatant, 0 });
                     }
                 }
@@ -235,8 +235,7 @@ namespace Server.Mobiles
                 {
                     if ((count % 4) == 0)
                     {
-                        m.LocalOverheadMessage(Network.MessageType.Emote, m.SpeechHue, true, "* The swarm of insects bites and stings your flesh! *");
-                        m.NonlocalOverheadMessage(Network.MessageType.Emote, m.SpeechHue, true, String.Format("* {0} is stung by a swarm of insects *", m.Name));
+                        m.OverheadMessage("* mordido por insetos *");
                     }
 
                     m.FixedParticles(0x91C, 10, 180, 9539, EffectLayer.Waist);

@@ -9,7 +9,9 @@ namespace Server.Items
 		
         [Constructable]
         public ChannelersDefender()
-        {	
+        {
+            this.Name = ("Channeler's Defender");
+		
             Hue = 95;	
             Attributes.DefendChance = 10;				
             Attributes.AttackChance = 5;	

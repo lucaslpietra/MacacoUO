@@ -28,8 +28,8 @@ namespace Server.Mobiles
 				Add( new GenericBuyInfo( typeof( SpidersSilk ), 3, 20, 0xF8D, 0 ) );
 				Add( new GenericBuyInfo( typeof( SulfurousAsh ), 4, 20, 0xF8C, 0 ) );
 
-				if ( Core.AOS )
-				{
+				//if ( Core.AOS )
+				//{
 					Add( new GenericBuyInfo( typeof( BatWing ), 4, 20, 0xF78, 0 ) );
 					Add( new GenericBuyInfo( typeof( GraveDust ), 4, 20, 0xF8F, 0 ) );
 					Add( new GenericBuyInfo( typeof( DaemonBlood ), 4, 20, 0xF7D, 0 ) );
@@ -37,7 +37,7 @@ namespace Server.Mobiles
 					Add( new GenericBuyInfo( typeof( PigIron ), 4, 20, 0xF8A, 0 ) );
 
 					Add( new GenericBuyInfo( typeof( NecromancerSpellbook ), 150, 10, 0x2253, 0 ) );
-				}
+				//}
 				
 				Add(new GenericBuyInfo("1041072", typeof(MagicWizardsHat), 11, 10, 0x1718, Utility.RandomDyedHue()));
                 Add(new GenericBuyInfo(typeof(ScribesPen), 8, 10, 0xFBF, 0));

@@ -72,7 +72,7 @@ namespace Server.Services.TownCryer
                     {
                         BaseQuest quest = QuestHelper.Construct(Entry.QuestType) as BaseQuest;
 
-                        if (quest != null && (!QuestHelper.CheckDoneOnce(User, quest, Cryer, true) || User.AccessLevel > AccessLevel.Player))
+                        if (quest != null && (!QuestHelper.CheckDoneOnce(User, quest, Cryer, true) || User.AccessLevel > AccessLevel.VIP))
                         {
                             quest.Owner = User;
                             quest.Quester = Cryer;

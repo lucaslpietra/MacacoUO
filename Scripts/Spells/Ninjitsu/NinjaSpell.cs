@@ -62,39 +62,28 @@ namespace Server.Spells.Ninjitsu
                 return 7;
             }
         }
-        public static bool CheckExpansion(Mobile from)
-        {
-            if (!(from is PlayerMobile))
-                return true;
-
-            if (from.NetState == null)
-                return false;
-
-            return from.NetState.SupportsExpansion(Expansion.SE);
-        }
-
+     
         public override bool CheckCast()
         {
-            int mana = this.ScaleMana(this.RequiredMana);
+            int mana = 0; //this.AjustaMana(this.RequiredMana/4);
+            int stamina = this.ScaleStamina(this.RequiredMana);
 
             if (!base.CheckCast())
                 return false;
 
-            if (!CheckExpansion(this.Caster))
-            {
-                this.Caster.SendLocalizedMessage(1063456); // You must upgrade to Samurai Empire in order to use that ability.
-                return false;
-            }
-
             if (this.Caster.Skills[this.CastSkill].Value < this.RequiredSkill)
             {
                 string args = String.Format("{0}\t{1}\t ", this.RequiredSkill.ToString("F1"), this.CastSkill.ToString());
-                this.Caster.SendLocalizedMessage(1063013, args); // You need at least ~1_SKILL_REQUIREMENT~ ~2_SKILL_NAME~ skill to use that ability.
+                this.Caster.SendMessage("Voce precisa ter pelo menos "+ this.RequiredSkill+" de skill para fazer isto"); // You need at least ~1_SKILL_REQUIREMENT~ ~2_SKILL_NAME~ skill to use that ability.
                 return false;
             }
             else if (this.Caster.Mana < mana)
             {
-                this.Caster.SendLocalizedMessage(1060174, mana.ToString()); // You must have at least ~1_MANA_REQUIREMENT~ Mana to use this ability.
+                this.Caster.SendMessage("Voce precisa ter pelo menos "+ mana.ToString()+" mana para fazer isto"); // You must have at least ~1_MANA_REQUIREMENT~ Mana to use this ability.
+                return false;
+            } else if(this.Caster.Stam < stamina)
+            {
+                this.Caster.SendMessage("Voce precisa ter pelo menos " + stamina.ToString() + " stamina para fazer isto"); // You must have at least ~1_MANA_REQUIREMENT~ Mana to use this ability.
                 return false;
             }
 
@@ -103,16 +92,22 @@ namespace Server.Spells.Ninjitsu
 
         public override bool CheckFizzle()
         {
-            int mana = this.ScaleMana(this.RequiredMana);
+            int mana = this.AjustaMana(this.RequiredMana / 4);
+            int stamina = this.ScaleStamina(this.RequiredMana);
 
             if (this.Caster.Skills[this.CastSkill].Value < this.RequiredSkill)
             {
-                this.Caster.SendLocalizedMessage(1063352, this.RequiredSkill.ToString("F1")); // You need ~1_SKILL_REQUIREMENT~ Ninjitsu skill to perform that attack!
+                this.Caster.SendMessage("Voce precisa ter pelo menos " + this.RequiredSkill.ToString("F1") + " de skill para fazer isto"); // You need at least ~1_SKILL_REQUIREMENT~ ~2_SKILL_NAME~ skill to use that ability.hat attack!
                 return false;
             }
             else if (this.Caster.Mana < mana)
             {
-                this.Caster.SendLocalizedMessage(1060174, mana.ToString()); // You must have at least ~1_MANA_REQUIREMENT~ Mana to use this ability.
+                this.Caster.SendMessage("Voce precisa ter pelo menos " + mana.ToString() + " mana para fazer isto"); // You must have at least ~1_MANA_REQUIREMENT~ Mana to use this ability.
+                return false;
+            }
+            else if (this.Caster.Stam < stamina)
+            {
+                this.Caster.SendMessage("Voce precisa ter pelo menos " + stamina.ToString() + " stamina para fazer isto"); // You must have at least ~1_MANA_REQUIREMENT~ Mana to use this ability.
                 return false;
             }
 
@@ -120,6 +115,7 @@ namespace Server.Spells.Ninjitsu
                 return false;
 
             this.Caster.Mana -= mana;
+            this.Caster.Stam -= stamina;
 
             return true;
         }

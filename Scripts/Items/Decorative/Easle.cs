@@ -8,7 +8,7 @@ namespace Server.Items
     {
         [Constructable]
         public EasleSouth()
-            : base(0xF66)
+            : base(0xF65)
         {
             Weight = 25.0;
         }
@@ -21,7 +21,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -29,9 +29,9 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (version == 0)
+            if (Weight == 10.0)
             {
-                ItemID = 0xF66;
+                Weight = 25.0;
             }
         }
     }
@@ -41,7 +41,7 @@ namespace Server.Items
     {
         [Constructable]
         public EasleEast()
-            : base(0xF68)
+            : base(0xF67)
         {
             Weight = 25.0;
         }
@@ -54,18 +54,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                ItemID = 0xF68;
-            }
         }
     }
 
@@ -74,7 +69,7 @@ namespace Server.Items
     {
         [Constructable]
         public EasleNorth()
-            : base(0xF6A)
+            : base(0xF69)
         {
             Weight = 25.0;
         }
@@ -87,18 +82,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                ItemID = 0xF6A;
-            }
         }
     }
 }

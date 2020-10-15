@@ -300,7 +300,7 @@ namespace Server.Engines.ArenaSystem
 
         public static bool HasSameIP(Mobile m, ArenaDuel duel)
         {
-            if (duel == null || m.AccessLevel > AccessLevel.Player)
+            if (duel == null || m.AccessLevel > AccessLevel.VIP)
                 return false;
 
             foreach (var kvp in duel.GetParticipants())
@@ -316,7 +316,7 @@ namespace Server.Engines.ArenaSystem
 
         public static bool IsSameIP(Mobile one, Mobile two)
         {
-            if (one.NetState == null || two.NetState == null || one.AccessLevel > AccessLevel.Player || two.AccessLevel > AccessLevel.Player)
+            if (one.NetState == null || two.NetState == null || one.AccessLevel > AccessLevel.VIP || two.AccessLevel > AccessLevel.VIP)
                 return false;
 
             var oneAddress = one.NetState.Address;

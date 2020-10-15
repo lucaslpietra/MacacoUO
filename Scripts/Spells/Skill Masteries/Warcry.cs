@@ -49,7 +49,7 @@ namespace Server.Spells.SkillMasteries
 
                 TimeSpan d;
 
-                if (Caster.AccessLevel == AccessLevel.Player)
+                if (Caster.AccessLevel <= AccessLevel.VIP)
                     d = TimeSpan.FromMinutes(20);
                 else
                     d = TimeSpan.FromSeconds(10);

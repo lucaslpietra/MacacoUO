@@ -1,17 +1,21 @@
 using System;
 using Server.Items;
+using Server.Ziden;
+using Server.Ziden.Items;
 
 namespace Server.Mobiles
 {
     [CorpseName("Ancient Lich [Renowned] corpse")]  
     public class AncientLichRenowned : BaseRenowned
     {
+        public override double DisturbChance { get { return 0; } }
+
         [Constructable]
         public AncientLichRenowned()
             : base(AIType.AI_NecroMage)
         {
-            this.Name = "Ancient Lich";
-            this.Title = "[Renowned]";
+            this.Name = "Lich Rei";
+            //this.Title = "[Renomado]";
             this.Body = 78;
             this.BaseSoundID = 412;
 
@@ -19,7 +23,7 @@ namespace Server.Mobiles
             this.SetDex(96, 115);
             this.SetInt(966, 1045);
 
-            this.SetHits(2000, 2500);
+            this.SetHits(3000, 3500);
 
             this.SetDamage(15, 27);
 
@@ -33,7 +37,8 @@ namespace Server.Mobiles
             this.SetResistance(ResistanceType.Poison, 50, 60);
             this.SetResistance(ResistanceType.Energy, 25, 30);
 
-            this.SetSkill(SkillName.EvalInt, 120.1, 130.0);
+            SetSkill(SkillName.Poisoning, 90.0, 99.0);
+            this.SetSkill(SkillName.EvalInt, 110, 120);
             this.SetSkill(SkillName.Magery, 120.1, 130.0);
             this.SetSkill(SkillName.Meditation, 100.1, 101.0);
             this.SetSkill(SkillName.MagicResist, 175.2, 200.0);
@@ -44,8 +49,12 @@ namespace Server.Mobiles
             this.Karma = -23000;
 
             this.VirtualArmor = 60;
-
-            this.PackNecroReg(30, 275);
+            this.PackNecroReg(200, 375);
+            PackItem(Decos.RandomDeco());
+            PackItem(new LivroAntigo());
+            var book = new NecromancerSpellbook();
+            book.LootType = LootType.Regular;
+            PackItem(book);
         }
 
         public AncientLichRenowned(Serial serial)
@@ -57,14 +66,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(SpinedBloodwormBracers), typeof(DefenderOfTheMagus) };
+                return new Type[] { /*typeof(SpinedBloodwormBracers), typeof(DefenderOfTheMagus)*/ };
             }
         }
         public override Type[] SharedSAList
         {
             get
             {
-                return new Type[] { typeof(SummonersKilt) };
+                return new Type[] { /*typeof(SummonersKilt)*/ };
             }
         }
         public override OppositionGroup OppositionGroup
@@ -120,9 +129,25 @@ namespace Server.Mobiles
             return 0x28B;
         }
 
+        /*
+        public override bool OnBeforeDeath()
+        {
+            var rights = this.GetLootingRights();
+            foreach(var d in rights)
+            {
+                if(d.m_HasRight)
+                {
+                    d.m_Mobile.Backpack.AddItem(new LichKiller());
+                }
+            }
+            return base.OnBeforeDeath();
+        }
+        */
+
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.FilthyRich, 2);
+            AddLoot(LootPack.FilthyRich, 3);
+            
         }
 
         public override void Serialize(GenericWriter writer)

@@ -31,17 +31,10 @@ namespace Server.Items
 
         public override void Drink(Mobile from)
         {
-            if (from.Stam < from.StamMax)
-            {
-                from.Stam += Scale(from, (int)(this.Refresh * from.StamMax));
+            from.Stam += Scale(from, (int)(this.Refresh * from.StamMax));
 
-                PlayDrinkEffect(from);
-                Consume();
-            }
-            else
-            {
-                from.SendMessage("You decide against drinking this potion, as you are already at full stamina.");
-            }
+            PlayDrinkEffect(from);
+            Consume();
         }
     }
 }

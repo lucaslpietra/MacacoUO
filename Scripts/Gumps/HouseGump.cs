@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Server.Mobiles;
 using Server.Multis;
 using Server.Network;
 using Server.Prompts;
@@ -296,17 +297,18 @@ namespace Server.Gumps
             AddHtmlLocalized(225, 190, 155, 20, 1011245, false, false); // Clear Friends list
             AddButton(200, 190, 2714, 2715, 9, GumpButtonType.Reply, 0);
 
-            AddHtmlLocalized(120, 215, 280, 20, 1011258, false, false); // Ban someone from the house
-            AddButton(95, 215, 2714, 2715, 10, GumpButtonType.Reply, 0);
+
+            //AddHtmlLocalized(120, 215, 280, 20, 1011258, false, false); // Ban someone from the house
+            //AddButton(95, 215, 2714, 2715, 10, GumpButtonType.Reply, 0);
 
             AddHtmlLocalized(120, 235, 280, 20, 1011259, false, false); // Eject someone from the house
             AddButton(95, 235, 2714, 2715, 11, GumpButtonType.Reply, 0);
 
-            AddHtmlLocalized(120, 255, 280, 20, 1011260, false, false); // View a list of banned people
-            AddButton(95, 255, 2714, 2715, 12, GumpButtonType.Reply, 0);
+            //AddHtmlLocalized(120, 255, 280, 20, 1011260, false, false); // View a list of banned people
+            //AddButton(95, 255, 2714, 2715, 12, GumpButtonType.Reply, 0);
 
-            AddHtmlLocalized(120, 275, 280, 20, 1011261, false, false); // Lift a ban
-            AddButton(95, 275, 2714, 2715, 13, GumpButtonType.Reply, 0);
+            //AddHtmlLocalized(120, 275, 280, 20, 1011261, false, false); // Lift a ban
+            //AddButton(95, 275, 2714, 2715, 13, GumpButtonType.Reply, 0);
 
             // Options page
             AddPage(3);
@@ -317,6 +319,10 @@ namespace Server.Gumps
             AddHtmlLocalized(45, 180, 355, 30, 1011249, false, false); // Demolish house and get deed back
             AddButton(20, 180, 2714, 2715, 15, GumpButtonType.Reply, 0);
 
+            AddHtmlLocalized(45, 210, 355, 30, 1011247, false, false); // Change the house locks
+            AddButton(20, 210, 2714, 2715, 16, GumpButtonType.Reply, 0);
+
+            /*
             if (!m_House.Public)
             {
                 AddHtmlLocalized(45, 210, 355, 30, 1011247, false, false); // Change the house locks
@@ -325,44 +331,47 @@ namespace Server.Gumps
                 AddHtmlLocalized(45, 240, 350, 90, 1011253, false, false); // Declare this building to be public. This will make your front door unlockable.
                 AddButton(20, 240, 2714, 2715, 17, GumpButtonType.Reply, 0);
             }
-            else
+             */
+
+            //AddHtmlLocalized( 45, 280, 350, 30, 1011250, false, false ); // Change the sign type
+            AddHtmlLocalized(45, 240, 350, 30, 1011250, false, false); // Change the sign type
+            AddButton(20, 240, 2714, 2715, 0, GumpButtonType.Page, 4);
+
+            /*
+            AddHtmlLocalized(45, 240, 350, 30, 1011252, false, false); // Declare this building to be private.
+            AddButton(20, 240, 2714, 2715, 17, GumpButtonType.Reply, 0);
+            */
+
+            // Change the sign type
+            AddPage(4);
+
+            for (int i = 0; i < 24; ++i)
             {
-                //AddHtmlLocalized( 45, 280, 350, 30, 1011250, false, false ); // Change the sign type
-                AddHtmlLocalized(45, 210, 350, 30, 1011250, false, false); // Change the sign type
-                AddButton(20, 210, 2714, 2715, 0, GumpButtonType.Page, 4);
-
-                AddHtmlLocalized(45, 240, 350, 30, 1011252, false, false); // Declare this building to be private.
-                AddButton(20, 240, 2714, 2715, 17, GumpButtonType.Reply, 0);
-			
-                // Change the sign type
-                AddPage(4);
-
-                for (int i = 0; i < 24; ++i)
-                {
-                    AddRadio(53 + ((i / 4) * 50), 137 + ((i % 4) * 35), 210, 211, false, i + 1);
-                    AddItem(60 + ((i / 4) * 50), 130 + ((i % 4) * 35), 2980 + (i * 2));
-                }
-
-                AddHtmlLocalized(200, 305, 129, 20, 1011254, false, false); // Guild sign choices
-                AddButton(350, 305, 252, 253, 0, GumpButtonType.Page, 5);
-
-                AddHtmlLocalized(200, 340, 355, 30, 1011277, false, false); // Okay that is fine.
-                AddButton(350, 340, 4005, 4007, 18, GumpButtonType.Reply, 0);
-
-                AddPage(5);
-
-                for (int i = 0; i < 29; ++i)
-                {
-                    AddRadio(53 + ((i / 5) * 50), 137 + ((i % 5) * 35), 210, 211, false, i + 25);
-                    AddItem(60 + ((i / 5) * 50), 130 + ((i % 5) * 35), 3028 + (i * 2));
-                }
-
-                AddHtmlLocalized(200, 305, 129, 20, 1011255, false, false); // Shop sign choices
-                AddButton(350, 305, 250, 251, 0, GumpButtonType.Page, 4);
-
-                AddHtmlLocalized(200, 340, 355, 30, 1011277, false, false); // Okay that is fine.
-                AddButton(350, 340, 4005, 4007, 18, GumpButtonType.Reply, 0);
+                AddRadio(53 + ((i / 4) * 50), 137 + ((i % 4) * 35), 210, 211, false, i + 1);
+                AddItem(60 + ((i / 4) * 50), 130 + ((i % 4) * 35), 2980 + (i * 2));
             }
+
+            AddHtmlLocalized(200, 305, 129, 20, 1011254, false, false); // Guild sign choices
+            AddButton(350, 305, 252, 253, 0, GumpButtonType.Page, 5);
+
+            AddHtmlLocalized(200, 340, 355, 30, 1011277, false, false); // Okay that is fine.
+            AddButton(350, 340, 4005, 4007, 18, GumpButtonType.Reply, 0);
+
+            AddPage(5);
+
+            for (int i = 0; i < 29; ++i)
+            {
+                AddRadio(53 + ((i / 5) * 50), 137 + ((i % 5) * 35), 210, 211, false, i + 25);
+                AddItem(60 + ((i / 5) * 50), 130 + ((i % 5) * 35), 3028 + (i * 2));
+            }
+
+            AddHtmlLocalized(200, 305, 129, 20, 1011255, false, false); // Shop sign choices
+            AddButton(350, 305, 250, 251, 0, GumpButtonType.Page, 4);
+
+            AddHtmlLocalized(200, 340, 355, 30, 1011277, false, false); // Okay that is fine.
+            AddButton(350, 340, 4005, 4007, 18, GumpButtonType.Reply, 0);
+
+
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
@@ -389,7 +398,7 @@ namespace Server.Gumps
             if (sign == null || from.Map != sign.Map || !from.InRange(sign.GetWorldLocation(), 18))
                 return;
 
-            switch ( info.ButtonID )
+            switch (info.ButtonID)
             {
                 case 1: // Rename sign
                     {
@@ -508,13 +517,15 @@ namespace Server.Gumps
 
                         break;
                     }
-                case 10: // Ban
-                    {
-                        from.SendLocalizedMessage(501325); // Target the individual to ban from this house.
-                        from.Target = new HouseBanTarget(true, m_House);
+                /*
+            case 10: // Ban
+                {
+                    from.SendLocalizedMessage(501325); // Target the individual to ban from this house.
+                    from.Target = new HouseBanTarget(true, m_House);
 
-                        break;
-                    }
+                    break;
+                }
+                */
                 case 11: // Eject
                     {
                         from.SendLocalizedMessage(501326); // Target the individual to eject from this house.
@@ -522,24 +533,26 @@ namespace Server.Gumps
 
                         break;
                     }
-                case 12: // List bans
-                    {
-                        from.CloseGump(typeof(HouseGump));
-                        from.CloseGump(typeof(HouseListGump));
-                        from.CloseGump(typeof(HouseRemoveGump));
-                        from.SendGump(new HouseListGump(1011271, m_House.Bans, m_House, true));
+                /*
+            case 12: // List bans
+                {
+                    from.CloseGump(typeof(HouseGump));
+                    from.CloseGump(typeof(HouseListGump));
+                    from.CloseGump(typeof(HouseRemoveGump));
+                    from.SendGump(new HouseListGump(1011271, m_House.Bans, m_House, true));
 
-                        break;
-                    }
-                case 13: // Remove ban
-                    {
-                        from.CloseGump(typeof(HouseGump));
-                        from.CloseGump(typeof(HouseListGump));
-                        from.CloseGump(typeof(HouseRemoveGump));
-                        from.SendGump(new HouseRemoveGump(1011269, m_House.Bans, m_House, true));
+                    break;
+                }
+            case 13: // Remove ban
+                {
+                    from.CloseGump(typeof(HouseGump));
+                    from.CloseGump(typeof(HouseListGump));
+                    from.CloseGump(typeof(HouseRemoveGump));
+                    from.SendGump(new HouseRemoveGump(1011269, m_House.Bans, m_House, true));
 
-                        break;
-                    }
+                    break;
+                }
+                */
                 case 14: // Transfer ownership
                     {
                         if (isOwner)
@@ -577,25 +590,24 @@ namespace Server.Gumps
                     }
                 case 16: // Change locks
                     {
-                        if (m_House.Public)
+                        if (isOwner)
                         {
-                            from.SendLocalizedMessage(501669);// Public houses are always unlocked.
-                        }
-                        else
-                        {
-                            if (isOwner)
+                            if(Banker.Withdraw(from, 500))
                             {
                                 m_House.RemoveKeys(from);
                                 m_House.ChangeLocks(from);
-
-                                from.SendLocalizedMessage(501306); // The locks on your front door have been changed, and new master keys have been placed in your bank and your backpack.
-                            }
-                            else
+                                from.SendMessage("Voce pagou 500 moedas para trocar a chave de sua casa.");
+                                from.SendMessage("Suas chaves foram trocadas. Uma nova chave foi colocada em sua mochila."); // The locks on your front door have been changed, and new master keys have been placed in your bank and your backpack.
+                            } else
                             {
-                                from.SendLocalizedMessage(501303); // Only the house owner may change the house locks.
+                                from.SendMessage("Voce precisa ter 500 moedas para poder trocar a chave da sua casa.");
                             }
+                         
                         }
-
+                        else
+                        {
+                            from.SendLocalizedMessage(501303); // Only the house owner may change the house locks.
+                        }
                         break;
                     }
                 case 17: // Declare public/private
@@ -746,7 +758,7 @@ namespace Server.Prompts
                 if (m_House.Sign != null)
                     m_House.Sign.Name = text;
 
-                from.SendMessage("Sign changed.");
+                from.SendMessage("Alterado.");
             }
         }
     }

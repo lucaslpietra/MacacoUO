@@ -189,7 +189,7 @@ namespace Server.Items
         {
             if (keg != null && !keg.Deleted && keg.Held == 100)
             {
-                if (keg.Type == PotionEffect.ExplosionLesser)
+                if (keg.Type == PotionEffect.ExplosaoFraca)
                     return 5;
                 else if (keg.Type == PotionEffect.Explosion)
                     return 10;

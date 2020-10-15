@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public FleshGolem()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a flesh golem";
+            Name = "golem de carne";
             Body = 304;
             BaseSoundID = 684;
 
@@ -40,6 +40,7 @@ namespace Server.Mobiles
             VirtualArmor = 34;
 
             SetWeaponAbility(WeaponAbility.BleedAttack);
+            AddItem(new RawSteakExp());
         }
 
         public FleshGolem(Serial serial)

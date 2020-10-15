@@ -1,5 +1,6 @@
 using System;
 using Server.Mobiles;
+using Server.Network;
 using Server.Spells.Chivalry;
 using Server.Targeting;
 
@@ -43,8 +44,9 @@ namespace Server.Spells.Fifth
             }
             else if (this.CheckHSequence(m))
             {
-                SpellHelper.Turn(this.Caster, m);
+                //SpellHelper.Turn(this.Caster, m);
 
+                // mais facil 
                 SpellHelper.CheckReflect((int)this.Circle, this.Caster, ref m);
 
                 double duration;
@@ -53,9 +55,6 @@ namespace Server.Spells.Fifth
                 {
                     int secs = (int)((this.GetDamageSkill(this.Caster) / 10) - (this.GetResistSkill(m) / 10));
 					
-                    if (!Core.SE)
-                        secs += 2;
-
                     if (!m.Player)
                         secs *= 3;
 
@@ -67,10 +66,13 @@ namespace Server.Spells.Fifth
                 else
                 {
                     // Algorithm: ((20% of magery) + 7) seconds [- 50% if resisted]
-                    duration = 7.0 + (this.Caster.Skills[SkillName.Magery].Value * 0.2);
-
-                    if (this.CheckResisted(m))
-                        duration *= 0.75;
+                    duration = Utility.Random(5, 6);
+   
+                    if (duration <= 0 || this.CheckResisted(m))
+                    {
+                        duration = 0;
+                        m.SendMessage("Voce sente seu corpo resistindo a magia");
+                    } 
                 }
 
                 if (m is PlagueBeastLord)
@@ -79,10 +81,25 @@ namespace Server.Spells.Fifth
                     duration = 120;
                 }
 
+                if (duration == 0)
+                    return;
+
+                var limiteParalize = DateTime.UtcNow - TimeSpan.FromSeconds(10);
+                if(m.LastParalized > limiteParalize)
+                {
+                    duration /= 2;
+                    this.Caster.SendMessage("O alvo foi paralizado demais e esta mais resistente a magia");
+                }
+
+                m.PrivateOverheadMessage("* Paralizado *");
+
                 m.Paralyze(TimeSpan.FromSeconds(duration));
 
+                m.LastParalized = DateTime.UtcNow;
+
                 m.PlaySound(0x204);
-                m.FixedEffect(0x376A, 6, 1);
+                //m.FixedEffect(0x376A, 6, 1);
+                Caster.MovingParticles(m, 0x374A, 7, 0, false, false, 9502, 0x374A, 0x204);
 
                 this.HarmfulSpell(m);
             }
@@ -94,7 +111,7 @@ namespace Server.Spells.Fifth
         {
             private readonly ParalyzeSpell m_Owner;
             public InternalTarget(ParalyzeSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(Spell.RANGE, false, TargetFlags.Harmful)
             {
                 this.m_Owner = owner;
             }

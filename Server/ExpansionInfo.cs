@@ -189,10 +189,10 @@ namespace Server
 				new ExpansionInfo(
 					4,
 					"Blackthorn's Revenge",
-					ClientFlags.Ilshenar,
-					FeatureFlags.ExpansionLBR,
-					CharacterListFlags.ExpansionLBR,
-					HousingFlags.None),
+					ClientFlags.Felucca,
+					FeatureFlags.ExpansionEJ,
+					CharacterListFlags.ExpansionEJ,
+					HousingFlags.HousingEJ),
 				new ExpansionInfo(
 					5,
 					"Age of Shadows",

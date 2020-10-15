@@ -32,6 +32,7 @@ namespace Server.Items
                     m_Held = value;
                     UpdateWeight();
                     InvalidateProperties();
+                    Hue = GetHue();
                 }
             }
         }
@@ -46,8 +47,66 @@ namespace Server.Items
             {
                 m_Type = value;
                 InvalidateProperties();
+                Hue = GetHue();
             }
         }
+
+        public int GetHue()
+        {
+            if (Held == 0)
+                return 0;
+            else
+            {
+                switch(Type)
+                {
+                    case PotionEffect.Forca:
+                    case PotionEffect.ForcaMaior:
+                        return 1154;
+                    case PotionEffect.Inteligencia:
+                    case PotionEffect.InteligenciaMaior:
+                        return TintaPreta.COR; ;
+                    case PotionEffect.AgilidadeMaior:
+                    case PotionEffect.Agilidade:
+                        return 100;
+                    case PotionEffect.Conflagration:
+                    case PotionEffect.ConflagrationGreater:
+                        return 38;
+                    case PotionEffect.ConfusionBlast:
+                    case PotionEffect.ConfusionBlastGreater:
+                        return TintaPreta.COR;
+                    case PotionEffect.Vida:
+                    case PotionEffect.VidaForte:
+                    case PotionEffect.VidaFraca:
+                        return 50;
+                    case PotionEffect.Stamina:
+                    case PotionEffect.StaminaTotal:
+                        return 32;
+                    case PotionEffect.Cura:
+                    case PotionEffect.CuraMaior:
+                    case PotionEffect.CuraMenor:
+                        return 44;
+                    case PotionEffect.Veneno:
+                    case PotionEffect.VenenoForte:
+                    case PotionEffect.VenenoFraco:
+                    case PotionEffect.VenenoMortal:
+                        return 72;
+                    case PotionEffect.Invisibilidade:
+                        return 2;
+                    case PotionEffect.AntiParalize:
+                        return 55;
+                    case PotionEffect.ManaForte:
+                    case PotionEffect.Mana:
+                    case PotionEffect.ManaFraca:
+                        return 380;
+                    case PotionEffect.ExplosaoFraca:
+                    case PotionEffect.Explosion:
+                    case PotionEffect.ExplosionGreater:
+                        return 19;
+                }
+            }
+            return 0;
+        }
+
         public override int LabelNumber
         { 
             get
@@ -58,11 +117,9 @@ namespace Server.Items
                     {
                         case PotionEffect.Parasitic: return 1080069;
                         case PotionEffect.Darkglow: return 1080070;
-                        case PotionEffect.Invisibility: return 1080071;
+                        case PotionEffect.Invisibilidade: return 1080071;
                         case PotionEffect.Conflagration: return 1072658;
                         case PotionEffect.ConflagrationGreater: return 1072659;
-                        case PotionEffect.ConfusionBlast: return 1072662;
-                        case PotionEffect.ConfusionBlastGreater: return 1072663;
                     }
                 }
 
@@ -78,7 +135,7 @@ namespace Server.Items
         {
             int held = Math.Max(0, Math.Min(m_Held, 100));
 
-            Weight = 20 + ((held * 80) / 100);
+            Weight = 10 + ((held * 40) / 100);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -117,14 +174,15 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            int number;
+            string number;
 
+            /*
             if (m_Held <= 0)
-                number = 502246; // The keg is empty.
+                number = "Vazio"; // The keg is empty.
             else if (m_Held < 5)
-                number = 502248; // The keg is nearly empty.
+                number = "Quase Vazio"; // The keg is nearly empty.
             else if (m_Held < 20)
-                number = 502249; // The keg is not very full.
+                number = "; // The keg is not very full.
             else if (m_Held < 30)
                 number = 502250; // The keg is about one quarter full.
             else if (m_Held < 40)
@@ -143,8 +201,16 @@ namespace Server.Items
                 number = 502257; // The liquid is almost to the top of the keg.
             else
                 number = 502258; // The keg is completely full.
+           */
 
-            list.Add(number);
+            if (m_Held > 0)
+            {
+                list.Add(+m_Held + "% Cheio");
+                list.Add(m_Type.ToString());
+            } else
+            {
+                list.Add("Barril vazio");
+            }
         }
 
         public override void OnSingleClick(Mobile from)
@@ -197,7 +263,7 @@ namespace Server.Items
 
                         if (pack.TryDropItem(from, pot, false))
                         {
-                            from.SendLocalizedMessage(502243); // ...and place it into your backpack.
+                            //from.SendLocalizedMessage(502243); // ...and place it into your backpack.
                             from.PlaySound(0x240);
 
                             if (--Held == 0)
@@ -322,48 +388,48 @@ namespace Server.Items
             switch ( m_Type )
             {
                 default:
-                case PotionEffect.Nightsight:
+                case PotionEffect.VisaoNoturna:
                     return new NightSightPotion();
 
-                case PotionEffect.CureLesser:
+                case PotionEffect.CuraMenor:
                     return new LesserCurePotion();
-                case PotionEffect.Cure:
+                case PotionEffect.Cura:
                     return new CurePotion();
-                case PotionEffect.CureGreater:
+                case PotionEffect.CuraMaior:
                     return new GreaterCurePotion();
 
-                case PotionEffect.Agility:
+                case PotionEffect.Agilidade:
                     return new AgilityPotion();
-                case PotionEffect.AgilityGreater:
+                case PotionEffect.AgilidadeMaior:
                     return new GreaterAgilityPotion();
 
-                case PotionEffect.Strength:
+                case PotionEffect.Forca:
                     return new StrengthPotion();
-                case PotionEffect.StrengthGreater:
+                case PotionEffect.ForcaMaior:
                     return new GreaterStrengthPotion();
 
-                case PotionEffect.PoisonLesser:
+                case PotionEffect.VenenoFraco:
                     return new LesserPoisonPotion();
-                case PotionEffect.Poison:
+                case PotionEffect.Veneno:
                     return new PoisonPotion();
-                case PotionEffect.PoisonGreater:
+                case PotionEffect.VenenoForte:
                     return new GreaterPoisonPotion();
-                case PotionEffect.PoisonDeadly:
+                case PotionEffect.VenenoMortal:
                     return new DeadlyPoisonPotion();
 
-                case PotionEffect.Refresh:
+                case PotionEffect.Stamina:
                     return new RefreshPotion();
-                case PotionEffect.RefreshTotal:
+                case PotionEffect.StaminaTotal:
                     return new TotalRefreshPotion();
 
-                case PotionEffect.HealLesser:
+                case PotionEffect.VidaFraca:
                     return new LesserHealPotion();
-                case PotionEffect.Heal:
+                case PotionEffect.Vida:
                     return new HealPotion();
-                case PotionEffect.HealGreater:
+                case PotionEffect.VidaForte:
                     return new GreaterHealPotion();
 
-                case PotionEffect.ExplosionLesser:
+                case PotionEffect.ExplosaoFraca:
                     return new LesserExplosionPotion();
                 case PotionEffect.Explosion:
                     return new ExplosionPotion();
@@ -380,8 +446,19 @@ namespace Server.Items
                 case PotionEffect.ConfusionBlastGreater:
                     return new GreaterConfusionBlastPotion();
 
-                case PotionEffect.Invisibility:
+                case PotionEffect.Invisibilidade:
                     return new InvisibilityPotion();
+                case PotionEffect.Mana:
+                    return new ManaPotion();
+
+                  case PotionEffect.ManaFraca:
+                    return new LesserManaPotion();
+
+                case PotionEffect.ManaForte:
+                    return new GreaterManaPotion();
+
+                case PotionEffect.AntiParalize:
+                    return new AntiParaPotion();
             }
         }
     }

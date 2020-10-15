@@ -164,7 +164,7 @@ namespace Server.Engines.Quests
             }
             else if (!Completed)
             {
-                m_Quest.Owner.SendLocalizedMessage(1072258); // You failed to complete an objective in time!
+                m_Quest.Owner.SendMessage("Voce nao completou a tempo"); // You failed to complete an objective in time!
 				
                 Fail();
             }
@@ -275,9 +275,9 @@ namespace Server.Engines.Quests
         public virtual void OnKill(Mobile killed)
         {
             if (Completed)
-                Quest.Owner.SendLocalizedMessage(1075050); // You have killed all the required quest creatures of this type.
+                Quest.Owner.SendMessage("Voce matou todas criaturas da missao"); // You have killed all the required quest creatures of this type.
             else
-                Quest.Owner.SendLocalizedMessage(1075051, (MaxProgress - CurProgress).ToString()); // You have killed a quest creature. ~1_val~ more left.
+                Quest.Owner.SendMessage("Voce matou uma criatura da missao, faltam "+ (MaxProgress - CurProgress).ToString()); // You have killed a quest creature. ~1_val~ more left.
         }
 
         public virtual bool IsObjective(Mobile mob)
@@ -424,10 +424,11 @@ namespace Server.Engines.Quests
                     if (!obtained.QuestItem)
                     { 
                         CurProgress += obtained.Amount;
-							
+
+                        Shard.Debug("Objetivos: " + Quest.Objectives.Count);
                         obtained.QuestItem = true;
                         Quest.Owner.SendLocalizedMessage(1072353); // You set the item to Quest Item status
-
+                        Shard.Debug("Progresso " + CurProgress+" de "+MaxProgress+" completo ? "+Quest.Completed);
                         Quest.OnObjectiveUpdate(obtained);
                     }
                     else
@@ -447,6 +448,7 @@ namespace Server.Engines.Quests
 
         public virtual bool IsObjective(Item item)
         {
+            Shard.Debug("Precisava de " + m_Obtain.Name + " to dando " + item.GetType());
             if (m_Obtain == null)
                 return false;
 		
@@ -689,7 +691,7 @@ namespace Server.Engines.Quests
         {
             if (Quest != null && Quest.Owner != null && Quest.Owner.Murderer && Quest.Owner.DoneQuests.FirstOrDefault(info => info.QuestType == typeof(ResponsibilityQuest)) == null)
             {
-                QuestHelper.Delay(Quest.Owner, typeof(ResponsibilityQuest), Quest.RestartDelay);
+                QuestHelper.DoneQuest(Quest.Owner, typeof(ResponsibilityQuest), Quest.RestartDelay);
             }
 
             base.OnCompleted();

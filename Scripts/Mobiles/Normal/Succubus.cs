@@ -1,9 +1,5 @@
 using System;
-using System.Linq;
 using System.Collections;
-
-using Server.Items;
-using Server.Spells;
 
 namespace Server.Mobiles
 {
@@ -46,8 +42,6 @@ namespace Server.Mobiles
             Karma = -24000;
 
             VirtualArmor = 80;
-
-            SetSpecialAbility(SpecialAbility.LifeDrain);
         }
 
         public Succubus(Serial serial)
@@ -74,6 +68,8 @@ namespace Server.Mobiles
             AddLoot(LootPack.FilthyRich, 2);
             AddLoot(LootPack.MedScrolls, 2);
         }
+
+        public override bool DrainsLife { get { return true; } }
 
         public override void Serialize(GenericWriter writer)
         {

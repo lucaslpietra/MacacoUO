@@ -433,7 +433,7 @@ namespace Server.Items
 
 		public override bool CheckTarget(Mobile from, Server.Targeting.Target targ, object targeted)
 		{
-			if (from.AccessLevel == AccessLevel.Player) return false;
+			if (from.AccessLevel <= AccessLevel.VIP) return false;
 
 			return true;
 		}

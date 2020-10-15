@@ -302,14 +302,9 @@ namespace Server.Engines.Khaldun
 
         public override bool OnMoveOver(Mobile m)
         {
-            if (m.AccessLevel > AccessLevel.Player)
+            if (m.AccessLevel > AccessLevel.VIP)
             {
                 return base.OnMoveOver(m);
-            }
-
-            if (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)
-            {
-                m = ((BaseCreature)m).GetMaster();
             }
 
             bool hasCreds = m.FindItemOnLayer(Layer.Neck) is DetectiveCredentials;
@@ -327,7 +322,6 @@ namespace Server.Engines.Khaldun
                         return base.OnMoveOver(m);
                     }
                 }
-
                 eable.Free();
 
                 if (X == 5991 && Y == 3749)
@@ -385,8 +379,6 @@ namespace Server.Engines.Khaldun
 
                 break;
             }
-
-            eable.Free();
         }
 
         public KhaldunCampBlocker(Serial serial)

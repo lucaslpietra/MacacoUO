@@ -37,15 +37,19 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            from.SendLocalizedMessage(500856); // Select the dye tub to use the dyes on.
-            from.Target = new InternalTarget();
+            from.SendMessage("Selecione um balde de tintas"); // Select the dye tub to use the dyes on.
+            from.Target = new InternalTarget(this);
+            
         }
 
         private class InternalTarget : Target
         {
-            public InternalTarget()
+
+            private Dyes d;
+            public InternalTarget(Dyes d)
                 : base(1, false, TargetFlags.None)
             {
+                this.d = d;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
@@ -60,6 +64,7 @@ namespace Server.Items
                             from.SendHuePicker(new InternalPicker(tub));
                         else
                             from.SendGump(new CustomHuePickerGump(from, tub.CustomHuePicker, new CustomHuePickerCallback(SetTubHue), tub));
+                        d.Consume();
                     }
                     else if (tub is BlackDyeTub)
                     {
@@ -72,13 +77,14 @@ namespace Server.Items
                 }
                 else
                 {
-                    from.SendLocalizedMessage(500857); // Use this on a dye tub.
+                    from.SendMessage("Use isto em um balde de tintas"); // Use this on a dye tub.
                 }
             }
 
             private static void SetTubHue(Mobile from, object state, int hue)
             {
                 ((DyeTub)state).DyedHue = hue;
+                ((DyeTub)state).charges = 6;
             }
 
             private class InternalPicker : HuePicker
@@ -93,6 +99,7 @@ namespace Server.Items
                 public override void OnResponse(int hue)
                 {
                     this.m_Tub.DyedHue = hue;
+                    this.m_Tub.charges = 6;
                 }
             }
         }

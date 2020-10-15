@@ -18,7 +18,7 @@ namespace Server.Spells.Chivalry
 
         public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(0.5); } }
 
-        public override double RequiredSkill { get { return 45.0; } }
+        public override double RequiredSkill { get { return 65.0; } }
         public override int RequiredMana { get { return 20; } }
         public override int RequiredTithing { get { return 10; } }
         public override int MantraNumber { get { return 1060723; } } // Forul Solum
@@ -28,7 +28,7 @@ namespace Server.Spells.Chivalry
         {
             TimeSpan delay = base.GetCastDelay();
 
-            if (Core.SA && UnderEffect(Caster))
+            if (UnderEffect(Caster))
             {
                 double milliseconds = delay.TotalMilliseconds / 2;
 
@@ -40,7 +40,7 @@ namespace Server.Spells.Chivalry
 
         public override void OnCast()
         {
-            if (Core.SA && UnderEffect(Caster))
+            if (UnderEffect(Caster))
             {
                 PlayEffects();
 
@@ -227,7 +227,7 @@ namespace Server.Spells.Chivalry
             m_DamageScalar = 10 + ((chivalry - 40) * 9) / 10;
 
             if (m_PlayerOrPet != null)
-                m_DamageScalar /= 2;
+                m_DamageScalar /= 6;
         }
 
 		private void UpdateBuffInfo()
@@ -275,7 +275,7 @@ namespace Server.Spells.Chivalry
 				DeltaEnemies();
 				UpdateBuffInfo();
 			}
-            else if (Core.SA)
+            else 
             {
                 // Odd but OSI recalculates when the target changes...
                 UpdateDamage();

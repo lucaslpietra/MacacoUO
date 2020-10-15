@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Server.Items;
 using Server.Network;
 using Server.Spells.Bushido;
+using Server.Spells.Necromancy;
 using Server.Spells.Ninjitsu;
 
 namespace Server.Spells
@@ -136,7 +137,7 @@ namespace Server.Spells
 
             if (!Server.Spells.Necromancy.MindRotSpell.GetMindRotScalar(m, ref scalar))
             {
-                scalar = 1.0;
+                scalar = 1;
             }
 
             if (Server.Spells.Mysticism.PurgeMagicSpell.IsUnderCurseEffects(m))
@@ -159,13 +160,24 @@ namespace Server.Spells
             return total;
         }
 
+        public virtual int ScaleStamina(Mobile m, int stam)
+        {
+            return StrangleSpell.ScaleStamina(m, stam);
+        }
+
         public virtual bool CheckMana(Mobile from, bool consume)
         {
-            int mana = this.ScaleMana(from, this.BaseMana);
+            int mana = this.ScaleMana(from, this.BaseMana/6);
+            int stam = this.ScaleStamina(from, (int)(this.BaseMana));
 
             if (from.Mana < mana)
             {
-                from.SendLocalizedMessage(1060181, mana.ToString()); // You need ~1_MANA_REQUIREMENT~ mana to perform that attack
+                from.SendMessage("Voce precisa de pelo menos "+mana+" mana"); // You need ~1_MANA_REQUIREMENT~ mana to perform that attack
+                return false;
+            }
+            if (from.Stam < stam)
+            {
+                from.SendMessage("Voce precisa de pelo menos " + stam + " stamina");  // You need ~1_MANA_REQUIREMENT~ mana to perform that attack
                 return false;
             }
 
@@ -175,6 +187,7 @@ namespace Server.Spells
                     this.SetContext(from);
 
                 from.Mana -= mana;
+                from.Stam -= stam;
             }
 
             return true;
@@ -216,7 +229,7 @@ namespace Server.Spells
 
         public virtual void CheckGain(Mobile m)
         {
-            m.CheckSkill(this.MoveSkill, this.RequiredSkill, this.RequiredSkill + 37.5);
+            m.CheckSkillMult(this.MoveSkill, this.RequiredSkill, this.RequiredSkill + 37.5);
         }
 
         private static readonly Dictionary<Mobile, SpecialMove> m_Table = new Dictionary<Mobile, SpecialMove>();
@@ -253,12 +266,6 @@ namespace Server.Spells
             if (m == null)
                 return null;
 
-            if (!Core.SE)
-            {
-                ClearCurrentMove(m);
-                return null;
-            }
-
             SpecialMove move = null;
             m_Table.TryGetValue(m, out move);
 
@@ -273,12 +280,6 @@ namespace Server.Spells
 
         public static bool SetCurrentMove(Mobile m, SpecialMove move)
         {
-            if (!Core.SE)
-            {
-                ClearCurrentMove(m);
-                return false;
-            }
-
             if (move != null && !move.Validate(m))
             {
                 ClearCurrentMove(m);
@@ -290,7 +291,11 @@ namespace Server.Spells
             ClearCurrentMove(m);
 
             if (sameMove)
-                return true;
+            {
+                Shard.Debug("Same move");
+                m.SendMessage("Voce ja tem este movimento setado");
+                //return false;
+            } 
 
             if (move != null)
             {
@@ -307,7 +312,8 @@ namespace Server.Spells
 
                 Server.Spells.SkillMasteries.SkillMasterySpell.OnToggleSpecialAbility(m);
 
-                move.SendAbilityMessage(m);
+                if(!sameMove)
+                    move.SendAbilityMessage(m);
             }
 
             return true;

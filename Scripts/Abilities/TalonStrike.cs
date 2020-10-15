@@ -48,8 +48,8 @@ namespace Server.Items
 
             ClearCurrentAbility(attacker);
 
-            attacker.SendLocalizedMessage(1063358); // You deliver a talon strike!
-            defender.SendLocalizedMessage(1063359); // Your attacker delivers a talon strike!
+            attacker.SendLocalizedMessage("Voce da um ataque especial"); // You deliver a talon strike!
+            defender.SendLocalizedMessage("Voce recebeu um golpe especial"); // Your attacker delivers a talon strike!
 
             defender.FixedParticles(0x373A, 1, 17, 0x26BC, 0x662, 0, EffectLayer.Waist);
 

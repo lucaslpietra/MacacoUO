@@ -40,7 +40,7 @@ namespace Server.Engines.VvV
 
                                 mobile.Delta(MobileDelta.Noto);
 
-                                mobile.SendMessage("You have been pardoned from all murder counts.");
+                                mobile.SendMessage("Voce foi perdoado por todos seus kills.");
                                 Delete();
 
                                 //TODO: Effects? Message?

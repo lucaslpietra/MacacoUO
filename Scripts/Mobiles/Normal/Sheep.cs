@@ -13,7 +13,7 @@ namespace Server.Mobiles
         public Sheep()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            Name = "a sheep";
+            Name = "ovelha";
             Body = 0xCF;
             BaseSoundID = 0xD6;
 
@@ -99,8 +99,8 @@ namespace Server.Mobiles
                 return false;
             }
 
-            from.SendLocalizedMessage(500452); // You place the gathered wool into your backpack.
-            from.AddToBackpack(new Wool(Map == Map.Felucca ? 2 : 1));
+            from.SendMessage("Voce coletou la"); // You place the gathered wool into your backpack.
+            from.AddToBackpack(new Wool(10));
 
             if (from is PlayerMobile)
             {

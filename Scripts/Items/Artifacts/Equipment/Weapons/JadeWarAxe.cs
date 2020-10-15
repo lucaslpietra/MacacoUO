@@ -10,10 +10,11 @@ namespace Server.Items
 		
         [Constructable]
         public JadeWarAxe()
-        {	
+        {
+            Name = ("Jade War Axe");	
             Hue = 1162;			
             AbsorptionAttributes.EaterFire = 10;
-            Slayer = SlayerName.ReptilianDeath;
+            Slayer = SlayerName.Repteis;
             WeaponAttributes.HitFireball = 30;	
             WeaponAttributes.HitLowerDefend = 60;		
             Attributes.WeaponSpeed = 20;
@@ -42,12 +43,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
         }
     }

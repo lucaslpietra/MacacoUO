@@ -106,12 +106,7 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            list.Add(1152599, String.Format("#{0}\t#1152606", CraftResources.GetLocalizationNumber(_Resource))); // ~1_RES~ ~2_TYPE~ Talisman
-        }
-
-        public override void AddUsesRemainingProperties(ObjectPropertyList list)
-        {
-            list.Add(1060584, UsesRemaining.ToString()); // uses remaining: ~1_val~
+            list.Add("Talisman Forjador de "+ _Resource.ToString()); // ~1_RES~ ~2_TYPE~ Talisman
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -122,6 +117,7 @@ namespace Server.Items
             if (DateTime.UtcNow < Expires)
                 left = (int)(Expires - DateTime.UtcNow).TotalSeconds;
 
+            list.Add(1060584, UsesRemaining.ToString()); // uses remaining: ~1_val~
             list.Add(1072517, left.ToString()); // Lifespan: ~1_val~ seconds
         }
 

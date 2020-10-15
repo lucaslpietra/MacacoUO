@@ -38,7 +38,7 @@ namespace Server.Items
             m_OpenedSound = openedSound;
             m_ClosedSound = closedSound;
             m_Offset = offset;
-
+            CanUseKey = true;
             m_Timer = new InternalTimer(this);
 
             Movable = false;
@@ -184,6 +184,10 @@ namespace Server.Items
                 return false;
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool CanUseKey { get; set; }
+
         // Called by RunUO
         public static void Initialize()
         {
@@ -267,17 +271,19 @@ namespace Server.Items
             {
                 if (from.AccessLevel >= AccessLevel.GameMaster)
                 {
-                    from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 502502); // That is locked, but you open it with your godly powers.
+                    from.PrivateOverheadMessage("Voce abriu a porta trancada com seus poderes fodoes de GM"); // That is locked, but you open it with your godly powers.
                     //from.Send( new MessageLocalized( Serial, ItemID, MessageType.Regular, 0x3B2, 3, 502502, "", "" ) ); // That is locked, but you open it with your godly powers.
                 }
                 else if (Key.ContainsKey(from.Backpack, KeyValue))
                 {
                     from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 501282); // You quickly unlock, open, and relock the door
                 }
+                /*
                 else if (IsInside(from))
                 {
                     from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 501280); // That is locked, but is usable from the inside.
                 }
+                */
                 else
                 {
                     if (Hue == 0x44E && Map == Map.Malas) // doom door into healer room in doom
@@ -337,8 +343,8 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
-
+            writer.Write((int)1); // version
+            writer.Write(CanUseKey);
             writer.Write(m_KeyValue);
 
             writer.Write(m_Open);
@@ -357,8 +363,11 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
+                case 1:
+                    CanUseKey = reader.ReadBool();
+                    goto case 0;
                 case 0:
                     {
                         m_KeyValue = reader.ReadUInt();
@@ -486,7 +495,7 @@ namespace Server.Items
             {
                 int x = m.X, y = m.Y;
 
-                switch ( m.Direction & Direction.Mask )
+                switch (m.Direction & Direction.Mask)
                 {
                     case Direction.North:
                         --y;

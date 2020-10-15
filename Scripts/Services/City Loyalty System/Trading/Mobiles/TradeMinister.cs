@@ -197,14 +197,14 @@ namespace Server.Engines.CityLoyalty
                     switch (Utility.Random(9))
                     {
                         case 0: return new IronIngot(amount);
-                        case 1: return new DullCopperIngot(amount);
-                        case 2: return new ShadowIronIngot(amount);
+                        case 1: return new BeriloIngot(amount);
+                        case 2: return new VibraniumIngot(amount);
                         case 3: return new CopperIngot(amount);
                         case 4: return new BronzeIngot(amount);
-                        case 5: return new GoldIngot(amount);
-                        case 6: return new AgapiteIngot(amount);
-                        case 7: return new VeriteIngot(amount);
-                        case 8: return new ValoriteIngot(amount);
+                        case 5: return new SilverIngot(amount);
+                        case 6: return new NiobioIngot(amount);
+                        case 7: return new LazuritaIngot(amount);
+                        case 8: return new QuartzoIngot(amount);
                     }
                     break;
                 case 1:

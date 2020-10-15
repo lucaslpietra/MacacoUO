@@ -266,7 +266,7 @@ namespace Server.Commands
 							return false;
 						}
 
-						from.SendMessage("You do not have access to that command.");
+						from.SendMessage("Voce nao tem permissao para usar este comando.");
 					}
 				}
 				else
@@ -276,7 +276,7 @@ namespace Server.Commands
 						return false;
 					}
 
-					from.SendMessage("That is not a valid command.");
+					from.SendMessage("Comando invalido.");
 				}
 
 				return true;

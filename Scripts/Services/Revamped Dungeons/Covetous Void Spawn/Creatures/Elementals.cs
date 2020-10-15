@@ -9,7 +9,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public CovetousEarthElemental() : base(AIType.AI_Melee)
 		{
-			Name = "an earth elemental";
+			Name = "elemental desgovernado";
 			Body = 14;
             BaseSoundID = 268;
 		}
@@ -17,7 +17,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public CovetousEarthElemental(int level, bool voidSpawn) : base(AIType.AI_Melee, level, voidSpawn)
 		{
-			Name = "an earth elemental";
+			Name = "elemental desgovernado";
 			Body = 14;
             BaseSoundID = 268;
 		}
@@ -45,7 +45,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public CovetousWaterElemental() : base(AIType.AI_Mage)
 		{
-			Name = "a water elemental";
+			Name = "elemental desgovernado";
 			Body = 16;
             BaseSoundID = 278;
 		}
@@ -53,7 +53,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public CovetousWaterElemental(int level, bool voidSpawn) : base(AIType.AI_Melee, level, voidSpawn)
 		{
-			Name = "a water elemental";
+			Name = "elemental desgovernado";
 			Body = 16;
             BaseSoundID = 278;
 		}
@@ -81,7 +81,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public VortexElemental() : base(AIType.AI_Melee)
 		{
-			Name = "a vortex elemental";
+			Name = "elemental desgovernado";
 			Body = 13;
             Hue = 0x4001;
             BaseSoundID = 655;
@@ -90,7 +90,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public VortexElemental(int level, bool voidSpawn) : base(AIType.AI_Melee, level, voidSpawn)
 		{
-			Name = "a vortex elemental";
+			Name = "elemental desgovernado";
 			Body = 13;
             Hue = 0x4001;
             BaseSoundID = 655;
@@ -119,7 +119,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public SearingElemental() : base(AIType.AI_Mage)
 		{
-			Name = "a searing elemental";
+			Name = "elemental desgovernado";
 			Body = 15;
             BaseSoundID = 838;
 		}
@@ -127,7 +127,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public SearingElemental(int level, bool voidSpawn) : base(AIType.AI_Mage, level, voidSpawn)
 		{
-			Name = "a searing elemental";
+			Name = "elemental desgovernado";
 			Body = 15;
             BaseSoundID = 838;
 		}
@@ -155,7 +155,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public VenomElemental() : base(AIType.AI_Mage)
 		{
-			Name = "a venom elemental";
+			Name = "elemental desgovernado";
 			Body = 162;
             BaseSoundID = 263;
 		}
@@ -163,7 +163,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public VenomElemental(int level, bool voidSpawn) : base(AIType.AI_Mage, level, voidSpawn)
 		{
-			Name = "a venom elemental";
+			Name = "elemental desgovernado";
 			Body = 162;
             BaseSoundID = 263;
 		}

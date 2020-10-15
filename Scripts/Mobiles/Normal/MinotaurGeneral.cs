@@ -10,7 +10,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public MinotaurGeneral()
 		{
-			Name = "a minotaur general";
+			Name = "general minotauro";
 			Body = 0x118;			
 
 			SetStr( 602, 606 );
@@ -49,8 +49,6 @@ namespace Server.Mobiles
 		{
 			AddLoot( LootPack.UltraRich, 2 );
 		}
-		
-		public override int TreasureMapLevel { get { return 4; } }
 
         public MinotaurGeneral(Serial serial)
             : base(serial)

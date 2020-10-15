@@ -1,6 +1,7 @@
 using System;
 using Server.Factions;
 using Server.Gumps;
+using Server.Misc.Custom.GuerraTotal;
 using Server.Mobiles;
 using Server.Network;
 
@@ -29,16 +30,16 @@ namespace Server.Guilds
             bool isLeader = IsLeader(this.player, this.guild);
             base.PopulateGump();
 
-            this.AddHtmlLocalized(96, 43, 110, 26, 1063014, 0xF, false, false); // My Guild
+            this.AddHtml(96, 43, 110, 26, "Minha Guilda", 0xF, false, false); // My Guild
 
             this.AddImageTiled(65, 80, 160, 26, 0xA40);
             this.AddImageTiled(67, 82, 156, 22, 0xBBC);
-            this.AddHtmlLocalized(70, 83, 150, 20, 1062954, 0x0, false, false); // <i>Guild Name</i>
+            this.AddHtml(70, 83, 150, 20, "Nome",  false, false); // <i>Guild Name</i>
             this.AddHtml(233, 84, 320, 26, this.guild.Name, false, false);
 
             this.AddImageTiled(65, 114, 160, 26, 0xA40);
             this.AddImageTiled(67, 116, 156, 22, 0xBBC);
-            this.AddHtmlLocalized(70, 117, 150, 20, 1063025, 0x0, false, false); // <i>Alliance</i>
+            this.AddHtml(70, 117, 150, 20, "Aliados",  false, false); // <i>Alliance</i>
 
             if (this.guild.Alliance != null && this.guild.Alliance.IsMember(this.guild))
             {
@@ -48,7 +49,7 @@ namespace Server.Guilds
 
             this.AddImageTiled(65, 148, 160, 26, 0xA40);
             this.AddImageTiled(67, 150, 156, 22, 0xBBC);
-            this.AddHtmlLocalized(70, 151, 150, 20, 1063084, 0x0, false, false); // <i>Guild Faction</i>
+            this.AddHtml(70, 151, 150, 20, "Faction",  false, false); // <i>Guild Faction</i>
 		
             Faction f = Faction.Find(this.guild.Leader);
             if (f != null)
@@ -58,7 +59,7 @@ namespace Server.Guilds
 
             string s = this.guild.Charter;
             if (String.IsNullOrEmpty(s))
-                s = "The guild leader has not yet set the guild charter.";
+                s = "O lider ainda nao escreveu nada.";
 
             this.AddHtml(65, 216, 480, 80, s, true, true);
             if (isLeader)
@@ -67,36 +68,47 @@ namespace Server.Guilds
             s = this.guild.Website;
 
             if (string.IsNullOrEmpty(s))
-                s = "Guild website not yet set.";
+                s = "Site da guilda ainda nao informado.";
 
             this.AddHtml(65, 306, 480, 30, s, true, false);
 
             if (isLeader)
                 this.AddButton(40, 313, 0x4B9, 0x4BA, 5, GumpButtonType.Reply, 0);	//Website Edit button
 
-            AddBackground(65, 370, 170, 26, 0x2486);
+            /*
+            var guilda = player.Guild;
+            if(Guerra.Dados.TaParticipando(guilda))
+            {
+                // todo, gumps de ranking
+            } else
+            {
+                AddBackground(65, 370, 170, 26, 0x2486);
+                AddButton(67, 375, 0x4B9, 0x4BA, 8, GumpButtonType.Reply, 0);
+                AddHtml(92, 373, 170, 26, "Entrar Guerra Total", false, false);
+            }
+            */
 
             if (Server.Engines.VvV.ViceVsVirtueSystem.Enabled)
             {
                 if (Server.Engines.VvV.ViceVsVirtueSystem.IsVvV(player))
                 {
                     AddButton(67, 375, 0x4B9, 0x4BA, 9, GumpButtonType.Reply, 0); // Resign Vice vs Virtue
-                    AddHtmlLocalized(92, 373, 170, 26, 1155557, m_IsResigningVvV ? 0x5000 : 0, false, false);
+                    AddHtml(92, 373, 170, 26, "Resignar Guerra Infinita", m_IsResigningVvV ? 0x5000 : 0, false, false);
 
                     AddBackground(255, 370, 170, 26, 0x2486);
                     AddButton(257, 375, 0x4B9, 0x4BA, 10, GumpButtonType.Reply, 0);
-                    AddHtmlLocalized(282, 373, 150, 26, 1114982, false, false); // Leaderboards
+                    AddHtml(282, 373, 150, 26, "Rankings", false, false); // Leaderboards
                 }
                 else
                 {
                     AddButton(67, 375, 0x4B9, 0x4BA, 8, GumpButtonType.Reply, 0);
-                    AddHtmlLocalized(92, 373, 170, 26, 1155556, false, false); // Join Vice vs Virtue
+                    AddHtml(92, 373, 170, 26, "Entrar na Guerra Infinita", false, false); // Join Vice vs Virtue
                 }
             }
 
             AddBackground(445, 370, 100, 26, 0x2486);
             AddButton(447, 375, 0x845, 0x846, 7, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(472, 373, 60, 26, 3006115, (this.m_IsResigning) ? 0x5000 : 0, false, false); // Resign
+            AddHtml(472, 373, 60, 26, "Sair", (this.m_IsResigning) ? 0x5000 : 0xF, false, false); // Resign
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
@@ -117,7 +129,7 @@ namespace Server.Guilds
                     {
                         if (IsLeader(pm, this.guild))
                         {
-                            pm.SendLocalizedMessage(1013071); // Enter the new guild charter (50 characters max):
+                            pm.SendMessage("Digite no texto"); // Enter the new guild charter (50 characters max):
 
                             pm.BeginPrompt(new PromptCallback(SetCharter_Callback), true);	//Have the same callback handle both canceling and deletion cause the 2nd callback would just get a text of ""
                         }
@@ -127,7 +139,7 @@ namespace Server.Guilds
                     {
                         if (IsLeader(pm, this.guild))
                         {
-                            pm.SendLocalizedMessage(1013072); // Enter the new website for the guild (50 characters max):
+                            pm.SendMessage("Entre o site da guilda"); // Enter the new website for the guild (50 characters max):
                             pm.BeginPrompt(new PromptCallback(SetWebsite_Callback), true);	//Have the same callback handle both canceling and deletion cause the 2nd callback would just get a text of ""
                         }
                         break;
@@ -145,7 +157,7 @@ namespace Server.Guilds
                         //Resign
                         if (!this.m_IsResigning)
                         {
-                            pm.SendLocalizedMessage(1063332); // Are you sure you wish to resign from your guild?
+                            pm.SendMessage("Voce tem certeza que deseja sair da guilda ?"); // Are you sure you wish to resign from your guild?
                             pm.SendGump(new GuildInfoGump(pm, this.guild, true, false));
                         }
                         else
@@ -157,26 +169,27 @@ namespace Server.Guilds
                 case 8:
                     if (pm.Young)
                     {
-                        pm.SendLocalizedMessage(1155562); // Young players may not join Vice vs Virtue. Renounce your young player status by saying, "I renounce my young player status" and try again.
+                        pm.SendMessage("Muito newba..."); // Young players may not join Vice vs Virtue. Renounce your young player status by saying, "I renounce my young player status" and try again.
                     }
                     else
                     {
                         pm.SendGump(new Server.Engines.VvV.ConfirmSignupGump(pm));
+                        //pm.SendGump(new EntrarGuerraTotalGump(pm));
                     }
                     break;
                 case 9:
                     if (Server.Engines.Points.PointsSystem.ViceVsVirtue.IsResigning(pm, guild))
                     {
-                        pm.SendLocalizedMessage(1155560); // You are currently in the process of quitting Vice vs Virtue.
+                        pm.SendMessage("Voce esta no processo de sair das virtudes"); // You are currently in the process of quitting Vice vs Virtue.
                     }
                     else if (m_IsResigningVvV)
                     {
-                        pm.SendLocalizedMessage(1155559); // You have begun the Vice vs Virtue resignation process.  You will be removed from VvV in 3 days.
+                        pm.SendMessage("Comecou a sair do processo das virtudes"); // You have begun the Vice vs Virtue resignation process.  You will be removed from VvV in 3 days.
                         Server.Engines.Points.PointsSystem.ViceVsVirtue.OnResign(pm);
                     }
                     else
                     {
-                        pm.SendLocalizedMessage(1155558); // Are you sure you wish to resign from Vice vs Virtue? You will not be allowed to rejoin for 3 days.
+                        pm.SendMessage("Tem certeza ?"); // Are you sure you wish to resign from Vice vs Virtue? You will not be allowed to rejoin for 3 days.
                         pm.SendGump(new GuildInfoGump(pm, guild, false, true));
                     }
                     break;
@@ -195,12 +208,12 @@ namespace Server.Guilds
 
             if (charter.Length > 50)
             {
-                from.SendLocalizedMessage(1070774, "50"); // Your guild charter cannot exceed ~1_val~ characters.
+                from.SendMessage("Max 50 caracteres"); // Your guild charter cannot exceed ~1_val~ characters.
             }
             else
             {
                 this.guild.Charter = charter;
-                from.SendLocalizedMessage(1070775); // You submit a new guild charter.
+                from.SendMessage("Submetido"); // You submit a new guild charter.
                 return;
             }
         }
@@ -213,11 +226,11 @@ namespace Server.Guilds
             string site = Utility.FixHtml(text.Trim());
 
             if (site.Length > 50)
-                from.SendLocalizedMessage(1070777, "50"); // Your guild website cannot exceed ~1_val~ characters.
+                from.SendMessage("Max 50 caracteres"); // Your guild website cannot exceed ~1_val~ characters.
             else
             {
                 this.guild.Website = site;
-                from.SendLocalizedMessage(1070778); // You submit a new guild website.
+                from.SendMessage("Submetido"); // You submit a new guild website.
                 return;
             }
         }

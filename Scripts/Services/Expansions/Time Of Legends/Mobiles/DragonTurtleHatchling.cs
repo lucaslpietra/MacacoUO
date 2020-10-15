@@ -45,8 +45,9 @@ namespace Server.Mobiles
             MinTameSkill = 104.7;
 
             SetWeaponAbility(WeaponAbility.BleedAttack);
-            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
+
+        public override bool HasBreath { get { return true; } }
 
         public override void GenerateLoot()
         {
@@ -55,17 +56,14 @@ namespace Server.Mobiles
 
         public override void OnAfterTame(Mobile tamer)
         {
-            if (Owners.Count == 0)
-            {
-                SkillsCap = this.Skills.Total;
+            SkillsCap = this.Skills.Total;
 
-                foreach (Skill sk in this.Skills)
+            foreach (Skill sk in this.Skills)
+            {
+                if (sk.Base > 0)
                 {
-                    if (sk.Base > 0)
-                    {
-                        sk.Cap = Math.Max(100, sk.Base - (sk.Base * 10));
-                        sk.Base = sk.Base - (sk.Base * .55);
-                    }
+                    sk.Cap = Math.Max(100, sk.Base - (sk.Base * 10));
+                    sk.Base = sk.Base - (sk.Base * .55);
                 }
             }
         }

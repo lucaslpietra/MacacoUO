@@ -24,10 +24,16 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (IsChildOf(from.Backpack) && from.Region != null && from.Region.IsPartOf<MazeOfDeathRegion>())
+            if (IsChildOf(from.Backpack))
             {
-                from.CloseGump(typeof(CompassDirectionGump));
-                from.SendGump(new CompassDirectionGump(from));
+                if(from.Region != null && from.Region.IsPartOf<MazeOfDeathRegion>())
+                {
+                    from.CloseGump(typeof(CompassDirectionGump));
+                    from.SendGump(new CompassDirectionGump(from));
+                } else
+                {
+                    from.SendMessage("Voce precisa estar no labirinto para usar isto");
+                }
             }
             else if (RootParent == null && from.InRange(GetWorldLocation(), 3) && !Movable && !IsLockedDown && !IsSecure)
             {
@@ -36,7 +42,7 @@ namespace Server.Items
                     GoldenCompass c = new GoldenCompass();
                     c.StartTimer();
                     from.Backpack.DropItem(c);
-                    from.SendLocalizedMessage(1113584); // Please return what you borrow!
+                    from.SendMessage("Retorne o compasso depois.."); // Please return what you borrow!
                 }
             }
         }

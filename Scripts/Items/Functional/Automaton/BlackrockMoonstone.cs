@@ -5,12 +5,12 @@ namespace Server.Items
 {
     public class BlackrockMoonstone : Item
     {
-        public override int LabelNumber { get { return 1156993; } } // Black Moonstone
-
+ 
         [Constructable]
         public BlackrockMoonstone()
             : base(0x9CAA)
         {
+            Name = "Pedra da Lua Negra";
             Hue = 1175;
         }
 

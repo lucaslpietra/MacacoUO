@@ -138,7 +138,7 @@ namespace Server.Engines.Craft
                     SkillLock sl = mob.Skills[SkillName.Tinkering].Lock;
                     mob.Skills[SkillName.Tinkering].SetLockNoRelay(SkillLock.Locked);
 
-                    bool check = mob.CheckSkill(skill, difficulty - 25.0, difficulty + 25.0);
+                    bool check = mob.CheckSkillMult(skill, difficulty - 25.0, difficulty + 25.0);
 
                     mob.Skills[SkillName.Tinkering].SetLockNoRelay(sl);
 
@@ -165,7 +165,8 @@ namespace Server.Engines.Craft
             {
                 bool usingDeed = (m_Deed != null) || (m_Addon != null);
                 bool toDelete = false;
-                int number;
+                //int number;
+                string number = "";
 
                 double value = 0;
 
@@ -179,7 +180,7 @@ namespace Server.Engines.Craft
 
                     if (tool.Charges == 0)
                     {
-                        from.SendLocalizedMessage(1019073);// This item is out of charges.
+                        from.SendMessage("Este item esta sem cargas");// This item is out of charges.
                         m_Addon.Using = false;
                         return;
                     }
@@ -195,13 +196,11 @@ namespace Server.Engines.Craft
                 {
                     if (TryRepairMobile(from, (IRepairableMobile)targeted, usingDeed, out toDelete))
                     {
-                        number = 1044279; // You repair the item.
-
-                        m_CraftSystem.OnRepair(from, m_Tool, m_Deed, m_Addon, (IRepairableMobile)targeted);
+                        number = "Voce concertou o item"; // You repair the item.
                     }
                     else
                     {
-                        number = 500426; // You can't repair that.
+                        number = "Voce nao pode arrumar isto"; // You can't repair that.
                     }
                 }
                 else if (targeted is Item)
@@ -218,7 +217,7 @@ namespace Server.Engines.Craft
 
                         if (!AllowsRepair(targeted, m_CraftSystem))
                         {
-                            from.SendLocalizedMessage(500426); // You can't repair that.
+                            from.SendMessage("Voce nao pode reparar isto"); // You can't repair that.
 
                             if (m_Addon != null)
                                 m_Addon.Using = false;
@@ -228,14 +227,14 @@ namespace Server.Engines.Craft
 
                         if (m_CraftSystem.CanCraft(from, m_Tool, targeted.GetType()) == 1044267)
                         {
-                            number = 1044282; // You must be near a forge and and anvil to repair items. * Yes, there are two and's *
+                            number = "Voce precisa estar perto de uma forja ou bigorna"; // You must be near a forge and and anvil to repair items. * Yes, there are two and's *
                         }
                         else if (!usingDeed && m_CraftSystem is DefTinkering && targeted is BrokenAutomatonHead)
                         {
                             if (((BrokenAutomatonHead)targeted).TryRepair(from))
-                                number = 1044279; // You repair the item.
+                                number = "Voce arruma o item"; // You repair the item.
                             else
-                                number = 1044280; // You fail to repair the item.
+                                number = "Voce nao conseguiu arrumar o item"; // You fail to repair the item.
                         }
                         else if (targeted is BaseWeapon)
                         {
@@ -251,37 +250,41 @@ namespace Server.Engines.Craft
                             {
                                 double skillLevel = value;
 
-                                if (skillLevel >= 90.0)
+                                if (skillLevel >= 110)
                                     toWeaken = 1;
-                                else if (skillLevel >= 70.0)
+                                else if (skillLevel >= 101)
                                     toWeaken = 2;
-                                else
+                                else if (skillLevel >= 90)
                                     toWeaken = 3;
+                                else if (skillLevel >= 80)
+                                    toWeaken = 4;
+                                else
+                                    toWeaken = 5;
                             }
 
                             if (m_CraftSystem.CraftItems.SearchForSubclass(weapon.GetType()) == null && !CheckSpecial(weapon))
                             {
-                                number = (usingDeed) ? 1061136 : 1044277; // That item cannot be repaired. // You cannot repair that item with this type of repair contract.
+                                number = "Voce nao pode arrumar isto assim"; // That item cannot be repaired. // You cannot repair that item with this type of repair contract.
                             }
                             else if (!weapon.IsChildOf(from.Backpack) && (!Core.ML || weapon.Parent != from))
                             {
-                                number = 1044275; // The item must be in your backpack to repair it.
+                                number = "O item precisa estar em sua mochila"; // The item must be in your backpack to repair it.
                             }
                             else if (!Core.AOS && weapon.PoisonCharges != 0)
                             {
-                                number = 1005012; // You cannot repair an item while a caustic substance is on it.
+                                number = "Voce nao pode arrumar o item nesse estado"; // You cannot repair an item while a caustic substance is on it.
                             }
                             else if (weapon.MaxHitPoints <= 0 || weapon.HitPoints == weapon.MaxHitPoints)
                             {
-                                number = 1044281; // That item is in full repair
+                                number = "O item ta novinho"; // That item is in full repair
                             }
                             else if (weapon.MaxHitPoints <= toWeaken)
                             {
-                                number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
+                                number = "Este item ja foi arrumado muitas vezes"; // That item has been repaired many times, and will break if repairs are attempted again.
                             }
                             else if (weapon.NegativeAttributes.NoRepair > 0)
                             {
-                                number = 1044277; // That item cannot be repaired.
+                                number = "Este item nao pode ser arrumado"; // That item cannot be repaired.
                             }
                             else
                             {
@@ -293,15 +296,13 @@ namespace Server.Engines.Craft
 
                                 if (CheckRepairDifficulty(from, skill, weapon.HitPoints, weapon.MaxHitPoints))
                                 {
-                                    number = 1044279; // You repair the item.
+                                    number = "Voce arrumou o item"; // You repair the item.
                                     m_CraftSystem.PlayCraftEffect(from);
                                     weapon.HitPoints = weapon.MaxHitPoints;
-
-                                    m_CraftSystem.OnRepair(from, m_Tool, m_Deed, m_Addon, weapon);
                                 }
                                 else
                                 {
-                                    number = (usingDeed) ? 1061137 : 1044280; // You fail to repair the item. [And the contract is destroyed]
+                                    number = "Voce falhou em arrumar o item"; // You fail to repair the item. [And the contract is destroyed]
                                     m_CraftSystem.PlayCraftEffect(from);
                                 }
 
@@ -332,23 +333,23 @@ namespace Server.Engines.Craft
 
                             if (m_CraftSystem.CraftItems.SearchForSubclass(armor.GetType()) == null && !CheckSpecial(armor))
                             {
-                                number = (usingDeed) ? 1061136 : 1044277; // That item cannot be repaired. // You cannot repair that item with this type of repair contract.
+                                number ="Voce nao pode arrumar isto"; // That item cannot be repaired. // You cannot repair that item with this type of repair contract.
                             }
                             else if (!armor.IsChildOf(from.Backpack) && (!Core.ML || armor.Parent != from))
                             {
-                                number = 1044275; // The item must be in your backpack to repair it.
+                                number = "O item precisa estar em sua mochila"; // The item must be in your backpack to repair it.
                             }
                             else if (armor.MaxHitPoints <= 0 || armor.HitPoints == armor.MaxHitPoints)
                             {
-                                number = 1044281; // That item is in full repair
+                                number = "O item ta novinho bonitinho"; // That item is in full repair
                             }
                             else if (armor.MaxHitPoints <= toWeaken)
                             {
-                                number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
+                                number = "O item ja foi arrumado muitas vezes"; // That item has been repaired many times, and will break if repairs are attempted again.
                             }
                             else if (armor.NegativeAttributes.NoRepair > 0)
                             {
-                                number = 1044277; // That item cannot be repaired.
+                                number = "Este item nao pode ser arrumado"; // That item cannot be repaired.
                             }
                             else
                             {
@@ -360,15 +361,13 @@ namespace Server.Engines.Craft
 
                                 if (CheckRepairDifficulty(from, skill, armor.HitPoints, armor.MaxHitPoints))
                                 {
-                                    number = 1044279; // You repair the item.
+                                    number = "Voce arrumou o item"; // You repair the item.
                                     m_CraftSystem.PlayCraftEffect(from);
                                     armor.HitPoints = armor.MaxHitPoints;
-
-                                    m_CraftSystem.OnRepair(from, m_Tool, m_Deed, m_Addon, armor);
                                 }
                                 else
                                 {
-                                    number = (usingDeed) ? 1061137 : 1044280; // You fail to repair the item. [And the contract is destroyed]
+                                    number = "Voce falhou em arrumar o item"; // You fail to repair the item. [And the contract is destroyed]
                                     m_CraftSystem.PlayCraftEffect(from);
                                 }
 
@@ -399,23 +398,23 @@ namespace Server.Engines.Craft
 
                             if (m_CraftSystem.CraftItems.SearchForSubclass(jewel.GetType()) == null && !CheckSpecial(jewel))
                             {
-                                number = (usingDeed) ? 1061136 : 1044277; // That item cannot be repaired. // You cannot repair that item with this type of repair contract.
+                                number ="Item nao pode ser arrumado"; // That item cannot be repaired. // You cannot repair that item with this type of repair contract.
                             }
                             else if (!jewel.IsChildOf(from.Backpack))
                             {
-                                number = 1044275; // The item must be in your backpack to repair it.
+                                number = "O item precisa estar em sua mochila para arrumar"; // The item must be in your backpack to repair it.
                             }
                             else if (jewel.MaxHitPoints <= 0 || jewel.HitPoints == jewel.MaxHitPoints)
                             {
-                                number = 1044281; // That item is in full repair
+                                number = "O item esta arrumado"; // That item is in full repair
                             }
                             else if (jewel.MaxHitPoints <= toWeaken)
                             {
-                                number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
+                                number = "O item ja foi arrumado muitas vezes"; // That item has been repaired many times, and will break if repairs are attempted again.
                             }
                             else if (jewel.NegativeAttributes.NoRepair > 0)
                             {
-                                number = 1044277; // That item cannot be repaired.
+                                number = "O item nao pode ser arrumado"; // That item cannot be repaired.
                             }
                             else
                             {
@@ -427,15 +426,13 @@ namespace Server.Engines.Craft
 
                                 if (CheckRepairDifficulty(from, skill, jewel.HitPoints, jewel.MaxHitPoints))
                                 {
-                                    number = 1044279; // You repair the item.
+                                    number = "Voce arrumou o item"; // You repair the item.
                                     m_CraftSystem.PlayCraftEffect(from);
                                     jewel.HitPoints = jewel.MaxHitPoints;
-
-                                    m_CraftSystem.OnRepair(from, m_Tool, m_Deed, m_Addon, jewel);
                                 }
                                 else
                                 {
-                                    number = (usingDeed) ? 1061137 : 1044280; // You fail to repair the item. [And the contract is destroyed]
+                                    number = "Voce falhou em arrumar o item"; // You fail to repair the item. [And the contract is destroyed]
                                     m_CraftSystem.PlayCraftEffect(from);
                                 }
 
@@ -466,23 +463,23 @@ namespace Server.Engines.Craft
 
                             if (m_CraftSystem.CraftItems.SearchForSubclass(clothing.GetType()) == null && !CheckSpecial(clothing))
                             {
-                                number = (usingDeed) ? 1061136 : 1044277; // That item cannot be repaired. // You cannot repair that item with this type of repair contract.
+                                number = "Nao posso arrumar isso"; // That item cannot be repaired. // You cannot repair that item with this type of repair contract.
                             }
                             else if (!clothing.IsChildOf(from.Backpack) && (!Core.ML || clothing.Parent != from))
                             {
-                                number = 1044275; // The item must be in your backpack to repair it.
+                                number = "Precisa estar em sua mochila"; // The item must be in your backpack to repair it.
                             }
                             else if (clothing.MaxHitPoints <= 0 || clothing.HitPoints == clothing.MaxHitPoints)
                             {
-                                number = 1044281; // That item is in full repair
+                                number = "O item esta totalmente reparado"; // That item is in full repair
                             }
                             else if (clothing.MaxHitPoints <= toWeaken)
                             {
-                                number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
+                                number = "Isto ja foi arrumado muitas vezes."; // That item has been repaired many times, and will break if repairs are attempted again.
                             }
                             else if (clothing.NegativeAttributes.NoRepair > 0)// quick fix
                             {
-                                number = 1044277; // That item cannot be repaired.
+                                number = "Este item nao pode ser arrumado"; // That item cannot be repaired.
                             }
                             else
                             {
@@ -494,15 +491,13 @@ namespace Server.Engines.Craft
 
                                 if (CheckRepairDifficulty(from, skill, clothing.HitPoints, clothing.MaxHitPoints))
                                 {
-                                    number = 1044279; // You repair the item.
+                                    number = "Voce arrumou o item"; // You repair the item.
                                     m_CraftSystem.PlayCraftEffect(from);
                                     clothing.HitPoints = clothing.MaxHitPoints;
-
-                                    m_CraftSystem.OnRepair(from, m_Tool, m_Deed, m_Addon, clothing);
                                 }
                                 else
                                 {
-                                    number = (usingDeed) ? 1061137 : 1044280; // You fail to repair the item. [And the contract is destroyed]
+                                    number = "Falhou em concertar o item"; // You fail to repair the item. [And the contract is destroyed]
                                     m_CraftSystem.PlayCraftEffect(from);
                                 }
 
@@ -533,23 +528,23 @@ namespace Server.Engines.Craft
 
                             if (!(m_CraftSystem is DefTinkering))
                             {
-                                number = (usingDeed) ? 1061136 : 1044277; // That item cannot be repaired. // You cannot repair that item with this type of repair contract.
+                                number = "Nao posso arrumar isso"; // That item cannot be repaired. // You cannot repair that item with this type of repair contract.
                             }
                             else if (!talisman.IsChildOf(from.Backpack) && (!Core.ML || talisman.Parent != from))
                             {
-                                number = 1044275; // The item must be in your backpack to repair it.
+                                number = "Precisa estar na mochila"; // The item must be in your backpack to repair it.
                             }
                             else if (talisman.MaxHitPoints <= 0 || talisman.HitPoints == talisman.MaxHitPoints)
                             {
-                                number = 1044281; // That item is in full repair
+                                number = "O item esta novo em folha"; // That item is in full repair
                             }
                             else if (talisman.MaxHitPoints <= toWeaken)
                             {
-                                number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
+                                number = "Este item ja foi arrumado muitas vezes..."; // That item has been repaired many times, and will break if repairs are attempted again.
                             }
                             else if (!talisman.CanRepair)// quick fix
                             {
-                                number = 1044277; // That item cannot be repaired.
+                                number = "Item nao pode ser arrumado"; // That item cannot be repaired.
                             }
                             else
                             {
@@ -561,15 +556,13 @@ namespace Server.Engines.Craft
 
                                 if (CheckRepairDifficulty(from, skill, talisman.HitPoints, talisman.MaxHitPoints))
                                 {
-                                    number = 1044279; // You repair the item.
+                                    number = "Voce arrumou o item"; // You repair the item.
                                     m_CraftSystem.PlayCraftEffect(from);
                                     talisman.HitPoints = talisman.MaxHitPoints;
-
-                                    m_CraftSystem.OnRepair(from, m_Tool, m_Deed, m_Addon, talisman);
                                 }
                                 else
                                 {
-                                    number = (usingDeed) ? 1061137 : 1044280; // You fail to repair the item. [And the contract is destroyed]
+                                    number = "Voce falhou em arrumar o item"; // You fail to repair the item. [And the contract is destroyed]
                                     m_CraftSystem.PlayCraftEffect(from);
                                 }
 
@@ -588,31 +581,31 @@ namespace Server.Engines.Craft
                                     RepairDeed deed = new RepairDeed(RepairDeed.GetTypeFor(m_CraftSystem), from.Skills[skill].Value, from);
                                     from.AddToBackpack(deed);
 
-                                    number = 500442; // You create the item and put it in your backpack.
+                                    number = "Voce criou o item e colocou em sua mochila"; // You create the item and put it in your backpack.
                                 }
                                 else
                                 {
-                                    number = 1047005; // You must be at least apprentice level to create a repair service contract.
+                                    number = "Voce nao tem nivel pra fazer isto."; // You must be at least apprentice level to create a repair service contract.
                                 }
                             }
                             else
                             {
-                                number = 1061136; // You cannot repair that item with this type of repair contract.
+                                number = "Nao pode arrumar este item com esse tipo de contrato"; // You cannot repair that item with this type of repair contract.
                             }
                         }
                         else
                         {
-                            number = 500426; // You can't repair that.
+                            number = "Voce nao pode arrumar isso"; // You can't repair that.
                         }
                     }
                     else
                     {
-                        number = 500446; // That is too far away.
+                        number = "Isso esta muito longe"; // That is too far away.
                     }
                 }
                 else
                 {
-                    number = 500426; // You can't repair that.
+                    number = "Voce nao pode arrumar isso"; // You can't repair that.
                 }
 
                 if (!usingDeed)
@@ -630,11 +623,11 @@ namespace Server.Engines.Craft
 
                         from.SendGump(new RepairBenchGump(from, m_Addon));
 
-                        from.SendLocalizedMessage(number);
+                        from.SendMessage(number);
                     }
                     else
                     {
-                        from.SendLocalizedMessage(number);
+                        from.SendMessage(number);
 
                         if (toDelete)
                             m_Deed.Delete();
@@ -717,7 +710,7 @@ namespace Server.Engines.Craft
                         SkillLock sl = from.Skills[SkillName.Tinkering].Lock;
                         from.Skills[SkillName.Tinkering].SetLockNoRelay(SkillLock.Locked);
 
-                        if (!from.CheckSkill(SkillName.Tinkering, 0.0, 100.0))
+                        if (!from.CheckSkillMult(SkillName.Tinkering, 0.0, 100.0))
                             damage /= 6;
 
                         from.Skills[SkillName.Tinkering].SetLockNoRelay(sl);

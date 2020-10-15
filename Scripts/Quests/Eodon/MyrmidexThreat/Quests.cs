@@ -57,7 +57,7 @@ namespace Server.Engines.Quests
         {
             if (!MyrmidexInvasionSystem.CanRecieveQuest(Owner, Allegiance.Myrmidex))
             {
-                Owner.SendLocalizedMessage(1156778); // You must pledge allegiance to the Myrmidex and defeat the Eodonians in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Idol in the Barrab Village.
+                //Owner.SendLocalizedMessage(1156778); // You must pledge allegiance to the Myrmidex and defeat the Eodonians in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Idol in the Barrab Village.
                 return false;
             }
 
@@ -162,7 +162,7 @@ namespace Server.Engines.Quests
         {
             if (!MyrmidexInvasionSystem.CanRecieveQuest(Owner, Allegiance.Myrmidex))
             {
-                Owner.SendLocalizedMessage(1156778); // You must pledge allegiance to the Myrmidex and defeat the Eodonians in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Idol in the Barrab Village.
+                //Owner.SendLocalizedMessage(1156778); // You must pledge allegiance to the Myrmidex and defeat the Eodonians in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Idol in the Barrab Village.
                 return false;
             }
 
@@ -216,7 +216,7 @@ namespace Server.Engines.Quests
         {
             if (!MyrmidexInvasionSystem.CanRecieveQuest(Owner, Allegiance.Myrmidex))
             {
-                Owner.SendLocalizedMessage(1156778); // You must pledge allegiance to the Myrmidex and defeat the Eodonians in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Idol in the Barrab Village.
+                //Owner.SendLocalizedMessage(1156778); // You must pledge allegiance to the Myrmidex and defeat the Eodonians in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Idol in the Barrab Village.
                 return false;
             }
 
@@ -271,7 +271,7 @@ namespace Server.Engines.Quests
         {
             if (!MyrmidexInvasionSystem.CanRecieveQuest(Owner, Allegiance.Myrmidex))
             {
-                Owner.SendLocalizedMessage(1156778); // You must pledge allegiance to the Myrmidex and defeat the Eodonians in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Idol in the Barrab Village.
+                //Owner.SendLocalizedMessage(1156778); // You must pledge allegiance to the Myrmidex and defeat the Eodonians in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Idol in the Barrab Village.
                 return false;
             }
 
@@ -338,7 +338,7 @@ namespace Server.Engines.Quests
         {
             if (!MyrmidexInvasionSystem.CanRecieveQuest(Owner, Allegiance.Tribes))
             {
-                Owner.SendLocalizedMessage(1156779); // You must pledge allegiance to the Eodonians and defeat the Myrmidex in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Chaos banner in Sir Goeffrey's Camp.
+                //Owner.SendLocalizedMessage(1156779); // You must pledge allegiance to the Eodonians and defeat the Myrmidex in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Chaos banner in Sir Goeffrey's Camp.
                 return false;
             }
 
@@ -390,7 +390,7 @@ namespace Server.Engines.Quests
         {
             if (!MyrmidexInvasionSystem.CanRecieveQuest(Owner, Allegiance.Tribes))
             {
-                Owner.SendLocalizedMessage(1156779); // You must pledge allegiance to the Eodonians and defeat the Myrmidex in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Chaos banner in Sir Goeffrey's Camp.
+                //Owner.SendLocalizedMessage(1156779); // You must pledge allegiance to the Eodonians and defeat the Myrmidex in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Chaos banner in Sir Goeffrey's Camp.
                 return false;
             }
 
@@ -447,7 +447,7 @@ namespace Server.Engines.Quests
         {
             if (!MyrmidexInvasionSystem.CanRecieveQuest(Owner, Allegiance.Tribes))
             {
-                Owner.SendLocalizedMessage(1156779); // You must pledge allegiance to the Eodonians and defeat the Myrmidex in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Chaos banner in Sir Goeffrey's Camp.
+                //Owner.SendLocalizedMessage(1156779); // You must pledge allegiance to the Eodonians and defeat the Myrmidex in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Chaos banner in Sir Goeffrey's Camp.
                 return false;
             }
 
@@ -503,7 +503,7 @@ namespace Server.Engines.Quests
         {
             if (!MyrmidexInvasionSystem.CanRecieveQuest(Owner, Allegiance.Tribes))
             {
-                Owner.SendLocalizedMessage(1156779); // You must pledge allegiance to the Eodonians and defeat the Myrmidex in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Chaos banner in Sir Goeffrey's Camp.
+                //Owner.SendLocalizedMessage(1156779); // You must pledge allegiance to the Eodonians and defeat the Myrmidex in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Chaos banner in Sir Goeffrey's Camp.
                 return false;
             }
 
@@ -650,7 +650,7 @@ namespace Server.Engines.Quests
         {
             if (!MyrmidexInvasionSystem.CanRecieveQuest(Owner, Allegiance.Tribes))
             {
-                Owner.SendLocalizedMessage(1156779); // You must pledge allegiance to the Eodonians and defeat the Myrmidex in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Chaos banner in Sir Goeffrey's Camp.
+                //Owner.SendLocalizedMessage(1156779); // You must pledge allegiance to the Eodonians and defeat the Myrmidex in the Myrmidex Pits before you can embark on this quest.  You may pledge allegiance by double clicking the Chaos banner in Sir Goeffrey's Camp.
                 return false;
             }
 

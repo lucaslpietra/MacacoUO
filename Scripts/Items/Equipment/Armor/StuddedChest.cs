@@ -9,7 +9,8 @@ namespace Server.Items
         public StuddedChest()
             : base(0x13DB)
         {
-            Weight = 8.0;
+            this.Weight = 8.0;
+            this.Name = "Peitoral de Couro Reforçado";
         }
 
         public StuddedChest(Serial serial)
@@ -118,6 +119,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (this.Weight == 1.0)
+                this.Weight = 8.0;
         }
     }
 }

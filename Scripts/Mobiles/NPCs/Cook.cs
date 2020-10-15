@@ -9,10 +9,10 @@ namespace Server.Mobiles
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         [Constructable]
         public Cook()
-            : base("the cook")
+            : base("o cozinheiro")
         {
             this.SetSkill(SkillName.Cooking, 90.0, 100.0);
-            this.SetSkill(SkillName.TasteID, 75.0, 98.0);
+            this.SetSkill(SkillName.Jewelcrafting, 75.0, 98.0);
         }
 
         public Cook(Serial serial)
@@ -37,9 +37,6 @@ namespace Server.Mobiles
         public override void InitSBInfo()
         {
             this.m_SBInfos.Add(new SBCook());
-
-            if (this.IsTokunoVendor)
-                this.m_SBInfos.Add(new SBSECook());
         }
 
         public override void InitOutfit()
@@ -64,8 +61,8 @@ namespace Server.Mobiles
 
         public override void OnSuccessfulBulkOrderReceive(Mobile from)
         {
-            if (from is PlayerMobile)
-                ((PlayerMobile)from).NextCookingBulkOrder = TimeSpan.Zero;
+            //if (from is PlayerMobile)
+            //    ((PlayerMobile)from).NextCookingBulkOrder = TimeSpan.Zero;
         }
 
         #endregion

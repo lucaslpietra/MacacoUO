@@ -1,33 +1,28 @@
 using System;
+using Server;
 
 namespace Server.Items
 {
-    public class LocalMap : MapItem
+    public class LocalMap : ZMapItem
     {
         [Constructable]
-        public LocalMap()
+        public LocalMap() : base(-1)
         {
-            this.SetDisplay(0, 0, 5119, 4095, 400, 400);
+            SetDisplay(0, 0);
         }
 
-        public LocalMap(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1015230;
-            }
-        }// local map
         public override void CraftInit(Mobile from)
         {
             double skillValue = from.Skills[SkillName.Cartography].Value;
             int dist = 64 + (int)(skillValue * 2);
 
-            this.SetDisplay(from.X - dist, from.Y - dist, from.X + dist, from.Y + dist, 200, 200);
+            SetDisplay(from.X, from.Y);
+        }
+
+        public override int LabelNumber { get { return 1015230; } } // local map
+
+        public LocalMap(Serial serial) : base(serial)
+        {
         }
 
         public override void Serialize(GenericWriter writer)

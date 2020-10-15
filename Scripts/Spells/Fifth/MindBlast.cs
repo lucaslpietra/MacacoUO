@@ -31,7 +31,8 @@ namespace Server.Spells.Fifth
         {
             get
             {
-                return !Core.AOS;
+                //return !Core.AOS;
+                return false;
             }
         }
         public override void OnCast()
@@ -51,7 +52,7 @@ namespace Server.Spells.Fifth
                 {
                     Mobile from = Caster, target = m;
 
-                    SpellHelper.Turn(from, target);
+                    //SpellHelper.Turn(from, target);
                     SpellHelper.CheckReflect((int)Circle, ref from, ref target);
 
                     int intel = Math.Min(200, Caster.Int);
@@ -70,41 +71,12 @@ namespace Server.Spells.Fifth
             {
                 Mobile from = Caster, target = m;
 
-                SpellHelper.Turn(from, target);
+                //SpellHelper.Turn(from, target);
 
                 if(target != null)
                     SpellHelper.CheckReflect((int)Circle, ref from, ref target);
 
-                // Algorithm: (highestStat - lowestStat) / 2 [- 50% if resisted]
-
-                int highestStat = target.Str, lowestStat = target.Str;
-
-                if (target.Dex > highestStat)
-                    highestStat = target.Dex;
-
-                if (target.Dex < lowestStat)
-                    lowestStat = target.Dex;
-
-                if (target.Int > highestStat)
-                    highestStat = target.Int;
-
-                if (target.Int < lowestStat)
-                    lowestStat = target.Int;
-
-                if (highestStat > 150)
-                    highestStat = 150;
-
-                if (lowestStat > 150) 
-                    lowestStat = 150;
-                double damage;
-                if (Core.AOS)
-                {
-                    damage = GetDamageScalar(m)*(highestStat - lowestStat)/4; //less damage
-                }
-                else
-                {
-                    damage = GetDamageScalar(m) * (highestStat - lowestStat) / 2; //less damage
-                }
+                double damage = GetDamageScalar(m) * ((Caster.Int - target.Int) / 4); //less damage
                 if (damage > 45)
                     damage = 45;
 
@@ -151,7 +123,7 @@ namespace Server.Spells.Fifth
         {
             private readonly MindBlastSpell m_Owner;
             public InternalTarget(MindBlastSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(Spell.RANGE, false, TargetFlags.Harmful)
             {
                 m_Owner = owner;
             }

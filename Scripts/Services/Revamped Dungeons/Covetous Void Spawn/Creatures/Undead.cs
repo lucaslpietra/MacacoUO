@@ -9,7 +9,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public AngeredSpirit() : base(AIType.AI_Mage)
 		{
-			Name = "an angered spirit";
+			Name = "espirito revoltado";
 			Body = 3;
             BaseSoundID = 471;
 		}
@@ -17,7 +17,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public AngeredSpirit(int level, bool voidSpawn) : base(AIType.AI_Mage, level, voidSpawn)
 		{
-			Name = "an angered spirit";
+			Name = "espirito revoltado";
 			Body = 3;
             BaseSoundID = 471;
 		}
@@ -45,7 +45,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public BoneSwordSlinger() : base(AIType.AI_Melee)
 		{
-			Name = "a bone swordslinger";
+			Name = "esqueleto espadachim";
 			Body = 147;
             BaseSoundID = 451;
 		}
@@ -53,7 +53,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public BoneSwordSlinger(int level, bool voidSpawn) : base(AIType.AI_Melee, level, voidSpawn)
 		{
-			Name = "a bone sword slinger";
+			Name = "esqueleto espadachim";
 			Body = 147;
             BaseSoundID = 451;
 		}
@@ -81,7 +81,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public VileCadaver() : base(AIType.AI_Melee)
 		{
-			Name = "a vile cadaver";
+			Name = "cadaver maligno";
 			Body = 154;
             BaseSoundID = 471;
 		}
@@ -89,7 +89,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public VileCadaver(int level, bool voidSpawn) : base(AIType.AI_Melee, level, voidSpawn)
 		{
-			Name = "a vile cadaver";
+			Name = "cadaver maligno";
 			Body = 154;
             BaseSoundID = 471;
 		}
@@ -117,7 +117,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public DiseasedLich() : base(AIType.AI_Mage)
 		{
-			Name = "a diseased lich";
+			Name = "lich aprodrecido";
 			Body = 24;
             BaseSoundID = 0x3E9;
 		}
@@ -125,7 +125,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public DiseasedLich(int level, bool voidSpawn) : base(AIType.AI_Mage, level, voidSpawn)
 		{
-			Name = "a diseased lich";
+			Name = "lich aprodrecido";
 			Body = 24;
             BaseSoundID = 0x3E9;
 		}
@@ -155,7 +155,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public CovetousRevenant() : base(AIType.AI_Mage)
 		{
-			Name = "a covetous revenant";
+			Name = "fantasma vil";
 			Body = 400;
             Hue = 0x847E;
 
@@ -174,7 +174,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public CovetousRevenant(int level, bool voidSpawn) : base(AIType.AI_Mage, level, voidSpawn)
 		{
-			Name = "a covetous revenant";
+			Name = "fantasma vil";
 			Body = 400;
             //BaseSoundID = 609;
 			//TODO: Soundid

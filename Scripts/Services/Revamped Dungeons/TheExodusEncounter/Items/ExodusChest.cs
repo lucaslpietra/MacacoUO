@@ -4,7 +4,7 @@ using System;
 
 namespace Server.Items
 {
-    public class ExodusChest : DecorativeBox, IRevealableItem
+    public class ExodusChest : DecorativeBox
     {
         public static void Initialize()
         {
@@ -13,17 +13,7 @@ namespace Server.Items
 
         public override int DefaultGumpID { get { return 0x10C; } }
 
-        public bool CheckWhenHidden { get { return true; } }
-
-        public static Type[] RituelItem { get { return m_RituelItem; } }
-
-        private static Type[] m_RituelItem = new Type[]
-        {
-            typeof(ExodusSummoningRite), typeof(ExodusSacrificalDagger), typeof(RobeofRite), typeof(ExodusSummoningAlter)
-        };
-
         private Timer m_Timer;
-        private ExodusChestRegion m_Region;
 
         public override bool IsDecoContainer { get { return false; } }        
 
@@ -31,17 +21,17 @@ namespace Server.Items
         public ExodusChest() 
             : base()
         {
-            Visible = false;
+            Visible = true;
             Locked = true;
-            LockLevel = 90;
-            RequiredSkill = 90;
-            MaxLockLevel = 100;
+            LockLevel = 30;
+            RequiredSkill = 40;
+            MaxLockLevel = 50;
             Weight = 0.0;
             Hue = 2700;
-            Movable = false;
+            Movable = true;
 
             TrapType = TrapType.PoisonTrap;
-            TrapPower = 100;
+            TrapPower = 40;
             GenerateTreasure();           
         }
 
@@ -49,83 +39,9 @@ namespace Server.Items
         {
         }
 
-        public bool CheckReveal(Mobile m)
-        {
-            if (!m.InRange(Location, 3))
-                return false;
-
-            return m.Skills[SkillName.DetectHidden].Value >= 98.0;
-        }
-
-        public virtual void OnRevealed(Mobile m)
-        {
-            Visible = true;
-            StartDeleteTimer();
-        }
-
-        public virtual bool CheckPassiveDetect(Mobile m)
-        {
-            if (m.InRange(this.Location, 4))
-            {
-                int skill = (int)m.Skills[SkillName.DetectHidden].Value;
-
-                if (skill >= 80 && Utility.Random(300) < skill)
-                    return true;
-            }
-
-            return false;
-        }
-
         public void StartDeleteTimer()
         {
-            if (Utility.RandomDouble() < 0.2)
-            {
-                Item item = Activator.CreateInstance(m_RituelItem[Utility.Random(m_RituelItem.Length)]) as Item;
-                DropItem(item);
-            }
-
-            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(5), new TimerCallback(Delete));
-            m_Timer.Start();
-        }
-
-        public override void OnLocationChange(Point3D oldLoc)
-        {
-            if (Deleted)
-                return;
-
-            UpdateRegion();
-        }
-
-        public override void OnMapChange()
-        {
-            if (Deleted)
-                return;           
-
-            UpdateRegion();
-        }
-
-        public void UpdateRegion()
-        {
-            if (m_Region != null)
-                m_Region.Unregister();
-
-            if (!Deleted && Map != Map.Internal)
-            {
-                m_Region = new ExodusChestRegion(this);
-                m_Region.Register();
-            }
-        }
-
-        public override void OnAfterDelete()
-        {
-            if (m_Timer != null)
-                m_Timer.Stop();
-
-            m_Timer = null;
-
-            base.OnAfterDelete();
-
-            UpdateRegion();
+         
         }
 
         protected virtual void GenerateTreasure()
@@ -179,18 +95,6 @@ namespace Server.Items
             }
         }
 
-        public static void GiveRituelItem(Mobile m)
-        {
-            Item item = Activator.CreateInstance(m_RituelItem[Utility.Random(m_RituelItem.Length)]) as Item;
-            m.PlaySound(0x5B4);
-
-            if (item == null)
-                return;
-
-            m.AddToBackpack(item);
-            m.SendLocalizedMessage(1072223); // An item has been placed in your backpack.           
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -201,32 +105,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (!Locked)
-                Delete();
-
-            Timer.DelayCall(TimeSpan.Zero, new TimerCallback(UpdateRegion));
-        }
-    }
-
-    public class ExodusChestRegion : BaseRegion
-    {
-        private readonly ExodusChest m_Chest;
-
-        public ExodusChest ExodusChest { get { return m_Chest; } }
-
-        public ExodusChestRegion(ExodusChest chest)
-            : base(null, chest.Map, Region.Find(chest.Location, chest.Map), new Rectangle2D(chest.Location.X - 2, chest.Location.Y - 2 , 5, 5) )
-        {
-            m_Chest = chest;
-        }
-
-        public override void OnEnter(Mobile m)
-        {
-            if (!m_Chest.Visible && m is PlayerMobile && m.Skills[SkillName.DetectHidden].Value >= 98.0)
-            {
-                m.SendLocalizedMessage(1153493); // Your keen senses detect something hidden in the area...
-            }
         }
     }
 }

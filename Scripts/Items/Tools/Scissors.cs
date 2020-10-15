@@ -54,24 +54,21 @@ namespace Server.Items
                 m_ShowUsesRemaining = true;
 		}
 
-        public override void AddCraftedProperties(ObjectPropertyList list)
+        public override void GetProperties(ObjectPropertyList list)
         {
-            if (m_Crafter != null)
+            base.GetProperties(list);
+
+            if(m_Crafter != null)
                 list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
             if (m_Quality == ItemQuality.Exceptional)
                 list.Add(1060636); // exceptional
-        }
 
-        public override void AddUsesRemainingProperties(ObjectPropertyList list)
-        {
-            if (Siege.SiegeShard)
-            {
+            if(Siege.SiegeShard)
                 list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
-            }
         }
 
-        public Scissors(Serial serial)
+		public Scissors(Serial serial)
 			: base(serial)
 		{ }
 
@@ -131,7 +128,7 @@ namespace Server.Items
 
 		public override void OnDoubleClick(Mobile from)
 		{
-			from.SendLocalizedMessage(502434); // What should I use these scissors on?
+			from.SendLocalizedMessage("O que deseja cortar?"); // What should I use these scissors on?
 
 			from.Target = new InternalTarget(this);
 		}
@@ -178,7 +175,7 @@ namespace Server.Items
 				else if (Core.SE && Utility.RandomDouble() > .20 && (from.Direction & Direction.Running) != 0 &&
 						 (Core.TickCount - from.LastMoveTime) < from.ComputeMovementSpeed(from.Direction))
 				{
-					from.SendLocalizedMessage(1063305); // Didn't your parents ever tell you not to run with scissors in your hand?!
+					from.SendLocalizedMessage("Seus pais nunca te falaram pra nao correr com uma tesoura na mao?");
 				}
 				else if (targeted is Item && !((Item)targeted).Movable)
 				{
@@ -213,7 +210,7 @@ namespace Server.Items
 				}
 				else
 				{
-					from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
+					from.SendLocalizedMessage("Voce nao pode usar as tesouras nisto"); // Scissors can not be used on that to produce anything.
 				}
 			}
 

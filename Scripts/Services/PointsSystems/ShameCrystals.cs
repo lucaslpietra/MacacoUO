@@ -14,7 +14,7 @@ namespace Server.Engines.Points
 		public override bool AutoAdd { get { return true; } }
         public override double MaxPoints { get { return double.MaxValue; } }
 		
-		private TextDefinition m_Name = new TextDefinition(1151673);
+		private TextDefinition m_Name = new TextDefinition("Elementais");
 		
 		public ShameCrystals()
 		{
@@ -22,12 +22,12 @@ namespace Server.Engines.Points
 		
 		public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
 		{
-            from.SendLocalizedMessage(1151634, String.Format("{0}\t{1}\t{2}", ((int)points).ToString(), "Shame", ((int)old + points).ToString())); // You gain ~1_AMT~ dungeon points for ~2_NAME~. Your total is now ~3_TOTAL~.
+            from.SendLocalizedMessage(String.Format("Voce ganhou {0} pontos elementais. Total: \t{1}", ((int)points).ToString(), ((int)old + points).ToString())); // You gain ~1_AMT~ dungeon points for ~2_NAME~. Your total is now ~3_TOTAL~.
 		}
 		
 		public override TextDefinition GetTitle(PlayerMobile from)
 		{
-            return new TextDefinition(1123444);
+            return new TextDefinition("Elementalista");
 		}
 
         public override void Serialize(GenericWriter writer)

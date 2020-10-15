@@ -409,7 +409,7 @@ namespace Server.Items
             {
                 if (m != null)
                 {
-                    if (m.Alive && m is PlayerMobile && m.AccessLevel == AccessLevel.Player)
+                    if (m.Alive && m is PlayerMobile && m.AccessLevel <= AccessLevel.VIP)
                     {
                         m.DoHarmful(m);
                         m.FixedParticles(0x376A, 1, 3, 5052, EffectLayer.Waist);
@@ -517,7 +517,7 @@ namespace Server.Items
             {
                 if (m != null)
                 {
-                    if (m.Alive && m is PlayerMobile && m.AccessLevel == AccessLevel.Player)
+                    if (m.Alive && m is PlayerMobile && m.AccessLevel <= AccessLevel.VIP)
                     {
                         m.DoHarmful(m); 
                         m.Damage(Utility.RandomMinMax(mindmg, maxdmg), m);

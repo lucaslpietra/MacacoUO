@@ -10,11 +10,13 @@ namespace Server.Items
         public ValorGauntlets()
             : base(0x2B0C)
         {
+            Name = "Luvas do Valor";
             this.LootType = LootType.Blessed;
             this.Weight = 4.0;
             this.SetHue = 0;
             this.Hue = 0x226;
-			
+
+            /*
             this.SetSelfRepair = 5;
 			
             this.SetPhysicalBonus = 5;
@@ -22,6 +24,7 @@ namespace Server.Items
             this.SetColdBonus = 5;
             this.SetPoisonBonus = 5;
             this.SetEnergyBonus = 5;
+            */
         }
 
         public ValorGauntlets(Serial serial)

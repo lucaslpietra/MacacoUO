@@ -27,7 +27,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public RoyalBritannianGuardOrders()
         {
-            LootType = LootType.Blessed;
+            LootType = LootType.Blessed; 
         }
 
         public RoyalBritannianGuardOrders(Serial serial)
@@ -82,7 +82,7 @@ namespace Server.Engines.Quests
 
         public bool CanBeSeenBy(PlayerMobile pm)
         {
-            if (pm.AccessLevel > AccessLevel.Player)
+            if (pm.AccessLevel > AccessLevel.VIP)
                 return true;
 
             var quest = QuestHelper.GetQuest<RightingWrongQuest4>(pm);
@@ -210,7 +210,7 @@ namespace Server.Engines.Quests
         {
             if (QuestHelper.HasQuest<TheTreasureChaseQuest>((PlayerMobile)from))
             {
-                from.CheckSkill(SkillName.Cartography, 0, 100);
+                from.CheckSkillMult(SkillName.Cartography, 0, 100);
                 Decoder = from;
 
                 DisplayTo(from);
@@ -300,7 +300,7 @@ namespace Server.Engines.Quests
             }
         }
 
-        protected override bool HasRequiredSkill(Mobile from)
+        public override bool HasRequiredSkill(Mobile from)
         {
             return true;
         }
@@ -395,7 +395,7 @@ namespace Server.Engines.Quests
                     {
                         if (item.Locked && from.InRange(chest.GetWorldLocation(), 1))
                         {
-                            from.CheckTargetSkill(SkillName.Lockpicking, item, 0, 100);
+                            from.CheckTargetSkillMinMax(SkillName.Lockpicking, item, 0, 100);
 
                             // Success! Pick the lock!
                             from.PrivateOverheadMessage(MessageType.Regular, 1154, 1158252, from.NetState); // *Your recent study of Treasure Hunting helps you pick the lock...*

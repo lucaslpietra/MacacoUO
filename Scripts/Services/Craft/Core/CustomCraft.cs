@@ -13,6 +13,12 @@ namespace Server.Engines.Craft
         private readonly int m_Quality;
         public CustomCraft(Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, ITool tool, int quality)
         {
+
+            DyeTub tubo = new DyeTub();
+            int cor = tubo.DyedHue;
+            tubo.DyedHue = 1234;
+
+
             this.m_From = from;
             this.m_CraftItem = craftItem;
             this.m_CraftSystem = craftSystem;

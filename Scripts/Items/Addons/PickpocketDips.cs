@@ -86,7 +86,7 @@ namespace Server.Items
 
             Effects.PlaySound(this.GetWorldLocation(), this.Map, 0x4F);
 
-            if (from.CheckSkill(SkillName.Stealing, this.m_MinSkill, this.m_MaxSkill))
+            if (from.CheckSkillMult(SkillName.Stealing, this.m_MinSkill, this.m_MaxSkill))
             {
                 this.SendLocalizedMessageTo(from, 501834); // You successfully avoid disturbing the dip while searching it.
             }

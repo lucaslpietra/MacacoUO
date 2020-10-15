@@ -25,8 +25,8 @@ namespace Server.Items
 
             ClearCurrentAbility(attacker);
 
-            attacker.SendLocalizedMessage(1060165); // You have delivered a concussion!
-            defender.SendLocalizedMessage(1060166); // You feel disoriented!
+            attacker.SendLocalizedMessage("Voce deu um golpe muito pesado"); // You have delivered a concussion!
+            defender.SendLocalizedMessage("Voce se sente desorientado"); // You feel disoriented!
 
             defender.PlaySound(0x213);
             defender.FixedParticles(0x377A, 1, 32, 9949, 1153, 0, EffectLayer.Head);

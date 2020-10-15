@@ -21,8 +21,8 @@ namespace Server.Items
 
             ClearCurrentAbility(attacker);
 
-            attacker.SendLocalizedMessage(1074381); // You fire an arrow of pure force.
-            defender.SendLocalizedMessage(1074382); // You are struck by a force arrow!
+            attacker.SendLocalizedMessage("Voce atirou uma flecha de energia"); // You fire an arrow of pure force.
+            defender.SendLocalizedMessage("Voce foi atingido por uma flecha de energia"); // You are struck by a force arrow!
 
             if (.4 > Utility.RandomDouble())
             {

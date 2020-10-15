@@ -5,16 +5,20 @@ namespace Server.Items
     public class ScepterOfTheChief : Scepter
 	{
 		public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1072080; }  }// Scepter of the Chief
-		public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int LabelNumber
+        {
+            get
+            {
+                return 1072080;
+            }
+        }// Scepter of the Chief
 
         [Constructable]
         public ScepterOfTheChief()
             : base()
         {
             Hue = 0x481;			
-            Slayer = SlayerName.Exorcism;		
+            Slayer = SlayerName.Exorcismo;		
             Attributes.RegenHits = 2;
             Attributes.ReflectPhysical = 15;
             Attributes.WeaponDamage = 45;		

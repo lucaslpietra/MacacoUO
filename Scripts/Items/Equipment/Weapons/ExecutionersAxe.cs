@@ -12,6 +12,7 @@ namespace Server.Items
             : base(0xF45)
         {
             this.Weight = 8.0;
+            this.Name = "Machado do Carrasco";
         }
 
         public ExecutionersAxe(Serial serial)

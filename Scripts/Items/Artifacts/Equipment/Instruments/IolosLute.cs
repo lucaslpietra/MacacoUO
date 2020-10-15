@@ -9,8 +9,8 @@ namespace Server.Items
         public IolosLute()
         {
             Hue = 0x47E;
-            Slayer = SlayerName.Silver;
-            Slayer2 = SlayerName.Exorcism;
+            Slayer = SlayerName.Undeads;
+            Slayer2 = SlayerName.Exorcismo;
         }
 
         public IolosLute(Serial serial)

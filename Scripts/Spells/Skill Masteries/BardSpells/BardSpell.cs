@@ -73,7 +73,7 @@ namespace Server.Spells.SkillMasteries
 
         public override bool CheckCast()
         {
-            int mana = ScaleMana(RequiredMana);
+            int mana = AjustaMana(RequiredMana);
 
             if (!base.CheckCast())
                 return false;

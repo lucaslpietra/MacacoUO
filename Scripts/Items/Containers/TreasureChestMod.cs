@@ -1,210 +1,465 @@
 // Treasure Chest Pack - Version 0.99I
 // By Nerun
 
-using Server;
-using Server.Items;
-using Server.Multis;
-using Server.Network;
-using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
+    // ---------- [Level 1] ----------
+    // Large, Medium and Small Crate
+    [FlipableAttribute(0xe3e, 0xe3f)]
+    public class TreasureLevel1 : BaseTreasureChestMod
+    {
+        public override int DefaultGumpID { get { return 0x49; } }
 
-// ---------- [Level 1] ----------
-// Large, Medium and Small Crate
-	[FlipableAttribute( 0xe3e, 0xe3f )] 
-	public class TreasureLevel1 : BaseTreasureChestMod 
-	{ 
-		public override int DefaultGumpID{ get{ return 0x49; } }
+        public override int GetLevel()
+        {
+            return 1;
+        }
 
-		[Constructable] 
-		public TreasureLevel1() : base( Utility.RandomList( 0xE3C, 0xE3E, 0x9a9 ) )
-		{ 
-			RequiredSkill = 52;
-			LockLevel = this.RequiredSkill - Utility.Random( 1, 10 );
-			MaxLockLevel = this.RequiredSkill;
-			TrapType = TrapType.MagicTrap;
-			TrapPower = 1 * Utility.Random( 1, 25 );
+        [Constructable]
+        public TreasureLevel1() : base(Utility.RandomList(0xE3C, 0xE3E, 0x9a9))
+        {
+            RequiredSkill = 52;
+            LockLevel = this.RequiredSkill - Utility.Random(1, 10);
+            MaxLockLevel = this.RequiredSkill + 25;
+            TrapType = TrapType.MagicTrap;
+            TrapPower = 1 * Utility.Random(1, 25);
+
+            AddLoot(Loot.RandomProvision());
+            AddLoot(Loot.RandomProvision());
+            AddLoot(Loot.RandomProvision());
+
+            if (Utility.Random(3) == 1)
+                AddLoot(new BagOfReagents());
+            if (Utility.Random(5) == 1)
+                AddLoot(new BagOfNecroReagents());
 
             DropItem(new Gold(30, 100));
+
+            var t = Utility.Random(100);
+            var amt = Utility.Random(50, 60);
+            if (t <= 1)
+            {
+                DropItem(new CopperIngot(amt));
+                return;
+            }
+            else if (t == 3)
+            {
+                var cloth = new Cloth(amt);
+                cloth.Hue = Utility.RandomDyedHue();
+                DropItem(cloth);
+                return;
+            }
+            else if (t == 4)
+            {
+                DropItem(new Bolt(amt));
+                DropItem(new Arrow(amt));
+                return;
+            }
+            else if (t == 5)
+            {
+                DropItem(new OakBoard(amt));
+                return;
+            }
+
             DropItem(new Bolt(10));
-            DropItem(Loot.RandomClothing());
 
             AddLoot(Loot.RandomWeapon());
             AddLoot(Loot.RandomArmorOrShield());
             AddLoot(Loot.RandomJewelry());
+            AddLoot(Loot.RandomSeed());
 
-			for (int i = Utility.Random(3) + 1; i > 0; i--) // random 1 to 3
-				DropItem( Loot.RandomGem() );
-	}
+            for (int i = Utility.Random(3) + 1; i > 0; i--) // random 1 to 3
+                DropItem(Loot.RandomGem());
+        }
 
-		public TreasureLevel1( Serial serial ) : base( serial ) 
-		{ 
-		} 
+        public TreasureLevel1(Serial serial) : base(serial)
+        {
+        }
 
-		public override void Serialize( GenericWriter writer ) 
-		{ 
-			base.Serialize( writer ); 
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			writer.Write( (int) 0 ); // version 
-		} 
+            writer.Write((int)0); // version 
+        }
 
-		public override void Deserialize( GenericReader reader ) 
-		{ 
-			base.Deserialize( reader ); 
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-			int version = reader.ReadInt();
-		} 
-	}
+            int version = reader.ReadInt();
+        }
+    }
 
-// ---------- [Level 1 Hybrid] ----------
-// Large, Medium and Small Crate
-	[FlipableAttribute( 0xe3e, 0xe3f )] 
-	public class TreasureLevel1h : BaseTreasureChestMod 
-	{ 
-		public override int DefaultGumpID{ get{ return 0x49; } }
+    [FlipableAttribute(0xe3e, 0xe3f)]
+    public class TreasureLevel0 : BaseTreasureChestMod
+    {
+        public override int DefaultGumpID { get { return 0x49; } }
 
-		[Constructable] 
-		public TreasureLevel1h() : base( Utility.RandomList( 0xE3C, 0xE3E, 0x9a9 ) ) 
-		{ 
-			RequiredSkill = 56;
-			LockLevel = this.RequiredSkill - Utility.Random( 1, 10 );
-			MaxLockLevel = this.RequiredSkill;
-			TrapType = TrapType.MagicTrap;
-			TrapPower = 1 * Utility.Random( 1, 25 );
+        public override int GetLevel()
+        {
+            return 0;
+        }
 
-			DropItem( new Gold( 10, 40 ) );
-			DropItem( new Bolt( 5 ) );
-			switch ( Utility.Random( 2 )) 
-			{ 
-				case 0: DropItem( new Shoes( Utility.Random( 1, 2 ) ) ); break; 
-				case 1: DropItem( new Sandals( Utility.Random( 1, 2 ) ) ); break; 
-			}
 
-			switch ( Utility.Random( 3 )) 
-			{ 
-				case 0: DropItem( new BeverageBottle(BeverageType.Ale) ); break;
-				case 1: DropItem( new BeverageBottle(BeverageType.Liquor) ); break;
-				case 2: DropItem( new Jug(BeverageType.Cider) ); break;
-			}
-		} 
+        [Constructable]
+        public TreasureLevel0() : base(Utility.RandomList(0xE3C, 0xE3E, 0x9a9))
+        {
+            RequiredSkill = 50;
+            LockLevel = this.RequiredSkill - Utility.Random(1, 10);
+            MaxLockLevel = this.RequiredSkill + 25;
+            TrapType = TrapType.MagicTrap;
+            TrapPower = 2 * Utility.Random(1, 25);
 
-		public TreasureLevel1h( Serial serial ) : base( serial ) 
-		{ 
-		} 
+            if (Utility.Random(2) == 1)
+                AddLoot(new BagOfReagents(20));
+            if (Utility.Random(5) == 1)
+                AddLoot(new BagOfNecroReagents(20));
+            DropItem(new Gold(25, 60));
 
-		public override void Serialize( GenericWriter writer ) 
-		{ 
-			base.Serialize( writer ); 
+            var t = Utility.Random(100);
+            var amt = 30;
+            if (t <= 1)
+            {
+                DropItem(new CopperIngot(amt));
+                return;
+            }
+            else if (t == 3)
+            {
+                var cloth = new Cloth(amt);
+                cloth.Hue = Utility.RandomDyedHue();
+                DropItem(cloth);
+                return;
+            }
+            else if (t == 4)
+            {
+                DropItem(new Bolt(amt));
+                DropItem(new Arrow(amt));
+                return;
+            }
+            else if (t == 5)
+            {
+                DropItem(new OakBoard(amt));
+                return;
+            }
 
-			writer.Write( (int) 0 ); // version 
-		} 
+   
 
-		public override void Deserialize( GenericReader reader ) 
-		{ 
-			base.Deserialize( reader ); 
+            AddLoot(Loot.RandomSeed());
+            AddLoot(Loot.RandomProvision());
+            AddLoot(Loot.RandomProvision());
+        }
 
-			int version = reader.ReadInt(); 
-		} 
-	}
+        public TreasureLevel0(Serial serial) : base(serial)
+        {
+        }
 
-// ---------- [Level 2] ----------
-// Large, Medium and Small Crate
-// Wooden, Metal and Metal Golden Chest
-// Keg and Barrel
-	[FlipableAttribute( 0xe43, 0xe42 )] 
-	public class TreasureLevel2 : BaseTreasureChestMod 
-	{
-		[Constructable] 
-		public TreasureLevel2() : base( Utility.RandomList( 0xe3c, 0xE3E, 0x9a9, 0xe42, 0x9ab, 0xe40, 0xe7f, 0xe77 ) ) 
-		{ 
-			RequiredSkill = 72;
-			LockLevel = this.RequiredSkill - Utility.Random( 1, 10 );
-			MaxLockLevel = this.RequiredSkill;
-			TrapType = TrapType.MagicTrap;
-			TrapPower = 2 * Utility.Random( 1, 25 );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			DropItem( new Gold( 70, 100 ) );
-			DropItem( new Arrow( 10 ) );
-			DropItem( Loot.RandomPotion() );
-			for( int i = Utility.Random( 1, 2 ); i > 1; i-- )
-			{
-				Item ReagentLoot = Loot.RandomReagent();
-				ReagentLoot.Amount = Utility.Random( 1, 2 );
-				DropItem( ReagentLoot );
-			}
-			if (Utility.RandomBool()) //50% chance
-				for (int i = Utility.Random(8) + 1; i > 0; i--)
-					DropItem(Loot.RandomScroll(0, 39, SpellbookType.Regular));
+            writer.Write((int)0); // version 
+        }
 
-			if (Utility.RandomBool()) //50% chance
-				for (int i = Utility.Random(6) + 1; i > 0; i--)
-					DropItem( Loot.RandomGem() );
-		} 
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-		public TreasureLevel2( Serial serial ) : base( serial ) 
-		{ 
-		} 
+            int version = reader.ReadInt();
+        }
+    }
 
-		public override void Serialize( GenericWriter writer ) 
-		{ 
-			base.Serialize( writer ); 
+    // ---------- [Level 1 Hybrid] ----------
+    // Large, Medium and Small Crate
+    [FlipableAttribute(0xe3e, 0xe3f)]
+    public class TreasureLevel1h : BaseTreasureChestMod
+    {
 
-			writer.Write( (int) 0 ); // version 
-		} 
+        public override int GetLevel()
+        {
+            return 1;
+        }
 
-		public override void Deserialize( GenericReader reader ) 
-		{ 
-			base.Deserialize( reader ); 
+        public override int DefaultGumpID { get { return 0x49; } }
 
-			int version = reader.ReadInt(); 
-		} 
-	} 
+        [Constructable]
+        public TreasureLevel1h() : base(Utility.RandomList(0xE3C, 0xE3E, 0x9a9))
+        {
+            RequiredSkill = 56;
+            LockLevel = this.RequiredSkill - Utility.Random(1, 10);
+            MaxLockLevel = this.RequiredSkill + 25;
+            TrapType = TrapType.MagicTrap;
+            TrapPower = 1 * Utility.Random(1, 25);
 
-// ---------- [Level 3] ----------
-// Wooden, Metal and Metal Golden Chest
-	[FlipableAttribute( 0x9ab, 0xe7c )] 
-	public class TreasureLevel3 : BaseTreasureChestMod 
-	{ 
-		public override int DefaultGumpID{ get{ return 0x4A; } }
 
-		[Constructable] 
-		public TreasureLevel3() : base( Utility.RandomList( 0x9ab, 0xe40, 0xe42 ) ) 
-		{ 
-			RequiredSkill = 84;
-			LockLevel = this.RequiredSkill - Utility.Random( 1, 10 );
-			MaxLockLevel = this.RequiredSkill;
-			TrapType = TrapType.MagicTrap;
-			TrapPower = 3 * Utility.Random( 1, 25 );
+            if (Utility.Random(3) == 1)
+                AddLoot(new BagOfReagents());
+            if (Utility.Random(5) == 1)
+                AddLoot(new BagOfNecroReagents());
+            DropItem(new Gold(25, 70));
 
-			DropItem( new Gold( 180, 240 ) );
-			DropItem( new Arrow( 10 ) );
+            var t = Utility.Random(100);
+            var amt = 100;
+            if (t <= 1)
+            {
+                DropItem(new CopperIngot(amt));
+                return;
+            } else if (t == 3)
+            {
+                var cloth = new Cloth(amt*2);
+                cloth.Hue = Utility.RandomDyedHue();
+                DropItem(cloth);
+                return;
+            }
+            else if (t == 4)
+            {
+                DropItem(new Bolt(amt));
+                DropItem(new Arrow(amt));
+                return;
+            }
+            else if (t == 5)
+            {
+                DropItem(new OakBoard(amt));
+                return;
+            }
 
-			for( int i = Utility.Random( 1, 3 ); i > 1; i-- )
-			{
-				Item ReagentLoot = Loot.RandomReagent();
-				ReagentLoot.Amount = Utility.Random( 1, 9 );
-				DropItem( ReagentLoot );
-			}
+            DropItem(Loot.RandomSeed());
+            DropItem(Loot.RandomSeed());
+            AddLoot(Loot.RandomProvision());
+            AddLoot(Loot.RandomProvision());
+            AddLoot(Loot.RandomProvision());
+        
+            DropItem(new Bolt(5));
+            switch (Utility.Random(10))
+            {
+                case 0: DropItem(new Shoes(Utility.Random(1, 2))); break;
+                case 1: DropItem(new Sandals(Utility.Random(1, 2))); break;
+            }
 
-			for ( int i = Utility.Random( 1, 3 ); i > 1; i-- )
-				DropItem( Loot.RandomPotion() );
+            switch (Utility.Random(3))
+            {
+                case 0: DropItem(new BeverageBottle(BeverageType.Ale)); break;
+                case 1: DropItem(new BeverageBottle(BeverageType.Liquor)); break;
+                case 2: DropItem(new Jug(BeverageType.Cider)); break;
+            }
+            AddLoot(Loot.RandomSeed());
+        }
 
-			if ( 0.67 > Utility.RandomDouble() ) //67% chance = 2/3
-				for (int i = Utility.Random(12) + 1; i > 0; i--)
-					DropItem(Loot.RandomScroll(0, 47, SpellbookType.Regular));
+        public TreasureLevel1h(Serial serial) : base(serial)
+        {
+        }
 
-			if ( 0.67 > Utility.RandomDouble() ) //67% chance = 2/3
-				for (int i = Utility.Random(9) + 1; i > 0; i--)
-					DropItem( Loot.RandomGem() );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			for( int i = Utility.Random( 1, 3 ); i > 1; i-- )
-				DropItem( Loot.RandomWand() );
+            writer.Write((int)0); // version 
+        }
 
-			// Magical ArmorOrWeapon
-			for( int i = Utility.Random( 1, 3 ); i > 1; i-- )
-			{
-				Item item = Loot.RandomArmorOrShieldOrWeapon();
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    // ---------- [Level 2] ----------
+    // Large, Medium and Small Crate
+    // Wooden, Metal and Metal Golden Chest
+    // Keg and Barrel
+    [FlipableAttribute(0xe43, 0xe42)]
+    public class TreasureLevel2 : BaseTreasureChestMod
+    {
+        public override int GetLevel()
+        {
+            return 2;
+        }
+
+        [Constructable]
+        public TreasureLevel2() : base(Utility.RandomList(0xe3c, 0xE3E, 0x9a9, 0xe42, 0x9ab, 0xe40, 0xe7f, 0xe77))
+        {
+            RequiredSkill = 72;
+            LockLevel = this.RequiredSkill - Utility.Random(1, 10);
+            MaxLockLevel = this.RequiredSkill + 25;
+            TrapType = TrapType.MagicTrap;
+            TrapPower = 2 * Utility.Random(1, 25);
+            DropItem(Loot.RandomSeed());
+            DropItem(Loot.RandomSeed());
+            AddLoot(Loot.RandomProvision());
+            AddLoot(Loot.RandomProvision());
+            AddLoot(Loot.RandomProvision());
+            AddLoot(Loot.RandomProvision());
+            DropItem(Loot.RandomSeed());
+
+            AddLoot(new BagOfReagents());
+            if (Utility.Random(3) == 1)
+                AddLoot(new BagOfNecroReagents());
+
+            var t = Utility.Random(100);
+            var amt = Utility.Random(200, 100);
+            if (t <= 1)
+            {
+                DropItem(new CopperIngot(amt));
+                return;
+            }
+            else if (t == 3)
+            {
+                var cloth = new Cloth(amt*2);
+                cloth.Hue = Utility.RandomDyedHue();
+                DropItem(cloth);
+                return;
+            }
+            else if (t == 4)
+            {
+                DropItem(new Bolt(amt));
+                DropItem(new Arrow(amt));
+                return;
+            }
+            else if (t == 5)
+            {
+                DropItem(new OakBoard(amt));
+                return;
+            }
+
+            DropItem(Loot.RandomSeed());
+            if (Utility.Random(10) == 1)
+            {
+                DropItem(DefAlchemy.GetRandomRecipe());
+            }
+            if (Utility.Random(5) == 1)
+                DropItem(DefCookingExp.GetReceitaRandom());
+            DropItem(Loot.RandomSeed());
+            DropItem(new Gold(300, 400));
+            DropItem(new Arrow(10));
+            DropItem(Loot.RandomPotion());
+            for (int i = Utility.Random(1, 2); i > 1; i--)
+            {
+                Item ReagentLoot = Loot.RandomReagent();
+                ReagentLoot.Amount = Utility.Random(1, 2);
+                DropItem(ReagentLoot);
+            }
+            if (Utility.RandomBool()) //50% chance
+                for (int i = Utility.Random(8) + 1; i > 0; i--)
+                    DropItem(Loot.RandomScroll(0, 39, SpellbookType.Regular));
+
+            if (Utility.RandomBool()) //50% chance
+                for (int i = Utility.Random(6) + 1; i > 0; i--)
+                    DropItem(Loot.RandomGem());
+        }
+
+        public TreasureLevel2(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version 
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    // ---------- [Level 3] ----------
+    // Wooden, Metal and Metal Golden Chest
+    [FlipableAttribute(0x9ab, 0xe7c)]
+    public class TreasureLevel3 : BaseTreasureChestMod
+    {
+        public override int DefaultGumpID { get { return 0x4A; } }
+
+        public override int GetLevel()
+        {
+            return 3;
+        }
+
+
+        [Constructable]
+        public TreasureLevel3() : base(Utility.RandomList(0x9ab, 0xe40, 0xe42))
+        {
+            AddLoot(new BagOfReagents());
+            AddLoot(new BagOfNecroReagents());
+
+            var t = Utility.Random(100);
+            var amt = Utility.Random(300, 200);
+            if (t <= 1)
+            {
+                DropItem(new CopperIngot(amt));
+                return;
+            }
+            else if (t == 3)
+            {
+                var cloth = new Cloth(amt*2);
+                cloth.Hue = Utility.RandomDyedHue();
+                DropItem(cloth);
+                return;
+            }
+            else if (t == 4)
+            {
+                DropItem(new Bolt(amt));
+                DropItem(new Arrow(amt));
+                return;
+            }
+            else if (t == 5)
+            {
+                DropItem(new OakBoard(amt));
+                return;
+            }
+
+            DropItem(Loot.RandomSeed());
+            DropItem(Loot.RandomSeed());
+            DropItem(Loot.RandomSeed());
+            DropItem(Loot.RandomSeed());
+            DropItem(Loot.RandomSeed());
+            DropItem(Loot.RandomSeed());
+            DropItem(Loot.RandomSeed());
+            DropItem(Loot.RandomSeed());
+            DropItem(Loot.RandomSeed());
+            DropItem(Loot.RandomSeed());
+            DropItem(DefAlchemy.GetRandomRecipe());
+            DropItem(DefCookingExp.GetReceitaRandom());
+            RequiredSkill = 84;
+            LockLevel = this.RequiredSkill - Utility.Random(1, 10);
+            MaxLockLevel = this.RequiredSkill + 25;
+            TrapType = TrapType.MagicTrap;
+            TrapPower = 3 * Utility.Random(1, 25);
+
+            DropItem(new Gold(700, 900));
+            DropItem(new Arrow(10));
+
+            for (int i = Utility.Random(1, 3); i > 1; i--)
+            {
+                Item ReagentLoot = Loot.RandomReagent();
+                ReagentLoot.Amount = Utility.Random(1, 9);
+                DropItem(ReagentLoot);
+            }
+
+            for (int i = Utility.Random(1, 3); i > 1; i--)
+                DropItem(Loot.RandomPotion());
+
+            if (0.67 > Utility.RandomDouble()) //67% chance = 2/3
+                for (int i = Utility.Random(12) + 1; i > 0; i--)
+                    DropItem(Loot.RandomScroll(0, 47, SpellbookType.Regular));
+
+            if (0.67 > Utility.RandomDouble()) //67% chance = 2/3
+                for (int i = Utility.Random(9) + 1; i > 0; i--)
+                    DropItem(Loot.RandomGem());
+
+            for (int i = Utility.Random(1, 3); i > 1; i--)
+                DropItem(Loot.RandomWand());
+
+            // Magical ArmorOrWeapon
+            for (int i = Utility.Random(1, 3); i > 1; i--)
+            {
+                Item item = Loot.RandomArmorOrShieldOrWeapon();
 
                 if (!Core.AOS)
                 {
@@ -226,80 +481,131 @@ namespace Server.Items
                 }
                 else
                     AddLoot(item);
-			}
+            }
 
-			for( int i = Utility.Random( 1, 2 ); i > 1; i-- )
-				AddLoot( Loot.RandomClothing() );
+            for (int i = Utility.Random(1, 2); i > 1; i--)
+                AddLoot(Loot.RandomClothing());
 
-			for( int i = Utility.Random( 1, 2 ); i > 1; i-- )
+            for (int i = Utility.Random(1, 2); i > 1; i--)
                 AddLoot(Loot.RandomJewelry());
 
-			// Magic clothing (not implemented)
-			
-			// Magic jewelry (not implemented)
-		} 
+            // Magic clothing (not implemented)
 
-		public TreasureLevel3( Serial serial ) : base( serial ) 
-		{ 
-		} 
+            // Magic jewelry (not implemented)
+        }
 
-		public override void Serialize( GenericWriter writer ) 
-		{ 
-			base.Serialize( writer ); 
+        public TreasureLevel3(Serial serial) : base(serial)
+        {
+        }
 
-			writer.Write( (int) 0 ); // version 
-		} 
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-		public override void Deserialize( GenericReader reader ) 
-		{ 
-			base.Deserialize( reader ); 
+            writer.Write((int)0); // version 
+        }
 
-			int version = reader.ReadInt(); 
-		} 
-	} 
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-// ---------- [Level 4] ----------
-// Wooden, Metal and Metal Golden Chest
-	[FlipableAttribute( 0xe41, 0xe40 )] 
-	public class TreasureLevel4 : BaseTreasureChestMod 
-	{ 
-		[Constructable] 
-		public TreasureLevel4() : base( Utility.RandomList( 0xe40, 0xe42, 0x9ab ) )
-		{ 
-			RequiredSkill = 92;
-			LockLevel = this.RequiredSkill - Utility.Random( 1, 10 );
-			MaxLockLevel = this.RequiredSkill;
-			TrapType = TrapType.MagicTrap;
-			TrapPower = 4 * Utility.Random( 1, 25 );
+            int version = reader.ReadInt();
+        }
+    }
 
-			DropItem( new Gold( 200, 400 ) );
-			DropItem( new BlankScroll( Utility.Random( 1, 4 ) ) );
-			
-			for( int i = Utility.Random( 1, 4 ); i > 1; i-- )
-			{
-				Item ReagentLoot = Loot.RandomReagent();
-				ReagentLoot.Amount = Utility.Random( 6, 12 );
-				DropItem( ReagentLoot );
-			}
-	
-			for ( int i = Utility.Random( 1, 4 ); i > 1; i-- )
-				DropItem( Loot.RandomPotion() );
-			
-			if ( 0.75 > Utility.RandomDouble() ) //75% chance = 3/4
-				for (int i = Utility.RandomMinMax(8,16); i > 0; i--)
-					DropItem(Loot.RandomScroll(0, 47, SpellbookType.Regular));
+    // ---------- [Level 4] ----------
+    // Wooden, Metal and Metal Golden Chest
+    [FlipableAttribute(0xe41, 0xe40)]
+    public class TreasureLevel4 : BaseTreasureChestMod
+    {
+        public override int GetLevel()
+        {
+            return 4;
+        }
 
-			if ( 0.75 > Utility.RandomDouble() ) //75% chance = 3/4
-				for (int i = Utility.RandomMinMax(6,12) + 1; i > 0; i--)
-					DropItem( Loot.RandomGem() );
 
-			for( int i = Utility.Random( 1, 4 ); i > 1; i-- )
-				DropItem( Loot.RandomWand() );
+        [Constructable]
+        public TreasureLevel4() : base(Utility.RandomList(0xe40, 0xe42, 0x9ab))
+        {
+            RequiredSkill = 92;
+            LockLevel = this.RequiredSkill - Utility.Random(1, 10);
+            MaxLockLevel = this.RequiredSkill + 25;
+            TrapType = TrapType.MagicTrap;
+            TrapPower = 4 * Utility.Random(1, 27);
 
-			// Magical ArmorOrWeapon
-			for( int i = Utility.Random( 1, 4 ); i > 1; i-- )
-			{
-				Item item = Loot.RandomArmorOrShieldOrWeapon();
+            var t = Utility.Random(100);
+            var amt = Utility.Random(800, 400);
+            if (t <= 1)
+            {
+                DropItem(new CopperIngot(amt));
+                return;
+            }
+            else if (t == 3)
+            {
+                var cloth = new Cloth(amt*2);
+                cloth.Hue = Utility.RandomDyedHue();
+                DropItem(cloth);
+                return;
+            }
+            else if (t == 4)
+            {
+                DropItem(new Bolt(amt));
+                DropItem(new Arrow(amt));
+                return;
+            }
+            else if (t == 5)
+            {
+                DropItem(new OakBoard(amt));
+                return;
+            }
+
+            AddLoot(new BagOfReagents());
+            AddLoot(new BagOfNecroReagents());
+            AddLoot(new BagOfReagents());
+            AddLoot(new BagOfNecroReagents());
+
+            DropItem(Loot.RandomSeed());
+            DropItem(Loot.RandomSeed());
+            DropItem(Loot.RandomSeed());
+            DropItem(Loot.RandomSeed());
+            DropItem(Loot.RandomSeed());
+            DropItem(Loot.RandomSeed());
+            DropItem(Loot.RandomSeed());
+            DropItem(Loot.RandomSeed());
+            DropItem(Loot.RandomSeed());
+            DropItem(Loot.RandomSeed());
+            DropItem(Loot.RandomSeed());
+            DropItem(DefAlchemy.GetRandomRecipe());
+            DropItem(DefCookingExp.GetReceitaRandom());
+            DropItem(Decos.RandomDeco());
+            DropItem(new Gold(1000, 1210));
+            DropItem(new BlankScroll(Utility.Random(1, 4)));
+
+            for (int i = Utility.Random(1, 4); i > 1; i--)
+            {
+                Item ReagentLoot = Loot.RandomReagent();
+                ReagentLoot.Amount = Utility.Random(6, 12);
+                DropItem(ReagentLoot);
+            }
+
+            for (int i = Utility.Random(1, 4); i > 1; i--)
+                DropItem(Loot.RandomPotion());
+
+            if (0.75 > Utility.RandomDouble()) //75% chance = 3/4
+                for (int i = Utility.RandomMinMax(8, 16); i > 0; i--)
+                    DropItem(Loot.RandomScroll(0, 47, SpellbookType.Regular));
+
+            if (0.75 > Utility.RandomDouble()) //75% chance = 3/4
+                for (int i = Utility.RandomMinMax(6, 12) + 1; i > 0; i--)
+                    DropItem(Loot.RandomGem());
+
+            for (int i = Utility.Random(1, 4); i > 1; i--)
+                DropItem(Loot.RandomWand());
+
+            // Magical ArmorOrWeapon
+            for (int i = Utility.Random(1, 4); i > 1; i--)
+            {
+                Item item = Loot.RandomArmorOrShieldOrWeapon();
 
                 if (!Core.AOS)
                 {
@@ -321,32 +627,32 @@ namespace Server.Items
                 }
                 else
                     AddLoot(item);
-			}
+            }
 
-			for( int i = Utility.Random( 1, 2 ); i > 1; i-- )
-				AddLoot( Loot.RandomClothing() );
-			
-			for( int i = Utility.Random( 1, 2 ); i > 1; i-- )
-				AddLoot( Loot.RandomJewelry() );
-		} 
+            for (int i = Utility.Random(1, 2); i > 1; i--)
+                AddLoot(Loot.RandomClothing());
 
-		public TreasureLevel4( Serial serial ) : base( serial ) 
-		{ 
-		} 
+            for (int i = Utility.Random(1, 2); i > 1; i--)
+                AddLoot(Loot.RandomJewelry());
+        }
 
-		public override void Serialize( GenericWriter writer ) 
-		{ 
-			base.Serialize( writer ); 
+        public TreasureLevel4(Serial serial) : base(serial)
+        {
+        }
 
-			writer.Write( (int) 0 ); // version 
-		} 
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-		public override void Deserialize( GenericReader reader ) 
-		{ 
-			base.Deserialize( reader ); 
+            writer.Write((int)0); // version 
+        }
 
-			int version = reader.ReadInt(); 
-		} 
-	} 
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
 
 }

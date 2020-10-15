@@ -82,7 +82,8 @@ namespace Server.Items
             if (this.Deleted || !from.CanSee(this))
                 return false;
 
-            base.ScissorHelper(from, new Bandage(), 1);
+            from.SendMessage("Talvez algum alfaiate saiba criar bandagens...");
+            //base.ScissorHelper(from, new Bandage(), 1);
 
             return true;
         }

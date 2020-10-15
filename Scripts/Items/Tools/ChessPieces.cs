@@ -18,7 +18,7 @@ namespace Server.Items
         {
             get
             {
-                return "white king";
+                return "rei branco";
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -50,7 +50,7 @@ namespace Server.Items
         {
             get
             {
-                return "black king";
+                return "rei preto";
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -82,7 +82,7 @@ namespace Server.Items
         {
             get
             {
-                return "white queen";
+                return "rainha branca";
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -114,7 +114,7 @@ namespace Server.Items
         {
             get
             {
-                return "black queen";
+                return "rainha preta";
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -146,7 +146,7 @@ namespace Server.Items
         {
             get
             {
-                return "white rook";
+                return "torre branca";
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -178,7 +178,7 @@ namespace Server.Items
         {
             get
             {
-                return "black rook";
+                return "torre preta";
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -210,7 +210,7 @@ namespace Server.Items
         {
             get
             {
-                return "white bishop";
+                return "bispo branco";
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -242,7 +242,7 @@ namespace Server.Items
         {
             get
             {
-                return "black bishop";
+                return "bispo preto";
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -274,7 +274,7 @@ namespace Server.Items
         {
             get
             {
-                return "white knight";
+                return "cavalo branco";
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -306,7 +306,7 @@ namespace Server.Items
         {
             get
             {
-                return "black knight";
+                return "cavalo preto";
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -338,7 +338,7 @@ namespace Server.Items
         {
             get
             {
-                return "white pawn";
+                return "peao branco";
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -370,7 +370,7 @@ namespace Server.Items
         {
             get
             {
-                return "black pawn";
+                return "peao preto";
             }
         }
         public override void Serialize(GenericWriter writer)

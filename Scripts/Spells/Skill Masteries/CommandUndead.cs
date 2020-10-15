@@ -152,7 +152,7 @@ namespace Server.Spells.SkillMasteries
                     return false;
             }
 
-            SlayerEntry entry = SlayerGroup.GetEntryByName(SlayerName.Silver);
+            SlayerEntry entry = SlayerGroup.GetEntryByName(SlayerName.Undeads);
 
             return entry != null && entry.Slays(bc);
         }

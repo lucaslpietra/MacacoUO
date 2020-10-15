@@ -8,7 +8,7 @@ namespace Server.Mobiles
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         [Constructable]
         public LeatherWorker()
-            : base("the leather worker")
+            : base("o coureiro")
         { 
         }
 

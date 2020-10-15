@@ -7,9 +7,9 @@ namespace Server.Mobiles
     {
         [Constructable]
         public BrownBear()
-            : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a brown bear";
+            this.Name = "um urso marrom";
             this.Body = 167;
             this.BaseSoundID = 0xA3;
 
@@ -20,7 +20,7 @@ namespace Server.Mobiles
             this.SetHits(46, 60);
             this.SetMana(0);
 
-            this.SetDamage(6, 12);
+            this.SetDamage(10, 27);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
@@ -38,8 +38,10 @@ namespace Server.Mobiles
             this.VirtualArmor = 24;
 
             this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = 41.1;
+            this.ControlSlots = 2;
+            this.MinTameSkill = 51.1;
+
+            SetSpecialAbility(SpecialAbility.Rage);
         }
 
         public BrownBear(Serial serial)
@@ -58,7 +60,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return 12;
+                return 20;
             }
         }
         public override FoodType FavoriteFood

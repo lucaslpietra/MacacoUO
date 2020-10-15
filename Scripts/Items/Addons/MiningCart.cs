@@ -228,10 +228,10 @@ namespace Server.Items
                                     ingots = new IronIngot();
                                     break;
                                 case 1:
-                                    ingots = new DullCopperIngot();
+                                    ingots = new BeriloIngot();
                                     break;
                                 case 2:
-                                    ingots = new ShadowIronIngot();
+                                    ingots = new VibraniumIngot();
                                     break;
                                 case 3:
                                     ingots = new CopperIngot();
@@ -240,16 +240,16 @@ namespace Server.Items
                                     ingots = new BronzeIngot();
                                     break;
                                 case 5:
-                                    ingots = new GoldIngot();
+                                    ingots = new SilverIngot();
                                     break;
                                 case 6:
-                                    ingots = new AgapiteIngot();
+                                    ingots = new NiobioIngot();
                                     break;
                                 case 7:
-                                    ingots = new VeriteIngot();
+                                    ingots = new LazuritaIngot();
                                     break;
                                 case 8:
-                                    ingots = new ValoriteIngot();
+                                    ingots = new QuartzoIngot();
                                     break;
                             }
 

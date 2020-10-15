@@ -15,7 +15,7 @@ namespace Server.Mobiles
             : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = NameList.RandomName("shadow knight");
-            Title = "the Shadow Knight";
+            Title = "o cavaleiro das abismo";
             Body = 311;
 
             SetStr(250);
@@ -82,7 +82,6 @@ namespace Server.Mobiles
             }
         }
 
-        public override bool CanFlee { get { return false; } }
         public override TribeType Tribe { get { return TribeType.Undead; } }
 
         public override OppositionGroup OppositionGroup
@@ -236,6 +235,9 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (BaseSoundID == 357)
+                BaseSoundID = -1;
         }
     }
 }

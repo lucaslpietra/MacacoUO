@@ -11,14 +11,23 @@ namespace Server.Items
         public PlateLegs()
             : base(0x1411)
         {
-            Weight = 7.0;
+            this.Weight = 7.0;
+            this.Name = "Calças de Metal";
         }
+
+        public override int MaxMageryCircle { get { return 3; } }
 
         public PlateLegs(Serial serial)
             : base(serial)
         {
         }
-
+        public override int OldDexBonus
+        {
+            get
+            {
+                return -8;
+            }
+        }
         public override int BasePhysicalResistance
         {
             get
@@ -79,21 +88,14 @@ namespace Server.Items
         {
             get
             {
-                return 60;
-            }
-        }
-        public override int OldDexBonus
-        {
-            get
-            {
-                return -6;
+                return 80;
             }
         }
         public override int ArmorBase
         {
             get
             {
-                return 40;
+                return 60;
             }
         }
         public override ArmorMaterialType MaterialType

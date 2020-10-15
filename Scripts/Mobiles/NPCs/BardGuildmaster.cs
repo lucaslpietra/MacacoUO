@@ -6,7 +6,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public BardGuildmaster()
-            : base("bard")
+            : base("o bardo")
         {
             this.SetSkill(SkillName.Archery, 80.0, 100.0);
             this.SetSkill(SkillName.Discordance, 80.0, 100.0);

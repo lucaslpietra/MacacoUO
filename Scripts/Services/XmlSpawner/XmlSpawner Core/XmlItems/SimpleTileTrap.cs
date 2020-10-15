@@ -142,7 +142,7 @@ namespace Server.Items
 				return;
    
    
-			if( ( m.Player && m.AccessLevel == AccessLevel.Player ) )
+			if( ( m.Player && m.AccessLevel <= AccessLevel.VIP ) )
 			{
 				if ( CheckRange( m.Location, oldLocation, 0 ) )
 					OnEnter( m );

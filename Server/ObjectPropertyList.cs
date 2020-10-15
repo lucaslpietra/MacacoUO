@@ -14,7 +14,9 @@ namespace Server
 		private int m_Hash;
 		private int m_Header;
 		private int m_Strings;
-		private string m_HeaderArgs;
+        private int m_Strings2;
+        private int m_Strings3;
+        private string m_HeaderArgs;
 
 		public IEntity Entity { get { return m_Entity; } }
 		public int Hash { get { return 0x40000000 + m_Hash; } }
@@ -110,7 +112,24 @@ namespace Server
 			m_Stream.Write(m_Buffer, 0, byteCount);
 		}
 
-		public void Add(int number, string format, object arg0)
+        public void AddTwoValues(string s1, string s2)
+        {
+            var id = m_StringNumbers_2_values[m_Strings2++ % m_StringNumbers_2_values.Length];
+            Add(id, s1+"\t{0}", s2);
+        }
+
+        public void AddTwoValues(string s1, int s2)
+        {
+            AddTwoValues(s1, s2.ToString());
+        }
+
+        public void AddThreeValues(string s1, string s2, string s3)
+        {
+            var id = m_StringNumbers_3_values[m_Strings3++ % m_StringNumbers_3_values.Length];
+            Add(id, "#{0}\t#{1}\t{2}", s1, s2, s3);
+        }
+
+        public void Add(int number, string format, object arg0)
 		{
 			Add(number, String.Format(format, arg0));
 		}
@@ -131,19 +150,50 @@ namespace Server
 		}
 
 		// Each of these are localized to "~1_NOTHING~" which allows the string argument to be used
-		private static readonly int[] m_StringNumbers = new[] {1042971, 1070722};
+		private static readonly int[] m_StringNumbers = new[] {
+            1114057, 1114778, 1114779, // ~1_val~
+			1150541, // ~1_TOKEN~
+			1153153, // ~1_year~
 
-		private int GetStringNumber()
+			1041522, // ~1~~2~~3~
+            1060658, //  ~1_val~ ~2_val~
+            1060659, //  ~1_val~ ~2_val~
+            1060847, // ~1_val~ ~2_val~
+			1116560, // ~1_val~ ~2_val~
+			1116690, // ~1_val~ ~2_val~ ~3_val~
+			1116691, // ~1_val~ ~2_val~ ~3_val~
+			1116692, // ~1_val~ ~2_val~ ~3_val~
+			1116693, // ~1_val~ ~2_val~ ~3_val~
+			1116694 // ~1_val~ ~2_val~ ~3_val~
+        };
+
+        private static readonly int[] m_StringNumbers_2_values = new[] {
+            1060658, //  ~1_val~ ~2_val~
+            1060659, //  ~1_val~ ~2_val~
+            1060847, // ~1_val~ ~2_val~
+			1116560, // ~1_val~ ~2_val~
+        };
+
+        private static readonly int[] m_StringNumbers_3_values = new[] {
+            1116690, // ~1_val~ ~2_val~ ~3_val~
+			1116691, // ~1_val~ ~2_val~ ~3_val~
+			1116692, // ~1_val~ ~2_val~ ~3_val~
+			1116693, // ~1_val~ ~2_val~ ~3_val~
+			1116694  // ~1_val~ ~2_val~ ~3_val~
+        };
+
+        private int GetStringNumber()
 		{
-			return m_StringNumbers[m_Strings++ % m_StringNumbers.Length];
-		}
+            //return 1114057;
+            return m_StringNumbers[m_Strings++ % m_StringNumbers.Length];
+        }
 
 		public void Add(string text)
 		{
 			Add(GetStringNumber(), text);
 		}
 
-		public void Add(string format, string arg0)
+        public void Add(string format, string arg0)
 		{
 			Add(GetStringNumber(), String.Format(format, arg0));
 		}

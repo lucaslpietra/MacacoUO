@@ -38,11 +38,11 @@ namespace Server.Items
 
                 if (item == null && m == null)
                 {
-                    from.SendLocalizedMessage(500353); // You are not certain...
+                    from.SendMessage("Voce nao esta certo"); // You are not certain...
                     return;
                 }
                 
-                if (!from.CheckTargetSkill(SkillName.ItemID, o, 0, 100))
+                if (!from.CheckTargetSkillMinMax(SkillName.ItemID, o, 0, 100))
                 {
                     from.PrivateOverheadMessage(MessageType.Emote, 0x3B2, 1041352, from.NetState); // You have no idea how much it might be worth.
                     return;
@@ -91,7 +91,7 @@ namespace Server.Items
                         }
                         else
                         {
-                            int weight = Imbuing.GetTotalWeight(item, -1, false, true);
+                            int weight = Imbuing.GetTotalWeight(item);
                             string imbIngred = null;
                             double skill = from.Skills[SkillName.Imbuing].Base;
                             bool badSkill = false;
@@ -144,7 +144,7 @@ namespace Server.Items
                 }
                 else if (o is Item)
                 {
-                    if (from.CheckTargetSkill(SkillName.ItemID, o, 0, 100))
+                    if (from.CheckTargetSkillMinMax(SkillName.ItemID, o, 0, 100))
                     {
                         if (o is BaseWeapon)
                             ((BaseWeapon)o).Identified = true;

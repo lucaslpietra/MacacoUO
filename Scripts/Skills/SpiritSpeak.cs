@@ -10,79 +10,52 @@ using Server.Mobiles;
 
 namespace Server.SkillHandlers
 {
-	internal class SpiritSpeak
-	{
-		public static void Initialize()
-		{
-			SkillInfo.Table[32].Callback = OnUse;
-		}
+    internal class SpiritSpeak
+    {
+        public static void Initialize()
+        {
+            SkillInfo.Table[32].Callback = OnUse;
+        }
 
         public static Dictionary<Mobile, Timer> _Table;
 
-		public static TimeSpan OnUse(Mobile m)
-		{
-			if (Core.AOS)
-			{
-                if (m.Spell != null && m.Spell.IsCasting)
-                {
-                    m.SendLocalizedMessage(502642); // You are already casting a spell.
-                }
-                else if (BeginSpiritSpeak(m))
-                {
-                    return TimeSpan.FromSeconds(5.0);
-                }
+        public static TimeSpan OnUse(Mobile m)
+        {
+            if(m.Poisoned || BleedAttack.IsBleeding(m))
+            {
+                m.SendMessage("Voce nao pode usar isto envenenado ou sangrando");
+                return TimeSpan.FromSeconds(5.0);
+            }
 
-				return TimeSpan.Zero;
-			}
+            if (m.Spell != null && m.Spell.IsCasting)
+            {
+                m.SendMessage("Voce ja esta conjurando algo"); // You are already casting a spell.
+            }
+            else if (BeginSpiritSpeak(m))
+            {
+                return TimeSpan.FromSeconds(5.0);
+            }
 
-			m.RevealingAction();
+            return TimeSpan.Zero;
+        }
 
-			if (m.CheckSkill(SkillName.SpiritSpeak, 0, 100))
-			{
-				if (!m.CanHearGhosts)
-				{
-					Timer t = new SpiritSpeakTimer(m);
-					double secs = m.Skills[SkillName.SpiritSpeak].Base / 50;
-					secs *= 90;
-					if (secs < 15)
-					{
-						secs = 15;
-					}
+        private class SpiritSpeakTimer : Timer
+        {
+            private readonly Mobile m_Owner;
 
-					t.Delay = TimeSpan.FromSeconds(secs); //15seconds to 3 minutes
-					t.Start();
-					m.CanHearGhosts = true;
-				}
+            public SpiritSpeakTimer(Mobile m)
+                : base(TimeSpan.FromMinutes(2.0))
+            {
+                m_Owner = m;
+                Priority = TimerPriority.FiveSeconds;
+            }
 
-				m.PlaySound(0x24A);
-				m.SendLocalizedMessage(502444); //You contact the neitherworld.
-			}
-			else
-			{
-				m.SendLocalizedMessage(502443); //You fail to contact the neitherworld.
-				m.CanHearGhosts = false;
-			}
-
-			return TimeSpan.FromSeconds(1.0);
-		}
-
-		private class SpiritSpeakTimer : Timer
-		{
-			private readonly Mobile m_Owner;
-
-			public SpiritSpeakTimer(Mobile m)
-				: base(TimeSpan.FromMinutes(2.0))
-			{
-				m_Owner = m;
-				Priority = TimerPriority.FiveSeconds;
-			}
-
-			protected override void OnTick()
-			{
-				m_Owner.CanHearGhosts = false;
-				m_Owner.SendLocalizedMessage(502445); //You feel your contact with the neitherworld fading.
-			}
-		}
+            protected override void OnTick()
+            {
+                m_Owner.CanHearGhosts = false;
+                m_Owner.SendLocalizedMessage(502445); //You feel your contact with the neitherworld fading.
+            }
+        }
 
         public static bool BeginSpiritSpeak(Mobile m)
         {
@@ -113,7 +86,7 @@ namespace Server.SkillHandlers
         {
             if (_Table != null && _Table.ContainsKey(m))
             {
-                if(_Table[m] != null)
+                if (_Table[m] != null)
                     _Table[m].Stop();
 
                 m.SendSpeedControl(SpeedControlType.Disable);
@@ -126,14 +99,12 @@ namespace Server.SkillHandlers
 
         public static void CheckDisrupt(Mobile m)
         {
-            if (!Core.AOS)
-                return;
 
             if (_Table != null && _Table.ContainsKey(m))
             {
                 if (m is PlayerMobile)
                 {
-                    m.SendLocalizedMessage(500641); // Your concentration is disturbed, thus ruining thy spell.
+                    m.SendMessage("Sua concentracao foi interrompida"); // Your concentration is disturbed, thus ruining thy spell.
                 }
 
                 m.FixedEffect(0x3735, 6, 30);
@@ -183,52 +154,54 @@ namespace Server.SkillHandlers
 
                 eable.Free();
 
-                int max, min, mana, number;
+                int max, min, mana;
+                string msg;
 
                 if (toChannel != null)
                 {
-                    min = 1 + (int)(Caster.Skills[SkillName.SpiritSpeak].Value * 0.25);
-                    max = min + 4;
+                    min = 1 + (int)(Caster.Skills[SkillName.SpiritSpeak].Value * 0.2);
+                    max = min + 8;
                     mana = 0;
-                    number = 1061287; // You channel energy from a nearby corpse to heal your wounds.
+                    msg = "Voce canaliza suas energias na alma do corpo proximo"; // You channel energy from a nearby corpse to heal your wounds.
                 }
                 else
                 {
-                    min = 1 + (int)(Caster.Skills[SkillName.SpiritSpeak].Value * 0.25);
-                    max = min + 4;
+                    min = 1 + (int)(Caster.Skills[SkillName.SpiritSpeak].Value * 0.05);
+                    max = min + 15;
                     mana = 10;
-                    number = 1061286; // You channel your own spiritual energy to heal your wounds.
+                    msg = "Voce canaliza sua propria energia para se curar"; // You channel your own spiritual energy to heal your wounds.
                 }
 
                 if (Caster.Mana < mana)
                 {
-                    Caster.SendLocalizedMessage(1061285); // You lack the mana required to use this skill.
+                    Caster.SendMessage("Voce nao tem mana suficiente"); // You lack the mana required to use this skill.
                 }
                 else
                 {
-                    Caster.CheckSkill(SkillName.SpiritSpeak, 0.0, 120.0);
+                    Caster.CheckSkillMult(SkillName.SpiritSpeak, 0.0, 120.0);
 
                     if (Utility.RandomDouble() > (Caster.Skills[SkillName.SpiritSpeak].Value / 100.0))
                     {
-                        Caster.SendLocalizedMessage(502443); // You fail your attempt at contacting the netherworld.
+                        Caster.SendMessage("Voce falhou ao canalizar sua energia"); // You fail your attempt at contacting the netherworld.
                     }
                     else
                     {
                         if (toChannel != null)
                         {
+                            toChannel.Animated = true;
                             toChannel.Channeled = true;
-                            toChannel.Hue = 0x835;
+                            toChannel.Hue = 1109;
                         }
 
                         Caster.Mana -= mana;
-                        Caster.SendLocalizedMessage(number);
+                        Caster.SendMessage(msg);
 
                         if (min > max)
                         {
                             min = max;
                         }
 
-                        Caster.Hits += Utility.RandomMinMax(min, max);
+                        Caster.Heal(Utility.RandomMinMax(min, max));
 
                         Caster.FixedParticles(0x375A, 1, 15, 9501, 2100, 4, EffectLayer.Waist);
                     }
@@ -238,5 +211,5 @@ namespace Server.SkillHandlers
                 Stop();
             }
         }
-	}
+    }
 }

@@ -9,7 +9,7 @@ namespace Server.Items
         public RaptorClaw()
         {
             Hue = 53;
-            Slayer = SlayerName.Silver;
+            Slayer = SlayerName.Undeads;
             Attributes.AttackChance = 12;			
             Attributes.WeaponSpeed = 30;
             Attributes.WeaponDamage = 35;

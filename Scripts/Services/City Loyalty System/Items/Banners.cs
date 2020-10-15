@@ -40,6 +40,9 @@ namespace Server.Engines.CityLoyalty
             BannerInfo[City.SkaraBrae]      = new int[] { 0x4B6A, 1098178 };
             BannerInfo[City.NewMagincia]    = new int[] { 0x4B69, 1098177 };
             BannerInfo[City.Vesper]         = new int[] { 0x4B68, 1098176 };
+
+            BannerInfo[City.Rhodes] = new int[] { 0x4B68, 1098176 };
+            //BannerInfo[City.CaboDaTormenta] = new int[] { 0x4B68, 1098176 };
         }
 
         public CityBanner(Serial serial) : base(serial)

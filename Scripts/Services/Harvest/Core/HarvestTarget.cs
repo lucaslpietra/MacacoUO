@@ -23,8 +23,37 @@ namespace Server.Engines.Harvest
 
         protected override void OnTarget(Mobile from, object targeted)
         {
+
+            if (targeted == from)
+            {
+                HarvestDefinition def = null;
+                var system = m_System;
+                if (system is Mining)
+                    def = ((Mining)system).OreAndStone;
+                else if (system is Lumberjacking)
+                    def = ((Lumberjacking)system).Definition;
+
+                object newTarget = null;
+                if (HarvestSystem.FindValidTile(from, def, out newTarget))
+                {
+                    system.StartHarvesting(from, m_Tool, newTarget);
+                    return;
+                }
+                // targeted = new LandTarget(from.Location, from.Map);
+                // Shard.Debug("Target Self");
+            }
+
+            if (from is PlayerMobile)
+            {
+                var player = (PlayerMobile)from;
+                player.LastTarget = targeted;
+            }
+
             if (m_System is Mining)
             {
+
+             
+
                 if (targeted is StaticTarget)
                 {
                     int itemID = ((StaticTarget)targeted).ItemID;
@@ -58,7 +87,7 @@ namespace Server.Engines.Harvest
                     if (Server.Engines.Quests.TheGreatVolcanoQuest.OnHarvest(from, m_Tool))
                         return;
                 }
-            }
+            } 
 
             if (m_System is Lumberjacking && targeted is IChopable)
                 ((IChopable)targeted).OnChop(from);
@@ -89,9 +118,9 @@ namespace Server.Engines.Harvest
 			else
 			{
 				// If we got here and we're lumberjacking then we didn't target something that can be done from the pack
-				if (m_System is Lumberjacking && m_Tool.Parent != from)
+				if ((m_System is Lumberjacking || m_System is Mining) && m_Tool.Parent != from)
 				{
-					from.SendLocalizedMessage(500487); // The axe must be equipped for any serious wood chopping.
+					from.SendMessage("Voce precisa equipar a ferramenta"); 
 					return;
 				}
 				m_System.StartHarvesting(from, m_Tool, targeted);

@@ -19,8 +19,8 @@ namespace Server.Items
 
             ClearCurrentAbility(attacker);
 
-            attacker.SendLocalizedMessage(1074374); // You attack your enemy with the force of nature!
-            defender.SendLocalizedMessage(1074375); // You are assaulted with great force!
+            attacker.SendLocalizedMessage("Voce atacou com a forca da natureza"); // You attack your enemy with the force of nature!
+            defender.SendLocalizedMessage("Voce foi atacado com uma forca da natureza"); // You are assaulted with great force!
 
             defender.PlaySound(0x22F);
             defender.FixedParticles(0x36CB, 1, 9, 9911, 67, 5, EffectLayer.Head);

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server;
 using Server.Mobiles;
 
@@ -6,12 +6,12 @@ namespace Server.Items
 {
     public class MechanicalLifeManual : Item
     {
-        public override int LabelNumber { get { return 1112874; } } // Mechanical Life Manual
 
         [Constructable]
         public MechanicalLifeManual()
             : base(0xFF4)
         {
+            Name = "Manual de Mecanica";
             Weight = 2.0;
         }
 
@@ -40,18 +40,18 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
-            else if (pm == null || from.Skills[SkillName.Tinkering].Base < 100.0)
+            else if (pm == null || from.Skills[SkillName.Tinkering].Base < 80)
             {
-                from.SendLocalizedMessage(1112255); // Only a Grandmaster Tinker can learn from this book.
+                from.SendMessage("Voce precisa de pelo menos 80 tinkering para isto"); // Only a Grandmaster Tinker can learn from this book.
             }
             else if (pm.MechanicalLife)
             {
-                pm.SendLocalizedMessage(1080066); // You have already learned this information.
+                pm.SendMessage("Voce ja sabe isto"); // You have already learned this information.
             }
             else
             {
                 pm.MechanicalLife = true;
-                pm.SendLocalizedMessage(1112942); // You have learned how to build mechanical companions.
+                pm.SendMessage("Voce aprendeu como construir engenhocas mecanicas"); // You have learned how to build mechanical companions.
 
                 Delete();
             }

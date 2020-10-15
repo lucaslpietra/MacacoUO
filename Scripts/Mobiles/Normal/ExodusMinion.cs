@@ -243,6 +243,9 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
 
             this.m_FieldActive = this.CanUseField;
+
+            if (this.Name == "Exodus Minion")
+                this.Name = "exodus minion";
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Server.Mobiles;
+using Server.Services;
 
 namespace Server.Items
 {
@@ -12,7 +13,6 @@ namespace Server.Items
         private readonly DateTime m_Created;
         private readonly Timer m_Timer;
         private bool m_Drying;
-		
         [Constructable]
         public PoolOfAcid()
             : this(TimeSpan.FromSeconds(10.0), 2, 5)
@@ -23,13 +23,17 @@ namespace Server.Items
         public PoolOfAcid(TimeSpan duration, int minDamage, int maxDamage)
             : base(0x122A)
         {
-            Hue = 0x3F;
-            Movable = false;
-            m_MinDamage = minDamage;
-            m_MaxDamage = maxDamage;
-            m_Created = DateTime.UtcNow;
-            m_Duration = duration;
-            m_Timer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(1), new TimerCallback(OnTick));
+            this.Hue = 0x3F;
+            this.Movable = false;
+
+            if (minDamage < 1)
+                minDamage = 1;
+            this.m_MinDamage = minDamage;
+            this.m_MaxDamage = maxDamage;
+            this.m_Created = DateTime.UtcNow;
+            this.m_Duration = duration;
+
+            this.m_Timer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(1), new TimerCallback(OnTick));
         }
 
         public PoolOfAcid(Serial serial)
@@ -41,7 +45,7 @@ namespace Server.Items
         {
             get
             {
-                return "a pool of acid";
+                return "acido";
             }
         }
         public override void OnAfterDelete()
@@ -58,7 +62,17 @@ namespace Server.Items
 
         public void Damage(Mobile m)
         {
-            m.Damage(Utility.RandomMinMax(this.m_MinDamage, this.m_MaxDamage));
+            if(m is BaseCreature)
+            {
+                var bc = (BaseCreature)m;
+                if(bc.Tribe == TribeType.Undead)
+                {
+                    return;
+                }
+            }
+            var dmg = Utility.RandomMinMax(this.m_MinDamage, this.m_MaxDamage);
+            m.Damage(dmg);
+            DamageNumbers.ShowDamage(dmg, null, m, 78);
         }
 
         public override void Serialize(GenericWriter writer)

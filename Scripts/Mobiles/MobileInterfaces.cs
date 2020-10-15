@@ -13,25 +13,4 @@ namespace Server.Mobiles
         int Hits { get; set; }
         int HitsMax { get; }
     }
-
-    public interface IElementalCreature
-    {
-        ElementType ElementType { get; }
-    }
-
-    public interface IAuraCreature
-    {
-        void AuraEffect(Mobile victim);
-    }
-
-    public enum ElementType
-    {
-        Physical,
-        Fire,
-        Cold,
-        Poison,
-        Energy,
-        Chaos,
-        Direct
-    }
 }

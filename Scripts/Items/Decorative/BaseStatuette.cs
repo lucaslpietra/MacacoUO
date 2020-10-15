@@ -87,7 +87,7 @@ namespace Server.Items
             }
             else
             {
-                from.SendLocalizedMessage(502691); // You must be the owner to use this.
+                from.SendMessage("Voce precisa estar em sua casa para isto"); // You must be the owner to use this.
             }
         }
 
@@ -126,7 +126,7 @@ namespace Server.Items
 
                 this.AddBackground(0, 0, 300, 150, 0xA28);
 
-                this.AddHtmlLocalized(45, 20, 300, 35, statuette.TurnedOn ? 1011035 : 1011034, false, false); // [De]Activate this item
+                this.AddHtml(45, 20, 300, 35, statuette.TurnedOn ? "Desativar" : "Ativar", false, false); // [De]Activate this item
 
                 this.AddButton(40, 53, 0xFA5, 0xFA7, 1, GumpButtonType.Reply, 0);
                 this.AddHtmlLocalized(80, 55, 65, 35, 1011036, false, false); // OKAY
@@ -145,7 +145,7 @@ namespace Server.Items
                     this.m_Statuette.TurnedOn = newValue;
 
                     if (newValue && !this.m_Statuette.IsLockedDown)
-                        from.SendLocalizedMessage(502693); // Remember, this only works when locked down.
+                        from.SendMessage("Lembre-se de trancar o item em sua casa"); // Remember, this only works when locked down.
                 }
                 else
                 {

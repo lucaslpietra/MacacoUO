@@ -13,15 +13,7 @@ namespace Server.Mobiles
     {
         private static readonly string[] m_TownNames = new string[]
         {
-            "Cove", "Britain", "Jhelom",
-            "Minoc", "Ocllo", "Trinsic",
-            "Vesper", "Yew", "Skara Brae", //Original List, will need to add it back for Pre-ML shards
-            "Nujel'm", "Moonglow", "Magincia"
-        };
-        private static readonly string[] m_MLTownNames = new string[]
-        {
-            "Cove", "Serpent's Hold", "Jhelom", //ML List
-            "Nujel'm"
+           "Rhodes"
         };
 
         private static readonly Hashtable m_EscortTable = new Hashtable();
@@ -118,12 +110,12 @@ namespace Server.Mobiles
 
             if (escorter == null)
             {
-                Say("I am looking to go to {0}, will you take me?", (dest.Name == "Ocllo" && m.Map == Map.Trammel) ? "Haven" : dest.Name);
+                Say("Por favor me leve a {0}", (dest.Name == "Ocllo" && m.Map == Map.Trammel) ? "Haven" : dest.Name);
                 return true;
             }
             else if (escorter == m)
             {
-                Say("Lead on! Payment will be made when we arrive in {0}.", (dest.Name == "Ocllo" && m.Map == Map.Trammel) ? "Haven" : dest.Name);
+                Say("Seu pagamento sera feito quando chegar em {0}", (dest.Name == "Ocllo" && m.Map == Map.Trammel) ? "Haven" : dest.Name);
                 return true;
             }
 
@@ -146,14 +138,14 @@ namespace Server.Mobiles
 
             if (escortable != null && !escortable.Deleted && escortable.GetEscorter() == m)
             {
-                Say("I see you already have an escort.");
+                Say("Voce ja esta levando alguem.");
                 return false;
             }
             else if (m is PlayerMobile && (((PlayerMobile)m).LastEscortTime + m_EscortDelay) >= DateTime.UtcNow)
             {
                 int minutes = (int)Math.Ceiling(((((PlayerMobile)m).LastEscortTime + m_EscortDelay) - DateTime.UtcNow).TotalMinutes);
 
-                Say("You must rest {0} minute{1} before we set out on this journey.", minutes, minutes == 1 ? "" : "s");
+                Say("Descanse por {0} minuto{1} antes de sair nessa jornada.", minutes, minutes == 1 ? "" : "s");
                 return false;
             }
             else if (SetControlMaster(m))
@@ -163,7 +155,7 @@ namespace Server.Mobiles
                 if (m is PlayerMobile)
                     ((PlayerMobile)m).LastEscortTime = DateTime.UtcNow;
 
-                Say("Lead on! Payment will be made when we arrive in {0}.", (dest.Name == "Ocllo" && m.Map == Map.Trammel) ? "Haven" : dest.Name);
+                Say("Vamos, pagamento sera dado quando chegar a {0}.", (dest.Name == "Ocllo" && m.Map == Map.Trammel) ? "Haven" : dest.Name);
                 m_EscortTable[m] = this;
                 StartFollow();
                 return true;
@@ -227,10 +219,12 @@ namespace Server.Mobiles
             ControlOrder = OrderType.Follow;
             ControlTarget = escorter;
 
-            if (IsPrisoner && CantWalk)
-            {
-                CantWalk = false;
-            }
+            CantWalk = false;
+            Frozen = false;
+            IsPrisoner = false;
+            RangeHome = 0;
+            Home = Point3D.Zero;
+
 
             CurrentSpeed = 0.1;
         }
@@ -445,15 +439,12 @@ namespace Server.Mobiles
 
         public virtual string[] GetPossibleDestinations()
         {
-            if (!Core.ML)
-                return m_TownNames;
-            else
-                return m_MLTownNames;
+            return m_TownNames;
         }
 
         public virtual string PickRandomDestination()
         {
-            if (Map.Felucca.Regions.Count == 0 || Map == null || Map == Map.Internal || Location == Point3D.Zero)
+            if (Map == null || Map == Map.Internal || Location == Point3D.Zero)
                 return null; // Not yet fully initialized
 
             string[] possible = GetPossibleDestinations();
@@ -479,10 +470,7 @@ namespace Server.Mobiles
             if (m_Destination != null && m_Destination.Name == m_DestinationString)
                 return m_Destination;
 
-            if (Map.Felucca.Regions.Count > 0)
-                return (m_Destination = EDI.Find(m_DestinationString));
-
-            return (m_Destination = null);
+            return (m_Destination = EDI.Find(m_DestinationString));
         }
 
         protected override bool OnMove(Direction d)

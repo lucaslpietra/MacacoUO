@@ -12,11 +12,13 @@ namespace Server.Items
             : base(0x13FF)
         {
             this.Weight = 6.0;
+            Name = "Katana";
         }
 
         public Katana(Serial serial)
             : base(serial)
         {
+            Name = "Katana";
         }
 
         public override WeaponAbility PrimaryAbility
@@ -79,14 +81,14 @@ namespace Server.Items
         {
             get
             {
-                return 5;
+                return 10;
             }
         }
         public override int OldMaxDamage
         {
             get
             {
-                return 26;
+                return 22;
             }
         }
         public override int OldSpeed

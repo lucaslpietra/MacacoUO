@@ -75,16 +75,19 @@ namespace Server.Spells.Chivalry
                 {
                     Mobile m = id as Mobile;
 
-                    int damage = ComputePowerValue(10) + Utility.RandomMinMax(0, 2);
+                    if (Caster != null && (m != Caster) && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
+                    {
+                        int damage = ComputePowerValue(12) + Utility.RandomMinMax(0, 2);
 
-                    // TODO: Should caps be applied?
-                    if (damage < 8)
-                        damage = 8;
-                    else if (damage > 24)
-                        damage = 24;
+                        // TODO: Should caps be applied?
+                        if (damage < 8)
+                            damage = 8;
+                        else if (damage > 24)
+                            damage = 24;
 
-                    Caster.DoHarmful(m);
-                    SpellHelper.Damage(this, m, damage, 0, 0, 0, 0, 100);
+                        Caster.DoHarmful(m);
+                        SpellHelper.Damage(this, m, damage, 0, 0, 0, 0, 100);
+                    }
                 }
 
                 Caster.PlaySound(0x212);

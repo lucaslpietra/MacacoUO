@@ -148,18 +148,6 @@ namespace Server.Engines.Khaldun
             AddObjective(new InternalObjective());
         }
 
-        public override void OnAccept()
-        {
-            base.OnAccept();
-
-            Item book = new DetectiveBook();
-
-            if (Owner.Backpack == null || !Owner.Backpack.TryDropItem(Owner, book, false))
-            {
-                Owner.BankBox.DropItem(book);
-            }
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -281,11 +269,7 @@ namespace Server.Engines.Khaldun
             AddReward(new BaseReward(1158615)); // A unique opportunity with the Detective Branch
 
             AddObjective(new InternalObjective());
-
-            if (!World.Loading)
-            {
-                BookCase = GetBookcase();
-            }
+            BookCase = GetBookcase();
         }
 
         private LibraryBookcase GetBookcase()
@@ -310,7 +294,7 @@ namespace Server.Engines.Khaldun
                 return (LibraryBookcase)bookcase;
             }
 
-            Console.WriteLine("Error: GoingGumshoeQuest3 has no bookcases. setup LibraryBookcase per EA via [CreateWorld command.");
+            Console.WriteLine("Error: GoingGumshoeQuest3 has no bookcases. setup LibraryBookcase per EA.");
             return null;
         }
 
@@ -320,29 +304,21 @@ namespace Server.Engines.Khaldun
             {
                 var quest = QuestHelper.GetQuest<GoingGumshoeQuest3>((PlayerMobile)from);
 
-                if (quest != null && !quest.FoundCipherBook)
+                if (quest != null && !quest.FoundCipherBook && item == quest.BookCase)
                 {
-                    if (quest.BookCase == null)
+                    quest.FoundCipherBook = true;
+
+                    from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x47E, 1158713, from.NetState);
+                    // *You find the cipher text hidden among the books! Return to the Cryptologist to tell him where it is!*
+
+                    var region = Region.Find(from.Location, from.Map);
+
+                    if (region is QuestRegion)
                     {
-                        quest.BookCase = quest.GetBookcase();
+                        ((QuestRegion)region).ClearFromMessageTable(from);
                     }
 
-                    if (item == quest.BookCase)
-                    {
-                        quest.FoundCipherBook = true;
-
-                        from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x47E, 1158713, from.NetState);
-                        // *You find the cipher text hidden among the books! Return to the Cryptologist to tell him where it is!*
-
-                        var region = Region.Find(from.Location, from.Map);
-
-                        if (region is QuestRegion)
-                        {
-                            ((QuestRegion)region).ClearFromMessageTable(from);
-                        }
-
-                        return true;
-                    }
+                    return true;
                 }
             }
 
@@ -377,11 +353,6 @@ namespace Server.Engines.Khaldun
             BookCase = reader.ReadItem();
             FoundCipherBook = reader.ReadBool();
             BegunDecrypting = reader.ReadBool();
-
-            if (BookCase == null)
-            {
-                Timer.DelayCall(() => GetBookcase());
-            }
         }
 
         private class InternalObjective : BaseObjective

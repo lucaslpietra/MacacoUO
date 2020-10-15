@@ -17,9 +17,7 @@ namespace Server.Items
                 list.Add(new LockKarmaEntry((PlayerMobile)from));
 
             list.Add(new ResurrectEntry(from, item));
-
-            if (Core.AOS)
-                list.Add(new TitheEntry(from));
+            list.Add(new TitheEntry(from));
         }
 
         public static void Resurrect(Mobile m, Item item)
@@ -114,6 +112,11 @@ namespace Server.Items
             m_Item = new InternalItem(bloodied, this);
         }
 
+        public override void OnDoubleClick(Mobile from)
+        {
+            from.SendGump(new TithingGump(from, 100));
+        }
+
         public AnkhWest(Serial serial)
             : base(serial)
         {
@@ -206,6 +209,8 @@ namespace Server.Items
                 m_Item = item;
             }
 
+
+
             public InternalItem(Serial serial)
                 : base(serial)
             {
@@ -297,6 +302,11 @@ namespace Server.Items
         public AnkhNorth()
             : this(false)
         {
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            from.SendGump(new TithingGump(from, 100));
         }
 
         [Constructable]

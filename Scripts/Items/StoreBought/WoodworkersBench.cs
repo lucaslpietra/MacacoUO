@@ -101,7 +101,7 @@ namespace Server.Items
 
         public static bool IsInCooldown(Mobile m)
         {
-            if (m.AccessLevel > AccessLevel.Player || _Table == null || !_Table.ContainsKey(m))
+            if (m.AccessLevel > AccessLevel.VIP || _Table == null || !_Table.ContainsKey(m))
                 return false;
 
             if (_Table[m].Item2 + TimeSpan.FromMinutes(BonusDuration + Cooldown) < DateTime.UtcNow)
