@@ -37,6 +37,8 @@ namespace Server.Mobiles
 
             this.Fame = 0;
             this.Karma = 0;
+            MinTameSkill = 100;
+            Tamable = true;
         }
 
         public SkeletalMount(Serial serial)

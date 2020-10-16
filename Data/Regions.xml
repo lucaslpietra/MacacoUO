@@ -121,7 +121,7 @@
       </region>
     </region>
 
-    <region type="DungeonGuardedRegion" name="Edgewich">
+    <region type="DungeonRegion" name="Edgewich">
       <rune name="Edgewich" />
       <rect x="5138" y="70" width="225" height="160" />
       <go x="5212" y="215" z="0" />

@@ -5711,7 +5711,6 @@ namespace Server.Items
                     nome += " meia boca";
                 if (m_Resource != CraftResource.Ferro && m_Resource != CraftResource.RegularLeather && m_Resource != CraftResource.Cedro)
                     nome += " de " + m_Resource;
-
             }
 
             if (Name == null)

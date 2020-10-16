@@ -80,6 +80,8 @@ namespace Server.Gumps
 
             AddPage(0);
 
+            this.AddBackground(0, 0, 230, 430, 2600);
+            /*
             AddImage(0, 0, 0x1F40);
             AddImageTiled(20, 37, 300, 308, 0x1F42);
             AddImage(20, 325, 0x1F43);
@@ -88,7 +90,7 @@ namespace Server.Gumps
             AddImage(290, 8, 0x3B);
             AddImage(32, 33, 0x2635);
             AddImageTiled(70, 55, 230, 2, 0x23C5);
-
+            */
             Index = 0;
             Page = 1;
 

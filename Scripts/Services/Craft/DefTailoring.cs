@@ -517,8 +517,8 @@ namespace Server.Engines.Craft
             AddCraft(typeof(LeatherCap), 1015293, 1027609, 6.2, 31.2, typeof(Leather), 1044462, 2, 1044463);
             AddCraft(typeof(LeatherGloves), 1015293, 1025062, 51.8, 76.8, typeof(Leather), 1044462, 3, 1044463);
             AddCraft(typeof(LeatherArms), 1015293, 1025061, 53.9, 78.9, typeof(Leather), 1044462, 4, 1044463);
-            AddCraft(typeof(LeatherLegs), 1015293, 1025067, 66.3, 91.3, typeof(Leather), 1044462, 10, 1044463);
-            AddCraft(typeof(LeatherChest), 1015293, 1025068, 70.5, 95.5, typeof(Leather), 1044462, 12, 1044463);
+            AddCraft(typeof(LeatherLegs), 1015293, 1025067, 66.3, 81.3, typeof(Leather), 1044462, 10, 1044463);
+            AddCraft(typeof(LeatherChest), 1015293, 1025068, 70.5, 85.5, typeof(Leather), 1044462, 12, 1044463);
 
             if (Core.SE)
             {

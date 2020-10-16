@@ -265,7 +265,7 @@ namespace Server.Engines.Craft
             var num = Utility.Random(5601, 26);
             return new RecipeScroll(num);
         }
-      
+
         public static Item GetReceitaRandom()
         {
             Array values = Enum.GetValues(typeof(CookRecipesExp));
@@ -396,19 +396,17 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(JarHoney), 1044472, 1, 1044253);
             AddRecipe(index, (int)CookRecipesExp.SweetDough);
 
-            if (Core.ML)
-            {
-                index = AddCraft(typeof(CocoaButter), 1044495, 1079998, 15.0, 100.0, typeof(CocoaPulp), 1080530, 1, 1044253);
-                AddRecipe(index, (int)CookRecipesExp.CocoaButter);
-                SetItemHue(index, 0x457);
-                SetNeedOven(index, true);
+            index = AddCraft(typeof(CocoaButter), 1044495, 1079998, 15.0, 100.0, typeof(CocoaPulp), 1080530, 1, 1044253);
+            AddRecipe(index, (int)CookRecipesExp.CocoaButter);
+            SetItemHue(index, 0x457);
+            SetNeedOven(index, true);
 
-                index = AddCraft(typeof(CocoaLiquor), 1044495, 1079999, 15.0, 100.0, typeof(CocoaPulp), 1080530, 1, 1044253);
-                AddRes(index, typeof(EmptyPewterBowl), 1025629, 1, 1044253);
-                AddRecipe(index, (int)CookRecipesExp.CocoaLiquor);
-                SetItemHue(index, 0x46A);
-                SetNeedOven(index, true);
-            }
+            index = AddCraft(typeof(CocoaLiquor), 1044495, 1079999, 15.0, 100.0, typeof(CocoaPulp), 1080530, 1, 1044253);
+            AddRes(index, typeof(EmptyPewterBowl), 1025629, 1, 1044253);
+            AddRecipe(index, (int)CookRecipesExp.CocoaLiquor);
+            SetItemHue(index, 0x46A);
+            SetNeedOven(index, true);
+
             #endregion
 
             #region Oils
@@ -707,65 +705,52 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
             AddRecipe(index, (int)CookRecipesExp.WoodPulp);
 
-            if (Core.SE)
-            {
-                index = AddCraft(typeof(GreenTea), 1044496, 1030315, 80.0, 120.0, typeof(GreenTeaBasket), 1030316, 1, 1044253);
-                AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
-                AddRecipe(index, (int)CookRecipesExp.GreenTea);
-                SetNeedOven(index, true);
 
-                index = AddCraft(typeof(WasabiClumps), 1044496, 1029451, 70.0, 120.0, typeof(BaseBeverage), 1046458, 1, 1044253);
-                AddRes(index, typeof(WoodenBowlOfPeas), 1025633, 3, 1044253);
-                AddRecipe(index, (int)CookRecipesExp.WasabiClumps);
+            index = AddCraft(typeof(GreenTea), 1044496, 1030315, 80.0, 120.0, typeof(GreenTeaBasket), 1030316, 1, 1044253);
+            AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
+            AddRecipe(index, (int)CookRecipesExp.GreenTea);
+            SetNeedOven(index, true);
 
-                index = AddCraft(typeof(SushiRolls), 1044496, 1030303, 90.0, 120.0, typeof(BaseBeverage), 1046458, 1, 1044253);
-                AddRes(index, typeof(RawFishSteak), 1044476, 10, 1044253);
-                AddRecipe(index, (int)CookRecipesExp.SushiRolls);
+            index = AddCraft(typeof(WasabiClumps), 1044496, 1029451, 70.0, 120.0, typeof(BaseBeverage), 1046458, 1, 1044253);
+            AddRes(index, typeof(WoodenBowlOfPeas), 1025633, 3, 1044253);
+            AddRecipe(index, (int)CookRecipesExp.WasabiClumps);
 
-                index = AddCraft(typeof(SushiPlatter), 1044496, 1030305, 90.0, 120.0, typeof(BaseBeverage), 1046458, 1, 1044253);
-                AddRes(index, typeof(RawFishSteak), 1044476, 10, 1044253);
-                AddRecipe(index, (int)CookRecipesExp.SushiPlatter);
-            }
+            index = AddCraft(typeof(SushiRolls), 1044496, 1030303, 90.0, 120.0, typeof(BaseBeverage), 1046458, 1, 1044253);
+            AddRes(index, typeof(RawFishSteak), 1044476, 10, 1044253);
+            AddRecipe(index, (int)CookRecipesExp.SushiRolls);
+
+            index = AddCraft(typeof(SushiPlatter), 1044496, 1030305, 90.0, 120.0, typeof(BaseBeverage), 1046458, 1, 1044253);
+            AddRes(index, typeof(RawFishSteak), 1044476, 10, 1044253);
+            AddRecipe(index, (int)CookRecipesExp.SushiPlatter);
+
 
             index = AddCraft(typeof(TribalPaint), 1044496, 1040000, 55.0, 105.0, typeof(SackFlour), 1044468, 1, 1044253);
             AddRes(index, typeof(TribalBerry), 1046460, 1, 1044253);
             AddRecipe(index, (int)CookRecipesExp.TribalPaint);
 
-            if (Core.SE)
-            {
-                index = AddCraft(typeof(EggBomb), 1044496, 1030249, 90.0, 120.0, typeof(Eggs), 1044477, 1, 1044253);
-                AddRes(index, typeof(SackFlour), 1044468, 3, 1044253);
-                AddRecipe(index, (int)CookRecipesExp.EggBomb);
-            }
 
-            //if (Core.ML)
-            //{
-            //    index = AddCraft(typeof(ParrotWafers), 1044496, 1032246, 37.5, 87.5, typeof(Dough), 1044469, 1, 1044253);
-            //    AddRes(index, typeof(JarHoney), 1044472, 1, 1044253);
-            //    AddRes(index, typeof(RawFishSteak), 1044476, 10, 1044253);
-            //}
+            index = AddCraft(typeof(EggBomb), 1044496, 1030249, 90.0, 120.0, typeof(Eggs), 1044477, 1, 1044253);
+            AddRes(index, typeof(SackFlour), 1044468, 3, 1044253);
+            AddRecipe(index, (int)CookRecipesExp.EggBomb);
 
-            if (Core.SA)
-            {
-                index = AddCraft(typeof(PlantPigment), 1044496, 1112132, 33.0, 83.0, typeof(PlantClippings), 1112131, 1, 1044253);
-                AddRes(index, typeof(Bottle), 1023854, 1, 1044253);
+            index = AddCraft(typeof(PlantPigment), 1044496, 1112132, 33.0, 83.0, typeof(PlantClippings), 1112131, 1, 1044253);
+            AddRes(index, typeof(Bottle), 1023854, 1, 1044253);
 
-                index = AddCraft(typeof(NaturalDye), 1044496, 1112136, 75.0, 100.0, typeof(PlantPigment), 1112132, 1, 1044253);
-                AddRes(index, typeof(ColorFixative), 1112135, 1, 1044253);
+            index = AddCraft(typeof(NaturalDye), 1044496, 1112136, 75.0, 100.0, typeof(PlantPigment), 1112132, 1, 1044253);
+            AddRes(index, typeof(ColorFixative), 1112135, 1, 1044253);
 
-                index = AddCraft(typeof(ColorFixative), 1044496, 1112135, 75.0, 100.0, typeof(SilverSerpentVenom), 1112173, 1, 1044253);
-                AddRes(index, typeof(BaseBeverage), 1044476, 1, 1044253);//TODO correct Consumption of BaseBeverage...
-            }
+            index = AddCraft(typeof(ColorFixative), 1044496, 1112135, 75.0, 100.0, typeof(SilverSerpentVenom), 1112173, 1, 1044253);
+            AddRes(index, typeof(BaseBeverage), 1044476, 1, 1044253);//TODO correct Consumption of BaseBeverage...
+
 
             index = AddCraft(typeof(WoodPulp), 1044496, 1113136, 60.0, 100.0, typeof(BarkFragment), 1032687, 1, 1044253);
             AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
 
-            if (Core.HS)
-            {
-                index = AddCraft(typeof(Charcoal), 1044496, 1116303, 0.0, 50.0, typeof(Log), 1044041, 1, 1044351);
-                SetUseAllRes(index, true);
-                SetNeedHeat(index, true);
-            }
+
+            index = AddCraft(typeof(Charcoal), 1044496, 1116303, 0.0, 50.0, typeof(Log), 1044041, 1, 1044351);
+            SetUseAllRes(index, true);
+            SetNeedHeat(index, true);
+
 
             index = AddCraft(typeof(DriedOnions), 1044496, "Dried Onions", 60.0, 100.0, typeof(Onion), "Onions", 5, 1044253);
             AddRecipe(index, (int)CookRecipesExp.DriedOnions);
@@ -1261,28 +1246,27 @@ namespace Server.Engines.Craft
             AddRecipe(index, (int)CookRecipesExp.Hotdog);
             SetNeedCauldron(index, true);
 
-            if (Core.SE)
-            {
-                index = AddCraft(typeof(MisoSoup), "Cozimento", 1030317, 80.0, 110.0, typeof(RawFishSteak), 1044476, 1, 1044253);
-                AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
-                AddRecipe(index, (int)CookRecipesExp.MisoSoup);
-                SetNeedCauldron(index, true);
 
-                index = AddCraft(typeof(WhiteMisoSoup), "Cozimento", 1030318, 80.0, 110.0, typeof(RawFishSteak), 1044476, 1, 1044253);
-                AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
-                AddRecipe(index, (int)CookRecipesExp.WhiteMisoSoup);
-                SetNeedCauldron(index, true);
+            index = AddCraft(typeof(MisoSoup), "Cozimento", 1030317, 80.0, 110.0, typeof(RawFishSteak), 1044476, 1, 1044253);
+            AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
+            AddRecipe(index, (int)CookRecipesExp.MisoSoup);
+            SetNeedCauldron(index, true);
 
-                index = AddCraft(typeof(RedMisoSoup), "Cozimento", 1030319, 80.0, 110.0, typeof(RawFishSteak), 1044476, 1, 1044253);
-                AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
-                AddRecipe(index, (int)CookRecipesExp.RedMisoSoup);
-                SetNeedCauldron(index, true);
+            index = AddCraft(typeof(WhiteMisoSoup), "Cozimento", 1030318, 80.0, 110.0, typeof(RawFishSteak), 1044476, 1, 1044253);
+            AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
+            AddRecipe(index, (int)CookRecipesExp.WhiteMisoSoup);
+            SetNeedCauldron(index, true);
 
-                index = AddCraft(typeof(AwaseMisoSoup), "Cozimento", 1030320, 80.0, 110.0, typeof(RawFishSteak), 1044476, 1, 1044253);
-                AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
-                AddRecipe(index, (int)CookRecipesExp.AwaseMisoSoup);
-                SetNeedCauldron(index, true);
-            }
+            index = AddCraft(typeof(RedMisoSoup), "Cozimento", 1030319, 80.0, 110.0, typeof(RawFishSteak), 1044476, 1, 1044253);
+            AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
+            AddRecipe(index, (int)CookRecipesExp.RedMisoSoup);
+            SetNeedCauldron(index, true);
+
+            index = AddCraft(typeof(AwaseMisoSoup), "Cozimento", 1030320, 80.0, 110.0, typeof(RawFishSteak), 1044476, 1, 1044253);
+            AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
+            AddRecipe(index, (int)CookRecipesExp.AwaseMisoSoup);
+            SetNeedCauldron(index, true);
+
             #endregion
 
             #region Begin Barbecue
@@ -1518,34 +1502,31 @@ namespace Server.Engines.Craft
             SetBeverageType(index, BeverageType.Milk);
             SetItemHue(index, 0x47E);
 
-            #region Begin Enchanted
-            if (Core.ML)
-            {
-                index = AddCraft(typeof(FoodEngraver), 1073108, 1072951, 75.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
-                AddRes(index, typeof(JarHoney), 1044472, 1, 1044253);
 
-                index = AddCraft(typeof(EnchantedApple), 1073108, 1072952, 60.0, 110.0, typeof(Apple), 1044479, 1, 1044253);
-                AddRes(index, typeof(GreaterHealPotion), 1073467, 1, 1044253);
+            index = AddCraft(typeof(FoodEngraver), 1073108, 1072951, 75.0, 100.0, typeof(Dough), 1044469, 1, 1044253);
+            AddRes(index, typeof(JarHoney), 1044472, 1, 1044253);
 
-                index = AddCraft(typeof(GrapesOfWrath), 1073108, 1072953, 95.0, 145.0, typeof(Grapes), 1073468, 1, 1044253);
-                AddRes(index, typeof(GreaterStrengthPotion), 1073466, 1, 1044253);
+            index = AddCraft(typeof(EnchantedApple), 1073108, 1072952, 60.0, 110.0, typeof(Apple), 1044479, 1, 1044253);
+            AddRes(index, typeof(GreaterHealPotion), 1073467, 1, 1044253);
 
-                index = AddCraft(typeof(FruitBowl), 1073108, 1072950, 55.0, 105.0, typeof(EmptyWoodenBowl), 1073472, 1, 1044253);
-                AddRes(index, typeof(Pear), 1044481, 3, 1044253);
-                AddRes(index, typeof(Apple), 1044479, 3, 1044253);
-                AddRes(index, typeof(Banana), 1073470, 3, 1044253);
-            }
+            index = AddCraft(typeof(GrapesOfWrath), 1073108, 1072953, 95.0, 145.0, typeof(Grapes), 1073468, 1, 1044253);
+            AddRes(index, typeof(GreaterStrengthPotion), 1073466, 1, 1044253);
+
+            index = AddCraft(typeof(FruitBowl), 1073108, 1072950, 55.0, 105.0, typeof(EmptyWoodenBowl), 1073472, 1, 1044253);
+            AddRes(index, typeof(Pear), 1044481, 3, 1044253);
+            AddRes(index, typeof(Apple), 1044479, 3, 1044253);
+            AddRes(index, typeof(Banana), 1073470, 3, 1044253);
+
             /* End Enchanted */
-            #endregion
+            // #endregion
 
             #region High Seas
-            if (Core.HS)
-            {
-                // Fish Oil Flask ( Oléo de peixe )
-                index = AddCraft(typeof(FishOil), 1044496, 1150863, 60.0, 120.0, typeof(BaseBeverage), 1046458, 1, 1044253);
-                AddRes(index, typeof(RawFishSteak), 1044476, 8, 1044253);
-                AddRes(index, typeof(SackFlour), 1044468, 1, 1044253);
-            }
+
+            // Fish Oil Flask ( Oléo de peixe )
+            index = AddCraft(typeof(FishOil), 1044496, 1150863, 60.0, 120.0, typeof(BaseBeverage), 1046458, 1, 1044253);
+            AddRes(index, typeof(RawFishSteak), 1044476, 8, 1044253);
+            AddRes(index, typeof(SackFlour), 1044468, 1, 1044253);
+
             #endregion
         }
     }

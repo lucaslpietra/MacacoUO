@@ -1280,6 +1280,7 @@ namespace Server
                 }
                 else
                 {
+
                     list.Add(1050039, "{0}\t{1}", m_Amount, Name); // ~1_NUMBER~ ~2_ITEMNAME~
                 }
             }

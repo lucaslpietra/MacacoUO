@@ -856,7 +856,15 @@ namespace Server.Mobiles
 
         public virtual WeaponAbility GetWeaponAbility()
         {
-            return null;
+            XmlWeaponAbility a = (XmlWeaponAbility)XmlAttach.FindAttachment(this, typeof(XmlWeaponAbility));
+            if (a != null)
+            {
+                return a.WeaponAbility;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         #region Elemental Resistance/Damage
@@ -3390,6 +3398,9 @@ namespace Server.Mobiles
             {
                 AdjustTameRequirements();
             }
+
+            if (IsParagon)
+                Delete();
         }
 
         public virtual bool IsHumanInTown()
@@ -5831,7 +5842,6 @@ namespace Server.Mobiles
 
             if (m_Paragon)
             {
- 
                 if (Fame < 1250)
                 {
                     AddToBackpack(new Gold(Utility.Random(600, 600)));
