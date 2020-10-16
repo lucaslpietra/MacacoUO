@@ -3197,7 +3197,20 @@ namespace Server.Network
         {
             state.Send(new AccountLoginRej(reason));
             Shard.Debug("Login negado: " + reason);
-            state.Dispose();
+            Timer.DelayCall(TimeSpan.FromSeconds(20), () =>
+            {
+                try
+                {
+                    if (state != null && !state.IsDisposing)
+                    {
+                        state.Dispose();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Pau fechando state de login");
+                }
+            });
         }
 
         // EC Client Character Creation
