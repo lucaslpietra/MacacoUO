@@ -21,16 +21,25 @@ namespace Server.Mobiles
         public static double FameBuff = 1.40;
         public static double KarmaBuff = 1.40;
         public static int DamageBuff = 3;
-        public static void Convert(BaseCreature bc)
+
+        public static bool ValidParagon(BaseCreature bc)
         {
             if (bc.IsParagon ||
-                !bc.CanBeParagon)
-                return;
+             !bc.CanBeParagon)
+                return false;
 
             if (!bc.Murderer)
-                return;
+                return false;
 
             if (bc.Region is ChampionSpawnRegion)
+                return false;
+
+            return true;
+        }
+
+        public static void Convert(BaseCreature bc)
+        {
+            if (!ValidParagon(bc))
                 return;
 
             bc.Hue = Hue;

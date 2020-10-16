@@ -957,6 +957,13 @@ namespace Server.Mobiles
             get { return m_Paragon; }
             set
             {
+
+                if(value)
+                {
+                    if (!Paragon.ValidParagon(this))
+                        return;
+                }
+
                 if (m_Paragon == value)
                 {
                     return;
@@ -5842,6 +5849,7 @@ namespace Server.Mobiles
 
             if (m_Paragon)
             {
+                Shard.Debug("Paragon spawnando", this);
                 if (Fame < 1250)
                 {
                     AddToBackpack(new Gold(Utility.Random(600, 600)));
