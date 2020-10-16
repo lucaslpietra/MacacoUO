@@ -144,6 +144,20 @@ namespace Server.RemoteAdmin
                 state.Send(new UOGInfo(statStr));
                 //state.Dispose(false);
                 Shard.Debug("Comando 0xFF - desconectando");
+                Timer.DelayCall(TimeSpan.FromSeconds(20), () =>
+                {
+                    try
+                    {
+                        if (state != null && !state.IsDisposing)
+                        {
+                            state.Dispose();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Pau fechando state de login");
+                    }
+                });
             }
             else if (!IsAuth(state))
             {
