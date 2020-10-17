@@ -492,6 +492,9 @@ namespace Server.Items
             if (m_Quality == ItemQuality.Exceptional)
                 list.Add(1060636); // exceptional
 
+            if (Resource != CraftResource.None)
+                list.Add("Feito de "+Resource.ToString()); // exceptional
+
             list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
 
             if (m_ReplenishesCharges)
@@ -501,14 +504,14 @@ namespace Server.Items
             {
                 SlayerEntry entry = SlayerGroup.GetEntryByName(m_Slayer);
                 if (entry != null)
-                    list.AddTwoValues("Encantador de:", m_Slayer.ToString());
+                    list.AddTwoValues("Encantador de", m_Slayer.ToString());
             }
 
             if (m_Slayer2 != SlayerName.None)
             {
                 SlayerEntry entry = SlayerGroup.GetEntryByName(m_Slayer2);
                 if (entry != null)
-                    list.AddTwoValues("Encantador de:", m_Slayer2.ToString());
+                    list.AddTwoValues("Encantador de", m_Slayer2.ToString());
             }
 
             if (m_UsesRemaining != oldUses)
