@@ -106,7 +106,7 @@ namespace Server.Engines.Harvest
 
             veins = new HarvestVein[]
             {
-                new HarvestVein(49.8, 0.0, res[0], null),   // Iron
+                new HarvestVein(48.8, 0.0, res[0], null),   // Iron
                 new HarvestVein(11.4, 0.5, res[1], res[0]), // cobre
                 new HarvestVein(09.8, 0.5, res[2], res[0]), // bronze
                 new HarvestVein(08.4, 0.5, res[3], res[0]), // prata
@@ -114,8 +114,8 @@ namespace Server.Engines.Harvest
                 new HarvestVein(05.5, 0.5, res[5], res[0]), // lazurita
                 new HarvestVein(04, 0.5, res[6], res[0]), // quartzo
                 new HarvestVein(02.6, 0.5, res[7], res[0]), // berillo
-                new HarvestVein(01, 0.5, res[8], res[0]),  // vibranium
-                new HarvestVein(0.5, 0.5, res[9], res[0])  // adamantium
+                new HarvestVein(1.5, 0.5, res[8], res[0]),  // vibranium
+                new HarvestVein(1, 0.5, res[9], res[0])  // adamantium
             };
 
             oreAndStone.Resources = res;
@@ -138,7 +138,7 @@ namespace Server.Engines.Harvest
             //  }
 
             oreAndStone.RaceBonus = Core.ML;
-            oreAndStone.RandomizeVeins = false;
+            oreAndStone.RandomizeVeins = true;
 
             this.Definitions.Add(oreAndStone);
             #endregion

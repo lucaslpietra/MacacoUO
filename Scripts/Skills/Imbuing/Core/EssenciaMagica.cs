@@ -31,57 +31,51 @@ namespace Server.Ziden
         public override void OnDoubleClick(Mobile from)
         {
             base.OnDoubleClick(from);
-            if (from.Skills[SkillName.Jewelcrafting].Value < 70)
+
+            if (this.Amount < 100)
             {
-                from.SendMessage("Um joalheiro experiente [70] pode usar isto para criar cristais magicos talvez");
+                from.SendMessage("Voce precisa de 100 essencias do mesmo tipo para criar uma pedra magica");
+                return;
             }
-            else
+
+            if (!Imbuing.CheckSoulForge(from, 2))
             {
-                if (this.Amount < 100)
-                {
-                    from.SendMessage("Voce precisa de 100 essencias do mesmo tipo para criar uma pedra magica");
-                    return;
-                }
-
-                if (!Imbuing.CheckSoulForge(from, 2))
-                {
-                    from.SendMessage("Voce precisa estar perto de uma forja da alma para isto");
-                    return;
-                }
-
-                var garrafa = from.FindItemByType<Bottle>();
-                if (garrafa == null || garrafa.Amount == 0)
-                {
-                    from.SendMessage("Voce precisa de uma garrafa vazia para colocar o po da essencia");
-                    return;
-                }
-
-
-                bool anvil, forge = false;
-                DefBlacksmithy.CheckAnvilAndForge(from, 3, out anvil, out forge);
-                if (!anvil || !forge)
-                {
-                    from.SendMessage("Voce precisa estar proximo de uma bigorna e forja para isto");
-                    return;
-                }
-
-                garrafa.Consume(1);
-                Effects.SendLocationParticles(EffectItem.Create(from.Location, from.Map, EffectItem.DefaultDuration), 0, 0, 0, 0, 0, 5060, 0);
-                Effects.PlaySound(from.Location, from.Map, 0x243);
-
-                Effects.SendMovingParticles(new Entity(Serial.Zero, new Point3D(from.X - 6, from.Y - 6, from.Z + 15), from.Map), from, 0x36D4, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
-                Effects.SendMovingParticles(new Entity(Serial.Zero, new Point3D(from.X - 4, from.Y - 6, from.Z + 15), from.Map), from, 0x36D4, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
-                Effects.SendMovingParticles(new Entity(Serial.Zero, new Point3D(from.X - 6, from.Y - 4, from.Z + 15), from.Map), from, 0x36D4, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
-
-                Effects.SendTargetParticles(from, 0x375A, 35, 90, 0x00, 0x00, 9502, (EffectLayer)255, 0x100);
-
-                this.Consume(100);
-                from.PlaceInBackpack(new PedraMagica());
-                from.SendMessage("Voce transformou as essencias em um po magico e guardou em uma garrafa");
-                from.CheckSkillMult(SkillName.Jewelcrafting, 0, 80);
-                from.PlayAttackAnimation();
+                from.SendMessage("Voce precisa estar perto de uma forja da alma para isto");
+                return;
             }
+
+            var garrafa = from.FindItemByType<Bottle>();
+            if (garrafa == null || garrafa.Amount == 0)
+            {
+                from.SendMessage("Voce precisa de uma garrafa vazia para colocar o po da essencia");
+                return;
+            }
+
+            bool anvil, forge = false;
+            DefBlacksmithy.CheckAnvilAndForge(from, 3, out anvil, out forge);
+            if (!anvil || !forge)
+            {
+                from.SendMessage("Voce precisa estar proximo de uma bigorna e forja para isto");
+                return;
+            }
+
+            garrafa.Consume(1);
+            Effects.SendLocationParticles(EffectItem.Create(from.Location, from.Map, EffectItem.DefaultDuration), 0, 0, 0, 0, 0, 5060, 0);
+            Effects.PlaySound(from.Location, from.Map, 0x243);
+
+            Effects.SendMovingParticles(new Entity(Serial.Zero, new Point3D(from.X - 6, from.Y - 6, from.Z + 15), from.Map), from, 0x36D4, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+            Effects.SendMovingParticles(new Entity(Serial.Zero, new Point3D(from.X - 4, from.Y - 6, from.Z + 15), from.Map), from, 0x36D4, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+            Effects.SendMovingParticles(new Entity(Serial.Zero, new Point3D(from.X - 6, from.Y - 4, from.Z + 15), from.Map), from, 0x36D4, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+
+            Effects.SendTargetParticles(from, 0x375A, 35, 90, 0x00, 0x00, 9502, (EffectLayer)255, 0x100);
+
+            this.Consume(100);
+            from.PlaceInBackpack(new PedraMagica());
+            from.SendMessage("Voce transformou as essencias em um po magico e guardou em uma garrafa");
+            from.CheckSkillMult(SkillName.Jewelcrafting, 0, 80);
+            from.PlayAttackAnimation();
         }
+
     }
 
     public class PedraMagica : Item
@@ -94,7 +88,7 @@ namespace Server.Ziden
             Name = "Jarro de Po Magico";
         }
 
-        public PedraMagica(Serial s): base(s)
+        public PedraMagica(Serial s) : base(s)
         {
 
         }
@@ -140,14 +134,14 @@ namespace Server.Ziden
                         Shard.Debug("Tira acuracy");
                         list.Remove(1);
                     }
-                        
+
 
                     if (w.DurabilityLevel >= WeaponDurabilityLevel.Massive)
                     {
                         list.Remove(2);
                         Shard.Debug("Tira durab");
                     }
-                        
+
 
                     if (list.Count == 0)
                     {
@@ -214,7 +208,7 @@ namespace Server.Ziden
                         return;
                     }
 
-                    if(!from.CheckSkillMult(SkillName.Imbuing, -20, 100, 3))
+                    if (!from.CheckSkillMult(SkillName.Imbuing, -20, 100, 3))
                     {
                         from.SendMessage("Voce quebrou o jarro tentando aplica-lo.");
                         this.pedra.Consume(1);
@@ -235,7 +229,8 @@ namespace Server.Ziden
                     from.PlaySound(0x22D);
                     w.PublicOverheadMessage("* aprimorado *");
                     from.CheckSkillMult(SkillName.Imbuing, 0, 100, 1);
-                } else
+                }
+                else
                 {
                     from.SendMessage("Use isto em uma arma ou armadura para aprimora-la !");
                 }

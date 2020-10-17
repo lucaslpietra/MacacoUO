@@ -1066,7 +1066,7 @@ namespace Server.Engines.BulkOrders
             RewardCollection.Add(new BODCollectionItem(0x14F0, 1157186, 0, 25, RewardTitle, 5));
             RewardCollection.Add(new BODCollectionItem(0x14F0, 1157187, 0, 50, RewardTitle, 6));
             RewardCollection.Add(new BODCollectionItem(0x14F0, 1157190, 0, 210, RewardTitle, 9));
-            RewardCollection.Add(new BODCollectionItem(0x2831, "Receita para varinha negra.<br>Receita de carpentry", 0, 225, Recipe, 0));
+            //RewardCollection.Add(new BODCollectionItem(0x2831, "Receita para varinha negra.<br>Receita de carpentry", 0, 225, Recipe, 0));
             RewardCollection.Add(new BODCollectionItem(0x14F0, 1157188, 0, 250, RewardTitle, 7));
             RewardCollection.Add(new BODCollectionItem(0x2831, "Receita para lente de contato", 0, 310, Recipe, 1));
             RewardCollection.Add(new BODCollectionItem(0x14F0, 1157189, 0, 225, RewardTitle, 8));

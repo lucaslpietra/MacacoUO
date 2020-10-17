@@ -80,7 +80,7 @@ namespace Server.Gumps
 
             AddPage(0);
 
-            this.AddBackground(0, 0, 230, 430, 2600);
+            this.AddBackground(0, 0, 400, 360, 1579);
             /*
             AddImage(0, 0, 0x1F40);
             AddImageTiled(20, 37, 300, 308, 0x1F42);
@@ -135,6 +135,12 @@ namespace Server.Gumps
 				if (Points >= item.Points)
                 {
                     AddButton(35, offset + (int)(height / 2) - 5, 0x837, 0x838, 200 + Index, GumpButtonType.Reply, 0);
+                    if (item.TooltipStr != null)
+                        AddHtml(135, offset + (int)(height / 2) - 5, 300, 40, item.TooltipStr, false, false);
+                    else
+                        AddHtmlLocalized(135, offset + (int)(height / 2) - 5, 300, 40, item.Tooltip, false, false);
+
+                    /*
                     //AddItemProperty(item.s)
                     if (item.TooltipStr != null)
                     {
@@ -145,7 +151,8 @@ namespace Server.Gumps
                     {
                         AddTooltip(item.Tooltip);
                     }
-                    
+                    */
+
                 }
 				
 				int y = offset - item.Y;
@@ -162,8 +169,17 @@ namespace Server.Gumps
 
                 AddItem(55 - item.X + max / 2 - item.Width / 2, y, item.ItemID, hue);
 
-                if (i != null)
-                    AddItemProperty(i.Serial);
+                if(Points < item.Points)
+                {
+                    if (i != null)
+                        AddItemProperty(i.Serial);
+                    else if (item.TooltipStr != null)
+                        AddHtml(115 + max, offset + (int)(height / 2) - 10, 300, 40, item.TooltipStr, false, false);
+                    else
+                        AddHtmlLocalized(115 + max, offset + (int)(height / 2) - 10, 300, 40, item.Tooltip, false, false);
+                }
+             
+                /*
                 else if (item.TooltipStr != null)
                 {
                     Shard.Debug("Adicionando TT String 2" + item.TooltipStr);
@@ -173,6 +189,7 @@ namespace Server.Gumps
                 {
                     AddTooltip(item.Tooltip);
                 }
+                */
 
                 AddLabel(65 + max, offset + (int)(height / 2) - 10, Points >= item.Points ? 0x64 : 0x21, item.Points.ToString());
 

@@ -207,9 +207,12 @@ namespace Server.Mobiles
 				Effects.SendLocationParticles(
 					EffectItem.Create(Location, Map, EffectItem.DefaultDuration), 0x3728, 1, 13, 2100, 3, 5042, 0);
 				PlaySound(0x201);
-                var items = new List<Item>(Backpack.Items);
-                foreach (var item in items)
-                    item.MoveToWorld(this.Location, this.Map);
+                if(Backpack != null && Backpack.Items != null)
+                {
+                    var items = new List<Item>(Backpack.Items);
+                    foreach (var item in items)
+                        item.MoveToWorld(this.Location, this.Map);
+                }
 				Delete();
 			}
 		}
