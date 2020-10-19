@@ -2325,7 +2325,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public int ManaMaxSeed { get { return m_ManaMax; } set { m_ManaMax = value; } }
 
-        public virtual bool CanOpenDoors { get { return !Body.IsAnimal && !Body.IsSea; } }
+        public virtual bool CanOpenDoors { get { return Body.IsHuman; } }
 
         public virtual bool CanMoveOverObstacles { get { return Core.AOS || Body.IsMonster; } }
 
@@ -5849,30 +5849,29 @@ namespace Server.Mobiles
 
             if (m_Paragon)
             {
+                AddToBackpack(new Gold(Utility.Random(500, 500)));
                 Shard.Debug("Paragon spawnando", this);
                 if (Fame < 1250)
                 {
-                    AddToBackpack(new Gold(Utility.Random(600, 600)));
+
                     AddLoot(LootPack.Meager, 2);
                 }
                 else if (Fame < 2500)
                 {
-                    AddToBackpack(new Gold(Utility.Random(600, 600)));
+                   
                     AddLoot(LootPack.Average, 2);
                 }
                 else if (Fame < 5000)
                 {
-                    AddToBackpack(new Gold(Utility.Random(1000, 1000)));
+                   
                     AddLoot(LootPack.Rich, 2);
                 }
                 else if (Fame < 10000)
                 {
-                    AddToBackpack(new Gold(Utility.Random(3000, 3000)));
                     AddLoot(LootPack.FilthyRich, 2);
                 }
                 else
                 {
-                    AddToBackpack(new Gold(Utility.Random(5000, 5000)));
                     AddLoot(LootPack.UltraRich, 2);
                 }
             }

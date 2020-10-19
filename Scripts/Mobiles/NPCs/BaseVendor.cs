@@ -346,7 +346,8 @@ namespace Server.Mobiles
 
             LoadSBInfo();
 
-            CanMove = false;
+            if(!(this is BaseEscort))
+                CanMove = false;
 
             InitBody();
             InitOutfit();

@@ -88,6 +88,9 @@ namespace Server.Menus.Questions
 
             for (int i = 0; i < entries.Length; i++)
             {
+                if (i == 0 && beholder.Murderer)
+                    continue;
+
                 StuckMenuEntry entry = entries[i];
 
                 AddButton(50, 55 + 35 * i, 208, 209, i + 1, GumpButtonType.Reply, 0);

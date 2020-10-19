@@ -79,6 +79,13 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
+
+            if(from.Paralyzed || from.Frozen)
+            {
+                from.SendMessage("Voce nao pode fazer isto agora");
+                return;
+            }
+
             if (from.InRange(GetWorldLocation(), Range))
             {
                 from.RevealingAction(false);

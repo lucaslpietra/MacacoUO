@@ -22,7 +22,7 @@ namespace Server.SkillHandlers
             SkillInfo.Table[(int)SkillName.Forensics].Callback = new SkillUseCallback(OnUse);
         }
 
-      
+
         public static bool TellHarvestInformation(Mobile from, HarvestSystem system, object target)
         {
             int tileID;
@@ -37,7 +37,7 @@ namespace Server.SkillHandlers
 
             var definition = system.GetDefinition(tileID);
 
-            if(definition==null)
+            if (definition == null)
             {
                 Shard.Debug("Definition null");
                 return false;
@@ -66,10 +66,20 @@ namespace Server.SkillHandlers
             {
                 harvestables.Add(r);
             }
+
+            var jaFoi = new HashSet<CraftResource>();
+
             var str = "Aqui voce poderia encontrar  ";
             foreach (var t in harvestables)
             {
-                str += Trads.GetNome(t) + "  ";
+                var cs = CraftResources.GetFromType(t);
+                if (cs != CraftResource.None && !jaFoi.Contains(cs))
+                {
+                    str += cs.ToString() + "  ";
+                    jaFoi.Add(cs);
+                }
+                else
+                    str += Trads.GetNome(t) + "  ";
             }
             from.SendMessage(str);
             return true;

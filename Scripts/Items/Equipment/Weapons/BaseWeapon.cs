@@ -30,8 +30,6 @@ namespace Server.Items
         SlayerName Slayer2 { get; set; }
     }
 
-
-
     public abstract class BaseWeapon : Item, IWeapon, IFactionItem, IUsesRemaining, ICraftable, ISlayer, IDurability, ISetItem, IVvVItem, IOwnerRestricted, IResource, IArtifact, ICombatEquipment, IEngravable
     {
         #region Damage Helpers
@@ -1209,7 +1207,7 @@ namespace Server.Items
                         from.SetCooldown("dicaeq", TimeSpan.FromDays(1));
                         from.SendMessage(78, "Por ter muita forca e conhecimento em armas, voce equipou a arma rapidamente, podendo atacar com elas sem precisar esperar seu delay completo.");
                     }
-                    delay = (long)(GetDelay(from).TotalMilliseconds / (this is BaseRanged ? 1.5d : 4));
+                    delay = (long)(GetDelay(from).TotalMilliseconds / (this is BaseRanged ? 1.5d : 10));
                 }
                 else // a arma ainda ta em cooldown, entao d
                 {
@@ -1217,7 +1215,7 @@ namespace Server.Items
                         delay = (long)GetDelay(from).TotalMilliseconds / (from.CanAttack(this.GetType()) ? 4 : 1); // sphere estilo KDS, pouco delay dps de botar arma na mao
                     else
                     {
-                        delay = (long)(GetDelay(from).TotalMilliseconds / (from.CanAttack(this.GetType()) ? 1.5 : 1));
+                        delay = (long)(GetDelay(from).TotalMilliseconds / (from.CanAttack(this.GetType()) ? 4 : 1));
                     }
                 }
 
@@ -1783,6 +1781,7 @@ namespace Server.Items
                     {
                         if (bc.WeaponAbilityChance > Utility.RandomDouble())
                         {
+                            Shard.Debug("PvM Weapon Ability Setado", bc);
                             WeaponAbility.SetCurrentAbility(bc, ab);
                         }
                         else

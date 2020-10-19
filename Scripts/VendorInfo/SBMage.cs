@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using Server.Items;
@@ -27,22 +28,24 @@ namespace Server.Mobiles
             }
         }
 
+        public static int PRECO_REAGS = 5;
+
         public static void BuyReagents(List<GenericBuyInfo> info)
         {
-            info.Add(new GenericBuyInfo(typeof(BlackPearl), 4, 999, 0xF7A, 0));
-            info.Add(new GenericBuyInfo(typeof(Bloodmoss), 4, 999, 0xF7B, 0));
-            info.Add(new GenericBuyInfo(typeof(Garlic), 4, 999, 0xF84, 0));
-            info.Add(new GenericBuyInfo(typeof(Ginseng), 4, 999, 0xF85, 0));
-            info.Add(new GenericBuyInfo(typeof(MandrakeRoot), 4, 999, 0xF86, 0));
-            info.Add(new GenericBuyInfo(typeof(Nightshade), 4, 999, 0xF88, 0));
-            info.Add(new GenericBuyInfo(typeof(SpidersSilk), 4, 999, 0xF8D, 0));
-            info.Add(new GenericBuyInfo(typeof(SulfurousAsh), 4, 999, 0xF8C, 0));
+            info.Add(new GenericBuyInfo(typeof(BlackPearl), PRECO_REAGS + 1, 999, 0xF7A, 0));
+            info.Add(new GenericBuyInfo(typeof(Bloodmoss), PRECO_REAGS, 999, 0xF7B, 0));
+            info.Add(new GenericBuyInfo(typeof(Garlic), PRECO_REAGS, 999, 0xF84, 0));
+            info.Add(new GenericBuyInfo(typeof(Ginseng), PRECO_REAGS, 999, 0xF85, 0));
+            info.Add(new GenericBuyInfo(typeof(MandrakeRoot), PRECO_REAGS, 999, 0xF86, 0));
+            info.Add(new GenericBuyInfo(typeof(Nightshade), PRECO_REAGS, 999, 0xF88, 0));
+            info.Add(new GenericBuyInfo(typeof(SpidersSilk), PRECO_REAGS, 999, 0xF8D, 0));
+            info.Add(new GenericBuyInfo(typeof(SulfurousAsh), PRECO_REAGS, 999, 0xF8C, 0));
 
-            info.Add(new GenericBuyInfo(typeof(BatWing), 6, 999, 0xF78, 0));
-            info.Add(new GenericBuyInfo(typeof(DaemonBlood), 6, 999, 0xF7D, 0));
-            info.Add(new GenericBuyInfo(typeof(PigIron), 6, 999, 0xF8A, 0));
-            info.Add(new GenericBuyInfo(typeof(NoxCrystal), 6, 999, 0xF8E, 0));
-            info.Add(new GenericBuyInfo(typeof(GraveDust), 6, 999, 0xF8F, 0));
+            info.Add(new GenericBuyInfo(typeof(BatWing), PRECO_REAGS + 2, 999, 0xF78, 0));
+            info.Add(new GenericBuyInfo(typeof(DaemonBlood), PRECO_REAGS + 2, 999, 0xF7D, 0));
+            info.Add(new GenericBuyInfo(typeof(PigIron), PRECO_REAGS + 2, 999, 0xF8A, 0));
+            info.Add(new GenericBuyInfo(typeof(NoxCrystal), PRECO_REAGS + 2, 999, 0xF8E, 0));
+            info.Add(new GenericBuyInfo(typeof(GraveDust), PRECO_REAGS + 2, 999, 0xF8F, 0));
         }
 
         public class InternalBuyInfo : List<GenericBuyInfo>

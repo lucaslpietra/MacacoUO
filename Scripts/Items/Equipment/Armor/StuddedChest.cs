@@ -106,7 +106,7 @@ namespace Server.Items
         {
             get
             {
-                return ArmorMeditationAllowance.Half;
+                return ArmorMeditationAllowance.All;
             }
         }
         public override void Serialize(GenericWriter writer)

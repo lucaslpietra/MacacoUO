@@ -50,7 +50,8 @@ namespace Server.Mobiles
 
                 var def = PetTrainingHelper.GetTrainingDefinition(Creature);
 
-                Shard.Debug("Train definition:"+ def.Class, User);
+                if(def != null)
+                    Shard.Debug("Train definition:"+ def.Class, User);
 
                 if (trainProfile.HasBegunTraining && def != null && def.Class != Class.Untrainable)
                 {

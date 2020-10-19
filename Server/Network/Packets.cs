@@ -2632,7 +2632,7 @@ m_Stream.Write( (int) renderMode );
 
 				if (p == null)
 				{
-					cache[index] = p = new MessageLocalized(Serial.MinusOne, -1, MessageType.Regular, 0x488, 3, number, "System", "");
+					cache[index] = p = new MessageLocalized(Serial.MinusOne, -1, MessageType.Regular, Mobile.MSG_HUE, 3, number, "System", "");
 					p.SetStatic();
 				}
 			}

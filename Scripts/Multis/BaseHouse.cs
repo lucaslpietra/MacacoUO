@@ -2340,7 +2340,7 @@ namespace Server.Multis
                 isValid = false;
 
             if (!isValid)
-                from.SendLocalizedMessage(1062067); // In order to transfer the house, you and the recipient must both be outside the building and within two paces of the house sign.
+                from.SendLocalizedMessage("Para transferir a casa, voce e o alvo devem estar do lado de fora pertinho da placa"); // In order to transfer the house, you and the recipient must both be outside the building and within two paces of the house sign.
 
             return isValid;
         }

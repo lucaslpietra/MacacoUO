@@ -87,6 +87,24 @@ namespace Server.Items
 
                 if (canSwing && attacker.HarmfulCheck(damageable))
                 {
+                    if (attacker is BaseCreature)
+                    {
+                        BaseCreature bc = (BaseCreature)attacker;
+                        WeaponAbility ab = bc.TryGetWeaponAbility();
+
+                        if (ab != null)
+                        {
+                            if (bc.WeaponAbilityChance > Utility.RandomDouble())
+                            {
+                                WeaponAbility.SetCurrentAbility(bc, ab);
+                            }
+                            else
+                            {
+                                WeaponAbility.ClearCurrentAbility(bc);
+                            }
+                        }
+                    }
+
                     attacker.DisruptiveAction();
                     attacker.Send(new Swing(0, attacker, damageable));
 

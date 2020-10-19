@@ -145,13 +145,14 @@ namespace Server.Mobiles
             if (Female = Utility.RandomBool())
             {
                 Body = 0x191;
-                Name = NameList.RandomName("female") +" a bandoleira";
+                Name = NameList.RandomName("female");
+                Title = "a Bandoleira";
                 AddItem(new Skirt(Utility.RandomNeutralHue()));
             }
             else
             {
                 Body = 0x190;
-                Name = NameList.RandomName("male") + "o bandoleiro";
+                Name = NameList.RandomName("male");
                 AddItem(new ShortPants(Utility.RandomNeutralHue()));
                 Title = "o bandoleiro";
             }

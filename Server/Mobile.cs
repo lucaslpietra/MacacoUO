@@ -12788,8 +12788,10 @@ namespace Server
 
         public void SendLocalizedMessage(int number, string args)
         {
-            SendLocalizedMessage(number, args, 0x00FE);
+            SendLocalizedMessage(number, args, MSG_HUE);
         }
+
+        public static int MSG_HUE = 0x00FE;
 
         public void SendLocalizedMessage(int number, string args, int hue)
         {
@@ -12815,12 +12817,12 @@ namespace Server
 
         public void SendLocalizedMessage(int number, bool append, string affix)
         {
-            SendLocalizedMessage(number, append, affix, "", 0x00FE);
+            SendLocalizedMessage(number, append, affix, "", MSG_HUE);
         }
 
         public void SendLocalizedMessage(int number, bool append, string affix, string args)
         {
-            SendLocalizedMessage(number, append, affix, args, 0x00FE);
+            SendLocalizedMessage(number, append, affix, args, MSG_HUE);
         }
 
         public void SendLocalizedMessage(int number, bool append, string affix, string args, int hue)
@@ -12860,12 +12862,12 @@ namespace Server
         public void SendMessage(string text)
         {
             //SendMessage(0xB7, text);
-            SendMessage(0x00FE, text);
+            SendMessage(MSG_HUE, text);
         }
 
         public void SendMessage(string format, params object[] args)
         {
-            SendMessage(0x00FE, String.Format(format, args));
+            SendMessage(MSG_HUE, String.Format(format, args));
             //SendAsciiMessage(0xB7, String.Format(format, args));
         }
 
@@ -12895,12 +12897,12 @@ namespace Server
 
         public void SendAsciiMessage(string text)
         {
-            SendAsciiMessage(0x00FE, text);
+            SendAsciiMessage(MSG_HUE, text);
         }
 
         public void SendAsciiMessage(string format, params object[] args)
         {
-            SendAsciiMessage(0x00FE, String.Format(format, args));
+            SendAsciiMessage(MSG_HUE, String.Format(format, args));
         }
 
         public void SendAsciiMessage(int hue, string text)

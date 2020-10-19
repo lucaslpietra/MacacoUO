@@ -93,4 +93,66 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
         }
     }
+
+    public class ExecutionerPelado : BaseCreature
+    {
+        [Constructable]
+        public ExecutionerPelado()
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+        {
+            this.SpeechHue = Utility.RandomDyedHue();
+
+            this.Hue = Utility.RandomSkinHue();
+
+            this.Title = "o carrasco peladao";
+            this.Body = 0x190;
+            this.Name = NameList.RandomName("male");
+            this.AddItem(new ShortPants(Utility.RandomRedHue()));
+
+            this.SetStr(386, 400);
+            this.SetDex(151, 165);
+            this.SetInt(161, 175);
+
+            this.SetDamage(8, 10);
+
+            this.Fame = 2500;
+            this.Karma = -2500;
+
+            this.VirtualArmor = 40;
+
+            Utility.AssignRandomHair(this);
+        }
+
+        public ExecutionerPelado(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override bool AlwaysMurderer
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public override void GenerateLoot()
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version 
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
 }
+

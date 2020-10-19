@@ -29,7 +29,7 @@ namespace Server.SkillHandlers
 
         public static event ItemStolenEventHandler ItemStolen;
 
-		public static readonly bool ClassicMode = true;
+		public static readonly bool ClassicMode = false;
 		public static readonly bool SuspendOnMurder = false;
 
 		public static bool IsInGuild(Mobile m)

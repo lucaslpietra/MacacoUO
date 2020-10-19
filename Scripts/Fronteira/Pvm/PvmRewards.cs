@@ -38,9 +38,9 @@ namespace Server.Engines.VvV
             Rewards.Add(new CollectionItem(typeof(BagOfReagents), 0xE76, "Sacola com 50 Reagentes", 0, 350));
             Rewards.Add(new CollectionItem(typeof(HealPotion), 0xF0C, "Pocao de Vida", 0, 100));
             Rewards.Add(new CollectionItem(typeof(CurePotion), 0xF0C, "Pocao de Curar Veneno", 0, 200));
-            Rewards.Add(new CollectionItem(typeof(SacolaDeOuro), 0xE76, "Sacola com 300 Moedas", 0, 200));
-            Rewards.Add(new CollectionItem(typeof(SacolaDeOuro3000), 0xE76, "Sacola com 3000 Moedas", 0, 2000));
-            Rewards.Add(new CollectionItem(typeof(CaixaDeGold), 0xE7E, "Caixa com 10000 Moedas", 0, 8000));
+            Rewards.Add(new CollectionItem(typeof(SacolaDeOuro), 0xE76, "Sacola com 300 Moedas", 0, 300));
+            Rewards.Add(new CollectionItem(typeof(SacolaDeOuro3000), 0xE76, "Sacola com 3000 Moedas", 0, 3000));
+            Rewards.Add(new CollectionItem(typeof(CaixaDeGold), 0xE7E, "Caixa com 10000 Moedas", 0, 9000));
             Rewards.Add(new CollectionItem(typeof(PergaminhoRunebook), 0x1F35, "Pergaminho de Runebook<br>Recarrega um runebook", 0, 1000));
         }
 

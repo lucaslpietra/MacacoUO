@@ -359,7 +359,7 @@ namespace Server.Engines.Craft
 
             index = AddCraft(typeof(EnhancedBandage), 1015283, "Bandagem Medica +10 Healing", 60, 80, typeof(Cloth), 1044455, 10, 1044287);
             AddRes(index, typeof(Charcoal), "Carvao", 5, "Voce precisa de carvao para fazer isto");
-            AddRes(index, typeof(Ginseng), "Gengibre", 10, "Voce precisa de carvao para fazer isto");
+            AddRes(index, typeof(Ginseng), "Ginseng", 10, "Voce precisa de ginseng para fazer isto");
 
             if (Core.SE)
             {
@@ -652,11 +652,11 @@ namespace Server.Engines.Craft
             #endregion
 
             #region Studded Armor
-            AddCraft(typeof(StuddedGorget), 1015300, 1025078, 68.8, 80.8, typeof(Leather), 1044462, 6, 1044463);
-            AddCraft(typeof(StuddedGloves), 1015300, 1025077, 62.9, 89.9, typeof(Leather), 1044462, 8, 1044463);
-            AddCraft(typeof(StuddedArms), 1015300, 1025076, 67.1, 90.1, typeof(Leather), 1044462, 10, 1044463);
-            AddCraft(typeof(StuddedLegs), 1015300, 1025082, 71.2, 90.2, typeof(Leather), 1044462, 12, 1044463);
-            AddCraft(typeof(StuddedChest), 1015300, 1025083, 74.0, 90.0, typeof(Leather), 1044462, 14, 1044463);
+            AddCraft(typeof(StuddedGorget), 1015300, 1025078, 68.8, 90.8, typeof(Leather), 1044462, 6, 1044463);
+            AddCraft(typeof(StuddedGloves), 1015300, 1025077, 62.9, 99.9, typeof(Leather), 1044462, 8, 1044463);
+            AddCraft(typeof(StuddedArms), 1015300, 1025076, 67.1, 102, typeof(Leather), 1044462, 10, 1044463);
+            AddCraft(typeof(StuddedLegs), 1015300, 1025082, 71.2, 102, typeof(Leather), 1044462, 12, 1044463);
+            AddCraft(typeof(StuddedChest), 1015300, 1025083, 74.0, 102, typeof(Leather), 1044462, 14, 1044463);
 
             if (Core.SE)
             {

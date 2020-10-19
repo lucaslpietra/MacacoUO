@@ -1087,17 +1087,17 @@ namespace Server.Engines.BulkOrders
             RewardCollection.Add(new BODCollectionItem(0x2F5B, 1152677, CraftResources.GetHue(CraftResource.Quartzo), 1050, SmeltersTalisman, (int)CraftResource.Quartzo));
             RewardCollection.Add(new BODCollectionItem(0x14EC, 1152668, CraftResources.GetHue(CraftResource.Quartzo), 1100, HarvestMap, (int)CraftResource.Quartzo));
             RewardCollection.Add(new BODCollectionItem(0x9DB1, "Cabeca de Robo", 1175, 1200, CreateItem, 3));
-            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 105 Carpentry<br>Aumenta seu cap de Carpentry para de 100 para 105.", 0x481, 250, PowerScroll, 5));
-            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 110 Carpentry<br>Aumenta seu cap de Carpentry para de 105 para 110.", 0x481, 600, PowerScroll, 10));
-            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Carpentry<br>Aumenta seu cap de Carpentry para de 110 para 115.", 0x481, 900, PowerScroll, 15));
-            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 120 Carpentry<br>Aumenta seu cap de Carpentry para de 115 para 120.", 0x481, 1500, PowerScroll, 20));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 105 Tinkering<br>Aumenta seu cap de Tinkering para de 100 para 105.", 0x481, 250, PowerScroll, 5));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 110 Tinkering<br>Aumenta seu cap de Tinkering para de 105 para 110.", 0x481, 600, PowerScroll, 10));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Tinkering<br>Aumenta seu cap de Tinkering para de 110 para 115.", 0x481, 900, PowerScroll, 15));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 120 Tinkering<br>Aumenta seu cap de Tinkering para de 115 para 120.", 0x481, 1500, PowerScroll, 20));
         }
 
 
         private static Item CreatePowerScroll(int type)
         {
             if (type == 5 || type == 10 || type == 15 || type == 20)
-                return new PowerScroll(SkillName.Carpentry, 100 + type);
+                return new PowerScroll(SkillName.Tinkering, 100 + type);
 
             throw new InvalidOperationException();
         }

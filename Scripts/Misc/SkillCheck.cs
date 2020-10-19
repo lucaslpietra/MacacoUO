@@ -213,8 +213,8 @@ namespace Server.Misc
             {
                 gc -= 0.05;
             }
-            var ratio = 1.000 - (skill / 100);
-            gc *= ratio * (ratio * 2.6);
+            var ratio = 1.00001 - (skill / 100);
+            gc *= ratio * (ratio * 3);
             
             gc *= skillDifficulty;
 

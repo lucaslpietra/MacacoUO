@@ -122,4 +122,96 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
         }
     }
+
+    [CorpseName("an evil mage corpse")]
+    public class EvilMagePelado : BaseCreature
+    {
+        public override double DisturbChance { get { return 1; } }
+
+        [Constructable]
+        public EvilMagePelado()
+            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
+        {
+            Name = NameList.RandomName("evil mage");
+            Title = "o mago vil";
+            Body = 0x191;
+
+            SetStr(81, 105);
+            SetDex(91, 115);
+            SetInt(96, 120);
+
+            SetHits(70, 90);
+
+            SetDamage(9, 20);
+
+            SetDamageType(ResistanceType.Physical, 100);
+
+            Utility.AssignRandomHair(this);
+
+            Fame = 2500;
+            Karma = -2500;
+
+            VirtualArmor = 25;
+        }
+
+        public override int GetDeathSound()
+        {
+            return 0x423;
+        }
+
+        public override int GetHurtSound()
+        {
+            return 0x436;
+        }
+
+        public EvilMagePelado(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override bool CanRummageCorpses
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public override bool AlwaysMurderer
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public override int Meat
+        {
+            get
+            {
+                return 1;
+            }
+        }
+        public override int TreasureMapLevel
+        {
+            get
+            {
+                return Core.AOS ? 1 : 0;
+            }
+        }
+        public override void GenerateLoot()
+        {
+         
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
 }
