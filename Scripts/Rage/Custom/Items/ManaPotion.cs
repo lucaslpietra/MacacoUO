@@ -19,7 +19,7 @@ namespace Server.Items
         {
             get
             {
-                return 5; //(Core.AOS ? 5 : 5);
+                return 10; //(Core.AOS ? 5 : 5);
             }
         }
         public override int MaxMana

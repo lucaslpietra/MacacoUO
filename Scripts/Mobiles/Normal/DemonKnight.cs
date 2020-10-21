@@ -260,6 +260,9 @@ namespace Server.Mobiles
         {
             List<DamageStore> rights = GetLootingRights();
 
+            if (Utility.RandomBool())
+                c.DropItem(new PianoAddon());
+
             int top = 0;
             Item blood = null;
 

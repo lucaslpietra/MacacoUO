@@ -275,7 +275,7 @@ namespace Server.Gumps
             AddBackground(6, 15, 570, 140, 5054);
             AddAlphaRegion(16, 20, 550, 130);
             AddImageTiled(16, 20, 550, 20, 9354);
-            AddLabel(19, 20, 200, "Piano Keys");
+            AddLabel(19, 20, 200, "Notas");
             AddLabel(55, 60, 0, @"do");
             AddLabel(55, 80, 0, @"do");
             AddLabel(55, 100, 0, @"do");
@@ -338,7 +338,7 @@ namespace Server.Gumps
 
             switch (info.ButtonID)
             {
-                case 0: { m.SendMessage(60, "You stop playing."); break; }
+                case 0: { m.SendMessage(60, "Voce parou de tocar."); break; }
 
                 case 1: { m.PlaySound(1028); m.SendGump(new PianoGump()); break; }
 

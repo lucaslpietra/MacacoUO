@@ -244,16 +244,15 @@ namespace Server.Engines.Craft
 
             this.SetSubRes(typeof(Board), 1072643);
 
-
             // Add every material you want the player to be able to choose from
             // This will override the overridable material	TODO: Verify the required skill amount
-            this.AddSubRes(typeof(Board), 1072643, 00.0, 1044041, 1072652);
-            this.AddSubRes(typeof(OakBoard), 1072644, 65.0, 1044041, 1072652);
-            this.AddSubRes(typeof(AshBoard), 1072645, 75.0, 1044041, 1072652);
-            this.AddSubRes(typeof(YewBoard), 1072646, 85.0, 1044041, 1072652);
-            this.AddSubRes(typeof(HeartwoodBoard), 1072647, 95.0, 1044041, 1072652);
-            this.AddSubRes(typeof(BloodwoodBoard), 1072648, 95.0, 1044041, 1072652);
-            this.AddSubRes(typeof(FrostwoodBoard), 1072649, 95.0, 1044041, 1072652);
+            AddSubRes(typeof(Board), "Cedro", 00.0, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(OakBoard), "Carvalho", 60.0, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(AshBoard), "Pinho", 70.0, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(YewBoard), "Mogno", 80.0, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(HeartwoodBoard), "Eucalipto", 90.0, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(BloodwoodBoard), "Carmesim", 100.0, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(FrostwoodBoard), "Gelo", 101.0, "Voce nao sabe usar esta madeira");
             #endregion
 
             this.Resmelt = true;

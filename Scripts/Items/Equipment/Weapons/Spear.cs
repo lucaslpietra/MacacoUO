@@ -99,7 +99,7 @@ namespace Server.Items
         {
             get
             {
-                return 39;
+                return 32;
             }
         }
 

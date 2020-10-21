@@ -1,0 +1,26 @@
+
+<RandomEncounters
+    skiphidden="true"
+    delay="0.0"
+    interval="10.0:10.0:10.0"
+    cleanup="1800.0"
+    cleanupGrace="0"
+    debug="true"
+    debugEffect="false"
+    RTFM="true"
+    >
+
+    <Facet name="Trammel">
+        <Region name="default" type="Wilderness">
+            <Encounter p="1.0" level="0.400" distance="7:11">
+                <Mobile pick="SewerRat" n="1:4" forceAttack="true"/> <!-- x=6059,y=1438,z=4 -->
+            </Encounter>
+        </Region>
+		
+		<Region name="default" type="Wilderness">
+            <Encounter p="1.0" level="0.100" distance="7:11">
+                <Mobile pick="HealingFairy" n="1:1" forceAttack="false"/> <!-- x=6059,y=1438,z=4 -->
+            </Encounter>
+        </Region>
+    </Facet>
+</RandomEncounters>

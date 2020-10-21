@@ -1247,6 +1247,7 @@ namespace Server
 
             list.Add(1050045, "{0} \t{1}\t {2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~
 
+
             if (guild != null)
             {
                 string type;
@@ -1939,22 +1940,23 @@ namespace Server
 
         public bool CanAttack(Type weapon)
         {
+            Shard.Debug("Can attack " + weapon.Name);
             if (weapon == null)
                 weapon = this.Weapon.GetType();
 
             Shard.Debug("Verificando se pode atacar");
-
+            var next = this.m_NextCombatTime;
             if (Shard.TROCA_ARMA_RAPIDA && weapon != null)
             {
-                Shard.Debug("Pode atacar com " + weapon.GetType().Name);
-                if (this.NextCombatTimes.TryGetValue(weapon.GetType(), out aux))
+                Shard.Debug("Pode atacar com " + weapon.Name);
+                if (this.NextCombatTimes.TryGetValue(weapon, out aux))
                 {
-                    this.m_NextCombatTime = aux;
+                    next = aux;
                 }
                 else
                     return true;
             }
-            return Core.TickCount - this.m_NextCombatTime >= 0;
+            return Core.TickCount - next >= 0;
         }
 
         /// <summary>

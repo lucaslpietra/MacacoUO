@@ -38,20 +38,39 @@ namespace Server.Engines.VvV
         {
             get
             {
+                
                 if(ultimoCd != TimeSpan.Zero)
                 {
                     ultimoCd.Add(TimeSpan.FromHours(24));
                     return (int)ultimoCd.TotalMinutes;
                 }
 
+                var dateNow = DateTime.Now;
+                var date = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 20, 0, 0);
+                TimeSpan ts;
+                if (date > dateNow)
+                    ts = date - dateNow;
+                else
+                {
+                    date = date.AddDays(1);
+                    ts = date - dateNow;
+                }
+                var cooldown = ts;
+                /*
                 var today = DateTime.Today;
                 var agora = DateTime.Now;
                 var proximaGuerra = today.AddHours(20);
+
                 var cooldown = proximaGuerra - agora;
-                if(proximaGuerra < agora)
+                if (proximaGuerra < agora)
                 {
+                    cooldown = agora - proximaGuerra;
                     cooldown.Add(TimeSpan.FromHours(24));
+                } else
+                {
+                     cooldown = proximaGuerra - agora;
                 }
+                */
                 /*
                 var ult = today.Subtract(TimeSpan.FromHours(4));
 

@@ -2653,6 +2653,7 @@ namespace Server.Multis
 
         public virtual bool IsCombatRestricted(Mobile m)
         {
+            /*
             if (m == null || !m.Player || m.AccessLevel >= AccessLevel.GameMaster || !IsAosRules || (m_Owner != null && m_Owner.AccessLevel >= AccessLevel.GameMaster))
                 return false;
 
@@ -2663,11 +2664,11 @@ namespace Server.Multis
                 Guild attackerGuild = m.Guild as Guild;
                 Guild defenderGuild = info.Defender.Guild as Guild;
 
-                if (info.Defender.Player && info.Defender.Alive && (attackerGuild == null || defenderGuild == null || defenderGuild != attackerGuild && !defenderGuild.IsEnemy(attackerGuild)))
+                //if (info.Defender.Player && info.Defender.Alive && (attackerGuild != null || defenderGuild == null || defenderGuild != attackerGuild && !defenderGuild.IsEnemy(attackerGuild)))
                     //if (info.Defender.Player && info.Defender.Alive && (DateTime.UtcNow - info.LastCombatTime) < HouseRegion.CombatHeatDelay && (attackerGuild == null || defenderGuild == null || defenderGuild != attackerGuild && !defenderGuild.IsEnemy(attackerGuild)))
-                    return true;
+                //    return true;
             }
-
+            */
             return false;
         }
 

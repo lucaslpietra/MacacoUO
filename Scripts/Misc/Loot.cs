@@ -10,7 +10,10 @@ namespace Server
     public class Loot
     {
 
-
+        public static GemType RandomGemType()
+        {
+            return (GemType)Utility.Random(1, 8);
+        }
 
         public static int[] RareHues = new int[]
         {

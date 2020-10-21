@@ -271,6 +271,7 @@ namespace Server.Items
             set
             {
                 m_GemType = value;
+                SetaHue();
                 InvalidateProperties();
             }
         }
@@ -1360,6 +1361,57 @@ namespace Server.Items
         }
 
         #region ICraftable Members
+
+        public void SetaHue()
+        {
+            if (GemType == GemType.SafiraEstrela)
+            {
+                ;
+                Hue = 1175;
+            }
+
+            else if (GemType == GemType.Esmeralda)
+            {
+                Hue = 80;
+            }
+
+            else if (GemType == GemType.Safira)
+            {
+                Hue = 1151;
+            }
+
+            else if (GemType == GemType.Ruby)
+            {
+                Hue = 1358;
+            }
+
+            else if (GemType == GemType.Citrina)
+            {
+                Hue = 1255;
+            }
+
+            else if (GemType == GemType.Ametista)
+            {
+                Hue = 1266;
+            }
+
+            else if (GemType == GemType.Turmalina)
+            {
+                Hue = 1266;
+
+            }
+
+            else if (GemType == GemType.Ambrosia)
+            {
+                Hue = 1260;
+            }
+
+            else if (GemType == GemType.Diamante)
+            {
+                Hue = 1366;
+            }
+
+        }
 
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {

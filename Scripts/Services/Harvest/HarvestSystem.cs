@@ -147,7 +147,7 @@ namespace Server.Engines.Harvest
 
         private static HashSet<Type> MineriosFodas = new HashSet<Type>(new Type[] {
             typeof(AdamantiumOre), typeof(VibraniumOre), typeof(BeriloOre), typeof(QuartzoOre),
-            typeof(LazuritaOre), typeof(NiobioOre), typeof(SilverOre)
+            typeof(LazuritaOre)//, typeof(NiobioOre), typeof(SilverOre)
         });
 
         private static HashSet<Type> MadeirasFodas = new HashSet<Type>(new Type[] {

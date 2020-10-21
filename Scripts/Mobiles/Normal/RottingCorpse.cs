@@ -82,6 +82,9 @@ namespace Server.Mobiles
 
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
+            if (!(from is PlayerMobile))
+                return;
+
             base.OnDamage(amount, from, willKill);
             if (from == null)
                 return;
@@ -108,6 +111,9 @@ namespace Server.Mobiles
                     loc2.Y += 1;
                 else
                     loc2.Y -= 1;
+
+                if (from == null || from.Map == null || from.Map == Map.Internal || !from.Alive)
+                    return;
 
                 loc1.Z = from.Map.GetAverageZ(loc1.X, loc1.Y);
                 if (Math.Abs(loc1.Z - this.Location.Z) > 4)

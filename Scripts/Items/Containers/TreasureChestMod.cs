@@ -286,6 +286,7 @@ namespace Server.Items
             MaxLockLevel = this.RequiredSkill + 25;
             TrapType = TrapType.MagicTrap;
             TrapPower = 2 * Utility.Random(1, 25);
+
             DropItem(Loot.RandomSeed());
             DropItem(Loot.RandomSeed());
             AddLoot(Loot.RandomProvision());
@@ -303,25 +304,25 @@ namespace Server.Items
             if (t <= 1)
             {
                 DropItem(new CopperIngot(amt));
-                return;
+                //return;
             }
             else if (t == 3)
             {
                 var cloth = new Cloth(amt*2);
                 cloth.Hue = Utility.RandomDyedHue();
                 DropItem(cloth);
-                return;
+                //return;
             }
             else if (t == 4)
             {
                 DropItem(new Bolt(amt));
                 DropItem(new Arrow(amt));
-                return;
+                //return;
             }
             else if (t == 5)
             {
                 DropItem(new OakBoard(amt));
-                return;
+                //return;
             }
 
             DropItem(Loot.RandomSeed());
@@ -393,25 +394,25 @@ namespace Server.Items
             if (t <= 1)
             {
                 DropItem(new CopperIngot(amt));
-                return;
+             
             }
             else if (t == 3)
             {
                 var cloth = new Cloth(amt*2);
                 cloth.Hue = Utility.RandomDyedHue();
                 DropItem(cloth);
-                return;
+            
             }
             else if (t == 4)
             {
                 DropItem(new Bolt(amt));
                 DropItem(new Arrow(amt));
-                return;
+             
             }
             else if (t == 5)
             {
                 DropItem(new OakBoard(amt));
-                return;
+              
             }
 
             DropItem(Loot.RandomSeed());
@@ -426,11 +427,12 @@ namespace Server.Items
             DropItem(Loot.RandomSeed());
             DropItem(DefAlchemy.GetRandomRecipe());
             DropItem(DefCookingExp.GetReceitaRandom());
-            RequiredSkill = 84;
+
+            RequiredSkill = 72;
             LockLevel = this.RequiredSkill - Utility.Random(1, 10);
             MaxLockLevel = this.RequiredSkill + 25;
             TrapType = TrapType.MagicTrap;
-            TrapPower = 3 * Utility.Random(1, 25);
+            TrapPower = 2 * Utility.Random(1, 25);
 
             DropItem(new Gold(700, 900));
             DropItem(new Arrow(10));
@@ -537,26 +539,26 @@ namespace Server.Items
             var amt = Utility.Random(800, 400);
             if (t <= 1)
             {
-                DropItem(new CopperIngot(amt));
-                return;
+                DropItem(new LazuritaIngot(amt));
+          
             }
             else if (t == 3)
             {
-                var cloth = new Cloth(amt*2);
+                var cloth = new Cloth(amt*4);
                 cloth.Hue = Utility.RandomDyedHue();
                 DropItem(cloth);
-                return;
+         
             }
             else if (t == 4)
             {
                 DropItem(new Bolt(amt));
                 DropItem(new Arrow(amt));
-                return;
+         
             }
             else if (t == 5)
             {
                 DropItem(new OakBoard(amt));
-                return;
+          
             }
 
             AddLoot(new BagOfReagents());

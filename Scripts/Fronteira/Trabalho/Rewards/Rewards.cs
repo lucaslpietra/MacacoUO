@@ -730,11 +730,11 @@ namespace Server.Engines.BulkOrders
                 RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 105 Tailoring<br>Aumenta seu cap de Tailoring", 0x481, 400, PowerScroll, 5));
                 RewardCollection.Add(new BODCollectionItem(0x14F0, "Tapetes De Flores", 0, 400, Tapestry));
                 RewardCollection.Add(new BODCollectionItem(0x14F0, "Tapetes de Ursos", 0, 450, BearRug));
-                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 110 Tailoring<br>Aumenta seu cap de Tailoring", 0x481, 600, PowerScroll, 10));
+                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 110 Tailoring<br>Aumenta seu cap de Tailoring", 0x481, 900, PowerScroll, 10));
                 RewardCollection.Add(new BODCollectionItem(0x14F0, "Pergaminho Sagrado<br>Torna uma roupa pertence pessoal por 1 mes.", 0, 550, ClothingBlessDeed));
-                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Tailoring < br > Aumenta seu cap de Tailoring", 0x481, 900, PowerScroll, 15));
+                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Tailoring < br > Aumenta seu cap de Tailoring", 0x481, 1200, PowerScroll, 15));
                 //RewardCollection.Add(new BODCollectionItem(0xF9D, 1157116, CraftResources.GetHue(CraftResource.HornedLeather), 600, RunicKit, 2));
-                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 120 Tailoring<br>Aumenta seu cap de Tailoring", 0x481, 1200, PowerScroll, 20));
+                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 120 Tailoring<br>Aumenta seu cap de Tailoring", 0x481, 1500, PowerScroll, 20));
                 //RewardCollection.Add(new BODCollectionItem(0xF9D, 1157117, CraftResources.GetHue(CraftResource.BarbedLeather), 700, RunicKit, 3));
             }
             else
@@ -1730,8 +1730,8 @@ namespace Server.Engines.BulkOrders
             RewardCollection.Add(new BODCollectionItem(0x2F5A, "Talisman para cortar tabuas de madeira gelida", CraftResources.GetHue(CraftResource.Gelo), 1000, WoodsmansTalisman, (int)CraftResource.Gelo));
             RewardCollection.Add(new BODCollectionItem(0x14EC, "Mapa para coleta de madeira gelida", CraftResources.GetHue(CraftResource.Gelo), 1050, HarvestMap, (int)CraftResource.Gelo));
             RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 105 Bowcraft<br>Aumenta seu cap de bowcraft para de 100 para 105.", 0x481, 250, PowerScroll, 5));
-            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 110 Bowcraft<br>Aumenta seu cap de bowcraft para de 105 para 110.", 0x481, 600, PowerScroll, 10));
-            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Bowcraft<br>Aumenta seu cap de bowcraft para de 110 para 115.", 0x481, 900, PowerScroll, 15));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 110 Bowcraft<br>Aumenta seu cap de bowcraft para de 105 para 110.", 0x481, 900, PowerScroll, 10));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Bowcraft<br>Aumenta seu cap de bowcraft para de 110 para 115.", 0x481, 1200, PowerScroll, 15));
             RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 120 Bowcraft<br>Aumenta seu cap de bowcraft para de 115 para 120.", 0x481, 1500, PowerScroll, 20));
         }
 

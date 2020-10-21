@@ -147,6 +147,10 @@ namespace Server.Items
             LockLevel = RequiredSkill - 10;
             MaxLockLevel = RequiredSkill + 40;
 
+            var joia = Loot.JoiaRaraRandom(this.Map);
+            joia.GemType = Loot.RandomGemType();
+    
+            DropItem(joia);
             DropItem(new Gold(level * 200));
 
             for (int i = 0; i < level; ++i)

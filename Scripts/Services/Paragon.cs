@@ -169,8 +169,16 @@ namespace Server.Mobiles
             return chance > Utility.RandomDouble();
         }
 
-        public static void GiveArtifactTo(Mobile m)
+        public static void GiveArtifactTo(Mobile m, BaseCreature bc)
         {
+            var name = bc.Name;
+            if(name != null && m is PlayerMobile)
+            {
+                ((PlayerMobile)m).AddRewardTitle("Matador de " + bc+" Paragon");
+                m.SendMessage(78, "Voce ganhou um titulo !");
+                m.SendMessage(78, "Use .titulos para ver seus titulos !");
+            }
+           
             Item i = null;
             if (Utility.RandomDouble() < 0.2)
             {

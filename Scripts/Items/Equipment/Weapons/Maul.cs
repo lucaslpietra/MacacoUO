@@ -87,7 +87,7 @@ namespace Server.Items
         {
             get
             {
-                return 30;
+                return 34;
             }
         }
         public override int OldSpeed

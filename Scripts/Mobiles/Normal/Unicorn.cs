@@ -55,13 +55,7 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-        public override bool AllowMaleTamer
-        {
-            get
-            {
-                return false;
-            }
-        }
+   
         public override bool InitialInnocent
         {
             get

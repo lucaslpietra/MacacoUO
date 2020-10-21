@@ -366,10 +366,10 @@ namespace Server.Items
             }
             else
             {
-                if(ore.Resource > CraftResource.Niobio)
-                    ore.Amount = (int)(ore.Amount * 0.5);
+                if (ore.Resource > CraftResource.Niobio)
+                    ore.Amount -= 5;
                 else
-                    ore.Amount = (int)(ore.Amount * 0.75);
+                    ore.Amount -= 3;
                 if (ore.Amount <= 2)
                     ore.Consume();
 

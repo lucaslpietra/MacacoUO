@@ -6312,9 +6312,9 @@ namespace Server.Mobiles
         {
             base.AddNameProperties(list);
 
-            if (Controlled && !String.IsNullOrEmpty(EngravedText))
+            if (!String.IsNullOrEmpty(EngravedText))
             {
-                list.Add(1157315, EngravedText); // <BASEFONT COLOR=#668cff>Branded: ~1_VAL~<BASEFONT COLOR=#FFFFFF>
+                list.Add(EngravedText); // <BASEFONT COLOR=#668cff>Branded: ~1_VAL~<BASEFONT COLOR=#FFFFFF>
             }
 
             if (DisplayWeight)
@@ -6827,7 +6827,7 @@ namespace Server.Mobiles
         {
             if (m_Paragon && Paragon.CheckArtifactChance(mob, this))
             {
-                Paragon.GiveArtifactTo(mob);
+                Paragon.GiveArtifactTo(mob, this);
             }
 
             EventSink.InvokeOnKilledBy(new OnKilledByEventArgs(this, mob));

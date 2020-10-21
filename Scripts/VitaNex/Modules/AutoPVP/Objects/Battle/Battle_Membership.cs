@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 //   Vorspire    _,-'/-'/  Battle_Membership.cs
 //   .      __,-; ,'( '/
 //    \.    `-.__`-._`:_,-._       _ , . ``
@@ -193,25 +193,25 @@ namespace VitaNex.Modules.AutoPvP
 
 			if (!IsQueued(pm))
 			{
-				pm.SendMessage("You are not queued for {0}", Name);
+				pm.SendMessage("Voce nao esta na fila para {0}", Name);
 				return;
 			}
 
 			if (IsParticipant(pm))
 			{
-				pm.SendMessage("You are already participating in {0}", Name);
+				pm.SendMessage("Ja esta participando de {0}", Name);
 				return;
 			}
 
 			if (InOtherBattle(pm))
 			{
-				pm.SendMessage("You cannot join {0} while you are in another battle.", Name);
+				pm.SendMessage("Nao pode entrar em {0} estando em outra batalha.", Name);
 				return;
 			}
 
 			if (IsFull)
 			{
-				pm.SendMessage("The battle is full, you will be sent an invite if someone leaves.");
+				pm.SendMessage("Batalha cheia, aguarde alguem sair.");
 				return;
 			}
 
@@ -241,14 +241,14 @@ namespace VitaNex.Modules.AutoPvP
 
 			if (team == null || team.Deleted)
 			{
-				pm.SendMessage("The team you've chosen seems to have vanished in the void, sorry about that.");
+				pm.SendMessage("O time se foi.");
 				Queue.Remove(pm);
 				return;
 			}
 
 			if (team.IsFull)
 			{
-				pm.SendMessage("The team you've chosen is full, you will be sent an invite if someone leaves.");
+				pm.SendMessage("O time esta cheio.");
 				return;
 			}
 
@@ -268,7 +268,7 @@ namespace VitaNex.Modules.AutoPvP
 				return;
 			}
 
-			pm.SendMessage("You decide not to join {0}", Name);
+			pm.SendMessage("Voce nao quis entrar em {0}", Name);
 			SendSound(pm, Options.Sounds.InviteCancel);
 
 			if (IsQueued(pm))
@@ -284,7 +284,7 @@ namespace VitaNex.Modules.AutoPvP
 				return;
 			}
 
-			pm.SendMessage("You can not join {0} at this time.", Name);
+			pm.SendMessage("Nao pode entrar em {0} agora.", Name);
 			SendSound(pm, Options.Sounds.InviteCancel);
 		}
 
@@ -428,7 +428,7 @@ namespace VitaNex.Modules.AutoPvP
 		{
 			if (pm != null && !pm.Deleted)
 			{
-				pm.SendMessage("You have been ejected from the battle.");
+				pm.SendMessage("Voce foi removido da luta.");
 			}
 		}
 
@@ -442,15 +442,15 @@ namespace VitaNex.Modules.AutoPvP
 				return;
 			}
 
-			pm.SendMessage(0x22, "You have deserted {0}!", Name);
+			pm.SendMessage(0x22, "Voce desistiu de {0}!", Name);
 
-			AutoPvP.AddDeserter(pm);
+			// AutoPvP.AddDeserter(pm);
 
 			RevokePoints(pm);
 
 			UpdateStatistics(team, pm, o => ++o["Deserted"]);
 
-			WorldBroadcast("{0} has deserted {1}!", pm.RawName, Name);
+			WorldBroadcast("{0} desistiu de {1}!", pm.RawName, Name);
 		}
 
 		public virtual void InvalidateStray(Mobile m)

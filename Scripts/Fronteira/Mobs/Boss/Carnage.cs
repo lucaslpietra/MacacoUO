@@ -58,6 +58,8 @@ namespace Server.Mobiles
             PackItem(Decos.RandomDeco());
             SetWeaponAbility(WeaponAbility.BleedAttack);
             SetWeaponAbility(WeaponAbility.WhirlwindAttack);
+
+            last = DateTime.UtcNow;
         }
 
         public override void OnDamagedBySpell(Mobile from)
@@ -75,8 +77,23 @@ namespace Server.Mobiles
             }
         }
 
+        DateTime last;
+
+        public override void OnGaveMeleeAttack(Mobile defender)
+        {
+            last = DateTime.UtcNow;
+            base.OnGaveMeleeAttack(defender);
+        }
+
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
+            var diff = DateTime.UtcNow - last;
+            if(diff.TotalSeconds > 20)
+            {
+                this.MoveToWorld(from.Location, from.Map);
+                this.OverheadMessage("* pulou *");
+            }
+
             this.SetStam(400);
             base.OnDamage(amount, from, willKill);
 

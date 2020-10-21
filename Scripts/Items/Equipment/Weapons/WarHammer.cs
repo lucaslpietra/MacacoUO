@@ -81,21 +81,21 @@ namespace Server.Items
         {
             get
             {
-                return 8;
+                return 12;
             }
         }
         public override int OldMaxDamage
         {
             get
             {
-                return 36;
+                return 41;
             }
         }
         public override int OldSpeed
         {
             get
             {
-                return 31;
+                return 30;
             }
         }
         public override int InitMinHits

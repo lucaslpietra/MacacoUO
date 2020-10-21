@@ -102,7 +102,9 @@ namespace Server.Mobiles
             int amount = Utility.Random(5) + 1;
 
             corpse.DropItem(new MedusaDarkScales(amount));
-            corpse.DropItem(new EscamaMagica());
+
+            if(Utility.RandomDouble() < 0.35)
+                corpse.DropItem(new EscamaMagica());
 
             if(0.20 > Utility.RandomDouble())
                 corpse.DropItem(new MedusaBlood());

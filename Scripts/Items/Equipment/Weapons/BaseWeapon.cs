@@ -1208,6 +1208,7 @@ namespace Server.Items
                         from.SendMessage(78, "Por ter muita forca e conhecimento em armas, voce equipou a arma rapidamente, podendo atacar com elas sem precisar esperar seu delay completo.");
                     }
                     delay = (long)(GetDelay(from).TotalMilliseconds / (this is BaseRanged ? 1.5d : 10));
+
                 }
                 else // a arma ainda ta em cooldown, entao d
                 {
@@ -1215,10 +1216,17 @@ namespace Server.Items
                         delay = (long)GetDelay(from).TotalMilliseconds / (from.CanAttack(this.GetType()) ? 4 : 1); // sphere estilo KDS, pouco delay dps de botar arma na mao
                     else
                     {
-                        delay = (long)(GetDelay(from).TotalMilliseconds / (from.CanAttack(this.GetType()) ? 4 : 1));
+                        if(this is BaseRanged)
+                        {
+                            delay = (long)(GetDelay(from).TotalMilliseconds);
+                        } else
+                        {
+                            delay = (long)(GetDelay(from).TotalMilliseconds / (from.CanAttack(this.GetType()) ? 2 : 1));
+                        }
+                      
                     }
-                }
 
+                }
                 from.NextCombatTimes[this.GetType()] = Core.TickCount + delay;
             }
             else
@@ -1536,7 +1544,7 @@ namespace Server.Items
             var bonusArmsLore = defender.Skills.ArmsLore.Value / 2000; // 0.05 = 5%
             chance -= bonusArmsLore;
 
-            if(defender.Weapon is BaseRanged)
+            if (defender.Weapon is BaseRanged)
             {
                 chance += 0.15; // +15% chance hit em ranged
             }
@@ -1611,7 +1619,6 @@ namespace Server.Items
         public virtual TimeSpan GetDelay(Mobile m)
         {
             double speed = Speed;
-
             if (speed == 0)
             {
                 return TimeSpan.FromHours(1.0);
@@ -3980,7 +3987,7 @@ namespace Server.Items
                         bonus += 16;
                         break;
                     case CraftResource.Carmesim:
-                        bonus += 16;
+                        bonus += 18;
                         break;
                     case CraftResource.Gelo:
                     case CraftResource.Adamantium:

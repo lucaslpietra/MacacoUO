@@ -68,8 +68,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-       
-            this.AddLoot(LootPack.Rich);
+            this.AddPackedLoot(LootPack.MeagerProvisions, typeof(Bag));
             this.AddLoot(LootPack.Meager);
         }
 

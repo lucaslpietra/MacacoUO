@@ -3,6 +3,7 @@ using System;
 
 using Server.Items;
 using Server.Targeting;
+using Server.Ziden;
 #endregion
 
 namespace Server.Engines.Craft
@@ -219,7 +220,11 @@ namespace Server.Engines.Craft
         {
             int index;
 
+
             index = AddCraft(typeof(DragonStone), "Utils", "Pedra Draconiana", 70, 110, typeof(DragonHead), "Cabeca de Dragao", 1, "Voce precisa de 1 cabeca de dragao");
+            SetNeedForno(index, true);
+
+            index = AddCraft(typeof(JoiaArma), "Utils", "Joia Slayer para Armas", 70, 110, typeof(BloodOfTheDarkFather), "Sangue do Senhor das Sombras", 7, "Voce precisa de 7 sangue do senhor das sombras");
             SetNeedForno(index, true);
 
             // Ferro

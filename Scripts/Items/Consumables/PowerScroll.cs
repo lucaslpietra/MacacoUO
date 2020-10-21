@@ -183,7 +183,7 @@ namespace Server.Items
             if (level >= 0.0 && level <= 3.0 && this.Value % 5.0 == 0.0)
                 base.LabelTo(from, 1049639 + (int)level, this.GetNameLocalized());
             else
-                base.LabelTo(from, "a power scroll of {0} ({1} Skill)", this.GetName(), this.Value);
+                base.LabelTo(from, "pergaminho do poder de {0} ({1} Skill)", this.GetName(), this.Value);
         }
 
         public override bool CanUse(Mobile from)
@@ -195,6 +195,12 @@ namespace Server.Items
 
             if (skill == null)
                 return false;
+
+            if(skill.Value <= this.Value - 5)
+            {
+                from.SendLocalizedMessage("Este pergaminho eh muito poderoso para voce, use antes pergaminhos mais fracos"); // Your ~1_type~ is too high for this power scroll.
+                return false;
+            }
 
             if (skill.Cap >= this.Value)
             {

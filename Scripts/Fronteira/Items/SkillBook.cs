@@ -75,6 +75,7 @@ namespace Server.Items
             }
             else
             {
+                from.CloseAllGumps();
                 from.PlaySound(0x55);
                 from.SendGump(new InternalGump(from, this));
             }
