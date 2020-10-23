@@ -15,24 +15,17 @@ namespace Server.Items
 
         private Timer m_Timer;
 
-        public override bool IsDecoContainer { get { return false; } }        
+        public override bool IsDecoContainer { get { return false; } }
 
         [Constructable]
-        public ExodusChest() 
+        public ExodusChest()
             : base()
         {
             Visible = true;
-            Locked = true;
-            LockLevel = 30;
-            RequiredSkill = 40;
-            MaxLockLevel = 50;
-            Weight = 0.0;
+            Locked = false;
             Hue = 2700;
             Movable = true;
-
-            TrapType = TrapType.PoisonTrap;
-            TrapPower = 40;
-            GenerateTreasure();           
+            GenerateTreasure();
         }
 
         public ExodusChest(Serial serial) : base(serial)
@@ -41,17 +34,17 @@ namespace Server.Items
 
         public void StartDeleteTimer()
         {
-         
+
         }
 
         protected virtual void GenerateTreasure()
         {
-            DropItem(new Gold(1500, 3000));           
+            DropItem(new Gold(500, 1000));
 
             Item item = null;
 
-            for (int i = 0 ; i < Loot.GemTypes.Length; i++)
-            {               
+            for (int i = 0; i < Loot.GemTypes.Length; i++)
+            {
                 item = Activator.CreateInstance(Loot.GemTypes[i]) as Item;
                 item.Amount = Utility.Random(1, 6);
                 DropItem(item);
@@ -71,7 +64,7 @@ namespace Server.Items
                         item = new ParasiticPotion(Utility.Random(1, 3)); break;
                     case 1:
                         item = new InvisibilityPotion(Utility.Random(1, 3)); break;
-                }                        
+                }
 
                 DropItem(item);
             }
@@ -82,17 +75,15 @@ namespace Server.Items
                 item.Amount = Utility.Random(3, 6);
                 DropItem(item);
             }
-            
-            if (0.1 > Utility.RandomDouble())
+
+            switch (Utility.Random(4))
             {
-                switch (Utility.Random(4))
-                {
-                    case 0: DropItem(new Taint()); break;
-                    case 1: DropItem(new Corruption()); break;
-                    case 2: DropItem(new Blight()); break;
-                    case 3: DropItem(new LuminescentFungi()); break;
-                }
+                case 0: DropItem(new Taint()); break;
+                case 1: DropItem(new Corruption()); break;
+                case 2: DropItem(new Blight()); break;
+                case 3: DropItem(new LuminescentFungi()); break;
             }
+
         }
 
         public override void Serialize(GenericWriter writer)

@@ -48,7 +48,7 @@ namespace Server.Items
                 EndWound(m, true);
             }
 
-            if (Core.HS && m_EffectReduction.Contains(m))
+            if (m_EffectReduction.Contains(m))
             {
                 double d = duration.TotalSeconds;
                 duration = TimeSpan.FromSeconds(d / 2);
@@ -80,7 +80,7 @@ namespace Server.Items
             m.YellowHealthbar = false;
             m.SendLocalizedMessage("Voce nao esta mais sentindo a ferida mortal"); // You are no longer mortally wounded.
 
-            if (Core.HS && natural && !m_EffectReduction.Contains(m))
+            if (natural && !m_EffectReduction.Contains(m))
             {
                 m_EffectReduction.Add(m);
 
@@ -107,10 +107,10 @@ namespace Server.Items
             defender.FixedParticles(0x37B9, 244, 25, 9944, 31, 0, EffectLayer.Waist);
 
             // Do not reset timer if one is already in place.
-            if (Core.HS || !IsWounded(defender))
+            if (!IsWounded(defender))
             {
                 if (Spells.SkillMasteries.ResilienceSpell.UnderEffects(defender)) //Halves time
-                    BeginWound(defender, defender.Player ? TimeSpan.FromSeconds(3.0) : TimeSpan.FromSeconds(6));
+                    BeginWound(defender, defender.Player ? TimeSpan.FromSeconds(3.0) : TimeSpan.FromSeconds(8));
                 else
                     BeginWound(defender, defender.Player ? PlayerDuration : NPCDuration);
             }

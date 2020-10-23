@@ -21,9 +21,9 @@ namespace Server.SkillHandlers
 
         public static TimeSpan OnUse(Mobile m)
         {
-            if(m.Poisoned || BleedAttack.IsBleeding(m))
+            if(BleedAttack.IsBleeding(m))
             {
-                m.SendMessage("Voce nao pode usar isto envenenado ou sangrando");
+                m.SendMessage("Voce nao pode usar isto sangrando");
                 return TimeSpan.FromSeconds(5.0);
             }
 

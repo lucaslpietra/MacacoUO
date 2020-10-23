@@ -88,6 +88,7 @@
    
     <region type="NoGuardCity" name="Albus">
       <rune name="Albus" />
+      <temperatura valor="5"/>
       <rect x="1164" y="827" width="76" height="76" />
       <go x="1197" y="883" z="0" />
       <music name="Skarabra" />

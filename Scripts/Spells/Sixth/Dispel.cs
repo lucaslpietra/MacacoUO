@@ -1,6 +1,7 @@
 using System;
 using Server.Items;
 using Server.Mobiles;
+using Server.SkillHandlers;
 using Server.Spells.Fifth;
 using Server.Spells.First;
 using Server.Spells.Fourth;
@@ -54,6 +55,8 @@ namespace Server.Spells.Sixth
                     m.SendMessage("Voce removeu Weaken");
                 else if (ClumsySpell.RemoveEffects(m))
                     m.SendMessage("Voce removeu Clumsy");
+                else if (Discordance.RemoveEffect(m))
+                    m.SendMessage("Voce removeu Discordance");
                 else if (CurseSpell.RemoveEffectBool(m))
                     m.SendMessage("Voce removeu Curse");
                 else if (EvilOmenSpell.TryEndEffect(m))

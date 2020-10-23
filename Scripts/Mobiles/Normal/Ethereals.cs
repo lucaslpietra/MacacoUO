@@ -641,12 +641,6 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                NonTransparentMountedID = 0x3EA0;
-                Transparent = true;
-            }
         }
     }
 

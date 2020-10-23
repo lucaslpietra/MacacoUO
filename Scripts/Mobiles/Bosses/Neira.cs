@@ -185,7 +185,7 @@ namespace Server.Mobiles
             base.OnDeath(c);
 
             NecromancerSpellbook book = new NecromancerSpellbook();
-            book.Content = (1ul << book.BookCount) - 1;
+            //book.Content = (1ul << book.BookCount) - 1;
             c.DropItem(book);
         }
 

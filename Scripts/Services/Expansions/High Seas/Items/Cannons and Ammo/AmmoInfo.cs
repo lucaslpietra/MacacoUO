@@ -20,7 +20,7 @@ namespace Server.Items
         {
             m_Infos = new Dictionary<Type, AmmoInfo>();
 
-            m_Infos[typeof(LightCannonball)] = new AmmoInfo(typeof(LightCannonball), "cannonball", 20, 30, 3);
+            m_Infos[typeof(CannonBallHS)] = new AmmoInfo(typeof(CannonBallHS), "cannonball", 20, 30, 3);
             m_Infos[typeof(HeavyCannonball)] = new AmmoInfo(typeof(HeavyCannonball), "cannonball", 30, 50, 3);
             m_Infos[typeof(LightGrapeshot)] = new AmmoInfo(typeof(LightGrapeshot), "grapeshot", 40, 50, 3);
             m_Infos[typeof(HeavyGrapeshot)] = new AmmoInfo(typeof(HeavyGrapeshot), "grapeshot", 50, 75, 3);

@@ -84,10 +84,10 @@ namespace Server.Spells.Fifth
                 if (duration == 0)
                     return;
 
-                var limiteParalize = DateTime.UtcNow - TimeSpan.FromSeconds(10);
+                var limiteParalize = DateTime.UtcNow - TimeSpan.FromSeconds(20);
                 if(m.LastParalized > limiteParalize)
                 {
-                    duration /= 2;
+                    duration /= 3;
                     this.Caster.SendMessage("O alvo foi paralizado demais e esta mais resistente a magia");
                 }
 

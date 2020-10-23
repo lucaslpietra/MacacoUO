@@ -196,7 +196,7 @@ namespace Server.Items
             if (skill == null)
                 return false;
 
-            if(skill.Value <= this.Value - 5)
+            if(skill.Value < this.Value - 5)
             {
                 from.SendLocalizedMessage("Este pergaminho eh muito poderoso para voce, use antes pergaminhos mais fracos"); // Your ~1_type~ is too high for this power scroll.
                 return false;

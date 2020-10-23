@@ -459,7 +459,7 @@ namespace Server.Engines.Quests
                 hold.DropItem(new Ramrod());
                 hold.DropItem(new Matches(Utility.RandomMinMax(25, 30)));
                 hold.DropItem(new HeavyCannonball(Utility.RandomMinMax(7, 10)));
-                hold.DropItem(new LightCannonball(Utility.RandomMinMax(7, 10)));
+                hold.DropItem(new CannonBallHS(Utility.RandomMinMax(7, 10)));
                 hold.DropItem(new HeavyGrapeshot(Utility.RandomMinMax(7, 10)));
                 hold.DropItem(new LightGrapeshot(Utility.RandomMinMax(7, 10)));
                 hold.DropItem(new HeavyPowderCharge(Utility.RandomMinMax(7, 10)));
@@ -654,7 +654,7 @@ namespace Server.Engines.Quests
                 switch (Utility.Random(4))
                 {
                     case 0: hold.DropItem(new HeavyCannonball(Utility.RandomMinMax(5, 10))); break;
-                    case 1: hold.DropItem(new LightCannonball(Utility.RandomMinMax(5, 10))); break;
+                    case 1: hold.DropItem(new CannonBallHS(Utility.RandomMinMax(5, 10))); break;
                     case 2: hold.DropItem(new HeavyGrapeshot(Utility.RandomMinMax(5, 10))); break;
                     case 3: hold.DropItem(new LightGrapeshot(Utility.RandomMinMax(5, 10))); break;
                 }

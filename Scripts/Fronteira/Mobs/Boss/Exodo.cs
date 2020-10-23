@@ -159,8 +159,9 @@ namespace Server.Mobiles
             }
             
             DaItem(DemonKnight.FindRandomPlayer(this), new ExodusChest());
+            DaItem(DemonKnight.FindRandomPlayer(this), new ExodusChest());
 
-            if(Utility.Random(3)==1)
+            if (Utility.Random(3)==1)
                 DaItem(DemonKnight.FindRandomPlayer(this), new DupresSword());
 
             Map map = Map;

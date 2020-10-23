@@ -29,6 +29,36 @@ namespace Server.Ziden.Achievements
         }
     }
 
+    public class ScolaDizimo : Bag
+    {
+        [Constructable]
+        public ScolaDizimo()
+        {
+            this.AddItem(new IronIngot(100));
+            Name = "Sacola";
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            from.SendMessage("Voce recebeu 100 pontos para usar habilidades de paladino (Tithe points)");
+            from.TithingPoints += 100;
+            Delete();
+
+        }
+
+        public ScolaDizimo(Serial s) : base(s) { }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+        }
+    }
+
     public class SacolaBands : Bag
     {
         [Constructable]

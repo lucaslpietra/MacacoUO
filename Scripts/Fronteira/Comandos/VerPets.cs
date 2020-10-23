@@ -25,7 +25,12 @@ namespace Server.Commands
             foreach(var f in pl.AllFollowers)
             {
                 var reg = f.Region != null ? f.Region.Name : "Floresta";
-                pl.SendMessage(f.Name + " esta em " + f.Location.ToString()+" em "+reg);
+                pl.SendMessage(f.Name + " esta em " + f.Location.ToString()+" na regiao "+reg+" mapa "+f.Map);
+                if(f.Map == Map.Internal)
+                {
+                    f.Delete();
+                    pl.SendMessage("Um dos pets estava perdido, entao foi removido");
+                }
             }
         }
     }

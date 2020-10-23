@@ -635,7 +635,7 @@ namespace Server.Items
                 {
                     toHit = mob;
 
-                    if (toHit is BaseSeaChampion && info.AmmoType != null && (info.AmmoType == typeof(LightCannonball) || info.AmmoType == typeof(HeavyCannonball)))
+                    if (toHit is BaseSeaChampion && info.AmmoType != null && (info.AmmoType == typeof(CannonBallHS) || info.AmmoType == typeof(HeavyCannonball)))
                         damage *= 100;
 
                     shooter.DoHarmful(toHit);
@@ -651,7 +651,7 @@ namespace Server.Items
                 if (toHit != null)
                 {
                     //only cannonballs will get the damage bonus
-                    if (toHit is BaseSeaChampion && info.AmmoType != null && (info.AmmoType == typeof(LightCannonball) || info.AmmoType == typeof(HeavyCannonball)))
+                    if (toHit is BaseSeaChampion && info.AmmoType != null && (info.AmmoType == typeof(CannonBallHS) || info.AmmoType == typeof(HeavyCannonball)))
                         damage *= 75;
 
                     shooter.DoHarmful(toHit);
@@ -1382,7 +1382,7 @@ namespace Server.Items
 
         public override ShipCannonDeed GetDeed { get { return new LightShipCannonDeed(); } }
 
-        public override Type[] LoadTypes { get { return new Type[] {    typeof(LightCannonball),        typeof(LightGrapeshot),
+        public override Type[] LoadTypes { get { return new Type[] {    typeof(CannonBallHS),        typeof(LightGrapeshot),
                                                                         typeof(LightFlameCannonball),   typeof(LightFrostCannonball),
                                                                         /*typeof(LightScatterShot),       typeof(LightFragShot),
                                                                         typeof(LightHotShot),*/    }; } }
@@ -1393,7 +1393,7 @@ namespace Server.Items
 
         public override bool TryLoadAmmo(Item ammo)
         {
-            return ammo is LightCannonball || ammo is LightGrapeshot /*|| ammo is LightScatterShot || ammo is LightFragShot || ammo is LightHotShot*/;
+            return ammo is CannonBallHS || ammo is LightGrapeshot /*|| ammo is LightScatterShot || ammo is LightFragShot || ammo is LightHotShot*/;
         }
 
         public LightShipCannon(Serial serial) : base(serial) { }

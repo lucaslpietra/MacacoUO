@@ -98,6 +98,7 @@ namespace Server.Spells.Third
                     }
                     else
                     {
+                        /*
                         double total = Caster.Skills[SkillName.Magery].Value + Caster.Skills[SkillName.Poisoning].Value;                        
                         double dist = Caster.GetDistanceToSqrt(m);
 
@@ -112,6 +113,20 @@ namespace Server.Spells.Third
                             level = 1;
                         else
                             level = 0;
+                            */
+                        level = 0;
+                        if(Caster.Skills[SkillName.Poisoning].Value > 80)
+                        {
+                            if(!m.IsCooldown("poisonop"))
+                            {
+                                m.SetCooldown("poisonop");
+                                m.SendMessage(78, "O mago inimigo tinha um conhecimento de envenamentos avancado e conseguiu te envenenar de uma maneira mais forte");
+                            }
+                            level = 1;
+                            if (Utility.RandomDouble() < 0.3)
+                                level = 2;
+                        }
+
                     }
                     var p = Poison.GetPoison(level);
                     Shard.Debug("Toca "+p, m);

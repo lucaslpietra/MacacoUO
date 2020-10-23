@@ -238,8 +238,6 @@ namespace VitaNex.Modules.AutoPvP
 		{
 			++_CoreTicks;
 
-            Shard.Debug("Arena Core Tick");
-
 			MicroSync();
 			InvalidateState();
 

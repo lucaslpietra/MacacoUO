@@ -74,6 +74,42 @@ namespace Server.SkillHandlers
                 }
                 else
                 {
+                    var alvo = targeted as PlayerMobile;
+                    if (alvo != null && alvo != from)
+                    {
+                        from.SendMessage("Voce toca uma musica provocadora contra o alvo, causando dano por deixar o alvo stressado");
+                        var danoBase = 2;
+                        var rng = 2;
+                        switch(m_Instrument.Resource)
+                        {
+                            case CraftResource.Carmesim:
+                            case CraftResource.Gelo:
+                                danoBase = 8;
+                                rng = 8;
+                                break;
+                            case CraftResource.Eucalipto:
+                            case CraftResource.Mogno:
+                                danoBase = 6;
+                                rng = 6;
+                                break;
+                            case CraftResource.Pinho:
+                            case CraftResource.Carvalho:
+                                danoBase = 4;
+                                rng = 4;
+                                break;
+                        }
+                        if(m_Instrument.Quality == ItemQuality.Exceptional)
+                        {
+                            danoBase += 2;
+                            rng += 2;
+                        }
+                        m_Instrument.PlayInstrumentWell(from);
+                        AOS.Damage(alvo, Utility.Random(danoBase, rng), DamageType.Spell);
+                        from.MovingParticles(alvo, m_Instrument.ItemID, 7, 0, false, false, 38, 9502, 0x374A, 0x204, 1, 1);
+                        from.NextSkillTime = Core.TickCount + 10000;
+                        m_Instrument.ConsumeUse(from);
+                        return;
+                    }
                     from.SendLocalizedMessage(501589); // You can't incite that!
                 }
             }
@@ -97,12 +133,7 @@ namespace Server.SkillHandlers
 
                 if (targeted is PlayerMobile)
                 {
-                    if (targeted != from)
-                    {
-                        from.SendMessage("Voce nao pode fazer criaturas atacar outros jogadores. (mas pode a si)");
-                        return;
-                    }
-
+                  
                     if (!from.CanBeHarmful(m_Creature, true))
                     {
                         from.SendMessage("Voce nao pode fazer mau a esta criatura");

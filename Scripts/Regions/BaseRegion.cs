@@ -29,6 +29,7 @@ namespace Server.Regions
         private Rectangle3D[] m_Rectangles;
         private int[] m_RectangleWeights;
         private int m_TotalWeight;
+        private int m_temperatura;
 
         public BaseRegion(string name, Map map, int priority, params Rectangle2D[] area)
             : base(name, map, priority, area)
@@ -54,6 +55,13 @@ namespace Server.Regions
             : base(xml, map, parent)
         {
             ReadString(xml["rune"], "name", ref this.m_RuneName, false);
+
+            ReadInt32(xml["temperatura"], "valor", ref this.m_temperatura, false);
+
+            if (this.m_temperatura != 0)
+            {
+                ChecaTemp();
+            }
 
             bool logoutDelayActive = true;
             ReadBoolean(xml["logoutDelay"], "active", ref logoutDelayActive, false);
@@ -114,6 +122,39 @@ namespace Server.Regions
                     this.m_Spawns = list.ToArray();
                 }
             }
+        }
+
+        public void ChecaTemp()
+        {
+            if (this.m_temperatura == 0)
+            {
+                return;
+            }
+            var lista = this.GetMobiles();
+            if (lista != null)
+            {
+                foreach (var mobile in lista)
+                {
+                    var player = mobile as PlayerMobile;
+                    if (player != null)
+                    {
+                        if (this.m_temperatura < 0)
+                        {
+                            if (player.ColdResistance >= -this.m_temperatura)
+                            {
+                                continue;
+                            }
+                            AOS.Damage(player, -this.m_temperatura - player.ColdResistance, DamageType.Spell);
+                            if (!player.IsCooldown("frio"))
+                            {
+                                player.SetCooldown("frio", TimeSpan.FromSeconds(60));
+                                player.SendMessage(78, "Este local e muito fria e seu equipamento nao lhe proteje muito do frio");
+                            }
+                        }
+                    }
+                }
+            }
+            Timer.DelayCall(TimeSpan.FromSeconds(15), ChecaTemp);
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -275,6 +316,16 @@ namespace Server.Regions
                     m.SendGump(new YoungDungeonWarning());
                 }
             }
+            if (this.m_temperatura < 0)
+            {
+                if(m.ColdResistance < -this.m_temperatura)
+                {
+                    m.SendMessage("Voce sente o frio penetrando seus trajes e gelando sua pele.");
+                } else
+                {
+                    m.SendMessage("Voce sente o frio do local gelando seu rosto, mas suas roupas o protegem");
+                } 
+            }
         }
 
         public override bool AcceptsSpawnsFrom(Region region)
@@ -425,7 +476,7 @@ namespace Server.Regions
                 }
 
                 int z;
-                switch ( this.m_SpawnZLevel )
+                switch (this.m_SpawnZLevel)
                 {
                     case SpawnZLevel.Lowest:
                         {

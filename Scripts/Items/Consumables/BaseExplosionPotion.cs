@@ -117,7 +117,7 @@ namespace Server.Items
                 m_Timer = Timer.DelayCall(
                         TimeSpan.FromSeconds(1),
                         TimeSpan.FromSeconds(1),
-                        5,
+                        tempo + 1,
                         new TimerStateCallback(Detonate_OnTick),
                         new object[] { from, tempo }
                 );
@@ -345,7 +345,7 @@ namespace Server.Items
 
                 m_Potion.Internalize();
                 Timer.DelayCall(
-                    TimeSpan.FromSeconds(1), new TimerStateCallback(m_Potion.Reposition_OnTick), new object[] { from, p, map });
+                    TimeSpan.FromSeconds(0.25), new TimerStateCallback(m_Potion.Reposition_OnTick), new object[] { from, p, map });
             }
         }
     }

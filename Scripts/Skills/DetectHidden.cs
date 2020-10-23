@@ -68,6 +68,8 @@ namespace Server.SkillHandlers
                 if (!src.CheckSkillMult(SkillName.DetectHidden, 0.0, 100.0))
                     range /= 2;
 
+                src.RevealingAction();
+
                 Shard.Debug("Range Detect " + range);
 
                 int found = 0;

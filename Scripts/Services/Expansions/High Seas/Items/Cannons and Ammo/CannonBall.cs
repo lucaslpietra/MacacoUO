@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using Server;
 
 namespace Server.Items
 {
-    public class LightCannonball : Item, ICommodity, ICannonAmmo
+    public class CannonBallHS : Item, ICommodity, ICannonAmmo
     {
         public override int LabelNumber { get { return 1116266; } }
         public override double DefaultWeight { get { return 1.0; } }
@@ -14,24 +14,24 @@ namespace Server.Items
         public AmmoType AmmoType { get { return AmmoType.Cannonball; } }
 
         [Constructable]
-        public LightCannonball() : this(1)
+        public CannonBallHS() : this(1)
         {
         }
 
         [Constructable]
-        public LightCannonball(int amount) : this(amount, 16932)
+        public CannonBallHS(int amount) : this(amount, 16932)
         {
         }
 
         [Constructable]
-        public LightCannonball(int amount, int itemid)
+        public CannonBallHS(int amount, int itemid)
             : base(itemid)
         {
             Stackable = true;
             Amount = amount;
         }
 
-        public LightCannonball(Serial serial) : base(serial) { }
+        public CannonBallHS(Serial serial) : base(serial) { }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -87,7 +87,7 @@ namespace Server.Items
         }
     }
 
-    public class LightFlameCannonball : LightCannonball, ICommodity
+    public class LightFlameCannonball : CannonBallHS, ICommodity
     {
         public override int LabelNumber { get { return 1116759; } }
 
@@ -153,7 +153,7 @@ namespace Server.Items
         }
     }
 
-    public class LightFrostCannonball : LightCannonball, ICommodity
+    public class LightFrostCannonball : CannonBallHS, ICommodity
     {
         public override int LabelNumber { get { return 1116759; } }
 

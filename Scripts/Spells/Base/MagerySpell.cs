@@ -161,12 +161,12 @@ namespace Server.Spells
             if(Shard.SPHERE_STYLE)
                 chance *= 0.5; // sem pre cast mais dificil de resistir
             else
-                chance *= 0.8;
+                chance *= 0.85;
 
             if (Caster is BaseCreature && target is PlayerMobile)
                 chance /= 1.5;
 
-            Shard.Debug("Chance RS: " + chance);
+            Shard.Debug("Chance RS: " + chance, target);
 
             return chance;
         }

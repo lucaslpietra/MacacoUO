@@ -19,7 +19,7 @@ namespace Server.Engines.BulkOrders
         private bool m_RequireExceptional;
         private BulkMaterialType m_Material;
 
-        public override int Lifespan { get { return 60*60*24*2; } }
+        public override int Lifespan { get { return 60*60*24*3; } }
         public override bool UseSeconds { get { return false; } }
 
         [Constructable]

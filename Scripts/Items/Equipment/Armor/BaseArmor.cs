@@ -559,6 +559,11 @@ namespace Server.Items
 
         public override void AddResistanceProperties(ObjectPropertyList list)
         {
+            if(ColdResistance != 0)
+            {
+                list.AddTwoValues("Resistencia a Frio", "+" + ColdResistance.ToString());
+            }
+            /*
             if (PhysicalResistance != 0 || m_RefinedPhysical != 0)
             {
                 if (m_RefinedPhysical != 0)
@@ -601,6 +606,7 @@ namespace Server.Items
 
             if (RefinedDefenseChance != 0)
                 list.Add(1153733, String.Format("{0}\t{1}", "", RefinedDefenseChance.ToString()));
+                */
         }
 
         public static int GetInherentLowerManaCost(Mobile from)
@@ -1301,7 +1307,8 @@ namespace Server.Items
         {
             get
             {
-                return BasePhysicalResistance + GetProtOffset() + m_PhysicalBonus;
+                // return BasePhysicalResistance + GetProtOffset() + m_PhysicalBonus;
+                return GetProtOffset() + m_PhysicalBonus;
             }
         }
 
@@ -1309,7 +1316,7 @@ namespace Server.Items
         {
             get
             {
-                return BaseFireResistance + GetProtOffset() + m_FireBonus;
+                return GetProtOffset() + m_FireBonus;
             }
         }
 
@@ -1317,7 +1324,7 @@ namespace Server.Items
         {
             get
             {
-                return BaseColdResistance + GetProtOffset() + m_ColdBonus;
+                return GetProtOffset() + m_ColdBonus;
             }
         }
 
@@ -1325,7 +1332,7 @@ namespace Server.Items
         {
             get
             {
-                return BasePoisonResistance + GetProtOffset() + m_PoisonBonus;
+                return GetProtOffset() + m_PoisonBonus;
             }
         }
 
@@ -1333,7 +1340,7 @@ namespace Server.Items
         {
             get
             {
-                return BaseEnergyResistance + GetProtOffset() + m_EnergyBonus;
+                return GetProtOffset() + m_EnergyBonus;
             }
         }
 
@@ -2335,6 +2342,8 @@ namespace Server.Items
 
                         break;
                     }
+
+
             }
 
             #region Mondain's Legacy Sets
@@ -2379,6 +2388,9 @@ namespace Server.Items
 
             if (version < 13)
                 ApplyResourceResistances(CraftResource.None);
+
+            // SOH AGORA
+            // this.Attributes.Reset();
         }
 
         public virtual CraftResource DefaultResource
@@ -2616,7 +2628,7 @@ namespace Server.Items
         public DateTime NextSelfRepair { get; set; }
 
         public virtual int OnHit(BaseWeapon weapon, int damageTaken)
-        { 
+        {
             var random = Utility.RandomDouble();
             int Absorbed = (int)(ArmorRating / 3);
 
@@ -2837,7 +2849,7 @@ namespace Server.Items
             }
 
             var ar = ArmorRatingScaled;
-            if(ar > 0)
+            if (ar > 0)
                 list.AddTwoValues("Armadura", ar.ToString("0.0"));
 
             if (m_Crafter != null)
@@ -2846,7 +2858,7 @@ namespace Server.Items
             if (StrRequirement > 0)
                 list.Add("Forca necessaria: " + StrRequirement);
 
-            if(MaxHitPoints > 0)
+            if (MaxHitPoints > 0)
             {
                 double durabPct = HitPoints / (double)MaxHitPoints;
                 if (durabPct < 0.2)
@@ -2874,7 +2886,9 @@ namespace Server.Items
             if (m_GorgonLenseCharges > 0)
                 list.AddTwoValues("Cargas Gorgon", m_GorgonLenseCharges); //Gorgon Lens Charges: ~1_val~         
 
-            if(!Core.AOS)
+            AddResistanceProperties(list);
+
+            if (!Core.AOS)
                 return;
 
             if (OwnerName != null)
@@ -3026,8 +3040,6 @@ namespace Server.Items
             if ((prop = m_AosAttributes.RegenMana) != 0)
                 list.Add(1060440, prop.ToString()); // mana regeneration ~1_val~
 
-            if ((prop = (GetLuckBonus() + m_AosAttributes.Luck)) != 0)
-                list.Add(1060436, prop.ToString()); // luck ~1_val~
 
             if ((prop = m_AosAttributes.EnhancePotions) != 0)
                 list.Add(1060411, prop.ToString()); // enhance potions ~1_val~%

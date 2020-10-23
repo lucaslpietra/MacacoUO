@@ -134,7 +134,7 @@ namespace Server.Spells.First
                 {
                     if (this.Caster.BeginAction(typeof(DefensiveSpell)))
                     {
-                        int value = (int)(this.Caster.Skills[SkillName.Magery].Value + this.Caster.Skills[SkillName.Meditation].Value + this.Caster.Skills[SkillName.Inscribe].Value);
+                        int value = (int)((this.Caster.Skills[SkillName.Magery].Value/2) + this.Caster.Skills[SkillName.Meditation].Value + (this.Caster.Skills[SkillName.Inscribe].Value * 2));
                         value /= 4;
 
                         if (value < 0)
@@ -145,6 +145,7 @@ namespace Server.Spells.First
                         this.Caster.MeleeDamageAbsorb = value;
 
                         this.Caster.OverheadMessage("+"+value+"");
+                        this.Caster.SendMessage("Sua armadura magica ira absorver " + value + " de dano fisico");
 
                         this.Caster.FixedParticles(0x376A, 9, 32, 5008, EffectLayer.Waist);
                         this.Caster.PlaySound(0x1F2);

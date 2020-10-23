@@ -264,13 +264,40 @@ namespace Server.SkillHandlers
                                 else
                                 {
                                     from.SendLocalizedMessage("Voce acalmcou o alvo"); // You play hypnotic music, calming your target.
-                                    //from.MovingParticles(targ, m_Instrument.ItemID, 15, 0, false, false, 0, 9502, 0x374A, 0x204, 1, 1);
+                                                                                       //from.MovingParticles(targ, m_Instrument.ItemID, 15, 0, false, false, 0, 9502, 0x374A, 0x204, 1, 1);
+                                    var danoBase = 1;
+                                    var rng = 1;
+                                    switch (m_Instrument.Resource)
+                                    {
+                                        case CraftResource.Carmesim:
+                                        case CraftResource.Gelo:
+                                            danoBase = 2;
+                                            rng = 3;
+                                            break;
+                                        case CraftResource.Eucalipto:
+                                        case CraftResource.Mogno:
+                                            danoBase = 2;
+                                            rng = 2;
+                                            break;
+                                        case CraftResource.Pinho:
+                                        case CraftResource.Carvalho:
+                                            danoBase = 2;
+                                            rng = 1;
+                                            break;
+                                    }
+                                    if (m_Instrument.Quality == ItemQuality.Exceptional)
+                                    {
+                                        rng += 1;
+                                    }
 
                                     //Effects.SendMovingParticles(from, new Entity(Serial.Zero, new Point3D(from.X, from.Y, from.Z + 15), from.Map), m_Instrument.ItemID, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
                                     from.MovingParticles(targ, m_Instrument.ItemID, 10, 0, false, false, 1152, 9502, 0x374A, 0x204, 1, 1);
                                     targ.SendLocalizedMessage("Voce escuta uma musica calmante e esquece de lutar"); // You hear lovely music, and forget to continue battling!
                                     targ.Combatant = null;
                                     targ.Warmode = false;
+                                    targ.Paralyze(TimeSpan.FromSeconds(Utility.Random(2,2)));
+                                    targ.OverheadMessage("* acalmado *");
+                                    from.NextSkillTime = Core.TickCount + 10000;
                                 }
                             }
                         }

@@ -345,12 +345,12 @@ namespace Server.Engines.Craft
             #endregion
 
             #region Platemail
-            index = AddCraft(typeof(PlateArms), 1111704, 1025136, 66.3, 116.3, typeof(IronIngot), 1044036, 18, 1044037);
-            AddCraft(typeof(PlateGloves), 1111704, 1025140, 58.9, 118.9, typeof(IronIngot), 1044036, 12, 1044037);
-            AddCraft(typeof(PlateGorget), 1111704, 1025139, 56.4, 116.4, typeof(IronIngot), 1044036, 10, 1044037);
-            AddCraft(typeof(PlateLegs), 1111704, 1025137, 68.8, 118.8, typeof(IronIngot), 1044036, 20, 1044037);
-            AddCraft(typeof(PlateChest), 1111704, 1046431, 75.0, 115.0, typeof(IronIngot), 1044036, 25, 1044037);
-            AddCraft(typeof(FemalePlateChest), 1111704, 1046430, 44.1, 94.1, typeof(IronIngot), 1044036, 20, 1044037);
+            index = AddCraft(typeof(PlateArms), 1111704, 1025136, 66.3, 86.3, typeof(IronIngot), 1044036, 18, 1044037);
+            AddCraft(typeof(PlateGloves), 1111704, 1025140, 58.9, 88.9, typeof(IronIngot), 1044036, 12, 1044037);
+            AddCraft(typeof(PlateGorget), 1111704, 1025139, 56.4, 86.4, typeof(IronIngot), 1044036, 10, 1044037);
+            AddCraft(typeof(PlateLegs), 1111704, 1025137, 68.8, 88.8, typeof(IronIngot), 1044036, 20, 1044037);
+            AddCraft(typeof(PlateChest), 1111704, 1046431, 75.0, 85.0, typeof(IronIngot), 1044036, 25, 1044037);
+            AddCraft(typeof(FemalePlateChest), 1111704, 1046430, 44.1, 84.1, typeof(IronIngot), 1044036, 20, 1044037);
             
             AddCraft(typeof(DragonBardingDeed), 1111704, 1053012, 72.5, 122.5, typeof(IronIngot), 1044036, 750, 1044037);
 
@@ -457,7 +457,7 @@ namespace Server.Engines.Craft
             AddCraft(typeof(MetalShield), 1011080, 1027035, -10.2, 39.8, typeof(IronIngot), 1044036, 14, 1044037);
             AddCraft(typeof(MetalKiteShield), 1011080, 1027028, 4.6, 54.6, typeof(IronIngot), 1044036, 16, 1044037);
             AddCraft(typeof(WoodenKiteShield), 1011080, 1027032, -15.2, 34.8, typeof(IronIngot), 1044036, 8, 1044037);
-            AddCraft(typeof(OrderShield), 1011080, 1027108, 85.0, 135.0, typeof(IronIngot), 1044036, 20, 1044037);
+            AddCraft(typeof(OrderShield), 1011080, 1027108, 85.0, 115.0, typeof(IronIngot), 1044036, 20, 1044037);
 
             if (Core.AOS)
             {
@@ -885,7 +885,7 @@ namespace Server.Engines.Craft
 
             if (Core.HS)
             {
-                index = AddCraft(typeof(LightCannonball), 1116354, 1116266, 0.0, 50.0, typeof(IronIngot), 1044036, 6, 1044037);
+                index = AddCraft(typeof(CannonBallHS), 1116354, 1116266, 0.0, 50.0, typeof(IronIngot), 1044036, 6, 1044037);
 
                 index = AddCraft(typeof(HeavyCannonball), 1116354, 1116267, 10.0, 60.0, typeof(IronIngot), 1044036, 12, 1044037);
 

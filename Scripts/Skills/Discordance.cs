@@ -20,6 +20,21 @@ namespace Server.SkillHandlers
             return m != null && m_Table.Contains(m);
         }
 
+        public static bool RemoveEffect(Mobile m)
+        {
+            if(m_Table.Contains(m))
+            {
+                var info = m_Table[m] as DiscordanceInfo;
+                if (info == null)
+                {
+                    return false;
+                }
+                End(info);
+                return true;
+            }
+            return false;
+        }
+
         public static void Initialize()
         {
             SkillInfo.Table[(int)SkillName.Discordance].Callback = OnUse;
@@ -53,6 +68,17 @@ namespace Server.SkillHandlers
 
             effect = info.m_Effect;
             return true;
+        }
+
+        public static void End(DiscordanceInfo info)
+        {
+            if (info.m_Timer != null)
+            {
+                info.m_Timer.Stop();
+            }
+            var targ = info.m_Creature;
+            info.Clear();
+            m_Table.Remove(targ);
         }
 
         private static void ProcessDiscordance(DiscordanceInfo info)
@@ -89,13 +115,7 @@ namespace Server.SkillHandlers
 
             if (ends && info.m_Ending && info.m_EndTime < DateTime.UtcNow)
             {
-                if (info.m_Timer != null)
-                {
-                    info.m_Timer.Stop();
-                }
-
-                info.Clear();
-                m_Table.Remove(targ);
+                End(info);
             }
             else
             {
@@ -289,7 +309,7 @@ namespace Server.SkillHandlers
             }
         }
 
-        private class DiscordanceInfo
+        public class DiscordanceInfo
         {
             public readonly Mobile m_From;
             public readonly Mobile m_Creature;

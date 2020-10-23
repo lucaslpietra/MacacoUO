@@ -122,7 +122,7 @@ namespace Server.Mobiles
 
             Fame = 8500;
             Karma = -8500;
-            AddItem(new Gold(10000));
+            AddItem(new Gold(3000));
             Utility.AssignRandomHair(this);
         }
 

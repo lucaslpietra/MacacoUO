@@ -236,7 +236,7 @@ O guarda estende o braço para lhe entregar a estranha caixa.”";
             this.AddReward(new BaseReward(typeof(CaixaDeGold), 1, "Agradecimento de um goblin"));
             //this.AddReward(new BaseReward(typeof(PergaminhoSagrado), 1, "Pergaminho Sagrado para Roupas"));
             this.AddReward(new BaseReward(typeof(LivroAntigo), 1, "Livro Antigo"));
-            this.AddReward(new BaseReward(typeof(Gold), 30000, "30.000 Moedas"));
+            this.AddReward(new BaseReward(typeof(Gold), 10000, "10.000 Moedas"));
         }
 
         public override void OnAccept()

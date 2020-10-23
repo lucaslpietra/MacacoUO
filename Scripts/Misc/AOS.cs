@@ -663,6 +663,7 @@ namespace Server
 
     public sealed class AosAttributes : BaseAttributes
     {
+
         public static bool IsValid(AosAttribute attribute)
         {
             if (!Core.AOS)
@@ -3463,6 +3464,12 @@ namespace Server
         private int[] m_Values;
 
         private static readonly int[] m_Empty = new int[0];
+
+        public void Reset()
+        {
+            m_Names = 0;
+            m_Values = new int[0];
+        }
 
         public bool IsEmpty
         {

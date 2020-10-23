@@ -11,6 +11,12 @@ namespace Server.Engines.BulkOrders
 
     public sealed class RewardType
     {
+
+        public static int PS105 = 100;
+        public static int PS110 = 300;
+        public static int PS115 = 500;
+        public static int PS120 = 800;
+
         private readonly int m_Points;
         private readonly Type[] m_Types;
 
@@ -344,7 +350,7 @@ namespace Server.Engines.BulkOrders
                 RewardCollection.Add(new BODCollectionItem(0x2F5B, "Talisman do Forjador de Prata<br>100% De chance ao fundir minerios de Prata.<br>Dura um bom tempo.", CraftResources.GetHue(CraftResource.Dourado), 350, SmeltersTalisman, (int)CraftResource.Dourado));
                 RewardCollection.Add(new BODCollectionItem(0x9E2A, "Talisman do De Crafting +10", 0, 400, CraftsmanTalisman, 10));
                 RewardCollection.Add(new BODCollectionItem(0x13EB, "Luvas de Mineracao +5", 0, 450, MiningGloves, 5));
-                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 105 Mining<br>Aumenta seu cap de mining.", 0x481, 450, PowerScroll2, 5));
+                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 105 Mining<br>Aumenta seu cap de mining.", 0x481, RewardType.PS105, PowerScroll2, 5));
                 RewardCollection.Add(new BODCollectionItem(4102, "Po de refinamento<br>Maximima e melhora a durabilidade de um item", 0, 450, PowderOfTemperament));
                 RewardCollection.Add(new BODCollectionItem(0x2F5B, "Talisman do Forjador de Niobio<br>100% De chance ao fundir minerios de Niobio.<br>Dura um bom tempo.", CraftResources.GetHue(CraftResource.Niobio), 475, SmeltersTalisman, (int)CraftResource.Niobio));
                 //RewardCollection.Add(new BODCollectionItem(0x9E7E, ", 0, 500, RockHammer));
@@ -355,14 +361,14 @@ namespace Server.Engines.BulkOrders
                 RewardCollection.Add(new BODCollectionItem(0x2F5B, "Talisman do Forjador de Quartzo<br>100% De chance ao fundir minerios de Quartzo.<br>Dura um bom tempo.", CraftResources.GetHue(CraftResource.Quartzo), 575, SmeltersTalisman, (int)CraftResource.Quartzo));
                 RewardCollection.Add(new BODCollectionItem(0x14EC, "Mapa de Minerar Ouro", CraftResources.GetHue(CraftResource.Dourado), 100, HarvestMap, (int)CraftResource.Dourado));
                 RewardCollection.Add(new BODCollectionItem(0xFAF, "Bigorna Colorida", 0, 625, ColoredAnvil));
-                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 110 Mining<br>Aumenta seu cap de mining.", 0x481, 625, PowerScroll2, 10));
-                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 105 Blacksmithy<br>Aumenta seu cap de blacksmithy.", 0x481, 625, PowerScroll, 5));
+                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 110 Mining<br>Aumenta seu cap de mining.", 0x481, RewardType.PS110, PowerScroll2, 10));
+                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 105 Blacksmithy<br>Aumenta seu cap de blacksmithy.", 0x481, RewardType.PS105, PowerScroll, 5));
                 //RewardCollection.Add(new BODCollectionItem(0x13E3, 1157094, CraftResources.GetHue(CraftResource.Cobre), 650, RunicHammer, 3));
-                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 110 Blacksmithy<br>Aumenta seu cap de blacksmithy.", 0x481, 900, PowerScroll, 10));
+                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 110 Blacksmithy<br>Aumenta seu cap de blacksmithy.", 0x481, RewardType.PS110, PowerScroll, 10));
                 //RewardCollection.Add(new BODCollectionItem(0x13E3, 1157095, CraftResources.GetHue(CraftResource.Bronze), 700, RunicHammer, 4));
                 RewardCollection.Add(new BODCollectionItem(0x13E3, "Martelo +5 Blacksmithy", 0x482, 750, AncientHammer, 5));
-                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Mining<br>Aumenta seu cap de mining.", 0x481, 1200, PowerScroll2, 15));
-                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Blacksmithy<br>Aumenta seu cap de blacksmithy.", 0x481, 1200, PowerScroll, 15));
+                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Mining<br>Aumenta seu cap de mining.", 0x481, RewardType.PS115, PowerScroll2, 15));
+                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Blacksmithy<br>Aumenta seu cap de blacksmithy.", 0x481, RewardType.PS115, PowerScroll, 15));
                 RewardCollection.Add(new BODCollectionItem(0x13E3, "Martelo +10 Blacksmithy", 0x482, 850, AncientHammer, 10));
                 RewardCollection.Add(new BODCollectionItem(0x14EC, "Mapa de Minerar Niobio", CraftResources.GetHue(CraftResource.Niobio), 200, HarvestMap, (int)CraftResource.Niobio));
                 RewardCollection.Add(new BODCollectionItem(0x9E2A, "Talisman do De Crafting +50", 0, 900, CraftsmanTalisman, 50));
@@ -372,7 +378,7 @@ namespace Server.Engines.BulkOrders
                 //RewardCollection.Add(new BODCollectionItem(0x13E3, 1157097, CraftResources.GetHue(CraftResource.Niobio), 1050, RunicHammer, 6));
                 RewardCollection.Add(new BODCollectionItem(0x14EC, "Mapa de Minerar Quartzo", CraftResources.GetHue(CraftResource.Quartzo), 600, HarvestMap, (int)CraftResource.Quartzo));
                 RewardCollection.Add(new BODCollectionItem(0x13E3, "Martelo +30 Blacksmithy", 0x482, 1100, AncientHammer, 30));
-                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 120 Blacksmithy<br>Aumenta seu cap de blacksmithy.", 0x481, 1500, PowerScroll, 20));
+                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 120 Blacksmithy<br>Aumenta seu cap de blacksmithy.", 0x481, RewardType.PS120, PowerScroll, 20));
                 RewardCollection.Add(new BODCollectionItem(0x14EC, "Mapa de Minerar Vibranium", CraftResources.GetHue(CraftResource.Vibranium), 1350, HarvestMap, (int)CraftResource.Vibranium));
                 RewardCollection.Add(new BODCollectionItem(0x14EC, "Mapa de Minerar Adamantium", CraftResources.GetHue(CraftResource.Adamantium), 1350, HarvestMap, (int)CraftResource.Adamantium));
                 //RewardCollection.Add(new BODCollectionItem(0x13E3, 1157098, CraftResources.GetHue(CraftResource.Lazurita), 1150, RunicHammer, 7));
@@ -418,7 +424,7 @@ namespace Server.Engines.BulkOrders
         private static readonly ConstructCallback ProspectorsTool = new ConstructCallback(CreateProspectorsTool);
         private static readonly ConstructCallback PowderOfTemperament = new ConstructCallback(CreatePowderOfTemperament);
         private static readonly ConstructCallback RunicHammer = new ConstructCallback(CreateRunicHammer);
-        private static readonly ConstructCallback PowerScroll = new ConstructCallback(CreatePowerScroll); 
+        private static readonly ConstructCallback PowerScroll = new ConstructCallback(CreatePowerScroll);
         private static readonly ConstructCallback PowerScroll2 = new ConstructCallback(CreatePowerScroll2);
         private static readonly ConstructCallback ColoredAnvil = new ConstructCallback(CreateColoredAnvil);
         private static readonly ConstructCallback AncientHammer = new ConstructCallback(CreateAncientHammer);
@@ -727,14 +733,14 @@ namespace Server.Engines.BulkOrders
                 RewardCollection.Add(new BODCollectionItem(0x9E25, "Talisman Tailoring +15<br>Dura um tempo", 0, 300, CraftsmanTalisman, 15)); // todo: Get id
                 //RewardCollection.Add(new BODCollectionItem(0xF9D, 1157115, CraftResources.GetHue(CraftResource.SpinedLeather), 350, RunicKit, 1));
                 RewardCollection.Add(new BODCollectionItem(0x9E25, "Talisman Tailoring +20<br>Dura um tempo", 0, 350, CraftsmanTalisman, 20)); // todo: Get id
-                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 105 Tailoring<br>Aumenta seu cap de Tailoring", 0x481, 400, PowerScroll, 5));
+                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 105 Tailoring<br>Aumenta seu cap de Tailoring", 0x481, RewardType.PS105, PowerScroll, 5));
                 RewardCollection.Add(new BODCollectionItem(0x14F0, "Tapetes De Flores", 0, 400, Tapestry));
                 RewardCollection.Add(new BODCollectionItem(0x14F0, "Tapetes de Ursos", 0, 450, BearRug));
-                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 110 Tailoring<br>Aumenta seu cap de Tailoring", 0x481, 900, PowerScroll, 10));
+                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 110 Tailoring<br>Aumenta seu cap de Tailoring", 0x481, RewardType.PS110, PowerScroll, 10));
                 RewardCollection.Add(new BODCollectionItem(0x14F0, "Pergaminho Sagrado<br>Torna uma roupa pertence pessoal por 1 mes.", 0, 550, ClothingBlessDeed));
-                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Tailoring < br > Aumenta seu cap de Tailoring", 0x481, 1200, PowerScroll, 15));
+                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Tailoring < br > Aumenta seu cap de Tailoring", 0x481, RewardType.PS115, PowerScroll, 15));
                 //RewardCollection.Add(new BODCollectionItem(0xF9D, 1157116, CraftResources.GetHue(CraftResource.HornedLeather), 600, RunicKit, 2));
-                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 120 Tailoring<br>Aumenta seu cap de Tailoring", 0x481, 1500, PowerScroll, 20));
+                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 120 Tailoring<br>Aumenta seu cap de Tailoring", 0x481, RewardType.PS120, PowerScroll, 20));
                 //RewardCollection.Add(new BODCollectionItem(0xF9D, 1157117, CraftResources.GetHue(CraftResource.BarbedLeather), 700, RunicKit, 3));
             }
             else
@@ -1087,10 +1093,10 @@ namespace Server.Engines.BulkOrders
             RewardCollection.Add(new BODCollectionItem(0x2F5B, 1152677, CraftResources.GetHue(CraftResource.Quartzo), 1050, SmeltersTalisman, (int)CraftResource.Quartzo));
             RewardCollection.Add(new BODCollectionItem(0x14EC, 1152668, CraftResources.GetHue(CraftResource.Quartzo), 1100, HarvestMap, (int)CraftResource.Quartzo));
             RewardCollection.Add(new BODCollectionItem(0x9DB1, "Cabeca de Robo", 1175, 1200, CreateItem, 3));
-            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 105 Tinkering<br>Aumenta seu cap de Tinkering para de 100 para 105.", 0x481, 250, PowerScroll, 5));
-            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 110 Tinkering<br>Aumenta seu cap de Tinkering para de 105 para 110.", 0x481, 600, PowerScroll, 10));
-            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Tinkering<br>Aumenta seu cap de Tinkering para de 110 para 115.", 0x481, 900, PowerScroll, 15));
-            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 120 Tinkering<br>Aumenta seu cap de Tinkering para de 115 para 120.", 0x481, 1500, PowerScroll, 20));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 105 Tinkering<br>Aumenta seu cap de Tinkering para de 100 para 105.", 0x481, RewardType.PS105, PowerScroll, 5));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 110 Tinkering<br>Aumenta seu cap de Tinkering para de 105 para 110.", 0x481, RewardType.PS110, PowerScroll, 10));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Tinkering<br>Aumenta seu cap de Tinkering para de 110 para 115.", 0x481, RewardType.PS115, PowerScroll, 15));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 120 Tinkering<br>Aumenta seu cap de Tinkering para de 115 para 120.", 0x481, RewardType.PS120, PowerScroll, 20));
         }
 
 
@@ -1289,7 +1295,24 @@ namespace Server.Engines.BulkOrders
             //RewardCollection.Add(new BODCollectionItem(0x12B3, 1157299, CraftResources.GetHue(CraftResource.Lazurita), 1100, RunicMalletAndChisel, 7));
             //RewardCollection.Add(new BODCollectionItem(0x1029, 1157226, CraftResources.GetHue(CraftResource.Eucalipto), 1150, RunicDovetailSaw, 3));
             //RewardCollection.Add(new BODCollectionItem(0x12B3, 1157300, CraftResources.GetHue(CraftResource.Quartzo), 1150, RunicMalletAndChisel, 8));
+
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 105 Bowcraft<br>Aumenta seu cap de carpentry para de 100 para 105.", 0x481, RewardType.PS105, PowerScroll, 5));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 110 Bowcraft<br>Aumenta seu cap de carpentry para de 105 para 110.", 0x481, RewardType.PS110, PowerScroll, 10));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Bowcraft<br>Aumenta seu cap de carpentry para de 110 para 115.", 0x481, RewardType.PS115, PowerScroll, 15));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 120 Bowcraft<br>Aumenta seu cap de carpentry para de 115 para 120.", 0x481, RewardType.PS120, PowerScroll, 20));
+
+
         }
+
+        private static Item CreatePowerScroll(int type)
+        {
+            if (type == 5 || type == 10 || type == 15 || type == 20)
+                return new PowerScroll(SkillName.Carpentry, 100 + type);
+
+            throw new InvalidOperationException();
+        }
+
+        private static readonly ConstructCallback PowerScroll = new ConstructCallback(CreatePowerScroll);
 
         #region Constructors
 
@@ -1729,10 +1752,10 @@ namespace Server.Engines.BulkOrders
             RewardCollection.Add(new BODCollectionItem(0x14EC, "Mapa de coleta para Carmesim", CraftResources.GetHue(CraftResource.Carmesim), 900, HarvestMap, (int)CraftResource.Carmesim));
             RewardCollection.Add(new BODCollectionItem(0x2F5A, "Talisman para cortar tabuas de madeira gelida", CraftResources.GetHue(CraftResource.Gelo), 1000, WoodsmansTalisman, (int)CraftResource.Gelo));
             RewardCollection.Add(new BODCollectionItem(0x14EC, "Mapa para coleta de madeira gelida", CraftResources.GetHue(CraftResource.Gelo), 1050, HarvestMap, (int)CraftResource.Gelo));
-            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 105 Bowcraft<br>Aumenta seu cap de bowcraft para de 100 para 105.", 0x481, 250, PowerScroll, 5));
-            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 110 Bowcraft<br>Aumenta seu cap de bowcraft para de 105 para 110.", 0x481, 900, PowerScroll, 10));
-            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Bowcraft<br>Aumenta seu cap de bowcraft para de 110 para 115.", 0x481, 1200, PowerScroll, 15));
-            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 120 Bowcraft<br>Aumenta seu cap de bowcraft para de 115 para 120.", 0x481, 1500, PowerScroll, 20));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 105 Bowcraft<br>Aumenta seu cap de bowcraft para de 100 para 105.", 0x481, RewardType.PS105, PowerScroll, 5));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 110 Bowcraft<br>Aumenta seu cap de bowcraft para de 105 para 110.", 0x481, RewardType.PS110, PowerScroll, 10));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Bowcraft<br>Aumenta seu cap de bowcraft para de 110 para 115.", 0x481, RewardType.PS115, PowerScroll, 15));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 120 Bowcraft<br>Aumenta seu cap de bowcraft para de 115 para 120.", 0x481, RewardType.PS120, PowerScroll, 20));
         }
 
         private static Item CreatePowerScroll(int type)

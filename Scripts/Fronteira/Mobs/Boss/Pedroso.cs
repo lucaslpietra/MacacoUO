@@ -60,7 +60,7 @@ namespace Server.Mobiles
             VirtualArmor = 200;
 
             SetWeaponAbility(WeaponAbility.ConcussionBlow);
-            AddItem(new Gold(10000));
+            AddItem(new Gold(1000));
             AddItem(new Granite());
             AddItem(new Rock1Rand());
             AddItem(new Rock2Rand());

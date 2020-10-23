@@ -75,7 +75,8 @@ namespace Server.Spells.Chivalry
                 {
                     Mobile m = id as Mobile;
 
-                    if (Caster != null && (m != Caster) && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
+
+                    if (Caster != null && (m != Caster) && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false) && Notoriety.Compute(Caster, m) != Notoriety.Innocent)
                     {
                         int damage = ComputePowerValue(12) + Utility.RandomMinMax(0, 2);
 

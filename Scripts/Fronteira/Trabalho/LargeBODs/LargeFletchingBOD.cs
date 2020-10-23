@@ -47,7 +47,7 @@ namespace Server.Engines.BulkOrders
 
             int hue = 1425;
             int amountMax = Utility.RandomList(10, 15, 20, 20);
-            bool reqExceptional = useMaterials && 0.825 > Utility.RandomDouble();
+            bool reqExceptional = false; //useMaterials && 0.825 > Utility.RandomDouble();
 
             BulkMaterialType material;
 

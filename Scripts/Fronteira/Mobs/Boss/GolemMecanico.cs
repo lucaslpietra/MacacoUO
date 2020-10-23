@@ -80,7 +80,7 @@ namespace Server.Mobiles
             SetSpecialAbility(SpecialAbility.ManaDrain);
             SetWeaponAbility(WeaponAbility.ParalyzingBlow);
 
-            PackItem(new Gold(10000));
+            PackItem(new Gold(2000));
             this.PackItem(new Item(0xA517));
             PackItem(Carnage.GetRandomPS(105));
             PackItem(Carnage.GetRandomPS(105));
