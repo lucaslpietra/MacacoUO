@@ -85,6 +85,8 @@ namespace Server.Mobiles
                 {
                     var p = (PlayerMobile)r.m_Mobile;
 
+                  
+
                     switch (p.Profession)
                     {
                         case 4://StarterKits.ARCHER:
@@ -124,6 +126,10 @@ namespace Server.Mobiles
                             cajado.Owner = p;
                             AddItem(cajado);
                             AddItem(new BagOfReagents());
+                            if (p.Young)
+                            {
+                                p.PlaceInBackpack(new EnergyBoltScroll());
+                            }
                             break;
                         default:
                             var espada = new VikingSword();

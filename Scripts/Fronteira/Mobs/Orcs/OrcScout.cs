@@ -26,7 +26,7 @@ namespace Server.Mobiles
 			SetHits(58, 72);
 			SetMana(30, 60);
 
-			SetDamage(5, 7);
+			SetDamage(4, 5);
 
 			SetDamageType(ResistanceType.Physical, 100);
 
@@ -41,7 +41,6 @@ namespace Server.Mobiles
 
 			SetSkill(SkillName.Fencing, 50.1, 70.0);
 			SetSkill(SkillName.Archery, 80.1, 120.0);
-			SetSkill(SkillName.Parry, 40.1, 60.0);
 			SetSkill(SkillName.Healing, 80.1, 100.0);
 			SetSkill(SkillName.Anatomy, 50.1, 90.0);
 			SetSkill(SkillName.DetectHidden, 100.1, 120.0);

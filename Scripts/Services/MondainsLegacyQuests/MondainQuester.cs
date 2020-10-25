@@ -144,8 +144,11 @@ namespace Server.Engines.Quests
                 return;
 			
             if (QuestHelper.InProgress(player, this))
+            {
+                SayTo(player, true, "Se voce tem algo para me entregar, arraste o item para mim...");
                 return;
-		
+            }
+
             if (QuestHelper.QuestLimitReached(player))
                 return;
 			

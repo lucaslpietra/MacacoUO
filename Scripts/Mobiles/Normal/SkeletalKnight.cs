@@ -39,7 +39,7 @@ namespace Server.Mobiles
             Karma = -3000;
 
             VirtualArmor = 40;
-
+            PackItem(new Bone());
             switch ( Utility.Random(6) )
             {
                 case 0:

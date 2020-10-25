@@ -60,9 +60,9 @@ namespace Server.Mobiles
 			AddItem(new BoneLegs());
 			AddItem(new DeerMask());
 
-            if (Utility.Random(2) == 1)
+            if (Utility.RandomBool())
             {
-                PackItem(DefCookingExp.GetReceitaCarneRandom());
+                PackItem(DefCookingExp.GetReceitaRandom());
             }
         }
 

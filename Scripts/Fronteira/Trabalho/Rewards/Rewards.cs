@@ -1296,10 +1296,10 @@ namespace Server.Engines.BulkOrders
             //RewardCollection.Add(new BODCollectionItem(0x1029, 1157226, CraftResources.GetHue(CraftResource.Eucalipto), 1150, RunicDovetailSaw, 3));
             //RewardCollection.Add(new BODCollectionItem(0x12B3, 1157300, CraftResources.GetHue(CraftResource.Quartzo), 1150, RunicMalletAndChisel, 8));
 
-            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 105 Bowcraft<br>Aumenta seu cap de carpentry para de 100 para 105.", 0x481, RewardType.PS105, PowerScroll, 5));
-            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 110 Bowcraft<br>Aumenta seu cap de carpentry para de 105 para 110.", 0x481, RewardType.PS110, PowerScroll, 10));
-            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Bowcraft<br>Aumenta seu cap de carpentry para de 110 para 115.", 0x481, RewardType.PS115, PowerScroll, 15));
-            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 120 Bowcraft<br>Aumenta seu cap de carpentry para de 115 para 120.", 0x481, RewardType.PS120, PowerScroll, 20));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 105 Carpentry<br>Aumenta seu cap de carpentry para de 100 para 105.", 0x481, RewardType.PS105, PowerScroll, 5));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 110 Carpentry<br>Aumenta seu cap de carpentry para de 105 para 110.", 0x481, RewardType.PS110, PowerScroll, 10));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Carpentry<br>Aumenta seu cap de carpentry para de 110 para 115.", 0x481, RewardType.PS115, PowerScroll, 15));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 120 Carpentry<br>Aumenta seu cap de carpentry para de 115 para 120.", 0x481, RewardType.PS120, PowerScroll, 20));
 
 
         }
@@ -1641,7 +1641,6 @@ namespace Server.Engines.BulkOrders
                 case 1: return new PlumTreeAddonDeed();
                 case 2: return new FermentationBarrel();
             }
-
             return null;
         }
 
@@ -1931,8 +1930,21 @@ namespace Server.Engines.BulkOrders
             RewardCollection.Add(new BODCollectionItem(0x975, "Caldeirao de Carmesim<br>Dura um tempo", CraftResources.GetHue(CraftResource.Carmesim), 410, Cauldron, 6));
             RewardCollection.Add(new BODCollectionItem(0x182B, "Tinta natural<br>Pinta muitas coisas diferentes", 2735, 425, NaturalDye, 2));
             RewardCollection.Add(new BODCollectionItem(0x975, "Caldeirao de Lazurita<br>Dura um tempo", CraftResources.GetHue(CraftResource.Lazurita), 450, Cauldron, 7));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 105 Alchemy<br>Aumenta seu cap de Alchemy para de 100 para 105.", 0x481, RewardType.PS105, PowerScroll, 5));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 110 Alchemy<br>Aumenta seu cap de Alchemy para de 105 para 110.", 0x481, RewardType.PS110, PowerScroll, 10));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Alchemy<br>Aumenta seu cap de Alchemy para de 110 para 115.", 0x481, RewardType.PS115, PowerScroll, 15));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 120 Alchemy<br>Aumenta seu cap de Alchemy para de 115 para 120.", 0x481, RewardType.PS120, PowerScroll, 20));
         }
 
+        private static Item CreatePowerScroll(int type)
+        {
+            if (type == 5 || type == 10 || type == 15 || type == 20)
+                return new PowerScroll(SkillName.Alchemy, 100 + type);
+
+            throw new InvalidOperationException();
+        }
+
+        private static readonly ConstructCallback PowerScroll = new ConstructCallback(CreatePowerScroll);
         #region Constructors
         private static Item MortarAndPestle(int type)
         {

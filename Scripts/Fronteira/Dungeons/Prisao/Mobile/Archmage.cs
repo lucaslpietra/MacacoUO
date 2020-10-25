@@ -67,6 +67,10 @@ namespace Server.Mobiles
             PackReg(23);
             PackItem(new Sandals());
 
+            if(Utility.RandomDouble() < 0.3)
+            {
+                PackItem(new PianoAddonDeed());
+            }
  
             if (Utility.RandomDouble() < 0.75)
             {

@@ -66,17 +66,17 @@ namespace Server.Mobiles
             this.PackItem(Decos.RandomDeco());
             Instances.Add(this);
 
-            var keg = new PotionKeg();
-            keg.Held = 100;
+            Item pot = null;
 
-            switch(Utility.Random(4))
+            switch (Utility.Random(4))
             {
-                case 0: keg.Type = PotionEffect.CuraMaior; break;
-                case 1: keg.Type = PotionEffect.VidaForte; break;
-                case 2: keg.Type = PotionEffect.Stamina; break;
-                case 3: keg.Type = PotionEffect.Mana; break;
+                case 0: pot = new HealPotion(); break;
+                case 1: pot = new RefreshPotion(); break;
+                case 2: pot = new ManaPotion(); break;
+                case 3: pot = new CurePotion(); break;
             }
-            PackItem(keg);
+            pot.Amount = 50;
+            PackItem(pot);
             SetSpecialAbility(SpecialAbility.ManaDrain);
             SetWeaponAbility(WeaponAbility.ParalyzingBlow);
 

@@ -213,7 +213,7 @@ namespace Server.Items
                 return false;
             }
 
-            if (skill.SkillName != SkillName.Wrestling && from.Skills[SkillName.Anatomy].Value < reqSkill)
+            if (!(weapon is BaseStaff) && skill.SkillName != SkillName.Wrestling && from.Skills[SkillName.Anatomy].Value < reqSkill)
             {
                 from.SendMessage("Requisito mínimo para usar esta habilidade: "+reqSkill+" Anatomy");
                 return false;
@@ -222,12 +222,10 @@ namespace Server.Items
             if (skill != null && skill.Base >= reqSkill)
                 return true;
 
-            /* <UBWS> */
             if (weapon.WeaponAttributes.UseBestSkill > 0 && (from.Skills[SkillName.Swords].Base >= reqSkill || from.Skills[SkillName.Macing].Base >= reqSkill || from.Skills[SkillName.Fencing].Base >= reqSkill))
                 return true;
-            /* </UBWS> */
 
-            if (reqSecondarySkill != 0.0 && !Core.TOL)
+            if (reqSecondarySkill != 0.0)
             {
                 from.SendMessage("Requisito minimo para usar esta habilidade: " + reqSkill.ToString() +" em " + skill.SkillName + " e " + secondarySkill); // You need ~1_SKILL_REQUIREMENT~ weapon and tactics skill to perform that attack
             }

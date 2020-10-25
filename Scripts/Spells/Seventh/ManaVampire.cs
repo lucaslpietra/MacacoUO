@@ -49,44 +49,20 @@ namespace Server.Spells.Seventh
 
                 int toDrain = 0;
 
-                if (Core.AOS)
-                {
-                    toDrain = (int)(this.GetDamageSkill(this.Caster) - this.GetResistSkill(m));
-
-                    if (!m.Player)
-                        toDrain /= 2;
-
-                    if (toDrain < 0)
-                        toDrain = 0;
-                    else if (toDrain > m.Mana)
-                        toDrain = m.Mana;
-                }
+                if (this.CheckResisted(m))
+                    m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                 else
-                {
-                    if (this.CheckResisted(m))
-                        m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
-                    else
-                        toDrain = m.Mana;
-                }
+                    toDrain = m.Mana;
 
                 if (toDrain > (this.Caster.ManaMax - this.Caster.Mana))
                     toDrain = this.Caster.ManaMax - this.Caster.Mana;
 
                 m.Mana -= toDrain;
                 this.Caster.Mana += toDrain;
+                m.SendMessage("Sua mana foi sugada pela magia Mana Vampire de "+Caster.Name);
 
-                if (Core.AOS)
-                {
-                    m.FixedParticles(0x374A, 1, 15, 5054, 23, 7, EffectLayer.Head);
-                    m.PlaySound(0x1F9);
-
-                    this.Caster.FixedParticles(0x0000, 10, 5, 2054, EffectLayer.Head);
-                }
-                else
-                {
-                    m.FixedParticles(0x374A, 10, 15, 5054, EffectLayer.Head);
-                    m.PlaySound(0x1F9);
-                }
+                m.FixedParticles(0x374A, 10, 15, 5054, EffectLayer.Head);
+                m.PlaySound(0x1F9);
 
                 this.HarmfulSpell(m);
             }
@@ -96,14 +72,14 @@ namespace Server.Spells.Seventh
 
         public override double GetResistPercent(Mobile target)
         {
-            return 98.0;
+            return target.Skills[SkillName.MagicResist].Value * 0.7;
         }
 
         private class InternalTarget : Target
         {
             private readonly ManaVampireSpell m_Owner;
             public InternalTarget(ManaVampireSpell owner)
-                : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
+                : base(12, false, TargetFlags.Harmful)
             {
                 this.m_Owner = owner;
             }

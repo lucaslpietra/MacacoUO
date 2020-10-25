@@ -27,6 +27,7 @@ namespace Server.Items
         private uint m_KeyVal;
         private Item m_Link;
         private int m_MaxRange;
+        private int decaySeconds;
 
         private CraftResource _Resource;
         private Mobile _Crafter;

@@ -26,7 +26,7 @@ namespace Server.Engines.Quests
             get
             {
                 return @"Hmm... voce por acaso teria um livro de necromancia ? Caso tenha, eu posso fazer algo por ele para ele ser seu livro pessoal, sabe ? Para que voce nao o perca quando morra.
-Basta me trazer uma mascara... pois com ela, posso encantar o pergaminho para voce. Voce pode conseguir estes items na caverna dos selvagens.";
+Basta me trazer alguns ossos, que posso encantar seu livro de necromancia!";
             }
         }
         public override object Refuse
@@ -56,9 +56,7 @@ Basta me trazer uma mascara... pois com ela, posso encantar o pergaminho para vo
         {
             switch(Utility.Random(3))
             {
-                case 0: this.AddObjective(new ObtainObjective(typeof(DeerMask), "Mascara do Veado", 1)); break;
-                case 1: this.AddObjective(new ObtainObjective(typeof(BearMask), "Mascara do Urso", 1)); break;
-                case 2: this.AddObjective(new ObtainObjective(typeof(TribalMask), "Mascara Tribal", 1)); break;
+                case 0: this.AddObjective(new ObtainObjective(typeof(Bone), "100 Ossos", 100)); break;
             }
             this.AddReward(new BaseReward(typeof(PergaminhoNecro), 1, "Pergaminho para livro de necromancia pessoal"));
         }

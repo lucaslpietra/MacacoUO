@@ -116,7 +116,7 @@ namespace Server.Items
                                 from.SendMessage(from.Name + " fez o ritual de invocacao"); // ~1_PLAYER~ has read the Summoning Rite! 
 
                                 var terminouSegundo = altar.Rituals.Where(r => r.Ritual2 == true).Count();
-                                if (terminouSegundo >= 2)
+                                if (terminouSegundo >= 1)
                                 {
                                     altar.PublicOverheadMessage(Network.MessageType.Regular, 38, true, "* Virando paginas sozinho *");
                                     Timer.DelayCall(TimeSpan.FromSeconds(2), () =>

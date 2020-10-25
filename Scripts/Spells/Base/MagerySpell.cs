@@ -154,6 +154,10 @@ namespace Server.Spells
             var circ = 1 + (double)circle;
 
             var chance = ((magery * 2) / 10 + circ * circ);
+
+            if(Shard.DebugEnabled)
+                Shard.Debug("Chance Base: " + chance+" circulo "+circ);
+
             chance = resist - chance;
             if (chance < cap)
                 chance = cap;

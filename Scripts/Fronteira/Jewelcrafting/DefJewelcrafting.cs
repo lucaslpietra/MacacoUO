@@ -220,7 +220,6 @@ namespace Server.Engines.Craft
         {
             int index;
 
-
             index = AddCraft(typeof(DragonStone), "Utils", "Pedra Draconiana", 70, 110, typeof(DragonHead), "Cabeca de Dragao", 1, "Voce precisa de 1 cabeca de dragao");
             SetNeedForno(index, true);
 

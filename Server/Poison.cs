@@ -25,7 +25,7 @@ namespace Server
 			return Name;
 		}
 
-		private static readonly List<Poison> m_Poisons = new List<Poison>();
+		public static readonly List<Poison> m_Poisons = new List<Poison>();
 
 		public static void Register(Poison reg)
 		{
@@ -95,6 +95,11 @@ namespace Server
 
 		public static Poison GetPoison(string name)
 		{
+            if(m_Poisons.Count == 0)
+            {
+                Shard.Debug("Poison nao registrado");
+            }
+        
 			for (int i = 0; i < m_Poisons.Count; ++i)
 			{
 				Poison p = m_Poisons[i];

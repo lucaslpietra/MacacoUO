@@ -1174,10 +1174,7 @@ namespace Server.Items
             if (IsVvVItem)
                 list.Add(1154937); // VvV Item
 
-            if (!String.IsNullOrEmpty(m_EngravedText))
-            {
-                list.Add(1158847, Utility.FixHtml(m_EngravedText)); // Embroidered: ~1_MESSAGE~	
-            }
+           
         }
 
         public override void AddNameProperties(ObjectPropertyList list)
@@ -1191,8 +1188,12 @@ namespace Server.Items
                 list.Add("Excepcional"); // Exceptional
 
             if (m_GorgonLenseCharges > 0)
-                list.AddTwoValues("Cargas Gorgon", m_GorgonLenseCharges); //Gorgon Lens Charges: ~1_val~         
-
+                list.AddTwoValues("Cargas Gorgon", m_GorgonLenseCharges); //Gorgon Lens Charges: ~1_val~
+            
+            if (!String.IsNullOrEmpty(m_EngravedText))
+            {
+                list.AddTwoValues("Bordado",Utility.FixHtml(m_EngravedText)); // Embroidered: ~1_MESSAGE~	
+            }
             return;
 
             if (OwnerName != null)

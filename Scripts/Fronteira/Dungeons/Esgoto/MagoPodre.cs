@@ -72,6 +72,7 @@ namespace Server.Mobiles
                 return true;
             }
         }
+
         public override bool AlwaysMurderer
         {
             get
@@ -79,6 +80,7 @@ namespace Server.Mobiles
                 return true;
             }
         }
+
         public override int Meat
         {
             get
@@ -86,6 +88,7 @@ namespace Server.Mobiles
                 return 1;
             }
         }
+
         public override int TreasureMapLevel
         {
             get
@@ -106,7 +109,13 @@ namespace Server.Mobiles
                     if(p.Wisp != null)
                     {
                         p.Wisp.MataMago();
+                        if(p.Young)
+                        {
+                            p.PlaceInBackpack(new ParalyzeScroll());
+                            p.SendMessage("Voce encontrou um pergaminho desgastado");
+                        }
                     }
+                    
                 }
             }
             return base.OnBeforeDeath();

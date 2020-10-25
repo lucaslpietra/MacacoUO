@@ -122,6 +122,17 @@ namespace Server.Items
             TrapLevel = level;
             Locked = true;
 
+
+            var rnd = Utility.Random(5);
+            switch(rnd)
+            {
+                case 0: DropItem(new EmbroideryTool()); break;
+                case 1: DropItem(new WeaponEngravingTool()); break;
+                case 2: DropItem(new ArmorEngravingTool()); break;
+                case 3: DropItem(new SpellbookEngraver()); break;
+                case 4: DropItem(new MetalContainerEngraver()); break;
+            }
+
             switch ( level )
             {
                 case 1:

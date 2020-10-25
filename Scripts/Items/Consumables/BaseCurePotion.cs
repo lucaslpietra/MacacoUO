@@ -9,6 +9,7 @@ namespace Server.Items
         private readonly double m_Chance;
         public CureLevelInfo(Poison poison, double chance)
         {
+ 
             this.m_Poison = poison;
             this.m_Chance = chance;
         }
@@ -62,12 +63,27 @@ namespace Server.Items
 
             CureLevelInfo[] info = this.LevelInfo;
 
+            if(info.Length > 0 && info[0].Poison == null)
+            {
+               
+            }
+
             for (int i = 0; i < info.Length; ++i)
             {
                 CureLevelInfo li = info[i];
 
-                //if (li.Poison != null && from.Poison != null && li.Poison.RealLevel == from.Poison.RealLevel &&
-                if (li.Poison != null && from.Poison != null && li.Poison.RealLevel >= from.Poison.RealLevel &&
+                if(li.Poison == null)
+                {
+                    Shard.Debug("Lesser null ? "+(Poison.Lesser==null));
+                    Shard.Debug("Li pison null chance " + li.Chance);
+                } else
+                {
+                    Shard.Debug("Chance Cure: " + li.Chance + " Level " + li.Poison.RealLevel);
+                }
+             
+
+              //if (li.Poison != null && from.Poison != null && li.Poison.RealLevel == from.Poison.RealLevel &&
+                if (li.Poison != null && from.Poison != null && li.Poison.RealLevel == from.Poison.RealLevel &&
                     Scale(from, li.Chance) > Utility.RandomDouble())
                 {
                     cure = true;

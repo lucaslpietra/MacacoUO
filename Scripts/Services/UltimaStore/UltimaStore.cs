@@ -105,7 +105,7 @@ namespace Server.Engines.UOStore
             Register<SpecialHairDye>(new TextDefinition("Tinta para Cabelos"), "Loiro de Fogo", 0, 0x9C76, 0, 1000, cat, ConstructHairDye); // Fiery Blonde
             Register<SpecialHairDye>(new TextDefinition("Tinta para Cabelos"), "Marrom Amargo", 0, 0x9C77, 0, 1000, cat, ConstructHairDye); // Bitter Brown
             Register<SpecialHairDye>(new TextDefinition("Tinta para Cabelos"), "Azul Doidao", 0, 0x9C74, 0, 1000, cat, ConstructHairDye); // Gnaw's Twisted Blue
-            Register<SpecialHairDye>(new TextDefinition ("Tinta para Cabelos"), "Preto do Nevoeiro", 0, 0x9C75, 0, 1000, cat, ConstructHairDye); // Dusk Black
+            Register<SpecialHairDye>(new TextDefinition("Tinta para Cabelos"), "Preto do Nevoeiro", 0, 0x9C75, 0, 1000, cat, ConstructHairDye); // Dusk Black
             Register<GenderChangeToken>(new TextDefinition[] { "Trocar de Genero", 1156615 }, 1156642, 0x2AAA, 0, 0, 1000, cat);
             Register<NameChangeToken>(new TextDefinition[] { "Trocar de Nome", 1156615 }, 1156641, 0x2AAA, 0, 0, 1000, cat);
 
@@ -485,8 +485,8 @@ namespace Server.Engines.UOStore
 
         public static void OpenStore(PlayerMobile user)
         {
-            //user.SendMessage("Muito em breve...");
-            //return;
+            user.SendMessage("Loja desabilitada. Quem quiser doar para o shard, acesse nosso site !");
+            return;
 
             if (user == null || user.NetState == null)
             {
@@ -555,7 +555,7 @@ namespace Server.Engines.UOStore
             Shard.Debug("ENTRY ITEM ID: " + entry.GumpID);
             var info = NaturalHairDye.Table.FirstOrDefault(x => x.GumpID == entry.GumpID);
 
-            if(info != null)
+            if (info != null)
             {
                 Shard.Debug("Achei a tinta");
                 return new NaturalHairDye(info.Type);
@@ -688,7 +688,7 @@ namespace Server.Engines.UOStore
 
         public static Item ConstructMerchantsTrinket(Mobile m, StoreEntry entry)
         {
-            switch(entry.Name[0].Number)
+            switch (entry.Name[0].Number)
             {
                 case 1156827: return new MerchantsTrinket(false);
                 case 1156828: return new MerchantsTrinket(true);
@@ -839,19 +839,19 @@ namespace Server.Engines.UOStore
         {
             switch (sort)
             {
-                case SortBy.Name: 
-                        list.Sort((a, b) => String.CompareOrdinal(GetStringName(a.Name), GetStringName(b.Name)));
+                case SortBy.Name:
+                    list.Sort((a, b) => String.CompareOrdinal(GetStringName(a.Name), GetStringName(b.Name)));
                     break;
                 case SortBy.PriceLower:
-                        list.Sort((a, b) => a.Price.CompareTo(b.Price));
+                    list.Sort((a, b) => a.Price.CompareTo(b.Price));
                     break;
                 case SortBy.PriceHigher:
-                        list.Sort((a, b) => b.Price.CompareTo(a.Price));
+                    list.Sort((a, b) => b.Price.CompareTo(a.Price));
                     break;
                 case SortBy.Newest:
                     break;
                 case SortBy.Oldest:
-                        list.Reverse();
+                    list.Reverse();
                     break;
             }
         }
@@ -890,24 +890,24 @@ namespace Server.Engines.UOStore
             switch (Configuration.CurrencyImpl)
             {
                 case CurrencyType.Sovereigns:
-                {
-                    if (m is PlayerMobile)
                     {
-                        return ((PlayerMobile)m).MoedasMagicas;
+                        if (m is PlayerMobile)
+                        {
+                            return ((PlayerMobile)m).MoedasMagicas;
+                        }
                     }
-                }
                     break;
                 case CurrencyType.Gold:
                     return Banker.GetBalance(m);
                 case CurrencyType.PointsSystem:
-                {
-                    var sys = PointsSystem.GetSystemInstance(Configuration.PointsImpl);
-
-                    if (sys != null)
                     {
-                        return (int)Math.Min(Int32.MaxValue, sys.GetPoints(m));
+                        var sys = PointsSystem.GetSystemInstance(Configuration.PointsImpl);
+
+                        if (sys != null)
+                        {
+                            return (int)Math.Min(Int32.MaxValue, sys.GetPoints(m));
+                        }
                     }
-                }
                     break;
                 case CurrencyType.Custom:
                     return Configuration.GetCustomCurrency(m);
@@ -920,11 +920,11 @@ namespace Server.Engines.UOStore
         {
             var cart = GetCart(m);
             var total = GetSubTotal(cart);
-            
+
             if (cart == null || cart.Count == 0 || total == 0)
             {
                 // Purchase failed due to your cart being empty.
-                m.SendLocalizedMessage(1156842); 
+                m.SendLocalizedMessage(1156842);
             }
             else if (total > GetCurrency(m, true))
             {
@@ -984,7 +984,7 @@ namespace Server.Engines.UOStore
                 if (fail)
                 {
                     // Failed to process one of your items. Please check your cart and try again.
-                    m.SendLocalizedMessage(1156853); 
+                    m.SendLocalizedMessage(1156853);
                 }
             }
         }
@@ -999,30 +999,30 @@ namespace Server.Engines.UOStore
             switch (Configuration.CurrencyImpl)
             {
                 case CurrencyType.Sovereigns:
-                {
-                    if (m is PlayerMobile && ((PlayerMobile)m).WithdrawSovereigns(amount))
                     {
-                        return amount;
+                        if (m is PlayerMobile && ((PlayerMobile)m).WithdrawSovereigns(amount))
+                        {
+                            return amount;
+                        }
                     }
-                }
                     break;
                 case CurrencyType.Gold:
-                {
-                    if (Banker.Withdraw(m, amount, true))
                     {
-                        return amount;
+                        if (Banker.Withdraw(m, amount, true))
+                        {
+                            return amount;
+                        }
                     }
-                }
                     break;
                 case CurrencyType.PointsSystem:
-                {
-                    var sys = PointsSystem.GetSystemInstance(Configuration.PointsImpl);
-
-                    if (sys != null && sys.DeductPoints(m, amount, true))
                     {
-                        return amount;
+                        var sys = PointsSystem.GetSystemInstance(Configuration.PointsImpl);
+
+                        if (sys != null && sys.DeductPoints(m, amount, true))
+                        {
+                            return amount;
+                        }
                     }
-                }
                     break;
                 case CurrencyType.Custom:
                     return Configuration.DeductCustomCurrecy(m, amount);

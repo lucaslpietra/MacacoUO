@@ -168,6 +168,15 @@ namespace Server.Engines.Quests
             return false;
         }
 
+        public static bool HasCompleted(PlayerMobile player, Type questType)
+        {
+            if (player.DoneQuests.Any(x => x.QuestType == questType))
+            {
+                return true;
+            }
+            return false;
+        }
+
         public static bool TryReceiveQuestItem(PlayerMobile player, Type type, TimeSpan delay)
         {
             if (type.IsSubclassOf(typeof(Item)))
@@ -666,7 +675,6 @@ namespace Server.Engines.Quests
 
         public static bool CheckItem(PlayerMobile player, Item item, BaseVendor npc = null)
         {
-
             if (player.Wisp != null)
             {
                 player.Wisp.EntregaSapato();

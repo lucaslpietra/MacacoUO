@@ -58,7 +58,7 @@ namespace Server.Items
             PlayDrinkEffect(from);
             Consume();
 
-            Timer.DelayCall(TimeSpan.FromSeconds(Delay), (f) => { f.EndAction(typeof(BaseManaPotion)); }, from);
+            Timer.DelayCall(TimeSpan.FromSeconds(Delay), (f) => { f.EndAction(this.GetType()); }, from);
         }
 
     }

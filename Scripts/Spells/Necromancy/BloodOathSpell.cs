@@ -108,17 +108,20 @@ namespace Server.Spells.Necromancy
                 * ((ss-rm)/8)+8
                 */
 
+
+            if(CheckResisted(m, 5)) {
+                m.SendMessage("Voce sente seu corpo resistindo a magia");
+                return;
+            }
+
+            m.SendMessage("Voce sente sua alma conectar a alma de " + Caster.Name);
+
             ExpireTimer timer = (ExpireTimer)m_Table[m];
             if (timer != null)
                 timer.DoExpire();
 
             m_OathTable[Caster] = Caster;
             m_OathTable[m] = Caster;
-
-            if(CheckResisted(m, 7)) {
-                m.SendMessage("Voce sente seu corpo resistindo a magia");
-                return;
-            }
 
             if (m.Spell != null)
                 m.Spell.OnCasterHurt();

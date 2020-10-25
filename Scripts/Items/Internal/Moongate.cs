@@ -101,6 +101,7 @@ namespace Server.Items
                 BaseCreature.TeleportPets(m, Target, TargetMap);
 
             m.MoveToWorld(Target, TargetMap);
+            m.SendMessage("Voce sente seu corpo atravessando o portal frio");
 
             if (m.IsPlayer() || !m.Hidden)
                 m.PlaySound(0x1FE);
@@ -116,10 +117,6 @@ namespace Server.Items
             if (Sigil.ExistsOn(m))
             {
                 m.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
-            }
-            else if (TargetMap == Map.Felucca && m is PlayerMobile && ((PlayerMobile)m).Young)
-            {
-                m.SendLocalizedMessage(1049543); // You decide against traveling to Felucca while you are still young.
             }
             else if ((SpellHelper.RestrictRedTravel && m.Murderer && TargetMap != Map.Felucca && !Siege.SiegeShard) ||
                      (TargetMap == Map.Tokuno && (flags & ClientFlags.Tokuno) == 0) ||

@@ -19,9 +19,9 @@ namespace Server.Mobiles
             this.SetDex(91, 115);
             this.SetInt(161, 185);
 
-            this.SetHits(90, 90);
+            this.SetHits(60, 60);
 
-            this.SetDamage(4, 14);
+            this.SetDamage(4, 10);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
@@ -31,7 +31,7 @@ namespace Server.Mobiles
             this.SetResistance(ResistanceType.Poison, 30, 40);
             this.SetResistance(ResistanceType.Energy, 30, 40);
 
-            this.SetSkill(SkillName.EvalInt, 20, 30);
+            this.SetSkill(SkillName.EvalInt, 0, 0);
             this.SetSkill(SkillName.Magery, 60.1, 72.5);
             this.SetSkill(SkillName.MagicResist, 30, 40);
             this.SetSkill(SkillName.Tactics, 50.1, 65.0);
@@ -104,7 +104,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Average);
-            if(Utility.RandomDouble() < 0.05)
+            if(Utility.RandomDouble() < 0.4)
             {
                 this.AddLoot(LootPack.MedScrolls);
             } else

@@ -183,13 +183,6 @@ namespace Server.Misc
 
         public static double GC_INICIAL = 0.78;
 
-        /*
-        private static double BONUS_PVM = 0.75;
-        private static double BONUS_DUNGEON = 0.35;
-        private static double BONUS_CIDADE = -0.25;
-        private static double BONUS_CASA = -0.85;
-        */
-
         public static SkillName[] Work = new SkillName[] {
             SkillName.Alchemy, SkillName.Blacksmith, SkillName.Fletching,
             SkillName.Mining, SkillName.Tinkering, SkillName.Carpentry,
@@ -200,7 +193,7 @@ namespace Server.Misc
         public static double BONUS_GERAL = 0; 
 
         private static double BONUS_DUNGEON = 0.35;
-        private static double BONUS_PVM = 0.85;
+        private static double BONUS_PVM = 1.2;
         private static double BONUS_CIDADE = 0;
         private static double BONUS_CASA = -0.1;
 
@@ -214,7 +207,7 @@ namespace Server.Misc
                 gc -= 0.05;
             }
             var ratio = 1.00001 - (skill / 100);
-            gc *= ratio * (ratio * 3);
+            gc *= ratio * (ratio * 4);
             
             gc *= skillDifficulty;
 
@@ -258,6 +251,7 @@ namespace Server.Misc
             guardReg = false;
             houseReg = false;
             dgNoob = false;
+
             work = Work.Any(s => s == skill.SkillName);
             
             var gcBonus = 0.0;

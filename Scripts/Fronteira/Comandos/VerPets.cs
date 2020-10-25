@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Server.Accounting;
 using Server.Gumps;
 using Server.Items;
@@ -22,7 +23,8 @@ namespace Server.Commands
             if (pl == null)
                 return;
 
-            foreach(var f in pl.AllFollowers)
+            var followers = new List<Mobile>(pl.AllFollowers);
+            foreach(var f in followers)
             {
                 var reg = f.Region != null ? f.Region.Name : "Floresta";
                 pl.SendMessage(f.Name + " esta em " + f.Location.ToString()+" na regiao "+reg+" mapa "+f.Map);

@@ -43,7 +43,7 @@ namespace Server.Spells.Second
 
                 if (p != null)
                 {
-                    int chanceToCure = 10000 + (int)(this.Caster.Skills[SkillName.Magery].Value * 45) + (int)(this.Caster.Skills[SkillName.Inscribe].Value * 25) - ((p.RealLevel + 1) * (p.RealLevel < 4 ? 3300 : 3100));
+                    int chanceToCure = 10000 + (int)(this.Caster.Skills[SkillName.Magery].Value * 70) + (int)(this.Caster.Skills[SkillName.Inscribe].Value * 10) - ((p.RealLevel + 1) * (p.RealLevel < 4 ? 3300 : 3100));
                     chanceToCure /= 100;
 
                     Shard.Debug("Chance de curar poison: " + chanceToCure);

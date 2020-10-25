@@ -28,7 +28,7 @@ namespace Server.Items
         {
             get
             {
-                return 5;
+                return 10;
             }
         }
 
@@ -36,7 +36,7 @@ namespace Server.Items
         {
             get
             {
-                return 75;
+                return 70;
             }
         }
 

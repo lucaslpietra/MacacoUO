@@ -61,14 +61,14 @@ namespace Server.Spells.Fourth
             }
             else if (this.CheckBSequence(m))
             {
-                int toHeal = (int)(this.Caster.Skills[SkillName.Magery].Value * 0.15);
+                int toHeal = (int)(this.Caster.Skills[SkillName.Magery].Value * 0.165);
                 toHeal += Utility.Random(1, 15);
 
                 var inscript = this.Caster.Skills[SkillName.Inscribe].Value;
                 if (Caster is BaseCreature)
                     inscript += 100;
 
-                var inscriptBonus = (int)(inscript * 0.165);
+                var inscriptBonus = (int)(inscript * 0.15);
                 toHeal += inscriptBonus;
                 
                 /*

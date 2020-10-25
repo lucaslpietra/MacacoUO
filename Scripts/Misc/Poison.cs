@@ -18,6 +18,8 @@ namespace Server
 		[CallPriority(10)]
 		public static void Configure()
 		{
+            Shard.Debug("-------- REGISTRANDO POISONS ---------");
+
 			if (Core.AOS)
 			{
 				Register(new PoisonImpl("Lesser", 0, 4, 16, 7.5, 3.0, 2.25, 10, 4));

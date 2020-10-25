@@ -78,11 +78,11 @@ namespace Server.Spells.First
                 }
                 else if (target is Mobile)
                 {
-                    damage = Utility.Random(4, 4);
+                    damage = Utility.Random(3, 4);
 
                     if (CheckResisted((Mobile)target))
                     {
-                        damage *= 0.4;
+                        damage *= 0.3;
 
                         ((Mobile)target).SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                     }

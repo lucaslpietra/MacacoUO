@@ -101,19 +101,10 @@ namespace Server.Items
             minRaw = weapon.MinDamage;
             maxRaw = weapon.MaxDamage;
 
-            if (Core.AOS)
-            {
-                minVal = (int)weapon.ScaleDamageAOS(wielder, minVal, false);
-                maxVal = (int)weapon.ScaleDamageAOS(wielder, maxVal, false);
-            }
-            else
-            {
-                Shard.Debug("Min Max Antes de Scalar: " + minRaw + "/" + maxRaw, wielder);
-                minVal = (int)weapon.ScaleDamageOld(wielder, minVal, false);
-                maxVal = (int)weapon.ScaleDamageOld(wielder, maxVal, false);
-                Shard.Debug("Min Max Dps de Scalar: " + minRaw + "/" + maxRaw, wielder);
-            }
-
+            Shard.Debug("Min Max Antes de Scalar: " + minRaw + "/" + maxRaw, wielder);
+            minVal = (int)weapon.ScaleDamageOld(wielder, minVal, false);
+            maxVal = (int)weapon.ScaleDamageOld(wielder, maxVal, false);
+            Shard.Debug("Min Max Dps de Scalar: " + minRaw + "/" + maxRaw, wielder);
             return weapon;
         }
         #endregion
@@ -1216,14 +1207,15 @@ namespace Server.Items
                         delay = (long)GetDelay(from).TotalMilliseconds / (from.CanAttack(this.GetType()) ? 4 : 1); // sphere estilo KDS, pouco delay dps de botar arma na mao
                     else
                     {
-                        if(this is BaseRanged)
+                        if (this is BaseRanged)
                         {
                             delay = (long)(GetDelay(from).TotalMilliseconds);
-                        } else
+                        }
+                        else
                         {
                             delay = (long)(GetDelay(from).TotalMilliseconds / (from.CanAttack(this.GetType()) ? 2 : 1));
                         }
-                      
+
                     }
 
                 }
@@ -2929,6 +2921,26 @@ namespace Server.Items
 
             double propertyBonus = (move == null) ? 1.0 : move.GetPropertyBonus(attacker);
 
+            if (attacker is VampireBatFamiliar || attacker is VampireBat)
+            {
+                BaseCreature bc = (BaseCreature)attacker;
+                Mobile caster = bc.ControlMaster;
+
+                if (caster == null)
+                {
+                    caster = bc.SummonMaster;
+                }
+
+                if (caster != null && caster.Map == bc.Map && caster.InRange(bc, 2))
+                {
+                    caster.Hits += damage;
+                }
+                else
+                {
+                    bc.Hits += damage;
+                }
+            }
+
             if (Core.AOS)
             {
                 int lifeLeech = 0;
@@ -3029,25 +3041,7 @@ namespace Server.Items
                 }
             }
 
-            if (attacker is VampireBatFamiliar || attacker is VampireBat)
-            {
-                BaseCreature bc = (BaseCreature)attacker;
-                Mobile caster = bc.ControlMaster;
-
-                if (caster == null)
-                {
-                    caster = bc.SummonMaster;
-                }
-
-                if (caster != null && caster.Map == bc.Map && caster.InRange(bc, 2))
-                {
-                    caster.Hits += damage;
-                }
-                else
-                {
-                    bc.Hits += damage;
-                }
-            }
+          
 
             if (Core.AOS && !BlockHitEffects)
             {
@@ -4027,89 +4021,33 @@ namespace Server.Items
 
             GetBaseDamageRange(from, out baseMin, out baseMax);
 
-            if (Core.AOS)
-            {
-                min = Math.Max((int)ScaleDamageAOS(from, baseMin, false), 1);
-                max = Math.Max((int)ScaleDamageAOS(from, baseMax, false), 1);
-            }
-            else
-            {
-                //var 
-                var bonus = GetdDamageBonusSoPraMostrarProClient();
-                var armslore = from.Skills[SkillName.ArmsLore].Value / 20;
-                min = Math.Max((int)ScaleDamageOld(from, baseMin, false), 1) + bonus;
-                max = Math.Max((int)ScaleDamageOld(from, baseMax, false), 1) + bonus;
-                min += (int)armslore;
-                if (min > max)
-                    min = max;
-            }
-        }
+            //var 
+            var bonus = GetdDamageBonusSoPraMostrarProClient();
+            var armslore = from.Skills[SkillName.ArmsLore].Value / 20;
+            min = Math.Max((int)ScaleDamageOld(from, baseMin, false), 1) + bonus;
+            max = Math.Max((int)ScaleDamageOld(from, baseMax, false), 1) + bonus;
+            min += (int)armslore;
+            if (min > max)
+                min = max;
 
-        public virtual double ScaleDamageAOS(Mobile attacker, double damage, bool checkSkills)
-        {
-            if (checkSkills)
-            {
-                attacker.CheckSkillMult(SkillName.Tactics, 0.0, attacker.Skills[SkillName.Tactics].Cap);
-                // Passively check tactics for gain
-                attacker.CheckSkillMult(SkillName.Anatomy, 0.0, attacker.Skills[SkillName.Anatomy].Cap);
-                // Passively check Anatomy for gain
-
-                if (Type == WeaponType.Axe)
-                {
-                    attacker.CheckSkillMult(SkillName.Lumberjacking, 0.0, 100.0); // Passively check Lumberjacking for gain
-                }
-                //attacker.CheckSkill(SkillName.ArmsLore, 0.0, 100.0);
-            }
-
-            #region Physical bonuses
-            /*
-            * These are the bonuses given by the physical characteristics of the mobile.
-            * No caps apply.
-            */
-            double strengthBonus = GetBonus(attacker.Str, 0.300, 100.0, 5.00);
-            double anatomyBonus = GetBonus(attacker.Skills[SkillName.Anatomy].Value, 0.500, 100.0, 5.00);
-            double tacticsBonus = GetBonus(attacker.Skills[SkillName.Tactics].Value, 0.625, 100.0, 6.25);
-            double lumberBonus = GetBonus(attacker.Skills[SkillName.Lumberjacking].Value, 0.200, 100.0, 10.00);
-
-            if (Type != WeaponType.Axe)
-            {
-                lumberBonus = 0.0;
-            }
-            #endregion
-
-            #region Modifiers
-            /*
-            * The following are damage modifiers whose effect shows on the status bar.
-            * Capped at 100% total.
-            */
-            int damageBonus = AosAttributes.GetValue(attacker, AosAttribute.WeaponDamage);
-
-            if (damageBonus > 100)
-            {
-                damageBonus = 100;
-            }
-            #endregion
-
-            double totalBonus = strengthBonus + anatomyBonus + tacticsBonus + lumberBonus +
-                                ((GetdDamageBonusSoPraMostrarProClient() + damageBonus) / 100.0);
-
-            return damage + (int)(damage * totalBonus);
         }
 
         public virtual int VirtualDamageBonus { get { return 0; } }
 
-        public virtual int ComputeDamageAOS(Mobile attacker, Mobile defender)
-        {
-            return (int)ScaleDamageAOS(attacker, GetBaseDamage(attacker), true);
-        }
-
         public virtual double ScaleDamageOld(Mobile attacker, double damage, bool checkSkills)
         {
-            if (checkSkills)
+            var anat = SkillName.Anatomy;
+            if (this is BaseStaff)
             {
+                anat = SkillName.Magery;
+            }
+
+            if (checkSkills)
+            { 
                 attacker.CheckSkillMult(SkillName.Tactics, 0.0, attacker.Skills[SkillName.Tactics].Cap);
                 // Passively check tactics for gain
-                attacker.CheckSkillMult(SkillName.Anatomy, 0.0, attacker.Skills[SkillName.Anatomy].Cap);
+                if(anat == SkillName.Anatomy)
+                    attacker.CheckSkillMult(SkillName.Anatomy, 0.0, attacker.Skills[SkillName.Anatomy].Cap);
                 // Passively check Anatomy for gain
 
                 if (Type == WeaponType.Axe)
@@ -4119,7 +4057,7 @@ namespace Server.Items
 
                 if (Type == WeaponType.Bashing)
                 {
-                    attacker.CheckSkillMult(SkillName.Mining, 0.0, 60.0);
+                    attacker.CheckSkillMult(SkillName.Mining, 0.0, 70.0);
                 }
                 attacker.CheckSkillMult(SkillName.ArmsLore, 0.0, 100.0);
             }
@@ -4141,7 +4079,7 @@ namespace Server.Items
             * : 1% bonus for every 5 points of anatomy
             * : +10% bonus at Grandmaster or higher
             */
-            double anatomyValue = attacker.Skills[SkillName.Anatomy].Value;
+            double anatomyValue = attacker.Skills[anat].Value;
             modifiers += ((anatomyValue / 5.0) / 100.0);
 
             if (anatomyValue >= 100.0)
@@ -4156,10 +4094,13 @@ namespace Server.Items
 
             if (Type == WeaponType.Bashing)
             {
-                modifiers += -0.1;
                 double bsBonus = attacker.Skills[SkillName.Mining].Value;
-                bsBonus = -0.2 + (bsBonus / 5.0) / 50.0;
+                bsBonus = (bsBonus / 5.0) / 100; // -20% se nao tiver mining
+                if (bsBonus > 0.2)
+                    bsBonus = 0.2;
+
                 modifiers += bsBonus;
+               
             }
 
             if (Type == WeaponType.Axe)
@@ -4214,11 +4155,7 @@ namespace Server.Items
 
         public virtual int ComputeDamage(Mobile attacker, Mobile defender)
         {
-            if (Core.AOS)
-            {
-                return ComputeDamageAOS(attacker, defender);
-            }
-
+         
             var baseDamage = GetBaseDamage(attacker);
             Shard.Debug("Base Weapon Damage: " + baseDamage, attacker);
             int damage = (int)ScaleDamageOld(attacker, baseDamage, true);

@@ -1,5 +1,7 @@
 using System;
+using Server.Engines.Quests;
 using Server.Factions;
+using Server.Gumps;
 using Server.Gumps.Newbie;
 using Server.Items;
 using Server.Misc;
@@ -366,6 +368,11 @@ namespace Server.Mobiles
 
                 if (Passo == QUEST)
                 {
+                    if (QuestHelper.HasCompleted(Jogador, typeof(SapatoLindoQ))) {
+                        Passo = ALAVANCA;
+                        return;
+                    }
+
                     Fala("Siga a setinha e clique 2x no NPC para pegar a missao !");
 
                     Jogador.QuestArrow = new QuestArrow(Jogador, Zeh);
@@ -374,6 +381,11 @@ namespace Server.Mobiles
 
                 if (Passo == QUEST_MATOU)
                 {
+                    if(QuestHelper.HasCompleted(Jogador, typeof(SapatoLindoQ))) {
+                        Passo = ALAVANCA;
+                        return;
+                    }
+
                     if (Jogador.Region == null || !(Jogador.Region is DungeonGuardedRegion))
                     {
                         Fala("A dungeon iniciante fica perto do NPC ze, perto do riacho a direita da cidade. Vamos la tentar recuperar o sapato do ze ?");
@@ -390,6 +402,11 @@ namespace Server.Mobiles
 
                 if (Passo == QUEST_FIM)
                 {
+                    if (QuestHelper.HasCompleted(Jogador, typeof(SapatoLindoQ))) {
+                        Passo = ALAVANCA;
+                        return;
+                    }
+
                     Fala("Volte a cidade e arraste o sapato que voce pegou no mago para o ze para pegar a recompensa !");
                 }
 
@@ -702,12 +719,19 @@ namespace Server.Mobiles
             }
         }
 
-        public override void OnDoubleClick(Mobile from)
+
+        public void ResetaCds()
         {
             SetCooldown("pensa", TimeSpan.FromMilliseconds(1));
             SetCooldown("fala", TimeSpan.FromMilliseconds(1));
             SetCooldown("passo", TimeSpan.FromMilliseconds(1));
             SetCooldown("falachata", TimeSpan.FromMilliseconds(1));
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if(from is PlayerMobile)
+                from.SendGump(new GumpFada((PlayerMobile)from));
         }
 
         public override void Serialize(GenericWriter writer)

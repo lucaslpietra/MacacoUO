@@ -84,7 +84,7 @@ namespace Server.Spells.Fifth
                 if (duration == 0)
                     return;
 
-                var limiteParalize = DateTime.UtcNow - TimeSpan.FromSeconds(20);
+                var limiteParalize = DateTime.UtcNow - TimeSpan.FromSeconds(10);
                 if(m.LastParalized > limiteParalize)
                 {
                     duration /= 3;

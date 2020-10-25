@@ -65,6 +65,11 @@ namespace Server.Mobiles
             ControlSlots = 3;
             MinTameSkill = 100;
 
+            if (Utility.RandomDouble() < 0.2)
+            {
+                AddItem(new PetBrandingIron());
+            }
+
             if (Hue == 1153 || Utility.RandomDouble() < 0.2)
             {
                 AddItem(DefJewelcrafting.GetReceitaPower());
