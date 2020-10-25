@@ -256,10 +256,14 @@ namespace Server.Misc
             
             var gcBonus = 0.0;
 
+            var pvm = false;
             if (from.IsCooldown("matoumob"))
             {
-                if(!Work.Any(s => s==skill.SkillName))
+                if (!Work.Any(s => s == skill.SkillName))
+                {
                     gcBonus += BONUS_PVM;
+                    pvm = true;
+                }
             }
             else if (from.Region.IsPartOf<GuardedRegion>())
             {
@@ -331,6 +335,13 @@ namespace Server.Misc
             }
 
             var gc = GetExp(skill.Value, skill.Info.GainFactor, gcBonus) * mult;
+
+            if (pvm)
+                gc *= 1.2;
+
+            if (pvm && gc < 0.1)
+                gc = 0.1;
+
             if(BONUS_GERAL > 0)
             {
                 gc *= BONUS_GERAL;
