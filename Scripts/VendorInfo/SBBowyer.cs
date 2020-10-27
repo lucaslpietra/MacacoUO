@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Server.Engines.Craft;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -32,6 +33,8 @@ namespace Server.Mobiles
             public InternalBuyInfo()
             {
                 Add(new GenericBuyInfo(typeof(FletcherTools), 2, 20, 0x1022, 0));
+
+                Add(new GenericBuyInfo(typeof(RecipeScroll), 250000, 10, 0x2831, 0, new object[] { (int)TailorRecipe.ElvenQuiver }));
             }
         }
 

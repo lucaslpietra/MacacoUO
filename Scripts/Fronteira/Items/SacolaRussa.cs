@@ -6,7 +6,6 @@ namespace Server.Ziden.Items
 {
     public class CaliceRusso : Item
     {
-
         [Constructable]
         public CaliceRusso() : base(2483)
         {
@@ -29,6 +28,12 @@ namespace Server.Ziden.Items
             }
         }
 
+        public override void AddNameProperties(ObjectPropertyList list)
+        {
+            base.AddNameProperties(list);
+            list.Add("20% Chance de Morrer");
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (bebendo)
@@ -44,24 +49,25 @@ namespace Server.Ziden.Items
 
             Timer.DelayCall(TimeSpan.FromSeconds(3), () =>
             {
-            var rnd = Utility.Random(5);
-            if (Utility.Random(5) == 1)
-            {
-                DamageNumbers.ShowDamage(150, from, from, 32);
-                from.FixedParticles(0x36BD, 20, 10, 5044, EffectLayer.Head);
-                from.PlaySound(0x207);
-                from.Damage(150);
-            }
-            else
-            {
-                Anim(from);
-                from.OverheadMessage("* burp *");
-            }
-            base.OnDoubleClick(from);
-
-        });
-
-
+                var rnd = Utility.Random(5);
+                if (Utility.Random(5) == 1)
+                {
+                    from.SendMessage("O calice expele fiapos de metal que penetram sua garganta");
+                    from.OverheadMessage("* bateu as botas *");
+                    DamageNumbers.ShowDamage(150, from, from, 32);
+                    from.FixedParticles(0x36BD, 20, 10, 5044, EffectLayer.Head);
+                    from.PlaySound(0x207);
+                    from.Damage(150);
+                }
+                else
+                {
+                    Anim(from);
+                    from.OverheadMessage("* burp *");
+                    from.SendMessage("Voce degusta o conteudo do calice.");
+                    from.SendMessage("Porem nao havia nada no calice, voce esta ficando louco.");
+                }
+                base.OnDoubleClick(from);
+            });
         }
         public override void Serialize(GenericWriter writer)
         {

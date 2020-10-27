@@ -8,6 +8,7 @@ namespace Server.Items
         [Constructable]
         public SpecialDyeTub()
         {
+            Name = "Tubo de Tintas Especial";
             this.LootType = LootType.Blessed;
         }
 

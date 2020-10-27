@@ -7,6 +7,7 @@ namespace Server.Items
         [Constructable]
         public MetallicClothDyeTub()
         {
+            Name = "Tubo de Tintas De Roupas Metalicas";
             LootType = LootType.Blessed;
         }
 

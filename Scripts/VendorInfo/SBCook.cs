@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
+using Server.Engines.Craft;
 using Server.Items;
 
-namespace Server.Mobiles 
-{ 
-    public class SBCook : SBInfo 
-    { 
+namespace Server.Mobiles
+{
+    public class SBCook : SBInfo
+    {
         private readonly List<GenericBuyInfo> m_BuyInfo = new InternalBuyInfo();
         private readonly IShopSellInfo m_SellInfo = new InternalSellInfo();
-        public SBCook() 
-        { 
+        public SBCook()
+        {
         }
 
         public override IShopSellInfo SellInfo
@@ -27,9 +28,11 @@ namespace Server.Mobiles
             }
         }
 
-        public class InternalBuyInfo : List<GenericBuyInfo> 
-        { 
-            public InternalBuyInfo() 
+        public class InternalBuyInfo : List<GenericBuyInfo>
+        {
+            private static Random rnd = new Random();
+
+            public InternalBuyInfo()
             {
                 Add(new GenericBuyInfo(typeof(BreadLoaf), 5, 20, 0x103B, 0, true));
 
@@ -40,14 +43,25 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(JarHoney), 3, 20, 0x9EC, 0, true));
                 Add(new GenericBuyInfo(typeof(RollingPinExp), 2, 20, 0x1043, 0));
                 Add(new GenericBuyInfo(typeof(FlourSifterExp), 2, 20, 0x103E, 0));
-                Add(new GenericBuyInfo("1044567", typeof(SkilletExp), 3, 20, 0x97F, 0));
+
+                var values = Enum.GetValues(typeof(CookRecipesExp)).CastToList<int>();
+
+                for (var i = 0; i < 20; i++)
+                {
+                    var recipe = values[i];
+                    if (Recipe.Recipes.ContainsKey(recipe))
+                    {
+                        values.Remove(recipe);
+                        Add(new GenericBuyInfo(typeof(RecipeScroll), 50000, 10, 0x2831, 0, new object[] { recipe }));
+                    }
+                }
             }
         }
 
-        public class InternalSellInfo : GenericSellInfo 
-        { 
-            public InternalSellInfo() 
-            { 
+        public class InternalSellInfo : GenericSellInfo
+        {
+            public InternalSellInfo()
+            {
                 Add(typeof(CheeseWheel), 12);
                 Add(typeof(CookedBird), 8);
                 Add(typeof(RoastPig), 53);

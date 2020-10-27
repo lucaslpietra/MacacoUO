@@ -25,8 +25,6 @@ namespace Server.Items
         Jewelcrafting = 10
     }
 
- 
-
     public class RecipeScrollDefinition
     {
         public static RecipeSkillName RecipeSkillNameConvert(SkillName n)

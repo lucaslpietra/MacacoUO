@@ -1,6 +1,7 @@
 using Server.Items;
 using Server.Mobiles;
 using Server.SkillHandlers;
+using Server.Spells;
 using System;
 using System.Xml;
 
@@ -122,6 +123,13 @@ namespace Server.Regions
             {
                 this.m_EntranceMap = value;
             }
+        }
+
+        public override bool CheckTravel(Mobile traveller, Point3D p, TravelCheckType type)
+        {
+            if (type == TravelCheckType.GateTo || type == TravelCheckType.RecallTo)
+                return false;
+            return true;
         }
 
         public override bool AllowHousing(Mobile from, Point3D p)

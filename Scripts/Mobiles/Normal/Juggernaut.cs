@@ -42,11 +42,6 @@ namespace Server.Mobiles
 
             this.VirtualArmor = 70;
 
-            if (0.1 > Utility.RandomDouble())
-                this.PackItem(new PowerCrystal());
-
-            if (0.4 > Utility.RandomDouble())
-                this.PackItem(new ClockworkAssembly());
         }
 
         public Juggernaut(Serial serial)

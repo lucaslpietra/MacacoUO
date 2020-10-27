@@ -54,38 +54,38 @@ namespace Server.Ziden.Rankingss
         {
             var trofeu1 = new Item(4644);
             trofeu1.Hue = 2415;
-            var p1 = Dupe.DupeItem(trofeu1);
             var player = rank[2].Player;
-            p1.Name = "3o Lugar Ranking " + rankName + " 10/2020 - " + player.Name;
-            player.BankBox.DropItem(p1);
+            trofeu1.Name = "3o Lugar Ranking " + rankName + " 11/2020 - " + player.Name;
+            player.BankBox.DropItem(trofeu1);
         }
 
         public static void SegundoLugar(List<PointsEntry> rank, string rankName)
         {
             var trofeu1 = new Item(4646);
-            var p1 = Dupe.DupeItem(trofeu1);
             var player = rank[1].Player;
-            p1.Name = "2o Lugar Ranking " + rankName + " 10/2020 - " + player.Name;
-            player.BankBox.DropItem(p1);
+            trofeu1.Name = "2o Lugar Ranking " + rankName + " 11/2020 - " + player.Name;
+            player.BankBox.DropItem(trofeu1);
             var robe = new Robe();
-            robe.Name = "2o Lugar Ranking " + rankName + " 10/2020 - " + player.Name;
+            robe.Name = "2o Lugar Ranking " + rankName + " 11/2020 - " + player.Name;
             robe.Hue = Loot.RandomRareDye();
             player.BankBox.DropItem(robe);
+            player.BankBox.DropItem(new EmbroideryTool());
         }
 
         public static void PrimeiroLugar(List<PointsEntry> rank, string rankName)
         {
             var trofeu1 = new Item(4648);
             trofeu1.Hue = 0x8A5;
-            var p1 = Dupe.DupeItem(trofeu1);
             var player = rank[0].Player;
-            p1.Name = "1o Lugar Ranking " + rankName + " 10/2020 - " + player.Name;
-            player.BankBox.DropItem(p1);
+            trofeu1.Name = "1o Lugar Ranking " + rankName + " 11/2020 - " + player.Name;
+            player.BankBox.DropItem(trofeu1);
             var robe = new Robe();
-            robe.Name = "1o Lugar Ranking " + rankName + " 10/2020 - " + player.Name;
+            robe.Name = "1o Lugar Ranking " + rankName + " 11/2020 - " + player.Name;
             robe.Hue = Loot.RandomRareDye();
             player.BankBox.DropItem(robe);
-            player.BankBox.DropItem(new WindrunnerStatue());
+            player.BankBox.DropItem(new EmbroideryTool());
+            player.BankBox.DropItem(new WeaponEngravingTool());
+            player.BankBox.DropItem(new ArmorEngravingTool());
         }
     }
 

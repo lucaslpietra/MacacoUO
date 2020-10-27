@@ -117,7 +117,7 @@ namespace Server.Items
             {
                 case 1: // Classic Houses
                     {
-                        m_From.SendGump(new HousePlacementListGump(m_Tool, m_From, Core.EJ ? HousePlacementEntry.HousesEJ : HousePlacementEntry.ClassicHouses, true));
+                        m_From.SendGump(new HousePlacementListGump(m_Tool, m_From, HousePlacementEntry.HousesEJ, true));
                         break;
                     }
                 case 2: // 2-Story Customizable Houses
@@ -348,12 +348,12 @@ namespace Server.Items
             new HousePlacementEntry(typeof(SmallOldHouse),  1011306,	425,	212,	489,	244,	10,	35000, 0,	4,	0,	0x006A),
             new HousePlacementEntry(typeof(SmallOldHouse),  1011307,	425,	212,	489,	244,	10,	36500, 0,	4,	0,	0x006C),
             new HousePlacementEntry(typeof(SmallOldHouse),  1011308,	425,	212,	489,	244,	10,	36500, 0,	4,	0,	0x006E),
-            new HousePlacementEntry(typeof(SmallShop),      1011321,	425,	212,	489,	244,	10,	50250, -1,	4,	0,	0x00A0),
-            new HousePlacementEntry(typeof(SmallShop),      1011322,	425,	212,	489,	244,	10,	52250, 0,	4,	0,	0x00A2),
-            new HousePlacementEntry(typeof(SmallTower),     1011317,	580,	290,	667,	333,	14,	73250, 3,	4,	0,	0x0098),
+            new HousePlacementEntry(typeof(SmallShop),      1011321,	425,	212,	489,	244,	10,	60250, -1,	4,	0,	0x00A0),
+            new HousePlacementEntry(typeof(SmallShop),      1011322,	425,	212,	489,	244,	10,	62250, 0,	4,	0,	0x00A2),
+            new HousePlacementEntry(typeof(SmallTower),     1011317,	580,	290,	667,	333,	14,	83250, 3,	4,	0,	0x0098),
             new HousePlacementEntry(typeof(TwoStoryVilla),  1011319,	1100,	550,	1265,	632,	24,	113500, 3,	6,	0,	0x009E),
-            new HousePlacementEntry(typeof(SandStonePatio), 1011320,	850,	425,	1265,	632,	24,	76250, -1,	4,	0,	0x009C),
-            new HousePlacementEntry(typeof(LogCabin),       1011318,	1100,	550,	1265,	632,	24,	81250, 1,	6,	0,	0x009A),
+            new HousePlacementEntry(typeof(SandStonePatio), 1011320,	850,	425,	1265,	632,	24,	96250, -1,	4,	0,	0x009C),
+            new HousePlacementEntry(typeof(LogCabin),       1011318,	1100,	550,	1265,	632,	24,	91250, 1,	6,	0,	0x009A),
             new HousePlacementEntry(typeof(GuildHouse),     1011309,	1370,	685,	1576,	788,	28,	131250, -1,	7,	0,	0x0074),
             new HousePlacementEntry(typeof(TwoStoryHouse),  1011310,	1370,	685,	1576,	788,	28,	162500, -3,	7,	0,	0x0076),
             new HousePlacementEntry(typeof(TwoStoryHouse),  1011311,	1370,	685,	1576,	788,	28,	162750, -3,	7,	0,	0x0078),
@@ -372,8 +372,8 @@ namespace Server.Items
             new HousePlacementEntry(typeof(SmallOldHouse),      1011306,	425,	212,	489,	244,	10,	35000, 0,	4,	0,	0x006A),
             new HousePlacementEntry(typeof(SmallOldHouse),      1011307,	425,	212,	489,	244,	10,	36500, 0,	4,	0,	0x006C),
             new HousePlacementEntry(typeof(SmallOldHouse),      1011308,	425,	212,	489,	244,	10,	36500, 0,	4,	0,	0x006E),
-            new HousePlacementEntry(typeof(SmallShop),          1011321,	425,	212,	489,	244,	10,	50250, -1,	4,	0,	0x00A0),
-            new HousePlacementEntry(typeof(SmallShop),          1011322,	425,	212,	489,	244,	10,	52250, 0,	4,	0,	0x00A2),
+            new HousePlacementEntry(typeof(SmallShop),          1011321,	425,	212,	489,	244,	10,	70250, -1,	4,	0,	0x00A0),
+            new HousePlacementEntry(typeof(SmallShop),          1011322,	425,	212,	489,	244,	10,	72250, 0,	4,	0,	0x00A2),
             new HousePlacementEntry(typeof(SmallTower),         1011317,	580,	290,	667,	333,	14,	73250, 3,	4,	0,	0x0098),
             new HousePlacementEntry(typeof(TwoStoryVilla),      1011319,	1100,	550,	1265,	632,	24,	113500, 3,	6,	0,	0x009E),
             new HousePlacementEntry(typeof(SandStonePatio),     1011320,	850,	425,	1265,	632,	24,	76250, -1,	4,	0,	0x009C),
@@ -381,8 +381,8 @@ namespace Server.Items
             new HousePlacementEntry(typeof(GuildHouse),         1011309,	1370,	685,	1576,	788,	28,	131250, -1,	7,	0,	0x0074),
             new HousePlacementEntry(typeof(TwoStoryHouse),      1011310,	1370,	685,	1576,	788,	28,	162500, -3,	7,	0,	0x0076),
             new HousePlacementEntry(typeof(TwoStoryHouse),      1011311,	1370,	685,	1576,	788,	28,	162750, -3,	7,	0,	0x0078),
-            new HousePlacementEntry(typeof(LargePatioHouse),    1011315,	1370,	685,	1576,	788,	28,	129000, -4,	7,	0,	0x008C),
-            new HousePlacementEntry(typeof(LargeMarbleHouse),   1011316,	1370,	685,	1576,	788,	28,	160250, -4,	7,	0,	0x0096),
+            new HousePlacementEntry(typeof(LargePatioHouse),    1011315,	1370,	685,	1576,	788,	28,	129000*2, -4,	7,	0,	0x008C),
+            new HousePlacementEntry(typeof(LargeMarbleHouse),   1011316,	1370,	685,	1576,	788,	28,	160250*2, -4,	7,	0,	0x0096),
             new HousePlacementEntry(typeof(Tower),              1011312,	2119,	1059,	2437,	1218,	42,	366250*2, 0,	7,	0,	0x007A),
             new HousePlacementEntry(typeof(Keep),               1011313,	2625,	1312,	3019,	1509,	52,	562500*2, 0, 11,	0,	0x007C),
             new HousePlacementEntry(typeof(Castle),             1011314,	4076,	2038,	4688,	2344,	78,	865000*2, 0, 16,	0,	0x007E),
@@ -403,8 +403,8 @@ namespace Server.Items
 
         private static readonly HousePlacementEntry[] m_CustomHouseContest = new HousePlacementEntry[]
         {
-            new HousePlacementEntry(typeof(HouseFoundation), 1158538,	2625,	1312,	3019,	1509,	78,	525000, 0,	10,	0,	0x147C), // 23x23 3-Story Customizable Keep
-            new HousePlacementEntry(typeof(HouseFoundation), 1158539,	4076,	2038,	4688,	2344,	78,	525000, 0,	10,	0,	0x147D),  // 32x32 3-Story Customizable Castle
+            new HousePlacementEntry(typeof(HouseFoundation), 1158538,	2625,	1312,	3019,	1509,	78,	525000*2, 0,	10,	0,	0x147C), // 23x23 3-Story Customizable Keep
+            new HousePlacementEntry(typeof(HouseFoundation), 1158539,	4076,	2038,	4688,	2344,	78,	525000*2, 0,	10,	0,	0x147D),  // 32x32 3-Story Customizable Castle
         };
 
         private static readonly HousePlacementEntry[] m_TwoStoryFoundations = new HousePlacementEntry[]

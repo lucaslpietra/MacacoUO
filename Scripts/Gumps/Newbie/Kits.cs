@@ -249,7 +249,7 @@ namespace Server.Gumps.Newbie
                 mage.Skills.Add(SkillName.Inscribe, 50);
                 mage.Skills.Add(SkillName.Alchemy, 50);
                 mage.Skills.Add(SkillName.Macing, 40);
-                mage.Skills.Add(SkillName.Anatomy, 25);
+                mage.Skills.Add(SkillName.Tactics, 25);
                 mage.Skills.Add(SkillName.MagicResist, 50);
                 mage.items.Add(new BlankScroll(10));
                 mage.items.Add(new PenAndInk());

@@ -20,7 +20,7 @@ namespace Server.Mobiles
 
             this.SetHits(76, 93);
 
-            this.SetDamage(9, 16);
+            this.SetDamage(9, 12);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
@@ -78,11 +78,11 @@ namespace Server.Mobiles
 
             if (!bonus)
             {
-                totalDamage /= 5;
+                totalDamage = (int)(totalDamage * 0.8);
                 if (!from.IsCooldown("dicabas2"))
                 {
                     from.SetCooldown("dicabas2", TimeSpan.FromMinutes(10));
-                    from.SendMessage("Seu ataque nao foi muito efetivo por conta do tipo de sua arma");
+                    from.SendMessage(78, "Alguns monstros, como monstros de pedras recebem dano extra de armas Macefight");
 
                 }
             }

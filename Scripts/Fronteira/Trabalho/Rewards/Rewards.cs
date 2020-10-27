@@ -567,8 +567,8 @@ namespace Server.Engines.BulkOrders
             },
             new int[][] // 1-part (exceptional)
             {
-                new int[] { 250, 400, 400, 750, 750, 1500, 1500, 3000, 3000 },
-                new int[] { 375, 600, 600, 1125, 1125, 2250, 2250, 4500, 4500 },
+                new int[] { 400, 400, 400, 750, 750, 1500, 1500, 3000, 3000 },
+                new int[] { 500, 600, 600, 1125, 1125, 2250, 2250, 4500, 4500 },
                 new int[] { 500, 800, 1200, 1500, 2500, 3000, 6000, 6000, 12000 }
             },
             new int[][] // Ringmail (regular)
@@ -697,7 +697,7 @@ namespace Server.Engines.BulkOrders
                 gold = 500;
             }
 
-            gold = gold * 2;
+          
 
             Shard.Debug("Gold: " + gold);
             int min = (gold * 9) / 10;
@@ -1051,7 +1051,6 @@ namespace Server.Engines.BulkOrders
 
             gold = goldTable[typeIndex][quanIndex][mtrlIndex];
 
-            gold = gold * 2;
 
             int min = (gold * 9) / 10;
             int max = (gold * 10) / 9;
@@ -1251,7 +1250,6 @@ namespace Server.Engines.BulkOrders
 
             gold = goldTable[typeIndex][quanIndex][mtrlIndex];
 
-            gold = gold * 2;
 
             int min = (gold * 9) / 10;
             int max = (gold * 10) / 9;
@@ -1463,7 +1461,6 @@ namespace Server.Engines.BulkOrders
 
             gold = goldTable[typeIndex][quanIndex][mtrlIndex];
 
-            gold = gold * 2;
 
             int min = (gold * 9) / 10;
             int max = (gold * 10) / 9;
@@ -1721,8 +1718,6 @@ namespace Server.Engines.BulkOrders
 
             gold = goldTable[itemCount - 1][quanIndex];
 
-            gold = gold * 2;
-
             int min = (gold * 9) / 10;
             int max = (gold * 10) / 9;
 
@@ -1895,8 +1890,6 @@ namespace Server.Engines.BulkOrders
 
             gold = goldTable[typeIndex][quanIndex][mtrlIndex];
 
-            gold = gold * 2;
-
             int min = (gold * 9) / 10;
             int max = (gold * 10) / 9;
 
@@ -2015,7 +2008,7 @@ namespace Server.Engines.BulkOrders
         {
             new int[] // singles
             {
-                300, 400, 500
+                500, 600, 700
             },
             new int[] // no 2 piece
             {
@@ -2052,8 +2045,6 @@ namespace Server.Engines.BulkOrders
             int quanIndex = (quantity == 20 ? 2 : quantity == 15 ? 1 : 0);
 
             gold = goldTable[itemCount - 1][quanIndex];
-
-            gold = gold * 3;
 
             int min = (gold * 9) / 10;
             int max = (gold * 10) / 9;

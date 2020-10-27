@@ -106,6 +106,9 @@ namespace Server.Items
                         {
                             try
                             {
+                                if (from == null)
+                                    return;
+
                                 ((PlayerMobile)from).UseSummoningRite = false;
                                 from.OverheadMessage("* Encravou a adaga *"); // *You thrust the dagger into your flesh as tribute to Exodus!*
                                 altar.Rituals.Find(s => s.RitualMobile == from).Ritual2 = true;

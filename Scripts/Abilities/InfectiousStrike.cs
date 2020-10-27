@@ -39,9 +39,9 @@ namespace Server.Items
             if (weapon == null)
                 return;
 
-            Poison p = weapon.Poison;
+            Poison weaponPoison = weapon.Poison;
 
-            if (p == null || weapon.PoisonCharges <= 0)
+            if (weaponPoison == null || weapon.PoisonCharges <= 0)
             {
                 attacker.SendLocalizedMessage("Sua arma precisa estar envenenada"); // Your weapon must have a dose of poison to perform an infectious strike!
                 return;
@@ -60,13 +60,13 @@ namespace Server.Items
 
             // Infectious strike special move now uses poisoning skill to help determine potency 
             int maxLevel = 0;
-            if (p == Poison.DarkGlow)
+            if (weaponPoison == Poison.DarkGlow)
             {
             	maxLevel = 10 + (attacker.Skills[SkillName.Poisoning].Fixed / 333);
             	if (maxLevel > 13)
             		maxLevel = 13;
             }
-            else if (p == Poison.Parasitic)
+            else if (weaponPoison == Poison.Parasitic)
             {
             	maxLevel = 14 + (attacker.Skills[SkillName.Poisoning].Fixed / 250);
             	if (maxLevel > 18)
@@ -77,29 +77,31 @@ namespace Server.Items
 				maxLevel = attacker.Skills[SkillName.Poisoning].Fixed / 200;
 				if (maxLevel > 5)
 					maxLevel = 5;
+
+                if (attacker.Skills[SkillName.Poisoning].Value < 60)
+                    maxLevel = 2;
 			}
 			
             if (maxLevel < 0)
                 maxLevel = 0;
-            if (p.Level > maxLevel) // If they don't have enough Poisoning Skill for the potion strength, lower it.
-                p = Poison.GetPoison(maxLevel);
+            if (weaponPoison.Level > maxLevel) // If they don't have enough Poisoning Skill for the potion strength, lower it.
+                weaponPoison = Poison.GetPoison(maxLevel);
 
-            if (p != null)
-                Shard.Debug("Poison level " + p.Level + " - Max Level " + maxLevel);
+            if (weaponPoison != null)
+                Shard.Debug("Poison level " + weaponPoison.Level + " - Max Level " + maxLevel);
             else
                 Shard.Debug("Poison Null");
 
             if ((attacker.Skills[SkillName.Poisoning].Value / 150.0) > Utility.RandomDouble())
             {
-          
-            	if (p !=null && p.Level + 1 <= maxLevel)
+            	if (weaponPoison !=null && weaponPoison.Level + 1 <= maxLevel)
             	{
-            		int level = p.Level + 1;
+            		int level = weaponPoison.Level + 1;
                 	Poison newPoison = Poison.GetPoison(level);
            	
 	                if (newPoison != null)
 	                {
-                 	   p = newPoison;
+                 	   weaponPoison = newPoison;
 
  	                   attacker.SendLocalizedMessage("Seu golpe preciso aumentou o nivel do veneno"); // Your precise strike has increased the level of the poison by 1
  	                   defender.SendLocalizedMessage("O veneno ficou mais forte"); // The poison seems extra effective!
@@ -110,7 +112,7 @@ namespace Server.Items
             defender.PlaySound(0xDD);
             defender.FixedParticles(0x3728, 244, 25, 9941, 1266, 0, EffectLayer.Waist);
 
-            if (defender.ApplyPoison(attacker, p) != ApplyPoisonResult.Immune)
+            if (defender.ApplyPoison(attacker, weaponPoison) != ApplyPoisonResult.Immune)
             {
                 attacker.SendLocalizedMessage("Voce envenenou o alvo"); // You have poisoned your target : 
                 defender.SendLocalizedMessage("Voce foi envenenado"); //  : poisoned you!

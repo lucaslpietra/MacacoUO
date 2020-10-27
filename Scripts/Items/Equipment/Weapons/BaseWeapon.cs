@@ -1861,7 +1861,13 @@ namespace Server.Items
                 double chance = (parry - bushidoNonRacial) / (attacker.Player ? 400 : 350.0);
 
                 if (parry > 50 && attacker is BaseCreature)
-                    chance += parry / 400;
+                {
+                    if(defender.Player)
+                        chance += parry / 400;
+                    else
+                        chance += parry / 600;
+                }
+                    
 
                 if (attacker != null)
                 {
@@ -4094,13 +4100,16 @@ namespace Server.Items
 
             if (Type == WeaponType.Bashing)
             {
+                if(this is BaseStaff)
+                {
+                    modifiers += -0.075;
+                }
                 double bsBonus = attacker.Skills[SkillName.Mining].Value;
-                bsBonus = (bsBonus / 5.0) / 100; // -20% se nao tiver mining
+                bsBonus = -0.2 + (bsBonus / 5.0) / 50; // -20% se nao tiver mining
                 if (bsBonus > 0.2)
                     bsBonus = 0.2;
 
-                modifiers += bsBonus;
-               
+                modifiers += bsBonus;    
             }
 
             if (Type == WeaponType.Axe)
@@ -4155,7 +4164,6 @@ namespace Server.Items
 
         public virtual int ComputeDamage(Mobile attacker, Mobile defender)
         {
-         
             var baseDamage = GetBaseDamage(attacker);
             Shard.Debug("Base Weapon Damage: " + baseDamage, attacker);
             int damage = (int)ScaleDamageOld(attacker, baseDamage, true);
@@ -4165,6 +4173,11 @@ namespace Server.Items
             {
                 Shard.Debug("Half Damage on players");
                 damage = (int)(damage / 2.0);
+            }
+
+            if(!(this is BaseRanged) && attacker is PlayerMobile && defender is BaseCreature)
+            {
+                damage = (int)(damage * 1.3);
             }
 
             return damage;
@@ -5778,7 +5791,7 @@ namespace Server.Items
             var b = GetdDamageBonusSoPraMostrarProClient();
 
             list.AddTwoValues("Dano", (OldMinDamage + b) + " - " + (OldMaxDamage + b));
-            list.AddTwoValues("Velocidade", Speed.ToString());
+            list.AddTwoValues("Velocidade ", Speed.ToString());
 
             if (m_MaxHits > 0)
             {

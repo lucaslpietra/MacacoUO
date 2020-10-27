@@ -54,7 +54,7 @@ namespace Server.Mobiles
                     break;
             }
 
-            Name = "Crimson Drake";
+            Name = "Dragonete Maligna";
             Female = true;
             BaseSoundID = 362;
 

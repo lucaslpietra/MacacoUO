@@ -2524,6 +2524,7 @@ namespace Server.Mobiles
 
         public virtual void OnCarve(Mobile from, Corpse corpse, Item with)
         {
+            Shard.Debug("Base OnCarve", this);
             int feathers = Feathers;
             int wool = Wool;
             int meat = Meat;
@@ -5849,30 +5850,29 @@ namespace Server.Mobiles
 
             if (m_Paragon)
             {
-                AddToBackpack(new Gold(Utility.Random(500, 500)));
                 Shard.Debug("Paragon spawnando", this);
                 if (Fame < 1250)
                 {
 
-                    AddLoot(LootPack.Meager, 2);
+                    AddLoot(LootPack.Meager, 1);
                 }
                 else if (Fame < 2500)
                 {
                    
-                    AddLoot(LootPack.Average, 2);
+                    AddLoot(LootPack.Average, 1);
                 }
                 else if (Fame < 5000)
                 {
                    
-                    AddLoot(LootPack.Rich, 2);
+                    AddLoot(LootPack.Rich, 1);
                 }
                 else if (Fame < 10000)
                 {
-                    AddLoot(LootPack.FilthyRich, 2);
+                    AddLoot(LootPack.FilthyRich, 1);
                 }
                 else
                 {
-                    AddLoot(LootPack.UltraRich, 2);
+                    AddLoot(LootPack.UltraRich, 1);
                 }
             }
 

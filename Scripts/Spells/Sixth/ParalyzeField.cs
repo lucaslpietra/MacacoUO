@@ -197,6 +197,11 @@ namespace Server.Spells.Sixth
             {
                 if (Visible && m_Caster != null && (!Core.AOS || m != m_Caster) && m_Caster.CanBeHarmful(m, false))
                 {
+                    if (m_Caster == m)
+                    {
+                        return true;
+                    }
+
                     if (SpellHelper.CanRevealCaster(m))
                         m_Caster.RevealingAction();
 

@@ -36,9 +36,9 @@ namespace Server.Mobiles
             this.Karma = -18000;
             this.VirtualArmor = 65;
 
-            this.PackItem(new PowerCrystal());
+            //this.PackItem(new PowerCrystal());
             this.PackItem(new ArcaneGem());
-            this.PackItem(new ClockworkAssembly());
+            //this.PackItem(new ClockworkAssembly());
 
 		}
 
@@ -46,26 +46,6 @@ namespace Server.Mobiles
         {
             this.AddLoot(LootPack.Average);
             this.AddLoot(LootPack.Rich);
-
-            if (Utility.RandomDouble() < 0.1)
-            {
-                switch (Utility.Random(4))
-                {
-                    case 0:
-                        PackItem(new ExodusSummoningRite());
-                        break;
-                    case 1:
-                        PackItem(new ExodusSacrificalDagger());
-                        break;
-                    case 2:
-                        PackItem(new RobeofRite());
-                        break;
-                    case 3:
-                        PackItem(new ExodusSummoningAlter());
-                        break;
-                }
-            }
-
             this.m_FieldActive = this.CanUseField;
         }
 

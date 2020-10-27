@@ -366,10 +366,13 @@ namespace Server.Engines.Craft
                 index = AddCraft(typeof(Obi), 1015283, 1030219, 20.0, 45.0, typeof(Cloth), 1044455, 6, 1044287);
             }
 
+            index = AddCraft(typeof(ElvenQuiver), 1015283, 1032657, 65.0, 115.0, typeof(Leather), 1044462, 28, 1044463);
+            AddRes(index, typeof(BarkFragment), "Pedaco de Casca", 10, "Voce precisa de 10 pedacos de casca para isto");
+            AddRecipe(index, (int)TailorRecipe.ElvenQuiver);
+
             if (Core.ML)
             {
-                index = AddCraft(typeof(ElvenQuiver), 1015283, 1032657, 65.0, 115.0, typeof(Leather), 1044462, 28, 1044463);
-                AddRecipe(index, (int)TailorRecipe.ElvenQuiver);
+                
 
                 index = AddCraft(typeof(QuiverOfFire), 1015283, 1073109, 65.0, 115.0, typeof(Leather), 1044462, 28, 1044463);
                 AddRes(index, typeof(FireRuby), 1032695, 15, 1042081);

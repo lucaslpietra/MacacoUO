@@ -27,7 +27,7 @@ namespace Server.Engines.BulkOrders
     public class BulkOrderSystem
     {
         public static readonly int MaxCachedDeeds = 4;
-        public static readonly int Delay = 3;
+        public static readonly int Delay = 2;
 
         public static bool NewSystemEnabled = true;
         public static BulkOrderSystem Instance { get; set; }
@@ -174,7 +174,7 @@ namespace Server.Engines.BulkOrders
 
                 if (entry != null)
                 {
-                    Shard.Debug("Decache Deeds");
+                    Shard.Debug("Lendo deeds cacheadas");
                     if (entry.CachedDeeds > 0)
                     {
                         entry.CachedDeeds--;
@@ -194,7 +194,6 @@ namespace Server.Engines.BulkOrders
                     }
                 }
             }
-
             return false;
         }
 
@@ -260,9 +259,12 @@ namespace Server.Engines.BulkOrders
             {
                 SkillName sk = GetSkillForBOD(type);
                 double theirSkill = pm.Skills[sk].Base;
-                bool doLarge = theirSkill >= 70.1 && ((theirSkill - 70.0) / 100.0) > Utility.RandomDouble();
-
-                Shard.Debug("DoLarge? " + doLarge);
+                var chance = 0.0;
+                if (theirSkill >= 90)
+                    chance = 0.1;
+                if (theirSkill >= 100)
+                    chance = 0.2;
+                bool doLarge = chance >= Utility.RandomDouble();
 
                 switch (type)
                 {
@@ -386,7 +388,7 @@ namespace Server.Engines.BulkOrders
                 case BODType.Carpentry: points = CarpentryRewardCalculator.Instance.ComputePoints(bod); break;
             }
 
-            banked = (double)points * 0.04;
+            banked = (double)points * 0.05;
         }
 
         public static void ComputePoints(LargeBOD bod, out int points, out double banked)

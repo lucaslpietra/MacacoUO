@@ -39,9 +39,9 @@ namespace Server.Mobiles
             this.Karma = -18000;
             this.VirtualArmor = 65;
 
-            this.PackItem(new PowerCrystal());
+            //this.PackItem(new PowerCrystal());
             this.PackItem(new ArcaneGem());
-            this.PackItem(new ClockworkAssembly());
+            //this.PackItem(new ClockworkAssembly());
 
             this.m_FieldActive = this.CanUseField;
         }

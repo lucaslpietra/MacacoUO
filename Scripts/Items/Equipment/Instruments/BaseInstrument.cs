@@ -582,7 +582,7 @@ namespace Server.Items
 
             writer.Write((int)4); // version
 
-            writer.Write((int)Resource);
+            writer.Write((int)m_Resource);
             writer.Write(m_ReplenishesCharges);
             if (m_ReplenishesCharges)
                 writer.Write(m_LastReplenished);
@@ -608,7 +608,7 @@ namespace Server.Items
             switch (version)
             {
                 case 4:
-                    Resource = (CraftResource)reader.ReadInt();
+                    m_Resource = (CraftResource)reader.ReadInt();
                     goto case 3;
                 case 3:
                     {
@@ -717,8 +717,8 @@ namespace Server.Items
 
             CraftResource thisResource = CraftResources.GetFromType(typeRes);
             Hue = CraftResources.GetHue(thisResource);
-
-            if(Quality == ItemQuality.Exceptional && thisResource == CraftResource.Carmesim)
+            Resource = thisResource;
+            if (Quality == ItemQuality.Exceptional && thisResource == CraftResource.Carmesim)
             {
                 if(Utility.RandomBool())
                 {

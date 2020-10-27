@@ -105,8 +105,8 @@ namespace Server.Items
 
         public override bool OnDroppedInto(Mobile from, Container target, Point3D p)
         {
-            if (target is BankBox)
-                return true;
+            //if (target is BankBox)
+            //    return true;
 
             return base.OnDroppedInto(from, target, p);
         }

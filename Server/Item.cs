@@ -672,6 +672,25 @@ namespace Server
 
     public class Item : IEntity, IHued, IComparable<Item>, ISerializable, ISpawnable
     {
+
+        private int duracao;
+        private DateTime expireAt;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public virtual int DuraSegundos
+        {
+            get
+            {
+                return duracao;
+            }
+            set
+            {
+                duracao = value;
+                expireAt = DateTime.UtcNow + TimeSpan.FromSeconds(value);
+                InvalidateProperties();
+            }
+        }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual bool PartyLoot { get; set; }
 
@@ -1463,6 +1482,25 @@ namespace Server
             {
                 AddQuestItemProperty(list);
             }
+
+            if(DuraSegundos != 0)
+            {
+                var t = this.expireAt - DateTime.UtcNow;
+                int weeks = (int)t.Days / 7;
+                int days = t.Days;
+                int hours = t.Hours;
+                int minutes = t.Minutes;
+                if (weeks > 1)
+                    list.AddTwoValues("Semanas", (t.Days / 7).ToString()); // Lifespan: ~1_val~ weeks
+                else if (days > 1)
+                    list.AddTwoValues("Dias", t.Days.ToString()); // Lifespan: ~1_val~ days
+                else if (hours > 1)
+                    list.AddTwoValues("Horas", t.Hours.ToString()); // Lifespan: ~1_val~ hours
+                else if (minutes > 1)
+                    list.AddTwoValues("Minutos", t.Minutes.ToString()); // Lifespan: ~1_val~ minutes
+                else
+                    list.AddTwoValues("Segundos", t.Seconds.ToString()); // Lifespan: ~1_val~ seconds
+            }
         }
 
         /// <summary>
@@ -2098,7 +2136,7 @@ namespace Server
         [CommandProperty(AccessLevel.Decorator)]
         public virtual TimeSpan DecayTime { get { return TimeSpan.FromMinutes(m_DDT.TotalMinutes * DecayMultiplier); } }
 
-        public bool Movivel { get { return Movable && IsLockedDown;  } }
+        public bool Movivel { get { return Movable && IsLockedDown; } }
 
         [CommandProperty(AccessLevel.Decorator)]
         public virtual bool Decays
@@ -2704,7 +2742,22 @@ namespace Server
 
         public virtual void Serialize(GenericWriter writer)
         {
-            writer.Write(17); // version
+            if(this.DuraSegundos > 0 && DateTime.UtcNow > expireAt)
+            {
+                this.Delete();
+                if(this.RootParent is Mobile)
+                {
+                    ((Mobile)this.RootParent).SendMessage("Seu item se desfez");
+                }
+            } else
+            {
+                this.InvalidateProperties();
+            }
+
+            writer.Write(18); // version
+
+            // 18
+            writer.Write(DuraSegundos);
 
             // 17
             writer.Write(PartyLoot);
@@ -3220,6 +3273,9 @@ namespace Server
 
             switch (version)
             {
+                case 18:
+                    DuraSegundos = reader.ReadInt();
+                    goto case 17;
                 case 17:
                     PartyLoot = reader.ReadBool();
                     goto case 16;
@@ -3797,6 +3853,11 @@ namespace Server
             VerifyCompactInfo();
 
             UpdateLight();
+
+            if (BoundTo != null && LootType != LootType.Blessed)
+            {
+                BoundTo = null;
+            }
         }
 
         private void FixHolding_Sandbox()
@@ -6497,6 +6558,8 @@ namespace Server
 
     public class ItemSocket
     {
+
+
         [CommandProperty(AccessLevel.GameMaster)]
         public Item Owner { get; set; }
 

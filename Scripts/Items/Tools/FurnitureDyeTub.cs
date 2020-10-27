@@ -8,12 +8,14 @@ namespace Server.Items
         [Constructable]
         public FurnitureDyeTub()
         {
+            Name = "Tubo de Tintas de Moveis";
             this.LootType = LootType.Blessed;
         }
 
         public FurnitureDyeTub(Serial serial)
             : base(serial)
         {
+            Name = "Tubo de Tintas de Moveis";
         }
 
         public override bool AllowDyables

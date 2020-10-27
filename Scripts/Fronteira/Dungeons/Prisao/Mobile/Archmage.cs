@@ -47,7 +47,7 @@ namespace Server.Mobiles
             SetResistance(ResistanceType.Energy, 64, 68);
 
             SetSkill(SkillName.EvalInt, 120, 120);
-            SetSkill(SkillName.Magery, 96.9, 98.4);
+            SetSkill(SkillName.Magery, 120, 130);
             SetSkill(SkillName.Meditation, 89.9, 90.7);
             SetSkill(SkillName.MagicResist, 87.2, 88.7);
             SetSkill(SkillName.Tactics, 78.2, 79.9);
@@ -57,7 +57,7 @@ namespace Server.Mobiles
             Karma = -14500;
 
             VirtualArmor = 16;
-			switch (Utility.Random(16))
+			switch (Utility.Random(8))
             {
                 case 0: PackItem(new BloodOathScroll()); break;
                 case 1: PackItem(new CurseWeaponScroll()); break;
@@ -67,7 +67,12 @@ namespace Server.Mobiles
             PackReg(23);
             PackItem(new Sandals());
 
-            if(Utility.RandomDouble() < 0.3)
+            if (Utility.RandomDouble() < 0.1)
+            {
+                PackItem(new SpellbookDyeTub());
+            }
+
+            if (Utility.RandomDouble() < 0.3)
             {
                 PackItem(new PianoAddonDeed());
             }

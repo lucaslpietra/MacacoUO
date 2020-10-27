@@ -123,7 +123,7 @@ namespace Server.Multis
         {
             get
             {
-                return 250;
+                return 350;
             }
         }
 

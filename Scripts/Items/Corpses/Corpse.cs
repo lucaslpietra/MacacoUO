@@ -1559,6 +1559,8 @@ namespace Server.Items
 
             if (GetFlag(CorpseFlag.Carved) || dead == null)
             {
+                if(Shard.DebugEnabled)
+                    Shard.Debug("Flag Carved " + GetFlag(CorpseFlag.Carved) + " Owner = "+(dead != null));
                 PrivateOverheadMessage(MessageType.Regular, 0x3B2, 500485, from.NetState); // You see nothing useful to carve from the corpse.
             }
             else if (((Body)Amount).IsHuman && ItemID == 0x2006)

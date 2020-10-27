@@ -1,5 +1,6 @@
 using System;
 using Server.Items;
+using Server.Spells;
 
 namespace Server.Mobiles
 {
@@ -44,7 +45,7 @@ namespace Server.Mobiles
             this.PackReg(3);
             this.PackItem(new FertileDirt(Utility.RandomMinMax(1, 10)));
 
-            if (0.2 >= Utility.RandomDouble())
+            if (0.5 >= Utility.RandomDouble())
                 this.PackItem(new ExecutionersCap());
 
             PackItem(new Vines());  //this is correct
@@ -52,8 +53,58 @@ namespace Server.Mobiles
 
             if (Utility.RandomDouble() < 0.10)
             {
+              
                 PackItem(new DecorativeVines());
             }
+        }
+
+        public override void OnThink()
+        {
+            if (this.Combatant != null && this.Combatant.InRange2D(this.Location, 9))
+            {
+                if (this.Combatant.GetDistance(this.Location) <= 2)
+                    return;
+
+                if (!this.IsCooldown("omnoma"))
+                {
+                    this.SetCooldown("omnoma", TimeSpan.FromSeconds(1.5));
+                }
+                else
+                {
+                    return;
+                }
+
+                if (!this.InLOS(this.Combatant))
+                {
+                    return;
+                }
+
+                var defender = (Mobile)this.Combatant;
+                SpellHelper.Turn(this, defender);
+                var locPlayerGo = Corpser.GetPoint(defender, this.Direction);
+                if (defender.Map.CanFit(locPlayerGo, locPlayerGo.Z))
+                {
+                    this.PlayAttackAnimation();
+                    this.MovingParticles(defender, 0x0D3B, 11, 0, false, false, 9502, 4019, 0x160);
+                    Timer.DelayCall(TimeSpan.FromMilliseconds(400), () =>
+                    {
+                        defender.Freeze(TimeSpan.FromMilliseconds(600));
+                        Timer.DelayCall(TimeSpan.FromMilliseconds(400), () =>
+                        {
+                            defender.MovingParticles(this, 0x0D3B, 15, 0, false, false, 9502, 4019, 0x160);
+                            defender.SendMessage("A planta carnivora te puxa");
+                            defender.MoveToWorld(locPlayerGo, defender.Map);
+                            if (!this.IsCooldown("omnom"))
+                            {
+                                this.SetCooldown("omnom", TimeSpan.FromSeconds(10));
+                                this.OverheadMessage("* Nhom nom nom *");
+                            }
+                        });
+                    });
+
+                }
+            }
+            base.OnThink();
         }
 
         public WhippingVine(Serial serial)

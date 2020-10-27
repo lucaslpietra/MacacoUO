@@ -4,6 +4,7 @@ using Server.ContextMenus;
 using Server.Gumps;
 using Server.Multis;
 using Server.Targeting;
+using Server.Ziden;
 
 namespace Server.Items
 {
@@ -55,6 +56,7 @@ namespace Server.Items
 
         public virtual CustomHuePicker CustomHuePicker { get { return null; } }
         public virtual bool AllowRunebooks { get { return false; } }
+        public virtual bool AllowSpellbooks { get { return false; } }
         public virtual bool AllowFurniture { get { return false; } }
         public virtual bool AllowStatuettes { get { return false; } }
         public virtual bool AllowLeather { get { return false; } }
@@ -97,7 +99,7 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            list.Add("Tubo de Tintas");
+            list.Add(this.Name);
         }
 
         public virtual int TargetMessage { get { return 500859; } } // Select the clothing to dye.        
@@ -138,7 +140,7 @@ namespace Server.Items
                     }
             }
         }
-
+  
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
             base.GetContextMenuEntries(from, list);
@@ -186,6 +188,7 @@ namespace Server.Items
                             from.SendMessage("Muito Longe"); // That is too far away.
                         else if (((IDyable)item).Dye(from, m_Tub))
                         {
+                            from.OverheadMessage("* pintou *");
                             from.PlaySound(0x23E);
                             m_Tub.charges -= 1;
                         }
@@ -226,6 +229,24 @@ namespace Server.Items
                                 m_Tub.charges -= 1;
                                
                             }
+                        }
+                    }
+                    else if (item is Spellbook && m_Tub.AllowSpellbooks)
+                    {
+                        if (!from.InRange(m_Tub.GetWorldLocation(), 1) || !from.InRange(item.GetWorldLocation(), 1))
+                        {
+                            from.SendLocalizedMessage(500446); // That is too far away.
+                        }
+                        else if (!item.Movable)
+                        {
+                            from.SendLocalizedMessage(1049776); // You cannot dye runes or runebooks that are locked down.
+                        }
+                        else
+                        {
+                            m_Tub.charges -= 1;
+
+                            item.Hue = m_Tub.DyedHue;
+                            from.PlaySound(0x23E);
                         }
                     }
                     else if ((item is Runebook || item is RecallRune) && m_Tub.AllowRunebooks)

@@ -234,14 +234,25 @@ namespace Server.Mobiles
         [Constructable]
         public CaveTroll(ShameWall wall)
         {
-            Name = "troll da caverna";
-            BodyValue = 0x1;
+
+            if(wall == null)
+            {
+                Name = "troll da caverna";
+                BodyValue = 0x1;
+                Hue = 638;
+            } else
+            {
+                BodyValue = 16;
+                Hue = 1178;
+                Name = "elemental guardião";
+            }
+          
             FightMode = FightMode.Aggressor;
 
             if (wall != null)
                 Title = "o guardiao do muro";
 
-            Hue = 638;
+          
             Wall = wall;
 
             SetStr(180, 210);
@@ -1134,7 +1145,7 @@ namespace Server.Mobiles
 
             Fame = 15000;
             Karma = -15000;
-            AddItem(new Gold(1000));
+            //AddItem(new Gold(1000));
             AddItem(Decos.RandomDeco());
 
             switch (Utility.Random(6))
@@ -1278,7 +1289,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.Magery, 120, 130);
             SetSkill(SkillName.EvalInt, 120, 130);
             SetSkill(SkillName.Meditation, 100, 110);
-            AddItem(new Gold(1000));
+            //AddItem(new Gold(1000));
 
             switch (Utility.Random(6))
             {

@@ -8,6 +8,7 @@ namespace Server.Items
         [Constructable]
         public StatuetteDyeTub()
         {
+            Name = "Tubo de Tintas de Estatuas";
             this.LootType = LootType.Blessed;
         }
 

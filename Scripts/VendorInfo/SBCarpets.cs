@@ -32,22 +32,22 @@ namespace Server.Mobiles
 			public InternalBuyInfo()
 			{
 				// Blue carpets
-				AddCarpetGroup( 0x56B8, 13, 100 );
+				AddCarpetGroup( 0x56B8, 13, 1000 );
 
 				// Red carpets
-				AddCarpetGroup( 0x56C5, 11, 100 );
+				AddCarpetGroup( 0x56C5, 11, 1000 );
 
 				// Blue/gold carpets
-				AddCarpetGroup( 0x56D0, 9, 200 );
+				AddCarpetGroup( 0x56D0, 9, 2000 );
 
 				// Brown/gold carpets
-				AddCarpetGroup( 0x56D9, 9, 200 );
+				AddCarpetGroup( 0x56D9, 9, 2000 );
 
 				// Brown/red carpets
-				AddCarpetGroup( 0x56E2, 9, 200 );
+				AddCarpetGroup( 0x56E2, 9, 2000 );
 
 				// Fancy carpets
-				AddCarpetGroup( 0x56EB, 10, 500 );
+				AddCarpetGroup( 0x56EB, 10, 5000 );
 			}
 		}
 

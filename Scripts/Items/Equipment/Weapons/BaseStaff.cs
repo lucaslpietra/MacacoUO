@@ -64,7 +64,7 @@ namespace Server.Items
         public override void AddNameProperties(ObjectPropertyList list)
         {
             base.AddNameProperties(list);
-            list.AddThreeValues("Cajado de Mago", "Usa Magery", "No lugar de anatomy");
+            list.AddThreeValues("Cajado de Mago", "Usa Magery", " No lugar de anatomy");
         }
 
         public override void Deserialize(GenericReader reader)

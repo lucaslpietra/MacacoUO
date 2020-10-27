@@ -39,7 +39,7 @@ namespace Server.Mobiles
 
             SetStr(100, 100);
             SetDex(100, 100);
-            SetHits(5500);
+            SetHits(7000);
 
             SetResistance(ResistanceType.Fire, 100);
             SetResistance(ResistanceType.Poison, 10, 25);
@@ -80,7 +80,14 @@ namespace Server.Mobiles
             SetSpecialAbility(SpecialAbility.ManaDrain);
             SetWeaponAbility(WeaponAbility.ParalyzingBlow);
 
+            PackItem(new PowerCrystal());
+            if(Utility.RandomBool())
+                PackItem(new PowerCrystal());
+            PackItem(new ClockworkAssembly());
+            if (Utility.RandomBool())
+                PackItem(new ClockworkAssembly());
             PackItem(new Gold(2000));
+            PackItem(new MechanicalLifeManual());
             this.PackItem(new Item(0xA517));
             PackItem(Carnage.GetRandomPS(105));
             PackItem(Carnage.GetRandomPS(105));

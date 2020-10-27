@@ -93,12 +93,13 @@ namespace Server.Spells.Chivalry
                 Caster.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
                 return false;
             }
+            /*
             else if (Server.Misc.WeightOverloading.IsOverloaded(Caster))
             {
                 Caster.SendMessage("Voce esta muito pesado"); // Thou art too encumbered to move.
                 return false;
             }
-
+            */
             return SpellHelper.CheckTravel(Caster, TravelCheckType.RecallFrom);
         }
 

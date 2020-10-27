@@ -233,6 +233,13 @@ namespace Server.Spells.Fourth
                 Shard.Debug("Visible " + Visible + " CanHarm " + m_Caster.CanBeHarmful(m, false)+" Valid target "+ SpellHelper.ValidIndirectTarget(m_Caster, m));
                 if (Visible && m_Caster != null && m_Caster.CanBeHarmful(m, false))
                 {
+                    if(Shard.DebugEnabled)
+                    {
+                        Shard.Debug("Caster " + Caster.Name + " Alvo " + m.Name);
+                    }
+                    if (Caster == m)
+                        return true;
+
                     if (SpellHelper.CanRevealCaster(m))
                         m_Caster.RevealingAction();
 					
@@ -247,7 +254,7 @@ namespace Server.Spells.Fourth
                         m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                     }
 
-                    Shard.Debug("Dano");
+                    Shard.Debug("Dano Firefield");
                     AOS.Damage(m, m_Caster, damage, 0, 100, 0, 0, 0);
                     m.PlaySound(0x208);
 
@@ -307,6 +314,10 @@ namespace Server.Spells.Fourth
                             while (m_Queue.Count > 0)
                             {
                                 Mobile m = (Mobile)m_Queue.Dequeue();
+
+                                if (m == caster)
+                                    continue;
+
                                 Shard.Debug("Queimando a rosca de " + m.Name);
                                 if (SpellHelper.CanRevealCaster(m))
                                     caster.RevealingAction();

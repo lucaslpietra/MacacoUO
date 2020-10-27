@@ -113,9 +113,11 @@ namespace Server.Spells.Chivalry
                     SpellPlagueSpell.RemoveFromList(m);
 
                     BuffInfo.RemoveBuff(m, BuffIcon.MassCurse);
+                    m.SendMessage("Voce removeu todas maldicoes");
                 }
                 else
                 {
+                    m.SendMessage("Voce nao conseguiu remover todas maldicoes, talvez com mais Karma tenha melhores chances.");
                     m.PlaySound(0x1DF);
                 }
             }

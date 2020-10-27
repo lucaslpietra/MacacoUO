@@ -117,6 +117,7 @@ namespace Server.Engines.ShameRevamped
             Guardian.RangeHome = 8;
 
             DeadLine = DateTime.UtcNow + TimeSpan.FromHours(1);
+            PublicOverheadMessage("* tremendo *");
         }
 
         public void OnGuardianKilled()

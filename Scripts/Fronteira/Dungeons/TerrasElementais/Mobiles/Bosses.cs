@@ -14,7 +14,8 @@ namespace Server.Mobiles
         public ShameGuardian(AIType type)
             : base(type, FightMode.Aggressor, 10, 1, .4, .2)
         {
-            Title = "Guardiao";
+            Name = "Boss " + Name;
+            Title = "[BOSS]";
         }
 
         public override void OnDeath(Container c)
@@ -23,6 +24,8 @@ namespace Server.Mobiles
 
             if (Altar != null)
                 Altar.OnGuardianKilled();
+
+            c.PublicOverheadMessage("* dropou 1/3 da pedra elemental *");
 
             c.DropItem(new ShameCrystal(Utility.RandomMinMax(3, 5)));
 
@@ -75,6 +78,7 @@ namespace Server.Mobiles
         {
         }
 
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -91,6 +95,70 @@ namespace Server.Mobiles
     [CorpseName("a quartz elemental corpse")]
     public class QuartzElemental : ShameGuardian
     {
+        public override bool ReduceSpeedWithDamage { get { return false; } }
+
+        public override void OnThink()
+        {
+            base.OnThink();
+            var pl = Combatant as PlayerMobile;
+            if (pl != null)
+            {
+                if (!IsCooldown("skill"))
+                {
+                    SetCooldown("skill", TimeSpan.FromSeconds(6));
+                    Terremoto(pl);
+                }
+            }
+        }
+
+        public void Terremoto(Mobile alvo)
+        {
+            Effects.SendMovingParticles(this, new Entity(Serial.Zero, new Point3D(this.X, this.Y, this.Z + 20), this.Map), 0x11B6, 5, 20, true, true, 0, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+            var pentagrama = new BloodyPentagramAddon();
+            var loc = new Point3D(alvo.Location.X - 2, alvo.Location.Y - 2, alvo.Location.Z);
+            pentagrama.MoveToWorld(loc, alvo.Map);
+
+            //pentagrama.PublicOverheadMessage(Network.MessageType.Regular, 0, true, "* Tremidao *");
+            new TerremotoTimer(this, alvo.Location, alvo.Map, pentagrama).Start();
+        }
+
+        public class TerremotoTimer : Timer
+        {
+            private BaseCreature bixo;
+            private Point3D local;
+            private Map map;
+            private Item i;
+
+            public TerremotoTimer(BaseCreature bixo, Point3D local, Map map, Item item) : base(TimeSpan.FromSeconds(2))
+            {
+                this.map = map;
+                this.local = local;
+                this.bixo = bixo;
+                i = item;
+            }
+
+            protected override void OnTick()
+            {
+                var glr = map.GetClientsInRange(local, 3);
+                foreach (var netstate in glr)
+                {
+                    var m = netstate.Mobile;
+                    m.SendMessage("Voce sente o chao tremer...");
+                    bixo.DoHarmful(m);
+                    m.PlaySound(0x20D);
+                    Effects.SendMovingParticles(new Entity(Serial.Zero, new Point3D(m.X, m.Y, m.Z + 20), m.Map), m, 0x11B6, 5, 20, true, true, 0, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+                    Timer.DelayCall(TimeSpan.FromSeconds(0.6), () =>
+                    {
+                        AOS.Damage(m, 20 + Utility.Random(40), DamageType.SpellAOE);
+                        m.Freeze(TimeSpan.FromSeconds(1));
+                        m.OverheadMessage("* atordoado *");
+                    });
+                }
+                glr.Free();
+                i.Delete();
+            }
+        }
+
         [Constructable]
         public QuartzElemental()
             : base(AIType.AI_Melee)
@@ -134,6 +202,7 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
+           
             base.OnDeath(c);
 
             if ((c.Map != null && c.Map.Rules == MapRules.FeluccaRules) || 0.5 > Utility.RandomDouble())
@@ -161,6 +230,17 @@ namespace Server.Mobiles
     [CorpseName("a flame elemental corpse")]
     public class FlameElemental : ShameGuardian
     {
+        public override bool ReduceSpeedWithDamage { get { return false; } }
+
+        public override void OnThink()
+        {
+            if(Combatant != null && !IsCooldown("fog"))
+            {
+                SetCooldown("fog", TimeSpan.FromSeconds(3));
+                new Spells.Fourth.FireFieldSpell.FireFieldItem(0x398C, this.Location, this, this.Map, TimeSpan.FromSeconds(30), 10);
+            }
+        }
+
         [Constructable]
         public FlameElemental()
             : base(AIType.AI_Mage)
@@ -194,7 +274,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.Magery, 100, 145);
             SetSkill(SkillName.EvalInt, 90, 140);
             SetSkill(SkillName.Meditation, 80, 120);
-            SetSkill(SkillName.Parry, 100, 120);
+            SetSkill(SkillName.Parry, 20, 30);
 
             Fame = 4500;
             Karma = -4500;
@@ -205,9 +285,9 @@ namespace Server.Mobiles
         public override bool HasBreath { get { return true; } } // fire breath enabled
         public override bool HasAura { get { return true; } }
         public override int AuraRange { get { return 5; } }
-        public override int AuraBaseDamage { get { return 7; } }
-        public override int AuraFireDamage { get { return 100; } }
-        public override int AuraEnergyDamage { get { return 100; } }
+        public override int AuraBaseDamage { get { return 5; } }
+        public override int AuraFireDamage { get { return 10; } }
+        public override int AuraEnergyDamage { get { return 10; } }
 
         public override void GenerateLoot()
         {
@@ -243,6 +323,18 @@ namespace Server.Mobiles
     [CorpseName("a wind elemental corpse")]
     public class WindElemental : ShameGuardian
     {
+        public override bool ReduceSpeedWithDamage { get { return false; } }
+
+        public override void OnThink()
+        {
+            if (Combatant != null && !IsCooldown("fog"))
+            {
+                Effects.PlaySound(this, this.Map, 0x20B);
+                SetCooldown("fog", TimeSpan.FromSeconds(3));
+                new Spells.Sixth.ParalyzeFieldSpell.InternalItem(0x3967, this.Location, this, this.Map, TimeSpan.FromSeconds(30));
+            }
+        }
+
         [Constructable]
         public WindElemental()
             : base(AIType.AI_Mage)
@@ -279,6 +371,8 @@ namespace Server.Mobiles
 
             Fame = 4500;
             Karma = -4500;
+
+            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
 
         public override void GenerateLoot()
