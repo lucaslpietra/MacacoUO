@@ -2742,16 +2742,20 @@ namespace Server
 
         public virtual void Serialize(GenericWriter writer)
         {
-            if(this.DuraSegundos > 0 && DateTime.UtcNow > expireAt)
+            if (this.DuraSegundos > 0)
             {
-                this.Delete();
-                if(this.RootParent is Mobile)
+                if (DateTime.UtcNow > expireAt)
                 {
-                    ((Mobile)this.RootParent).SendMessage("Seu item se desfez");
+                    this.Delete();
+                    if (this.RootParent is Mobile)
+                    {
+                        ((Mobile)this.RootParent).SendMessage("Seu item se desfez");
+                    }
                 }
-            } else
-            {
-                this.InvalidateProperties();
+                else
+                {
+                    this.InvalidateProperties();
+                }
             }
 
             writer.Write(18); // version
