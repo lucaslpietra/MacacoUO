@@ -559,10 +559,12 @@ namespace Server.Items
 
         public override void AddResistanceProperties(ObjectPropertyList list)
         {
+            /*
             if(ColdResistance != 0)
             {
                 list.AddTwoValues("Resistencia a Frio", "+" + ColdResistance.ToString());
             }
+            */
             /*
             if (PhysicalResistance != 0 || m_RefinedPhysical != 0)
             {
