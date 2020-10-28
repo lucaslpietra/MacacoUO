@@ -899,7 +899,7 @@ namespace Server.Mobiles
                 else
                     name = RawName;
 
-                if(RankingFama < 10)
+                if(RankingFama < 5)
                 {
                     name = (Female ? "A Famosa " : "O Famoso ") + name;
                 }
@@ -6398,7 +6398,7 @@ namespace Server.Mobiles
             {
                 DaFama();
                 prefix = Female ? "Lady" : "Lord";
-                if(RankingFama < 10)
+                if(RankingFama < 5)
                 {
                     prefix = (Female ? "A Famosa " : "O Famoso ")+prefix;
                 }
