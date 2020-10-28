@@ -6,6 +6,30 @@ using System.Collections.Generic;
 
 namespace Server.Ziden
 {
+    public class Catalizador : Item
+    {
+
+        [Constructable]
+        public Catalizador() : base(7847)
+        {
+            Name = "Essencia Magica";
+            Stackable = true;
+            //Weight = 0.5;0x2206
+        }
+
+        public Catalizador(Serial s) : base(s)
+        {
+
+        }
+
+        public override void AddNameProperties(ObjectPropertyList list)
+        {
+            base.AddNameProperties(list);
+            list.Add("Usado para imbuing");
+        }
+
+    }
+
     public class EssenciaMagica : Item
     {
 

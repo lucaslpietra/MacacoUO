@@ -9,6 +9,7 @@ using Server.Mobiles;
 using AMA = Server.Items.ArmorMeditationAllowance;
 using AMT = Server.Items.ArmorMaterialType;
 using System.Linq;
+using Server.Gumps;
 
 namespace Server.Items
 {
@@ -2795,7 +2796,7 @@ namespace Server.Items
 
             if (!String.IsNullOrEmpty(_EngravedText))
             {
-                list.Add(1062613, Utility.FixHtml(_EngravedText));
+                list.AddTwoValues(Gump.Cor("Escrito", "orange"), Gump.Cor(Utility.FixHtml(_EngravedText), "orange"));
             }
         }
 

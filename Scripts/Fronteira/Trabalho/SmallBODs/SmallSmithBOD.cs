@@ -94,7 +94,7 @@ namespace Server.Engines.BulkOrders
             SmallBulkEntry[] entries;
             bool useMaterials;
 
-            useMaterials = Utility.RandomBool();
+            useMaterials = Utility.RandomDouble() < 0.1;
 
             if (Utility.RandomBool())
                 entries = SmallBulkEntry.BlacksmithArmor;

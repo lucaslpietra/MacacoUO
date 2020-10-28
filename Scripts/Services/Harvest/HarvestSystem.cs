@@ -158,6 +158,8 @@ namespace Server.Engines.Harvest
         {
             from.EndAction(locked);
 
+            Shard.Debug("Finish Harvest", from);
+
             if (!CheckHarvest(from, tool))
                 return;
 
@@ -167,11 +169,13 @@ namespace Server.Engines.Harvest
 
             if (!GetHarvestDetails(from, tool, toHarvest, out tileID, out map, out loc))
             {
+                Shard.Debug("Bad Harvest Sem Detalhes", from);
                 OnBadHarvestTarget(from, tool, toHarvest);
                 return;
             }
             else if (!def.Validate(tileID) && !def.ValidateSpecial(tileID))
             {
+                Shard.Debug("Finish Harvest TileID cagado", from);
                 OnBadHarvestTarget(from, tool, toHarvest);
                 return;
             }
@@ -198,6 +202,8 @@ namespace Server.Engines.Harvest
 
             if (vein == null)
                 return;
+
+            Shard.Debug("Obtendo recurso de harvest", from);
 
             HarvestResource primary = vein.PrimaryResource;
             HarvestResource fallback = vein.FallbackResource;

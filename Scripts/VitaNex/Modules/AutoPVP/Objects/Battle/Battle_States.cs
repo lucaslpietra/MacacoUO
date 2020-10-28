@@ -268,12 +268,12 @@ namespace VitaNex.Modules.AutoPvP
 
             if (Options.Broadcasts.World.OpenNotify)
             {
-                WorldBroadcast("{0} esta aberto para inscricoes !", Name);
+                WorldBroadcast("{0} esta aberto para inscricoes ! Use .pvp para se inscrever !", Name);
             }
 
             if (Options.Broadcasts.Local.OpenNotify)
             {
-                LocalBroadcast("{0} esta aberto para inscricoes !", Name);
+                LocalBroadcast("{0} esta aberto para inscricoes ! Use .pvp para se inscrever !", Name);
             }
 
             SendGlobalSound(Options.Sounds.BattleOpened);

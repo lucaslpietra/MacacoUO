@@ -13,7 +13,7 @@ namespace Server.Mobiles
         public PlagueBeastLord()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a plague beast lord";
+            this.Name = "senhor da praga";
             this.Body = 775;
             this.BaseSoundID = 679;
             this.SpeechHue = 0x3B2;

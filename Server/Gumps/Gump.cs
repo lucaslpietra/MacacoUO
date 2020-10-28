@@ -228,8 +228,12 @@ namespace Server.Gumps
             return value.ToArgb() & 0x00FFFFFF;
         }
 
+        public static string Cor(string text, string cor)
+        {
+            return String.Format("<basefont color={0}>{1}</basefont>", cor, text);
+        }
 
-        public string Cor(string text, int color)
+        public static string Cor(string text, int color)
         {
             if (color == 0x0)
             {

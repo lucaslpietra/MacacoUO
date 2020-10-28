@@ -121,9 +121,9 @@ namespace Server.Engines.BulkOrders
         public static SmallTinkerBOD CreateRandomFor(Mobile m)
         {
             SmallBulkEntry[] entries;
-            bool useMaterials;
+            bool useMaterials = Utility.RandomDouble() < 0.1;
 
-            if (useMaterials = 0.75 > Utility.RandomDouble())
+            if (useMaterials)
                 entries = SmallBulkEntry.TinkeringSmalls;
             else
                 entries = SmallBulkEntry.TinkeringSmallsRegular;

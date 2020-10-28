@@ -368,8 +368,8 @@ namespace VitaNex.Modules.AutoPvP.Battles
 					if (seconds > 5)
 					{
 						Broadcast(
-							"The match will {0} in {1} second{2}!",
-							!started ? "begin" : "end",
+							"A partida vai {0} em {1} segundo{2}!",
+							!started ? "comecar" : "terminar",
 							seconds,
 							seconds != 1 ? "s" : String.Empty);
 					}

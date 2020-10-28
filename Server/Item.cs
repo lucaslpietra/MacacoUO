@@ -2212,7 +2212,7 @@ namespace Server
         {
             if (item == this || item.GetType() != GetType())
             {
-                Shard.Debug("Type diferente", from);
+                //Shard.Debug("Type diferente", from);
                 return false;
             }
 

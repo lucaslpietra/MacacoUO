@@ -16,7 +16,7 @@ namespace Server.Gumps
 
             var ladder = RankFama.Rank;
             var points = pm.Fame;
-            var rank = pm.RankFama;
+            var rank = pm.RankingFama;
 
             this.Closable = true;
             this.Disposable = true;

@@ -24,7 +24,7 @@ namespace Server.Engines.BulkOrders
         public SmallCarpentryBOD()
         {
             SmallBulkEntry[] entries;
-            bool useMaterials = Utility.RandomBool();
+            bool useMaterials = Utility.RandomDouble() < 0.2;
 
             entries = SmallBulkEntry.CarpentrySmalls;
 
@@ -84,7 +84,7 @@ namespace Server.Engines.BulkOrders
         public static SmallCarpentryBOD CreateRandomFor(Mobile m)
         {
             SmallBulkEntry[] entries;
-            bool useMaterials = Utility.RandomBool();
+            bool useMaterials = Utility.RandomDouble() < 0.1;
 
             double theirSkill = BulkOrderSystem.GetBODSkill(m, SkillName.Carpentry);
 

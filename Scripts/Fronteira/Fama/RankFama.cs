@@ -17,7 +17,7 @@ namespace Server.Ziden
             CommandSystem.Register("calcularank", AccessLevel.Administrator, new CommandEventHandler(CMD));
             CommandSystem.Register("rank", AccessLevel.Administrator, new CommandEventHandler(CMDRank));
             Rank = PlayerMobile.Instances.OrderByDescending(e => e.Fame).Select((e, index) => {
-                e.RankFama = index;
+                e.RankingFama = index;
                 return new PointsEntry(e, e.Fame); }
             ).ToList();
             Console.WriteLine("Rankings de Fama Calculados");
@@ -33,7 +33,7 @@ namespace Server.Ziden
             if (pl == null)
                 return;
 
-            Rank = PlayerMobile.Instances.OrderByDescending(e => e.Fame).Select((e, index) => { e.RankFama = index; return new PointsEntry(e, e.Fame); }).ToList();
+            Rank = PlayerMobile.Instances.OrderByDescending(e => e.Fame).Select((e, index) => { e.RankingFama = index; return new PointsEntry(e, e.Fame); }).ToList();
             pl.SendMessage("Rankings Calculados");
             Console.WriteLine("Rankings de Fama Calculados");
         }

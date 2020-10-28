@@ -65,31 +65,9 @@ namespace Server.SkillHandlers
 
             public void Recebe(Mobile from, int cristais, bool id, Item i)
             {
-                if(cristais <= 0)
-                {
-                    from.SendMessage("Voce nao conseguiu extrair nenhuma essencia magica do item...");
-                    return;
-                }
-
-                if (!id)
-                {
-                    cristais = (int)(cristais * 0.9);
-                    from.SendMessage("O item nao estava totalmente identificado portanto foi mais dificil extrair as essencias dele.");
-                }
-
-                var skill = 25 + from.Skills.Imbuing.Value * 0.75;
-                cristais = (int)(cristais * skill/100);
-                if (cristais < 1)
-                    cristais = 1;
-            
-                from.PlayAttackAnimation();
-
-                from.CheckSkillMult(SkillName.Imbuing, 0, 100, cristais/2);
-                from.SendMessage("Voce transformou o item em "+cristais+" de essencia");
-                i.Delete();
-                var essencia = new EssenciaMagica();
-                essencia.Amount = cristais;
-                from.PlaceInBackpack(essencia);
+                var skill = (10 + from.Skills[SkillName.Imbuing].Value * 0.9d) / 100d;
+                cristais = (int)(cristais * skill);
+                from.SendGump(new DisenchantConfirm(from, cristais, i));
             }
 
             protected override void OnTarget(Mobile from, object targeted)

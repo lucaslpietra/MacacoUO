@@ -20,6 +20,7 @@ using Server.Spells.Ninjitsu;
 using Server.Spells.Sixth;
 using Server.Spells.Spellweaving;
 using Server.Spells.SkillMasteries;
+using Server.Gumps;
 #endregion
 
 namespace Server.Items
@@ -5693,7 +5694,7 @@ namespace Server.Items
 
             if (!String.IsNullOrEmpty(m_EngravedText))
             {
-                list.Add(1062613, Utility.FixHtml(m_EngravedText));
+                list.AddTwoValues(Gump.Cor("Escrito", "orange"), Gump.Cor(Utility.FixHtml(m_EngravedText), "orange"));
             }
         }
 

@@ -5,6 +5,7 @@ using Server.Engines.Craft;
 using Server.Factions;
 using Server.Network;
 using Server.Mobiles;
+using Server.Gumps;
 
 namespace Server.Items
 {
@@ -1192,7 +1193,7 @@ namespace Server.Items
             
             if (!String.IsNullOrEmpty(m_EngravedText))
             {
-                list.AddTwoValues("Bordado",Utility.FixHtml(m_EngravedText)); // Embroidered: ~1_MESSAGE~	
+                list.AddTwoValues(Gump.Cor("Bordado", "orange"), Gump.Cor(Utility.FixHtml(m_EngravedText), "orange")); // Embroidered: ~1_MESSAGE~	
             }
             return;
 

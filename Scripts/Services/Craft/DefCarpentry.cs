@@ -1,5 +1,6 @@
 using System;
 using Server.Items;
+using Server.Multis;
 
 namespace Server.Engines.Craft
 {
@@ -151,6 +152,22 @@ namespace Server.Engines.Craft
         public override void InitCraftList()
         {
             int index = -1;
+
+            // Boats
+            index = AddCraft(typeof(BritannianShipDeed), "Barcos", "Barco Grande Brittanico",90, 115, typeof(Board), 1044041, 10000, 1044351);
+            AddSkill(index, SkillName.Tinkering, 80.0, 85.0);
+            AddRes(index, typeof(IronIngot), 1044036, 3000, 1044037);
+            AddRes(index, typeof(AxleGears), "Engrenagens de Eixo", 50, "Voce precisa de engrenagens de eixo");
+
+            index = AddCraft(typeof(TokunoGalleonDeed), "Barcos", "Barco Grande Oriental", 80, 110, typeof(Board), 1044041, 8000, 1044351);
+            AddSkill(index, SkillName.Tinkering, 80.0, 85.0);
+            AddRes(index, typeof(IronIngot), 1044036, 2500, 1044037);
+            AddRes(index, typeof(AxleGears), "Engrenagens de Eixo", 40, "Voce precisa de engrenagens de eixo");
+
+            index = AddCraft(typeof(TokunoGalleonDeed), "Barcos", "Barco Grande", 70, 105, typeof(Board), 1044041, 7000, 1044351);
+            AddSkill(index, SkillName.Tinkering, 80.0, 85.0);
+            AddRes(index, typeof(IronIngot), 1044036, 2400, 1044037);
+            AddRes(index, typeof(AxleGears), "Engrenagens de Eixo", 40, "Voce precisa de engrenagens de eixo");
 
             // Other
             AddCraft(typeof(BarrelStaves), 1044294, 1027857, 00.0, 25.0, typeof(Board), 1044041, 5, 1044351);

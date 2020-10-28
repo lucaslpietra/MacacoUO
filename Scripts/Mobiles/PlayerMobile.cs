@@ -130,7 +130,7 @@ namespace Server.Mobiles
 
     public partial class PlayerMobile : Mobile, IHonorTarget
     {
-        public int RankFama = 0;
+        public int RankingFama = 0;
         public int NivelBanco = 0;
         public WispGuia Wisp = null;
         public int Anuncios = 0;
@@ -870,6 +870,20 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime PeacedUntil { get { return m_PeacedUntil; } set { m_PeacedUntil = value; } }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool Famoso { get; set; }
+
+        private void DaFama()
+        {
+            if (!Famoso)
+            {
+                Famoso = true;
+                var tit = (Female ? "Lady" : "Lord");
+                SendMessage(78, "Seu nivel de fama lhe tornou famoso. Agora voce eh conhecido como " + tit);
+                Anuncio.Anuncia(Name + " conquistou o titulo de " + tit);
+            }
+        }
+
         [CommandProperty(AccessLevel.Decorator)]
         public override string TitleName
         {
@@ -877,10 +891,18 @@ namespace Server.Mobiles
             {
                 string name;
 
-                if (Fame >= 10000)
+                if (Famoso || Fame >= 11000)
+                {
+                    DaFama();
                     name = String.Format("{0} {1}", Female ? "Lady" : "Lord", RawName);
+                }
                 else
                     name = RawName;
+
+                if(RankingFama < 10)
+                {
+                    name = (Female ? "A Famosa " : "O Famoso ") + name;
+                }
 
                 return name;
             }
@@ -5049,6 +5071,9 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 44:
+                    Famoso = reader.ReadBool();
+                    goto case 43;
                 case 43:
                     LastDungeonEntrance = reader.ReadPoint3D();
                     goto case 42;
@@ -5515,7 +5540,8 @@ namespace Server.Mobiles
 
             base.Serialize(writer);
 
-            writer.Write(43); // version
+            writer.Write(44); // version
+            writer.Write(Famoso);
             writer.Write(LastDungeonEntrance);
             //Exp.Serialize(writer);
             writer.Write(NivelBanco);
@@ -6368,9 +6394,14 @@ namespace Server.Mobiles
 
             string prefix = "";
 
-            if (ShowFameTitle && Fame >= 10000)
+            if (Famoso || Fame >= 11000)
             {
+                DaFama();
                 prefix = Female ? "Lady" : "Lord";
+                if(RankingFama < 10)
+                {
+                    prefix = (Female ? "A Famosa " : "O Famoso ")+prefix;
+                }
             }
 
             string suffix = "";

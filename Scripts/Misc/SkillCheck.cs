@@ -271,7 +271,7 @@ namespace Server.Misc
                 gcBonus += BONUS_CIDADE;
 
             }
-            else if (BaseHouse.FindHouseAt(from) != null) {
+            else if (!work && BaseHouse.FindHouseAt(from) != null) {
                 houseReg = true;
                 gcBonus += BONUS_CASA;
             } else if (!dgBonus && from.Region.IsPartOf<DungeonRegion>() && !work)

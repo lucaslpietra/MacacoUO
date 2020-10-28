@@ -36,11 +36,11 @@ namespace Server.Mobiles
             new Type[] { typeof(LeggingsOfBane) },          new Type[] { typeof(MidnightBracers) },     new Type[] { typeof(Glenda) },
             new Type[] { typeof(BowOfTheInfiniteSwarm) },   new Type[] { typeof(TheDeceiver) },         new Type[] { typeof(TheScholarsHalo) },
             new Type[] { typeof(DoomRecipeScroll) },
-            new Type[] 
+            new Type[]
             {
                 typeof(LegacyOfTheDreadLord),       typeof(TheTaskmaster),
                 typeof(ArmorOfFortune),             typeof(HelmOfInsight),
-                typeof(HolyKnightsBreastplate),     typeof(JackalsCollar),              
+                typeof(HolyKnightsBreastplate),     typeof(JackalsCollar),
                 typeof(OrnateCrownOfTheHarrower),   typeof(TheDragonSlayer),
                 typeof(TunicOfFire),                typeof(VoiceOfTheFallenKing),
                 typeof(RingOfTheVile),              typeof(BraceletOfHealth),
@@ -110,7 +110,7 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-       
+
         public override bool IgnoreYoungProtection
         {
             get
@@ -180,7 +180,7 @@ namespace Server.Mobiles
             if (!boss)
                 return;
 
-            if(Utility.RandomDouble() < 0.2)
+            if (Utility.RandomDouble() < 0.2)
             {
                 pm.PlaySound(0x5B4);
                 pm.PlaceInBackpack(DecoRelPor.RandomArty());
@@ -191,7 +191,7 @@ namespace Server.Mobiles
             if (!Core.AOS)
                 return;
 
-            if ( pm == null || bc == null || bc.NoKillAwards || !pm.Alive/*|| !CheckLocation(bc) || !CheckLocation(pm)*/)
+            if (pm == null || bc == null || bc.NoKillAwards || !pm.Alive/*|| !CheckLocation(bc) || !CheckLocation(pm)*/)
                 return;
 
             const double A = 0.000863316841;
@@ -259,6 +259,9 @@ namespace Server.Mobiles
         public override void OnDeath(Container c)
         {
             List<DamageStore> rights = GetLootingRights();
+
+            if (Utility.RandomBool())
+                c.DropItem(new RunebookDyeTub());
 
             if (Utility.RandomBool())
                 c.DropItem(new PianoAddon());
@@ -356,7 +359,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.SuperBoss, 2);
             AddLoot(LootPack.HighScrolls, Utility.RandomMinMax(6, 60));
         }
-        
+
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
             if (from != null && from != this && !m_InHere)
