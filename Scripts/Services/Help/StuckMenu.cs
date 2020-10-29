@@ -123,6 +123,12 @@ namespace Server.Menus.Questions
         {
             StopClose();
 
+            if(m_Mobile.RP)
+            {
+                m_Mobile.SendMessage("Jogadores RP nao podem usar isto");
+                return;
+            }
+
             if (Factions.Sigil.ExistsOn(m_Mobile))
             {
                 m_Mobile.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.

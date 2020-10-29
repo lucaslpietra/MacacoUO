@@ -2891,6 +2891,10 @@ namespace Server.Items
 
             AddResistanceProperties(list);
 
+            if (RP)
+                list.Add("[ RP ]");
+
+
             if (!Core.AOS)
                 return;
 

@@ -1,3 +1,4 @@
+using Server.Engines.Craft;
 using Server.Items;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,28 @@ namespace Server.Ziden.Achievements
         }
 
         public SacolaMinerios(Serial s) : base(s) { }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+        }
+    }
+
+    public class SacolaReceitaAlch : Bag
+    {
+        [Constructable]
+        public SacolaReceitaAlch()
+        {
+            this.AddItem(DefAlchemy.GetRandomRecipe());
+            Name = "Sacola";
+        }
+
+        public SacolaReceitaAlch(Serial s) : base(s) { }
 
         public override void Serialize(GenericWriter writer)
         {

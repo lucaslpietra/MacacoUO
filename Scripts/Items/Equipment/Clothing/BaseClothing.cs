@@ -1195,6 +1195,10 @@ namespace Server.Items
             {
                 list.AddTwoValues(Gump.Cor("Bordado", "orange"), Gump.Cor(Utility.FixHtml(m_EngravedText), "orange")); // Embroidered: ~1_MESSAGE~	
             }
+
+            if (RP)
+                list.Add("[ RP ]");
+
             return;
 
             if (OwnerName != null)

@@ -67,6 +67,26 @@ namespace Server.Regions
             ReadBoolean(xml["logoutDelay"], "active", ref logoutDelayActive, false);
             this.m_NoLogoutDelay = !logoutDelayActive;
 
+            XmlElement cfg = xml["cfg"];
+            if(cfg != null)
+            {
+                if (Shard.DebugEnabled)
+                {
+                    Shard.Debug("------- TEM CFG");
+                }
+                ReadBoolean(cfg, "pvp", ref this.PvP, true);
+                ReadBoolean(cfg, "recall", ref this.Recall, true);
+            } else
+            {
+                PvP = true;
+                Recall = true;
+            }
+
+            if(Shard.DebugEnabled)
+            {
+                Shard.Debug("Region " + Name + " Carregada : Pvp =" + PvP+" Recall = "+Recall);
+            }
+
             XmlElement spawning = xml["spawning"];
             if (spawning != null)
             {
@@ -661,6 +681,19 @@ namespace Server.Regions
 
         public virtual bool CheckTravel(Mobile traveller, Point3D p, Server.Spells.TravelCheckType type)
         {
+            if(Shard.DebugEnabled)
+            {
+                Shard.Debug("Travel Type " + type.ToString(), traveller);
+            }
+            if(!Recall)
+            {
+                if (type == Spells.TravelCheckType.GateTo || type == Spells.TravelCheckType.RecallTo || type == Spells.TravelCheckType.Mark)
+                {
+                    traveller.SendMessage("Voce nao pode fazer isto para esta regiao");
+                    return false;
+                }
+                    
+            }
             return true;
         }
 

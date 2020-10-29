@@ -35,10 +35,19 @@ namespace Server.Scripts.New.Adam.NewGuild
                 return;
             }
 
+
+
             if (pm.Profession == 0)
             {
-                pm.SendMessage("Escolha seu kit de skills iniciais");
-                pm.SendGump(new ClassGump());
+                if(pm.ContaRP)
+                {
+                    pm.SendMessage("Escolha seu kit de skills iniciais");
+                    pm.SendGump(new GumpCharRP(pm));
+                } else
+                {
+                    pm.SendMessage("Escolha se deseja criar um personagem RP ou NORMAL");
+                    pm.SendGump(new ClassGump());
+                }
             }
             else
             {
@@ -56,16 +65,6 @@ namespace Server.Scripts.New.Adam.NewGuild
                 Shard.Debug("R1");
                 return;
             }
-
-            /*
-            var accCreated = pm.Account.Created;
-            var now = DateTime.UtcNow;
-
-            if(accCreated + TimeSpan.FromDays(14) < now)
-            {
-                return;
-            }
-            */
 
             if (asked.Contains(pm.Serial))
                 return;

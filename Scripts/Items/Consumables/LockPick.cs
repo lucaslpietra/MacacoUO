@@ -139,6 +139,15 @@ namespace Server.Items
                 from.SendMessage("Voce conseguiu destrancar o item"); // The lock quickly yields to your skill.
                 from.PlaySound(0x4A);
                 lockpickable.LockPick(from);
+
+                if(lockpickable is Container)
+                {
+                    if(from.RP)
+                    {
+                        foreach (var i in ((Container)lockpickable).Items)
+                            i.RP = true;
+                    }
+                }
             }
             else
             {

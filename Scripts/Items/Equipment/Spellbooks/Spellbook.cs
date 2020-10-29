@@ -853,6 +853,9 @@ namespace Server.Items
 				list.Add("Criado por "+ m_Crafter.TitleName); // crafted by ~1_NAME~
 			}
 
+            if (RP)
+                list.Add("[ RP ]");
+
             #region Factions
             FactionEquipment.AddFactionProperties(this, list);
             #endregion
@@ -1374,6 +1377,13 @@ namespace Server.Items
 			}
 
 			Spellbook book = e.Spellbook as Spellbook;
+
+            if(from.RP && !book.RP)
+            {
+                from.SendMessage("Voce nao pode usar livros de magia nao RP");
+                return;
+            }
+
 			int spellID = e.SpellID;
 
 			if (book == null || !book.HasSpell(spellID))

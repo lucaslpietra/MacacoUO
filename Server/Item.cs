@@ -672,6 +672,8 @@ namespace Server
 
     public class Item : IEntity, IHued, IComparable<Item>, ISerializable, ISpawnable
     {
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool RP { get; set; }
 
         private int duracao;
         private DateTime expireAt;
@@ -2758,7 +2760,10 @@ namespace Server
                 }
             }
 
-            writer.Write(18); // version
+            writer.Write(19); // version
+
+            // 19
+            writer.Write(RP);
 
             // 18
             writer.Write(DuraSegundos);
@@ -3277,6 +3282,9 @@ namespace Server
 
             switch (version)
             {
+                case 19:
+                    RP = reader.ReadBool();
+                    goto case 18;
                 case 18:
                     DuraSegundos = reader.ReadInt();
                     goto case 17;

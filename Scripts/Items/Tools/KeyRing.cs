@@ -30,7 +30,7 @@ namespace Server.Items
             : base(0x1011)
         {
             Weight = 1.0; // They seem to have no weight on OSI ?!
-
+            LootType = LootType.Blessed;
             m_Keys = new List<Key>();
         }
 

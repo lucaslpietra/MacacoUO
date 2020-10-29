@@ -87,7 +87,7 @@ namespace Server.Mobiles
         ToggleCutClippings = 0x01000000,
         ToggleCutReeds = 0x02000000,
         MechanicalLife = 0x04000000,
-        Unused = 0x08000000,
+        RP = 0x08000000,
         ToggleCutTopiaries = 0x10000000,
         HasValiantStatReward = 0x20000000,
         RefuseTrades = 0x40000000,
@@ -134,7 +134,11 @@ namespace Server.Mobiles
         public int NivelBanco = 0;
         public WispGuia Wisp = null;
         public int Anuncios = 0;
-        public bool RP = false;
+
+
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int Vidas { get; set; }
 
         public static List<PlayerMobile> Instances { get; private set; }
 
@@ -291,10 +295,10 @@ namespace Server.Mobiles
                 Delta(MobileDelta.Noto);
                 InvalidateProperties();
 
-                if(!IsCooldown("msgtreta"))
+                if (!IsCooldown("msgtreta"))
                 {
                     SetCooldown("msgtreta", TimeSpan.FromDays(1));
-                    foreach(var pl in NetState.Instances)
+                    foreach (var pl in NetState.Instances)
                     {
                         if (pl != null && pl.Mobile != null)
                             pl.Mobile.SendMessage(38, this.Name + " pisou nas terras de Tretonia");
@@ -891,7 +895,7 @@ namespace Server.Mobiles
             {
                 string name;
 
-                if (Famoso || Fame >= 11000)
+                if (Famoso || Fame >= 15000)
                 {
                     DaFama();
                     name = String.Format("{0} {1}", Female ? "Lady" : "Lord", RawName);
@@ -899,7 +903,7 @@ namespace Server.Mobiles
                 else
                     name = RawName;
 
-                if(RankingFama < 5)
+                if (RankingFama < 10)
                 {
                     name = (Female ? "A Famosa " : "O Famoso ") + name;
                 }
@@ -2546,7 +2550,7 @@ namespace Server.Mobiles
             {
                 if (item is Container)
                 {
-                    if(IsCooldown("trapmsg"))
+                    if (IsCooldown("trapmsg"))
                     {
                         SetCooldown("trapmsg");
                         SendMessage(78, "Para sair de paralize, use harm em si mesmo com timing bom ou pocao anti paralizia");
@@ -2603,6 +2607,8 @@ namespace Server.Mobiles
                 PlaySound(0x57);
                 return;
             }
+
+           
 
             if (item is Bandage)
             {
@@ -3740,7 +3746,7 @@ namespace Server.Mobiles
                     PartyLoots.Add(item.GetType());
                     var copia = Dupe.DupeItem(item);
                     item.PartyLoot = false;
-                    if(item.LootType == LootType.Blessed)
+                    if (item.LootType == LootType.Blessed)
                         item.BoundTo = this.Name;
 
                     if (item.Parent is Mobile)
@@ -4125,6 +4131,54 @@ namespace Server.Mobiles
 
             base.OnDamage(amount, from, willKill);
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool ContaRP
+        {
+            get
+            {
+                var acct = Account as Account;
+                return acct.RP;
+            }
+            set
+            {
+                var acct = Account as Account;
+                acct.RP = value;
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public override bool RP
+        {
+            get { return GetFlag(PlayerFlag.RP); }
+            set
+            {
+
+                SetFlag(PlayerFlag.RP, value);
+                InvalidateProperties();
+            }
+        }
+
+        public static int MAX_MORTES = 5;
+
+        public override void OnDeathsChange(int oldValue)
+        {
+            if(this.RP){
+                this.SendMessage("Voce agora tem " + this.Deaths + "/5 Mortes...");
+                if(this.Deaths >= 5)
+                {
+                    this.SendGump(new AnuncioGump(this, "!!! VOCE MORREU !!!"));
+                    this.SendMessage(38, "!!! VOCE MORREU !!!");
+                    this.NetState.Dispose();
+                    this.Delete();
+                }
+            } else
+            {
+                this.SendMessage("Suas Mortes: " + Deaths);
+            }
+            base.OnDeathsChange(oldValue);
+        }
+
 
         public override void Resurrect()
         {
@@ -5059,7 +5113,6 @@ namespace Server.Mobiles
                 return padrao;
             }
             return null;
-
         }
 
         #region Serialization
@@ -5071,6 +5124,9 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 45:
+                    Vidas = reader.ReadInt();
+                    goto case 44;
                 case 44:
                     Famoso = reader.ReadBool();
                     goto case 43;
@@ -5540,7 +5596,8 @@ namespace Server.Mobiles
 
             base.Serialize(writer);
 
-            writer.Write(44); // version
+            writer.Write(45); // version
+            writer.Write(Vidas);
             writer.Write(Famoso);
             writer.Write(LastDungeonEntrance);
             //Exp.Serialize(writer);
@@ -5999,17 +6056,18 @@ namespace Server.Mobiles
 
         public override void OnSingleClick(Mobile from)
         {
-            var alvoPL = from as PlayerMobile;
-            if (alvoPL != null && alvoPL.RP)
+            if (this.RP)
             {
-                if (!this.RP && !this.IsCooldown("avisorp"))
-                {
-                    this.SetCooldown("avisorp", TimeSpan.FromHours(3));
-                    this.SendMessage(78, "[ATENCAO] Voce esta se aproximando de jogadores em modo RP ON. Contribua com o shard e nao atrapalhe o Role Play dos jogadores RP.");
-                }
-                from.OverheadMessage("[RP ON]");
+                this.PrivateOverheadMessage(MessageType.Regular, 0x35, true, "[ Personagem RP ]", from.NetState);
             }
 
+            if (from != null && !from.RP && this.RP && !from.IsCooldown("avisorp"))
+            {
+                from.SetCooldown("avisorp", TimeSpan.FromMinutes(10));
+                from.SendMessage(78, "[ATENCAO] Voce esta se aproximando de jogadores em modo RP. Atrapalhar jogadores RP podera resultar em Jail e ate Ban !");
+            }
+
+            /*
             if (Map == Faction.Facet)
             {
                 PlayerState pl = PlayerState.Find(this);
@@ -6056,7 +6114,7 @@ namespace Server.Mobiles
                     PrivateOverheadMessage(MessageType.Label, hue, ascii, text, from.NetState);
                 }
             }
-
+            */
             base.OnSingleClick(from);
         }
 
@@ -6394,13 +6452,13 @@ namespace Server.Mobiles
 
             string prefix = "";
 
-            if (Famoso || Fame >= 11000)
+            if (Famoso || Fame >= 15000)
             {
                 DaFama();
                 prefix = Female ? "Lady" : "Lord";
-                if(RankingFama < 5)
+                if (RankingFama < 10)
                 {
-                    prefix = (Female ? "A Famosa " : "O Famoso ")+prefix;
+                    prefix = (Female ? "A Famosa " : "O Famoso ") + prefix;
                 }
             }
 
@@ -6471,7 +6529,7 @@ namespace Server.Mobiles
                 }
             }
             if (RP)
-                list.Add("[RP ON]");
+                list.Add(Gump.Cor("[ Personagem RP ]", "yellow"));
         }
         #endregion
 

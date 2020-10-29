@@ -160,6 +160,27 @@ namespace Server.Misc
 
             var map = from.Map;
 
+            if (target.Region != null && !target.Region.PvP)
+            {
+                from.SendMessage("PvP desligado nesta regiao");
+                return false;
+            }
+
+            if(from.Party == null || from.Party != target.Party)
+            {
+                // jogador nao RP nao pode atacar jogador RP
+                if (target.RP && !from.RP)
+                    return false;
+
+                // RP tb nao pode atacar nao RP
+                if (from.RP && !target.RP)
+                    return false;
+            }
+
+            // pets de players normais nao atacam RP
+            if (target.RP && from is BaseCreature && !((BaseCreature)from).ControlMaster.RP)
+                return false;
+
             if (map != null && (map.Rules & MapRules.HarmfulRestrictions) == 0)
                 return true; // In felucca, anything goes
 
@@ -238,7 +259,6 @@ namespace Server.Misc
                         g = (Guild)(c.Guild = null);
                 }
             }
-
             return g;
         }
 
@@ -379,6 +399,17 @@ namespace Server.Misc
 
             if (target is PlayerVendor || target is TownCrier)
                 return Notoriety.Invulnerable;
+
+            if (source.Party == null || source.Party != target.Party)
+            {
+                // PK NAO MATA RP
+                if (target.RP && !source.RP)
+                    return Notoriety.Invulnerable;
+
+                // RP NAO MATA PK
+                if (source.RP && !target.RP)
+                    return Notoriety.Invulnerable;
+            }
 
             var context = EnemyOfOneSpell.GetContext(source);
 

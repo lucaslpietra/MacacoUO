@@ -127,7 +127,7 @@ namespace Server.Regions
 
         public override bool CheckTravel(Mobile traveller, Point3D p, TravelCheckType type)
         {
-            if (type == TravelCheckType.GateTo || type == TravelCheckType.RecallTo)
+            if (type == TravelCheckType.GateTo || type == TravelCheckType.RecallTo || type==TravelCheckType.Mark)
                 return false;
             return true;
         }

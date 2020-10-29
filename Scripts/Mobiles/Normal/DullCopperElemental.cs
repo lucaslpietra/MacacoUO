@@ -16,7 +16,7 @@ namespace Server.Mobiles
         public DullCopperElemental(int oreAmount)
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a dull copper elemental";
+            Name = "elemental de berilo";
             Body = 110;
             BaseSoundID = 268;
 
@@ -47,6 +47,7 @@ namespace Server.Mobiles
 
             Item ore = new BeriloOre(oreAmount);
             ore.ItemID = 0x19B9;
+            Hue = ore.Hue;
             PackItem(ore);
         }
 

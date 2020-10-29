@@ -1650,6 +1650,9 @@ namespace Server.Mobiles
                     ((BaseTool)item).Quality = ItemQuality.Low;
                 }
 
+                if (buyer.RP)
+                    item.RP = true;
+
                 bii.OnBought(this, amount);
 
                 if (item.Stackable)
@@ -1984,6 +1987,9 @@ namespace Server.Mobiles
 
                                     if (cont == null || !cont.TryDropItem(buyer, buyItem, false))
                                     {
+                                        if (buyer.RP)
+                                            buyItem.RP = true;
+
                                         buyItem.MoveToWorld(buyer.Location, buyer.Map);
                                     }
 

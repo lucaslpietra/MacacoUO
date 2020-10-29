@@ -75,6 +75,7 @@ namespace Server.Items
 
                 if (diferenca < 60 * 60) // nao passou X segundos
                 {
+                    from.CloseAllGumps();
                     from.SendGump(new ConfirmaRoubo((int)diferenca, from, loc, map, this));
                     return;
                 }

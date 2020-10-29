@@ -11,7 +11,6 @@ namespace Server.Engines.BulkOrders
 
     public sealed class RewardType
     {
-
         public static int PS105 = 100;
         public static int PS110 = 300;
         public static int PS115 = 500;
@@ -368,6 +367,7 @@ namespace Server.Engines.BulkOrders
                 //RewardCollection.Add(new BODCollectionItem(0x13E3, 1157095, CraftResources.GetHue(CraftResource.Bronze), 700, RunicHammer, 4));
                 RewardCollection.Add(new BODCollectionItem(0x13E3, "Martelo +5 Blacksmithy", 0x482, 750, AncientHammer, 5));
                 RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Mining<br>Aumenta seu cap de mining.", 0x481, RewardType.PS115, PowerScroll2, 15));
+                RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 120 Mining<br>Aumenta seu cap de mining.", 0x481, RewardType.PS120, PowerScroll2, 20));
                 RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Blacksmithy<br>Aumenta seu cap de blacksmithy.", 0x481, RewardType.PS115, PowerScroll, 15));
                 RewardCollection.Add(new BODCollectionItem(0x13E3, "Martelo +10 Blacksmithy", 0x482, 850, AncientHammer, 10));
                 RewardCollection.Add(new BODCollectionItem(0x14EC, "Mapa de Minerar Niobio", CraftResources.GetHue(CraftResource.Niobio), 200, HarvestMap, (int)CraftResource.Niobio));

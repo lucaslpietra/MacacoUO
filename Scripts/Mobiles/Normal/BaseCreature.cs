@@ -3029,7 +3029,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return Fame / 100;
+                return Fame / 110;
             }
         }
 

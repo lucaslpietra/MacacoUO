@@ -16,7 +16,7 @@ namespace Server.Mobiles
         public AgapiteElemental(int oreAmount)
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an agapite elemental";
+            this.Name = "elemental de niobio";
             this.Body = 107;
             this.BaseSoundID = 268;
 
@@ -47,6 +47,7 @@ namespace Server.Mobiles
 
             Item ore = new NiobioOre(oreAmount);
             ore.ItemID = 0x19B9;
+            Hue = ore.Hue;
             this.PackItem(ore);
         }
 

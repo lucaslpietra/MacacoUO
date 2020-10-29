@@ -433,6 +433,7 @@ namespace Server.Accounting
         /// </summary>
         public int Flags { get; set; }
 
+
 		/// <summary>
 		///     Gets or sets a flag indiciating if this account is banned.
 		/// </summary>
@@ -485,10 +486,20 @@ namespace Server.Accounting
 			}
 		}
 
-		/// <summary>
-		///     The date and time of when this account was created.
-		/// </summary>
-		[CommandProperty(AccessLevel.Administrator, true)]
+        [CommandProperty(AccessLevel.Administrator)]
+        public bool RP
+        {
+            get { return GetFlag(2); }
+            set
+            {
+                SetFlag(2, value);
+            }
+        }
+
+        /// <summary>
+        ///     The date and time of when this account was created.
+        /// </summary>
+        [CommandProperty(AccessLevel.Administrator, true)]
 		public DateTime Created { get; set; }
 
 		[CommandProperty(AccessLevel.Administrator)]

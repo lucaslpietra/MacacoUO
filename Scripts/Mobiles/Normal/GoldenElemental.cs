@@ -16,7 +16,7 @@ namespace Server.Mobiles
         public GoldenElemental(int oreAmount)
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a golden elemental";
+            this.Name = "elemental dourado";
             this.Body = 166;
             this.BaseSoundID = 268;
 
@@ -47,6 +47,7 @@ namespace Server.Mobiles
 
             Item ore = new SilverOre(oreAmount);
             ore.ItemID = 0x19B9;
+            Hue = ore.Hue;
             this.PackItem(ore);
         }
 

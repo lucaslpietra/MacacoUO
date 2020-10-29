@@ -537,6 +537,8 @@ namespace Server
     public class Mobile : IEntity, IHued, IComparable<Mobile>, ISerializable, ISpawnable, IDamageable
     {
 
+        public virtual bool RP { get { return false; } set { } }
+
         public string LastTraducao = null;
 
         public int SpellSteps;
@@ -4357,12 +4359,12 @@ namespace Server
                         }
                     }
                 }
-
                 Packet.Release(animPacket);
 
                 eable.Free();
             }
 
+            Deaths++;
 
             OnDeath(c);
         }

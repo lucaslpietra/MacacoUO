@@ -17,7 +17,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             // TODO: Gas attack
-            Name = "a bronze elemental";
+            Name = "elemental de bronze";
             Body = 108;
             BaseSoundID = 268;
 
@@ -50,7 +50,7 @@ namespace Server.Mobiles
             Item ore = new BronzeOre(oreAmount);
             ore.ItemID = 0x19B9;
             PackItem(ore);
-
+            Hue = ore.Hue;
             SetAreaEffect(AreaEffect.PoisonBreath);
         }
 

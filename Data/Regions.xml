@@ -92,6 +92,7 @@
       <rect x="1164" y="827" width="76" height="76" />
       <go x="1197" y="883" z="0" />
       <music name="Skarabra" />
+      <cfg pvp="true" recall="false"/>
       <region name="Albus Camp">
         <rect x="1221" y="844" width="6" height="4" />
         <logoutDelay active="false" />
@@ -223,10 +224,11 @@
       <music name="Dungeon2" />
     </region>
    
-    <region type="OutdoorDungeonRegion" name="Morthuna">
+    <region type="NoHousingRegion" name="Morthuna">
       <rune name="Morthuna" />
       <rect x="671" y="1610" width="60" height="104" />
       <go x="711" y="1627" z="0" />
+      <cfg pvp="true" recall="false"/>
       <music name="Dungeon2" />
     </region>
    
@@ -375,6 +377,11 @@
     <rect x="1335" y="1901" width="117" height="90" />
     </region>
   
+  <region type="NoHousingRegion" name="ArenaPvP">
+    <rect x="5786" y="1754" width="25" height="25" />
+    <cfg pvp="false" recall="false"/>
+  </region>
+
   <region type="NoHousingRegion" name="Tretonia">
       <rune name="Tretonia" />
     <rect x="1323" y="1714" width="341" height="286" />

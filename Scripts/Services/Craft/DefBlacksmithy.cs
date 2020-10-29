@@ -345,12 +345,12 @@ namespace Server.Engines.Craft
             #endregion
 
             #region Platemail
-            index = AddCraft(typeof(PlateArms), 1111704, 1025136, 66.3, 86.3, typeof(IronIngot), 1044036, 18, 1044037);
-            AddCraft(typeof(PlateGloves), 1111704, 1025140, 58.9, 88.9, typeof(IronIngot), 1044036, 12, 1044037);
-            AddCraft(typeof(PlateGorget), 1111704, 1025139, 56.4, 86.4, typeof(IronIngot), 1044036, 10, 1044037);
-            AddCraft(typeof(PlateLegs), 1111704, 1025137, 68.8, 88.8, typeof(IronIngot), 1044036, 20, 1044037);
-            AddCraft(typeof(PlateChest), 1111704, 1046431, 75.0, 85.0, typeof(IronIngot), 1044036, 25, 1044037);
-            AddCraft(typeof(FemalePlateChest), 1111704, 1046430, 44.1, 84.1, typeof(IronIngot), 1044036, 20, 1044037);
+            index = AddCraft(typeof(PlateArms), 1111704, 1025136, 76.3, 105.0, typeof(IronIngot), 1044036, 18, 1044037);
+            AddCraft(typeof(PlateGloves), 1111704, 1025140, 78.9, 105.0, typeof(IronIngot), 1044036, 12, 1044037);
+            AddCraft(typeof(PlateGorget), 1111704, 1025139, 76.4, 105.0, typeof(IronIngot), 1044036, 10, 1044037);
+            AddCraft(typeof(PlateLegs), 1111704, 1025137, 78.8, 105.0, typeof(IronIngot), 1044036, 20, 1044037);
+            AddCraft(typeof(PlateChest), 1111704, 1046431, 75.0, 105.0, typeof(IronIngot), 1044036, 25, 1044037);
+            AddCraft(typeof(FemalePlateChest), 1111704, 1046430, 44.1, 105.0, typeof(IronIngot), 1044036, 20, 1044037);
             
             AddCraft(typeof(DragonBardingDeed), 1111704, 1053012, 72.5, 122.5, typeof(IronIngot), 1044036, 750, 1044037);
 

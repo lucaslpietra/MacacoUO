@@ -9,7 +9,7 @@ namespace Server.Items
             : base(0x1779)
         {
             this.Hue = CraftResources.GetHue(resource);
-            this.Stackable = Core.ML;
+            this.Stackable = true;
 
             this.m_Resource = resource;
         }
@@ -48,7 +48,8 @@ namespace Server.Items
             {
                 return 1044607;
             }
-        }// high quality granite
+        }
+        // high quality granite
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -64,7 +65,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                 case 0:
@@ -73,7 +74,7 @@ namespace Server.Items
                         break;
                     }
             }
-			
+
             if (version < 1)
                 this.Stackable = Core.ML;
         }
@@ -84,12 +85,7 @@ namespace Server.Items
 
             if (!CraftResources.IsStandard(this.m_Resource))
             {
-                int num = CraftResources.GetLocalizationNumber(this.m_Resource);
-
-                if (num > 0)
-                    list.Add(num);
-                else
-                    list.Add(CraftResources.GetName(this.m_Resource));
+                list.Add(this.m_Resource.ToString());
             }
         }
     }
@@ -129,6 +125,7 @@ namespace Server.Items
         public DullCopperGranite()
             : base(CraftResource.Berilo)
         {
+
         }
 
         public DullCopperGranite(Serial serial)
@@ -328,6 +325,34 @@ namespace Server.Items
         }
 
         public ValoriteGranite(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class AdamantiumGranite : BaseGranite
+    {
+        [Constructable]
+        public AdamantiumGranite()
+            : base(CraftResource.Adamantium)
+        {
+        }
+
+        public AdamantiumGranite(Serial serial)
             : base(serial)
         {
         }

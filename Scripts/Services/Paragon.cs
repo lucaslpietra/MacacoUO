@@ -34,6 +34,9 @@ namespace Server.Mobiles
             if (bc.Region is ChampionSpawnRegion)
                 return false;
 
+            if (bc.IsChampionSpawn)
+                return false;
+
             return true;
         }
 

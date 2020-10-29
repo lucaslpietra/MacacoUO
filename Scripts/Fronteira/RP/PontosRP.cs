@@ -16,13 +16,13 @@ namespace Server.Ziden.Kills
 
         public override void Serialize(GenericWriter writer)
         {
-            Shard.Debug("Salvando pontos de kills");
+            Shard.Debug("Salvando pontos de RP");
             base.Serialize(writer);
         }
 
         public override void Deserialize(GenericReader reader)
         {
-            Shard.Debug("Carregando pontos de kills");
+            Shard.Debug("Carregando pontos de RP");
             base.Deserialize(reader);
             this.GetOrCalculateRank();
         }

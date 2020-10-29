@@ -32,6 +32,13 @@ namespace Server.Ziden.Kills
                 e.Mobile.SendMessage("Voce nao pode usar este comando no calor da batalha");
                 return;
             }
+
+            if(e.Mobile.RP)
+            {
+                e.Mobile.SendMessage("Voce nao pode usar este comando em um personagem RP");
+                return;
+            }
+
             e.Mobile.SendGump(new PvmRewardsGump(e.Mobile, e.Mobile as PlayerMobile));
         }
 
@@ -42,7 +49,10 @@ namespace Server.Ziden.Kills
 
             if (pontos <= 0)
                 return;
-          
+
+            if (bc.IsChampionSpawn && !(bc is BaseChampion))
+                pontos = pontos / 4;
+
             var c = e.Corpse;
             var killer = e.Killer;
 
@@ -53,6 +63,11 @@ namespace Server.Ziden.Kills
                     var pl = m.m_Mobile as PlayerMobile;
                     if(pl != null)
                     {
+                        if (pl.RP)
+                        {
+                            continue;
+                        }
+
                         PointsSystem.PontosPvm.AwardPoints(pl, pontos);
                         PointsSystem.PontosPvmEterno.AwardPoints(pl, pontos/2, false);
                         pl.SendMessage("+" + pontos + " pontos PvM");

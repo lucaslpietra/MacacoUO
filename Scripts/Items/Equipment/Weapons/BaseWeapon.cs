@@ -5834,6 +5834,9 @@ namespace Server.Items
                 list.Add("Imbuido"); // (Imbued)
             }
 
+            if (RP)
+                list.AddTwoValues("Item", "RP");
+
             #region Factions
             FactionEquipment.AddFactionProperties(this, list);
             #endregion
