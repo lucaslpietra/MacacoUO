@@ -160,11 +160,13 @@ namespace Server.Misc
 
             var map = from.Map;
 
+            /*
             if (target.Region != null && !target.Region.PvP)
             {
                 from.SendMessage("PvP desligado nesta regiao");
                 return false;
             }
+            */
 
             if(from.Party == null || from.Party != target.Party)
             {
