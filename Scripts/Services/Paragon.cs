@@ -6,13 +6,13 @@ namespace Server.Mobiles
 {
     public class Paragon
     {
-        public static double ChestChance = .10;// Chance that a paragon will carry a paragon chest
+        public static double ChestChance = .25;// Chance that a paragon will carry a paragon chest
         public static double ChocolateIngredientChance = .20;// Chance that a paragon will drop a chocolatiering ingredient
 
         public static int Hue = 0x501;// Paragon hue
 
         // Buffs
-        public static double HitsBuff = 1.5;
+        public static double HitsBuff = 3;
         public static double StrBuff = 1.05;
         public static double IntBuff = 1.20;
         public static double DexBuff = 1.20;
@@ -145,6 +145,12 @@ namespace Server.Mobiles
             if (bc is BaseChampion || bc is Harrower || bc is BaseVendor || bc is BaseEscortable || bc is Clone || bc.IsParagon)
                 return false;
 
+            if (bc.IsChampionSpawn)
+                return false;
+
+            if (bc.Region is ChampionSpawnRegion)
+                return false;
+
             int fame = bc.Fame;
 
             if (fame > 32000)
@@ -175,9 +181,9 @@ namespace Server.Mobiles
         public static void GiveArtifactTo(Mobile m, BaseCreature bc)
         {
             var name = bc.Name;
-            if(name != null && m is PlayerMobile)
+            if(name != null && m is PlayerMobile && bc.Name != null)
             {
-                ((PlayerMobile)m).AddRewardTitle("Matador de " + bc+" Paragon");
+                ((PlayerMobile)m).AddRewardTitle("Matador de " + bc.Name+" Paragon");
                 m.SendMessage(78, "Voce ganhou um titulo !");
                 m.SendMessage(78, "Use .titulos para ver seus titulos !");
             }

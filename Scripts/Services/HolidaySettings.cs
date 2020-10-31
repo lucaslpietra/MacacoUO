@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server.Items;
 
 namespace Server.Events.Halloween
@@ -31,14 +31,14 @@ namespace Server.Events.Halloween
         {
             get
             {
-                return new DateTime(2012, 10, 24);
+                return new DateTime(2020, 10, 24);
             }
         }// YY MM DD
         public static DateTime FinishHalloween
         {
             get
             {
-                return new DateTime(2012, 11, 15);
+                return new DateTime(2020, 11, 15);
             }
         }
         public static Item RandomGMBeggerItem

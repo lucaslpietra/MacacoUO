@@ -1462,25 +1462,23 @@ namespace Server.Items
             else
             {
                 sk = Skill;
-
                 if (sk != SkillName.Wrestling && !m.Player && !m.Body.IsHuman &&
                     m.Skills[SkillName.Wrestling].Value > m.Skills[sk].Value)
                 {
                     sk = SkillName.Wrestling;
                 }
             }
-
             return sk;
         }
 
         public virtual double GetAttackSkillValue(Mobile attacker, Mobile defender)
         {
-            return attacker.Skills[GetUsedSkill(attacker, true)].Value;
+            return Math.Min(attacker.Skills[GetUsedSkill(attacker, true)].Value, 100);
         }
 
         public virtual double GetDefendSkillValue(Mobile attacker, Mobile defender)
         {
-            return defender.Skills[GetUsedSkill(defender, true)].Value;
+            return Math.Min(defender.Skills[GetUsedSkill(defender, true)].Value, 100);
         }
 
         public static bool CheckAnimal(Mobile m, Type type)
@@ -1863,12 +1861,12 @@ namespace Server.Items
 
                 if (parry > 50 && attacker is BaseCreature)
                 {
-                    if(defender.Player)
+                    if (defender.Player)
                         chance += parry / 400;
                     else
                         chance += parry / 600;
                 }
-                    
+
 
                 if (attacker != null)
                 {
@@ -2733,25 +2731,21 @@ namespace Server.Items
                 percentageBonus -= 10;
             #endregion
 
-            #region Mondain's Legacy
-            if (Core.ML)
+
+            BaseTalisman talisman = attacker.Talisman as BaseTalisman;
+
+            if (talisman != null && talisman.Killer != null)
             {
-                BaseTalisman talisman = attacker.Talisman as BaseTalisman;
+                percentageBonus += talisman.Killer.DamageBonus(defender);
+            }
 
-                if (talisman != null && talisman.Killer != null)
+            if (this is ButchersWarCleaver)
+            {
+                if (defender is Bull || defender is Cow || defender is Gaman)
                 {
-                    percentageBonus += talisman.Killer.DamageBonus(defender);
-                }
-
-                if (this is ButchersWarCleaver)
-                {
-                    if (defender is Bull || defender is Cow || defender is Gaman)
-                    {
-                        percentageBonus += 100;
-                    }
+                    percentageBonus += 100;
                 }
             }
-            #endregion
 
             percentageBonus += ForceOfNature.GetBonus(attacker, defender);
 
@@ -3048,7 +3042,7 @@ namespace Server.Items
                 }
             }
 
-          
+
 
             if (Core.AOS && !BlockHitEffects)
             {
@@ -4050,10 +4044,10 @@ namespace Server.Items
             }
 
             if (checkSkills)
-            { 
+            {
                 attacker.CheckSkillMult(SkillName.Tactics, 0.0, attacker.Skills[SkillName.Tactics].Cap);
                 // Passively check tactics for gain
-                if(anat == SkillName.Anatomy)
+                if (anat == SkillName.Anatomy)
                     attacker.CheckSkillMult(SkillName.Anatomy, 0.0, attacker.Skills[SkillName.Anatomy].Cap);
                 // Passively check Anatomy for gain
 
@@ -4101,7 +4095,7 @@ namespace Server.Items
 
             if (Type == WeaponType.Bashing)
             {
-                if(this is BaseStaff)
+                if (this is BaseStaff)
                 {
                     modifiers += -0.075;
                 }
@@ -4110,7 +4104,7 @@ namespace Server.Items
                 if (bsBonus > 0.2)
                     bsBonus = 0.2;
 
-                modifiers += bsBonus;    
+                modifiers += bsBonus;
             }
 
             if (Type == WeaponType.Axe)
@@ -4176,7 +4170,7 @@ namespace Server.Items
                 damage = (int)(damage / 2.0);
             }
 
-            if(!(this is BaseRanged) && attacker is PlayerMobile && defender is BaseCreature)
+            if (!(this is BaseRanged) && attacker is PlayerMobile && defender is BaseCreature)
             {
                 damage = (int)(damage * 1.3);
             }

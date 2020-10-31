@@ -226,6 +226,14 @@ namespace Server.Engines.Craft
             index = AddCraft(typeof(JoiaArma), "Utils", "Joia Slayer para Armas", 70, 110, typeof(BloodOfTheDarkFather), "Sangue do Senhor das Sombras", 7, "Voce precisa de 7 sangue do senhor das sombras");
             SetNeedForno(index, true);
 
+            index = AddCraft(typeof(TalismanDaProtecao), "Talismans", "Talisman de Protecao", 80, 110, typeof(RelicFragment), "Fragmento de Reliquia", 5, "Voce precisa de 5 Fragmentos de Reliquia");
+            AddRes(index, typeof(SilverIngot), "Barras de Ouro", 10, "Voce precisa 10 barras de Ouro");
+            SetNeedForno(index, true);
+
+            index = AddCraft(typeof(TalismanDaMorte), "Talismans", "Talisman de Dano", 80, 110, typeof(RelicFragment), "Fragmento de Reliquia", 5, "Voce precisa de 6 Fragmentos de Reliquia");
+            AddRes(index, typeof(SilverIngot), "Barras de Ouro", 10, "Voce precisa 10 barras de Ouro");
+            SetNeedForno(index, true);
+
             // Ferro
             index = AddCraft(typeof(SilverBracelet), "Joias Basicas", "Bracelete", -25, 70,
                 typeof(IronIngot), "Lingotes de Ferro", 8, "Faltam lingotes de ferro");

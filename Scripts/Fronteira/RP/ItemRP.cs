@@ -5,8 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/*
 namespace Server.Fronteira.RP
 {
+
     public class ItemRP
     {
         public static void Configure()
@@ -48,3 +50,4 @@ namespace Server.Fronteira.RP
         }
     }
 }
+*/

@@ -249,9 +249,6 @@ namespace Server.Engines.Craft
             }
             #endregion
 
-            index = AddCraft(typeof(ScrollBinderDeed), 1044294, 1113135, 75.0, 125.0, typeof(Taint), 1113136, 1, 1044253);
-            SetItemHue(index, 1641);
-
             #region SA
             if (Core.SA)
             {

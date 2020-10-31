@@ -2311,6 +2311,7 @@ namespace Server.Multis
                 m_House.Bans.Clear();
                 m_House.Friends.Clear();
                 m_House.CoOwners.Clear();
+                m_House.Secures.ForEach(x => { x.Owner = to; });
                 m_House.ChangeLocks(to);
                 m_House.LastTraded = DateTime.UtcNow;
 

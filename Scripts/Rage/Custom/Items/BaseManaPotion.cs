@@ -1,6 +1,7 @@
 using System;
 using Server.Network;
 using Server.Services;
+using VitaNex.Modules.AutoPvP;
 
 namespace Server.Items
 {
@@ -56,8 +57,10 @@ namespace Server.Items
         {
             DoMana(from);
             PlayDrinkEffect(from);
-            Consume();
 
+            if (!(from.Region is PvPRegion))
+                Consume();
+          
             Timer.DelayCall(TimeSpan.FromSeconds(Delay), (f) => { f.EndAction(this.GetType()); }, from);
         }
 

@@ -30,6 +30,45 @@ namespace Server.Ziden.Achievements
         }
     }
 
+    public class SacolaHalloween : Bag
+    {
+
+        public static Type [] Tipos = new Type[]
+        {
+            typeof(HalloweenBloodFountainAddonDeed), typeof(HalloweenCasketTempleAddonDeed), typeof(HalloweenGhoulPicnicAddonDeed), typeof(HalloweenGuillotinePatchAddonDeed),
+            typeof(HalloweenHellPitAddonDeed), typeof(HalloweenSkullPostAddonDeed), typeof(HalloweenTortureChamberAddonDeed), typeof(HalloweenTreeRedAddonDeed), typeof(HalloweenTreeBlackAddonDeed)
+        };
+
+        [Constructable]
+        public SacolaHalloween()
+        {
+            Name = "Sacola de Halloween";
+            Hue = 38;
+            try
+            {
+                var item = Tipos[Utility.Random(Tipos.Length)];
+                var i = Activator.CreateInstance(item) as Item;
+                AddItem(i);
+            } catch(Exception e)
+            {
+                Name = "Sacola de Halloween da Travessura";
+            }
+        }
+
+        public SacolaHalloween(Serial s) : base(s) { }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+        }
+    }
+
+
     public class SacolaReceitaAlch : Bag
     {
         [Constructable]

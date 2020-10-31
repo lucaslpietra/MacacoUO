@@ -187,9 +187,9 @@ namespace Server.Mobiles
 
             SetSkill(SkillName.MagicResist, 110, 120);
             SetSkill(SkillName.Tactics, 100, 110.0);
-            SetSkill(SkillName.Wrestling, 110, 120);
+            SetSkill(SkillName.Wrestling, 100, 100);
 
-            AddItem(new QuartzoOre(30+Utility.Random(100)));
+            AddItem(new QuartzoOre(30 + Utility.Random(100)));
 
             Fame = 4500;
             Karma = -4500;
@@ -202,7 +202,7 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
-           
+
             base.OnDeath(c);
 
             if ((c.Map != null && c.Map.Rules == MapRules.FeluccaRules) || 0.5 > Utility.RandomDouble())
@@ -234,9 +234,42 @@ namespace Server.Mobiles
 
         public override void OnThink()
         {
-            if(Combatant != null && !IsCooldown("fog"))
+            if (Combatant != null && !IsCooldown("fog"))
             {
                 SetCooldown("fog", TimeSpan.FromSeconds(3));
+
+                var jatem = false;
+                var aqui = this.FindItemsInRange(this.Map, 0);
+                foreach (var i in aqui)
+                {
+                    if (i is Spells.Fourth.FireFieldSpell.FireFieldItem)
+                    {
+                        jatem = true;
+                        break;
+                    }
+                }
+
+                if (jatem)
+                {
+                    aqui = Combatant.FindItemsInRange(Combatant.Map, 0);
+                    foreach (var i in aqui)
+                    {
+                        if (i is Spells.Fourth.FireFieldSpell.FireFieldItem)
+                        {
+                            return;
+                        }
+                    }
+                    var alvo = Combatant;
+                    this.MovingParticles(Combatant, 0x36D4, 7, 0, false, true, 9502, 4019, 0x160);
+                    Timer.DelayCall(TimeSpan.FromSeconds(0.5), () =>
+                    {
+                        if (alvo != null && alvo.Alive)
+                        {
+                            new Spells.Fourth.FireFieldSpell.FireFieldItem(0x398C, alvo.Location, this, alvo.Map, TimeSpan.FromSeconds(30), 10);
+                        }
+                    });
+                    return;
+                }
                 new Spells.Fourth.FireFieldSpell.FireFieldItem(0x398C, this.Location, this, this.Map, TimeSpan.FromSeconds(30), 10);
             }
         }
@@ -270,7 +303,7 @@ namespace Server.Mobiles
 
             SetSkill(SkillName.MagicResist, 90, 140);
             SetSkill(SkillName.Tactics, 90, 130.0);
-            SetSkill(SkillName.Wrestling, 90, 120);
+            SetSkill(SkillName.Wrestling, 90, 100);
             SetSkill(SkillName.Magery, 100, 145);
             SetSkill(SkillName.EvalInt, 90, 140);
             SetSkill(SkillName.Meditation, 80, 120);

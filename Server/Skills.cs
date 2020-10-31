@@ -621,7 +621,7 @@ namespace Server
 
         public static double HARD = 0.45f;
         public static double MEDIUM = 0.70f;
-        public static double EASY = 0.78f;
+        public static double EASY = 0.9f;
 
         private static SkillInfo[] m_Table = new SkillInfo[58]
         {
@@ -651,7 +651,7 @@ namespace Server
             new SkillInfo(23, "Inscription", 0.0, 2.0, 8.0, "Escriba", null, 0.0, 0.2, 0.8, MEDIUM, StatCode.Int, StatCode.Dex),
             new SkillInfo(24, "Lockpicking", 0.0, 25.0, 0.0, "Infiltrador", null, 0.0, 2.0, 0.0, EASY, StatCode.Dex, StatCode.Int),
             new SkillInfo(25, "Magery", 0.0, 0.0, 15.0, "Mago", null, 0.0, 0.0, 1.5, MEDIUM, StatCode.Int, StatCode.Str, true ),
-            new SkillInfo(26, "Resisting Spells", 0.0, 0.0, 0.0, "Resistente", null, 0.25, 0.25, 0.5, MEDIUM, StatCode.Str, StatCode.Dex),
+            new SkillInfo(26, "Resisting Spells", 0.0, 0.0, 0.0, "Resistente", null, 0.25, 0.25, 0.5, EASY, StatCode.Str, StatCode.Dex),
             new SkillInfo(27, "Tactics", 0.0, 0.0, 0.0, "Tatico", null, 0.0, 0.2, 0.0, EASY, StatCode.Str, StatCode.Dex),
             new SkillInfo(28, "Snooping", 0.0, 25.0, 0.0, "Espiao", null, 0.0, 2.5, 0.0, EASY, StatCode.Dex, StatCode.Int),
             new SkillInfo(29, "Musicianship", 0.0, 0.0, 0.0, "Bardo", null, 0.0, 0.8, 0.2, EASY, StatCode.Dex, StatCode.Int),

@@ -138,10 +138,9 @@ namespace Server.Engines.Events
 
         private static void EventSink_Speech(SpeechEventArgs e)
         {
-            if (Insensitive.Contains(e.Speech, "trick or treat"))
+            if (Insensitive.Contains(e.Speech, "doces ou travessuras"))
             {
                 e.Mobile.Target = new TrickOrTreatTarget();
-
                 e.Mobile.SendLocalizedMessage(1076764);  /* Pick someone to Trick or Treat. */
             }
         }
@@ -216,7 +215,7 @@ namespace Server.Engines.Events
                             }
                             else
                             {
-                                m_Begged.Say(1076770); /* TRICK! */
+                                m_Begged.Say("Travessura !!"); /* TRICK! */
 
                                 int m_Action = Utility.Random(4);
 

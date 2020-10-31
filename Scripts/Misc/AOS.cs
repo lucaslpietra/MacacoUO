@@ -47,7 +47,7 @@ namespace Server
             }
         }
 
-        public static int Damage(IDamageable m, int damage, DamageType type=DamageType.Melee, Mobile dealer=null)
+        public static int Damage(IDamageable m, int damage, DamageType type = DamageType.Melee, Mobile dealer = null)
         {
             var ignoreArmor = type == DamageType.Spell || type == DamageType.SpellAOE;
             var direct = ignoreArmor ? 0 : 1;
@@ -123,7 +123,7 @@ namespace Server
                     Shard.Debug("Armor Pierce", m);
                     damage += (int)((double)damage * .1);
                 }
-                 
+
                 #region Skill Mastery
                 //SkillMasterySpell.OnDamage(m, from, type, ref damage);
                 #endregion
@@ -170,7 +170,7 @@ namespace Server
                     damage = m.Hits;
                 }
 
-                Shard.Debug("Dano Base: "+damage, m);
+                Shard.Debug("Dano Base: " + damage, m);
 
                 if (damageDealer is BaseCreature && type <= DamageType.Ranged)
                 {
@@ -191,7 +191,7 @@ namespace Server
 
                 if (pois > phys)
                 {
-                    if(CorpseSkinSpell.IsUnderEffects(m))
+                    if (CorpseSkinSpell.IsUnderEffects(m))
                     {
                         damage += 2;
                     }
@@ -199,17 +199,17 @@ namespace Server
 
                 // PACTO DE SANGUE
                 Mobile necromanteLinkado = BloodOathSpell.GetBloodOath(damageDealer);
-                if(necromanteLinkado != null)
+                if (necromanteLinkado != null)
                 {
                     // necro tomando o dano
-                    if(necromanteLinkado==m)
+                    if (necromanteLinkado == m)
                     {
                         damage = (int)Math.Round(damage * 1.25);
 
                         // Alvo toma um pouco tb
                         damageDealer.SendMessage("O pacto de sangue do necromante causa o dano em voce tambem");
                         AOS.Damage(damageDealer, damage / 2, DamageType.Spell, m);
-                    } 
+                    }
                 }
 
                 // PRESSAGIO
@@ -227,14 +227,15 @@ namespace Server
                 if (m != null)
                 {
                     var hue = 42;
-                    if(m is PlayerMobile)
+                    if (m is PlayerMobile)
                     {
                         hue = 32;
                     }
-                    if(pois > phys)
+                    if (pois > phys)
                     {
                         hue = 68;
-                    } else if(ignoreArmor)
+                    }
+                    else if (ignoreArmor)
                     {
                         hue = 48;
                     }
@@ -244,19 +245,22 @@ namespace Server
                 return damage;
             }
 
+            if (m != null)
+            {
+                if (m.Talisman != null && m.Talisman is ITalismanProtection)
+                {
+                    ITalismanProtection prot = m.Talisman as ITalismanProtection;
+                    if (prot != null)
+                    {
+                        damage = prot.Protection.ScaleDamage(damageDealer, damage);
+                    }
+                }
+            }
+
             return damage;
 
             #region Mondain's Legacy
-            if (m != null)
-            {
-                m.Items.ForEach(i =>
-                {
-                    ITalismanProtection prot = i as ITalismanProtection;
 
-                    if (prot != null)
-                        damage = prot.Protection.ScaleDamage(damageDealer, damage);
-                });
-            }
             #endregion
 
             Fix(ref phys);
@@ -349,7 +353,7 @@ namespace Server
             }
 
             #region Evil Omen, Blood Oath and reflect physical
-          
+
 
             if (damageDealer != null && !damageDealer.Deleted && damageDealer.Alive && !damageDealer.IsDeadBondedPet)
             {

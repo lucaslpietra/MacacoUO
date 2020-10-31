@@ -66,6 +66,7 @@ namespace Server.Engines.CannedEvil
 				default: return 0.25d;
 			}
 		}
+
 		public static double TranscendenceChance { get { return m_TranscendenceChance; } }
 		public static double ScrollChance { get { return m_ScrollChance; } }
 
@@ -74,11 +75,11 @@ namespace Server.Engines.CannedEvil
 			m_Enabled = Config.Get("Champions.Enabled", true);
 			m_RotateDelay = Config.Get("Champions.RotateDelay", TimeSpan.FromDays(1.0d));
 			m_GoldShowerPiles = Config.Get("Champions.GoldPiles", 50);
-			m_GoldShowerMinAmount = Config.Get("Champions.GoldMin", 4000);
-			m_GoldShowerMaxAmount = Config.Get("Champions.GoldMax", 5500);
+            m_GoldShowerMinAmount = 100;//Config.Get("Champions.GoldMin", 100);
+            m_GoldShowerMaxAmount = 300;//Config.Get("Champions.GoldMax", 300);
 			m_HarrowerGoldPiles = Config.Get("Champions.HarrowerGoldPiles", 75);
-			m_HarrowerGoldMinAmount = Config.Get("Champions.HarrowerGoldMin", 5000);
-			m_HarrowerGoldMaxAmount = Config.Get("Champions.HarrowerGoldMax", 10000);
+            m_HarrowerGoldMinAmount = 200;// Config.Get("Champions.HarrowerGoldMin", 5000);
+            m_HarrowerGoldMaxAmount = 300; // Config.Get("Champions.HarrowerGoldMax", 10000);
             m_PowerScrollAmount = 6;//Config.Get("Champions.PowerScrolls", 6);
             m_StatScrollAmount = 0; // Config.Get("Champions.StatScrolls", 16);
             m_ScrollChance = Config.Get("Champions.ScrollChance", 0.1d) / 100.0d;

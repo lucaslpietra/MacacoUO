@@ -1,5 +1,6 @@
 using System;
 using Server.Network;
+using VitaNex.Modules.AutoPvP;
 
 namespace Server.Items
 {
@@ -66,7 +67,9 @@ namespace Server.Items
             {
                 DoHeal(from);
                 PlayDrinkEffect(from);
-                Consume();
+
+                if(!(from.Region is PvPRegion))
+                    Consume();
             }
         }
     }

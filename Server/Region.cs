@@ -183,8 +183,8 @@ namespace Server
 			return ret;
 		}
 
-        public bool PvP;
-        public bool Recall;
+        public bool PvP = true;
+        public bool Recall = true;
 		private readonly string m_Name;
 		private readonly Map m_Map;
 		private readonly Region m_Parent;

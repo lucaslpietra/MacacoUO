@@ -67,6 +67,13 @@ namespace Server.SkillHandlers
             {
                 var skill = (10 + from.Skills[SkillName.Imbuing].Value * 0.9d) / 100d;
                 cristais = (int)(cristais * skill);
+
+                if(cristais <= 0)
+                {
+                    from.SendMessage("Voce nao pode desencantar isto");
+                    return;
+                }
+
                 from.SendGump(new DisenchantConfirm(from, cristais, i));
             }
 

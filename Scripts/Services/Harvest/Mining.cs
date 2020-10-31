@@ -101,7 +101,7 @@ namespace Server.Engines.Harvest
                 new HarvestResource(95, 60, 130.0, "Você encontrou minério de Quartzo e colocou em sua mochila", typeof(QuartzoOre), typeof(ValoriteGranite), typeof(ValoriteElemental)),
                 new HarvestResource(100, 55, 135.0, "Você encontrou minério de Berillo e colocou em sua mochila", typeof(BeriloOre),    typeof(DullCopperGranite), typeof(DullCopperElemental)),
                 new HarvestResource(103, 90.9, 139.0, "Você encontrou minério de Vibranium e colocou em sua mochila", typeof(VibraniumOre), typeof(ShadowIronGranite), typeof(ShadowIronElemental)),
-                 new HarvestResource(105, 90.9, 139.0, "Você encontrou minério de Adamantium e colocou em sua mochila", typeof(AdamantiumOre), typeof(ValoriteGranite), typeof(ShadowIronElemental)),
+                 new HarvestResource(105, 90.9, 139.0, "Você encontrou minério de Adamantium e colocou em sua mochila", typeof(AdamantiumOre), typeof(ValoriteGranite), typeof(AdamantiumElemental)),
             };
 
             veins = new HarvestVein[]

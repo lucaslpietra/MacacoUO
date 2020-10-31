@@ -122,15 +122,17 @@ namespace Server.Items
             TrapLevel = level;
             Locked = true;
 
-
-            var rnd = Utility.Random(5);
-            switch(rnd)
+            if(Utility.RandomBool())
             {
-                case 0: DropItem(new EmbroideryTool()); break;
-                case 1: DropItem(new WeaponEngravingTool()); break;
-                case 2: DropItem(new ArmorEngravingTool()); break;
-                case 3: DropItem(new SpellbookEngraver()); break;
-                case 4: DropItem(new MetalContainerEngraver()); break;
+                var rnd = Utility.Random(5);
+                switch (rnd)
+                {
+                    case 0: DropItem(new EmbroideryTool()); break;
+                    case 1: DropItem(new WeaponEngravingTool()); break;
+                    case 2: DropItem(new ArmorEngravingTool()); break;
+                    case 3: DropItem(new SpellbookEngraver()); break;
+                    case 4: DropItem(new MetalContainerEngraver()); break;
+                }
             }
 
             switch ( level )
@@ -167,7 +169,7 @@ namespace Server.Items
             for (int i = 0; i < level; ++i)
                 DropItem(Loot.RandomScroll(0, 63, SpellbookType.Regular));
 
-            for (int i = 0; i < level * 2; ++i)
+            for (int i = 0; i < level; ++i)
             {
                 Item item;
 
@@ -205,9 +207,10 @@ namespace Server.Items
                         if (weapon.Name != null)
                             weapon.Name = weapon.Name + " Paragon";
                         weapon.Hue = Paragon.Hue;
-                        weapon.DamageLevel = (WeaponDamageLevel)Utility.Random(6);
-                        weapon.AccuracyLevel = (WeaponAccuracyLevel)Utility.Random(6);
-                        weapon.DurabilityLevel = (WeaponDurabilityLevel)Utility.Random(6);
+                        weapon.Resource = CraftResource.Dourado;
+                        weapon.DamageLevel = (WeaponDamageLevel)Utility.Random(3);
+                        weapon.AccuracyLevel = (WeaponAccuracyLevel)Utility.Random(3);
+                        weapon.DurabilityLevel = (WeaponDurabilityLevel)Utility.Random(3);
                     }
 
                     DropItem(item);
@@ -230,8 +233,9 @@ namespace Server.Items
                         if (armor.Name != null)
                             armor.Name = armor.Name + " Paragon";
                         armor.Hue = Paragon.Hue;
-                        armor.ProtectionLevel = (ArmorProtectionLevel)Utility.Random(6);
-                        armor.Durability = (ArmorDurabilityLevel)Utility.Random(6);
+                        armor.Resource = CraftResource.Dourado;
+                        armor.ProtectionLevel = (ArmorProtectionLevel)Utility.Random(3);
+                        armor.Durability = (ArmorDurabilityLevel)Utility.Random(3);
                     }
 
                     DropItem(item);
@@ -278,7 +282,7 @@ namespace Server.Items
                 DropItem(item);
             }
 
-            DropItem(new TreasureMap(level + 1, (Siege.SiegeShard ?  Map.Felucca : Utility.RandomBool() ? Map.Felucca : Map.Trammel)));
+            //DropItem(new TreasureMap(level + 1, (Siege.SiegeShard ?  Map.Felucca : Utility.RandomBool() ? Map.Felucca : Map.Trammel)));
         }
     }
 }

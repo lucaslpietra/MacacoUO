@@ -142,11 +142,13 @@ namespace Server.Items
 
                 if(lockpickable is Container)
                 {
+                    /*
                     if(from.RP)
                     {
                         foreach (var i in ((Container)lockpickable).Items)
                             i.RP = true;
                     }
+                    */
                 }
             }
             else

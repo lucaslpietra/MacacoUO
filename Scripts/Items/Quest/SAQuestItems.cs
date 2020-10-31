@@ -633,6 +633,7 @@ namespace Server.Items
             : base(0x2DB3)
         {
             Name = "Fragmento de Reliquia";
+            Hue = Paragon.Hue;
             Stackable = true;
             Amount = amount;
         }
@@ -663,6 +664,12 @@ namespace Server.Items
                 return true;
             }
         }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            from.SendMessage("Joalheiros podem usar isto para fabricar talismans");
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

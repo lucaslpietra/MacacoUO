@@ -1192,8 +1192,12 @@ namespace Server
                     var noto = Notoriety.Compute(from, this);
                     hue = Notoriety.GetHue(noto);
 
+
                     if (noto == Notoriety.CanBeAttacked && !this.Player)
                         hue = Notoriety.GetHue(Notoriety.Criminal);
+
+                    if (Shard.DebugEnabled)
+                        Shard.Debug("noto " + noto.ToString());
 
                     if (noto == Notoriety.CanBeAttacked && Player)
                     {

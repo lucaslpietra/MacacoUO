@@ -208,7 +208,7 @@ namespace Server.Mobiles
     {
         public const int MaxLoyalty = 100;
 
-        public virtual bool IsSmart { get { return this.Body.IsHuman || this.Body == 24; } }
+        public virtual bool IsSmart { get { return IsParagon || this.Body.IsHuman || this.Body == 24; } }
 
         private bool _LockDirection;
 
@@ -389,7 +389,7 @@ namespace Server.Mobiles
                     regen = 4;
 
                 if (IsParagon)
-                    regen += 40;
+                    regen += 6;
 
                 regen += HumilityVirtue.GetRegenBonus(this);
 
@@ -6355,8 +6355,12 @@ namespace Server.Mobiles
             typeof(AnimalAI),  typeof(HealerAI),  typeof(VendorAI)
         });
 
+        //private static int COR_CINZA = 0x3B2;
+        //private static int COR_AZUL = 
+
         public override void OnSingleClick(Mobile from)
         {
+            var cor = 0x3B2;
             if (Controlled && Commandable)
             {
                 string number;
@@ -6391,6 +6395,7 @@ namespace Server.Mobiles
                         }
                     }
                 }
+                
                 PrivateOverheadMessage(MessageType.Regular, 0x3B2, true, number, from.NetState);
             }
             base.OnSingleClick(from);
@@ -6937,6 +6942,14 @@ namespace Server.Mobiles
                 if (bonus || this.m_Paragon)
                 {
                     c.PublicOverheadMessage(MessageType.Regular, 78, false, "$");
+                }
+
+                if(this.m_Paragon)
+                {
+                    c.DropItem(new RelicFragment(Utility.Random(2, 6)));
+                    c.DropItem(Loot.RandomGem());
+                    c.DropItem(Loot.RandomGem());
+                    c.DropItem(Loot.RandomGem());
                 }
 
                 LootingRights = null;

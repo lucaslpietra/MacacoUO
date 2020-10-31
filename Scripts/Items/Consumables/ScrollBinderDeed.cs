@@ -120,8 +120,8 @@ namespace Server.Items
 								double value = ps.Value;
                                 int needed = 0;
 								if(value == 105) needed = 8;
-								else if(value == 110) needed = 12;
-								else if(value == 115) needed = 10;
+								else if(value == 110) needed = 6;
+								else if(value == 115) needed = 4;
 								else
 									return;
 								
@@ -131,7 +131,7 @@ namespace Server.Items
 								m_Skill = ps.Skill;
 								m_BinderType = BinderType.PowerScroll;
 								ps.Delete();
-                                from.SendMessage("Binding Powerscroll.");
+                                from.SendMessage("Anexando.");
                                 from.PlaySound(0x249);
 							}
 						}

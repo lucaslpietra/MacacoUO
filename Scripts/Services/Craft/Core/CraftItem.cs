@@ -2256,7 +2256,6 @@ namespace Server.Engines.Craft
                 {
                     from.SendLocalizedMessage(1044153); // You don't have the required skills to attempt this item.
                 }
-
                 AutoCraftTimer.EndTimer(from);
             }
             else
@@ -2347,6 +2346,7 @@ namespace Server.Engines.Craft
 
                 if (m_iCount < m_iCountMax)
                 {
+                    m_From.RevealingAction();
                     m_CraftSystem.PlayCraftEffect(m_From);
                 }
                 else

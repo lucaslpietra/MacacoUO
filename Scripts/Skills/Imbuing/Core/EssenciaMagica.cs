@@ -144,6 +144,11 @@ namespace Server.Ziden
                 if (targeted is BaseWeapon)
                 {
                     var w = targeted as BaseWeapon;
+                    if (w.LootType == LootType.Blessed)
+                    {
+                        from.SendMessage("Nessa arma nao pode...");
+                        return;
+                    }
                     bool foi = false;
                     var list = new List<int>(new int[] { 0, 1, 2 });
 
@@ -217,6 +222,11 @@ namespace Server.Ziden
                 else if (targeted is BaseArmor)
                 {
                     var w = targeted as BaseArmor;
+                    if(w.LootType == LootType.Blessed)
+                    {
+                        from.SendMessage("Nessa armadura nao pode...");
+                        return;
+                    }
                     bool foi = false;
                     var list = new List<int>(new int[] { 0, 1 });
 

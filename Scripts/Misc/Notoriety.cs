@@ -11,7 +11,6 @@ using Server.Guilds;
 using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
-using Server.Scripts.New.Adam.NewGuild;
 using Server.SkillHandlers;
 using Server.Spells.Chivalry;
 using Server.Spells.Seventh;
@@ -25,12 +24,11 @@ namespace Server.Misc
         {
             Notoriety.Hues[Notoriety.Innocent] = 0x59;
             Notoriety.Hues[Notoriety.Ally] = 0x3F;
-            Notoriety.Hues[Notoriety.CanBeAttacked] = 1047;
+            Notoriety.Hues[Notoriety.CanBeAttacked] = 0x3B2;
             Notoriety.Hues[Notoriety.Criminal] = 0x3B2;
             Notoriety.Hues[Notoriety.Enemy] = 0x90;
             Notoriety.Hues[Notoriety.Murderer] = 0x22;
             Notoriety.Hues[Notoriety.Invulnerable] = 0x35;
-            //Notoriety.Hues[Notoriety.Thief] = 1047;
 
             Notoriety.Handler = MobileNotoriety;
 
@@ -89,11 +87,6 @@ namespace Server.Misc
             }
             #endregion
 
-            #region Mondain's Legacy
-            if (target is Gregorio)
-                return false;
-            #endregion
-
             if (map != null && (map.Rules & MapRules.BeneficialRestrictions) == 0)
                 return true; // In felucca, anything goes
 
@@ -127,61 +120,10 @@ namespace Server.Misc
         {
             var target = damageable as Mobile;
 
-            var g = (Guild)BaseGuild.FindByAbbrev(NewPlayerGuildAutoJoin.Abrev);//don't allow people in the new guild to attack eachother
-            if (g != null && g.IsMember(from) && g.IsMember(target))
-            {
-                from.SendMessage("Voce nao pode fazer isto com a guilda de novatos.");
-                return false;
-            }
-
-
-            if (from is PlayerMobile && target is WispGuia)
-            {
-                from.SendMessage("Voce nao pode atacar uma fada guia.");
-                return false;
-            }
-
-            if (target is BaseVendor)
-                return false;
-
             if (from == null || target == null || from.IsStaff() || target.IsStaff())
                 return true;
 
-            #region Mondain's Legacy
-            if (target is Gregorio)
-            {
-                if (Gregorio.IsMurderer(from))
-                    return true;
-
-                from.SendLocalizedMessage(1075456); // You are not allowed to damage this NPC unless your on the Guilty Quest
-                return false;
-            }
-            #endregion
-
             var map = from.Map;
-
-            /*
-            if (target.Region != null && !target.Region.PvP)
-            {
-                from.SendMessage("PvP desligado nesta regiao");
-                return false;
-            }
-            */
-
-            if(from.Party == null || from.Party != target.Party)
-            {
-                // jogador nao RP nao pode atacar jogador RP
-                if (target.RP && !from.RP)
-                    return false;
-
-                // RP tb nao pode atacar nao RP
-                if (from.RP && !target.RP)
-                    return false;
-            }
-
-            // pets de players normais nao atacam RP
-            if (target.RP && from is BaseCreature && !((BaseCreature)from).ControlMaster.RP)
-                return false;
 
             if (map != null && (map.Rules & MapRules.HarmfulRestrictions) == 0)
                 return true; // In felucca, anything goes
@@ -194,7 +136,6 @@ namespace Server.Misc
                 target = ((BaseCreature)target).SummonMaster;
 
             var bc = from as BaseCreature;
-
 
             if (!from.Player && !(bc != null && bc.GetMaster() != null && bc.GetMaster().IsPlayer()))
             {
@@ -261,6 +202,7 @@ namespace Server.Misc
                         g = (Guild)(c.Guild = null);
                 }
             }
+
             return g;
         }
 
@@ -372,6 +314,7 @@ namespace Server.Misc
                     if (m == source)
                         return Notoriety.CanBeAttacked;
                 }
+
                 return Notoriety.Innocent;
             }
         }
@@ -386,12 +329,7 @@ namespace Server.Misc
             var target = damageable as Mobile;
 
             if (target == null)
-            {
-                Shard.Debug("Target null");
                 return Notoriety.CanBeAttacked;
-            }
-
-            Shard.Debug("Calculando notoriety de " + target.Name, source);
 
             if (target.Blessed)
                 return Notoriety.Invulnerable;
@@ -402,16 +340,6 @@ namespace Server.Misc
             if (target is PlayerVendor || target is TownCrier)
                 return Notoriety.Invulnerable;
 
-            if (source.Party == null || source.Party != target.Party)
-            {
-                // PK NAO MATA RP
-                if (target.RP && !source.RP)
-                    return Notoriety.Invulnerable;
-
-                // RP NAO MATA PK
-                if (source.RP && !target.RP)
-                    return Notoriety.Invulnerable;
-            }
 
             var context = EnemyOfOneSpell.GetContext(source);
 
@@ -433,23 +361,22 @@ namespace Server.Misc
 
                 var master = bc.GetMaster();
 
-                if (master != null && master.IsStaff())
-                    return Notoriety.CanBeAttacked;
+                //if (master != null && master.IsStaff())
+                //    return Notoriety.CanBeAttacked;
 
                 master = bc.ControlMaster;
-
-                if (source == master)
-                    return Notoriety.CanBeAttacked;
 
                 if (master != null && !bc.ForceNotoriety)
                 {
                     if (source == master && CheckAggressor(target.Aggressors, source))
+                    {
                         return Notoriety.CanBeAttacked;
+                    }
 
                     if (CheckAggressor(source.Aggressors, bc))
                         return Notoriety.CanBeAttacked;
 
-                    Shard.Debug("NOTO SOURCE MASTER");
+                    Shard.Debug("Vendo noto do master da criatura");
 
                     return MobileNotoriety(source, master);
                 }
@@ -470,6 +397,9 @@ namespace Server.Misc
                     return Notoriety.Murderer;
             }
 
+            if (source.Player && target is BaseEscort)
+                return Notoriety.Innocent;
+
             if (target.Criminal)
                 return Notoriety.Criminal;
 
@@ -478,7 +408,7 @@ namespace Server.Misc
 
             if (sourceGuild != null && targetGuild != null)
             {
-                if (sourceGuild == targetGuild && targetGuild.Abbreviation != NewPlayerGuildAutoJoin.Abrev)
+                if (sourceGuild == targetGuild)
                     return Notoriety.Ally;
 
                 if (sourceGuild.IsAlly(targetGuild))
@@ -486,14 +416,6 @@ namespace Server.Misc
 
                 if (sourceGuild.IsEnemy(targetGuild))
                     return Notoriety.Enemy;
-            }
-
-            var sourceParty = Party.Get(source);
-            var targParty = Party.Get(target);
-
-            if (sourceParty != null && targParty != null && sourceParty == targParty)
-            {
-                return Notoriety.Ally;
             }
 
             if (Settings.Enabled)
@@ -509,10 +431,7 @@ namespace Server.Misc
                 return Notoriety.Enemy;
 
             if (Stealing.ClassicMode && target is PlayerMobile && ((PlayerMobile)target).PermaFlags.Contains(source))
-            {
                 return Notoriety.CanBeAttacked;
-            }
-
 
             if (target is BaseCreature && ((BaseCreature)target).AlwaysAttackable)
                 return Notoriety.CanBeAttacked;
@@ -524,37 +443,20 @@ namespace Server.Misc
             if (!(target is BaseCreature && ((BaseCreature)target).InitialInnocent))
             {
                 if (!target.Body.IsHuman && !target.Body.IsGhost && !IsPet(target as BaseCreature) && !(target is PlayerMobile))
-                {
                     return Notoriety.CanBeAttacked;
-                }
-
 
                 if (!Core.ML && !target.CanBeginAction(typeof(PolymorphSpell)))
-                {
                     return Notoriety.CanBeAttacked;
-                }
-
             }
 
             if (CheckAggressor(source.Aggressors, target))
-            {
-                Shard.Debug("Agressor 1");
                 return Notoriety.CanBeAttacked;
-            }
-
 
             if (source is PlayerMobile && CheckPetAggressor((PlayerMobile)source, target))
-            {
-                Shard.Debug("Agressor 2");
                 return Notoriety.CanBeAttacked;
-            }
-
 
             if (CheckAggressed(source.Aggressed, target))
-            {
-                Shard.Debug("Agressor 3");
                 return Notoriety.CanBeAttacked;
-            }
 
             if (source is PlayerMobile && CheckPetAggressed((PlayerMobile)source, target))
                 return Notoriety.CanBeAttacked;
@@ -591,7 +493,6 @@ namespace Server.Misc
                 }
             }
 
-            Shard.Debug("Inno");
             return Notoriety.Innocent;
         }
 

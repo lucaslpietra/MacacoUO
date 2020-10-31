@@ -10,7 +10,7 @@ namespace Server.Items
         private SkillMod m_SkillMod;
         [Constructable]
         public AncientSmithyHammer(int bonus)
-            : this(bonus, 30)
+            : this(bonus, 100)
         {
         }
 

@@ -1,4 +1,5 @@
 using System;
+using VitaNex.Modules.AutoPvP;
 
 namespace Server.Items
 {
@@ -34,7 +35,9 @@ namespace Server.Items
             from.Stam += Scale(from, (int)(this.Refresh * from.StamMax));
 
             PlayDrinkEffect(from);
-            Consume();
+
+            if (!(from.Region is PvPRegion))
+                Consume();
         }
     }
 }

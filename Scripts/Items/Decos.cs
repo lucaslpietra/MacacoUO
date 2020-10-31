@@ -59,7 +59,7 @@ namespace Server.Items
             typeof(SkullsOnPike), typeof(Snowman), typeof(UltimaBanner), typeof(WallSconce), typeof(HitchingPost),
             typeof(WallTorch), typeof(WritingDesk), typeof(WritingTable), typeof(BrazierTall), typeof(Tapestry1N), typeof(Tapestry2N),
             typeof(Tapestry2W), typeof(Tapestry3W),  typeof(Tapestry4W), typeof(Tapestry4N),  typeof(Tapestry5N), typeof(StackofIngots), typeof(StackofLogs), typeof(AncientArmor),
-            typeof(CannonBall2), typeof(Gunpowder2), typeof(CannonFuse), typeof(CrackedCrystalBall), typeof(SeersPowder), typeof(EnchantedMarble),
+            typeof(CannonBall2), typeof(Gunpowder2), typeof(CannonFuse), typeof(CrackedCrystalBall), typeof(SeersPowder), typeof(EnchantedMarble),typeof(minostatueAddonDeed)
         };
 
         public static Item RandomDeco()

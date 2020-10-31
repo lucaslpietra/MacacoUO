@@ -197,7 +197,7 @@ namespace Server.Misc
         private static double BONUS_CIDADE = 0;
         private static double BONUS_CASA = -0.1;
 
-        public static double GetExp(double skill, double skillDifficulty, double gcBonus = 0)
+        public static double GetExp(double skill, double skillDifficulty, bool work, bool pvm, double gcBonus = 0)
         {
             // Formuleta simplona de up
             var gc = GC_INICIAL + (gcBonus * 4);
@@ -211,19 +211,27 @@ namespace Server.Misc
             
             gc *= skillDifficulty;
 
-            if (gc < 0.005)
-                gc = 0.005;
+            if(!work && pvm)
+            {
+                if (gc < 0.05)
+                    gc = 0.05;
+            } else
+            {
+                if (gc < 0.005)
+                    gc = 0.005;
 
-            if (skillDifficulty == SkillInfo.EASY)
-            {
-                if (gc < 0.01)
-                    gc = 0.01;
+                if (skillDifficulty == SkillInfo.EASY)
+                {
+                    if (gc < 0.01)
+                        gc = 0.01;
+                }
+                if (skillDifficulty == SkillInfo.MEDIUM)
+                {
+                    if (gc < 0.008)
+                        gc = 0.008;
+                }
             }
-            if (skillDifficulty == SkillInfo.MEDIUM)
-            {
-                if (gc < 0.008)
-                    gc = 0.008;
-            }
+           
 
             if (skill < 50)
                 gc *= 3;
@@ -334,7 +342,7 @@ namespace Server.Misc
                 */
             }
 
-            var gc = GetExp(skill.Value, skill.Info.GainFactor, gcBonus) * mult;
+            var gc = GetExp(skill.Value, skill.Info.GainFactor, work, pvm, gcBonus) * mult;
 
             if (pvm)
                 gc *= 1.2;

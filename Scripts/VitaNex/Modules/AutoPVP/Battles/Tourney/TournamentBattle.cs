@@ -53,7 +53,7 @@ namespace VitaNex.Modules.AutoPvP.Battles
 		{
 			Name = "Tournament";
 			Category = "Tournaments";
-			Description = "An elimination tournament!";
+			Description = "Torneio de Eliminacao!";
 
 			AddTeam("Contenders", 10, 50, 85);
 

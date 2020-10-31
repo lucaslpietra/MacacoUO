@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Server.Events.Halloween;
 using Server.Items;
@@ -155,7 +155,7 @@ namespace Server.Engines.Events
         public PlayerBones(String name)
             : base(Utility.RandomMinMax(0x0ECA, 0x0ED2))
         {
-            this.Name = String.Format("{0}'s bones", name);
+            this.Name = String.Format("ossos de {0}", name);
 
             switch( Utility.Random(10) )
             {
@@ -194,7 +194,7 @@ namespace Server.Engines.Events
     [CorpseName("a rotting corpse")]
     public class ZombieSkeleton : BaseCreature
     {
-        private static readonly string m_Name = "Zombie Skeleton";
+        private static readonly string m_Name = "Zumbi";
         private PlayerMobile m_DeadPlayer;
         public ZombieSkeleton()
             : this(null)
@@ -206,7 +206,7 @@ namespace Server.Engines.Events
         {
             this.m_DeadPlayer = player;
 
-            this.Name = (player != null) ? String.Format("{0}'s {1}", player.Name, m_Name) : m_Name;
+            this.Name = (player != null) ? String.Format("{0} {1}", player.Name, m_Name) : m_Name;
 
             this.Body = 0x93;
             this.BaseSoundID = 0x1c3;

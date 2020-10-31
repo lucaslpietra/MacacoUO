@@ -101,7 +101,6 @@ namespace Server.Gumps
                         from.FixedParticles(0x376A, 9, 32, 5030, EffectLayer.Waist);
                         from.CheckSkillMult(SkillName.Imbuing, 0, 100, mult);
                         from.SendMessage("Voce transformou o item em " + cristais + " de essencia");
-                        item.PublicOverheadMessage("* desencantado *");
                         item.Delete();
                         var essencia = new EssenciaMagica();
                         essencia.Amount = cristais;

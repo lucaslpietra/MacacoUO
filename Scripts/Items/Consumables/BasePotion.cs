@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Server.Engines.Craft;
+using VitaNex.Modules.AutoPvP;
 
 namespace Server.Items
 {
@@ -282,7 +283,9 @@ namespace Server.Items
         {
             m.RevealingAction();
             m.PlaySound(0x031);
-            m.AddToBackpack(new Bottle());
+
+            if (!(m.Region is PvPRegion))
+                m.AddToBackpack(new Bottle());
 
             if (m.Body.IsHuman && !m.Mounted)
             {

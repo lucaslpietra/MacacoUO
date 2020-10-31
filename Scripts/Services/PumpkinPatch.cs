@@ -30,8 +30,8 @@ namespace Server.Engines.Events
 
         protected static void PumpkinPatchSpawnerCallback()
         {
-            AddPumpkin(Map.Felucca);
-            AddPumpkin(Map.Trammel);
+            //AddPumpkin(Map.Felucca);
+            //AddPumpkin(Map.Trammel);
         }
 
         private static void AddPumpkin(Map map)

@@ -163,7 +163,7 @@ namespace Server.Items
 
         public int ScaleDamage(Mobile from, int damage)
         {
-            if (from != null && (from.GetType() == m_Type || (m_Type != null && from.GetType().IsSubclassOf(m_Type))))
+            if (from != null && (from.Name == m_Name || from.GetType() == m_Type || (m_Type != null && from.GetType().IsSubclassOf(m_Type))))
                 return (int)(damage * (1 - m_Amount / 100.0));
 
             return damage;
