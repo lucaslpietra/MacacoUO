@@ -190,6 +190,9 @@ namespace Server.Misc
 
                 if (from is PlayerMobile)
                     Shard.Debug("Meditation Rate: " + rate, from);
+                else if (from is BaseCreature)
+                    rate -= ((BaseCreature)from).DefaultManaRegen / 10;
+
 
                 if (rate < 0.5)
                     rate = 0.5;
@@ -232,9 +235,9 @@ namespace Server.Misc
             points += CombatTrainingSpell.RegenBonus(from);
             points += BarrabHemolymphConcentrate.HPRegenBonus(from);
 
-            if (Core.AOS)
-                foreach (RegenBonusHandler handler in HitsBonusHandlers)
-                    points += handler(from);
+
+            foreach (RegenBonusHandler handler in HitsBonusHandlers)
+                points += handler(from);
 
             return points;
         }

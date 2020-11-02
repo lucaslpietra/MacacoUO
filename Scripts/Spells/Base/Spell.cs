@@ -365,13 +365,12 @@ namespace Server.Spells
         /// <returns></returns>
 		public virtual bool OnCasterMoving(Direction d)
         {
-            /*
-            if (IsCasting && BlocksMovement && (!(m_Caster is BaseCreature) || ((BaseCreature)m_Caster).FreezeOnCast))
+            if (Shard.CAST_CLASSICO && IsCasting && BlocksMovement && (!(m_Caster is BaseCreature) || ((BaseCreature)m_Caster).FreezeOnCast))
 			{
 				m_Caster.SendLocalizedMessage(500111); // You are frozen and can not move.
 				return false;
 			}
-            */
+            
             return true;
         }
 
@@ -426,7 +425,8 @@ namespace Server.Spells
                 }
 
                 // Nao da disturb quando equipa
-                // Disturb(DisturbType.EquipRequest);
+                if(Shard.CAST_CLASSICO)
+                    Disturb(DisturbType.EquipRequest);
             }
 
             return true;
@@ -454,13 +454,11 @@ namespace Server.Spells
                 return true;
             }
 
-            /*
             if (AosAttributes.GetValue(m_Caster, AosAttribute.LowerRegCost) > Utility.Random(100))
             {
                 return true;
             }
-            */
-
+        
             if (this is MagerySpell || this is NecromancerSpell)
             {
                 if (ElementalBall.UseElementalBall(Caster))

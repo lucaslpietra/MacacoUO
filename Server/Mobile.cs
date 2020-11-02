@@ -1703,7 +1703,6 @@ namespace Server
                 if (oldValue != value)
                 {
                     m_Hunger = value;
-
                     EventSink.InvokeHungerChanged(new HungerChangedEventArgs(this, oldValue));
                 }
             }
@@ -7738,6 +7737,10 @@ namespace Server
 
         public bool SendGump(Gump g)
         {
+            if(!IsStaff())
+            {
+                CloseGump(g.GetType());
+            }
             return SendGump(g, false);
         }
 

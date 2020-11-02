@@ -57,6 +57,7 @@ namespace Server.Engines.Points
         CaboDaTormenta,
 
         PvM,
+        Exp,
         PvMEterno,
 
         Trabalho
@@ -418,6 +419,7 @@ namespace Server.Engines.Points
         public static PontosLogin PontosLogin { get; set; }
         public static PontosRP PontosRP { get; set; }
         public static PontosPvm PontosPvm { get; set; }
+        public static Exp Exp { get; set; }
         public static PontosPvmEternos PontosPvmEterno { get; set; }
         public static PontosTrabalho PontosTrabalho { get; set; }
 
@@ -450,6 +452,7 @@ namespace Server.Engines.Points
             PontosPvm = new PontosPvm();
             PontosPvmEterno = new PontosPvmEternos();
             PontosTrabalho = new PontosTrabalho();
+            Exp = new Exp();
         }
 
         public static void HandleKill(BaseCreature victim, Mobile damager, int index)

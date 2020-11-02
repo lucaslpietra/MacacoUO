@@ -16,7 +16,7 @@ namespace Server.Engines.Chat
 
         public Mobile Mobile { get { return m_Mobile; } }
 
-        public string Username { get { return String.Format("<{0}>{1}", m_Mobile.Serial.Value, m_Mobile.Name); } }
+        public string Username { get { return m_Mobile.Name; } }
 
         public Channel CurrentChannel { get { return m_Channel; } set { m_Channel = value; } }
 

@@ -62,6 +62,9 @@ namespace Server.Mobiles
             else
                 this.AddItem(new SavageMask());
 
+            if (Utility.RandomDouble() < 0.2)
+                AddItem(new TaxidermyKit());
+
             if (Utility.Random(5) == 1)
             {
                 PackItem(DefCookingExp.GetReceitaIgredienteRandom());

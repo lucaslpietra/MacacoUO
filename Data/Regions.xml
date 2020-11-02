@@ -99,7 +99,7 @@
       </region>
     </region>
   
-    <region type="NoHousingRegion" name="Bowan">
+    <region type="RPGuardedRegion" name="Bowan">
       <rune name="Bowan" />
       <rect x="800" y="1693" width="76" height="125" />
       <rect x="875" y="1718" width="16" height="64" />
@@ -107,7 +107,7 @@
       <rect x="873" y="1798" width="7" height="21" />
       <rect x="828" y="1802" width="25" height="25" />
       <go x="856" y="1749" z="0" />
-      <music name="DreadHornArea" />
+      <music name="Honor" />
     </region>
     
     <!-- End Neutral Town Regions -->

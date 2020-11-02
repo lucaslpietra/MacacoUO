@@ -4160,9 +4160,13 @@ namespace Server.Items
         public virtual int ComputeDamage(Mobile attacker, Mobile defender)
         {
             var baseDamage = GetBaseDamage(attacker);
-            Shard.Debug("Base Weapon Damage: " + baseDamage, attacker);
+          
             int damage = (int)ScaleDamageOld(attacker, baseDamage, true);
-            Shard.Debug("Scaled Weapon Damage: " + damage, attacker);
+            if(Shard.DebugEnabled)
+            {
+                Shard.Debug("Base Weapon Damage: " + baseDamage, attacker);
+                Shard.Debug("Scaled Weapon Damage: " + damage, attacker);
+            }
             // pre-AOS, halve damage if the defender is a player or the attacker is not a player
             if (defender is PlayerMobile || !(attacker is PlayerMobile))
             {
@@ -4170,9 +4174,9 @@ namespace Server.Items
                 damage = (int)(damage / 2.0);
             }
 
-            if (!(this is BaseRanged) && attacker is PlayerMobile && defender is BaseCreature)
+            if (!(this is BaseRanged) && attacker is PlayerMobile && defender is BaseCreature && defender.HitsMax > 150)
             {
-                damage = (int)(damage * 1.3);
+                damage = (int)(damage * 1.25);
             }
 
             return damage;

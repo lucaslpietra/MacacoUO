@@ -36,6 +36,8 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo("tinta de cabelo", typeof(HairDye), 60, 20, 0xEFF, 0));
                 Add(new GenericBuyInfo("penteados", typeof(AdvancedHairRestylingDeed), 500, 20, 0x14F0, 0));
                 Add(new GenericBuyInfo("penteados elficos", typeof(AdvancedHairRestylingElfDeed), 50000, 20, 0x14F0, 0));
+                Add(new GenericBuyInfo("barbas", typeof(AdvancedBeardRestylingDeed), 500, 20, 0x14F0, 0));
+                Add(new GenericBuyInfo("barbas elficas", typeof(AdvancedBeardRestylingElfDeed), 50000, 20, 0x14F0, 0));
             }
         }
 

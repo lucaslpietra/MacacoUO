@@ -51,7 +51,7 @@ namespace Server.Spells.Fourth
             {
                 this.Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2, 500951); // You cannot heal that.
             }
-            else if ((!Shard.POL_STYLE || Shard.SPHERE_STYLE) && m.Poisoned)
+            else if (Shard.SPHERE_STYLE && m.Poisoned)
             {
                 this.Caster.PrivateOverheadMessage("Voce esta envenenado...");
             }

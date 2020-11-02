@@ -154,9 +154,9 @@ namespace Server.Engines.BulkOrders
                         bool allRequiredSkills = true;
                         double chance = item.GetSuccessChance(m, res, system, false, ref allRequiredSkills);
 
-                        Shard.Debug("Chance Pra Bod: " + chance+" Usando res "+(res==null ? "Null": res.Name), m);
+                        // Shard.Debug("Chance Pra Bod: " + chance+" Usando res "+(res==null ? "Null": res.Name), m);
 
-                        if (allRequiredSkills && chance > 0 && chance < 1)
+                        if (allRequiredSkills && chance > 0)
                         {
                             if (reqExceptional)
                                 chance = item.GetExceptionalChance(system, chance, m);

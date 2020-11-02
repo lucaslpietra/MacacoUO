@@ -91,9 +91,9 @@ namespace Server.Gumps
                         }
                         var mult = 1;
                         if (cristais > 10)
-                            mult += 1;
+                            mult += 10;
                         if (cristais > 20)
-                            mult += 2;
+                            mult += 20;
 
                         from.OverheadMessage("* desencantou item *");
                         from.PlaySound(0x57);

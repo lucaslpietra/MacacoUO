@@ -35,11 +35,11 @@ namespace Server.Gumps
             AddBackground(210, 220, 507, 392, 9200);
             AddHtml(366, 234, 200, 23, @"Criar Personagem RP ?", (bool)false, (bool)false);
             AddBackground(223, 275, 476, 250, 5150);
-            AddHtml(250, 306, 422, 24, @"- Perma Death (Morreu Perdeu o Personagem)", (bool)false, (bool)false);
-            AddHtml(251, 334, 422, 24, @"- Nao tem .pvm ou .login (Apenas via NPCs)", (bool)false, (bool)false);
-            AddHtml(251, 361, 422, 24, @"- So pode usar items obtidos por personagens RP", (bool)false, (bool)false);
+            AddHtml(250, 306, 422, 24, @"- Perma Death (Zerar pontos de vida, personagem deletado)", (bool)false, (bool)false);
+            AddHtml(251, 334, 422, 24, @"- Nao tem .pvm ou .login", (bool)false, (bool)false);
+            AddHtml(251, 361, 422, 24, @"- RP Obrigatorio", (bool)false, (bool)false);
             AddHtml(251, 388, 432, 24, @"- So pode ser PKlizado ou Looteado por Personagem RP", (bool)false, (bool)false);
-            AddHtml(252, 415, 432, 24, @"- Upa skills mais lentamente e nao eh (Novato)", (bool)false, (bool)false);
+            AddHtml(252, 415, 432, 24, @"- Nao tem a tag de (Novato)", (bool)false, (bool)false);
             AddHtml(252, 442, 432, 24, @"- Nao pode alterar template", (bool)false, (bool)false);
             AddHtml(252, 469, 432, 24, @"- Nao pode usar 'Estou Preso'", (bool)false, (bool)false);
             AddHtml(414, 278, 77, 25, @"Contrato", (bool)false, (bool)false);
@@ -68,7 +68,7 @@ namespace Server.Gumps
                         from.SendMessage("Voce criou um personagem RP");
                         from.RP = true;
                         from.Young = false;
-                        from.SendGump(new ClassGump());
+                        from.SendGump(new GumpLore(from));
                         break;
                     }
                 case (int)Buttons.Nada:
@@ -76,7 +76,7 @@ namespace Server.Gumps
                     {
                         from.SendMessage("Voce criou um personagem NORMAL");
                         from.RP = false;
-                        from.SendGump(new ClassGump());
+                        from.SendGump(new GumpLore(from));
                         break;
                     }
 

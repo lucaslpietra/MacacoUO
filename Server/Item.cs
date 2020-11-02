@@ -535,7 +535,7 @@ namespace Server
     public enum LootType : byte
     {
         /// <summary>
-        ///     Stealable. Lootable.
+        ///     Ste. Lootable.
         /// </summary>
         Regular = 0,
 

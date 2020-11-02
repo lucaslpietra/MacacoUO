@@ -958,7 +958,7 @@ namespace Server.Mobiles
             set
             {
 
-                if(value)
+                if (value)
                 {
                     if (!Paragon.ValidParagon(this))
                         return;
@@ -3029,7 +3029,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return Fame / 110;
+                return Fame / 160;
             }
         }
 
@@ -4394,11 +4394,8 @@ namespace Server.Mobiles
             {
                 if (TryHitPoison())
                 {
-                    if (Core.TOL)
-                    {
-                        defender.FixedEffect(0x3779, 1, 10, 1271, 0);
-                    }
 
+                    defender.FixedEffect(0x3779, 1, 10, 1271, 0);
                     defender.ApplyPoison(this, p);
                 }
 
@@ -5858,12 +5855,12 @@ namespace Server.Mobiles
                 }
                 else if (Fame < 2500)
                 {
-                   
+
                     AddLoot(LootPack.Average, 1);
                 }
                 else if (Fame < 5000)
                 {
-                   
+
                     AddLoot(LootPack.Rich, 1);
                 }
                 else if (Fame < 10000)
@@ -6303,7 +6300,10 @@ namespace Server.Mobiles
         }
 
         //[CommandProperty(AccessLevel.Counselor)]
-        public override bool Murderer { get {
+        public override bool Murderer
+        {
+            get
+            {
                 return !(ControlMaster is PlayerMobile) && AIObject != null && !AIPacificas.Contains(AIObject.GetType()) && FightMode != FightMode.Aggressor && FightMode != FightMode.Good;
             }
         }
@@ -6395,7 +6395,7 @@ namespace Server.Mobiles
                         }
                     }
                 }
-                
+
                 PrivateOverheadMessage(MessageType.Regular, 0x3B2, true, number, from.NetState);
             }
             base.OnSingleClick(from);
@@ -6841,7 +6841,7 @@ namespace Server.Mobiles
         public override void OnDeath(Container c)
         {
 
-     
+
             MeerMage.StopEffect(this, false);
 
             if (IsBonded)
@@ -6944,7 +6944,7 @@ namespace Server.Mobiles
                     c.PublicOverheadMessage(MessageType.Regular, 78, false, "$");
                 }
 
-                if(this.m_Paragon)
+                if (this.m_Paragon)
                 {
                     c.DropItem(new RelicFragment(Utility.Random(2, 6)));
                     c.DropItem(Loot.RandomGem());

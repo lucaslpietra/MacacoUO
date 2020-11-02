@@ -246,7 +246,7 @@ namespace Server.Engines.BulkOrders
             }
         }
 
-        public static double MIN_CRAFT_BODS = 0.01;
+        public static double MIN_CRAFT_BODS = 0.00;
 
         public static Item CreateBulkOrder(Mobile m, BODType type, bool fromContextMenu)
         {
@@ -388,7 +388,8 @@ namespace Server.Engines.BulkOrders
                 case BODType.Carpentry: points = CarpentryRewardCalculator.Instance.ComputePoints(bod); break;
             }
 
-            banked = (double)points * 0.05;
+            var bonus = bod.BODType == BODType.Alchemy;
+            banked = (double)points * (bonus ? 0.075 : 0.05);
         }
 
         public static void ComputePoints(LargeBOD bod, out int points, out double banked)

@@ -121,7 +121,7 @@ namespace Server.Mobiles
 
         public virtual Item GetArtifact()
         {
-            if (Shard.POL_STYLE)
+            if (!Core.AOS)
             {
                 return this.CreateArtifact(this.DecorativeList);
             }

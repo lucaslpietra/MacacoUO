@@ -74,6 +74,7 @@ namespace Server.SkillHandlers
                     return;
                 }
 
+                from.CloseGump(typeof(DisenchantConfirm));
                 from.SendGump(new DisenchantConfirm(from, cristais, i));
             }
 

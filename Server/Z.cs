@@ -18,8 +18,11 @@ namespace Server
 
         public static bool DebugEnabled { get { return Config.Get("General.Debug", false); } }
 
-        public static bool POL_STYLE = true;
-        public static bool SPHERE_STYLE = false; //{ get { return Config.Get("General.Sphere", false); } } 
+        public static bool POL_STYLE { get { return Config.Get("General.POL", true); } }
+
+        public static bool CAST_CLASSICO { get { return Config.Get("General.CAST_CLASSICO", false); } }
+
+        public static bool SPHERE_STYLE { get { return Config.Get("General.TARGET_SPHERE", false); } } 
 
         public static void Erro(string str, Mobile from = null)
         {

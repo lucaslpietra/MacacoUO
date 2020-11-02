@@ -201,7 +201,13 @@ namespace Server.Multis
 
                             if ((id.Impassable || (id.Surface && (id.Flags & TileFlag.Background) == 0)) && addTileTop > oldTile.Z && (oldTile.Z + id.CalcHeight) > addTileZ + 3)
                             {
-                                Console.WriteLine("BAD STATIC");
+                                if(Shard.DebugEnabled)
+                                {
+                                    Shard.Debug("Bad Static: " + id.Name+" Passable ? "+id.Impassable);
+                                    Shard.Debug("Regra 1: "+ (id.Surface && (id.Flags & TileFlag.Background) == 0));
+                                    Shard.Debug("Regra 2:" + (addTileTop > oldTile.Z));
+                                    Shard.Debug("Regra 3:" + ((oldTile.Z + id.CalcHeight) > addTileZ + 3));
+                                }
                                 return HousePlacementResult.BadStatic; // Broke rule #2
                             }       
                             /*else if ( isFoundation && !hasSurface && (id.Flags & TileFlag.Surface) != 0 && (oldTile.Z + id.CalcHeight) == center.Z )
@@ -333,11 +339,31 @@ namespace Server.Multis
 
                 for (int j = 0; j < tiles.Length; ++j)
                 {
+
                     StaticTile tile = tiles[j];
                     ItemData id = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
 
-                    if (id.Impassable || (id.Surface && (id.Flags & TileFlag.Background) == 0 && (tile.Z + id.CalcHeight) > (center.Z + 2)))
+                    if (Shard.DebugEnabled)
                     {
+                        Shard.Debug("Verificando file " + id.Name+" Fila Size: "+ tiles.Length);
+                        for (int jj = 0; jj < tiles.Length; ++jj)
+                        {
+                            StaticTile tilej = tiles[jj];
+                            ItemData idj = TileData.ItemTable[tilej.ID & TileData.MaxItemValue];
+                            Shard.Debug("Tem na fila: " + idj.Name);
+                        }
+
+                    }
+
+                    if (id.Name != "agua" && (id.Impassable || (id.Surface && (id.Flags & TileFlag.Background) == 0 && (tile.Z + id.CalcHeight) > (center.Z + 2))))
+                    {
+                        if (Shard.DebugEnabled)
+                        {
+                            Shard.Debug("Bad Static: " + id.Name + " Passable ? " + id.Impassable);
+                            Shard.Debug("Regra 1: " + (id.Surface && (id.Flags & TileFlag.Background) == 0));
+                            Shard.Debug("Regra 3:" + ((tile.Z + id.CalcHeight) > (center.Z + 2)));
+                            Shard.Debug("X "+ borderPoint.X + " Y " + borderPoint.Y);
+                        }
                         Console.WriteLine("BAD STATIC");
                         return HousePlacementResult.BadStatic; // Broke rule #1
                     }

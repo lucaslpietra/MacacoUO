@@ -8,6 +8,16 @@ using System;
 
 namespace Server.Ziden.Kills
 {
+    public class Exp : PointsSystem
+    {
+        public override TextDefinition Name { get { return "Exp"; } }
+        public override PointsType Loyalty { get { return PointsType.Exp; } }
+        public override bool AutoAdd { get { return true; } }
+        public override double MaxPoints { get { return double.MaxValue; } }
+        public override bool ShowOnLoyaltyGump { get { return true; } }
+        public static bool Enabled = true;
+    }
+
     public class PontosPvm : PointsSystem
     {
         public override TextDefinition Name { get { return "PvM"; } }
@@ -68,7 +78,8 @@ namespace Server.Ziden.Kills
                             continue;
                         }
 
-                        PointsSystem.PontosPvm.AwardPoints(pl, pontos);
+                        // PointsSystem.Exp.AwardPoints(pl, pontos, false);
+                        PointsSystem.PontosPvm.AwardPoints(pl, pontos, false);
                         PointsSystem.PontosPvmEterno.AwardPoints(pl, pontos/2, false);
                         pl.SendMessage("+" + pontos + " pontos PvM");
                         if(!pl.IsCooldown("pvmp"))
