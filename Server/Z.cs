@@ -22,7 +22,9 @@ namespace Server
 
         public static bool CAST_CLASSICO { get { return Config.Get("General.CAST_CLASSICO", false); } }
 
-        public static bool SPHERE_STYLE { get { return Config.Get("General.TARGET_SPHERE", false); } } 
+        public static bool SPHERE_STYLE { get { return Config.Get("General.TARGET_SPHERE", false); } }
+
+        public static bool EXP = true;
 
         public static void Erro(string str, Mobile from = null)
         {

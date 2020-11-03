@@ -7,7 +7,7 @@ namespace Server.Items
     {
         public int ExpPrecisa()
         {
-            return (2 * this.Protection.Amount);
+            return (2 * this.Killer.Amount);
         }
 
         public int Exp { get; set; }

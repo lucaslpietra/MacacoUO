@@ -213,7 +213,7 @@ namespace Server.Items
                 SkillName.Tactics, SkillName.Anatomy, SkillName.Magery, SkillName.MagicResist,
                 SkillName.Chivalry, SkillName.Necromancy, SkillName.Ninjitsu, SkillName.Healing,
                 SkillName.Musicianship, SkillName.Peacemaking, SkillName.Provocation, SkillName.Discordance,
-                SkillName.Archery, SkillName.DetectHidden, SkillName.Lockpicking, SkillName.Parry
+                SkillName.Archery, SkillName.DetectHidden, SkillName.Lockpicking, SkillName.Parry, SkillName.Poisoning
             });
 
             public override void OnResponse(NetState sender, RelayInfo info)

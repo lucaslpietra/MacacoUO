@@ -188,6 +188,12 @@ namespace Server.Items
             }
         }
 
+        public override void AddNameProperties(ObjectPropertyList list)
+        {
+            base.AddNameProperties(list);
+            list.Add("Skill: " + GetMinSkill());
+        }
+
         public void Colhe(Mobile from, Point3D loc, Map map)
         {
             if (map == Map.Internal)

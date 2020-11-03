@@ -57,10 +57,11 @@ namespace Server.Engines.Points
         CaboDaTormenta,
 
         PvM,
-        Exp,
         PvMEterno,
 
-        Trabalho
+        Trabalho,
+
+        Exp,
     }
 
     public abstract class PointsSystem

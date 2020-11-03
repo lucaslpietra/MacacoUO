@@ -55,6 +55,7 @@ namespace Server.Items
                 else
                     list.Add("Germinando");
             }
+            list.Add("Skill: " + GetMinSkill());
         }
 
         public BasePlantable(Serial serial)

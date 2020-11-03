@@ -41,7 +41,7 @@ namespace Server.Spells.Chivalry
         {
             get
             {
-                return 30.0;
+                return 15;
             }
         }
         public override int RequiredMana

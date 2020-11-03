@@ -43,7 +43,7 @@ namespace Server.Items
         {
             _Resource = CraftResource.Ferro;
 
-            Name = "kotl automaton";
+            Name = "automato";
             Body = 1406;
             BaseSoundID = 541;
 
@@ -68,10 +68,11 @@ namespace Server.Items
             SetSkill(SkillName.Tactics, 82.0, 94.8);
             SetSkill(SkillName.Wrestling, 94.4, 108.4);
             SetSkill(SkillName.DetectHidden, 40.0);
-            SetSkill(SkillName.Parry, 70.0, 80.0);
+            SetSkill(SkillName.Parry, 120, 120);
 
             Fame = 14000;
             Karma = -14000;
+            VirtualArmor = 100;
 
             ControlSlots = 4;
             SetWeaponAbility(WeaponAbility.ParalyzingBlow);

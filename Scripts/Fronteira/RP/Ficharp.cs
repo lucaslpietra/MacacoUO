@@ -31,104 +31,67 @@ namespace Server.Gumps
 
             if (caller.HasGump(typeof(MyGump)))
                 caller.CloseGump(typeof(MyGump));
-            caller.SendGump(new MyGump(caller));
+            caller.SendGump(new MyGump());
         }
 
-        public MyGump(Mobile from) : this()
-        {
-            caller = from;
-        }
-
-        public MyGump() : base(0, 0)
+        public MyGump()
+         : base(0, 0)
         {
             this.Closable = true;
             this.Disposable = true;
             this.Dragable = true;
             this.Resizable = false;
-
-            AddPage(0);
-            AddBackground(38, 21, 648, 512, 9200);
-            AddButton(581, 490, 247, 248, 0, GumpButtonType.Reply, 0);
-            AddImage(38, 22, 5174);
-            AddImage(206, 22, 5174);
-            AddImage(375, 22, 5174);
-            AddImage(514, 22, 5174);
-            AddImage(38, 134, 5174);
-            AddImage(206, 134, 5174);
-            AddImage(375, 134, 5174);
-            AddImage(514, 134, 5174);
-            AddImage(38, 245, 5174);
-            AddImage(206, 245, 5174);
-            AddImage(375, 245, 5174);
-            AddImage(514, 245, 5174);
-            AddImage(38, 356, 5174);
-            AddImage(206, 356, 5174);
-            AddImage(375, 356, 5174);
-            AddImage(514, 356, 5174);
-            AddImage(38, 421, 5174);
-            AddImage(207, 421, 5174);
-            AddImage(376, 421, 5174);
-            AddImage(515, 421, 5174);
-            AddImage(38, 526, 5177);
-            AddImage(206, 526, 5177);
-            AddImage(373, 526, 5177);
-            AddImage(515, 526, 5177);
-            AddImage(38, 0, 5171);
-            AddImage(206, 0, 5171);
-            AddImage(372, 0, 5171);
-            AddImage(514, 0, 5171);
-            AddImage(0, 0, 5170);
-            AddImage(0, 526, 5156);
-            AddImage(684, 526, 5158);
-            AddImage(684, 0, 5172);
-            AddImage(0, 38, 5153);
-            AddImage(0, 150, 5153);
-            AddImage(0, 262, 5153);
-            AddImage(0, 374, 5153);
-            AddImage(0, 418, 5153);
-            AddImage(684, 38, 5155);
-            AddImage(684, 150, 5155);
-            AddImage(684, 262, 5155);
-            AddImage(684, 372, 5155);
-            AddImage(684, 417, 5155);
-            AddImage(121, 93, 4037);
-            AddImage(154, 101, 4213);
-            AddImage(361, 53, 4246);
-            AddButton(185, 171, 5575, 248, 0, GumpButtonType.Reply, 0);
-            AddButton(186, 379, 5551, 248, 0, GumpButtonType.Reply, 0);
-            AddButton(186, 277, 5583, 248, 0, GumpButtonType.Reply, 0);
-            AddButton(677, 273, 5582, 248, 0, GumpButtonType.Reply, 0);
-            AddButton(677, 169, 5572, 248, 0, GumpButtonType.Reply, 0);
-            AddButton(677, 375, 5569, 248, 0, GumpButtonType.Reply, 0);
-            AddButton(304, 306, 5603, 248, 0, GumpButtonType.Reply, 0);
-            AddButton(606, 305, 5601, 248, 0, GumpButtonType.Reply, 0);
-            AddImage(251, 102, 4230);
-            AddImage(322, 173, 5011);
-            AddImage(156, 234, 4213);
-            AddImage(647, 232, 4213, 0);
-            AddImage(648, 336, 4213, 0);
-            AddImage(645, 438, 4213, 0);
-            AddImage(153, 339, 4213);
-            AddImage(152, 442, 4213);
-            AddTextEntry(196, 237, 41, 20, 0, 1, @"PERFIL");
-            AddTextEntry(159, 341, 118, 20, 0, 2, @"VIRTUDES E DEFEITOS");
-            AddTextEntry(185, 445, 59, 20, 0, 3, @"OBJETIVOS");
-            AddTextEntry(677, 234, 59, 20, 0, 4, @"OBJETIVOS");
-            AddTextEntry(668, 338, 93, 20, 0, 5, @"NOTAS MENTAIS");
-            AddTextEntry(668, 440, 93, 20, 0, 6, @"NOTAS STAFF");
-            AddLabel(420, 67, 0, @"FICHA RP");
-            AddButton(115, 562, 5514, 248, 0, GumpButtonType.Reply, 0);
-            AddButton(733, 530, 4025, 248, 0, GumpButtonType.Reply, 0);
-            AddButton(688, 531, 4008, 248, 0, GumpButtonType.Reply, 0);
-            AddImage(367, 468, 93);
-            AddButton(340, 464, 9004, 248, 0, GumpButtonType.Reply, 0);
-            AddImage(482, 468, 93);
-
-
-      
+            this.AddPage(0);
+            this.AddBackground(94, 94, 654, 464, 9200);
+            this.AddImage(311, 160, 1800);
+            this.AddButton(181, 174, 5575, 248, (int)Buttons.PERFIL, GumpButtonType.Page, 0);
+            this.AddButton(603, 295, 5581, 248, (int)Buttons.NOTASMENTAIS, GumpButtonType.Page, 0);
+            this.AddButton(178, 298, 5583, 248, (int)Buttons.VIRTUDESEDEFEITOS, GumpButtonType.Page, 0);
+            this.AddButton(177, 420, 5588, 248, (int)Buttons.OBJETIVOS, GumpButtonType.Page, 0);
+            this.AddButton(602, 421, 5585, 248, (int)Buttons.NOTASSTAFF, GumpButtonType.Page, 0);
+            this.AddButton(605, 170, 5545, 248, (int)Buttons.BIOGRAFIA, GumpButtonType.Page, 0);
+            this.AddImage(313, 158, 1889);
+            this.AddImage(147, 243, 0);
+            this.AddImage(144, 369, 0);
+            this.AddImage(143, 491, 0);
+            this.AddImage(575, 240, 0);
+            this.AddImage(572, 366, 0);
+            this.AddImage(572, 492, 0);
+            this.AddTextEntry(191, 245, 54, 20, 0, (int)Buttons.PERFILTEXTO, @"Perfil");
+            this.AddTextEntry(155, 370, 111, 20, 0, (int)Buttons.VIRTUDESEDEFEITOSTeXTO, @"Virtudes e Defeitos");
+            this.AddTextEntry(177, 492, 64, 20, 0, (int)Buttons.OBJETIVOSTEXTO, @"Objetivos");
+            this.AddTextEntry(612, 241, 68, 20, 0, (int)Buttons.biografiatexto, @"Biografia");
+            this.AddTextEntry(600, 367, 83, 20, 0, (int)Buttons.notasmentaistexto, @"Notas Mentais");
+            this.AddTextEntry(602, 494, 77, 20, 0, (int)Buttons.NotasStaffTexto, @"Notas Staff");
+            this.AddImage(44, 81, 10400);
+            this.AddImage(44, 258, 10401);
+            this.AddImage(44, 440, 10402);
+            this.AddImage(328, 103, 0);
+            this.AddTextEntry(397, 118, 75, 20, 0, (int)Buttons.FICHARP, @"FICHA RP");
+            this.AddButton(702, 529, 4025, 248, (int)Buttons.Button9, GumpButtonType.Reply, 0);
+            this.AddImage(352, 532, 1801);
+            this.AddButton(652, 530, 4020, 248, (int)Buttons.Button10, GumpButtonType.Reply, 0);
 
         }
 
+        public enum Buttons
+        {
+            PERFIL,
+            NOTASMENTAIS,
+            VIRTUDESEDEFEITOS,
+            OBJETIVOS,
+            NOTASSTAFF,
+            BIOGRAFIA,
+            PERFILTEXTO,
+            VIRTUDESEDEFEITOSTeXTO,
+            OBJETIVOSTEXTO,
+            biografiatexto,
+            notasmentaistexto,
+            NotasStaffTexto,
+            FICHARP,
+            Button9,
+            Button10,
+        }
 
 
         public override void OnResponse(NetState sender, RelayInfo info)
