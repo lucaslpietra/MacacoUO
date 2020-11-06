@@ -299,6 +299,8 @@ namespace Server.Engines.Craft
             SetNeedForno(index, true);
             AddRecipe(index, (int)JewelRecipes.Turqueza);
 
+     
+
             index = AddCraft(typeof(PerfectEmerald), "Pedras", "Esmeralda Perfeita", 25, 100, typeof(Emerald), "Esmeralda", 3, "Faltam pedras para criar isto");
             AddRecipe(index, (int)JewelRecipes.Esmeralda);
 
@@ -332,6 +334,8 @@ namespace Server.Engines.Craft
             AddElegante(typeof(Citrine), "Citrina Eru", JewelRecipes.Citrino);
             AddElegante(typeof(Sapphire), "Safira Negra", JewelRecipes.Safira);
             AddElegante(typeof(Amber), "Ambar Brilhante", JewelRecipes.Ambar);
+
+
 
             Resmelt = true;
             Repair = false;
