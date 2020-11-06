@@ -1,4 +1,5 @@
 using System;
+using Server.Engines.Points;
 using Server.Items;
 using Server.Mobiles;
 using Server.Ziden.Dungeons.Esgoto;
@@ -74,6 +75,7 @@ namespace Server.Engines.Quests
 
         public override void OnCompleted()
         {
+            PointsSystem.Exp.AwardPoints(this.Owner, 300);
             this.Owner.PlaySound(this.CompleteSound);
         }
 

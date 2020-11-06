@@ -30,6 +30,9 @@ namespace Server.Scripts.New.Adam.NewGuild
         {
             var pm = e.Mobile as PlayerMobile;
 
+            if (pm == null)
+                return;
+
             if (Shard.WARSHARD)
             {
                 return;

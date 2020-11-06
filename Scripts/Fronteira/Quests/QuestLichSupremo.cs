@@ -1,4 +1,5 @@
 using System;
+using Server.Engines.Points;
 using Server.Items;
 using Server.Mobiles;
 using Server.Ziden;
@@ -55,7 +56,7 @@ Se voce conseguir, quem sabe<b> voce nao consegue um livro de necromancia </b> p
             : base()
         {
             this.AddObjective(new SlayObjective(typeof(AncientLichRenowned), "Lich Rei", 1));
-            this.AddReward(new BaseReward(typeof(Gold), 5000, "5000 Moedas de Ouro"));
+            this.AddReward(new BaseReward(typeof(Gold), 1000, "1000 Moedas de Ouro"));
             this.AddReward(new BaseReward(typeof(LichKiller), 1, "Titulo de Matador de Liches"));
             this.AddReward(new BaseReward(typeof(BagOfNecromancerReagents), 25, "Sacola de Reags Necro"));
         }
@@ -63,6 +64,7 @@ Se voce conseguir, quem sabe<b> voce nao consegue um livro de necromancia </b> p
         public override void OnCompleted()
         {
             this.Owner.PlaySound(this.CompleteSound);
+            PointsSystem.Exp.AwardPoints(this.Owner, 1000);
         }
 
         public override void Serialize(GenericWriter writer)

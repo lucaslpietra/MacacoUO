@@ -394,6 +394,9 @@ namespace Server.Spells
                     if (((MagerySpell)this).Circle <= SpellCircle.Fifth)
                         return true;
                 }
+
+                if (this is CloseWoundsSpell)
+                    return true;
             }
             else
             {

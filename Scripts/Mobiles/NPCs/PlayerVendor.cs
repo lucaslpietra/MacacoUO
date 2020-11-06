@@ -708,8 +708,8 @@ namespace Server.Mobiles
 
         public virtual bool IsOwner(Mobile m)
         {
-            if (m.AccessLevel >= AccessLevel.GameMaster)
-                return true;
+            //if (m.AccessLevel >= AccessLevel.GameMaster)
+            //    return true;
 
             if (BaseHouse.NewVendorSystem && House != null)
             {

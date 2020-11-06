@@ -29,7 +29,6 @@ namespace Server.Commands
         {
             e.Mobile.SendMessage("Selecione um jogador para dar pontos RP numa area de 20x20 em volta dele");
             e.Mobile.Target = new IT();
-
         }
 
         public class IT : Target {

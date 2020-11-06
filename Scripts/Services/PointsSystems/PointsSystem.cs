@@ -125,22 +125,23 @@ namespace Server.Engines.Points
             }
         }
 
-        public virtual void AwardPoints(Mobile from, double points, bool quest = false, bool message = true)
+        public virtual double AwardPoints(Mobile from, double points, bool quest = false, bool message = true)
         {
             if (!(from is PlayerMobile) || points <= 0)
-                return;
+                return 0;
 
             PointsEntry entry = GetEntry(from);
-
+            var old = 0d;
             if (entry != null)
             {
                 SetPoints((PlayerMobile)from, Math.Min(MaxPoints, entry.Points + points));
 
-                double old = entry.Points;
+                old = entry.Points;
 
                 if (message)
                     SendMessage((PlayerMobile)from, old, points, quest);
             }
+            return old;
         }
 
         public void SetPoints(PlayerMobile pm, double points)
@@ -153,10 +154,7 @@ namespace Server.Engines.Points
 
         public virtual void SendMessage(PlayerMobile from, double old, double points, bool quest)
         {
-            if (quest)
-                from.SendLocalizedMessage("Pontos Ganhos:" + ((int)points).ToString()); //You have received ~1_val~ loyalty points as a reward for completing the quest. 
-            else
-                from.SendLocalizedMessage(String.Format("Pontos {0}\t aumentou em {1}", Name.ToString(), ((int)points).ToString()));  // Your loyalty to ~1_GROUP~ has increased by ~2_AMOUNT~;Original
+                from.SendLocalizedMessage(78, String.Format("+{0}\t {1}", ((int)points).ToString(), Name.ToString()));  // Your loyalty to ~1_GROUP~ has increased by ~2_AMOUNT~;Original
         }
 
         public virtual bool DeductPoints(Mobile from, double points, bool message = false)

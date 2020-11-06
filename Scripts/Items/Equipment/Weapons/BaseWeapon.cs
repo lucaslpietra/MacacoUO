@@ -2251,7 +2251,7 @@ namespace Server.Items
 
                 if (defender is PlayerMobile)
                 {
-                    virtualArmor *= 1.05;
+                    //virtualArmor *= 1.05;
                     scalar *= 2;
                 }
 
@@ -2473,6 +2473,11 @@ namespace Server.Items
                 }
             }
 
+            if(this is BaseRanged && attacker.FindItemOnLayer(Layer.Cloak) is BaseQuiver)
+            {
+
+            }
+
             var transform = AnimalForm.GetContext(attacker);
             if (transform != null)
             {
@@ -2487,10 +2492,11 @@ namespace Server.Items
                     attacker.MovingEffect(damageable, 0x0F53, 18, 1, false, false, 78, 1);
                 }
 
+
+
                 if (transform.Type == typeof(Llama) && this is BaseRanged)
                 {
                     damageBonus -= 0.05;
-                    //attacker.MovingEffect(damageable, 0x0F53, 18, 1, false, false, 78, 1);
                 }
 
                 if (transform.Type == typeof(GreyWolf) && !(this is BaseRanged))

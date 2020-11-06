@@ -86,7 +86,7 @@ namespace Server.Gumps
                     {
                         if(!Valid())
                         {
-                            from.SendMessage("Algo errado nao esta certo...");
+                            from.SendMessage("O item precisa estar em sua mochila");
                             return;
                         }
                         var mult = 1;

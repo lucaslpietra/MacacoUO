@@ -669,7 +669,7 @@ namespace Server.Items
         {
             get
             {
-                return Content == BeverageType.Water ? 5 : 5;
+                return Content == BeverageType.Water ? 30 : 5;
             }
         }
 

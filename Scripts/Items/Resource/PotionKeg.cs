@@ -1,8 +1,9 @@
+using Server.Engines.Craft;
 using System;
 
 namespace Server.Items
 {
-    public class PotionKeg : Item
+    public class PotionKeg : Item, ICraftable
     {
         private PotionEffect m_Type;
         private int m_Held;
@@ -460,6 +461,11 @@ namespace Server.Items
                 case PotionEffect.AntiParalize:
                     return new AntiParaPotion();
             }
+        }
+
+        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
+        {
+            return quality;
         }
     }
 }

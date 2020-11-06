@@ -77,10 +77,6 @@ namespace Server.Spells.Chivalry
             {
                 this.Caster.SendMessage("Alvo morto"); // You cannot heal a creature that is already dead!
             }
-            else if (m.Hits >= m.HitsMax)
-            {
-                this.Caster.SendMessage("O alvo nao esta danificado"); // That being is not damaged!
-            }
             else if (Server.Items.MortalStrike.IsWounded(m))
             {
                 this.Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2, (this.Caster == m) ? 1005000 : 1010398);
@@ -89,11 +85,11 @@ namespace Server.Spells.Chivalry
             {
                 this.Caster.SendMessage("O alvo nao pode ser curado enquanto esta envenenado");
             }
-            /*else if (BleedAttack.IsBleeding(m))
+            else if (BleedAttack.IsBleeding(m))
             {
                 this.Caster.SendMessage("O alvo nao pode ser curado enquanto esta sangrando");
             }
-            */
+            
             else if (this.CheckBSequence(m))
             {
                 //SpellHelper.Turn(this.Caster, m);
@@ -102,7 +98,7 @@ namespace Server.Spells.Chivalry
                 * The caster's Karma affects the amount of damage healed.
                 */
 
-                int toHeal = this.ComputePowerValue(6) + Utility.RandomMinMax(0, 2);
+                var toHeal = (this.ComputePowerValue(6) + Utility.RandomMinMax(0, 2)) * 0.7;
 
                 // TODO: Should caps be applied?
                 if (toHeal < 7)
@@ -115,7 +111,7 @@ namespace Server.Spells.Chivalry
 
                 //m.Hits += toHeal;	//Was previosuly due to the message
                 //m.Heal( toHeal, Caster, false );
-                SpellHelper.Heal(toHeal, m, this.Caster, false);
+                SpellHelper.Heal((int)toHeal, m, this.Caster, false);
 
                 //m.SendLocalizedMessage(1060203, toHeal.ToString()); // You have had ~1_HEALED_AMOUNT~ hit points of damage healed.
 

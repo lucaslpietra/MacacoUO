@@ -4995,6 +4995,11 @@ namespace Server.Mobiles
             m_AntiMacroTable = new Hashtable();
         }
 
+        public override bool SendGump(Gump g)
+        {
+            return base.SendGump(g);
+        }
+
         public List<Mobile> VisibilityList { get { return m_VisList; } }
 
         public List<Mobile> PermaFlags { get { return m_PermaFlags; } }
@@ -5047,7 +5052,7 @@ namespace Server.Mobiles
 
         public bool AntiMacroCheck(Skill skill, object obj)
         {
-            if (obj == null || m_AntiMacroTable == null || IsStaff())
+            if (obj == null || m_AntiMacroTable == null)
             {
                 return true;
             }

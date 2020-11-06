@@ -28,15 +28,17 @@ namespace Server.Engines.VvV
             Rewards.Add(new CollectionItem(typeof(TintaPreta), 0xFAB, "Tinta Preta", TintaPreta.COR, 10000));  // Greater Stam
             Rewards.Add(new CollectionItem(typeof(TintaBranca), 0xFAB, "Tinta Branca", TintaBranca.COR, 10000));  // Greater Stam
             Rewards.Add(new CollectionItem(typeof(PergaminhoSagrado), 0x14F0, "Transforma roupa newbie por 1 mes", 1154, 50000));  // Greater Stam
-            Rewards.Add(new CollectionItem(typeof(CombatSkillBook), 0xEFA, "Livro de Combate<br>Sobe 0.5 em uma skill de combate", 788, 1000));  // Greater Stam
-            Rewards.Add(new CollectionItem(typeof(SacolaBands), 0xE21, "Sacola com 50 Bandagens", 0, 400));
-            Rewards.Add(new CollectionItem(typeof(ScolaDizimo), 0xE21, "Sacola com 100 Dizimos de Paladino", 0, 400));
+            if (Shard.EXP)
+                Rewards.Add(new CollectionItem(typeof(CombatSkillBook), 0xEFA, "Livro de Combate<br>+500 EXP", 788, 1000));  // Greater Stam
+            else
+                Rewards.Add(new CollectionItem(typeof(CombatSkillBook), 0xEFA, "Livro de Combate<br>Sobe 0.5 em uma skill de combate", 788, 1000));  // Greater Stam
+            Rewards.Add(new CollectionItem(typeof(SacolaBands), 0xE21, "Sacola com 50 Bandagens", 0, 500));
+            Rewards.Add(new CollectionItem(typeof(ScolaDizimo), 0xE21, "Sacola com 100 Dizimos de Paladino", 0, 500));
+            Rewards.Add(new CollectionItem(typeof(BagOfNecroReagents), 0xE76, "Sacola com 50 Reagentes Necro", 0, 600));
+            Rewards.Add(new CollectionItem(typeof(BagOfArrows), 0xE76, "100 Flechas", 0, 500));
+            Rewards.Add(new CollectionItem(typeof(BagOfBolts), 0xE76, "100 Dardos", 0, 500));
 
-            Rewards.Add(new CollectionItem(typeof(BagOfNecroReagents), 0xE76, "Sacola com 50 Reagentes Necro", 0, 500));
-            Rewards.Add(new CollectionItem(typeof(BagOfArrows), 0xE76, "100 Flechas", 0, 400));
-            Rewards.Add(new CollectionItem(typeof(BagOfBolts), 0xE76, "100 Dardos", 0, 400));
-
-            Rewards.Add(new CollectionItem(typeof(BagOfReagents), 0xE76, "Sacola com 50 Reagentes", 0, 400));
+            Rewards.Add(new CollectionItem(typeof(BagOfReagents), 0xE76, "Sacola com 50 Reagentes", 0, 500));
             Rewards.Add(new CollectionItem(typeof(HealPotion), 0xF0C, "Pocao de Vida", 0, 100));
             Rewards.Add(new CollectionItem(typeof(CurePotion), 0xF0C, "Pocao de Curar Veneno", 0, 200));
             Rewards.Add(new CollectionItem(typeof(SacolaDeOuro), 0xE76, "Sacola com 300 Moedas", 0, 400));

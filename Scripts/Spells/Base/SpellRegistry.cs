@@ -156,11 +156,21 @@ namespace Server.Spells
             #endregion
         };
 
+        private static Dictionary<string, Type> Cache = new Dictionary<string, Type>();
+
         public static Spell NewSpell(string name, Mobile caster, Item scroll)
         {
+            Type t = null;
+            if(Cache.TryGetValue(name, out t))
+            {
+                m_Params[0] = caster;
+                m_Params[1] = scroll;
+                return (Spell)Activator.CreateInstance(t, m_Params);
+            }
+
             for (int i = 0; i < m_CircleNames.Length; ++i)
             {
-                Type t = ScriptCompiler.FindTypeByFullName(String.Format("Server.Spells.{0}.{1}", m_CircleNames[i], name));
+                t = ScriptCompiler.FindTypeByFullName(String.Format("Server.Spells.{0}.{1}", m_CircleNames[i], name));
 
                 if (t != null && !t.IsSubclassOf(typeof(SpecialMove)))
                 {
@@ -169,7 +179,9 @@ namespace Server.Spells
 
                     try
                     {
-                        return (Spell)Activator.CreateInstance(t, m_Params);
+                        var s = (Spell)Activator.CreateInstance(t, m_Params);
+                        Cache[name] = t;
+                        return s;
                     }
                     catch
                     {

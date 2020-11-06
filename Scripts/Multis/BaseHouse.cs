@@ -21,7 +21,7 @@ namespace Server.Multis
 {
     public abstract class BaseHouse : BaseMulti
     {
-		private static int m_AccountHouseLimit = Config.Get("Housing.AccountHouseLimit", 1);
+        private static int m_AccountHouseLimit = Config.Get("Housing.AccountHouseLimit", 1);
 
         public static int AccountHouseLimit { get { return m_AccountHouseLimit; } }
 
@@ -515,7 +515,7 @@ namespace Server.Multis
         // Contents will not decay
         public virtual bool CheckContentsDecay(Item item)
         {
-            if (_NoDecayItems.Any(x => item.GetType() == x ||item.GetType().IsSubclassOf(x)))
+            if (_NoDecayItems.Any(x => item.GetType() == x || item.GetType().IsSubclassOf(x)))
             {
                 return false;
             }
@@ -706,7 +706,7 @@ namespace Server.Multis
             }
         }
         #endregion
-        
+
         public List<Mobile> AvailableVendorsFor(Mobile m)
         {
             List<Mobile> list = new List<Mobile>();
@@ -1242,7 +1242,7 @@ namespace Server.Multis
 
             SecureAccessResult res = house.CheckSecureAccess(m, item);
 
-            switch ( res )
+            switch (res)
             {
                 case SecureAccessResult.Insecure:
                     break;
@@ -1310,9 +1310,14 @@ namespace Server.Multis
 
         public bool CheckAccessibility(Item item, Mobile from)
         {
+
             SecureAccessResult res = CheckSecureAccess(from, item);
 
-            switch ( res )
+            if (Shard.DebugEnabled)
+            {
+                Shard.Debug("Check Acesso a coisa em casa - Secured ?" + res.ToString());
+            }
+            switch (res)
             {
                 case SecureAccessResult.Insecure:
                     break;
@@ -1338,11 +1343,21 @@ namespace Server.Multis
             {
                 // non friend, but item is on friends only list
                 if (!IsFriend(from) && IsInList(item, _AccessibleToFriends))
+                {
                     return false;
+                } else if(IsFriend(from) && IsInList(item, _AccessibleToFriends))
+                {
+                    return true;
+                }
 
                 // anyone can use list, house must be public or player must have access to house
                 if (IsInList(item, _AccessibleToAll) && (m_Public || m_Access.Contains(from)))
+                {
+                    Shard.Debug("Coisa publica");
+
                     return true;
+                }
+
 
                 return false;
             }
@@ -1364,7 +1379,7 @@ namespace Server.Multis
         private Type[] _AccessibleToAll =
         {
             typeof(TenthAnniversarySculpture), typeof(RewardBrazier), typeof(VendorRentalContract), typeof(Dyes), typeof(DyeTub),
-            typeof(BaseInstrument), typeof(Clock), typeof(TreasureMap), typeof(RecallRune), typeof(Dices), typeof(BaseBoard), 
+            typeof(BaseInstrument), typeof(Clock), typeof(TreasureMap), typeof(RecallRune), typeof(Dices), typeof(BaseBoard),
             typeof(Runebook)
         };
 
@@ -2066,12 +2081,12 @@ namespace Server.Multis
         public void SetLockdown(Mobile m, Item i, bool locked)
         {
             if (m_LockDowns == null || (locked && m_LockDowns.ContainsKey(i)) || (!locked && !m_LockDowns.ContainsKey(i)))
-                return; 
+                return;
 
             if (i is BaseAddonContainer)
                 i.Movable = false;
             else
-            	i.Movable = !locked;
+                i.Movable = !locked;
 
             i.IsLockedDown = locked;
 
@@ -2123,13 +2138,13 @@ namespace Server.Multis
                 i.SetLastMoved();
 
             Shard.Debug("Trancado " + i.Name);
-            
+
             if (i is Container && CheckContentsDecay(i))
             {
                 foreach (Item c in i.Items)
                     SetLockdown(m, c, locked);
             }
-            
+
         }
 
         public bool LockDown(Mobile m, Item item)
@@ -2493,13 +2508,13 @@ namespace Server.Multis
 
         public bool CheckLockdownOwnership(Mobile m, Item item)
         {
-            if(item == null)
+            if (item == null)
                 return false;
 
-            if(IsOwner(m))
+            if (IsOwner(m))
                 return true;
 
-            if(item is Container || item.Parent is Container)
+            if (item is Container || item.Parent is Container)
             {
                 Item check = item.Parent is BaseContainer ? (Item)item.Parent : item;
 
@@ -2590,7 +2605,7 @@ namespace Server.Multis
 
                 if (info != null)
                 {
-                    m.CloseGump(typeof (SetSecureLevelGump));
+                    m.CloseGump(typeof(SetSecureLevelGump));
                     m.SendGump(new Gumps.SetSecureLevelGump(m_Owner, info, this));
                 }
                 else if (item.Parent != null)
@@ -2624,7 +2639,7 @@ namespace Server.Multis
 
                     m_Secures.Add(info);
 
-                    if(m_LockDowns.ContainsKey(item))
+                    if (m_LockDowns.ContainsKey(item))
                         m_LockDowns.Remove(item);
 
                     item.Movable = false;
@@ -2646,7 +2661,7 @@ namespace Server.Multis
                         ad.Movable = false;
                     }
 
-                    m.CloseGump(typeof (SetSecureLevelGump));
+                    m.CloseGump(typeof(SetSecureLevelGump));
                     m.SendGump(new Gumps.SetSecureLevelGump(m_Owner, info, this));
                 }
             }
@@ -2687,7 +2702,7 @@ namespace Server.Multis
                 return true;
 
             if (IsCombatRestricted(m))
-               return false;
+                return false;
 
             switch (level)
             {
@@ -2881,7 +2896,7 @@ namespace Server.Multis
             {
                 targ.MoveToWorld(BanLocation, Map);
 
-                from.SendMessage(targ.Name+" foi expulso da casa"); // ~1_PLAYER NAME~ has been ejected from this house.
+                from.SendMessage(targ.Name + " foi expulso da casa"); // ~1_PLAYER NAME~ has been ejected from this house.
                 targ.SendMessage("Voce foi expulso da casa"); /* You have been ejected from this house.
                 * If you persist in entering, you may be banned from the house.
                 */
@@ -3036,8 +3051,8 @@ namespace Server.Multis
             m_CoOwners.Add(targ);
 
             List<Mobile> remove = new List<Mobile>();
-            
-            foreach(Mobile m in m_CoOwners)
+
+            foreach (Mobile m in m_CoOwners)
             {
                 if (AccountHandler.CheckAccount(m, targ) && m != targ)
                     remove.Add(m);
@@ -3077,7 +3092,7 @@ namespace Server.Multis
 
                 targ.Delta(MobileDelta.Noto);
 
-                if(fromMessage)
+                if (fromMessage)
                     from.SendLocalizedMessage(501299); // Co-owner removed from list.
 
                 targ.SendLocalizedMessage(501300); // You have been removed as a house co-owner.
@@ -3158,7 +3173,7 @@ namespace Server.Multis
 
                 targ.Delta(MobileDelta.Noto);
 
-                if(fromMessage)
+                if (fromMessage)
                     from.SendLocalizedMessage(501298); // Friend removed from list.
 
                 targ.SendLocalizedMessage(1060751); // You are no longer a friend of this house.
@@ -3636,7 +3651,7 @@ namespace Server.Multis
 
             foreach (var item in Region.GetEnumeratedItems().Where(i => i is IAddon))
             {
-                if(m_Addons.ContainsKey(item))
+                if (m_Addons.ContainsKey(item))
                     continue;
 
                 m_Addons[item] = Owner;
@@ -3652,7 +3667,7 @@ namespace Server.Multis
         {
             Dictionary<Item, Mobile> lockDowns = new Dictionary<Item, Mobile>();
 
-            foreach(KeyValuePair<Item, Mobile> kvp in m_LockDowns)
+            foreach (KeyValuePair<Item, Mobile> kvp in m_LockDowns)
             {
                 if (kvp.Key is Container)
                     lockDowns.Add(kvp.Key, kvp.Value);
@@ -3751,8 +3766,8 @@ namespace Server.Multis
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int TotalVisits
-        { 
-            get { return m_Visits.Count; } 
+        {
+            get { return m_Visits.Count; }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -3905,7 +3920,7 @@ namespace Server.Multis
 
             if (m_LockDowns != null)
             {
-                foreach(KeyValuePair<Item, Mobile> kvp in m_LockDowns)
+                foreach (KeyValuePair<Item, Mobile> kvp in m_LockDowns)
                 {
                     Item item = kvp.Key;
 
@@ -4198,7 +4213,7 @@ namespace Server.Multis
 
             if (m_LockDowns != null)
             {
-                foreach(KeyValuePair<Item, Mobile> kvp in m_LockDowns)
+                foreach (KeyValuePair<Item, Mobile> kvp in m_LockDowns)
                 {
                     Item item = kvp.Key;
 
@@ -4262,7 +4277,7 @@ namespace Server.Multis
 
             if (m_Addons != null)
             {
-                foreach(var kvp in m_Addons)
+                foreach (var kvp in m_Addons)
                 {
                     Item item = kvp.Key;
 
@@ -4387,7 +4402,7 @@ namespace Server.Multis
         public static int GetAccountHouseLimit(Mobile m)
         {
             var max = m_AccountHouseLimit;
-            
+
             return max;
         }
 
@@ -4930,7 +4945,7 @@ namespace Server.Multis
                             m_House.ReleaseSecure(from, component.Addon);
                     }
                     else
-                    #endregion
+                        #endregion
 
                         m_House.ReleaseSecure(from, (Item)targeted);
                 }
@@ -4952,7 +4967,7 @@ namespace Server.Multis
                                 m_House.AddSecure(from, component.Addon);
                         }
                         else
-                        #endregion
+                            #endregion
 
                             m_House.AddSecure(from, (Item)targeted);
                     }
@@ -5215,7 +5230,7 @@ namespace Server.Multis
             {
                 Mobile owner = sec is SecureInfo ? ((SecureInfo)sec).Owner : Owner.From;
 
-                Owner.From.CloseGump(typeof (SetSecureLevelGump));
+                Owner.From.CloseGump(typeof(SetSecureLevelGump));
                 Owner.From.SendGump(new SetSecureLevelGump(owner, sec, BaseHouse.FindHouseAt(m_Item)));
             }
         }

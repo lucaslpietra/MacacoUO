@@ -20,12 +20,14 @@ namespace Server.Commands
         public static void Initialize()
         {
             CommandSystem.Register("skillock", AccessLevel.Administrator, OnAction);
+            CommandSystem.Register("skilllock", AccessLevel.Administrator, OnAction);
+            CommandSystem.Register("statlock", AccessLevel.Administrator, OnAction);
         }
 
         [Usage("Action")]
         private static void OnAction(CommandEventArgs e)
         {
-            e.Mobile.SendMessage("Para travar/destravar skills, abra a janela de skills e clique na setinha para subir/descer/travar skills.");
+            e.Mobile.SendMessage("Para travar/destravar skills ou stats, abra a janela de skills ou stats e clique na setinha para subir/descer/travar skills.");
         }
     }
 }

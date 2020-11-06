@@ -27,6 +27,7 @@ namespace Server.Items
                 this.m_RecipeID = recipeID;
             } else
             {
+                this.m_RecipeID = recipeID;
                 Name = "Receita Desconhecida " + recipeID;
             }
         }
@@ -96,6 +97,32 @@ namespace Server.Items
                 {
                     pm.SendMessage("Voce ja conhece esta receita, digite .receitas para ver suas receitas"); // You already know this recipe.
                 }
+            } else if(r == null)
+            {
+        
+                if(Name.Contains("Receita Desconhecida"))
+                {
+                    var s = Name.Split(' ');
+                    if(s.Length == 3)
+                    {
+                        try
+                        {
+                            var i = Int32.Parse(s[2]);
+                            m_RecipeID = i;
+                            var recipe = Recipe.Recipes[m_RecipeID];
+                            var skill = RecipeScrollDefinition.RecipeSkillNameConvert(recipe.CraftSystem.MainSkill);
+                            Name = "pergaminho de receita de " + skill.ToString();
+                            InvalidateProperties();
+                            from.SendMessage("Voce conseguiu entender esta receita...");
+
+                            return;
+                        } catch(Exception e)
+                        {
+
+                        }
+                    }
+                }
+                from.SendMessage("Esta receita parece estar perdida no tempo...");
             }
         }
 

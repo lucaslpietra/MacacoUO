@@ -83,6 +83,7 @@ selado, o local que o mapa que lhe dei indica, e fazer o ritual. Como fazer o ri
 
         public override void OnCompleted()
         {
+            Points.PointsSystem.Exp.AwardPoints(this.Owner, 600);
             this.Owner.PlaySound(this.CompleteSound);
         }
 

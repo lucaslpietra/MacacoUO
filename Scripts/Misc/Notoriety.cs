@@ -11,6 +11,7 @@ using Server.Guilds;
 using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
+using Server.Regions;
 using Server.SkillHandlers;
 using Server.Spells.Chivalry;
 using Server.Spells.Seventh;
@@ -122,6 +123,9 @@ namespace Server.Misc
 
             if (from == null || target == null || from.IsStaff() || target.IsStaff())
                 return true;
+
+            if (target.Player && from.Player && target.Region is GuardedRegion)
+                return false;
 
             var map = from.Map;
 

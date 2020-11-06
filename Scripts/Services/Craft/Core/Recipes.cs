@@ -19,10 +19,14 @@ namespace Server.Engines.Craft
             this.m_System = system;
             this.m_CraftItem = item;
 
-
-            //    throw new Exception("Attempting to create recipe with preexisting ID: "+id);
             if (!m_Recipes.ContainsKey(id))
+            {
                 m_Recipes.Add(id, this);
+                Shard.Debug("Registrada Receita " + id + " para " + item.ItemType.Name);
+            }
+               
+            //throw new Exception("Attempting to create recipe with preexisting ID: "+id+" Item "+item.ItemType.Name);
+           
             m_LargestRecipeID = Math.Max(id, m_LargestRecipeID);
         }
 

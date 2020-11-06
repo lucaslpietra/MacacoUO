@@ -1959,5 +1959,24 @@ namespace Server.Accounting
             return true;
         }
         #endregion
+
+        private int m_PseudoSeerLastCharacterIndex = -1;
+        public Mobile GetPseudoSeerLastCharacter()
+        {
+            if (m_PseudoSeerLastCharacterIndex == -1 || m_PseudoSeerLastCharacterIndex > m_Mobiles.Length - 1) return null;
+            return m_Mobiles[m_PseudoSeerLastCharacterIndex];
+        }
+        public void SetPseudoSeerLastCharacter(Mobile m)
+        {
+            for (int i = 0; i < m_Mobiles.Length; i++)
+            {
+                if (m_Mobiles[i] == m)
+                {
+                    m_PseudoSeerLastCharacterIndex = i;
+                    return;
+                }
+            }
+            m_PseudoSeerLastCharacterIndex = -1;
+        }
     }
 }

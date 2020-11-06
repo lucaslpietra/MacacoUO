@@ -699,7 +699,8 @@ namespace Server.Spells
             if (map == null)
                 return;
 
-            Shard.Debug("Duration: " + duration.TotalSeconds, caster);
+            if(Shard.DebugEnabled)
+                Shard.Debug("Duration: " + duration.TotalSeconds, caster);
             if (caster is BaseCreature && (useSkill == SkillName.SpiritSpeak || useSkill == SkillName.Begging))
                 useSkill = SkillName.Magery;
 
@@ -712,13 +713,16 @@ namespace Server.Spells
                 }
             }
 
-            double scale = 0.5 + (caster.Skills[useSkill].Value / 200);
+            double scale = 0.3 + (caster.Skills[useSkill].Value * 0.007);
             double scaleDur = 1 + (caster.Skills[useSkill].Value / 100)/2;
 
             duration = TimeSpan.FromSeconds(duration.TotalSeconds * scaleDur);
-            Shard.Debug("Duration Scaled: " + duration.TotalSeconds, caster);
-            Shard.Debug("Summon Scale: " + scale, caster);
-
+            if (Shard.DebugEnabled)
+            {
+                Shard.Debug("Duration Scaled: " + duration.TotalSeconds, caster);
+                Shard.Debug("Summon Scale: " + scale, caster);
+            }
+          
             creature.RawStr = (int)(creature.RawStr * scale);
             creature.Hits = creature.HitsMax;
 

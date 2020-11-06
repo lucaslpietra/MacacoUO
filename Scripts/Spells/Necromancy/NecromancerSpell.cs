@@ -115,18 +115,31 @@ namespace Server.Spells.Necromancy
 
         public virtual double GetResistPercentForCircle(Mobile target, int circle)
         {
-            var resist = Caster.Skills[SkillName.MagicResist].Value;
+            var resist = target.Skills[SkillName.MagicResist].Value;
             var cap = resist / 5;
-            if (cap < 15)
-                cap = 15;
 
             var magery = Caster.Skills[CastSkill].Value;
-            var circ = 1 + circle;
+            var circ = 1 + (double)circle;
 
-            var chance = ((magery * 2) / 15 + circ * circ);
+            var chance = ((magery * 2) / 10 + circ * circ);
+
+            if (Shard.DebugEnabled)
+                Shard.Debug("Chance Base: " + chance + " circulo " + circ);
+
             chance = resist - chance;
             if (chance < cap)
                 chance = cap;
+
+            if (Shard.SPHERE_STYLE)
+                chance *= 0.5; // sem pre cast mais dificil de resistir
+            else
+                chance *= 0.85;
+
+            if (Caster is BaseCreature && target is PlayerMobile)
+                chance /= 1.5;
+
+            Shard.Debug("Chance RS: " + chance, target);
+
             return chance;
         }
 

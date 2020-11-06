@@ -1,3 +1,4 @@
+using Server.Engines.Points;
 using Server.Engines.Quests;
 using Server.Items;
 using Server.Items.Functional.Pergaminhos;
@@ -76,6 +77,7 @@ Ele lhe estende a estranha chave enquanto coça o queixo com as mãos sujas de �
         public override void OnCompleted()
         {
             this.Owner.PlaySound(this.CompleteSound);
+            PointsSystem.Exp.AwardPoints(this.Owner, 80);
         }
 
         public override void OnAccept()
@@ -161,6 +163,7 @@ O guarda estende o braço para lhe entregar a estranha caixa.”";
         public override void OnCompleted()
         {
             this.Owner.PlaySound(this.CompleteSound);
+            PointsSystem.Exp.AwardPoints(this.Owner, 100);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -246,6 +249,7 @@ O guarda estende o braço para lhe entregar a estranha caixa.”";
 
         public override void OnCompleted()
         {
+            PointsSystem.Exp.AwardPoints(this.Owner, 500);
             this.Owner.PlaySound(this.CompleteSound);
             //this.Owner.Backpack.AddItem(new Gold(60000));
         }

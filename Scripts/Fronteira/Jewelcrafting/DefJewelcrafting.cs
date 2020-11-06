@@ -297,6 +297,8 @@ namespace Server.Engines.Craft
 
             index = AddCraft(typeof(Turquoise), "Pedras", "Turquesa", 25, 100, typeof(Amethyst), "Ametista", 3, "Faltam pedras para criar isto");
             SetNeedForno(index, true);
+            AddRecipe(index, (int)JewelRecipes.Turqueza);
+
             index = AddCraft(typeof(PerfectEmerald), "Pedras", "Esmeralda Perfeita", 25, 100, typeof(Emerald), "Esmeralda", 3, "Faltam pedras para criar isto");
             AddRecipe(index, (int)JewelRecipes.Esmeralda);
 
@@ -341,23 +343,23 @@ namespace Server.Engines.Craft
 
         public void AddElegante(Type pedra, string n, JewelRecipes rec)
         {
-            var index = AddCraft(typeof(GoldBraceletBonito), n, "Bracelete Elegante de " + n, 80, 110, typeof(GoldBracelet), "Bracelete de Ouro", 1, "Voce nao tem a joia suficiente");
+            var index = AddCraft(typeof(GoldBraceletBonito), "Joias Elegantes", "Bracelete Elegante de " + n, 80, 110, typeof(GoldBracelet), "Bracelete de Ouro", 1, "Voce nao tem a joia suficiente");
             AddRes(index, pedra, n, 1, "Voce nao tem a pedra preciosa para fazer isto");
             SetNeedForno(index, true);
 
-            index = AddCraft(typeof(GoldNecklaceBonito), n, "Colar Elegante de " + n, 0, 80, typeof(GoldNecklace), "Colar de Ouro", 1, "Voce nao tem a joia suficiente");
+            index = AddCraft(typeof(GoldNecklaceBonito), "Joias Elegantes", "Colar Elegante de " + n, 0, 80, typeof(GoldNecklace), "Colar de Ouro", 1, "Voce nao tem a joia suficiente");
             AddRes(index, pedra, n, 1, "Voce nao tem a pedra preciosa para fazer isto");
             SetNeedForno(index, true);
 
-            index = AddCraft(typeof(GoldBeadNecklaceMagico), n, "Colar de Bolinhas Elegante de " + n, 0, 80, typeof(GoldBeadNecklace), "Colar de Bolinha de Ouro", 1, "Voce nao tem a joia suficiente");
+            index = AddCraft(typeof(GoldBeadNecklaceMagico), "Joias Elegantes", "Colar de Bolinhas Elegante de " + n, 0, 80, typeof(GoldBeadNecklace), "Colar de Bolinha de Ouro", 1, "Voce nao tem a joia suficiente");
             AddRes(index, pedra, n, 1, "Voce nao tem a pedra preciosa para fazer isto");
             SetNeedForno(index, true);
 
-            index = AddCraft(typeof(GoldRingMagico), n, "Anel Elegante de " + n, 0, 80, typeof(GoldRing), "Anel de Ouro", 1, "Voce nao tem a joia suficiente");
+            index = AddCraft(typeof(GoldRingMagico), "Joias Elegantes", "Anel Elegante de " + n, 0, 80, typeof(GoldRing), "Anel de Ouro", 1, "Voce nao tem a joia suficiente");
             AddRes(index, pedra, n, 1, "Voce nao tem a pedra preciosa para fazer isto");
             SetNeedForno(index, true);
 
-            index = AddCraft(typeof(GoldEarringsMagico), n, "Brinco Elegante de " + n, 80, 80, typeof(GoldEarrings), "Brinco de Ouro", 1, "Voce nao tem a joia suficiente");
+            index = AddCraft(typeof(GoldEarringsMagico),  "Joias Elegantes", "Brinco Elegante de " + n, 80, 80, typeof(GoldEarrings), "Brinco de Ouro", 1, "Voce nao tem a joia suficiente");
             AddRes(index, pedra, n, 1, "Voce nao tem a pedra preciosa para fazer isto");
             SetNeedForno(index, true);
 
@@ -366,35 +368,35 @@ namespace Server.Engines.Craft
 
         public void AddMagico(Type pedra, string n, JewelRecipes rec)
         {
-            var index = AddCraft(typeof(GoldBraceletMagico), n, "Bracelete de "+n, 80, 110, typeof(GoldBracelet), "Bracelete de Ouro", 1, "Voce nao tem a joia suficiente");
+            var index = AddCraft(typeof(GoldBraceletMagico), "Joias Magicas", "Bracelete de "+n, 80, 110, typeof(GoldBracelet), "Bracelete de Ouro", 1, "Voce nao tem a joia suficiente");
             AddRes(index, pedra, n, 1, "Voce nao tem a pedra preciosa para fazer isto");
             SetNeedForno(index, true);
-            AddRecipe(index, (int)JewelRecipes.BraceleteDeOuro);
-            AddRecipe(index, (int)rec);
+            //AddRecipe(index, (int)JewelRecipes.BraceleteDeOuro);
+            //AddRecipe(index, (int)rec);
 
-            index = AddCraft(typeof(GoldNecklaceMagico), n, "Colar de "+n, 80, 110, typeof(GoldNecklace), "Colar de Ouro", 1, "Voce nao tem a joia suficiente");
+            index = AddCraft(typeof(GoldNecklaceMagico), "Joias Magicas", "Colar de "+n, 80, 110, typeof(GoldNecklace), "Colar de Ouro", 1, "Voce nao tem a joia suficiente");
             AddRes(index, pedra, n, 1, "Voce nao tem a pedra preciosa para fazer isto");
             SetNeedForno(index, true);
-            AddRecipe(index, (int)JewelRecipes.ColarDeOuro);
-            AddRecipe(index, (int)rec);
+            //AddRecipe(index, (int)JewelRecipes.ColarDeOuro);
+            //AddRecipe(index, (int)rec);
 
-            index = AddCraft(typeof(GoldBeadNecklaceMagico), n, "Colar de Bolinhas de "+n, 80, 110, typeof(GoldBeadNecklace), "Colar de Bolinha de Ouro", 1, "Voce nao tem a joia suficiente");
+            index = AddCraft(typeof(GoldBeadNecklaceMagico), "Joias Magicas", "Colar de Bolinhas de "+n, 80, 110, typeof(GoldBeadNecklace), "Colar de Bolinha de Ouro", 1, "Voce nao tem a joia suficiente");
             AddRes(index, pedra, n, 1, "Voce nao tem a pedra preciosa para fazer isto");
             SetNeedForno(index, true);
-            AddRecipe(index, (int)JewelRecipes.ColarDeOuro);
-            AddRecipe(index, (int)rec);
+            //AddRecipe(index, (int)JewelRecipes.ColarDeOuro);
+            //AddRecipe(index, (int)rec);
 
-            index = AddCraft(typeof(GoldRingMagico), n, "Anel de "+n, 80, 110, typeof(GoldRing), "Anel de Ouro", 1, "Voce nao tem a joia suficiente");
+            index = AddCraft(typeof(GoldRingMagico), "Joias Magicas", "Anel de "+n, 80, 110, typeof(GoldRing), "Anel de Ouro", 1, "Voce nao tem a joia suficiente");
             AddRes(index, pedra, n, 1, "Voce nao tem a pedra preciosa para fazer isto");
             SetNeedForno(index, true);
-            AddRecipe(index, (int)JewelRecipes.AnelDeOuro);
-            AddRecipe(index, (int)rec);
+            //AddRecipe(index, (int)JewelRecipes.AnelDeOuro);
+            //AddRecipe(index, (int)rec);
 
-            index = AddCraft(typeof(GoldEarringsMagico), n, "Brinco de " + n, 80, 110, typeof(GoldEarrings), "Brinco de Ouro", 1, "Voce nao tem a joia suficiente");
+            index = AddCraft(typeof(GoldEarringsMagico), "Joias Magicas", "Brinco de " + n, 80, 110, typeof(GoldEarrings), "Brinco de Ouro", 1, "Voce nao tem a joia suficiente");
             AddRes(index, pedra, n, 1, "Voce nao tem a pedra preciosa para fazer isto");
             SetNeedForno(index, true);
-            AddRecipe(index, (int)JewelRecipes.BrincoDeOuro);
-            AddRecipe(index, (int)rec);
+            //AddRecipe(index, (int)JewelRecipes.BrincoDeOuro);
+            //AddRecipe(index, (int)rec);
         }
     }
 }

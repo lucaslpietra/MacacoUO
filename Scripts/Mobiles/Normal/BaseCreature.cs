@@ -13,6 +13,7 @@ using Server.Engines.VvV;
 using Server.Engines.XmlSpawner2;
 using Server.Ethics;
 using Server.Factions;
+using Server.Gumps;
 using Server.Items;
 using Server.Misc;
 using Server.Multis;
@@ -206,6 +207,12 @@ namespace Server.Mobiles
 
     public class BaseCreature : Mobile, IHonorTarget, IEngravable
     {
+        public override bool SendGump(Gump g)
+        {
+            SendMessage("Nao pode fazer isto agora");
+            return true;
+        }
+
         public const int MaxLoyalty = 100;
 
         public virtual bool IsSmart { get { return IsParagon || this.Body.IsHuman || this.Body == 24; } }
@@ -2124,11 +2131,21 @@ namespace Server.Mobiles
             return (p != null && p.RealLevel >= poison.RealLevel);
         }
 
+        public bool HasBeenPseudoseerControlled = false; // cancel gold bonus
+
         [CommandProperty(AccessLevel.GameMaster)]
         public int Loyalty { get { return m_Loyalty; } set { m_Loyalty = Math.Min(Math.Max(value, 0), MaxLoyalty); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public WayPoint CurrentWayPoint { get { return m_CurrentWayPoint; } set { m_CurrentWayPoint = value; } }
+
+        private bool m_ForceWaypoint = false; // just for the current waypoint, not for all waypoints
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool ForceWaypoint
+        {
+            get { return m_ForceWaypoint; }
+            set { m_ForceWaypoint = value; }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int CurrentNavPoint
@@ -2377,6 +2394,8 @@ namespace Server.Mobiles
         {
             if (type >= DamageType.Spell && RecentSetControl)
             {
+                if (Shard.DebugEnabled)
+                    Shard.Debug("Nulei dano");
                 totalDamage = 0;
             }
         }
@@ -3723,7 +3742,7 @@ namespace Server.Mobiles
 
         public virtual bool OverrideBondingReqs()
         {
-            return false;
+            return this is IMount;
         }
 
         public virtual bool CanAngerOnTame { get { return false; } }

@@ -198,7 +198,7 @@ namespace Server.Items
                     i++;
                     var recipe = Recipe.Recipes[id];
                     var skill = RecipeScrollDefinition.RecipeSkillNameConvert(recipe.CraftSystem.MainSkill);
-                    var def = new RecipeScrollDefinition(i, id, Expansion.T2A, skill);
+                    var def = new RecipeScrollDefinition(id, id, Expansion.T2A, skill);
                     def.Amount = 0;
                     if (player.HasRecipe(recipe))
                     {

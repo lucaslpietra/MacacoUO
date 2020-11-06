@@ -8684,6 +8684,11 @@ namespace Server.Mobiles
 			{
 				typeKeyword kw = typeKeywordHash[typeName];
 
+                if(Shard.DebugEnabled)
+                {
+                    Shard.Debug("XML Spawn Keyword Trigando: " + kw.ToString(), triggermob);
+                }
+
 				switch (kw)
 				{
 					case typeKeyword.SET:
@@ -10592,6 +10597,8 @@ namespace Server.Mobiles
 						}
 					case typeKeyword.CAST:
 						{
+                            Shard.Debug("Xml Cast");
+
 							string[] arglist = ParseSlashArgs(substitutedtypeName, 3);
 							// Syntax is CAST,spellnumber[,arg] or CAST,spellname[,arg]
 							string[] keywordargs = ParseString(arglist[0], 3, ",");
@@ -10604,12 +10611,15 @@ namespace Server.Mobiles
 							}
 							else
 							{
+
 								status_str = "invalid CAST specification";
-								// note that returning true means that Spawn will assume that it worked and will not try to recast
-								return true;
+                                Shard.Debug(status_str);
+                                // note that returning true means that Spawn will assume that it worked and will not try to recast
+                                return true;
 							}
-							// call this with the 3 argument version that includes the bodytype arg
-							int keywordarg2 = 0;
+                            Shard.Debug("Xml Cast 2");
+                            // call this with the 3 argument version that includes the bodytype arg
+                            int keywordarg2 = 0;
 							if (keywordargs.Length > 2)
 							{
 								int.TryParse(keywordargs[2], out keywordarg2);
@@ -10640,7 +10650,8 @@ namespace Server.Mobiles
 							}
 							if (spell != null)
 							{
-								bool casterror = false;
+                                Shard.Debug("Casting");
+                                bool casterror = false;
 								try
 								{
 									// deal with the 3 types of spells, mob targeted, location targeted, and self targeted

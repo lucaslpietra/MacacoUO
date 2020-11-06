@@ -1,4 +1,5 @@
 using System;
+using Server.Engines.Points;
 using Server.Items;
 using Server.Mobiles;
 
@@ -6,7 +7,7 @@ namespace Server.Engines.Quests
 {
     public class MatarOrcs : BaseQuest
     {
-        public override bool DoneOnce { get { return true; } }
+        public override bool DoneOnce { get { return false; } }
 
         //public override QuestChain ChainID => QuestChain.Tutorial;
 
@@ -52,12 +53,13 @@ namespace Server.Engines.Quests
             : base()
         {
             this.AddObjective(new SlayObjective(typeof(Orc), "Orcs", 10));
-            this.AddReward(new BaseReward(typeof(Gold), 1500, "1500 Moedas de Ouro"));
-            this.AddReward(new BaseReward(typeof(CottonSeeds), 25, "25 Sementes de Algodao"));
+            this.AddReward(new BaseReward(typeof(Gold), 500, "500 Moedas de Ouro"));
+            this.AddReward(new BaseReward(typeof(CottonSeeds), 10, "10 Sementes de Algodao"));
         }
 
         public override void OnCompleted()
         {
+            PointsSystem.Exp.AwardPoints(this.Owner, 100);
             this.Owner.PlaySound(this.CompleteSound);
         }
 

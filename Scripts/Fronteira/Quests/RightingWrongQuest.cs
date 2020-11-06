@@ -3,6 +3,7 @@ using System;
 using Server.Items;
 using Server.Mobiles;
 using Server.Services.TownCryer;
+using Server.Engines.Points;
 
 namespace Server.Engines.Quests
 {
@@ -49,6 +50,12 @@ namespace Server.Engines.Quests
 
         public override int AcceptSound { get { return 0x2E8; } }
         public override bool DoneOnce { get { return true; } }
+
+        public override void OnCompleted()
+        {
+            PointsSystem.Exp.AwardPoints(this.Owner, 200);
+            base.OnCompleted();
+        }
 
         public RightingWrongQuest()
         {
@@ -108,6 +115,13 @@ namespace Server.Engines.Quests
         public override int AcceptSound { get { return 0x2E8; } }
         public override bool DoneOnce { get { return true; } }
 
+        public override void OnCompleted()
+        {
+            PointsSystem.Exp.AwardPoints(this.Owner, 200);
+            base.OnCompleted();
+        }
+
+
         public RightingWrongQuest2()
         {
             AddObjective(new SlayObjective(typeof(LizardmanDefender), "homens lagarto defensores", 5));
@@ -138,6 +152,13 @@ Seus servicos sao muito bons. Se ainda quer continuar, um de nossos camaradas fo
 
         public override int AcceptSound { get { return 0x2E8; } }
 
+        public override void OnCompleted()
+        {
+            PointsSystem.Exp.AwardPoints(this.Owner, 500);
+            base.OnCompleted();
+        }
+
+
         public RightingWrongQuest3()
         {
             AddObjective(new SlayObjective(typeof(Fezzik), "fezzik o ogro cozinheiro", 1));
@@ -165,11 +186,18 @@ Seus servicos sao muito bons.Se ainda quer continuar, um de nossos camaradas foi
 
         public override int AcceptSound { get { return 0x2E8; } }
 
+        public override void OnCompleted()
+        {
+            PointsSystem.Exp.AwardPoints(this.Owner, 800);
+            base.OnCompleted();
+        }
+
+
         public RightingWrongQuest4()
         {
             AddObjective(new InternalObjective());
 
-            AddReward(new BaseReward(typeof(Gold), 10000, "10.000 Moedas de Ouro"));
+            AddReward(new BaseReward(typeof(Gold), 3000, "3000 Moedas de Ouro"));
             AddReward(new BaseReward(typeof(SacolaJoiaRara), 1, "Joia Rara"));
             AddReward(new BaseReward(typeof(RightingWrongRewardTitleDeed), "Honraria a Guarda de Rhodes")); // A Unique Honor from the Royal Britannian Guard
         }

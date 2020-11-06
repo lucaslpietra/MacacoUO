@@ -170,17 +170,24 @@ namespace Server
                     damage = m.Hits;
                 }
 
-                Shard.Debug("Dano Base: " + damage, m);
+                if(Shard.DebugEnabled)
+                    Shard.Debug("Dano Base: " + damage, m);
 
                 if (damageDealer is BaseCreature && type <= DamageType.Ranged)
                 {
                     ((BaseCreature)damageDealer).AlterMeleeDamageTo(m, ref damage);
                 }
 
+                if (Shard.DebugEnabled)
+                    Shard.Debug("Dano Depois d AlterMeleeDamageTo: " + damage, m);
+
                 if (m is BaseCreature && type <= DamageType.Ranged)
                 {
                     ((BaseCreature)m).AlterMeleeDamageFrom(damageDealer, ref damage);
                 }
+
+                if (Shard.DebugEnabled)
+                    Shard.Debug("Dano Depois d AlterMeleeDamageFrom: " + damage, m);
 
                 if (m is BaseCreature)
                 {
@@ -257,6 +264,12 @@ namespace Server
                 }
             }
 
+            bool ranged = type == DamageType.Ranged;
+            BaseQuiver quiver = null;
+
+            if (quiver != null)
+                damage += damage * quiver.DamageIncrease / 100;
+
             return damage;
 
             #region Mondain's Legacy
@@ -293,8 +306,7 @@ namespace Server
                 }
             }
 
-            bool ranged = type == DamageType.Ranged;
-            BaseQuiver quiver = null;
+          
 
             if (ranged && damageDealer.Race != Race.Gargoyle)
                 quiver = damageDealer.FindItemOnLayer(Layer.Cloak) as BaseQuiver;

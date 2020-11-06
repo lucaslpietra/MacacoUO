@@ -2551,8 +2551,11 @@ namespace Server.Network
             }
         }
 
-        public static void DoLogin(NetState state)
+        public static void DoLogin(NetState state, Mobile over = null)
         {
+            if (over != null)
+                state.Mobile = over;
+
             var m = state.Mobile;
 
             state.Send(new LoginConfirm(m));
@@ -2601,7 +2604,8 @@ namespace Server.Network
 
             state.Send(new MapChange(m));
 
-            EventSink.InvokeLogin(new LoginEventArgs(m));
+            if(m.Player)
+                EventSink.InvokeLogin(new LoginEventArgs(m));
 
             Console.WriteLine("Client: {0}: Entered World ({1})", state, m);
 

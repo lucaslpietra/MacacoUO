@@ -23,7 +23,12 @@ namespace Server.Misc
             foreach (NetState state in NetState.Instances)
             {
                 if ((decayFome && HungerDecay(state.Mobile)) || ThirstDecay(state.Mobile))
-                    state.Mobile.SendGump(new FomeSede(state.Mobile));   
+                {
+                    if (state.Mobile.RP)
+                        state.Mobile.SendGump(new FomeSede(state.Mobile));
+                }
+
+
             }
         }
 
@@ -32,13 +37,14 @@ namespace Server.Misc
             if (m != null && m.Hunger >= 1)
             {
                 m.Hunger -= 1;
-                if(m.RP && m.Hunger <= 5)
+                if (m.RP && m.Hunger <= 5)
                 {
-                    if(m.Hunger == 0)
+                    if (m.Hunger == 0)
                     {
                         m.Kill();
                         m.SendMessage(38, "Voce morreu de fome...");
-                    } else
+                    }
+                    else
                         m.SendMessage(38, "Voce esta com muita fome... coma algo para nao desmaiar !");
                 }
                 return true;
@@ -51,19 +57,25 @@ namespace Server.Misc
             if (m != null && m.Thirst >= 1)
             {
                 m.Thirst -= 1;
-                if (m.RP && m.Hunger <= 5)
+                if (m.RP && m.Thirst <= 5)
                 {
-                    m.SendMessage(38, "Voce esta com muita sede... beba algo para nao desmaiar !");
+                    if (m.Thirst == 0)
+                    {
+                        m.Kill();
+                        m.SendMessage(38, "Voce morreu desidratado...");
+                    }
+                    else
+                        m.SendMessage(38, "Voce esta com muita sede... beba algo para se hidratar !");
                 }
                 return true;
             }
             return false;
-                
+
         }
 
         protected override void OnTick()
         {
-            FoodDecay();			
+            FoodDecay();
         }
     }
 }

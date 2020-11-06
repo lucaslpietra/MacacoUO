@@ -401,6 +401,7 @@ namespace Server.Items
 
             var toHeal = GetToHeal();
 
+
             pct *= pct; // Qto menos ele se curou, mais nerfa a cura
    
             toHeal *= pct;
@@ -428,7 +429,7 @@ namespace Server.Items
             if(m_Patient is BaseCreature && !(m_Patient is BaseHire))
             {
                 healing = m_Healer.Skills[SkillName.Veterinary].Value;
-                anatomy = (m_Healer.Skills[SkillName.AnimalLore].Value * 0.5) + (m_Healer.Skills[SkillName.Healing].Value + 0.5);
+                anatomy = (m_Healer.Skills[SkillName.AnimalLore].Value * 0.8) + (m_Healer.Skills[SkillName.Healing].Value + 0.2);
             }
 
             double min, max;
@@ -440,11 +441,12 @@ namespace Server.Items
 
             if ((m_Patient.Body.IsMonster || m_Patient.Body.IsAnimal) && !m_Patient.Player)
             {
-                toHeal += m_Patient.HitsMax / 200;
+                toHeal += m_Patient.HitsMax / 170;
             }
 
-            toHeal -= m_Slips * 3;
-            Shard.Debug("To Heal: " + toHeal + " Escorregadas: " + m_Slips, m_Healer);
+            toHeal -= m_Slips * 4;
+            if(Shard.DebugEnabled)
+                Shard.Debug("To Heal: " + toHeal + " Escorregadas: " + m_Slips, m_Healer);
             return toHeal;
         }
 

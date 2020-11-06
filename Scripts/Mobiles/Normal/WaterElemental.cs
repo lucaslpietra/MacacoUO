@@ -44,7 +44,7 @@ namespace Server.Mobiles
             this.Fame = 4500;
             this.Karma = -4500;
 
-            this.VirtualArmor = 40;
+            this.VirtualArmor = 0;
             this.ControlSlots = 3;
             this.CanSwim = true;
 
@@ -70,6 +70,10 @@ namespace Server.Mobiles
 
             bool bonus = false;
             base.OnBeforeDamage(from, ref totalDamage, type);
+
+            if (!from.Player)
+                return;
+
             var arma = from.FindItemOnLayer(Layer.OneHanded);
             if (arma != null && arma is BaseSword)
             {
@@ -86,12 +90,11 @@ namespace Server.Mobiles
 
             if (!bonus)
             {
-                totalDamage /= 10;
+                totalDamage /= 3;
                 if (!from.IsCooldown("dicabas2"))
                 {
                     from.SetCooldown("dicabas2", TimeSpan.FromMinutes(10));
-                    from.SendMessage("Seu ataque nao foi muito efetivo por conta do tipo de sua arma");
-
+                    from.SendMessage("Seu ataque nao foi muito efetivo contra este ser aquoso por conta do tipo de sua arma");
                 }
             }
             else if (bonus)

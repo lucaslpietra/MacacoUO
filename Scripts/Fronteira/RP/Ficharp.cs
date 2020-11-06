@@ -31,67 +31,75 @@ namespace Server.Gumps
 
             if (caller.HasGump(typeof(MyGump)))
                 caller.CloseGump(typeof(MyGump));
-            caller.SendGump(new MyGump());
+            caller.SendGump(new MyGump(caller));
         }
 
-        public MyGump()
-         : base(0, 0)
+        public MyGump(Mobile from) : this()
+        {
+            caller = from;
+        }
+
+        public MyGump() : base(0, 0)
         {
             this.Closable = true;
             this.Disposable = true;
             this.Dragable = true;
-            this.Resizable = false;
-            this.AddPage(0);
-            this.AddBackground(94, 94, 654, 464, 9200);
-            this.AddImage(311, 160, 1800);
-            this.AddButton(181, 174, 5575, 248, (int)Buttons.PERFIL, GumpButtonType.Page, 0);
-            this.AddButton(603, 295, 5581, 248, (int)Buttons.NOTASMENTAIS, GumpButtonType.Page, 0);
-            this.AddButton(178, 298, 5583, 248, (int)Buttons.VIRTUDESEDEFEITOS, GumpButtonType.Page, 0);
-            this.AddButton(177, 420, 5588, 248, (int)Buttons.OBJETIVOS, GumpButtonType.Page, 0);
-            this.AddButton(602, 421, 5585, 248, (int)Buttons.NOTASSTAFF, GumpButtonType.Page, 0);
-            this.AddButton(605, 170, 5545, 248, (int)Buttons.BIOGRAFIA, GumpButtonType.Page, 0);
-            this.AddImage(313, 158, 1889);
-            this.AddImage(147, 243, 0);
-            this.AddImage(144, 369, 0);
-            this.AddImage(143, 491, 0);
-            this.AddImage(575, 240, 0);
-            this.AddImage(572, 366, 0);
-            this.AddImage(572, 492, 0);
-            this.AddTextEntry(191, 245, 54, 20, 0, (int)Buttons.PERFILTEXTO, @"Perfil");
-            this.AddTextEntry(155, 370, 111, 20, 0, (int)Buttons.VIRTUDESEDEFEITOSTeXTO, @"Virtudes e Defeitos");
-            this.AddTextEntry(177, 492, 64, 20, 0, (int)Buttons.OBJETIVOSTEXTO, @"Objetivos");
-            this.AddTextEntry(612, 241, 68, 20, 0, (int)Buttons.biografiatexto, @"Biografia");
-            this.AddTextEntry(600, 367, 83, 20, 0, (int)Buttons.notasmentaistexto, @"Notas Mentais");
-            this.AddTextEntry(602, 494, 77, 20, 0, (int)Buttons.NotasStaffTexto, @"Notas Staff");
-            this.AddImage(44, 81, 10400);
-            this.AddImage(44, 258, 10401);
-            this.AddImage(44, 440, 10402);
-            this.AddImage(328, 103, 0);
-            this.AddTextEntry(397, 118, 75, 20, 0, (int)Buttons.FICHARP, @"FICHA RP");
-            this.AddButton(702, 529, 4025, 248, (int)Buttons.Button9, GumpButtonType.Reply, 0);
-            this.AddImage(352, 532, 1801);
-            this.AddButton(652, 530, 4020, 248, (int)Buttons.Button10, GumpButtonType.Reply, 0);
+            this.Resizable = true;
+
+            AddPage(0);
+            AddBackground(71, 34, 624, 466, 9200);
+            AddImage(63, 27, 9002);
+            AddButton(187, 162, 5575, 248, 0, GumpButtonType.Page, 0);
+            AddButton(153, 275, 5583, 248, 0, GumpButtonType.Reply, 0);
+            AddButton(184, 390, 5587, 248, 0, GumpButtonType.Reply, 0);
+            AddButton(537, 162, 5563, 248, 0, GumpButtonType.Reply, 0);
+            AddButton(532, 382, 5569, 248, 0, GumpButtonType.Reply, 0);
+            AddButton(568, 274, 5581, 248, 0, GumpButtonType.Reply, 0);
+            AddImage(319, 76, 11390);
+            AddButton(348, 395, 5603, 248, 0, GumpButtonType.Reply, 0);
+            AddButton(429, 396, 5601, 248, 0, GumpButtonType.Reply, 0);
+            AddImage(154, 226, 4213);
+            AddImage(119, 340, 4213);
+            AddImage(151, 453, 4213);
+            AddImage(503, 227, 4213);
+            AddImage(534, 338, 4213);
+            AddImage(503, 447, 4213);
+            AddImage(371, 32, 9804);
+            AddImage(341, 201, 30515);
+            AddTextEntry(196, 228, 58, 20, 0, 0, @"PERFIL");
+            AddTextEntry(124, 342, 120, 20, 0, 0, @"VIRTUDES E DEFEITOS");
+            AddTextEntry(181, 456, 68, 20, 0, 0, @"OBJETIVOS");
+            AddTextEntry(541, 230, 56, 20, 0, 0, @"BIOGRAFIA");
+            AddTextEntry(557, 341, 88, 20, 0, 0, @"NOTAS MENTAIS");
+            AddTextEntry(532, 449, 79, 20, 0, 0, @"NOTAS STAFF");
+            AddLabel(353, 82, 0, @"FICHA RP");
+            AddButton(104, 495, 5514, 248, 0, GumpButtonType.Reply, 0);
+            AddButton(328, 455, 247, 248, 0, GumpButtonType.Reply, 0);
+            AddButton(408, 455, 241, 248, 0, GumpButtonType.Reply, 0);
+
+            /*
+            TextRelay entry0 = info.GetTextEntry(0);
+            string text0 = (entry0 == null ? "" : entry0.Text.Trim());
+
+            TextRelay entry0 = info.GetTextEntry(0);
+            string text0 = (entry0 == null ? "" : entry0.Text.Trim());
+
+            TextRelay entry0 = info.GetTextEntry(0);
+            string text0 = (entry0 == null ? "" : entry0.Text.Trim());
+
+            TextRelay entry0 = info.GetTextEntry(0);
+            string text0 = (entry0 == null ? "" : entry0.Text.Trim());
+
+            TextRelay entry0 = info.GetTextEntry(0);
+            string text0 = (entry0 == null ? "" : entry0.Text.Trim());
+
+            TextRelay entry0 = info.GetTextEntry(0);
+            string text0 = (entry0 == null ? "" : entry0.Text.Trim());
+            */
+
 
         }
 
-        public enum Buttons
-        {
-            PERFIL,
-            NOTASMENTAIS,
-            VIRTUDESEDEFEITOS,
-            OBJETIVOS,
-            NOTASSTAFF,
-            BIOGRAFIA,
-            PERFILTEXTO,
-            VIRTUDESEDEFEITOSTeXTO,
-            OBJETIVOSTEXTO,
-            biografiatexto,
-            notasmentaistexto,
-            NotasStaffTexto,
-            FICHARP,
-            Button9,
-            Button10,
-        }
 
 
         public override void OnResponse(NetState sender, RelayInfo info)
@@ -102,25 +110,7 @@ namespace Server.Gumps
             {
                 case 0:
                     {
-                        /*
-                        TextRelay entry1 = info.GetTextEntry(1);
-                        string text1 = (entry1 == null ? "" : entry1.Text.Trim());
 
-                        TextRelay entry2 = info.GetTextEntry(2);
-                        string text2 = (entry2 == null ? "" : entry2.Text.Trim());
-
-                        TextRelay entry3 = info.GetTextEntry(3);
-                        string text3 = (entry3 == null ? "" : entry3.Text.Trim());
-
-                        TextRelay entry4 = info.GetTextEntry(4);
-                        string text4 = (entry4 == null ? "" : entry4.Text.Trim());
-
-                        TextRelay entry5 = info.GetTextEntry(5);
-                        string text5 = (entry5 == null ? "" : entry5.Text.Trim());
-
-                        TextRelay entry6 = info.GetTextEntry(6);
-                        string text6 = (entry6 == null ? "" : entry6.Text.Trim());
-                        */
                         break;
                     }
 

@@ -26,7 +26,7 @@ namespace Server.Misc
         /// <summary>
         ///     How long do we remember targets/locations?
         /// </summary>
-        public static TimeSpan AntiMacroExpire = TimeSpan.FromMinutes(5.0);
+        public static TimeSpan AntiMacroExpire = TimeSpan.FromMinutes(1.0);
 
         /// <summary>
         ///     How many times may we use the same location/target for gain
@@ -42,7 +42,7 @@ namespace Server.Misc
 
         static SkillCheck()
         {
-            _AntiMacroCode = Config.Get("PlayerCaps.EnableAntiMacro", false);
+            _AntiMacroCode = false;//Config.Get("PlayerCaps.EnableAntiMacro", false);
 
             _StatGainDelay = Config.Get("PlayerCaps.PlayerStatTimeDelay", TimeSpan.FromMinutes(15.0));
             _PetStatGainDelay = Config.Get("PlayerCaps.PetStatTimeDelay", TimeSpan.FromMinutes(5.0));
@@ -193,7 +193,7 @@ namespace Server.Misc
         public static double BONUS_GERAL = 0; 
 
         private static double BONUS_DUNGEON = 0.35;
-        private static double BONUS_PVM = 1.2;
+        //private static double BONUS_PVM = 1.2;
         private static double BONUS_CIDADE = 0;
         private static double BONUS_CASA = -0.1;
 
@@ -239,10 +239,6 @@ namespace Server.Misc
             return gc;
         }
 
-        static bool dgBonus = false;
-        static bool guardReg = false;
-        static bool houseReg = false;
-        static bool dgNoob = false;
         static bool work = false;
 
         public static bool CheckSkill(Mobile from, Skill skill, object amObj, double chance, double mult)
@@ -255,49 +251,31 @@ namespace Server.Misc
             if (mult == 0)
                 return success;
 
-            dgBonus = false;
-            guardReg = false;
-            houseReg = false;
-            dgNoob = false;
 
             work = Work.Any(s => s == skill.SkillName);
             
             var gcBonus = 0.0;
 
-            var pvm = false;
+         
             if (from.IsCooldown("matoumob"))
             {
+                /*
                 if (!Work.Any(s => s == skill.SkillName))
                 {
                     gcBonus += BONUS_PVM;
                     pvm = true;
                 }
+                */
             }
-            else if (from.Region.IsPartOf<GuardedRegion>())
-            {
-                guardReg = true;
-                gcBonus += BONUS_CIDADE;
-
-            }
-            else if (!work && BaseHouse.FindHouseAt(from) != null) {
-                houseReg = true;
-                gcBonus += BONUS_CASA;
-            } else if (!dgBonus && from.Region.IsPartOf<DungeonRegion>() && !work)
-            {
-                gcBonus += BONUS_DUNGEON;
-                dgBonus = true;
-            }
-            else if (!dgBonus && from.Region.IsPartOf<DungeonGuardedRegion>() && !work)
+            if (from.Region.IsPartOf<DungeonGuardedRegion>() && !work)
             {
                 if (skill.Value < 70)
                 {
-                    gcBonus += BONUS_DUNGEON + 0.15;
-                    dgBonus = true;
-                } else
-                {
-                    dgNoob = true;
+                    gcBonus += BONUS_DUNGEON;
                 }
             }
+
+            /*
             if (!Shard.WARSHARD && from is PlayerMobile)
             {
                 var player = (PlayerMobile)from;
@@ -310,7 +288,7 @@ namespace Server.Misc
                         player.PrivateOverheadMessage(Network.MessageType.Regular, 0, false, "Por estar em cidade voce esta destraido e seu aprendizado esta comprometido", player.NetState);
                     }
                 }
-                */
+            
                 if (houseReg)
                 {
                     if (!player.IsCooldown("skill_warn3"))
@@ -320,7 +298,7 @@ namespace Server.Misc
                         player.PrivateOverheadMessage(Network.MessageType.Regular, 0, false, "Por estar em uma casa voce esta muito relaxado e seu aprendizado esta muito comprometido", player.NetState);
                     }
                 }
-                /*
+                
                 else if (dgBonus)
                 {
                     if (!player.IsCooldown("skill_warn2"))
@@ -329,8 +307,8 @@ namespace Server.Misc
                         player.PrivateOverheadMessage(Network.MessageType.Regular, 0, false, "Por estar em uma regiao perigosa voce consegue aprender skills que nao sejam de trabalho mais rapidamente", player.NetState);          
                     }
                 }
-                */
-                /*
+                
+             
                 else if (dgNoob)
                 {
                     if (!player.IsCooldown("skill_warn22"))
@@ -339,16 +317,11 @@ namespace Server.Misc
                         player.PrivateOverheadMessage(Network.MessageType.Regular, 38, false, "Por suas habilidades serem maior que 70, seu aprendizado na dungeon newbie eh comprometido.", player.NetState);
                     }
                 }
-                */
+               
             }
+            */
 
-            var gc = GetExp(skill.Value, skill.Info.GainFactor, work, pvm, gcBonus) * mult;
-
-            if (pvm)
-                gc *= 1.2;
-
-            if (pvm && gc < 0.1)
-                gc = 0.1;
+            var gc = GetExp(skill.Value, skill.Info.GainFactor, work, false, gcBonus) * mult;
 
             if(BONUS_GERAL > 0)
             {
@@ -476,7 +449,7 @@ namespace Server.Misc
             Int
         }
 
-        public static void Gain(Mobile from, Skill skill)
+        public static void Gain(Mobile from, Skill skill, int amt = 1)
         {
             if (from.Region.IsPartOf<Jail>())
                 return;
@@ -490,7 +463,7 @@ namespace Server.Misc
 
             if (skill.Base < skill.Cap && skill.Lock == SkillLock.Up)
             {
-                var toGain = 1;
+                var toGain = amt;
                 var skills = from.Skills;
 
                 if (from is PlayerMobile && Siege.SiegeShard)
@@ -513,7 +486,7 @@ namespace Server.Misc
                     }
                 }
 
-                if (skill.Base <= 10.0)
+                if (skill.Base <= 10.0 && amt==1)
                     toGain = Utility.Random(4) + 1;
 
                 #region Mondain's Legacy
@@ -530,7 +503,7 @@ namespace Server.Misc
                     // You are infused with intense energy. You are under the effects of an accelerated skillgain scroll.
                     ((PlayerMobile)from).SendLocalizedMessage(1077956);
 
-                    toGain = Utility.RandomMinMax(2, 5);
+                    toGain += Utility.RandomMinMax(2, 5);
                 }
                 #endregion
 
@@ -599,10 +572,14 @@ namespace Server.Misc
 
         private static void CheckReduceSkill(Skills skills, int toGain, Skill gainSKill)
         {
-            if (skills.Total / skills.Cap >= Utility.RandomDouble())
+            Shard.Debug("Tentando baixar skill");
+            if (skills.Total + toGain / skills.Cap >= Utility.RandomDouble())
             {
+                Shard.Debug("Passou random estranho");
                 foreach (var toLower in skills)
                 {
+                    if(Shard.DebugEnabled && toLower.Lock == SkillLock.Down)
+                        Shard.Debug("Tentando baixar "+ toLower.Name+" - "+ (toLower.BaseFixedPoint >= toGain));
                     if (toLower != gainSKill && toLower.Lock == SkillLock.Down && toLower.BaseFixedPoint >= toGain)
                     {
                         toLower.BaseFixedPoint -= toGain;

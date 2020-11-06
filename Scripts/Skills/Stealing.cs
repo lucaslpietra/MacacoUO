@@ -66,8 +66,14 @@ namespace Server.SkillHandlers
 					stealable = toSteal is AddonComponent ? StealableArtifactsSpawner.GetStealableInstance(((AddonComponent)toSteal).Addon) : StealableArtifactsSpawner.GetStealableInstance(toSteal);
 				}
 
-                var canSteal = toSteal is BaseDecorationArtifact || toSteal is DecoRelPor;
-                if(!toSteal.Movable && canSteal && toSteal.GetRegion() is DungeonRegion )
+                var canSteal = toSteal is BaseDecorationArtifact || toSteal is DecoRelPor || ItemFlags.GetStealable(toSteal);
+
+                if(Shard.DebugEnabled)
+                {
+                    Shard.Debug("Flag ? " + ItemFlags.GetStealable(toSteal) + " Dungeon ? " + (toSteal.GetRegion() is DungeonRegion+" Movable ? "+ toSteal.Movable));
+                }
+
+                if(!toSteal.Movable && canSteal && toSteal.GetRegion() is DungeonRegion)
                 {
                     if(m_Thief.Skills[SkillName.Stealing].Value < 100)
                     {

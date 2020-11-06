@@ -281,5 +281,8 @@ namespace Server.Accounting
 
 		void SetPassword(string password);
 		bool CheckPassword(string password);
-	}
+
+        Mobile GetPseudoSeerLastCharacter();
+        void SetPseudoSeerLastCharacter(Mobile m);
+    }
 }

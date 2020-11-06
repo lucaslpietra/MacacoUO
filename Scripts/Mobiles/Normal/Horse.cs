@@ -52,7 +52,7 @@ namespace Server.Mobiles
 
             Tamable = true;
             ControlSlots = 1;
-            MinTameSkill = 55;
+            MinTameSkill = 48;
         }
 
         public Horse(Serial serial)

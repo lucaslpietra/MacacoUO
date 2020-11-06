@@ -7,6 +7,7 @@ using Server.Mobiles;
 using System.Collections.Generic;
 using System;
 using Server.Misc;
+using Server.Engines.Points;
 
 namespace Server.Items
 {
@@ -58,7 +59,10 @@ namespace Server.Items
         public override void AddNameProperties(ObjectPropertyList list)
         {
             base.AddNameProperties(list);
-            list.Add("Escolha uma skill de combate para ganhar 0.5%");
+            if(Shard.EXP)
+                list.Add("Receba +300 Exp");
+            else
+                list.Add("Escolha uma skill de combate para ganhar 0.5%");
         }
 
         public override void AddNameProperty(ObjectPropertyList list)
@@ -77,6 +81,16 @@ namespace Server.Items
             {
                 from.CloseAllGumps();
                 from.PlaySound(0x55);
+
+                if(Shard.EXP)
+                {
+                    PointsSystem.Exp.AwardPoints(from, 300);
+                    from.FixedParticles(0x375A, 9, 20, 5016, EffectLayer.Waist);
+                    from.PlaySound(0x1FD);
+                    Consume();
+                    return;
+                }
+
                 from.SendGump(new InternalGump(from, this));
             }
         }

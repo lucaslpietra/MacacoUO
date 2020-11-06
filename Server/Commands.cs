@@ -216,6 +216,8 @@ namespace Server.Commands
 			return Handle(from, text, MessageType.Regular);
 		}
 
+        public static List<string> ComandosPossess = new List<string>(new string[] { "unpossess", "say" });
+
 		public static bool Handle(Mobile from, string text, MessageType type)
 		{
 			if (text.StartsWith(m_Prefix) || type == MessageType.Command)
@@ -250,10 +252,17 @@ namespace Server.Commands
 
 				if (entry != null)
 				{
-					if (from.AccessLevel >= entry.AccessLevel)
+                    var liberado = ComandosPossess.Contains(command);
+
+                    if ((from.Account == null && liberado) || from.AccessLevel >= entry.AccessLevel)
 					{
 						if (entry.Handler != null)
 						{
+                            if(from.Account == null && !liberado)
+                            { 
+                                from.SendMessage("Comando bloqueado em forma de monstro pra evitar crash - pedir pro dev liberar");
+                                return true;
+                            }
 							CommandEventArgs e = new CommandEventArgs(from, command, argString, args);
 							entry.Handler(e);
 							EventSink.InvokeCommand(e);

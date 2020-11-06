@@ -43,12 +43,10 @@ namespace Server.Spells.Eighth
         {
             if (this.CheckSequence())
             {
-                TimeSpan duration = TimeSpan.FromSeconds(20 + (2 * this.Caster.Skills.SpiritSpeak.Value));
-
-                if (Core.AOS)
-                    SpellHelper.Summon(new SummonedWaterElemental(), this.Caster, 0x217, duration, false, false);
-                else
-                    SpellHelper.Summon(new WaterElemental(), this.Caster, 0x217, duration, false, false);
+                TimeSpan duration = TimeSpan.FromSeconds(40 + (2 * this.Caster.Skills.SpiritSpeak.Value));
+                var ele = new WaterElemental();
+                SpellHelper.Summon(ele, this.Caster, 0x217, duration, false, false);
+                ele.VirtualArmor = 0;
             }
 
             this.FinishSequence();

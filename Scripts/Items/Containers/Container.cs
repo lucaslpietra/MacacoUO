@@ -6,6 +6,7 @@ using Server.Multis;
 using Server.Network;
 using Server.Accounting;
 using System.Linq;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
@@ -748,7 +749,7 @@ namespace Server.Items
         }
     }
 
-    public class Keg : BaseContainer
+    public class Keg : BaseContainer, IResource
     {
         [Constructable]
         public Keg()
@@ -763,11 +764,29 @@ namespace Server.Items
         {
         }
 
+        private CraftResource m_Resource;
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CraftResource Resource
+        {
+            get { return m_Resource; }
+            set
+            {
+                m_Resource = value;
+                Hue = CraftResources.GetHue(m_Resource);
+                InvalidateProperties();
+            }
+        }
+
+        public ItemQuality Quality { get { return ItemQuality.Normal; } set { } }
+
+        public bool PlayerConstructed { get { return false; } }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
+            writer.Write((int)Resource);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -775,6 +794,34 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+            if(version >= 1)
+            {
+                m_Resource = (CraftResource)reader.ReadInt();
+            }
+        }
+
+        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
+        {
+            Type resourceType = typeRes;
+            if (resourceType == null) resourceType = craftItem.Resources.GetAt(0).ItemType;
+
+            if (Shard.DebugEnabled)
+            {
+                Shard.Debug("TYPERES: " + typeRes.Name);
+                var ct = craftItem.Resources.Count -1;
+                while (ct >= 0)
+                {
+                    var res = craftItem.Resources.GetAt(ct);
+                    Shard.Debug("ItemType: " + res.ItemType.Name);
+                    Shard.Debug("NameString" + res.NameString);
+                    //var search = res.SearchFor(baseType);
+                    ct--;
+                }
+                Shard.Debug("Resource: " + resourceType.Name);
+                Shard.Debug("QTD: " + craftItem.Resources.Count);
+            }
+
+            return quality;
         }
     }
 

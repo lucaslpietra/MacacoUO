@@ -45,10 +45,9 @@ namespace Server.Spells.Eighth
             {
                 TimeSpan duration = TimeSpan.FromSeconds(20 + (2 * this.Caster.Skills.SpiritSpeak.Value));
 
-                if (Core.AOS)
-                    SpellHelper.Summon(new SummonedAirElemental(), this.Caster, 0x217, duration, false, false);
-                else
-                    SpellHelper.Summon(new AirElemental(), this.Caster, 0x217, duration, false, false);
+                var ele = new AirElemental();
+                SpellHelper.Summon(ele, this.Caster, 0x217, duration, false, false);
+                ele.VirtualArmor = 0;
             }
 
             this.FinishSequence();

@@ -1,6 +1,6 @@
 #region References
 using System;
-
+using Server.Engines.XmlSpawner2;
 using Server.Items;
 using Server.SkillHandlers;
 using Server.Spells;
@@ -413,10 +413,30 @@ namespace Server.Mobiles
 				OnFailedMove();
 		}
 
-		public virtual Spell ChooseSpell(IDamageable c)
+        private XmlCast XmlCast = null;
+        private bool jaleu = false;
+
+
+        public virtual Spell ChooseSpell(IDamageable c)
 		{
 			if (c == null || !c.Alive)
 				return null;
+
+            if(!jaleu)
+            {
+                jaleu = true;
+                XmlCast = (XmlCast)XmlAttach.FindAttachment(m_Mobile, typeof(XmlCast));
+            }
+
+            if(XmlCast != null)
+            {
+                if(Utility.Random(100) > XmlCast.Chance)
+                {
+                    var s = XmlCast.GetSpell(m_Mobile);
+                    if (s != null)
+                        return s;
+                }
+            }
 
 			Spell spell = null;
 

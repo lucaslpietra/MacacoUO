@@ -7735,7 +7735,7 @@ namespace Server
             return HasGump(type);
         }
 
-        public bool SendGump(Gump g)
+        public virtual bool SendGump(Gump g)
         {
             if(!IsStaff())
             {
@@ -7744,8 +7744,16 @@ namespace Server
             return SendGump(g, false);
         }
 
+        public bool AllowGumps = true;
+
         public bool SendGump(Gump g, bool throwOnOffline)
         {
+            if (!AllowGumps || this.Account.GetPseudoSeerLastCharacter() != null)
+            {
+                SendMessage("Nao pode fazer isto agora");
+                return false;
+            }
+
             if (m_NetState != null)
             {
                 g.SendTo(m_NetState);

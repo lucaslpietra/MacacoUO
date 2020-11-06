@@ -158,14 +158,14 @@ namespace Server.Engines.Craft
             // Weapons
             this.AddCraft(typeof(PraticeBow), 1044566, 1025042, 30.0, 70.0, typeof(Board), 1044041, 20, 1044351);
             this.AddCraft(typeof(Bow), 1044566, 1025042, 30.0, 70.0, typeof(Board), 1044041, 7, 1044351);
-            this.AddCraft(typeof(Crossbow), 1044566, 1023919, 60.0, 100.0, typeof(Board), 1044041, 7, 1044351);
-            this.AddCraft(typeof(HeavyCrossbow), 1044566, 1025117, 70.0, 120.0, typeof(Board), 1044041, 10, 1044351);
+            this.AddCraft(typeof(Crossbow), 1044566, 1023919, 60.0, 90, typeof(Board), 1044041, 7, 1044351);
+            this.AddCraft(typeof(HeavyCrossbow), 1044566, 1025117, 70.0, 100, typeof(Board), 1044041, 10, 1044351);
 
-            index = this.AddCraft(typeof(CompositeBow), 1044566, 1029922, 65.0, 139.0, typeof(Board), 1044041, 8, 1044351);
+            index = this.AddCraft(typeof(CompositeBow), 1044566, 1029922, 65.0, 105, typeof(Board), 1044041, 8, 1044351);
             this.AddRes(index, typeof(Cloth), "Pano", 5, "Voce precisa de Pano para fazer isto");
 
-            this.AddCraft(typeof(RepeatingCrossbow), 1044566, 1029923, 90.0, 130.0, typeof(Board), 1044041, 10, 1044351);
-            index = AddCraft(typeof(Yumi), 1044566, 1030224, 70.0, 110.0, typeof(Board), 1044041, 10, 1044351);
+            this.AddCraft(typeof(RepeatingCrossbow), 1044566, 1029923, 90.0, 100, typeof(Board), 1044041, 10, 1044351);
+            index = AddCraft(typeof(Yumi), 1044566, 1030224, 70.0, 95, typeof(Board), 1044041, 10, 1044351);
 
 
             #region Mondain's Legacy

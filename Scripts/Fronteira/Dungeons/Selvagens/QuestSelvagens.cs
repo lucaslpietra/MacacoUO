@@ -1,4 +1,5 @@
 using System;
+using Server.Engines.Points;
 using Server.Items;
 
 namespace Server.Engines.Quests
@@ -62,6 +63,7 @@ Sera que voce consegue recuperar minha foicinha ? <br>Voce vai precisar de <b>bo
 
         public override void OnCompleted()
         {
+            PointsSystem.Exp.AwardPoints(this.Owner, 300);
             this.Owner.PlaySound(this.CompleteSound);
         }
 

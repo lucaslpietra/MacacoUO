@@ -120,7 +120,6 @@ namespace Server.Gumps
             PvM,
             Trabalho,
             Fama,
-
             Prox,
             Ant
         }
