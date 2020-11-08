@@ -16,7 +16,7 @@ namespace Server.SkillHandlers
             SkillInfo.Table[(int)SkillName.Peacemaking].Callback = OnUse;
         }
 
-        public static int CUSTO_STAMINA = 15;
+        public static int CUSTO_STAMINA = 5;
 
         public static TimeSpan OnUse(Mobile m)
         {
@@ -27,7 +27,6 @@ namespace Server.SkillHandlers
                 m.SendMessage("Voce esta muito cansado para tocar");
                 return TimeSpan.FromSeconds(2.0);
             }
-               
 
             BaseInstrument.PickInstrument(m, OnPickedInstrument);
 
@@ -111,68 +110,82 @@ namespace Server.SkillHandlers
                         }
                         else
                         {
-                            from.NextSkillTime = Core.TickCount + 5000;
+                            from.NextSkillTime = Core.TickCount + 10000;
+                            from.NextActionTime = Core.TickCount + 3000;
                             m_Instrument.PlayInstrumentWell(from);
                             m_Instrument.ConsumeUse(from);
+                            from.OverheadMessage("* tocando *");
 
-                            Map map = from.Map;
-
-                            if (map != null)
+                            Timer.DelayCall(TimeSpan.FromSeconds(3), () =>
                             {
-                                int range = BaseInstrument.GetBardRange(from, SkillName.Peacemaking);
+                                if (from == null || !from.Alive || from.Map == Map.Internal)
+                                    return;
 
-                                bool calmed = false;
-                                IPooledEnumerable eable = from.GetMobilesInRange(range);
+                                Map map = from.Map;
 
-                                foreach (Mobile m in eable)
+                                if (map != null)
                                 {
-                                    if (!(m is BaseCreature))
-                                    {
-                                        continue;
-                                    }
-                                    var bc = (BaseCreature)m;
+                                    int range = BaseInstrument.GetBardRange(from, SkillName.Peacemaking);
 
-                                    if (bc.Tribe == TribeType.Undead)
+                                    bool calmed = false;
+                                    IPooledEnumerable eable = from.GetMobilesInRange(range);
+
+                                    foreach (Mobile m in eable)
                                     {
-                                        Shard.Debug("Slayer: " + m_Instrument.Slayer);
-                                        if (m_Instrument.Slayer != SlayerName.Undeads && m_Instrument.Slayer2 != SlayerName.Undeads) {
-                                            bc.Say("* ... *");
+                                        if (!(m is BaseCreature))
+                                        {
                                             continue;
                                         }
-                                    }
+                                        var bc = (BaseCreature)m;
 
-                                    if (bc.Uncalmable ||
-                                        (bc.AreaPeaceImmune) || m == from || !from.CanBeHarmful(m, false))
+                                        if (bc.Tribe == TribeType.Undead)
+                                        {
+                                            Shard.Debug("Slayer: " + m_Instrument.Slayer);
+                                            if (m_Instrument.Slayer != SlayerName.Undeads && m_Instrument.Slayer2 != SlayerName.Undeads)
+                                            {
+                                                bc.Say("* ... *");
+                                                continue;
+                                            }
+                                        }
+
+                                        if (bc.Uncalmable ||
+                                            (bc.AreaPeaceImmune) || m == from || !from.CanBeHarmful(m, false))
+                                        {
+                                            continue;
+                                        }
+
+                                        calmed = true;
+
+                                        m.SendLocalizedMessage(500616); // You hear lovely music, and forget to continue battling!
+                                        m.Combatant = null;
+                                        m.Warmode = false;
+
+                                        if (bc.BardPacified)
+                                        {
+                                            bc.Pacify(from, DateTime.UtcNow + TimeSpan.FromSeconds(1.0));
+                                        }
+                                    }
+                                    eable.Free();
+
+                                    if (!calmed)
                                     {
-                                        continue;
+                                        from.SendLocalizedMessage("Voce nao conseguiu acalmar a criatura"); // You play hypnotic music, but there is nothing in range for you to calm.
                                     }
-
-                                    calmed = true;
-
-                                    m.SendLocalizedMessage(500616); // You hear lovely music, and forget to continue battling!
-                                    m.Combatant = null;
-                                    m.Warmode = false;
-
-                                    if (bc.BardPacified)
+                                    else
                                     {
-                                        bc.Pacify(from, DateTime.UtcNow + TimeSpan.FromSeconds(1.0));
+                                        from.SendLocalizedMessage("Voce toca uma musica hipnotica parando a batalha"); // You play your hypnotic music, stopping the battle.
                                     }
                                 }
-                                eable.Free();
+                            });
+                          
 
-                                if (!calmed)
-                                {
-                                    from.SendLocalizedMessage("Voce nao conseguiu acalmar a criatura"); // You play hypnotic music, but there is nothing in range for you to calm.
-                                }
-                                else
-                                {
-                                    from.SendLocalizedMessage("Voce toca uma musica hipnotica parando a batalha"); // You play your hypnotic music, stopping the battle.
-                                }
-                            }
+                           
                         }
                     }
                     else
                     {
+                        from.OverheadMessage("* tocando *");
+
                         // Target mode : pacify a single target for a longer duration
                         Mobile targ = (Mobile)targeted;
 
@@ -223,109 +236,120 @@ namespace Server.SkillHandlers
                             {
                                 m_Instrument.PlayInstrumentWell(from);
                                 m_Instrument.ConsumeUse(from);
+                                from.NextSkillTime = Core.TickCount + 10000;
+                                from.NextActionTime = Core.TickCount + 3000;
 
-                                from.NextSkillTime = Core.TickCount + (5000 - ((masteryBonus / 5) * 1000));
-
-                                if (targ is BaseCreature)
+                                Timer.DelayCall(TimeSpan.FromSeconds(4.2 - from.Dex / 50), () =>
                                 {
-                                    BaseCreature bc = (BaseCreature)targ;
+                                    if (from == null || !from.Alive || from.Map == Map.Internal || !targ.Alive || targ.Map == Map.Internal)
+                                        return;
 
-                                    if (bc.Tribe == TribeType.Undead)
+                                    from.NextSkillTime = Core.TickCount + (5000 - ((masteryBonus / 5) * 1000));
+
+                                    if (targ is BaseCreature)
                                     {
-                                        if (m_Instrument.Slayer != SlayerName.Undeads && m_Instrument.Slayer2 != SlayerName.Undeads)
+                                        BaseCreature bc = (BaseCreature)targ;
+
+                                        if (bc.Tribe == TribeType.Undead)
                                         {
-                                            bc.Say("* ... *");
-                                            from.SendMessage("A criatura morto viva ignora a musica. Talvez com um instrumento especial...");
+                                            if (m_Instrument.Slayer != SlayerName.Undeads && m_Instrument.Slayer2 != SlayerName.Undeads)
+                                            {
+                                                bc.Say("* ... *");
+                                                from.SendMessage("A criatura morto viva ignora a musica. Talvez com um instrumento especial...");
+                                                return;
+                                            }
+                                        }
+
+                                        //Effects.SendMovingParticles(targ, new Entity(Serial.Zero, new Point3D(targ.X, targ.Y, targ.Z + 15), from.Map), m_Instrument.ItemID, 10, 10, false, false, 1154, 0, 9502, 1, 0, EffectLayer.Head, 1);
+                                        from.MovingParticles(targ, m_Instrument.ItemID, 7, 0, false, false, 1152, 9502, 0x374A, 0x204, 1, 1);
+                                        from.SendLocalizedMessage("Voce toca uma musica hipnotica acalmando a criatura"); // You play hypnotic music, calming your target.
+                                        targ.FixedEffect(0x376A, 1, 32, 1154, 0);
+                                        targ.Combatant = null;
+                                        targ.Warmode = false;
+
+                                        double seconds = 100 - (diff / 1.5);
+
+                                        if (seconds > 120)
+                                        {
+                                            seconds = 120;
+                                        }
+                                        else if (seconds < 10)
+                                        {
+                                            seconds = 10;
+                                        }
+
+                                        bc.Pacify(from, DateTime.UtcNow + TimeSpan.FromSeconds(seconds));
+
+                                        #region Bard Mastery Quest
+                                        if (from is PlayerMobile)
+                                        {
+                                            BaseQuest quest = QuestHelper.GetQuest((PlayerMobile)from, typeof(TheBeaconOfHarmonyQuest));
+
+                                            if (quest != null)
+                                            {
+                                                foreach (BaseObjective objective in quest.Objectives)
+                                                    objective.Update(bc);
+                                            }
+                                        }
+                                        #endregion
+                                    }
+                                    else // target is player
+                                    {
+
+                                        if (!from.CanBeHarmful(targ))
+                                            return;
+
+                                        from.DoHarmful(targ);
+
+                                        if (Utility.Random(10) == 1)
+                                        {
+                                            targ.SendMessage("A musica nao fez efeito");
+                                            from.SendMessage("O alvo resistiu a musica");
+                                            targ.PlaySound(0x1E6);
+                                            targ.FixedEffect(0x42CF, 10, 5);
                                             return;
                                         }
-                                    }
 
-                                    //Effects.SendMovingParticles(targ, new Entity(Serial.Zero, new Point3D(targ.X, targ.Y, targ.Z + 15), from.Map), m_Instrument.ItemID, 10, 10, false, false, 1154, 0, 9502, 1, 0, EffectLayer.Head, 1);
-                                    from.MovingParticles(targ, m_Instrument.ItemID, 7, 0, false, false, 1152, 9502, 0x374A, 0x204, 1, 1);
-                                    from.SendLocalizedMessage("Voce toca uma musica hipnotica acalmando a criatura"); // You play hypnotic music, calming your target.
-                                    targ.FixedEffect(0x376A, 1, 32, 1154, 0);
-                                    targ.Combatant = null;
-                                    targ.Warmode = false;
-
-                                    double seconds = 100 - (diff / 1.5);
-
-                                    if (seconds > 120)
-                                    {
-                                        seconds = 120;
-                                    }
-                                    else if (seconds < 10)
-                                    {
-                                        seconds = 10;
-                                    }
-
-                                    bc.Pacify(from, DateTime.UtcNow + TimeSpan.FromSeconds(seconds));
-
-                                    #region Bard Mastery Quest
-                                    if (from is PlayerMobile)
-                                    {
-                                        BaseQuest quest = QuestHelper.GetQuest((PlayerMobile)from, typeof(TheBeaconOfHarmonyQuest));
-
-                                        if (quest != null)
+                                        from.SendLocalizedMessage("Voce acalmcou o alvo"); // You play hypnotic music, calming your target.
+                                                                                           //from.MovingParticles(targ, m_Instrument.ItemID, 15, 0, false, false, 0, 9502, 0x374A, 0x204, 1, 1);
+                                        var danoBase = 1;
+                                        var rng = 0;
+                                        switch (m_Instrument.Resource)
                                         {
-                                            foreach (BaseObjective objective in quest.Objectives)
-                                                objective.Update(bc);
+                                            case CraftResource.Carmesim:
+                                            case CraftResource.Gelo:
+                                                danoBase = 2;
+                                                rng = 2;
+                                                break;
+                                            case CraftResource.Eucalipto:
+                                            case CraftResource.Mogno:
+                                                danoBase = 2;
+                                                rng = 1;
+                                                break;
+                                            case CraftResource.Pinho:
+                                            case CraftResource.Carvalho:
+                                                danoBase = 2;
+                                                rng = 0;
+                                                break;
                                         }
-                                    }
-                                    #endregion
-                                }
-                                else // target is player
-                                {
+                                        if (m_Instrument.Quality == ItemQuality.Exceptional)
+                                        {
+                                            rng += 1;
+                                        }
 
-                                    if (!from.CanBeHarmful(targ))
-                                        return;
-
-                                    from.DoHarmful(targ);
-
-                                    if(Utility.Random(10) == 1)
-                                    {
-                                        targ.SendMessage("A musica nao fez efeito");
-                                        from.SendMessage("O alvo resistiu a musica");
-                                        targ.PlaySound(0x1E6);
-                                        targ.FixedEffect(0x42CF, 10, 5);
-                                        return;
+                                        //Effects.SendMovingParticles(from, new Entity(Serial.Zero, new Point3D(from.X, from.Y, from.Z + 15), from.Map), m_Instrument.ItemID, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+                                        from.MovingParticles(targ, m_Instrument.ItemID, 10, 0, false, false, 1152, 9502, 0x374A, 0x204, 1, 1);
+                                        targ.SendLocalizedMessage("Voce escuta uma musica calmante e esquece de lutar"); // You hear lovely music, and forget to continue battling!
+                                        targ.Combatant = null;
+                                        targ.Warmode = false;
+                                        targ.Paralyze(TimeSpan.FromSeconds(Utility.Random(danoBase, rng)));
+                                        targ.OverheadMessage("* acalmado *");
+                                        from.NextSkillTime = Core.TickCount + 10000;
                                     }
 
-                                    from.SendLocalizedMessage("Voce acalmcou o alvo"); // You play hypnotic music, calming your target.
-                                                                                       //from.MovingParticles(targ, m_Instrument.ItemID, 15, 0, false, false, 0, 9502, 0x374A, 0x204, 1, 1);
-                                    var danoBase = 1;
-                                    var rng = 1;
-                                    switch (m_Instrument.Resource)
-                                    {
-                                        case CraftResource.Carmesim:
-                                        case CraftResource.Gelo:
-                                            danoBase = 2;
-                                            rng = 3;
-                                            break;
-                                        case CraftResource.Eucalipto:
-                                        case CraftResource.Mogno:
-                                            danoBase = 2;
-                                            rng = 2;
-                                            break;
-                                        case CraftResource.Pinho:
-                                        case CraftResource.Carvalho:
-                                            danoBase = 2;
-                                            rng = 1;
-                                            break;
-                                    }
-                                    if (m_Instrument.Quality == ItemQuality.Exceptional)
-                                    {
-                                        rng += 1;
-                                    }
+                                });
 
-                                    //Effects.SendMovingParticles(from, new Entity(Serial.Zero, new Point3D(from.X, from.Y, from.Z + 15), from.Map), m_Instrument.ItemID, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
-                                    from.MovingParticles(targ, m_Instrument.ItemID, 10, 0, false, false, 1152, 9502, 0x374A, 0x204, 1, 1);
-                                    targ.SendLocalizedMessage("Voce escuta uma musica calmante e esquece de lutar"); // You hear lovely music, and forget to continue battling!
-                                    targ.Combatant = null;
-                                    targ.Warmode = false;
-                                    targ.Paralyze(TimeSpan.FromSeconds(Utility.Random(2,2)));
-                                    targ.OverheadMessage("* acalmado *");
-                                    from.NextSkillTime = Core.TickCount + 10000;
-                                }
+                                
                             }
                         }
                     }

@@ -136,10 +136,20 @@ namespace Server.Mobiles
         public WispGuia Wisp = null;
         public int Anuncios = 0;
 
-
-
         [CommandProperty(AccessLevel.GameMaster)]
         public int Vidas { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public PatenteRP PatenteRP {
+            get
+            {
+                return FichaRP.Patente;
+            }
+            set
+            {
+                FichaRP.Patente = value;
+            }
+        }
 
         public static List<PlayerMobile> Instances { get; private set; }
 

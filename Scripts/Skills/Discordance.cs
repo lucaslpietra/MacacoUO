@@ -24,7 +24,7 @@ namespace Server.SkillHandlers
 
         public static bool RemoveEffect(Mobile m)
         {
-            if(m_Table.Contains(m))
+            if (m_Table.Contains(m))
             {
                 var info = m_Table[m] as DiscordanceInfo;
                 if (info == null)
@@ -164,7 +164,7 @@ namespace Server.SkillHandlers
                 else if (target is Mobile)
                 {
                     Mobile targ = (Mobile)target;
-                    
+
                     if (
                         (targ is BaseCreature && (((BaseCreature)targ).BardImmune || !from.CanBeHarmful(targ, false)) &&
                          ((BaseCreature)targ).ControlMaster != from))
@@ -212,43 +212,24 @@ namespace Server.SkillHandlers
                         }
                         else if (from.CheckTargetSkillMinMax(SkillName.Discordance, target, diff - 25.0, diff + 25.0))
                         {
-                            from.SendLocalizedMessage("Voce tocou bem, reduzindo as forcas do alvo"); // You play the song surpressing your targets strength
+                            from.OverheadMessage("* tocando *");
                             m_Instrument.PlayInstrumentWell(from);
                             m_Instrument.ConsumeUse(from);
 
-                            ArrayList mods = new ArrayList();
-                            int effect;
-                            double scalar;
+                            from.NextSkillTime = Core.TickCount + (8000 - ((masteryBonus / 5) * 1000));
+                            from.NextActionTime = Core.TickCount + 3000;
 
-                            if (Core.AOS)
+                            Timer.DelayCall(TimeSpan.FromSeconds(4 - from.Dex / 50), () =>
                             {
-                                double discord = from.Skills[SkillName.Discordance].Value;
+                                if (from == null || !from.Alive || from.Map == Map.Internal || !targ.Alive || targ.Map == Map.Internal)
+                                    return;
 
-                                effect = (int)Math.Max(-28.0, (discord / -4.0));
+                                from.SendLocalizedMessage("Voce tocou bem, reduzindo as forcas do alvo"); // You play the song surpressing your targets strength
+                             
+                                ArrayList mods = new ArrayList();
+                                int effect;
+                                double scalar;
 
-                                if (Core.SE && BaseInstrument.GetBaseDifficulty(targ) >= 160.0)
-                                {
-                                    effect /= 2;
-                                }
-
-                                scalar = (double)effect / 100;
-
-                                mods.Add(new ResistanceMod(ResistanceType.Physical, effect));
-                                mods.Add(new ResistanceMod(ResistanceType.Fire, effect));
-                                mods.Add(new ResistanceMod(ResistanceType.Cold, effect));
-                                mods.Add(new ResistanceMod(ResistanceType.Poison, effect));
-                                mods.Add(new ResistanceMod(ResistanceType.Energy, effect));
-
-                                for (int i = 0; i < targ.Skills.Length; ++i)
-                                {
-                                    if (targ.Skills[i].Value > 0)
-                                    {
-                                        mods.Add(new DefaultSkillMod((SkillName)i, true, targ.Skills[i].Value * scalar));
-                                    }
-                                }
-                            }
-                            else
-                            {
                                 var mod = -5.0;
                                 if (targ is PlayerMobile)
                                     mod = -10;
@@ -274,27 +255,28 @@ namespace Server.SkillHandlers
                                     }
                                 }
 
-                            }
+                                DiscordanceInfo info = new DiscordanceInfo(from, targ, Math.Abs(effect), mods);
+                                info.m_Timer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(2), ProcessDiscordance, info);
 
-                            DiscordanceInfo info = new DiscordanceInfo(from, targ, Math.Abs(effect), mods);
-                            info.m_Timer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(2), ProcessDiscordance, info);
-
-                            #region Bard Mastery Quest
-                            if (from is PlayerMobile)
-                            {
-                                BaseQuest quest = QuestHelper.GetQuest((PlayerMobile)from, typeof(WieldingTheSonicBladeQuest));
-
-                                if (quest != null)
+                                #region Bard Mastery Quest
+                                if (from is PlayerMobile)
                                 {
-                                    foreach (BaseObjective objective in quest.Objectives)
-                                        objective.Update(targ);
+                                    BaseQuest quest = QuestHelper.GetQuest((PlayerMobile)from, typeof(WieldingTheSonicBladeQuest));
+
+                                    if (quest != null)
+                                    {
+                                        foreach (BaseObjective objective in quest.Objectives)
+                                            objective.Update(targ);
+                                    }
                                 }
-                            }
-                            #endregion
+                                #endregion
 
-                            m_Table[targ] = info;
+                                m_Table[targ] = info;
 
-                            from.NextSkillTime = Core.TickCount + (8000 - ((masteryBonus / 5) * 1000));
+                                from.NextSkillTime = Core.TickCount + (8000 - ((masteryBonus / 5) * 1000));
+                            });
+
+
                         }
                         else
                         {

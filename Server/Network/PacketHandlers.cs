@@ -1037,7 +1037,10 @@ namespace Server.Network
                 return;
             }
 
-            EventSink.InvokeChangeProfileRequest(new ChangeProfileRequestEventArgs(beholder, beheld, "ficharp"));
+            if(beholder==beheld)
+                EventSink.InvokeChangeProfileRequest(new ChangeProfileRequestEventArgs(beholder, beheld, beholder.Profile));
+            else
+                EventSink.InvokeChangeProfileRequest(new ChangeProfileRequestEventArgs(beholder, beheld, "ficharp"));
 
             /*
             switch (type)

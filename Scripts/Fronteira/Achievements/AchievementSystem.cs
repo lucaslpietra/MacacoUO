@@ -97,7 +97,7 @@ namespace Scripts.Mythik.Systems.Achievements
             Achievements.Add(new DiscoveryAchievement(11, 3, 0x14EB, false, null, "Abismo", "Encontre o Abismo", 5, "Doom"));
 
             Achievements.Add(new DiscoveryAchievement(1, 1, 0x14EB, false, null, "Vila dos Druidas", "Encontre a Vila dos Druidas", 5, "Arbor"));
-            Achievements.Add(new DiscoveryAchievement(2, 1, 0x14EB, false, null, "Malditos Anarquistas", "Encontre a Vila dos Anarquistas", 5, "Bowan"));
+            Achievements.Add(new DiscoveryAchievement(2, 1, 0x14EB, false, null, "Forte Fofnolsaern", "Encontre o Forte Fofnolsaern", 5, "Bowan"));
             Achievements.Add(new DiscoveryAchievement(3, 1, 0x14EB, false, null, "Ratown", "Va a vila dos Ratos", 5, "SavageCamp"));
             Achievements.Add(new DiscoveryAchievement(4, 1, 0x14EB, false, null, "Tretonia", "Encontre Tretonia", 5, "Tretonia"));
             /*

@@ -1378,12 +1378,6 @@ namespace Server.Items
 
 			Spellbook book = e.Spellbook as Spellbook;
 
-            if(from.RP && !book.RP)
-            {
-                from.SendMessage("Voce nao pode usar livros de magia nao RP");
-                return;
-            }
-
 			int spellID = e.SpellID;
 
 			if (book == null || !book.HasSpell(spellID))

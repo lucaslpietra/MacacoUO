@@ -144,7 +144,7 @@ namespace Server.Gumps
             this.AddBackground(390, 259, 344, 26, 9300);
             this.AddImage(353, 463, 1598);
             this.AddBackground(391, 294, 344, 406, 9300);
-            this.AddTextEntry(397, 300, 330, 395, 0, (int)Buttons2.Aparencia, ficha.Aparencia == null ? @"Descreva a aparencia do personagem" : ficha.Aparencia);
+            this.AddTextEntry(397, 300, 330, 395, 0, (int)Buttons2.Aparencia, ficha.Aparencia == null ? @"Descreva a aparencia do personagem. Isto sera o que outros irao ver quando clicarem no profile do seu personagem." : ficha.Aparencia);
             this.AddTextEntry(394, 230, 331, 20, 0, (int)Buttons2.Nome, ficha.Nome == null ? @"Digite o nome do personagem" : ficha.Nome);
             this.AddTextEntry(397, 263, 331, 20, 0, (int)Buttons2.Idade, ficha.Idade == 0 ? @"Digite a idade do personagem" : ficha.Idade.ToString());
         }

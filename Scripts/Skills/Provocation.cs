@@ -17,7 +17,7 @@ namespace Server.SkillHandlers
             SkillInfo.Table[(int)SkillName.Provocation].Callback = OnUse;
         }
 
-        public static int CUSTO_STAMINA = 15;
+        public static int CUSTO_STAMINA = 5;
 
         public static TimeSpan OnUse(Mobile m)
         {
@@ -76,60 +76,77 @@ namespace Server.SkillHandlers
                         from.Stam -= CUSTO_STAMINA;
 
                         from.RevealingAction();
-                        m_Instrument.PlayInstrumentWell(from);
+                        //m_Instrument.PlayInstrumentWell(from);
                         from.SendLocalizedMessage("Quem deseja atacar com a criatura?");
                         // You play your music and your target becomes angered.  Whom do you wish them to attack?
                         from.Target = new InternalSecondTarget(from, m_Instrument, creature);
                     }
                 }
-                else
+                else if(targeted is PlayerMobile)
                 {
                     from.Stam -= CUSTO_STAMINA;
 
-                    var alvo = targeted as PlayerMobile;
-                    if (alvo != null && alvo != from)
+             
+                    if(!from.CheckSkillMult(SkillName.Provocation, 0, 110, 1))
                     {
-                        if (!from.CanBeHarmful(alvo))
-                            return;
-
-                        from.DoHarmful(alvo);
-
-                        from.SendMessage("Voce toca uma musica provocadora contra o alvo, causando dano por deixar o alvo stressado");
-                        var danoBase = 2;
-                        var rng = 2;
-                        switch(m_Instrument.Resource)
-                        {
-                            case CraftResource.Carmesim:
-                            case CraftResource.Gelo:
-                                danoBase = 8;
-                                rng = 8;
-                                break;
-                            case CraftResource.Eucalipto:
-                            case CraftResource.Mogno:
-                                danoBase = 6;
-                                rng = 6;
-                                break;
-                            case CraftResource.Pinho:
-                            case CraftResource.Carvalho:
-                                danoBase = 4;
-                                rng = 4;
-                                break;
-                        }
-                        if(m_Instrument.Quality == ItemQuality.Exceptional)
-                        {
-                            danoBase += 2;
-                            rng += 2;
-                        }
-
-                   
-                        m_Instrument.PlayInstrumentWell(from);
-                        AOS.Damage(alvo, Utility.Random(danoBase, rng), DamageType.Spell);
-                        from.MovingParticles(alvo, m_Instrument.ItemID, 7, 0, false, false, 38, 9502, 0x374A, 0x204, 1, 1);
-                        from.NextSkillTime = Core.TickCount + 10000;
-                        m_Instrument.ConsumeUse(from);
+                        m_Instrument.PlayInstrumentBadly(from);
                         return;
                     }
-                    from.SendLocalizedMessage(501589); // You can't incite that!
+
+                    from.OverheadMessage("* tocando *");
+
+                    from.NextSkillTime = Core.TickCount + 5000;
+                    from.NextActionTime = Core.TickCount + 3000;
+
+                    Timer.DelayCall(TimeSpan.FromSeconds(2), () =>
+                    {
+                        var alvo = targeted as PlayerMobile;
+                        if (alvo != null && alvo != from && alvo.Alive && from.Alive)
+                        {
+                            if (!from.CanBeHarmful(alvo))
+                                return;
+
+                            from.DoHarmful(alvo);
+
+                            from.SendMessage("Voce toca uma musica provocadora contra o alvo, causando dano por deixar o alvo stressado");
+                            var danoBase = 2;
+                            var rng = 2;
+                            switch (m_Instrument.Resource)
+                            {
+                                case CraftResource.Carmesim:
+                                case CraftResource.Gelo:
+                                    danoBase = 8;
+                                    rng = 8;
+                                    break;
+                                case CraftResource.Eucalipto:
+                                case CraftResource.Mogno:
+                                    danoBase = 6;
+                                    rng = 6;
+                                    break;
+                                case CraftResource.Pinho:
+                                case CraftResource.Carvalho:
+                                    danoBase = 4;
+                                    rng = 4;
+                                    break;
+                            }
+                            if (m_Instrument.Quality == ItemQuality.Exceptional)
+                            {
+                                danoBase += 2;
+                                rng += 2;
+                            }
+
+
+                            m_Instrument.PlayInstrumentWell(from);
+                            AOS.Damage(alvo, Utility.Random(danoBase, rng), DamageType.Spell);
+                            from.MovingParticles(alvo, m_Instrument.ItemID, 7, 0, false, false, 38, 9502, 0x374A, 0x204, 1, 1);
+                            from.NextSkillTime = Core.TickCount + 10000;
+                            m_Instrument.ConsumeUse(from);
+                            return;
+                        }
+                        from.SendLocalizedMessage(501589); // You can't incite that!
+                    });
+
+                    
                 }
             }
         }
@@ -224,6 +241,7 @@ namespace Server.SkillHandlers
 
                         if (from.CanBeHarmful(m_Creature, true) && from.CanBeHarmful(target, true))
                         {
+
                             if (from.Player && !BaseInstrument.CheckMusicianship(from))
                             {
                                 from.NextSkillTime = Core.TickCount + (10000 - ((masteryBonus / 5) * 1000));
@@ -244,12 +262,19 @@ namespace Server.SkillHandlers
                                 }
                                 else
                                 {
-                                    from.SendLocalizedMessage(501602); // Your music succeeds, as you start a fight.
-                                    m_Instrument.PlayInstrumentWell(from);
-                                    m_Instrument.ConsumeUse(from);
-                                    from.MovingParticles(m_Creature, m_Instrument.ItemID, 7, 0, false, false, 38, 9502, 0x374A, 0x204, 1, 1);
+                                    from.OverheadMessage("* tocando *");
 
-                                    m_Creature.Provoke(from, target, true);
+                                    Timer.DelayCall(TimeSpan.FromSeconds(4 - from.Dex / 50), () =>
+                                    {
+                                        if (from == null || from.Deleted || target.Deleted || !from.Alive || !target.Alive || target.Map == Map.Internal)
+                                            return;
+
+                                        from.SendLocalizedMessage(501602); // Your music succeeds, as you start a fight.
+                                        m_Instrument.PlayInstrumentWell(from);
+                                        m_Instrument.ConsumeUse(from);
+                                        from.MovingParticles(m_Creature, m_Instrument.ItemID, 7, 0, false, false, 38, 9502, 0x374A, 0x204, 1, 1);
+                                        m_Creature.Provoke(from, target, true);
+                                    });
                                 }
                             }
                         }

@@ -9,6 +9,21 @@ namespace Server.Fronteira.RP
 {
     class TeleporterRP : Teleporter
     {
+        [Constructable]
+        public TeleporterRP() : base() { }
+
+        public TeleporterRP(Serial s): base(s) { }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+        }
+
         public override bool OnMoveOver(Mobile m)
         {
             if(!m.RP)

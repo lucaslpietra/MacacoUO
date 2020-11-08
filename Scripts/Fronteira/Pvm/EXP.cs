@@ -72,7 +72,7 @@ namespace Server.Gumps
 
         public static int GetPontos(Mobile m, SkillName s)
         {
-            V = (int)Math.Pow(m.Skills[s].Value / 10, 4) / 20;
+            V = (int)Math.Pow(m.Skills[s].Base / 10, 4) / 20;
             if (V <= 0)
                 V = 1;
             return V;
