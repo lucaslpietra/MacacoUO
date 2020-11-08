@@ -72,8 +72,8 @@ namespace Server.Gumps
                         from.SendMessage("Voce criou um personagem RP");
                         from.RP = true;
                         from.Young = false;
-                        var acc = from.Account as Account;
-                        acc.RP = false;
+                        //var acc = from.Account as Account;
+                        //acc.RP = false;
                         from.SendGump(new GumpLore(from));
                         break;
                     }
