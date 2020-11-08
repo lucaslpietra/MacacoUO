@@ -31,8 +31,15 @@ namespace Server.Gumps
                 }
                 else
                 {
-                    var alvo = e.Beheld as PlayerMobile;
-                    EventSink.InvokeProfileRequest(new ProfileRequestEventArgs(e.Beholder, e.Beheld, alvo.FichaRP.Aparencia == null ? "Em Branco.." : alvo.FichaRP.Aparencia));
+                    if(e.Beheld is PlayerMobile)
+                    {
+                        var alvo = e.Beheld as PlayerMobile;
+                        EventSink.InvokeProfileRequest(new ProfileRequestEventArgs(e.Beholder, e.Beheld, alvo.FichaRP.Aparencia == null ? "Em Branco.." : alvo.FichaRP.Aparencia));
+                    } else
+                    {
+                        e.Beholder.SendMessage("Ainda nao implementado");
+                    }
+                
                 }
             }
         }

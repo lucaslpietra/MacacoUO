@@ -5,13 +5,11 @@ using Server.Mobiles;
 
 namespace Server.Engines.Quests
 {
+    // CONFIGURACAO DA QUEST
     public class MatarOrcs : BaseQuest
     {
+        // AQUI VC BOTA SE EH QUETS REPETIVEL OU NAO (tipo as de matar X ganhar Y XP podem ser td repetivel)
         public override bool DoneOnce { get { return false; } }
-
-        //public override QuestChain ChainID => QuestChain.Tutorial;
-
-        //public override Type NextQuest =>  typeof(CloseEnoughQuest)
 
         public override object Title
         {
@@ -52,14 +50,19 @@ namespace Server.Engines.Quests
         public MatarOrcs()
             : base()
         {
+
+            // AQUI BOTA O OBJETIVO DA QUEST
             this.AddObjective(new SlayObjective(typeof(Orc), "Orcs", 10));
+
+            // RECOMPENSAS DA QUEST
             this.AddReward(new BaseReward(typeof(Gold), 500, "500 Moedas de Ouro"));
             this.AddReward(new BaseReward(typeof(CottonSeeds), 10, "10 Sementes de Algodao"));
         }
 
         public override void OnCompleted()
         {
-            PointsSystem.Exp.AwardPoints(this.Owner, 100);
+            // AQUI VC BOTA QUANTO DE EXP VAI DAR A QUEST
+            PointsSystem.Exp.AwardPoints(this.Owner, 300);
             this.Owner.PlaySound(this.CompleteSound);
         }
 
@@ -76,8 +79,10 @@ namespace Server.Engines.Quests
         }
     }
 
+    //// AQUI EH A CLASSE DO NPC Q VAI DAR A QUETS ///   
     public class FazendeiroDoido : MondainQuester
     {
+        /// AQUI REGISTRA QUAL QUEST ELE VAI DAR 
         public override Type[] Quests
         {
             get

@@ -12,6 +12,7 @@ using Server.Gumps;
 using Server.Network;
 using Server.Commands;
 using Server.Mobiles;
+using Server.Accounting;
 
 namespace Server.Gumps
 {
@@ -57,6 +58,8 @@ namespace Server.Gumps
             NORMAL,
         }
 
+        public static Point3D CharRP = new Point3D(839, 1820, 1);
+
         public override void OnResponse(NetState sender, RelayInfo info)
         {
             var from = sender.Mobile as PlayerMobile;
@@ -65,9 +68,12 @@ namespace Server.Gumps
             {
                 case (int)Buttons.RP:
                     {
+                        from.MoveToWorld(CharRP, Map.Felucca);
                         from.SendMessage("Voce criou um personagem RP");
                         from.RP = true;
                         from.Young = false;
+                        var acc = from.Account as Account;
+                        acc.RP = false;
                         from.SendGump(new GumpLore(from));
                         break;
                     }
