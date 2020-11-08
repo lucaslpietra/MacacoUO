@@ -181,7 +181,56 @@
     <Compile Include="Fronteira\Chat\Gumps\Gumps Plus\HtmlPlus.cs" />
     <Compile Include="Fronteira\Chat\Gumps\Gumps Plus\InfoGump.cs" />
     <Compile Include="Fronteira\Chat\RUOVersion.cs" />
+    <Compile Include="Fronteira\Comandos\Salvar.cs" />
+    <Compile Include="Fronteira\Comandos\CoresRaras.cs" />
+    <Compile Include="Fronteira\Comandos\Seer.cs" />
+    <Compile Include="Fronteira\Comandos\WipeXP.cs" />
+    <Compile Include="Fronteira\FomeSede\DecayFomeSede.cs" />
+    <Compile Include="Fronteira\FomeSede\GumpFomeSede.cs" />
+    <Compile Include="Fronteira\FronteiraStone.cs" />
+    <Compile Include="Fronteira\HumanBasezao.cs" />
+    <Compile Include="Fronteira\Items\AnelTeleporte.cs" />
+    <Compile Include="Fronteira\Items\BeardStyle.cs" />
+    <Compile Include="Fronteira\Items\PermissaoConstruirBarco.cs" />
+    <Compile Include="Fronteira\Items\Seiva.cs" />
     <Compile Include="Fronteira\Items\HairStyle.cs" />
+    <Compile Include="Fronteira\Items\Piano.cs" />
+    <Compile Include="Fronteira\Mobs\Arvores.cs" />
+    <Compile Include="Fronteira\Mobs\MobAlquimista.cs" />
+    <Compile Include="Fronteira\Mobs\Tarantula.cs" />
+    <Compile Include="Fronteira\Mounts\RidableEnergyElemental.cs" />
+    <Compile Include="Fronteira\Mounts\RidableFireElemental.cs" />
+    <Compile Include="Fronteira\Mounts\RidableIceElemental.cs" />
+    <Compile Include="Fronteira\Mounts\RidablePoisonElemental.cs" />
+    <Compile Include="Fronteira\Mounts\RidableTetraElemental.cs" />
+    <Compile Include="Fronteira\Pvm\EXP.cs" />
+    <Compile Include="Fronteira\RP\CmdContaRp.cs" />
+    <Compile Include="Fronteira\RP\Ficharp.cs" />
+    <Compile Include="Fronteira\RP\GumpCharRP.cs" />
+    <Compile Include="Fronteira\RP\GumpLore.cs" />
+    <Compile Include="Fronteira\RP\ItemRP.cs" />
+    <Compile Include="Fronteira\RP\ObjetoFicha.cs" />
+    <Compile Include="Fronteira\RP\Patentes.cs" />
+    <Compile Include="Fronteira\RP\TeleporterRP.cs" />
+    <Compile Include="Fronteira\Talismans\TalismanMagico.cs" />
+    <Compile Include="Fronteira\Tutorial\WispGump.cs" />
+    <Compile Include="Fronteira\XML\XmlSiege\BaseSiegeProjectile.cs" />
+    <Compile Include="Fronteira\XML\XmlSiege\BaseSiegeWeapon.cs" />
+    <Compile Include="Fronteira\XML\XmlSiege\HandSiegeAttack.cs" />
+    <Compile Include="Fronteira\XML\XmlSiege\SiegeCannon.cs" />
+    <Compile Include="Fronteira\XML\XmlSiege\SiegeCannonballs.cs" />
+    <Compile Include="Fronteira\XML\XmlSiege\SiegeCannonDeed.cs" />
+    <Compile Include="Fronteira\XML\XmlSiege\SiegeCatapult.cs" />
+    <Compile Include="Fronteira\XML\XmlSiege\SiegeCatapultDeed.cs" />
+    <Compile Include="Fronteira\XML\XmlSiege\SiegeComponent.cs" />
+    <Compile Include="Fronteira\XML\XmlSiege\SiegeInterfaces.cs" />
+    <Compile Include="Fronteira\XML\XmlSiege\SiegeLogs.cs" />
+    <Compile Include="Fronteira\XML\XmlSiege\SiegeRam.cs" />
+    <Compile Include="Fronteira\XML\XmlSiege\SiegeRamDeed.cs" />
+    <Compile Include="Fronteira\XML\XmlSiege\SiegeRepairTool.cs" />
+    <Compile Include="Fronteira\XML\XmlSiege\XmlChestSiege.cs" />
+    <Compile Include="Fronteira\XML\XmlSiege\XmlDrag.cs" />
+    <Compile Include="Fronteira\XML\XmlSiege\XmlSiege.cs" />
     <Compile Include="Items\Addons\Randoms\abby addons\AbbygifttobaleAddon.cs" />
     <Compile Include="Items\Addons\Randoms\abby addons\birdhouseAddon.cs" />
     <Compile Include="Items\Addons\Randoms\abby addons\blanksoutharchAddon.cs" />
@@ -660,9 +709,13 @@
     <Compile Include="Rage\WarShard\Items\PedraArmadura.cs" />
     <Compile Include="Rage\WarShard\Items\PedraTrabalho.cs" />
     <Compile Include="Regions\DungeonProtectedRegion.cs" />
+    <Compile Include="Regions\RPGuardedRegion.cs" />
     <Compile Include="Regions\Hall.cs" />
+    <Compile Include="Regions\ColdRegion.cs" />
     <Compile Include="Services\UltimaStore\Doou.cs" />
     <Compile Include="Services\UltimaStore\Codigos.cs" />
+    <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlCast.cs" />
+    <Compile Include="Skills\Imbuing\Core\DisenchantGump.cs" />
     <Compile Include="Skills\Imbuing\Core\EssenciaMagica.cs" />
     <Compile Include="VendorInfo\SBMuambeiro.cs" />
     <Compile Include="Fronteira\Achievements\Achievement.cs" />
@@ -10342,9 +10395,6 @@
     <Compile Include="Misc\Fastwalk.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Misc\FoodDecay.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Misc\Geometry.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -14469,6 +14519,7 @@
     <Content Include="Fronteira\Chat\Text Data Files\ChatFilters.txt" />
     <Content Include="Fronteira\Chat\Text Data Files\ChatLocal.txt" />
     <Content Include="Fronteira\Chat\Text Data Files\HelpContents.txt" />
+    <Content Include="Fronteira\XML\XmlSiege\XmlSiege.txt" />
     <Content Include="Items\Addons\Randoms\BoardGames\notes.txt" />
     <Content Include="Items\Addons\Randoms\BoardGames\toto.txt" />
     <Content Include="Items\Addons\Randoms\Deco Stuff\Addons\lamps\Lamp00.bmp" />
@@ -14556,7 +14607,6 @@
     <Folder Include="Fronteira\Cooking\Foods\Protein Foods\Seafood\Canned Fish\" />
     <Folder Include="Fronteira\Eleicoes\" />
     <Folder Include="Fronteira\Leilao\Modified\" />
-    <Folder Include="Fronteira\NewFolder1\" />
     <Folder Include="Items\Functional\Herding\" />
     <Folder Include="VitaNex\Items\Tools\" />
   </ItemGroup>

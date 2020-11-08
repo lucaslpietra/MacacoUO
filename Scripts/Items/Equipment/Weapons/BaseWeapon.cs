@@ -5709,7 +5709,7 @@ namespace Server.Items
                 if (this.Quality == ItemQuality.Exceptional)
                     nome += " excepcional";
                 if (this.Quality == ItemQuality.Low)
-                    nome += " meia boca";
+                    nome += " de baixa qualidade";
                 if (m_Resource != CraftResource.Ferro && m_Resource != CraftResource.RegularLeather && m_Resource != CraftResource.Cedro)
                     nome += " de " + m_Resource;
             }

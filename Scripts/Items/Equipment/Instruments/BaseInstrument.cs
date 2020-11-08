@@ -108,14 +108,14 @@ namespace Server.Items
         {
             get
             {
-                return 450;
+                return 100;
             }
         }
         public virtual int InitMaxUses
         {
             get
             {
-                return 650;
+                return 200;
             }
         }
 
@@ -494,6 +494,8 @@ namespace Server.Items
 
             if (m_Quality == ItemQuality.Exceptional)
                 list.Add(1060636); // exceptional
+            else if (m_Quality == ItemQuality.Low)
+                list.Add("Baixa Qualidade"); // exceptional
 
             if (Resource != CraftResource.None)
                 list.Add("Feito de "+Resource.ToString()); // exceptional
