@@ -13,7 +13,7 @@ namespace Server.Items
     {
         private int m_WellSound, m_BadlySound;
         private SlayerName m_Slayer, m_Slayer2;
-        private ItemQuality m_Quality;
+        private ItemQuality m_Quality = ItemQuality.Normal;
         private Mobile m_Crafter;
         private int m_UsesRemaining;
 
@@ -253,13 +253,13 @@ namespace Server.Items
 
         public int GetUsesScalar()
         {
-            var q = 40;
+            var q = 100;
             if (m_Quality == ItemQuality.Exceptional)
-                return q += 50;
+                q += 50;
             else if (m_Quality == ItemQuality.Low)
-                return 10;
+                q -= 60;
             if(Resource != CraftResource.None)
-                q += ((int)this.Resource - 301) * 20;
+                q += ((int)this.Resource - 301) * 30;
             return q;
         }
 

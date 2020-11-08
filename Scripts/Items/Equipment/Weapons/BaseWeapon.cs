@@ -176,15 +176,15 @@ namespace Server.Items
                 else if (Resource == CraftResource.Dourado)
                     scalar += 90;
                 else if (Resource == CraftResource.Niobio)
-                    scalar += 100;
+                    scalar += 110;
                 else if (Resource == CraftResource.Lazurita)
-                    scalar += 130;
+                    scalar += 150;
                 else if (Resource == CraftResource.Quartzo)
-                    scalar += 250;
+                    scalar += 350;
                 else if (Resource == CraftResource.Berilo)
-                    scalar += 130;
+                    scalar += 230;
                 else if (Resource == CraftResource.Vibranium)
-                    scalar += 130;
+                    scalar += 230;
                 else if (Resource == CraftResource.Adamantium)
                     scalar += 130;
                 else if (Resource == CraftResource.Carmesim)
