@@ -20,6 +20,8 @@ namespace Server.SkillHandlers
             return m != null && m_Table.Contains(m);
         }
 
+        public static int CUSTO_STAMINA = 5;
+
         public static bool RemoveEffect(Mobile m)
         {
             if(m_Table.Contains(m))
@@ -42,6 +44,12 @@ namespace Server.SkillHandlers
 
         public static TimeSpan OnUse(Mobile m)
         {
+            if (m.Stam < CUSTO_STAMINA)
+            {
+                m.SendMessage("Voce esta muito cansado para tocar");
+                return TimeSpan.FromSeconds(2.0);
+            }
+
             m.RevealingAction();
 
             BaseInstrument.PickInstrument(m, OnPickedInstrument);
@@ -170,6 +178,9 @@ namespace Server.SkillHandlers
                     else if (from.Player || (from is BaseCreature && ((BaseCreature)from).CanDiscord))
                     {
                         Shard.Debug("Disc");
+
+                        from.Stam -= CUSTO_STAMINA;
+
                         double diff = m_Instrument.GetDifficultyFor(targ) - 10.0;
                         double music = from.Skills[SkillName.Musicianship].Value;
 

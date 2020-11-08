@@ -11,8 +11,7 @@ namespace Server.Items
             : base(0xE86)
         {
             this.Weight = 11.0;
-            this.UsesRemaining = 250;
- 
+            this.UsesRemaining = 200;
             Name = "Picareta";
         }
 
@@ -20,6 +19,8 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+
 
         public override HarvestSystem HarvestSystem
         {

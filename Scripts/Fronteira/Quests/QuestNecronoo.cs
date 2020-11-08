@@ -8,7 +8,7 @@ namespace Server.Engines.Quests
 {
     public class NecroNoob : BaseQuest
     {
-        public override bool DoneOnce { get { return false; } }
+        public override bool DoneOnce { get { return true; } }
 
         //public override QuestChain ChainID => QuestChain.Tutorial;
 
@@ -54,10 +54,7 @@ Basta me trazer alguns ossos, que posso encantar seu livro de necromancia!";
         public NecroNoob()
             : base()
         {
-            switch(Utility.Random(3))
-            {
-                case 0: this.AddObjective(new ObtainObjective(typeof(Bone), "100 Ossos", 100)); break;
-            }
+            this.AddObjective(new ObtainObjective(typeof(Bone), "100 Ossos", 100));
             this.AddReward(new BaseReward(typeof(PergaminhoNecro), 1, "Pergaminho para livro de necromancia pessoal"));
         }
 

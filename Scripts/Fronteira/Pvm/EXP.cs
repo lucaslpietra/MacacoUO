@@ -190,11 +190,11 @@ namespace Server.Gumps
             AddButton(935, 269, 55, 248, (int)Buttons.Archery, GumpButtonType.Reply, 0);
             AddButton(935, 289, 55, 248, (int)Buttons.Tracking, GumpButtonType.Reply, 0);
             AddButton(935, 312, 55, 248, (int)Buttons.Hiding, GumpButtonType.Reply, 0);
-            AddButton(935, 333, 55, 248, (int)Buttons.Stealth, GumpButtonType.Page, 0);
-            AddButton(935, 354, 55, 248, (int)Buttons.Ninjitsu, GumpButtonType.Page, 0);
-            AddButton(935, 375, 55, 248, (int)Buttons.Focus, GumpButtonType.Page, 0);
-            AddButton(935, 397, 55, 248, (int)Buttons.DetectHidden, GumpButtonType.Page, 0);
-            AddButton(935, 420, 55, 248, (int)Buttons.Poisoning, GumpButtonType.Page, 0);
+            AddButton(935, 333, 55, 248, (int)Buttons.Stealth, GumpButtonType.Reply, 0);
+            AddButton(935, 354, 55, 248, (int)Buttons.Ninjitsu, GumpButtonType.Reply, 0);
+            AddButton(935, 375, 55, 248, (int)Buttons.Focus, GumpButtonType.Reply, 0);
+            AddButton(935, 397, 55, 248, (int)Buttons.DetectHidden, GumpButtonType.Reply, 0);
+            AddButton(935, 420, 55, 248, (int)Buttons.Poisoning, GumpButtonType.Reply, 0);
             //AddButton(1119, 166, 1491, 1491, (int)Buttons.Help, GumpButtonType.Reply, 0);
             AddImage(1026, 251, 50);
 
@@ -204,7 +204,7 @@ namespace Server.Gumps
             AddImage(1229, 460, 10460);
 
         
-            AddHtml(573, 439, 158, 21, @"Chivalry", (bool)false, (bool)false);
+            AddHtml(573, 439, 158, 21, string.Format("{0} Chivalry", caller.Skills.Chivalry.Value), (bool)false, (bool)false);
             AddButton(1168, 268, 55, 248, (int)Buttons.Musicianship, GumpButtonType.Reply, 0);
             AddButton(1168, 288, 55, 248, (int)Buttons.Peacemaking, GumpButtonType.Reply, 0);
             AddButton(1168, 309, 55, 248, (int)Buttons.Provocation, GumpButtonType.Reply, 0);

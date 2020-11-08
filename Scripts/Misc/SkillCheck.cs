@@ -222,13 +222,13 @@ namespace Server.Misc
 
                 if (skillDifficulty == SkillInfo.EASY)
                 {
-                    if (gc < 0.01)
-                        gc = 0.01;
+                    if (gc < 0.008)
+                        gc = 0.008;
                 }
                 if (skillDifficulty == SkillInfo.MEDIUM)
                 {
-                    if (gc < 0.008)
-                        gc = 0.008;
+                    if (gc < 0.006)
+                        gc = 0.006;
                 }
             }
            
@@ -267,6 +267,7 @@ namespace Server.Misc
                 }
                 */
             }
+            /*
             if (from.Region.IsPartOf<DungeonGuardedRegion>() && !work)
             {
                 if (skill.Value < 70)
@@ -274,7 +275,7 @@ namespace Server.Misc
                     gcBonus += BONUS_DUNGEON;
                 }
             }
-
+            */
             /*
             if (!Shard.WARSHARD && from is PlayerMobile)
             {

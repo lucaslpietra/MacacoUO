@@ -1215,10 +1215,19 @@ namespace Server.Items
 
         public bool CanLoot(Mobile from, Item item)
         {
-            if(this.Owner != null && this.Owner.RP && !from.RP)
+            if(this.Owner != null && this.Owner.RP)
             {
-                from.SendMessage(38, "Voce nao pode lootear items de jogadores RP");
-                return false;
+                if(!from.RP && from.Player)
+                {
+                    from.SendMessage(38, "Voce nao pode lootear items de jogadores RP");
+                    return false;
+                }
+
+                if(from.Player && (this.Owner.Party == null || this.Owner.Party != from.Party))
+                {
+                    from.SendMessage(38, "Apenas jogadores do mesmo grupo podem se lootiar.");
+                    return false;
+                }
             }
 
             if (!IsCriminalAction(from))

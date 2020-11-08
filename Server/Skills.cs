@@ -619,7 +619,7 @@ namespace Server
 
         public int Localization { get { return 1044060 + SkillID; } }
 
-        public static double HARD = 0.45f;
+        public static double HARD = 0.38f;
         public static double MEDIUM = 0.70f;
         public static double EASY = 0.9f;
         public static double COMBAT = 0.2;

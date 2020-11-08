@@ -1037,6 +1037,9 @@ namespace Server.Network
                 return;
             }
 
+            EventSink.InvokeChangeProfileRequest(new ChangeProfileRequestEventArgs(beholder, beheld, "ficharp"));
+
+            /*
             switch (type)
             {
                 case 0x00: // display request
@@ -1050,7 +1053,7 @@ namespace Server.Network
                         pvSrc.ReadInt16(); // Skip
                         int length = pvSrc.ReadUInt16();
 
-                        if (length > 511)
+                        if (length > 2000)
                         {
                             return;
                         }
@@ -1061,7 +1064,8 @@ namespace Server.Network
 
                         break;
                     }
-            }
+                    */
+
         }
 
         public static void Disconnect(NetState state, PacketReader pvSrc)
@@ -2604,7 +2608,7 @@ namespace Server.Network
 
             state.Send(new MapChange(m));
 
-            if(m.Player)
+            if (m.Player)
                 EventSink.InvokeLogin(new LoginEventArgs(m));
 
             Console.WriteLine("Client: {0}: Entered World ({1})", state, m);

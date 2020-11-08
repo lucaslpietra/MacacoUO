@@ -165,10 +165,49 @@ namespace Server.Items
 
         public int GetUsesScalar()
         {
-            if (m_Quality == ItemQuality.Exceptional)
-                return 200;
+            var scalar = 100;
+            if (this is IResource)
+            {
+                var Resource = ((IResource)this).Resource;
+                if (Resource == CraftResource.Cobre)
+                    scalar += 50;
+                else if (Resource == CraftResource.Bronze)
+                    scalar += 80;
+                else if (Resource == CraftResource.Dourado)
+                    scalar += 90;
+                else if (Resource == CraftResource.Niobio)
+                    scalar += 100;
+                else if (Resource == CraftResource.Lazurita)
+                    scalar += 130;
+                else if (Resource == CraftResource.Quartzo)
+                    scalar += 250;
+                else if (Resource == CraftResource.Berilo)
+                    scalar += 130;
+                else if (Resource == CraftResource.Vibranium)
+                    scalar += 130;
+                else if (Resource == CraftResource.Adamantium)
+                    scalar += 130;
+                else if (Resource == CraftResource.Carmesim)
+                    scalar += 250;
+                else if (Resource == CraftResource.Gelo)
+                    scalar += 250;
+                else if (Resource == CraftResource.Eucalipto)
+                    scalar += 150;
+                else if (Resource == CraftResource.Mogno)
+                    scalar += 120;
+                else if (Resource == CraftResource.Pinho)
+                    scalar += 100;
+                else if (Resource == CraftResource.Carvalho)
+                    scalar += 50;
+            }
+            if (m_Quality == ItemQuality.Low)
+                scalar -= 70;
 
-            return 100;
+            if (m_Quality == ItemQuality.Exceptional)
+                scalar += 100;
+
+
+            return scalar;
         }
         #endregion
 
@@ -542,6 +581,7 @@ namespace Server.Items
                 Hue = CraftResources.GetHue(m_Resource);
                 InvalidateProperties();
                 ScaleDurability();
+                ScaleUses();
             }
         }
 
@@ -5823,7 +5863,7 @@ namespace Server.Items
                 }
             }
 
-            if (this is IUsesRemaining && ((IUsesRemaining)this).ShowUsesRemaining)
+            if (this is IUsesRemaining)
             {
                 list.Add("Usos restantes: " + ((IUsesRemaining)this).UsesRemaining.ToString()); // uses remaining: ~1_val~
             }

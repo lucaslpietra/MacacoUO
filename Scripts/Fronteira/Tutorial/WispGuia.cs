@@ -13,7 +13,6 @@ namespace Server.Mobiles
     [CorpseName("a wisp corpse")]
     public class WispGuia : BaseCreature
     {
-
         public static void Configure()
         {
             if (Shard.RP)
@@ -61,7 +60,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public WispGuia(PlayerMobile player)
-            : base(AIType.AI_Healer, FightMode.Aggressor, 10, 1, 0.05, 0.05)
+            : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.05, 0.05)
         {
             this.Name = "Fada dos Noobs";
             this.Body = 58;

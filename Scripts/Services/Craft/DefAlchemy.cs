@@ -203,9 +203,8 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(Bottle), 1044529, 1, 500315);
             AddRecipe(index, (int)AlchemyRecipes.Dex);
 
-            index = AddCraft(typeof(AntiParaPotion), 1116349, "Pocao Anti Paralize", 60, 100, typeof(Bone), "Osso", 3, "Voce precisa de osso");
+            index = AddCraft(typeof(AntiParaPotion), 1116349, "Pocao Anti Paralize", 60, 100, typeof(ZoogiFungus), "Fungo de Formiga", 3, "Voce precisa de 3 Fungos de Formiga");
             AddRes(index, typeof(Bottle), 1044529, 1, 500315);
-            AddRes(index, typeof(Beeswax), "Cera de Abelha", 1, "Voce precisa de cera de abelha para fazer isto");
             AddRecipe(index, (int)AlchemyRecipes.AntiParalize);
 
             index = AddCraft(typeof(NightSightPotion), 1116349, 1044542, -25.0, 25.0, typeof(SpidersSilk), 1044360, 1, 1044368);

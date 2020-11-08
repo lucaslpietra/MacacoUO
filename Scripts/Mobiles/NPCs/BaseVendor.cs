@@ -1640,14 +1640,38 @@ namespace Server.Mobiles
                 if (item is BaseWeapon)
                 {
                     ((BaseWeapon)item).Quality = ItemQuality.Low;
+                    if(!buyer.IsCooldown("msgq"))
+                    {
+                        buyer.SetCooldown("msgq", TimeSpan.FromMinutes(10));
+                        buyer.SendMessage(78, "[DICA] Items comprados de NPC tem qualidade muito inferior");
+                    }
                 }
                 else if (item is BaseArmor)
                 {
                     ((BaseArmor)item).Quality = ItemQuality.Low;
+                    if (!buyer.IsCooldown("msgq"))
+                    {
+                        buyer.SetCooldown("msgq", TimeSpan.FromMinutes(10));
+                        buyer.SendMessage(78, "[DICA] Items comprados de NPC tem qualidade muito inferior");
+                    }
                 }
                 else if (item is BaseTool)
                 {
                     ((BaseTool)item).Quality = ItemQuality.Low;
+                    if (!buyer.IsCooldown("msgq"))
+                    {
+                        buyer.SetCooldown("msgq", TimeSpan.FromMinutes(10));
+                        buyer.SendMessage(78, "[DICA] Items comprados de NPC tem qualidade muito inferior");
+                    }
+                }
+                else if (item is BaseInstrument)
+                {
+                    ((BaseInstrument)item).Quality = ItemQuality.Low;
+                    if (!buyer.IsCooldown("msgq"))
+                    {
+                        buyer.SetCooldown("msgq", TimeSpan.FromMinutes(10));
+                        buyer.SendMessage(78, "[DICA] Items comprados de NPC tem qualidade muito inferior");
+                    }
                 }
 
                 //if (buyer.RP)

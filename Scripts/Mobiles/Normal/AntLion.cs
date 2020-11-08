@@ -15,7 +15,7 @@ namespace Server.Mobiles
         public AntLion()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "an ant lion";
+            Name = "formigaum";
             Body = 787;
             BaseSoundID = 1006;
 
@@ -48,7 +48,7 @@ namespace Server.Mobiles
             PackItem(new Bone(3));
             PackItem(new FertileDirt(Utility.RandomMinMax(1, 5)));
 
-            if (Core.ML && Utility.RandomDouble() < .33)
+            if (Utility.RandomDouble() < .05)
                 PackItem(Engines.Plants.Seed.RandomPeculiarSeed(3));
 
             Item orepile = null; /* no trust, no love :( */
@@ -59,7 +59,7 @@ namespace Server.Mobiles
                     orepile = new BeriloOre();
                     break;
                 case 1:
-                    orepile = new VibraniumOre();
+                    orepile = new SilverOre();
                     break;
                 case 2:
                     orepile = new CopperOre();
@@ -87,7 +87,7 @@ namespace Server.Mobiles
         }
 
         public override bool HasBreath { get { return true; } }
-        public override int BreathPoisonDamage { get { return 100; } }
+        public override int BreathPoisonDamage { get { return 60; } }
         public override int BreathFireDamage { get { return 0; } }
         public override int BreathEffectHue { get { return 0x3F; } }
         public override int BreathEffectSound { get { return 0; } }
@@ -111,7 +111,7 @@ namespace Server.Mobiles
 
         private void DoTunnel(Mobile combatant)
         {
-            PublicOverheadMessage(Server.Network.MessageType.Regular, 0x3B3, false, "* The ant lion begins tunneling into the ground *");
+            PublicOverheadMessage(Server.Network.MessageType.Regular, 0x3B3, false, "* comeca a cavar um tunel *");
             Effects.SendTargetParticles(this, 0x36B0, 20, 10, 1734, 0, 5044, EffectLayer.Head, 0);
 
             Frozen = true;
@@ -166,7 +166,7 @@ namespace Server.Mobiles
         {
             if (_Tunneling && !Hidden && 0.25 > Utility.RandomDouble())
             {
-                PublicOverheadMessage(Server.Network.MessageType.Regular, 0x3B3, false, "* You interrupt the ant lion's digging! *");
+                PublicOverheadMessage(Server.Network.MessageType.Regular, 0x3B3, false, "* voce interrompeu a escavacao *");
 
                 Frozen = false;
                 Hidden = false;
@@ -227,7 +227,7 @@ namespace Server.Mobiles
             if (0.2 >= Utility.RandomDouble())
                 m.ApplyPoison(this, Poison.Greater);
 
-            AOS.Damage(m, Utility.RandomMinMax(100, 120), 0, 0, 0, 100, 0);
+            AOS.Damage(m, Utility.RandomMinMax(25, 75), 0, 0, 0, 100, 0);
         }
         #endregion
 

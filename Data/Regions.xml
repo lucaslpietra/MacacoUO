@@ -125,8 +125,7 @@
 
     <region type="DungeonRegion" name="DungeonNova">
        <music name="QueenPalace"/>
-       <rect x="6046" y="2564" width="100" height="60" />
-       <rect x="5921" y="2309" width="220" height="60" />
+       <rect x="5866" y="2339" width="245" height="252" />
     </region>
 
     <region type="DungeonRegion" name="Edgewich">

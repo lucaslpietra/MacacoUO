@@ -52,6 +52,7 @@ using Felladrin.Automations;
 using Server.Engines.TexasHoldem;
 using Server.Ziden;
 using Server.Commands;
+using Server.Fronteira.RP;
 #endregion
 
 namespace Server.Mobiles
@@ -903,10 +904,18 @@ namespace Server.Mobiles
                 else
                     name = RawName;
 
+                if (RP)
+                {
+                    name = string.Format("{0} {1}", FichaRP.Patente.ToString(), name);
+                }
+
                 if (RankingFama < 10)
                 {
                     name = (Female ? "A Famosa " : "O Famoso ") + name;
                 }
+
+
+
 
                 return name;
             }
@@ -2608,7 +2617,7 @@ namespace Server.Mobiles
                 return;
             }
 
-           
+
 
             if (item is Bandage)
             {
@@ -4163,16 +4172,18 @@ namespace Server.Mobiles
 
         public override void OnDeathsChange(int oldValue)
         {
-            if(this.RP){
+            if (this.RP)
+            {
                 this.SendMessage("Voce agora tem " + this.Deaths + "/5 Mortes...");
-                if(this.Deaths >= 5)
+                if (this.Deaths >= 5)
                 {
                     this.SendGump(new AnuncioGump(this, "!!! VOCE MORREU !!!"));
                     this.SendMessage(38, "!!! VOCE MORREU !!!");
                     this.NetState.Dispose();
                     this.Delete();
                 }
-            } else
+            }
+            else
             {
                 this.SendMessage("Suas Mortes: " + Deaths);
             }
@@ -5129,6 +5140,9 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 46:
+                    FichaRP.Deserialize(reader);
+                    goto case 45;
                 case 45:
                     Vidas = reader.ReadInt();
                     goto case 44;
@@ -5576,6 +5590,8 @@ namespace Server.Mobiles
             }
         }
 
+        public ObjetoFicha FichaRP = new ObjetoFicha();
+
         public override void Serialize(GenericWriter writer)
         {
             //cleanup our anti-macro table
@@ -5598,10 +5614,9 @@ namespace Server.Mobiles
 
             CheckKillDecay();
             CheckAtrophies(this);
-
             base.Serialize(writer);
-
-            writer.Write(45); // version
+            writer.Write(46); // version
+            FichaRP.Serialize(writer);
             writer.Write(Vidas);
             writer.Write(Famoso);
             writer.Write(LastDungeonEntrance);
@@ -6457,10 +6472,15 @@ namespace Server.Mobiles
 
             string prefix = "";
 
+            if (RP)
+            {
+                prefix = FichaRP.Patente.ToString()+" ";
+            }
+
             if (Famoso || Fame >= 15000)
             {
                 DaFama();
-                prefix = Female ? "Lady" : "Lord";
+                prefix += Female ? "Lady" : "Lord";
                 if (RankingFama < 10)
                 {
                     prefix = (Female ? "A Famosa " : "O Famoso ") + prefix;

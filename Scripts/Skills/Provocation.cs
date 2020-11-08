@@ -17,8 +17,16 @@ namespace Server.SkillHandlers
             SkillInfo.Table[(int)SkillName.Provocation].Callback = OnUse;
         }
 
+        public static int CUSTO_STAMINA = 15;
+
         public static TimeSpan OnUse(Mobile m)
         {
+            if (m.Stam < CUSTO_STAMINA)
+            {
+                m.SendMessage("Voce esta muito cansado para tocar");
+                return TimeSpan.FromSeconds(2.0);
+            }
+
             m.RevealingAction();
 
             BaseInstrument.PickInstrument(m, OnPickedInstrument);
@@ -65,6 +73,8 @@ namespace Server.SkillHandlers
                     }
                     else
                     {
+                        from.Stam -= CUSTO_STAMINA;
+
                         from.RevealingAction();
                         m_Instrument.PlayInstrumentWell(from);
                         from.SendLocalizedMessage("Quem deseja atacar com a criatura?");
@@ -74,9 +84,16 @@ namespace Server.SkillHandlers
                 }
                 else
                 {
+                    from.Stam -= CUSTO_STAMINA;
+
                     var alvo = targeted as PlayerMobile;
                     if (alvo != null && alvo != from)
                     {
+                        if (!from.CanBeHarmful(alvo))
+                            return;
+
+                        from.DoHarmful(alvo);
+
                         from.SendMessage("Voce toca uma musica provocadora contra o alvo, causando dano por deixar o alvo stressado");
                         var danoBase = 2;
                         var rng = 2;
@@ -103,6 +120,8 @@ namespace Server.SkillHandlers
                             danoBase += 2;
                             rng += 2;
                         }
+
+                   
                         m_Instrument.PlayInstrumentWell(from);
                         AOS.Damage(alvo, Utility.Random(danoBase, rng), DamageType.Spell);
                         from.MovingParticles(alvo, m_Instrument.ItemID, 7, 0, false, false, 38, 9502, 0x374A, 0x204, 1, 1);
@@ -140,7 +159,7 @@ namespace Server.SkillHandlers
                         return;
                     }
 
-                    if (!from.CheckTargetSkillMinMax(SkillName.Provocation, (Mobile)targeted, 0, 100))
+                    if (!from.CheckTargetSkillMinMax(SkillName.Provocation, (Mobile)targeted, 0, 120))
                     {
                         from.NextSkillTime = Core.TickCount + 5000;
                         from.SendLocalizedMessage(501599); // Your music fails to incite enough anger.

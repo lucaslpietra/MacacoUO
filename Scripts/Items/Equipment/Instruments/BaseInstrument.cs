@@ -256,7 +256,8 @@ namespace Server.Items
             var q = 40;
             if (m_Quality == ItemQuality.Exceptional)
                 return q += 50;
-
+            else if (m_Quality == ItemQuality.Low)
+                return 10;
             if(Resource != CraftResource.None)
                 q += ((int)this.Resource - 301) * 20;
             return q;
@@ -393,8 +394,8 @@ namespace Server.Items
 
             val += GetPoisonLevel(bc) * 20;
 
-            if (val > 700)
-                val = 700;
+            if (val > 900)
+                val = 900;
 
             val /= 10;
 
@@ -414,7 +415,9 @@ namespace Server.Items
             double val = GetBaseDifficulty(targ);
 
             if (m_Quality == ItemQuality.Exceptional)
-                val -= 10.0; // 10%
+                val -= 5; // 10%
+            else if (m_Quality == ItemQuality.Low)
+                val += 5;
 
             if (m_Slayer != SlayerName.None)
             {

@@ -16,13 +16,22 @@ namespace Server.SkillHandlers
             SkillInfo.Table[(int)SkillName.Peacemaking].Callback = OnUse;
         }
 
+        public static int CUSTO_STAMINA = 15;
+
         public static TimeSpan OnUse(Mobile m)
         {
             m.RevealingAction();
 
+            if (m.Stam < CUSTO_STAMINA)
+            {
+                m.SendMessage("Voce esta muito cansado para tocar");
+                return TimeSpan.FromSeconds(2.0);
+            }
+               
+
             BaseInstrument.PickInstrument(m, OnPickedInstrument);
 
-            return TimeSpan.FromSeconds(1.0); // Cannot use another skill for 1 second
+            return TimeSpan.FromSeconds(5.0); // Cannot use another skill for 1 second
         }
 
         public static void OnPickedInstrument(Mobile from, BaseInstrument instrument)
@@ -71,6 +80,9 @@ namespace Server.SkillHandlers
                 }
                 else
                 {
+
+                    from.Stam -= CUSTO_STAMINA;
+
                     m_SetSkillTime = false;
 
                     int masteryBonus = 0;
@@ -261,8 +273,23 @@ namespace Server.SkillHandlers
                                     }
                                     #endregion
                                 }
-                                else
+                                else // target is player
                                 {
+
+                                    if (!from.CanBeHarmful(targ))
+                                        return;
+
+                                    from.DoHarmful(targ);
+
+                                    if(Utility.Random(10) == 1)
+                                    {
+                                        targ.SendMessage("A musica nao fez efeito");
+                                        from.SendMessage("O alvo resistiu a musica");
+                                        targ.PlaySound(0x1E6);
+                                        targ.FixedEffect(0x42CF, 10, 5);
+                                        return;
+                                    }
+
                                     from.SendLocalizedMessage("Voce acalmcou o alvo"); // You play hypnotic music, calming your target.
                                                                                        //from.MovingParticles(targ, m_Instrument.ItemID, 15, 0, false, false, 0, 9502, 0x374A, 0x204, 1, 1);
                                     var danoBase = 1;

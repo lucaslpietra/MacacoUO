@@ -118,6 +118,8 @@ namespace Server.Games
             {
                 e.Mobile.NetState.Dispose();
             }
+            if(e.Mobile.Account != null)
+                e.Mobile.Account.SetPseudoSeerLastCharacter(null);
         }
 
         public static bool AttemptReturnToOriginalBody(NetState monsterNetState)

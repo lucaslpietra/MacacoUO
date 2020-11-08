@@ -80,13 +80,10 @@ namespace Server.Items
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
                 return;
             }
-
             Recipe r = this.Recipe;
-
             if (r != null && from is PlayerMobile)
             {
                 PlayerMobile pm = from as PlayerMobile;
-
                 if (!pm.HasRecipe(r))
                 {
                     pm.SendMessage(78, "Voce aprendeu a receita. Digite .receitas para ver as receitas"); // You have learned a new recipe: ~1_RECIPE~
@@ -114,7 +111,6 @@ namespace Server.Items
                             Name = "pergaminho de receita de " + skill.ToString();
                             InvalidateProperties();
                             from.SendMessage("Voce conseguiu entender esta receita...");
-
                             return;
                         } catch(Exception e)
                         {

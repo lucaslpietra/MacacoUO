@@ -60,19 +60,15 @@ namespace Server.Misc
                     footer = "This profile has been locked.";
             }
 
-            if (footer.Length == 0 && beholder == beheld)
-                footer = "Pontos RP: "+PointsSystem.PontosRP.GetPoints(beholder);
+            string body = e.TextOver != null ? e.TextOver : beheld.Profile;
 
-                    //GetAccountDuration(beheld);
-
-            string body = beheld.Profile;
-
+            /*
             if (body == null || body.Length <= 0)
             {
                 body = "";
                 beholder.SendMessage(78, "Este e seu perfil RPG. Escreva uma descricao do seu personagem, quais sao as fraquezas dele ? Suas forcas ? O que ele gosta ? Invente um RP para seu personagem !");
             }
-                
+            */    
 
             beholder.Send(new DisplayProfile(beholder != beheld || !beheld.ProfileLocked, beheld, header, body, footer));
         }

@@ -160,6 +160,8 @@ namespace Server.Mobiles
                     {
                         ecoInc -= TotalSold / BaseVendor.SellItemChange;
                     }
+
+                    
                 }
 
                 if (m_PriceScalar != 0)

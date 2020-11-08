@@ -123,6 +123,8 @@ namespace Server.Items
         public int GetUsesScalar()
         {
             var scalar = 100;
+            if (m_Quality == ItemQuality.Low)
+                scalar -= 70;
             if (m_Quality == ItemQuality.Exceptional)
                 scalar += 50;
             if (Resource == CraftResource.Cobre)
@@ -169,7 +171,7 @@ namespace Server.Items
         public abstract CraftSystem CraftSystem { get; }
 
         public BaseTool(int itemID)
-            : this(Utility.RandomMinMax(250, 300), itemID)
+            : this(Utility.RandomMinMax(100, 150), itemID)
         {
         }
 
