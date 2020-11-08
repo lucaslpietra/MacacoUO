@@ -28,6 +28,9 @@ namespace Server.Ziden.Kills
         [Description("ve as recompensas de login.")]
         public static void Ranking_OnCommand(CommandEventArgs e)
         {
+            if (e.Mobile.RP)
+                return;
+
             e.Mobile.SendGump(new LoginRewardsGump(e.Mobile, e.Mobile as PlayerMobile));
         }
 
@@ -48,6 +51,12 @@ namespace Server.Ziden.Kills
                     {
                         ns.Mobile.SendMessage(78, msg);
                         PointsSystem.PontosLogin.AwardPoints(ns.Mobile, 1);
+                        if(ns.Mobile.RP && Utility.RandomBool() && ns.Mobile.Deaths > 0)
+                        {
+                            ns.Mobile.Deaths--;
+                            ns.Mobile.SendMessage(string.Format("Regenerou uma Morte: {0}/5 ", ns.Mobile.Deaths));
+                        }
+
                     }
                 }
             }
