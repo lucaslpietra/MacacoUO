@@ -1579,6 +1579,10 @@ namespace Server.Items
             {
                 chance += 0.15; // +15% em PvM
             }
+            if (attacker is BaseCreature && defender is PlayerMobile)
+            {
+                chance += 0.15; // +15% em PvM
+            }
 
             if (defender.Weapon is BaseRanged)
             {
