@@ -622,7 +622,7 @@ namespace Server
         public static double HARD = 0.38f;
         public static double MEDIUM = 0.70f;
         public static double EASY = 0.9f;
-        public static double COMBAT = 0.2;
+        public static double COMBAT = 0.4;
 
         private static SkillInfo[] m_Table = new SkillInfo[58]
         {
