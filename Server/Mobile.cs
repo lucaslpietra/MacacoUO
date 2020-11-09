@@ -1693,7 +1693,7 @@ namespace Server
         public int NameHue { get { return m_NameHue; } set { m_NameHue = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Hunger
+        public virtual int Hunger
         {
             get { return m_Hunger; }
             set
@@ -1703,13 +1703,18 @@ namespace Server
                 if (oldValue != value)
                 {
                     m_Hunger = value;
-                    EventSink.InvokeHungerChanged(new HungerChangedEventArgs(this, oldValue));
+                    EventSink.InvokeHungerChanged(new HungerChangedEventArgs(this, oldValue, true));
                 }
             }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Thirst { get { return m_Thirst; } set { m_Thirst = value; } }
+        public virtual int Thirst { get { return m_Thirst; } set {
+                var oldValue = m_Thirst;
+                m_Thirst = value;
+                EventSink.InvokeHungerChanged(new HungerChangedEventArgs(this, oldValue, false));
+            }
+        }
 
         [CommandProperty(AccessLevel.Decorator)]
         public int BAC { get { return m_BAC; } set { m_BAC = value; } }

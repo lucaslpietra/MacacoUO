@@ -15,6 +15,18 @@ namespace Server.Misc
         public static void Initialize()
         {
             new DecayFomeSede().Start();
+            EventSink.HungerChanged += Hunger;
+        }
+
+        public static void Hunger(HungerChangedEventArgs e)
+        {
+            if(e.Mobile.RP)
+            {
+                if(e.Hunger && e.OldValue < e.Mobile.Hunger)
+                    e.Mobile.SendGump(new FomeSede(e.Mobile));
+                if(!e.Hunger && e.OldValue < e.Mobile.Thirst)
+                    e.Mobile.SendGump(new FomeSede(e.Mobile));
+            }
         }
 
         public static void FoodDecay()

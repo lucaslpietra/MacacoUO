@@ -4222,7 +4222,7 @@ namespace Server.Items
 
             if (!(this is BaseRanged) && attacker is PlayerMobile && defender is BaseCreature && defender.HitsMax > 150)
             {
-                damage = (int)(damage * 1.25);
+                damage = (int)(damage * 1.1);
             }
 
             return damage;
@@ -5863,7 +5863,7 @@ namespace Server.Items
                 }
             }
 
-            if (this is IUsesRemaining)
+            if (this is IUsesRemaining && ((IUsesRemaining)this).ShowUsesRemaining)
             {
                 list.Add("Usos restantes: " + ((IUsesRemaining)this).UsesRemaining.ToString()); // uses remaining: ~1_val~
             }

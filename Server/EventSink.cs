@@ -749,9 +749,11 @@ namespace Server
 
 		public Mobile Mobile { get { return m_Mobile; } }
 		public int OldValue { get { return m_OldValue; } }
+        public bool Hunger;
 
-		public HungerChangedEventArgs(Mobile mobile, int oldValue)
+		public HungerChangedEventArgs(Mobile mobile, int oldValue, bool hunger=true)
 		{
+            this.Hunger = hunger;
 			m_Mobile = mobile;
 			m_OldValue = oldValue;
 		}

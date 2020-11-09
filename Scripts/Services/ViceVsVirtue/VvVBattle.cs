@@ -38,12 +38,13 @@ namespace Server.Engines.VvV
         {
             get
             {
-                
+                /*
                 if(ultimoCd != TimeSpan.Zero)
                 {
                     ultimoCd.Add(TimeSpan.FromHours(24));
                     return (int)ultimoCd.TotalMinutes;
                 }
+                */
 
                 var dateNow = DateTime.Now;
                 var date = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 20, 0, 0);
@@ -82,8 +83,8 @@ namespace Server.Engines.VvV
                 }
                 */
                 Shard.Debug("-------------- COOLDOWN VVV ------------------");
-                Shard.Debug("Horas: " + cooldown.TotalHours);
-                ultimoCd = cooldown;
+                //Shard.Debug("Horas: " + cooldown.TotalHours);
+                //ultimoCd = cooldown;
                 return (int)cooldown.TotalMinutes;
             }
         }

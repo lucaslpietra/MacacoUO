@@ -12,6 +12,7 @@ namespace Server.Items
         {
             this.Weight = 11.0;
             this.UsesRemaining = 200;
+            this.ShowUsesRemaining = true;
             Name = "Picareta";
         }
 
