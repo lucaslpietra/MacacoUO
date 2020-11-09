@@ -1575,6 +1575,11 @@ namespace Server.Items
             var bonusArmsLore = defender.Skills.ArmsLore.Value / 2000; // 0.05 = 5%
             chance -= bonusArmsLore;
 
+            if(defender is BaseCreature && attacker is PlayerMobile)
+            {
+                chance += 0.15; // +15% em PvM
+            }
+
             if (defender.Weapon is BaseRanged)
             {
                 chance += 0.15; // +15% chance hit em ranged
