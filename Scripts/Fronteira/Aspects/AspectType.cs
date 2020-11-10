@@ -12,15 +12,15 @@ namespace Server.Fronteira.Aspects
 
         Gelo,  // +dano fisico, +acerto fisico
 
-        Trovao,
+        Trovao, // +reflete dano, 
 
-        Agua,
+        Agua, // +dano pets, +cura pets
 
         Vento, // +esquiva, +velocidade atk
 
         Terra, // +parry, +armadura
 
-        Luz,
+        Luz, // +crafting +exp crafting
 
         Escuridao // +dano poison, +chance poison
     }

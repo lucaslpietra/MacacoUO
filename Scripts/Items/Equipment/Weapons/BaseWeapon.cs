@@ -2023,13 +2023,12 @@ namespace Server.Items
             if (blocked)
             {
                 BaseShield shield = defender.FindItemOnLayer(Layer.TwoHanded) as BaseShield;
-
                 attacker.SendMessage("O alvo bloqueou seu ataque com o escudo");
                 defender.SendMessage("Voce bloqueou o ataque");
                 defender.FixedEffect(0x37B9, 10, 16);
                 var bloqueado = 0;
                 if (shield != null)
-                    bloqueado = (int)(shield.ArmorRating * (attackerWeapon is BaseRanged ? 1.5 : 1));
+                    bloqueado = (int)(shield.ArmorRating * (attackerWeapon is BaseRanged ? 1.5 : 1.2));
                 else
                     bloqueado = (int)(damage * 0.2);
 

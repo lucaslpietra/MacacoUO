@@ -22,6 +22,12 @@ namespace Server.Commands
         {
             CommandSystem.Register("powerhour", AccessLevel.Administrator, OnAction);
 
+            Inicial();
+
+        }
+
+        public static void Inicial()
+        {
             var dateNow = DateTime.Now;
             var date = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 18, 0, 0);
             TimeSpan ts;
@@ -40,10 +46,11 @@ namespace Server.Commands
                 Timer.DelayCall(TimeSpan.FromHours(1.2), () => {
                     SkillCheck.BONUS_GERAL = 0;
                     Anuncio.Anuncia("O PowerHour de XP Terminou !");
+                    Inicial();
                 });
             });
-
         }
+
 
         [Usage("Action")]
         private static void OnAction(CommandEventArgs e)

@@ -2,6 +2,7 @@ using Server.Commands;
 using Server.Engines.Points;
 using Server.Engines.VvV;
 using Server.Gumps;
+using Server.Misc;
 using Server.Mobiles;
 using Server.Spells;
 using System;
@@ -65,7 +66,10 @@ namespace Server.Ziden.Kills
             var c = e.Corpse;
             var killer = e.Killer;
 
-            var exp = (int)(pontos * 1.5);
+            var exp = (int)(pontos * 1.75);
+
+            if (SkillCheck.BONUS_GERAL != 0)
+                exp = (int)(exp * SkillCheck.BONUS_GERAL);
 
             if (bc != null && bc.GetLootingRights() != null)
             {
@@ -77,7 +81,7 @@ namespace Server.Ziden.Kills
                         if (Shard.EXP)
                         {
                             c.PrivateOverheadMessage(Network.MessageType.Regular, 66, false, string.Format("+{0} EXP", exp), pl.NetState);
-                            PointsSystem.Exp.AwardPoints(pl, pontos * 1.5, false, false);
+                            PointsSystem.Exp.AwardPoints(pl, pontos, false, false);
                             if (!pl.IsCooldown("xpp"))
                             {
                                 pl.SetCooldown("xpp", TimeSpan.FromHours(1));
