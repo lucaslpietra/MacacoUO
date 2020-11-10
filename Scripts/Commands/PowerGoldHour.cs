@@ -23,6 +23,28 @@ namespace Server.Commands
         public static void Initialize()
         {
             CommandSystem.Register("goldhour", AccessLevel.Administrator, OnAction);
+
+            var dateNow = DateTime.Now;
+            var date = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 21, 0, 0);
+            TimeSpan ts;
+            if (date > dateNow)
+                ts = date - dateNow;
+            else
+            {
+                date = date.AddDays(1);
+                ts = date - dateNow;
+            }
+            var cooldown = ts;
+            Timer.DelayCall(cooldown, () =>
+            {
+                Anuncio.Anuncia("GOLDHOUR !! Bonus de GOLD de monstros por 1 Hora !");
+                GOLD_MULT = 1.5;
+                Timer.DelayCall(TimeSpan.FromHours(1.2), () => {
+                    GOLD_MULT = 0;
+                    Anuncio.Anuncia("O GoldHour Terminou !");
+                });
+            });
+
         }
 
         [Usage("Action")]

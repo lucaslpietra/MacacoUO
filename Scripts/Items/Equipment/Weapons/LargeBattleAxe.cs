@@ -80,7 +80,7 @@ namespace Server.Items
         {
             get
             {
-                return 6;
+                return 8;
             }
         }
         public override int OldMaxDamage

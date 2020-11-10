@@ -18,13 +18,18 @@ namespace Server.Misc
         public static void EventSink_ChangeProfileRequest(ChangeProfileRequestEventArgs e)
         {
             Mobile from = e.Beholder;
-
             if (from.ProfileLocked)
                 from.SendMessage("Perfil Trancado.");
             else
             {
-                from.SendMessage("Salvo");
-                from.Profile = e.Text;
+                var pl = from as PlayerMobile;
+                if(pl != null)
+                {
+                    from.SendMessage("Salvo");
+                    Shard.Debug(e.Text);
+                    from.Profile = e.Text;
+                    //pl.FichaRP. = e.Text;
+                }
             }
         }
 
@@ -43,7 +48,29 @@ namespace Server.Misc
                 {
                     bh.SayTo(beholder, "Oxe vc n eh meu mestre, nao vou te revelar minhas skills...");
                 }
+                return;
             }
+
+            if (e.Beheld == e.Beholder && e.Beheld.Player)
+            {
+                e.Beholder.SendGump(new FichaRP(e.Beheld as PlayerMobile));
+            }
+            else
+            {
+                if (e.Beheld is PlayerMobile)
+                {
+                    var alvo = e.Beheld as PlayerMobile;
+                    beholder.Send(new DisplayProfile(beholder != beheld || !beheld.ProfileLocked, beheld, "Aparencia de "+beheld.Name, alvo.FichaRP.Aparencia, ""));
+                    //EventSink.InvokeProfileRequest(new ProfileRequestEventArgs(e.Beholder, e.Beheld, alvo.FichaRP.Aparencia == null ? "Em Branco.." : alvo.FichaRP.Aparencia));
+                }
+                else
+                {
+                    e.Beholder.SendMessage("Ainda nao implementado");
+                }
+
+            }
+
+            /*
 
             if (!beheld.Player)
                 return;
@@ -66,6 +93,7 @@ namespace Server.Misc
             string body = e.TextOver != null ? e.TextOver : beheld.Profile;
 
             beholder.Send(new DisplayProfile(beholder != beheld || !beheld.ProfileLocked, beheld, header, body, footer));
+            */
         }
     }
 }

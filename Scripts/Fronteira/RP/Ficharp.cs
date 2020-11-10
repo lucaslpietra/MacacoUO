@@ -18,30 +18,6 @@ namespace Server.Gumps
         public static void Initialize()
         {
             CommandSystem.Register("ficharpteste", AccessLevel.Player, new CommandEventHandler(CMD));
-            EventSink.ChangeProfileRequest += ProfileRequest;
-        }
-
-        public static void ProfileRequest(ChangeProfileRequestEventArgs e)
-        {
-            if (e.Text == "ficharp")
-            {
-                if (e.Beheld == e.Beholder && e.Beheld.Player)
-                {
-                    e.Beholder.SendGump(new FichaRP(e.Beheld as PlayerMobile));
-                }
-                else
-                {
-                    if(e.Beheld is PlayerMobile)
-                    {
-                        var alvo = e.Beheld as PlayerMobile;
-                        EventSink.InvokeProfileRequest(new ProfileRequestEventArgs(e.Beholder, e.Beheld, alvo.FichaRP.Aparencia == null ? "Em Branco.." : alvo.FichaRP.Aparencia));
-                    } else
-                    {
-                        e.Beholder.SendMessage("Ainda nao implementado");
-                    }
-                
-                }
-            }
         }
 
         [Usage("")]
@@ -118,7 +94,8 @@ namespace Server.Gumps
             }
             else if (info.ButtonID == (int)Buttons.BG)
             {
-                EventSink.InvokeProfileRequest(new ProfileRequestEventArgs(sender.Mobile, this.m, null));
+                sender.Mobile.Send(new DisplayProfile(sender.Mobile != this.m || !this.m.ProfileLocked, this.m, "Background de "+this.m.Name, this.m.Profile, ""));
+                //EventSink.InvokeProfileRequest(new ProfileRequestEventArgs(sender.Mobile, this.m, null));
             }
         }
     }

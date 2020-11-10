@@ -20,6 +20,9 @@ namespace Server.Accounting
 	[PropertyObject]
 	public class Account : IAccount, IComparable, IComparable<Account>
 	{
+
+        public bool Checou = false;
+
 		public static readonly TimeSpan YoungDuration = TimeSpan.FromHours(24*6);
 		public static readonly TimeSpan InactiveDuration = TimeSpan.FromDays(180.0);
 		public static readonly TimeSpan EmptyInactiveDuration = TimeSpan.FromDays(30.0);
@@ -1514,6 +1517,24 @@ namespace Server.Accounting
 				return;
 			}
 
+            if(acc.Young && !acc.Checou)
+            {
+                acc.Checou = true;
+                foreach (var other in acc.FindSharedAccounts())
+                {
+                    if (!other.Young)
+                    {
+                        acc.Young = false;
+                        foreach(var m in acc.GetMobiles())
+                        {
+                            var pl = m as PlayerMobile;
+                            pl.Young = false;
+                        }
+                            
+                        return;
+                    }
+                }
+            }
 			acc.m_YoungTimer = new YoungTimer(acc);
 			acc.m_YoungTimer.Start();
 		}

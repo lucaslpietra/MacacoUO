@@ -42,6 +42,9 @@ namespace Server.Mobiles
             int price = 0;
             m_Table.TryGetValue(item.GetType(), out price);
 
+            if (Shard.DebugEnabled)
+                Shard.Debug("Vendendo item " + item.GetType().Name + " Usaneo economia vendor ? " + BaseVendor.UseVendorEconomy);
+
             if (vendor != null && BaseVendor.UseVendorEconomy)
             {
                 IBuyItemInfo buyInfo = vendor.GetBuyInfo().OfType<GenericBuyInfo>().FirstOrDefault(info => info.EconomyItem && info.Type == item.GetType());
@@ -49,11 +52,14 @@ namespace Server.Mobiles
                 if (buyInfo != null)
                 {
                     int sold = buyInfo.TotalSold;
-                    price = (int)((double)buyInfo.Price * .5);
-
+                    price = (int)((double)buyInfo.Price * .5) / 3;
+                    if (Shard.DebugEnabled)
+                        Shard.Debug("Preco de venda " + price + " item " + item.GetType().Name);
                     return Math.Max(1, price);
                 }
             }
+
+            Shard.Debug("Nao tem Buyinfo");
 
             if (item is BaseArmor)
             {
@@ -115,7 +121,7 @@ namespace Server.Mobiles
                     price = price2;
             }
 
-            return price;
+            return price / 3;
         }
 
         public int GetBuyPriceFor(Item item)

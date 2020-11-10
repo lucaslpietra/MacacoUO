@@ -27,8 +27,8 @@ namespace Server.Gumps
 
         public GumpCharRP() : base(0, 0)
         {
-            this.Closable = true;
-            this.Disposable = true;
+            this.Closable = false;
+            this.Disposable = false;
             this.Dragable = true;
             this.Resizable = false;
 

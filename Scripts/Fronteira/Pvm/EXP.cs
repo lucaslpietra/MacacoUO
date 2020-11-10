@@ -122,7 +122,7 @@ namespace Server.Gumps
             AddHtml(794, 310, 158, 21, string.Format(@"{0} Hiding", caller.Skills.Hiding.Value), (bool)false, (bool)false);
             AddHtml(794, 331, 158, 21, string.Format(@"{0} Stealth", caller.Skills.Stealth.Value), (bool)false, (bool)false);
             AddHtml(794, 352, 158, 21, string.Format(@"{0} Ninjutsu", caller.Skills.Ninjitsu.Value), (bool)false, (bool)false);
-            AddHtml(794, 374, 158, 21, string.Format(@"{0} Focus", caller.Skills.MagicResist.Value), (bool)false, (bool)false);
+            AddHtml(794, 374, 158, 21, string.Format(@"{0} Focus", caller.Skills.Focus.Value), (bool)false, (bool)false);
             AddHtml(573, 419, 158, 21, string.Format(@"{0} Parrying", caller.Skills.Parry.Value), (bool)false, (bool)false);
             AddHtml(794, 396, 158, 21, string.Format(@"{0} Detect Hidden", caller.Skills.DetectHidden.Value), (bool)false, (bool)false);
             AddHtml(794, 417, 158, 21, string.Format(@"{0} Poisoning", caller.Skills.Poisoning.Value), (bool)false, (bool)false);

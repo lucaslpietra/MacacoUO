@@ -1037,10 +1037,41 @@ namespace Server.Network
                 return;
             }
 
-            if(beholder==beheld)
-                EventSink.InvokeChangeProfileRequest(new ChangeProfileRequestEventArgs(beholder, beheld, beholder.Profile));
+            if(Shard.DebugEnabled)
+            {
+                Shard.Debug("Profile Request Tipo "+type);
+                if (beholder != null)
+                    Shard.Debug("Beholder " + beholder.Name);
+
+                if (beheld != null)
+                    Shard.Debug("Beheld " + beheld.Name);
+            }
+
+            if (type == 0)
+            {
+                Shard.Debug("Profile Real", beholder);
+                EventSink.InvokeProfileRequest(new ProfileRequestEventArgs(beholder, beheld, null));
+            } else
+            {
+                pvSrc.ReadInt16(); // Skip
+                int length = pvSrc.ReadUInt16();
+
+                if (length > 2000)
+                {
+                    return;
+                }
+
+                string text = pvSrc.ReadUnicodeString(length);
+
+                EventSink.InvokeChangeProfileRequest(new ChangeProfileRequestEventArgs(beholder, beheld, text));
+            }
+            /*
             else
-                EventSink.InvokeChangeProfileRequest(new ChangeProfileRequestEventArgs(beholder, beheld, "ficharp"));
+            {
+                Shard.Debug("Vendo Ficha RP", beholder);
+                EventSink.InvokeProfileRequest(new ProfileRequestEventArgs(beholder, beheld, "ficharp"));
+            }
+            */
 
             /*
             switch (type)

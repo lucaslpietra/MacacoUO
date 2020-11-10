@@ -4154,12 +4154,17 @@ namespace Server.Items
                 {
                     modifiers += -0.075;
                 }
-                double bsBonus = attacker.Skills[SkillName.Mining].Value;
-                bsBonus = -0.2 + (bsBonus / 5.0) / 50; // -20% se nao tiver mining
-                if (bsBonus > 0.2)
-                    bsBonus = 0.2;
+                double mine = attacker.Skills[SkillName.Mining].Value;
+                mine = (mine / 5.0) / 100.0;
+                if (mine > 0.2)
+                    mine = 0.2;
 
-                modifiers += bsBonus;
+                modifiers += mine;
+
+                if (mine >= 100.0)
+                {
+                    modifiers += 0.1;
+                }
             }
 
             if (Type == WeaponType.Axe)

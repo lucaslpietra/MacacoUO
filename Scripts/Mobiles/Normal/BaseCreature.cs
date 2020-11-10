@@ -2464,6 +2464,14 @@ namespace Server.Mobiles
             base.OnDamage(amount, from, willKill);
         }
 
+        public override double ArmorRating
+        {
+            get
+            {
+                return Math.Min(VirtualArmor, 500) + VirtualArmorMod;
+            }
+        }
+
         public virtual void OnDamagedBySpell(Mobile from)
         {
             if (CanBeDistracted && ControlOrder == OrderType.Follow)
