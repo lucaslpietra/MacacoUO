@@ -66,7 +66,7 @@ namespace Server.Ziden.Kills
             var c = e.Corpse;
             var killer = e.Killer;
 
-            var exp = (int)(pontos * 1.75);
+            var exp = (int)(pontos * 1.5);
 
             if (SkillCheck.BONUS_GERAL != 0)
                 exp = (int)(exp * SkillCheck.BONUS_GERAL);
