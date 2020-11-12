@@ -1385,7 +1385,7 @@ namespace Server.Multis
 
         private Type[] _AccessibleToFriends =
         {
-            typeof(PotionKeg)
+            typeof(PotionKeg), typeof(TownTrashBarrel), typeof(TrashBarrel)
         };
 
         public virtual bool IsInside(Point3D p, int height)

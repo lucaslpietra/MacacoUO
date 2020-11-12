@@ -150,6 +150,8 @@ namespace Server.Items
             }
         }
 
+        
+
         public override void OnHit(Mobile attacker, IDamageable defender, double damageBonus)
         {
             base.OnHit(attacker, defender, damageBonus);
@@ -162,7 +164,19 @@ namespace Server.Items
                 if (Utility.RandomDouble() <= 0.08)
                 {
                     --this.PoisonCharges;
-                    ((Mobile)defender).ApplyPoison(attacker, this.Poison);
+                    if(attacker.Skills[SkillName.Poisoning].Value < 80)
+                    {
+                        if (this.Poison == Poison.Lethal)
+                            ((Mobile)defender).ApplyPoison(attacker, Poison.Greater);
+                        if (this.Poison == Poison.Deadly)
+                            ((Mobile)defender).ApplyPoison(attacker, Poison.Regular);
+                        else
+                            ((Mobile)defender).ApplyPoison(attacker, Poison.Lesser);
+                    } else
+                    {
+                        ((Mobile)defender).ApplyPoison(attacker, this.Poison);
+                    }
+                  
                 }
             }
 

@@ -1230,6 +1230,15 @@ namespace Server.Items
                 }
             }
 
+            if(!this.Owner.RP && from.RP)
+            {
+                if (from.Player && (this.Owner.Party == null || this.Owner.Party != from.Party))
+                {
+                    from.SendMessage(38, "Apenas jogadores do mesmo grupo podem se lootiar.");
+                    return false;
+                }
+            }
+
             if (!IsCriminalAction(from))
             {
                 return true;

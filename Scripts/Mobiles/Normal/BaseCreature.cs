@@ -4395,7 +4395,6 @@ namespace Server.Mobiles
         {
             Effects.SendLocationParticles(EffectItem.Create(m.Location, m.Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
             Effects.PlaySound(m, m.Map, 0x201);
-
             m.Delete();
         }
 
@@ -4407,7 +4406,7 @@ namespace Server.Mobiles
 
             XmlPoison xp = (XmlPoison)XmlAttach.FindAttachment(this, typeof(XmlPoison));
 
-            if (xp != null)
+            if (xp != null && xp.HitaPoison)
             {
                 p = xp.HitPoison;
             }

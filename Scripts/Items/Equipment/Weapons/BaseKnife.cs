@@ -83,7 +83,19 @@ namespace Server.Items
                 if (Utility.RandomDouble() <= 0.1)
                 {
                     --this.PoisonCharges;
-                    ((Mobile)defender).ApplyPoison(attacker, this.Poison);
+                    if (attacker.Skills[SkillName.Poisoning].Value < 80)
+                    {
+                        if (this.Poison == Poison.Lethal)
+                            ((Mobile)defender).ApplyPoison(attacker, Poison.Greater);
+                        if (this.Poison == Poison.Deadly)
+                            ((Mobile)defender).ApplyPoison(attacker, Poison.Regular);
+                        else
+                            ((Mobile)defender).ApplyPoison(attacker, Poison.Lesser);
+                    }
+                    else
+                    {
+                        ((Mobile)defender).ApplyPoison(attacker, this.Poison);
+                    }
                 }
             }
         }

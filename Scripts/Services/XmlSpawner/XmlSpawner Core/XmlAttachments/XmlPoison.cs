@@ -5,6 +5,7 @@ namespace Server.Engines.XmlSpawner2
     public class XmlPoison : XmlAttachment
     {
         private int p_level = 0;
+        public bool HitaPoison = true;
         // a serial constructor is REQUIRED
         public XmlPoison(ASerial serial)
             : base(serial)
@@ -12,9 +13,10 @@ namespace Server.Engines.XmlSpawner2
         }
 
         [Attachable]
-        public XmlPoison(int level)
+        public XmlPoison(int level, bool hitPoison=true)
         {
             this.p_level = level;
+            this.HitaPoison = hitPoison;
         }
 
         // when attached to a mobile, it should gain poison immunity and a poison
@@ -84,9 +86,10 @@ namespace Server.Engines.XmlSpawner2
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write((int)1);
             // version 0
             writer.Write(this.p_level);
+            writer.Write(HitaPoison);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -94,6 +97,7 @@ namespace Server.Engines.XmlSpawner2
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+           
             switch(version)
             {
                 case 0:
@@ -101,6 +105,8 @@ namespace Server.Engines.XmlSpawner2
                     this.p_level = reader.ReadInt();
                     break;
             }
+            if (version >= 1)
+                this.HitaPoison = reader.ReadBool();
         }
     }
 }

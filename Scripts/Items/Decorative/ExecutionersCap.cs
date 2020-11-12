@@ -18,6 +18,12 @@ namespace Server.Items
         {
         }
 
+        public override void OnDoubleClick(Mobile from)
+        {
+            from.SendMessage("Talvez um alquimista possa usar isto para algo...");
+            base.OnDoubleClick(from);
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

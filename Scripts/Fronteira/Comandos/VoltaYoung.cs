@@ -17,15 +17,22 @@ namespace Server.Commands
 
         [Usage("receitas")]
         [Description("Camping Menu.")]
-        public static void CMD(CommandEventArgs arg)
-        {
-            var gm = arg.Mobile;
-            gm.SendMessage("Indo...");
-            foreach(var pl in PlayerMobile.Instances)
+        public static void CMD(CommandEventArgs arg) { 
+
+            foreach(var gm in PlayerMobile.Instances)
             {
-                pl.PointSystems.ViceVsVirtue = 0;
+                if (gm == null || gm.Young)
+                    continue;
+
+                var acc = gm.Account as Account;
+                if (acc.TotalGameTime < Account.YoungDuration)
+                {
+                    acc.Young = true;
+                    gm.Young = true;
+                    arg.Mobile.SendMessage(gm.Name + "Virou Young");
+                }
             }
-            gm.SendMessage("Foi");
+            arg.Mobile.SendMessage("Foi");
         }
     }
 }

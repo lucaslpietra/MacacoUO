@@ -119,11 +119,27 @@ namespace Server.Items
         public override void OnHit(Mobile attacker, IDamageable defender, double damageBonus)
         {
             base.OnHit(attacker, defender, damageBonus);
-            if (Utility.RandomDouble() <= 0.15)
+            if (!Core.AOS && defender is Mobile && this.Poison != null && this.PoisonCharges > 0)
             {
-                --this.PoisonCharges;
-                ((Mobile)defender).ApplyPoison(attacker, this.Poison);
+                if (Utility.RandomDouble() <= 0.15)
+                {
+                    --this.PoisonCharges;
+                    if (attacker.Skills[SkillName.Poisoning].Value < 80)
+                    {
+                        if (this.Poison == Poison.Lethal)
+                            ((Mobile)defender).ApplyPoison(attacker, Poison.Greater);
+                        if (this.Poison == Poison.Deadly)
+                            ((Mobile)defender).ApplyPoison(attacker, Poison.Regular);
+                        else
+                            ((Mobile)defender).ApplyPoison(attacker, Poison.Lesser);
+                    }
+                    else
+                    {
+                        ((Mobile)defender).ApplyPoison(attacker, this.Poison);
+                    }
+                }
             }
+          
             /*
             if (!Core.AOS && defender is Mobile && (attacker.Player || attacker.Body.IsHuman) && this.Layer == Layer.TwoHanded && (attacker.Skills[SkillName.Anatomy].Value / 400.0) >= Utility.RandomDouble())
             {

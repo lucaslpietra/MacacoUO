@@ -32,6 +32,13 @@ namespace Server.Items
                 return this.LabelNumber;
             }
         }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            from.SendMessage("Talvez um alquimista possa usar isto para algo...");
+            base.OnDoubleClick(from);
+        }
+
         bool ICommodity.IsDeedable
         {
             get
