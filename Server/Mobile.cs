@@ -1455,7 +1455,7 @@ namespace Server
 
         public virtual void AddSkillMod(SkillMod mod)
         {
-            Console.WriteLine("ADD MODD " + mod.Value + " - ");
+            //Console.WriteLine("ADD MODD " + mod.Value + " - ");
 
             if (mod == null)
             {
@@ -1464,11 +1464,11 @@ namespace Server
 
             ValidateSkillMods();
 
-            Console.WriteLine("VALID");
+            //Console.WriteLine("VALID");
 
             if (!m_SkillMods.Contains(mod))
             {
-                Console.WriteLine("NO CONTAINS");
+                //Console.WriteLine("NO CONTAINS");
                 m_SkillMods.Add(mod);
                 mod.Owner = this;
 
@@ -1476,7 +1476,7 @@ namespace Server
 
                 if (sk != null)
                 {
-                    Console.WriteLine("UP");
+                    //Console.WriteLine("UP");
                     sk.Update();
                 }
             }

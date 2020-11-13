@@ -41,9 +41,9 @@ namespace Server.Commands
             var cooldown = ts;
             Timer.DelayCall(cooldown, () =>
             {
-                Anuncio.Anuncia("POWEHOUR !! Bonus de UP por 1 Hora !");
+                Anuncio.Anuncia("POWEHOUR !! Bonus de UP por 3 Horas !");
                 SkillCheck.BONUS_GERAL = 1.5;
-                Timer.DelayCall(TimeSpan.FromHours(1.2), () => {
+                Timer.DelayCall(TimeSpan.FromHours(3), () => {
                     SkillCheck.BONUS_GERAL = 0;
                     Anuncio.Anuncia("O PowerHour de XP Terminou !");
                     Inicial();

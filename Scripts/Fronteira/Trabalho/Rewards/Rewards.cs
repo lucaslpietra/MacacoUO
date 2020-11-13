@@ -2001,7 +2001,7 @@ namespace Server.Engines.BulkOrders
             else if (itemCount == 6)
                 points += 350;
 
-            return (int)(points * 1.25);
+            return (int)(points * 2);
         }
 
         private static readonly int[][] m_GoldTable = new int[][]

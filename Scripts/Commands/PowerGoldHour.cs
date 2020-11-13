@@ -37,9 +37,9 @@ namespace Server.Commands
             var cooldown = ts;
             Timer.DelayCall(cooldown, () =>
             {
-                Anuncio.Anuncia("GOLDHOUR !! Bonus de GOLD de monstros por 1 Hora !");
+                Anuncio.Anuncia("GOLDHOUR !! Bonus de GOLD de monstros por 2 Horas !");
                 GOLD_MULT = 1.5;
-                Timer.DelayCall(TimeSpan.FromHours(1.2), () => {
+                Timer.DelayCall(TimeSpan.FromHours(2), () => {
                     GOLD_MULT = 0;
                     Anuncio.Anuncia("O GoldHour Terminou !");
                 });

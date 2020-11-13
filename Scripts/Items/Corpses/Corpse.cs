@@ -1215,7 +1215,7 @@ namespace Server.Items
 
         public bool CanLoot(Mobile from, Item item)
         {
-            if(this.Owner != null && this.Owner.RP)
+            if(this.Owner != null && this.Owner.RP && this.Owner.Player)
             {
                 if(!from.RP && from.Player)
                 {
@@ -1230,7 +1230,7 @@ namespace Server.Items
                 }
             }
 
-            if(!this.Owner.RP && from.RP)
+            if(!this.Owner.RP && from.RP && this.Owner.Player && from.Player)
             {
                 if (from.Player && (this.Owner.Party == null || this.Owner.Party != from.Party))
                 {
