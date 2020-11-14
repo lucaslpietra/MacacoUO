@@ -6,6 +6,7 @@ using Server.Items;
 using Server.Mobiles;
 using Server.Network;
 using Server.Regions;
+using Server.Scripts.Custom.Items;
 using Server.Targeting;
 
 namespace Server.Engines.Harvest
@@ -330,11 +331,11 @@ namespace Server.Engines.Harvest
                 else
                     level = 1;
 
-                return new TreasureMap(level, from.Map == Map.Felucca ? Map.Felucca : Map.Trammel);
+                return new TreasureMap(level, Map.Felucca);
             }
             else if (type == typeof(MessageInABottle))
             {
-                return new MessageInABottle(from.Map == Map.Felucca ? Map.Felucca : Map.Trammel);
+                return new MessageInABottle(Map.Felucca);
             }
             else if (type == typeof(WhitePearl))
             {
@@ -472,10 +473,28 @@ namespace Server.Engines.Harvest
                         }
                         else
                         {
-                            if (Utility.RandomBool())
-                                chest = new MetalGoldenChest();
-                            else
-                                chest = new WoodenChest();
+                            switch (sos.Level)
+                            {
+                                case 0: chest = new SOSChest(Utility.RandomBool() ? 0xE43 : 0xE41); chest.MaxItems = 120;  break;
+                                case 1: chest = new SOSChest(0xA306); chest.MaxItems = 150;  break;
+                                case 2: chest = new SOSChest(Utility.RandomBool() ? 0xE43 : 0xE41); chest.MaxItems = 200; break;
+                                case 3: chest = new SOSChest(0xA308); chest.MaxItems = 350;  break;
+                                default:
+                                    if (.33 > Utility.RandomDouble())
+                                    {
+                                        chest = new SOSChest(0xA30A);
+                                        chest.MaxItems = 210;
+                                    }
+                                    else
+                                    {
+                                        chest = new SOSChest(Utility.RandomBool() ? 0xE41 : 0xE43)
+                                        {
+                                            Hue = 0x481
+                                        };
+                                        chest.MaxItems = 210;
+                                    }
+                                    break;
+                            }
                         }
 
                         if (sos.IsAncient)
@@ -490,6 +509,34 @@ namespace Server.Engines.Harvest
                             chest.DropItem(new FabledFishingNet());
                         else
                             chest.DropItem(new SpecialFishingNet());
+
+                        if (Utility.RandomDouble() < 0.1)
+                            chest.DropItem(new ChocolateNutcracker());
+
+                        if (Utility.RandomDouble() < 0.1)
+                            chest.DropItem(new MasterChefsApron());
+
+                        if (Utility.RandomDouble() < 0.5)
+                            chest.DropItem(DecoRelPor.RandomArty());
+
+                        if (Utility.RandomDouble() < 0.1)
+                            if (Utility.RandomBool())
+                                chest.DropItem(new SmallGrandfatherClock());
+                            else
+                                chest.DropItem(new WhiteGrandfatherClock());
+
+                        if (Utility.RandomDouble() < 0.1)
+                        {
+                            var weapon = Loot.RandomWeapon();
+                            weapon.Resource = CraftResource.Adamantium;
+                            weapon.Quality = ItemQuality.Exceptional;
+                            chest.DropItem(weapon);
+                        }
+
+                        var itemRaro = new Item(DECOS[Utility.Random(DECOS.Length)]);
+                        itemRaro.Name = "Decoracao Naufragada";
+                        itemRaro.Hue = Utility.RandomBirdHue();
+                        chest.DropItem(itemRaro);
 
                         chest.Movable = true;
                         chest.Locked = false;
@@ -508,6 +555,12 @@ namespace Server.Engines.Harvest
 
             return base.Construct(type, from, tool);
         }
+
+        public static int[] DECOS = new int[] {
+            0xA32D,
+            0x4721, 0x46FD, 0x470E, 0x4753, 0x473E, 0x4747, 0x46E5, 0x46FA, 0x44F8, 0x44E7, 0x44E5, 0x44C4, 0x4302, 0x4305, 0x42C5, 0x42B5, 0x42C3, 0x4215,
+            0x3DAA, 0x3D8E, 0x3D86, 0x3B0F, 0x3B12, 0x3B12, 0x3B13, 0x364D, 41692,41693, 41694, 41695,41696, 41697, 41698, 41699, 41700, 41701, 41702, 41704, 41705, 41706
+        };
 
         public override bool Give(Mobile m, Item item, bool placeAtFeet)
         {

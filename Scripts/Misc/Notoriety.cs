@@ -129,6 +129,30 @@ namespace Server.Misc
 
             var map = from.Map;
 
+            var bc = from as BaseCreature;
+            var targPlayer = damageable as PlayerMobile;
+
+            if (!from.Player && !(bc != null && bc.GetMaster() != null && bc.GetMaster().IsPlayer()))
+            {
+                if (targPlayer != null && targPlayer.RP && !bc.GetMaster().RP)
+                    return false;
+
+                if (!CheckAggressor(from.Aggressors, target) && !CheckAggressed(from.Aggressed, target) && target is PlayerMobile &&
+                    ((PlayerMobile)target).CheckYoungProtection(from))
+                    return false;
+            }
+
+            // PVP
+            if (from.Player && targPlayer != null)
+            {
+                var targ = targPlayer as PlayerMobile;
+                if (targ.RP != from.RP)
+                {
+                    from.SendMessage("Voce nao pode atacar um jogador com o modo de jogo RP difetente do seu.");
+                    return false;
+                } 
+            }
+
             if (map != null && (map.Rules & MapRules.HarmfulRestrictions) == 0)
                 return true; // In felucca, anything goes
 
@@ -138,8 +162,6 @@ namespace Server.Misc
 
             if (target is BaseCreature && ((BaseCreature)target).Summoned && ((BaseCreature)target).SummonMaster != null)
                 target = ((BaseCreature)target).SummonMaster;
-
-            var bc = from as BaseCreature;
 
             if (!from.Player && !(bc != null && bc.GetMaster() != null && bc.GetMaster().IsPlayer()))
             {

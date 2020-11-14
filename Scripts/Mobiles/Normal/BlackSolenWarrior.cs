@@ -99,7 +99,7 @@ namespace Server.Mobiles
             if (0.2 >= Utility.RandomDouble())
                 m.ApplyPoison(this, Poison.Greater);
 
-            AOS.Damage(m, Utility.RandomMinMax(100, 120), 0, 0, 0, 100, 0);
+            AOS.Damage(m, Utility.RandomMinMax(20, 50), 0, 0, 0, 100, 0);
         }
         #endregion
 

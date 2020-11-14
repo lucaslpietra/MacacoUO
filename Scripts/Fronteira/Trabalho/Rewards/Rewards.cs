@@ -1166,7 +1166,7 @@ namespace Server.Engines.BulkOrders
             if (exceptional)
                 points += 200;
 
-            return points;
+            return points * 2;
         }
 
         private static readonly int[][][] m_GoldTable = new int[][][]

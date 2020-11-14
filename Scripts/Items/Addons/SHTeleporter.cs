@@ -270,7 +270,7 @@ namespace Server.Items
         [Description("Generates solen hives teleporters.")]
         public static void SHTelGen_OnCommand(CommandEventArgs e)
         {
-            World.Broadcast(0x35, true, "Solen hives teleporters are being generated, please wait.");
+            World.Broadcast(0x35, true, "Gerando Formigueiro.");
 
             DateTime startTime = DateTime.UtcNow;
 
@@ -278,7 +278,7 @@ namespace Server.Items
 
             DateTime endTime = DateTime.UtcNow;
 
-            World.Broadcast(0x35, true, "{0} solen hives teleporters have been created. The entire process took {1:F1} seconds.", count, (endTime - startTime).TotalSeconds);
+            World.Broadcast(0x35, true, "{0} teleporters gerados em {1:F1} segundos.", count, (endTime - startTime).TotalSeconds);
         }
 
         public void ChangeActive(bool active)
@@ -434,7 +434,7 @@ namespace Server.Items
             public void AddSHTCouple(bool ext1, int x1, int y1, int z1, bool ext2, int x2, int y2, int z2)
             {
                 this.AddSHTCouple(Map.Trammel, ext1, x1, y1, z1, ext2, x2, y2, z2);
-                this.AddSHTCouple(Map.Felucca, ext1, x1, y1, z1, ext2, x2, y2, z2);
+               // this.AddSHTCouple(Map.Felucca, ext1, x1, y1, z1, ext2, x2, y2, z2);
             }
 
             public int CreateSHTeleporters()
@@ -450,10 +450,12 @@ namespace Server.Items
                 tele2 = this.AddSHT(Map.Trammel, false, 5658, 1898, 0);
                 Link(tele1, tele2);
 
+                /*
                 tele1 = this.AddSHT(Map.Felucca, false, 5747, 1895, 0);
                 tele1.LeftTele.TeleOffset = new Point3D(-1, 3, 0);
                 tele2 = this.AddSHT(Map.Felucca, false, 5658, 1898, 0);
                 Link(tele1, tele2);
+                */
 
                 this.AddSHTCouple(false, 5727, 1894, 0, false, 5756, 1794, 0);
                 this.AddSHTCouple(false, 5784, 1929, 0, false, 5700, 1929, 0);
@@ -463,20 +465,24 @@ namespace Server.Items
                 tele2 = this.AddSHT(Map.Trammel, false, 5657, 1954, 0);
                 Link(tele1, tele2);
 
+                /*
                 tele1 = this.AddSHT(Map.Felucca, false, 5711, 1952, 0);
                 tele1.LeftTele.TeleOffset = new Point3D(-1, 3, 0);
                 tele2 = this.AddSHT(Map.Felucca, false, 5657, 1954, 0);
                 Link(tele1, tele2);
+                */
 
                 tele1 = this.AddSHT(Map.Trammel, false, 5655, 2018, 0);
                 tele1.LeftTele.TeleOffset = new Point3D(-1, 3, 0);
                 tele2 = this.AddSHT(Map.Trammel, true, 1690, 2789, 0);
                 Link(tele1, tele2);
 
+                /*
                 tele1 = this.AddSHT(Map.Felucca, false, 5655, 2018, 0);
                 tele1.LeftTele.TeleOffset = new Point3D(-1, 3, 0);
                 tele2 = this.AddSHT(Map.Felucca, true, 1690, 2789, 0);
                 Link(tele1, tele2);
+                */
 
                 this.AddSHTCouple(false, 5809, 1905, 0, false, 5876, 1891, 0);
 
@@ -485,10 +491,12 @@ namespace Server.Items
                 tele2 = this.AddSHT(Map.Trammel, false, 5913, 1893, 0);
                 Link(tele1, tele2);
 
+                /*
                 tele1 = this.AddSHT(Map.Felucca, false, 5814, 2015, 0);
                 tele1.LeftTele.TeleOffset = new Point3D(-1, 3, 0);
                 tele2 = this.AddSHT(Map.Felucca, false, 5913, 1893, 0);
                 Link(tele1, tele2);
+                */
 
                 this.AddSHTCouple(false, 5919, 2021, 0, true, 1724, 814, 0);
 
@@ -497,10 +505,12 @@ namespace Server.Items
                 Link(tele1, tele2);
                 this.AddSHT(Map.Trammel, false, 5734, 1859, 0).ChangeDest(tele2);
 
+                /*
                 tele1 = this.AddSHT(Map.Felucca, false, 5654, 1791, 0);
                 tele2 = this.AddSHT(Map.Felucca, true, 730, 1451, 0);
                 Link(tele1, tele2);
                 this.AddSHT(Map.Felucca, false, 5734, 1859, 0).ChangeDest(tele2);
+                */
 
                 return this.m_Count;
             }

@@ -188,10 +188,10 @@ namespace Server.Spells
             if (!Core.AOS)
             {
                 if(Caster is BaseCreature)
-                    return TimeSpan.FromSeconds(0.5 + 0.5 * (int)Circle);
+                    return TimeSpan.FromSeconds(0.5 + 0.35 * (int)Circle);
                 //if(Circle < SpellCircle.Third)
                 //    return TimeSpan.FromSeconds(1.25);
-                return TimeSpan.FromSeconds(0.5 + 0.5 * (int)Circle);
+                return TimeSpan.FromSeconds(0.5 + 0.35 * (int)Circle);
             }
             return base.GetCastDelay();
         }

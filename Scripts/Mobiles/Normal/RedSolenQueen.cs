@@ -15,7 +15,7 @@ namespace Server.Mobiles
         public RedSolenQueen()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a red solen queen";
+            this.Name = "rainha formiga vermelha";
             this.Body = 783;
             this.BaseSoundID = 959;
 

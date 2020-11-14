@@ -148,6 +148,7 @@ namespace Server.Items
             }
         }
 
+
         public int PesoMax = 0;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -1636,8 +1637,8 @@ namespace Server.Items
             UpdateContainerData();
         }
 
-        private static int m_GlobalMaxItems = 125;
-        private static int m_GlobalMaxWeight = 2000;
+        private static int m_GlobalMaxItems = 100;
+        private static int m_GlobalMaxWeight = 5000;
 
         public static int GlobalMaxItems { get { return m_GlobalMaxItems; } set { m_GlobalMaxItems = value; } }
         public static int GlobalMaxWeight { get { return m_GlobalMaxWeight; } set { m_GlobalMaxWeight = value; } }
@@ -2009,9 +2010,9 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (DisplaysContent) //CheckContentDisplay( from ) )
+            if (true) //CheckContentDisplay( from ) )
             {
-                if (Core.ML)
+                if (true)
                 {
                     if (ParentsContain<Item>() || IsLockedDown || IsSecure) //Root Parent is the Mobile.  Parent could be another containter.
                     {

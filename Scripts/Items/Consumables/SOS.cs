@@ -214,7 +214,7 @@ namespace Server.Items
             0x0136, 0x0137
         };
 
-        private static readonly Rectangle2D[] m_BritRegions = new Rectangle2D[] { new Rectangle2D(0, 0, 5120, 4096) };
+        private static Rectangle2D[] m_BritRegions = new Rectangle2D[]{ new Rectangle2D( 0, 0, 5120, 4096 ) };
         private static readonly Rectangle2D[] m_IlshRegions = new Rectangle2D[] { new Rectangle2D(1472, 272, 304, 240), new Rectangle2D(1240, 1000, 312, 160) };
         private static readonly Rectangle2D[] m_MalasRegions = new Rectangle2D[] { new Rectangle2D(1376, 1520, 464, 280) };
         private static readonly Rectangle2D[] m_TokunoRegions = new Rectangle2D[] { new Rectangle2D(10, 10, 1440, 1440) };
@@ -319,7 +319,7 @@ namespace Server.Items
 
                 AddPage(0);
 
-                if (Core.ML)
+                if (true)
                 {
                     AddBackground(0, 0, 250, 350, 9390);
 

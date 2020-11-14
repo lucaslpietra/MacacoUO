@@ -167,6 +167,8 @@ namespace Server.Gumps
 
                     if (newCharacter)
                     {
+                        from.Hunger = 20;
+                        from.Thirst = 20;
                         var hue = StarterKits.GetNoobColor();
 
                         var ball = new ElementalBall();

@@ -11,7 +11,7 @@ namespace Server.Mobiles
         public SeaSerpent()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a sea serpent";
+            this.Name = "serpente do mar";
             this.Body = 150;
             this.BaseSoundID = 447;
 

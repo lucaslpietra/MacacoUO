@@ -4182,10 +4182,10 @@ namespace Server.Mobiles
 
         public override void OnDeathsChange(int oldValue)
         {
-            if (this.RP)
+            if (this.RP && oldValue < this.Deaths) // ganhou ponto de death
             {
                 this.SendMessage("Voce agora tem " + this.Deaths + "/5 Mortes...");
-                if (this.Deaths >= 5)
+                if (this.Deaths >= MAX_MORTES)
                 {
                     this.SendGump(new AnuncioGump(this, "!!! VOCE MORREU !!!"));
                     this.SendMessage(38, "!!! VOCE MORREU !!!");

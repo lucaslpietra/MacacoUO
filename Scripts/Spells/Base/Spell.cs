@@ -1647,7 +1647,7 @@ namespace Server.Spells
 
                     if (m_Spell.m_Caster.Player && m_Spell.m_Caster.Target != originalTarget && m_Spell.Caster.Target != null)
                     {
-                        m_Spell.m_Caster.Target.BeginTimeout(m_Spell.m_Caster, TimeSpan.FromSeconds(5.0));
+                        m_Spell.m_Caster.Target.BeginTimeout(m_Spell.m_Caster, TimeSpan.FromSeconds(2.5));
                     }
 
                     m_Spell.m_CastTimer = null;
