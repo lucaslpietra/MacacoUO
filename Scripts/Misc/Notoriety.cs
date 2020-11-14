@@ -132,9 +132,9 @@ namespace Server.Misc
             var bc = from as BaseCreature;
             var targPlayer = damageable as PlayerMobile;
 
-            if (!from.Player && !(bc != null && bc.GetMaster() != null && bc.GetMaster().IsPlayer()))
+            if (from != null && !from.Player && !(bc != null && bc.GetMaster() != null && bc.GetMaster().IsPlayer()))
             {
-                if (targPlayer != null && targPlayer.RP && !bc.GetMaster().RP)
+                if (targPlayer != null && targPlayer.RP && bc.GetMaster() != null && !bc.GetMaster().RP)
                     return false;
 
                 if (!CheckAggressor(from.Aggressors, target) && !CheckAggressed(from.Aggressed, target) && target is PlayerMobile &&

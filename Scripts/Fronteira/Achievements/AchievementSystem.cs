@@ -46,8 +46,6 @@ namespace Scripts.Mythik.Systems.Achievements
         public static List<BaseAchievement> Achievements = new List<BaseAchievement>();
         public static List<AchievementCategory> Categories = new List<AchievementCategory>();
 
-
-
         private static Dictionary<Serial, Dictionary<int, AchieveData>> m_featData = new Dictionary<Serial, Dictionary<int, AchieveData>>();
         private static Dictionary<Serial, int> m_pointsTotal = new Dictionary<Serial, int>();
         private static int GetPlayerPointsTotal(PlayerMobile m)
@@ -95,6 +93,7 @@ namespace Scripts.Mythik.Systems.Achievements
             Achievements.Add(new DiscoveryAchievement(9, 3, 0x14EB, false, null, "Templo da Medusa", "Encontre o Templo da Medusa", 5, "Pulma"));
             Achievements.Add(new DiscoveryAchievement(10, 3, 0x14EB, false, null, "Masmorra de Arenito", "Encontre a Masmorra de Arenito", 5, "Khalmer"));
             Achievements.Add(new DiscoveryAchievement(11, 3, 0x14EB, false, null, "Abismo", "Encontre o Abismo", 5, "Doom"));
+            Achievements.Add(new DiscoveryAchievement(11, 3, 0x14EB, false, null, "Formigueiro", "Encontre o Formigueiro", 5, "Solen Hives"));
 
             Achievements.Add(new DiscoveryAchievement(1, 1, 0x14EB, false, null, "Vila dos Druidas", "Encontre a Vila dos Druidas", 5, "Arbor"));
             Achievements.Add(new DiscoveryAchievement(2, 1, 0x14EB, false, null, "Forte Fofnolsaern", "Encontre o Forte Fofnolsaern", 5, "Bowan"));
@@ -205,7 +204,11 @@ namespace Scripts.Mythik.Systems.Achievements
 
             Achievements.Add(new HunterAchievement(1022, 3000, 0x4298, false, null, 1, "[BOSS] Medusa me Seduza", "Mate a Medusa", 10, typeof(Medusa), typeof(CaixaDeGold), typeof(MedusaDarkScales)));
             Achievements.Add(new HunterAchievement(1023, 3000, 0x20D7, false, null, 1, "[BOSS] Fique longe do Drack", "Mata o Pedroso de Drack", 10, typeof(Pedroso), typeof(CaixaDeGold), typeof(DecoRocks2)));
-            Achievements.Add(new HunterAchievement(1024, 3000, 0x258B, false, null, 1, "[BOSS] Neira nao ta de zoeira", "Mate o champion Neira", 10, typeof(Pedroso), typeof(CaixaDeGold)));
+            Achievements.Add(new HunterAchievement(1024, 3000, 0x258B, false, null, 1, "[BOSS] Neira nao ta de zoeira", "Mate o champion Neira", 10, typeof(Neira), typeof(CaixaDeGold)));
+            Achievements.Add(new HunterAchievement(1025, 3000, 0x2602, false, null, 1, "Formigas Vermelhas", "Mate 10 Formigas Trabalhadoras Vermelhas", 10, typeof(RedSolenWorker), typeof(BagOfReagents)));
+            Achievements.Add(new HunterAchievement(1026, 3000, 0x2602, false, null, 1, "Formigas Pretas", "Mate 10 Formigas Trabalhadoras Pretas", 10, typeof(BlackSolenWorker), typeof(BagOfReagents)));
+            Achievements.Add(new HunterAchievement(1027, 3000, 0x2602, false, null, 1, "Formigas Guerreiras Vermelhas", "Mate 50 Formigas Guerreiras Vermelhas", 50, typeof(RedSolenWarrior), typeof(SacolaDeOuro3000)));
+            Achievements.Add(new HunterAchievement(1028, 3000, 0x2602, false, null, 1, "Formigas Guerreiras Pretas", "Mate 50 Formigas Guerreiras Pretas", 50, typeof(BlackSolenWarrior), typeof(SacolaDeOuro3000)));
 
             // SKILLS
             // BS

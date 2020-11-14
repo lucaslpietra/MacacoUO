@@ -1,4 +1,4 @@
-﻿using Server;
+using Server;
 using System;
 using Server.Commands;
 using Server.Mobiles;
@@ -10,13 +10,13 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            if (Core.HS)
-            {
+            //if (Core.HS)
+            //{
                 CommandSystem.Register("DecorateHS", AccessLevel.Administrator, GenerateDeco);
                 CommandSystem.Register("DeleteHS", AccessLevel.Administrator, DeleteHS);
 
                 CommandSystem.Register("CharydbisSpawner", AccessLevel.Administrator, Spawner);
-            }
+            //}
         }
 
         public static void Spawner(CommandEventArgs e)

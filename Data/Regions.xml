@@ -1474,7 +1474,8 @@
 	<region type="DungeonRegion" priority="50" name="Solen Hives">
       <rect x="5640" y="1776" width="295" height="263" />
       <go x="5774" y="1896" z="20" />
-    </region>
+      <music name="Holycity"/>
+  </region>
 	<region type="SeaMarketRegion" priority="50" name="Sea Market">
       <rect x="4529" y="2296" width="45" height="112" />
       <go x="4550" y="2317" z="-2" />
