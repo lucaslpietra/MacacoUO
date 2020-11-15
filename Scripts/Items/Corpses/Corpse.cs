@@ -1230,7 +1230,7 @@ namespace Server.Items
                 }
             }
 
-            if(!this.Owner.RP && from.RP && this.Owner.Player && from.Player)
+            if(this.Owner != null && from != null && !this.Owner.RP && from.RP && this.Owner.Player && from.Player)
             {
                 if (from.Player && (this.Owner.Party == null || this.Owner.Party != from.Party))
                 {
