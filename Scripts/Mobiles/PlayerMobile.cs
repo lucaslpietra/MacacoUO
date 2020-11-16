@@ -5604,8 +5604,8 @@ namespace Server.Mobiles
                 _BlessedItem);
             }
 
-            if (this.Backpack.MaxItems == 100)
-                this.Backpack.MaxItems = 125;
+            //if (this.Backpack.MaxItems == 100)
+            //    this.Backpack.MaxItems = 125;
         }
 
         public ObjetoFicha FichaRP = new ObjetoFicha();
