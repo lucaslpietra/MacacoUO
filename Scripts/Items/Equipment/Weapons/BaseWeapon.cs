@@ -2960,7 +2960,7 @@ namespace Server.Items
                 defender,
                 attacker,
                 damage,
-                ignoreArmor,
+                false,
                 phys,
                 fire,
                 cold,
