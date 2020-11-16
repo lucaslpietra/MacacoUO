@@ -1530,7 +1530,7 @@ namespace Server.Engines.BulkOrders
             if (itemCount > 1)
                 points += this.LookupTypePoints(m_Types, type);
 
-            return points;
+            return points * 2;
         }
 
         private RewardType[] m_Types =
@@ -2001,7 +2001,7 @@ namespace Server.Engines.BulkOrders
             else if (itemCount == 6)
                 points += 350;
 
-            return (int)(points * 2);
+            return (int)(points * 2.2);
         }
 
         private static readonly int[][] m_GoldTable = new int[][]

@@ -226,7 +226,7 @@ namespace Server.Items
 
             private int count;
 
-            public GrowTimer(BasePlantable plantable, Mobile plantador, string nomeDono) : base(TimeSpan.FromMinutes(30), TimeSpan.FromMinutes(30), 2)
+            public GrowTimer(BasePlantable plantable, Mobile plantador, string nomeDono) : base(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5), 2)
             {
                 this.nomeDono = nomeDono;
                 this.plantable = plantable;

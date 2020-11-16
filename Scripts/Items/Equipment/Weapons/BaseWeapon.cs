@@ -2251,25 +2251,35 @@ namespace Server.Items
             {
                 var oldDmg = damage;
                 armor.OnHit(this, damage);
-                Shard.Debug("Armor mitigou " + (oldDmg - damage) + " dano", defender);
+                if(Shard.DebugEnabled)
+                    Shard.Debug("Armor mitigou " + (oldDmg - damage) + " dano", defender);
             }
 
             var virtualArmor = defender.ArmorRating;
 
+
             WeaponAbility a = WeaponAbility.GetCurrentAbility(attacker);
+            SpecialMove move = SpecialMove.GetCurrentMove(attacker);
+
+            WeaponAbility weavabil;
+            bool bladeweaving = Bladeweave.BladeWeaving(attacker, out weavabil);
+            bool ignoreArmor = (a is ArmorIgnore || (move != null && move.IgnoreArmor(attacker)) || (bladeweaving && weavabil is ArmorIgnore));
+
             if (a != null && a is ArmorIgnore)
             {
                 virtualArmor = 0;
                 Shard.Debug("Ignorou armadura", attacker);
+                damage = (int)(damage * 0.9);
             }
 
-            Shard.Debug("Armor Rating: " + virtualArmor);
+            if (Shard.DebugEnabled)
+                Shard.Debug("Armor Rating: " + virtualArmor);
 
             var armorMiti = XmlAttach.OnArmorHit(attacker, defender, armorItem, this, damage);
             //var shieldMiti = XmlAttach.OnArmorHit(attacker, defender, shield, this, damage);
             damage -= armorMiti;
             //damage -= shieldMiti;
-            if (armorMiti > 0)
+            if (armorMiti > 0 && Shard.DebugEnabled)
                 Shard.Debug("Mitigacao ArmorXML: " + armorMiti, defender);
 
             if (virtualArmor > 0)
@@ -2311,11 +2321,15 @@ namespace Server.Items
                 var redux = Utility.Random(from, (to - from) + 1);
                 damage -= redux;
 
-                Shard.Debug("Virtual Armor: " + virtualArmor + " Scalar: " + scalar + " REDUX " + redux);
-                Shard.Debug("Virtual MinMax: " + from + "/" + to + " - Calculando media", defender);
+                if(Shard.DebugEnabled)
+                {
+                    Shard.Debug("Virtual Armor: " + virtualArmor + " Scalar: " + scalar + " REDUX " + redux);
+                    Shard.Debug("Virtual MinMax: " + from + "/" + to + " - Calculando media", defender);
+                }
             }
 
-            Shard.Debug("Dano depois da reducao de armor " + damage);
+            if(Shard.DebugEnabled)
+                Shard.Debug("Dano depois da reducao de armor " + damage);
             return new Tuple<int, bool>(damage, mods.Item2);
         }
 
@@ -2467,7 +2481,8 @@ namespace Server.Items
 
             int damage = ComputeDamage(attacker, defender);
 
-            Shard.Debug("Dano Base Final: " + damage, attacker);
+            if(Shard.DebugEnabled)
+                Shard.Debug("Dano Base Final: " + damage, attacker);
 
             WeaponAbility a = WeaponAbility.GetCurrentAbility(attacker);
             SpecialMove move = SpecialMove.GetCurrentMove(attacker);
@@ -2611,6 +2626,7 @@ namespace Server.Items
                 }
             }
 
+            /*
             WeaponAbility weavabil;
             bool bladeweaving = Bladeweave.BladeWeaving(attacker, out weavabil);
             bool ignoreArmor = (a is ArmorIgnore || (move != null && move.IgnoreArmor(attacker)) || (bladeweaving && weavabil is ArmorIgnore));
@@ -2633,6 +2649,7 @@ namespace Server.Items
 
                 return;
             }
+            */
 
             #region Damage Multipliers
             /*
@@ -2651,11 +2668,13 @@ namespace Server.Items
                 percentageBonus += (int)(move.GetDamageScalar(attacker, defender) * 100) - 100;
             }
 
-            Shard.Debug("Null? " + (ConsecratedContext == null));
+            if(Shard.DebugEnabled)
+                Shard.Debug("Null? " + (ConsecratedContext == null));
             if (ConsecratedContext != null && ConsecratedContext.Owner == attacker)
             {
                 percentageBonus += ConsecratedContext.ConsecrateDamageBonus;
-                Shard.Debug("Bonus Dano Consecrated Weapon: " + ConsecratedContext.ConsecrateDamageBonus);
+                if(Shard.DebugEnabled)
+                    Shard.Debug("Bonus Dano Consecrated Weapon: " + ConsecratedContext.ConsecrateDamageBonus);
             }
 
             percentageBonus += (int)(damageBonus * 100) - 100;

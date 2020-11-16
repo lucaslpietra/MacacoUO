@@ -4189,8 +4189,6 @@ namespace Server.Mobiles
                 {
                     this.SendGump(new AnuncioGump(this, "!!! VOCE MORREU !!!"));
                     this.SendMessage(38, "!!! VOCE MORREU !!!");
-                    this.NetState.Dispose();
-                    this.Delete();
                 }
             }
             else
@@ -4203,6 +4201,13 @@ namespace Server.Mobiles
 
         public override void Resurrect()
         {
+
+            if (RP && Deaths >= MAX_MORTES)
+            {
+                SendMessage("Voce morreu... e apenas pode vagar no mundo como alma");
+                return;
+            }
+
             bool wasAlive = Alive;
 
             base.Resurrect();
@@ -5598,6 +5603,9 @@ namespace Server.Mobiles
                 },
                 _BlessedItem);
             }
+
+            if (this.Backpack.MaxItems == 100)
+                this.Backpack.MaxItems = 125;
         }
 
         public ObjetoFicha FichaRP = new ObjetoFicha();
@@ -6564,7 +6572,13 @@ namespace Server.Mobiles
                 }
             }
             if (RP)
-                list.Add(Gump.Cor("[ Personagem RP ]", "yellow"));
+            {
+                list.Add(Gump.Cor("<CENTER>[ Personagem RP ]</CENTER>", "yellow"));
+                if (Deaths >= 5)
+                    list.Add(Gump.Cor("<CENTER>MORTO</CENTER>", "red"));
+            }
+               
+
         }
         #endregion
 

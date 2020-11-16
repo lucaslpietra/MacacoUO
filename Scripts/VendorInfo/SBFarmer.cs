@@ -60,11 +60,11 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(SheafOfHay), 2, 20, 0xF36, 0));
                 Add(new GenericBuyInfo(typeof(Hoe), 5, 20, 3897, 0));
 
-                Add(new GenericBuyInfo(typeof(CottonSeeds), 50, 60, 0x0F24, 0, true));
-                Add(new GenericBuyInfo(typeof(NightshadeSeeds), 50, 60, 0x0F24, 0, true));
-                Add(new GenericBuyInfo(typeof(GarlicSeeds), 50, 60, 0x0F24, 0, true));
-                Add(new GenericBuyInfo(typeof(GinsengSeeds), 50, 60, 0x0F24, 0, true));
-                Add(new GenericBuyInfo(typeof(MandrakeSeeds), 50, 60, 0x0F24, 0, true));
+                Add(new GenericBuyInfo(typeof(CottonSeeds), 15, 60, 0x0F24, 0, true));
+                Add(new GenericBuyInfo(typeof(NightshadeSeeds), 15, 60, 0x0F24, 0, true));
+                Add(new GenericBuyInfo(typeof(GarlicSeeds), 15, 60, 0x0F24, 0, true));
+                Add(new GenericBuyInfo(typeof(GinsengSeeds), 15, 60, 0x0F24, 0, true));
+                Add(new GenericBuyInfo(typeof(MandrakeSeeds), 15, 60, 0x0F24, 0, true));
             }
         }
 

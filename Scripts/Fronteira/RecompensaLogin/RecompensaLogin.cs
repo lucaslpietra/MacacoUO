@@ -22,15 +22,33 @@ namespace Server.Ziden.Kills
         {
             new LoginTimer().Start();
             CommandSystem.Register("login", AccessLevel.Player, new CommandEventHandler(Ranking_OnCommand));
+            CommandSystem.Register("deathtick", AccessLevel.Administrator, new CommandEventHandler(DeathTick));
+        }
+
+        [Usage("login")]
+        [Description("ve as recompensas de login.")]
+        public static void DeathTick(CommandEventArgs e)
+        {
+            foreach (var ns in NetState.Instances)
+            {
+                if (ns != null && ns.Mobile != null)
+                {
+                    Shard.Debug("Ponto login");
+                    PointsSystem.PontosLogin.AwardPoints(ns.Mobile, 1);
+                    if (ns.Mobile.Alive && ns.Mobile.RP && Utility.RandomBool() && ns.Mobile.Deaths > 0)
+                    {
+                        ns.Mobile.Deaths--;
+                        ns.Mobile.SendMessage(string.Format("Regenerou uma Morte: {0}/5 ", ns.Mobile.Deaths));
+                    }
+
+                }
+            }
         }
 
         [Usage("login")]
         [Description("ve as recompensas de login.")]
         public static void Ranking_OnCommand(CommandEventArgs e)
         {
-            if (e.Mobile.RP)
-                return;
-
             e.Mobile.SendGump(new LoginRewardsGump(e.Mobile, e.Mobile as PlayerMobile));
         }
 

@@ -4,23 +4,44 @@ using Server.Network;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a solen warrior corpse")]
-    public class RedSolenWarrior : BaseCreature, IRedSolen
+    [CorpseName("corpo de uma formiga fantasma")]
+    public class SolenFantasma : BaseCreature, IBlackSolen
     {
         private bool m_BurstSac;
-        [Constructable]
-        public RedSolenWarrior()
-            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+        private Timer m_SoundTimer;
+
+        public virtual void SendTrackingSound()
         {
-            this.Name = "a red solen warrior";
-            this.Body = 782;
+            if (Hidden)
+            {
+                Effects.PlaySound(Location, Map, 0x2C8);
+                Combatant = null;
+            }
+            else
+            {
+                Frozen = false;
+
+                if (m_SoundTimer != null)
+                    m_SoundTimer.Stop();
+
+                m_SoundTimer = null;
+            }
+        }
+
+        [Constructable]
+        public SolenFantasma()
+            : base(AIType.AI_Ninja, FightMode.Closest, 10, 1, 0.2, 0.4)
+        {
+            this.Name = "formiga fantasma";
+            this.Body = 806;
             this.BaseSoundID = 959;
+            this.Hue = 0x497;
 
             this.SetStr(196, 220);
-            this.SetDex(101, 125);
-            this.SetInt(36, 60);
+            this.SetDex(151, 175);
+            this.SetInt(70, 100);
 
-            this.SetHits(96, 107);
+            this.SetHits(200, 400);
 
             this.SetDamage(5, 15);
 
@@ -33,32 +54,35 @@ namespace Server.Mobiles
             this.SetResistance(ResistanceType.Poison, 20, 35);
             this.SetResistance(ResistanceType.Energy, 10, 25);
 
-            this.SetSkill(SkillName.MagicResist, 60.0);
             this.SetSkill(SkillName.Tactics, 80.0);
-            this.SetSkill(SkillName.Wrestling, 80.0);
+            this.SetSkill(SkillName.Hiding, 100.0);
+            this.SetSkill(SkillName.Stealth, 100.0);
+            this.SetSkill(SkillName.Ninjitsu, 90.0);
+            this.SetSkill(SkillName.MagicResist, 85.0);
 
-            this.Fame = 3000;
-            this.Karma = -3000;
+            this.Fame = 3500;
+            this.Karma = -3500;
 
             this.VirtualArmor = 35;
 
+            SetWeaponAbility(WeaponAbility.ShadowStrike);
+
             SolenHelper.PackPicnicBasket(this);
-            this.PackItem(new ZoogiFungus((0.05 < Utility.RandomDouble()) ? 3 : 13));
+
+            this.PackItem(new ZoogiFungus((0.05 > Utility.RandomDouble()) ? 13 : 3));
 
             if (Utility.RandomDouble() < 0.05)
                 this.PackItem(new BraceletOfBinding());
         }
 
-        public RedSolenWarrior(Serial serial)
+        public SolenFantasma(Serial serial)
             : base(serial)
         {
         }
 
         public override void OnGotMeleeAttack(Mobile attacker)
         {
-
             if (attacker.Weapon is BaseRanged)
-
                 BeginAcidBreath();
 
             base.OnGotMeleeAttack(attacker);
@@ -82,8 +106,6 @@ namespace Server.Mobiles
             if (m == null || m.Deleted || !m.Alive || !Alive || m_NextAcidBreath > DateTime.Now || !CanBeHarmful(m))
                 return;
 
-            OverheadMessage("* cospe acido *");
-
             PlaySound(0x118);
             MovingEffect(m, 0x36D4, 1, 0, false, false, 0x3F, 0);
 
@@ -99,9 +121,9 @@ namespace Server.Mobiles
                 return;
 
             if (0.2 >= Utility.RandomDouble())
-                m.ApplyPoison(this, Poison.Greater);
+                m.ApplyPoison(this, Poison.Regular);
 
-            AOS.Damage(m, Utility.RandomMinMax(20, 50), 0, 0, 0, 100, 0);
+            AOS.Damage(m, Utility.RandomMinMax(30, 45), 0, 0, 0, 100, 0);
         }
         #endregion
 
@@ -145,7 +167,7 @@ namespace Server.Mobiles
 
         public override bool IsEnemy(Mobile m)
         {
-            if (SolenHelper.CheckRedFriendship(m))
+            if (SolenHelper.CheckBlackFriendship(m))
                 return false;
             else
                 return base.IsEnemy(m);
@@ -153,7 +175,7 @@ namespace Server.Mobiles
 
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
-            SolenHelper.OnRedDamage(from);
+            SolenHelper.OnBlackDamage(from);
 
             if (!willKill)
             {
@@ -161,7 +183,7 @@ namespace Server.Mobiles
                 {
                     if (this.Hits < 50)
                     {
-                        this.PublicOverheadMessage(MessageType.Regular, 0x3B2, true, "* The solen's acid sac is burst open! *");
+                        this.PublicOverheadMessage(MessageType.Regular, 0x3B2, true, "* A bolsa de acido da formiga se rompeu *");
                         this.m_BurstSac = true;
                     }
                 }
@@ -181,6 +203,55 @@ namespace Server.Mobiles
             return base.OnBeforeDeath();
         }
 
+        private bool m_HasTeleportedAway;
+
+        public override void OnThink()
+        {
+            if (!m_HasTeleportedAway && Hits < (HitsMax / 2))
+            {
+                Map map = Map;
+
+                if (map != null)
+                {
+                    // try 10 times to find a teleport spot
+                    for (int i = 0; i < 10; ++i)
+                    {
+                        int x = X + (Utility.RandomMinMax(5, 10) * (Utility.RandomBool() ? 1 : -1));
+                        int y = Y + (Utility.RandomMinMax(5, 10) * (Utility.RandomBool() ? 1 : -1));
+                        int z = Z;
+
+                        if (!map.CanFit(x, y, z, 16, false, false))
+                            continue;
+
+                        Point3D from = Location;
+                        Point3D to = new Point3D(x, y, z);
+
+                        if (!InLOS(to))
+                            continue;
+
+                        Location = to;
+                        ProcessDelta();
+                        Hidden = true;
+                        Combatant = null;
+
+                        Effects.SendLocationParticles(EffectItem.Create(from, map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
+                        Effects.SendLocationParticles(EffectItem.Create(to, map, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023);
+
+                        Effects.PlaySound(to, map, 0x1FE);
+
+                        m_HasTeleportedAway = true;
+                        m_SoundTimer = Timer.DelayCall(TimeSpan.FromSeconds(5.0), TimeSpan.FromSeconds(2.5), new TimerCallback(SendTrackingSound));
+
+                        Frozen = true;
+
+                        break;
+                    }
+                }
+            }
+
+            base.OnThink();
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -192,8 +263,8 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-			
-            switch( version )
+
+            switch (version)
             {
                 case 1:
                     {

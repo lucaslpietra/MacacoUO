@@ -203,10 +203,10 @@ namespace Server.Items
             Item spawn = this.GetCropObject();
 
             var Skill = (int)from.Skills[SkillName.Herding].Value;
-            var amt = Skill / 8 + Utility.Random(Skill / 10);
+            var amt = Skill / 8 + Utility.Random(Skill / 10) / 4;
             if (nomeQuemPlantou == null)
             {
-                amt /= 4;
+                amt /= 2;
                 if (amt <= 0)
                     amt = 1;
             }
