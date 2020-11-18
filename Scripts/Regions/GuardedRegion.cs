@@ -200,6 +200,7 @@ namespace Server.Regions
 			}
 		}
 
+        /*
 		public override void OnAggressed(Mobile aggressor, Mobile aggressed, bool criminal)
 		{
 			base.OnAggressed(aggressor, aggressed, criminal);
@@ -209,6 +210,7 @@ namespace Server.Regions
 				CheckGuardCandidate(aggressor, aggressor is BaseCreature && ((BaseCreature)aggressor).IsAggressiveMonster);
 			}
 		}
+      
 
 		public override void OnGotBeneficialAction(Mobile helper, Mobile helped)
 		{
@@ -236,6 +238,7 @@ namespace Server.Regions
 				CheckGuardCandidate(m);
 			}
 		}
+       */
 
         public void CheckGuardCandidate(Mobile m)
         {

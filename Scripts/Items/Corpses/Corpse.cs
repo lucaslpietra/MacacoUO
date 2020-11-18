@@ -186,7 +186,20 @@ namespace Server.Items
                     return info.IsOwner(m); //IsOwner checks Party stuff.
                 }
             }
+            return true;
+        }
 
+        public override bool OnDroppedOnto(Mobile from, Item dropped)
+        {
+            if (dropped is Gold)
+                return false;
+            return true;
+        }
+
+        public override bool OnDragDrop(Mobile from, Item dropped)
+        {
+            if (dropped is Gold)
+                return false;
             return true;
         }
 

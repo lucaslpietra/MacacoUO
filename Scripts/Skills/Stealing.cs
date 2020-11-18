@@ -319,9 +319,17 @@ namespace Server.SkillHandlers
 				{
 					m_Thief.SendLocalizedMessage("Nao pode roubar isto"); // You can't steal that!
 				}
-				else if (root is Mobile && !m_Thief.CanBeHarmful((Mobile)root))
+				else if (root is Mobile && !(root is PlayerMobile) && !m_Thief.CanBeHarmful((Mobile)root))
 				{ }
-				else if (root is Corpse)
+                else if(root is PlayerMobile && ((PlayerMobile)root).Young)
+                {
+                    m_Thief.SendMessage("Voce nao pode roubar novatos");
+                }
+                else if (root is PlayerMobile && ((PlayerMobile)root).RP)
+                {
+                    m_Thief.SendMessage("Voce nao pode roubar jogadores RP");
+                }
+                else if (root is Corpse)
 				{
 					m_Thief.SendLocalizedMessage("Nao pode roubar isto"); // You can't steal that!
 				}

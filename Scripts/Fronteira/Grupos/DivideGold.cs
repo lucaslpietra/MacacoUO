@@ -19,8 +19,6 @@ namespace Felladrin.Automations
             if (from == null)
                 return false;
 
-            
-
             if (!(item is Gold) || from.Party == null || from.Party is Party && item.Amount < ((Party)from.Party).Members.Count)
                 return false;
 
@@ -44,7 +42,7 @@ namespace Felladrin.Automations
 
             int share = item.Amount / mesmaRegiao.Count;
 
-            share = (int)(share * 1.2);
+            //share = (int)(share * 1.2);
             //var bonus = (int)(share * 0.2);
 
             foreach (var info in mesmaRegiao)

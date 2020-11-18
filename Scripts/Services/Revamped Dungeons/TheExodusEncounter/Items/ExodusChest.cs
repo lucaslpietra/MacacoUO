@@ -83,7 +83,6 @@ namespace Server.Items
                 case 2: DropItem(new Blight()); break;
                 case 3: DropItem(new LuminescentFungi()); break;
             }
-
         }
 
         public override void Serialize(GenericWriter writer)

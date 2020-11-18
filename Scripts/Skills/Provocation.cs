@@ -106,6 +106,19 @@ namespace Server.SkillHandlers
                             if (!from.CanBeHarmful(alvo))
                                 return;
 
+                            int range = BaseInstrument.GetBardRange(from, SkillName.Peacemaking);
+                            if (!from.InRange(alvo.Location, range))
+                            {
+                                from.SendMessage("Voce esta muito longe do alvo");
+                                return;
+                            }
+
+                            if (!!from.InLOS(alvo))
+                            {
+                                from.SendMessage("A musica precisa estar direcionada ao alvo diretamente");
+                                return;
+                            }
+
                             from.DoHarmful(alvo);
 
                             from.SendMessage("Voce toca uma musica provocadora contra o alvo, causando dano por deixar o alvo stressado");
@@ -136,8 +149,11 @@ namespace Server.SkillHandlers
                             }
 
 
+                            var ratio = (from.Skills.Provocation.Value + from.Skills.Musicianship.Value) / 200;
+                            var par = Utility.Random(danoBase, rng) * ratio;
+
                             m_Instrument.PlayInstrumentWell(from);
-                            AOS.Damage(alvo, Utility.Random(danoBase, rng), DamageType.Spell);
+                            AOS.Damage(alvo, (int)par , DamageType.Spell);
                             from.MovingParticles(alvo, m_Instrument.ItemID, 7, 0, false, false, 38, 9502, 0x374A, 0x204, 1, 1);
                             from.NextSkillTime = Core.TickCount + 10000;
                             m_Instrument.ConsumeUse(from);
@@ -268,6 +284,19 @@ namespace Server.SkillHandlers
                                     {
                                         if (from == null || from.Deleted || target.Deleted || !from.Alive || !target.Alive || target.Map == Map.Internal)
                                             return;
+
+                                        int range = BaseInstrument.GetBardRange(from, SkillName.Provocation);
+                                        if (!from.InRange(target.Location, range))
+                                        {
+                                            from.SendMessage("Voce esta muito longe do alvo");
+                                            return;
+                                        }
+
+                                        if (!!from.InLOS(target))
+                                        {
+                                            from.SendMessage("A musica precisa estar direcionada ao alvo diretamente");
+                                            return;
+                                        }
 
                                         from.SendLocalizedMessage(501602); // Your music succeeds, as you start a fight.
                                         m_Instrument.PlayInstrumentWell(from);

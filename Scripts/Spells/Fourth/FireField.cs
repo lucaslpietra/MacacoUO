@@ -3,6 +3,7 @@ using System.Collections;
 using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
+using Server.Multis;
 using Server.Spells.Fifth;
 using Server.Targeting;
 
@@ -143,6 +144,16 @@ namespace Server.Spells.Fourth
                 : base(itemID)
             {
                 bool canFit = SpellHelper.AdjustField(ref loc, map, 12, false);
+
+                var house = BaseHouse.FindHouseAt(loc, map, loc.Z);
+                if(house != null)
+                {
+                    Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+                    {
+                        Delete();
+                    });
+                    return;
+                }
 
                 Movable = false;
                 Light = LightType.Circle300;

@@ -18,8 +18,8 @@ namespace Server.SkillHandlers
         {
             Map map = from.Map;
 
-            if (to.Player)
-                return from.CanBeHarmful(to, false, true); // normal restrictions
+            //if (to.Player)
+            //    return from.CanBeHarmful(to, false, true); // normal restrictions
 
             if (map != null && (map.Rules & MapRules.HarmfulRestrictions) == 0)
                 return true; // felucca you can snoop anybody

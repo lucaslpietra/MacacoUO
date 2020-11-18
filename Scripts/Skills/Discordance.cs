@@ -224,6 +224,19 @@ namespace Server.SkillHandlers
                                 if (from == null || !from.Alive || from.Map == Map.Internal || !targ.Alive || targ.Map == Map.Internal)
                                     return;
 
+                                int range = BaseInstrument.GetBardRange(from, SkillName.Discordance);
+                                if (!from.InRange(targ.Location, range))
+                                {
+                                    from.SendMessage("Voce esta muito longe do alvo");
+                                    return;
+                                }
+
+                                if (!!from.InLOS(targ))
+                                {
+                                    from.SendMessage("A musica precisa estar direcionada ao alvo diretamente");
+                                    return;
+                                }
+
                                 from.SendLocalizedMessage("Voce tocou bem, reduzindo as forcas do alvo"); // You play the song surpressing your targets strength
                              
                                 ArrayList mods = new ArrayList();

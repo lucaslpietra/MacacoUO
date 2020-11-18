@@ -24,8 +24,8 @@ namespace Server.Ziden.Items
             { "Exodus", "Laboratorio Goblin"},
             { "Orc Cave", "Caverna dos Orcs" },
             { "Khalmer", "Masmorra de Arenito" },
-             { "Pulma", "Templo da Medusa" },
-              { "Destard", "Caverna dos Dragoes" }
+            { "Pulma", "Templo da Medusa" },
+            { "Destard", "Caverna dos Dragoes" }
         };
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -36,6 +36,8 @@ namespace Server.Ziden.Items
 
         public static void CriaChave(Container c)
         {
+            return;
+
             var region = c.GetRegion();
             Shard.Debug("Criando chave dg " + region.Name);
             if (region != null && region is DungeonRegion)

@@ -14,7 +14,7 @@ namespace Server.Ziden
         {
             Name = "Essencia Magica";
             Stackable = true;
-            //Weight = 0.5;0x2206
+        
         }
 
         public Catalizador(Serial s) : base(s)
@@ -38,7 +38,7 @@ namespace Server.Ziden
         {
             Name = "Essencia Magica";
             Stackable = true;
-            //Weight = 0.5;
+            Weight = 0.1;
         }
 
         public EssenciaMagica(Serial s) : base(s)

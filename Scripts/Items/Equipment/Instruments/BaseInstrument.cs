@@ -330,6 +330,11 @@ namespace Server.Items
             {
                 SetInstrument(from, instrument);
 
+                if(instrument.Quality == ItemQuality.Low)
+                {
+                    from.SendMessage(78, "Voce escolheu um instrumento de baixa qualidade, a qualidade de instrumentos influencia nas chances de bardo");
+                }
+
                 InstrumentPickedCallback callback = state as InstrumentPickedCallback;
 
                 if (callback != null)

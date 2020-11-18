@@ -66,6 +66,7 @@ namespace Server.Items
 				return;
 			}
 
+          
 			Mobile owner = null;
 			SecureTradeInfo tradeInfo = null;
 

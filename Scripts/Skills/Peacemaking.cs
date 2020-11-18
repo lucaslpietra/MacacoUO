@@ -121,12 +121,12 @@ namespace Server.SkillHandlers
                                 if (from == null || !from.Alive || from.Map == Map.Internal)
                                     return;
 
+                                int range = BaseInstrument.GetBardRange(from, SkillName.Peacemaking);
+   
                                 Map map = from.Map;
 
                                 if (map != null)
                                 {
-                                    int range = BaseInstrument.GetBardRange(from, SkillName.Peacemaking);
-
                                     bool calmed = false;
                                     IPooledEnumerable eable = from.GetMobilesInRange(range);
 
@@ -177,9 +177,6 @@ namespace Server.SkillHandlers
                                     }
                                 }
                             });
-                          
-
-                           
                         }
                     }
                     else
@@ -243,6 +240,19 @@ namespace Server.SkillHandlers
                                 {
                                     if (from == null || !from.Alive || from.Map == Map.Internal || !targ.Alive || targ.Map == Map.Internal)
                                         return;
+
+                                    int range = BaseInstrument.GetBardRange(from, SkillName.Peacemaking);
+                                    if(!from.InRange(targ.Location, range))
+                                    {
+                                        from.SendMessage("Voce esta muito longe do alvo");
+                                        return;
+                                    }
+
+                                    if(!!from.InLOS(targ))
+                                    {
+                                        from.SendMessage("A musica precisa estar direcionada ao alvo diretamente");
+                                        return;
+                                    }
 
                                     from.NextSkillTime = Core.TickCount + (5000 - ((masteryBonus / 5) * 1000));
 
@@ -336,20 +346,19 @@ namespace Server.SkillHandlers
                                         {
                                             rng += 1;
                                         }
-
+#
+                                        var ratio = (from.Skills.Peacemaking.Value + from.Skills.Musicianship.Value) / 200;
+                                        var par = Utility.Random(danoBase, rng) * ratio;
                                         //Effects.SendMovingParticles(from, new Entity(Serial.Zero, new Point3D(from.X, from.Y, from.Z + 15), from.Map), m_Instrument.ItemID, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
                                         from.MovingParticles(targ, m_Instrument.ItemID, 10, 0, false, false, 1152, 9502, 0x374A, 0x204, 1, 1);
                                         targ.SendLocalizedMessage("Voce escuta uma musica calmante e esquece de lutar"); // You hear lovely music, and forget to continue battling!
                                         targ.Combatant = null;
                                         targ.Warmode = false;
-                                        targ.Paralyze(TimeSpan.FromSeconds(Utility.Random(danoBase, rng)));
+                                        targ.Paralyze(TimeSpan.FromSeconds(par));
                                         targ.OverheadMessage("* acalmado *");
-                                        from.NextSkillTime = Core.TickCount + 10000;
+                                        from.NextSkillTime = Core.TickCount + 15000;
                                     }
-
-                                });
-
-                                
+                                });  
                             }
                         }
                     }
