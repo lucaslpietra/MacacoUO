@@ -346,7 +346,7 @@ namespace Server.SkillHandlers
                                         {
                                             rng += 1;
                                         }
-#
+
                                         var ratio = (from.Skills.Peacemaking.Value + from.Skills.Musicianship.Value) / 200;
                                         var par = Utility.Random(danoBase, rng) * ratio;
                                         //Effects.SendMovingParticles(from, new Entity(Serial.Zero, new Point3D(from.X, from.Y, from.Z + 15), from.Map), m_Instrument.ItemID, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
