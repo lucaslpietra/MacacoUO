@@ -134,7 +134,7 @@ namespace Server.Misc
 
             if (from != null && !from.Player && !(bc != null && bc.GetMaster() != null && bc.GetMaster().IsPlayer()))
             {
-                if (targPlayer != null && targPlayer.RP && bc.GetMaster() != null && !bc.GetMaster().RP)
+                if (targPlayer != null && targPlayer.RP && bc!=null && bc.GetMaster() != null && !bc.GetMaster().RP)
                     return false;
 
                 if (!CheckAggressor(from.Aggressors, target) && !CheckAggressed(from.Aggressed, target) && target is PlayerMobile &&
