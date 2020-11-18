@@ -15,6 +15,7 @@ namespace Server.Fronteira
             Visible = false;
         }
 
+        public FronteiraStone(Serial s) : base(s) { }
 
         /*
         public string Alchemy { get; set; }
@@ -76,6 +77,8 @@ namespace Server.Fronteira
         public string Imbuing = 56,
         public string Throwing = 57
         */
+
+
 
         public override void Serialize(GenericWriter writer)
         {
