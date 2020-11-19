@@ -4463,38 +4463,35 @@ namespace Server.Mobiles
 
         public override DeathMoveResult GetParentMoveResultFor(Item item)
         {
-            if (CheckInsuranceOnDeath(item))
+            if (CheckInsuranceOnDeath(item) && !Young)
             {
                 return DeathMoveResult.MoveToBackpack;
             }
 
             DeathMoveResult res = base.GetParentMoveResultFor(item);
 
-            /*
-            if (res == DeathMoveResult.MoveToCorpse && item.Movable)
+            if (res == DeathMoveResult.MoveToCorpse && item.Movable && Young && Wisp != null)
             {
                 res = DeathMoveResult.MoveToBackpack;
             }
-            */
 
             return res;
         }
 
         public override DeathMoveResult GetInventoryMoveResultFor(Item item)
         {
-            if (CheckInsuranceOnDeath(item))
+            if (CheckInsuranceOnDeath(item) && !Young)
             {
                 return DeathMoveResult.MoveToBackpack;
             }
 
             DeathMoveResult res = base.GetInventoryMoveResultFor(item);
 
-            /*
-            if (res == DeathMoveResult.MoveToCorpse && item.Movable && Young)
+            if (res == DeathMoveResult.MoveToCorpse && item.Movable && Young && Wisp != null)
             {
                 res = DeathMoveResult.MoveToBackpack;
             }
-            */
+
             return res;
         }
 
@@ -4509,7 +4506,7 @@ namespace Server.Mobiles
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
                 {
-                    Wisp.Fala("Eu sei que voce morreu, mas nao desista !!");
+                    Wisp.Fala("Eu sei que voce morreu, mas nao desista !! Como voce e novato, eu nao deixei voce perder seus items ! hihi");
                 });
             }
 
