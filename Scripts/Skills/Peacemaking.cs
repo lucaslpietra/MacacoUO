@@ -71,6 +71,7 @@ namespace Server.SkillHandlers
 
                 if (!(targeted is Mobile))
                 {
+                    Shard.Debug("N eh mobile oxe");
                     from.SendLocalizedMessage(1049528); // You cannot calm that!
                 }
                 else if (!m_Instrument.IsChildOf(from.Backpack))
@@ -248,7 +249,7 @@ namespace Server.SkillHandlers
                                         return;
                                     }
 
-                                    if(!!from.InLOS(targ))
+                                    if(!from.InLOS(targ))
                                     {
                                         from.SendMessage("A musica precisa estar direcionada ao alvo diretamente");
                                         return;

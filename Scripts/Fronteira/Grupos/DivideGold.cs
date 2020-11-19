@@ -75,7 +75,7 @@ namespace Felladrin.Automations
                 {
                     from.SendMessage("Voce pegou o dinheiro e distribuiu com o grupo, {0}gp para cada.", share);
 
-                    int rest = item.Amount % party.Members.Count;
+                    int rest = item.Amount % mesmaRegiao.Count;
 
                     if (rest > 0)
                     {

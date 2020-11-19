@@ -81,10 +81,7 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(1005401); // You cannot bury the stone here.
             }
-            else if (from is PlayerMobile && ((PlayerMobile)from).Young)
-            {
-                from.SendLocalizedMessage(1049543); // You decide against traveling to Felucca while you are still young.
-            }
+          
             else if (SpellHelper.RestrictRedTravel && from.Murderer)
             {
                 from.SendLocalizedMessage(1005402); // The magic of the stone cannot be evoked by someone with blood on their hands.

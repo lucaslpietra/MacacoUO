@@ -2029,8 +2029,8 @@ namespace Server.Mobiles
                     return false;
                 }
 
-                var youngFrom = from is PlayerMobile ? ((PlayerMobile)from).Young : false;
-                var youngTo = to is PlayerMobile ? ((PlayerMobile)to).Young : false;
+                var youngFrom = false;
+                var youngTo = false;
 
                 if (accepted && youngFrom && !youngTo)
                 {
@@ -2138,8 +2138,8 @@ namespace Server.Mobiles
             {
                 m_Mobile.DebugSay("Begin transfer with {0}", to.Name);
 
-                var youngFrom = from is PlayerMobile ? ((PlayerMobile)from).Young : false;
-                var youngTo = to is PlayerMobile ? ((PlayerMobile)to).Young : false;
+                var youngFrom = false;
+                var youngTo = false;
 
                 if (youngFrom && !youngTo)
                 {

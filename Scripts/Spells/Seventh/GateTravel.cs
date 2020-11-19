@@ -78,10 +78,7 @@ namespace Server.Spells.Seventh
             else if (!SpellHelper.CheckTravel(Caster, map, loc, TravelCheckType.GateTo))
             {
             }
-            else if (map == Map.Felucca && Caster is PlayerMobile && ((PlayerMobile)Caster).Young)
-            {
-                Caster.SendLocalizedMessage(1049543); // You decide against traveling to Felucca while you are still young.
-            }
+         
             else if (SpellHelper.RestrictRedTravel && Caster.Murderer && map.Rules != MapRules.FeluccaRules && !Siege.SiegeShard)
             {
                 Caster.SendLocalizedMessage(1019004); // You are not allowed to travel there.
