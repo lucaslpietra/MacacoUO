@@ -80,16 +80,29 @@ namespace Server.Ziden.Kills
                     {
                         if (Shard.EXP)
                         {
-                            exp *= 20;
-                            pl.SendMessage(78, "Bonus 200% mais XP - Semana FULL XP");
-
-                            c.PrivateOverheadMessage(Network.MessageType.Regular, 66, false, string.Format("+{0} EXP", exp), pl.NetState);
-                            PointsSystem.Exp.AwardPoints(pl, pontos, false, false);
-                            if (!pl.IsCooldown("xpp"))
+                            if(!pl.RP)
                             {
-                                pl.SetCooldown("xpp", TimeSpan.FromHours(1));
-                                pl.SendMessage(78, "Digite .xp para usar sua EXP para subir skills");
+                                var nexp = exp * 15;
+                                pl.SendMessage(78, "Bonus 1500% XP: Semana FULL EXP");
+                                c.PrivateOverheadMessage(Network.MessageType.Regular, 66, false, string.Format("+{0} EXP", nexp), pl.NetState);
+                                PointsSystem.Exp.AwardPoints(pl, nexp, false, false);
+                                if (!pl.IsCooldown("xpp"))
+                                {
+                                    pl.SetCooldown("xpp", TimeSpan.FromHours(1));
+                                    pl.SendMessage(78, "Digite .xp para usar sua EXP para subir skills");
+                                }
+                            } else
+                            {
+                                c.PrivateOverheadMessage(Network.MessageType.Regular, 66, false, string.Format("+{0} EXP", exp), pl.NetState);
+                                PointsSystem.Exp.AwardPoints(pl, pontos, false, false);
+                                if (!pl.IsCooldown("xpp"))
+                                {
+                                    pl.SetCooldown("xpp", TimeSpan.FromHours(1));
+                                    pl.SendMessage(78, "Digite .xp para usar sua EXP para subir skills");
+                                }
                             }
+                          
+                          
                         }
                         PointsSystem.PontosPvmEterno.AwardPoints(pl, pontos / 2, false, false);
                         if (pl.RP)
