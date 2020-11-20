@@ -81,7 +81,7 @@ namespace Server.Ziden.Kills
                         if (Shard.EXP)
                         {
                             exp *= 20;
-                            pl.SendMessage(78, "Bonus Semana FULL XP");
+                            pl.SendMessage(78, "Bonus 200% mais XP - Semana FULL XP");
 
                             c.PrivateOverheadMessage(Network.MessageType.Regular, 66, false, string.Format("+{0} EXP", exp), pl.NetState);
                             PointsSystem.Exp.AwardPoints(pl, pontos, false, false);
