@@ -82,8 +82,8 @@ namespace Server.Ziden.Kills
                         {
                             if(!pl.RP)
                             {
-                                var nexp = exp * 15;
-                                pl.SendMessage(78, "Bonus 1500% XP: Semana FULL EXP");
+                                var nexp = exp * 5;
+                                pl.SendMessage(78, "Bonus de XP: Semana FULL EXP");
                                 c.PrivateOverheadMessage(Network.MessageType.Regular, 66, false, string.Format("+{0} EXP", nexp), pl.NetState);
                                 PointsSystem.Exp.AwardPoints(pl, nexp, false, false);
                                 if (!pl.IsCooldown("xpp"))
