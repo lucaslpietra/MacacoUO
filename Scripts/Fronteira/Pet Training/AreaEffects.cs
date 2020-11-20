@@ -68,7 +68,7 @@ namespace Server.Mobiles
 			return defender != null && defender.Alive && !defender.Deleted && !defender.IsDeadBondedPet && defender != attacker.ControlMaster &&
                     (attacker.ControlMaster is PlayerMobile && attacker.ControlMaster.CanBeHarmful(defender)) &&
 					attacker.Alive && !attacker.IsDeadBondedPet && defender.InRange(attacker.Location, MaxRange) && 
-					defender.Map == attacker.Map && attacker.InLOS(defender) && !attacker.BardPacified;
+					defender.Map == attacker.Map && attacker.InLOS(defender) && !attacker.BardPacified && (defender.Party == null || defender.Party != attacker.ControlMaster.Party);
 		}
 		
 		public bool CheckMana(Mobile m)

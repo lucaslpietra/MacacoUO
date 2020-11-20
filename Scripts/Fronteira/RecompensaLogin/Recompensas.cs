@@ -28,6 +28,7 @@ namespace Server.Ziden.RecompensaLogin
             Rewards.Add(new CollectionItem(typeof(CaixaDeGold), 0xE21, "Caixa com 10k Moedas", 0, 24 * 5));
             Rewards.Add(new CollectionItem(typeof(SkillBook), 0xEFA, "Livro Cientifico</br>Upa uma skill de 0.1 a 0.5", 0, 24 * 3)); // Yew]
 
+            Rewards.Add(new CollectionItem(typeof(PergaminhoCarregamento), 0x1F35, "Pergaminho do Carregamento<br>+1 Item na mochila", 0, 48));
             Rewards.Add(new CollectionItem(typeof(KegGH), 0x1940, "Keg de Vida Maior", 0, 24 * 5));
             Rewards.Add(new CollectionItem(typeof(KegMana), 0x1940, "Keg de Mana", 0, 24 * 5));
             Rewards.Add(new CollectionItem(typeof(KegStamina), 0x1940, "Keg de Stamina", 0, 24 * 5));
@@ -35,7 +36,7 @@ namespace Server.Ziden.RecompensaLogin
 
             Rewards.Add(new CollectionItem(typeof(TemporaryForgeDeed), 0xFB1, "Forja Temporaria", 0, 50));
             // Rewards.Add(new CollectionItem(typeof(MagicalFishFinder), 0x14F6, "Encontrador de Peixes Magicos", 2500, 100));
-            Rewards.Add(new CollectionItem(typeof(PergaminhoRunebook), 0x1F35, "Pergaminho de Runebook<br>Recarrega um runebook", 0, 50));
+            Rewards.Add(new CollectionItem(typeof(PergaminhoRunebook), 0x1F35, "Pergaminho de Runebook<br>Recarrega um runebook", 0, 10));
             Rewards.Add(new CollectionItem(typeof(HoodedShroudOfShadows), 0x2684, "Tunica dos Mortos", 0, 24 * 20)); // Yew
         }
     }

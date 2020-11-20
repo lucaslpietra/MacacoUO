@@ -35,7 +35,7 @@ namespace Server.Ziden.Kills
                 {
                     Shard.Debug("Ponto login");
                     PointsSystem.PontosLogin.AwardPoints(ns.Mobile, 1);
-                    if (ns.Mobile.Alive && ns.Mobile.RP && Utility.RandomBool() && ns.Mobile.Deaths > 0)
+                    if (ns.Mobile.Alive && ns.Mobile.RP && ns.Mobile.Deaths > 0)
                     {
                         ns.Mobile.Deaths--;
                         ns.Mobile.SendMessage(string.Format("Regenerou uma Morte: {0}/5 ", ns.Mobile.Deaths));

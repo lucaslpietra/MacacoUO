@@ -357,7 +357,7 @@ namespace Server.SkillHandlers
                                         targ.Warmode = false;
                                         targ.Paralyze(TimeSpan.FromSeconds(par));
                                         targ.OverheadMessage("* acalmado *");
-                                        from.NextSkillTime = Core.TickCount + 15000;
+                                        from.NextSkillTime = Core.TickCount + 10000;
                                     }
                                 });  
                             }

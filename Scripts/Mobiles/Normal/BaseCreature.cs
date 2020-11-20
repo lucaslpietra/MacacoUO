@@ -7455,7 +7455,14 @@ namespace Server.Mobiles
             new UnsummonTimer(caster, creature, duration).Start();
             creature.m_SummonEnd = DateTime.UtcNow + duration;
 
-            creature.MoveToWorld(p, caster.Map);
+            if (creature is AirElemental || creature is EarthElemental || creature is FireElemental || creature is WaterElemental || creature is EnergyVortex)
+            {
+                creature.Freeze(TimeSpan.FromSeconds(1.1));
+                creature.MoveToWorld(p, caster.Map);
+                creature.Animate(12, 5, 1, true, false, 0);
+            }
+            else
+                creature.MoveToWorld(p, caster.Map);
 
             Effects.PlaySound(p, creature.Map, sound);
 

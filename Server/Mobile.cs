@@ -4173,7 +4173,7 @@ namespace Server
             return item.OnInventoryDeath(this);
         }
 
-        public virtual bool RetainPackLocsOnDeath { get { return Core.AOS; } }
+        public virtual bool RetainPackLocsOnDeath { get { return true; } }
 
         public virtual void Kill()
         {
@@ -4268,6 +4268,8 @@ namespace Server
             for (int i = 0; i < itemsCopy.Count; ++i)
             {
                 Item item = itemsCopy[i];
+                var x = m_Items[i].X;
+                var y = m_Items[i].Y;
 
                 if (item == pack)
                 {
@@ -4291,6 +4293,8 @@ namespace Server
                         }
                     case DeathMoveResult.MoveToBackpack:
                         {
+                            if (Shard.DebugEnabled)
+                                Shard.Debug("Movendo item dos items privados pra bag do morto " + item.GetType().Name, this);
                             moveToPack.Add(item);
                             break;
                         }

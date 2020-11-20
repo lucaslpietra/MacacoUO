@@ -292,7 +292,7 @@ namespace Server.SkillHandlers
                                             return;
                                         }
 
-                                        if (!!from.InLOS(target))
+                                        if (!from.InLOS(target))
                                         {
                                             from.SendMessage("A musica precisa estar direcionada ao alvo diretamente");
                                             return;

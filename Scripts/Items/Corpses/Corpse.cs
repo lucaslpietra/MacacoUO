@@ -91,6 +91,8 @@ namespace Server.Items
 
         private List<Item> m_RestoreEquip; // List of items equipped when the owner died. Includes insured and blessed items.
 
+        private Dictionary<Item, Point3D> ItemPositions = new Dictionary<Item, Point3D>();
+
         private List<Mobile> m_Aggressors;
         // Anyone from this list will be able to loot this corpse; we attacked them, or they attacked us when we were freely attackable
 
@@ -577,8 +579,11 @@ namespace Server.Items
                 {
                     Item item = initialContent[i];
 
+                    //c.ItemPositions.Add(item, item.Location);
+
                     if (owner.Player && item.Parent == owner.Backpack)
                     {
+
                         c.AddItem(item);
                     }
                     else
@@ -1392,8 +1397,8 @@ namespace Server.Items
                             }
                             else if (pack != null && pack.CheckHold(from, item, false, true))
                             {
-                                item.Location = loc;
                                 pack.AddItem(item);
+                                item.Location = loc;
                                 gathered = true;
                             }
                             else
