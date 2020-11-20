@@ -4268,8 +4268,6 @@ namespace Server
             for (int i = 0; i < itemsCopy.Count; ++i)
             {
                 Item item = itemsCopy[i];
-                var x = m_Items[i].X;
-                var y = m_Items[i].Y;
 
                 if (item == pack)
                 {
