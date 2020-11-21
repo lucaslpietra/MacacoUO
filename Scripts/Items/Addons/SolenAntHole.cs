@@ -26,8 +26,8 @@ namespace Server.Items
 
                 if (map == Map.Trammel || map == Map.Felucca)
                 {
-                    from.MoveToWorld(new Point3D(5922, 2024, 0), map);
-                    this.PublicOverheadMessage(MessageType.Regular, 0x3B2, true, String.Format("* {0} dives into the hole and disappears!*", from.Name)); 
+                    from.MoveToWorld(new Point3D(5922, 2024, 0), Map.Trammel);
+                    this.PublicOverheadMessage(MessageType.Regular, 0x3B2, true, String.Format("* {0} entra no buraco!*", from.Name)); 
                 }
             }
             else

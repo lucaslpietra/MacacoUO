@@ -62,6 +62,12 @@ namespace Server.Mobiles
 
         public static void OfereceBulkOrder(Mobile from, BaseVendor vendor)
         {
+            if (vendor is AnimalTrainer)
+            {
+                BodTamer.EntregaBodTamer(from as PlayerMobile, vendor);
+                return;
+            }
+
             EventSink.InvokeBODOffered(new BODOfferEventArgs(from, vendor));
 
             Shard.Debug("Oferecendo bod", from);
@@ -346,7 +352,7 @@ namespace Server.Mobiles
 
             LoadSBInfo();
 
-            if(!(this is BaseEscort))
+            if (!(this is BaseEscort))
                 CanMove = false;
 
             InitBody();
@@ -1218,6 +1224,51 @@ namespace Server.Mobiles
                 return false;
             }
 
+            if (dropped is BodTamer)
+            {
+                var bod = dropped as BodTamer;
+                if (bod.Quantidade > bod.QuantidadeAtual)
+                {
+                    from.SendMessage("Esta ordem nao esta completa...");
+                    return false;
+                }
+                bod.Delete();
+                SayTo(from, true, "Obrigado pelo trabalho, irei cuidar bem dos animais");
+
+                if (from.Skills[SkillName.AnimalTaming].Value < 65)
+                {
+                    SkillCheck.Gain(from, from.Skills[SkillName.AnimalTaming], 10);
+                    from.PlaceInBackpack(new Gold(Utility.RandomMinMax(100, 300)));
+                }
+                else if (from.Skills[SkillName.AnimalTaming].Value < 70)
+                {
+                    SkillCheck.Gain(from, from.Skills[SkillName.AnimalTaming], 5);
+                    from.PlaceInBackpack(new Gold(Utility.RandomMinMax(150, 350)));
+                }
+                else if (from.Skills[SkillName.AnimalTaming].Value < 80)
+                {
+                    SkillCheck.Gain(from, from.Skills[SkillName.AnimalTaming], 4);
+                    from.PlaceInBackpack(new Gold(Utility.RandomMinMax(200, 400)));
+                }
+                else if (from.Skills[SkillName.AnimalTaming].Value < 90)
+                {
+                    SkillCheck.Gain(from, from.Skills[SkillName.AnimalTaming], 3);
+                    from.PlaceInBackpack(new Gold(Utility.RandomMinMax(250, 450)));
+                }
+                else if (from.Skills[SkillName.AnimalTaming].Value < 100)
+                {
+                    SkillCheck.Gain(from, from.Skills[SkillName.AnimalTaming], 2);
+                    from.PlaceInBackpack(new Gold(Utility.RandomMinMax(300, 500)));
+                }
+                else
+                {
+                    SkillCheck.Gain(from, from.Skills[SkillName.AnimalTaming], 1);
+                    from.PlaceInBackpack(new Gold(Utility.RandomMinMax(350, 550)));
+                }
+                from.PlaySound(0x5B5);
+                return false;
+            }
+
             if (dropped is SmallBOD || dropped is LargeBOD)
             {
                 PlayerMobile pm = from as PlayerMobile;
@@ -1305,7 +1356,7 @@ namespace Server.Mobiles
                             if (large.Material >= BulkMaterialType.Carvalho && large.Material <= BulkMaterialType.Gelo)
                                 matBonus -= 11;
 
-                            exp *=  6;
+                            exp *= 6;
 
                             exp += (ushort)(matBonus * 2000);
                         }
@@ -1376,6 +1427,8 @@ namespace Server.Mobiles
                 }
 
                 Titles.AwardFame(from, fame, true);
+
+                from.PlaySound(0x5B5);
 
                 OnSuccessfulBulkOrderReceive(from);
                 Server.Engines.CityLoyalty.CityLoyaltySystem.OnBODTurnIn(from, gold);
@@ -1640,7 +1693,7 @@ namespace Server.Mobiles
                 if (item is BaseWeapon)
                 {
                     ((BaseWeapon)item).Quality = ItemQuality.Low;
-                    if(!buyer.IsCooldown("msgq"))
+                    if (!buyer.IsCooldown("msgq"))
                     {
                         buyer.SetCooldown("msgq", TimeSpan.FromMinutes(10));
                         buyer.SendMessage(78, "[DICA] Items comprados de NPC tem qualidade muito inferior");

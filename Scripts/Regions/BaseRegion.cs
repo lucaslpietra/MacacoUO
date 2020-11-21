@@ -318,6 +318,9 @@ namespace Server.Regions
 
         public override TimeSpan GetLogoutDelay(Mobile m)
         {
+            if (m.Criminal || m.Aggressed.Count > 0)
+                return TimeSpan.FromMinutes(3);
+
             if (this.m_NoLogoutDelay)
             {
                 if (m.Aggressors.Count == 0 && m.Aggressed.Count == 0 && !m.Criminal)

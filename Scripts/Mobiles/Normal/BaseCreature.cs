@@ -13,6 +13,7 @@ using Server.Engines.VvV;
 using Server.Engines.XmlSpawner2;
 using Server.Ethics;
 using Server.Factions;
+using Server.Fronteira.Quests;
 using Server.Gumps;
 using Server.Items;
 using Server.Misc;
@@ -2862,11 +2863,16 @@ namespace Server.Mobiles
                 {
                     this.PackStatue();
                 }
-                else if (rnd == 2)
+                else if (rnd > 990)
                 {
                     this.PackItem(Loot.RandomClothing());
                 }
             }
+            Timer.DelayCall(TimeSpan.FromMilliseconds(100), () =>
+            {
+                if(!Deleted && Alive)
+                    Tamavel.RegistraBixo(this);
+            });  
         }
 
         public BaseCreature(Serial serial)
@@ -3436,6 +3442,11 @@ namespace Server.Mobiles
 
             if (IsParagon)
                 Delete();
+            else
+            {
+                Tamavel.RegistraBixo(this);
+            }
+
         }
 
         public virtual bool IsHumanInTown()

@@ -11,6 +11,7 @@ namespace Server.Engines.BulkOrders
         Tinkering,
         Fletching,
         Carpentry,
-        Cooking
+        Cooking,
+        Taming
     }
 }

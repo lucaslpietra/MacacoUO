@@ -420,7 +420,7 @@ namespace Server.Items
             BeginDecay(m_BoneDecayTime);
         }
 
-        private static readonly TimeSpan m_DefaultDecayTime = TimeSpan.FromMinutes(10);
+        private static readonly TimeSpan m_DefaultDecayTime = TimeSpan.FromMinutes(20);
         private static readonly TimeSpan m_BoneDecayTime = TimeSpan.FromMinutes(20);
 
         private Timer m_DecayTimer;
@@ -538,12 +538,12 @@ namespace Server.Items
             }
             if (this.Owner != null)
             {
-                if(this.Owner is PlayerMobile)
+                if (this.Owner is PlayerMobile)
                     this.Owner.SendMessage("Seu corpo se decompos. Seus items se tornaram historia, e podem ser encontrados em tesouros pelo mundo.");
-                else if(this.Owner is BaseCreature)
+                else if (this.Owner is BaseCreature)
                 {
                     var bc = (BaseCreature)this.Owner;
-                    if(bc.ControlMaster is PlayerMobile && !bc.Summoned && bc.IsDeadPet && bc is IMount)
+                    if (bc.ControlMaster is PlayerMobile && !bc.Summoned && bc.IsDeadPet && bc is IMount)
                     {
                         bc.ControlMaster.SendMessage(78, "Sua montaria " + bc.Name + " se foi.");
                         bc.Delete();
@@ -739,7 +739,6 @@ namespace Server.Items
             }
 
             BeginDecay(m_DefaultDecayTime);
-
             DevourCorpse();
 
             if (owner is PlayerMobile)
@@ -1128,12 +1127,13 @@ namespace Server.Items
         public override void OnItemLifted(Mobile from, Item item)
         {
 
-            if(this.Owner is PlayerMobile && from is PlayerMobile)
+            if (this.Owner is PlayerMobile && from is PlayerMobile)
             {
-                if(item.Name != null)
+                if (item.Name != null)
                 {
                     from.OverheadMessage("* pegou " + item.NameSemAcento + " *");
-                } else
+                }
+                else
                 {
                     from.OverheadMessage("* pegou " + item.GetType().Name + " *");
                 }
@@ -1233,22 +1233,22 @@ namespace Server.Items
 
         public bool CanLoot(Mobile from, Item item)
         {
-            if(this.Owner != null && this.Owner.RP && this.Owner.Player)
+            if (this.Owner != null && this.Owner.RP && this.Owner.Player)
             {
-                if(!from.RP && from.Player)
+                if (!from.RP && from.Player)
                 {
                     from.SendMessage(38, "Voce nao pode lootear items de jogadores RP");
                     return false;
                 }
 
-                if(from.Player && (this.Owner.Party == null || this.Owner.Party != from.Party))
+                if (from.Player && (this.Owner.Party == null || this.Owner.Party != from.Party))
                 {
                     from.SendMessage(38, "Apenas jogadores do mesmo grupo podem se lootiar.");
                     return false;
                 }
             }
 
-            if(this.Owner != null && from != null && !this.Owner.RP && from.RP && this.Owner.Player && from.Player)
+            if (this.Owner != null && from != null && !this.Owner.RP && from.RP && this.Owner.Player && from.Player)
             {
                 if (from.Player && (this.Owner.Party == null || this.Owner.Party != from.Party))
                 {
@@ -1317,7 +1317,7 @@ namespace Server.Items
 
                 if (looteando == true)
                 {
-                    if(from==this.Owner)
+                    if (from == this.Owner)
                     {
                         from.SendMessage("Voce esta pegando seus pertences, aguarde alguns segundos");
                         return;
@@ -1335,7 +1335,7 @@ namespace Server.Items
                         looteando = false;
                         if (from == null || !from.Alive || this.Deleted)
                         {
-                            if(from != null)
+                            if (from != null)
                             {
                                 from.SendMessage("Seu corpo se foi");
                             }
@@ -1540,12 +1540,12 @@ namespace Server.Items
                 }
                 else
                 {
-                    list.Add("Corpo de "+ Name); // the remains of ~1_NAME~
+                    list.Add("Corpo de " + Name); // the remains of ~1_NAME~
                 }
             }
             else // Bone form
             {
-                list.Add("Restos mortais de "+ Name); // the remains of ~1_NAME~
+                list.Add("Restos mortais de " + Name); // the remains of ~1_NAME~
             }
         }
 
@@ -1601,8 +1601,8 @@ namespace Server.Items
 
             if (GetFlag(CorpseFlag.Carved) || dead == null)
             {
-                if(Shard.DebugEnabled)
-                    Shard.Debug("Flag Carved " + GetFlag(CorpseFlag.Carved) + " Owner = "+(dead != null));
+                if (Shard.DebugEnabled)
+                    Shard.Debug("Flag Carved " + GetFlag(CorpseFlag.Carved) + " Owner = " + (dead != null));
                 PrivateOverheadMessage(MessageType.Regular, 0x3B2, 500485, from.NetState); // You see nothing useful to carve from the corpse.
             }
             else if (((Body)Amount).IsHuman && ItemID == 0x2006)

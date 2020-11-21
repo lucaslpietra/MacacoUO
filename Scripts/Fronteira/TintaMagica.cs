@@ -1,3 +1,4 @@
+using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
@@ -32,14 +33,14 @@ namespace Server.Ziden
             list.Add("Tinta Magica");
             list.Add("Use em um livro para encanta-lo");
             list.Add("Magias darao mais dano a monstro do tipo " + Slayer.ToString());
-            list.Add("Imbuing: 70");
+            list.Add("Imbuing: 90");
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if(from.Skills[SkillName.Imbuing].Value <= 70)
+            if(from.Skills[SkillName.Imbuing].Value <= 90)
             {
-                from.SendMessage("Voce precisa de pelo menos 70 Imbuing para usar isto");
+                from.SendMessage("Voce precisa de pelo menos 90 Imbuing para usar isto");
                 return;
             }
 
@@ -63,7 +64,7 @@ namespace Server.Ziden
                     var spellbook = (Spellbook)targeted;
                     if (spellbook.Slayer != SlayerName.None)
                     {
-                        from.SendMessage("Este livro ja esta encantado");
+                        from.SendGump(new ConfirmaOverride(tinta, spellbook));
                         return;
                     }
                     tinta.Consume();
@@ -76,6 +77,40 @@ namespace Server.Ziden
                 {
                     from.SendMessage("Voce precisa escolher um livro de magias");
                 }
+            }
+        }
+
+        public class ConfirmaOverride : BaseConfirmGump
+        {
+            TintaMagica tinta;
+            Spellbook book;
+
+            public override string LabelString { get { return "O encantamento antigo sera perdido, ok?"; } }
+            public override string TitleString
+            {
+                get
+                {
+                    return "Sobre-escrever encantamento";
+                }
+            }
+
+            public ConfirmaOverride(TintaMagica tinta, Spellbook book)
+            {
+                this.book = book;
+                this.tinta = tinta;
+                this.Closable = true;
+                this.Disposable = true;
+                this.Dragable = true;
+                this.Resizable = false;
+            }
+
+            public override void Confirm(Mobile from)
+            {
+                tinta.Consume();
+                book.Slayer = tinta.Slayer;
+                from.SendMessage("Voce encantou o livro");
+                book.PrivateMessage("* encantado *", from);
+                book.InvalidateProperties();
             }
         }
 
@@ -102,14 +137,14 @@ namespace Server.Ziden
         [Constructable]
         public EscamaMagica() : base(0x26B4)
         {
-            Name = "Escama Divina";
+            Name = "Escama Magica";
             Hue = TintaBranca.COR;
             Slayer = BaseRunicTool.GetRandomSlayer();
         }
 
         public EscamaMagica(BaseCreature mob) : base(0xFBF)
         {
-            Name = "Escama Divina";
+            Name = "Escama Magica";
             Hue = TintaBranca.COR;
             Slayer = SlayerGroup.GetLootSlayerType(mob.GetType());
         }
@@ -125,7 +160,12 @@ namespace Server.Ziden
 
         public override void OnDoubleClick(Mobile from)
         {
-            from.SendMessage("Selecione um livro sem propriedades magicas para encantar");
+            if (from.Skills[SkillName.Imbuing].Value <= 90)
+            {
+                from.SendMessage("Voce precisa de pelo menos 90 Imbuing para usar isto");
+                return;
+            }
+            from.SendMessage("Selecione uma arma sem propriedades magicas para encantar");
             from.Target = new InternalTarget(this);
             base.OnDoubleClick(from);
         }
@@ -203,11 +243,17 @@ namespace Server.Ziden
             list.Add("Joia Magica");
             list.Add("Use em uma arma para encanta-la");
             list.Add("Ataques darao mais dano a " + Slayer.ToString());
+            list.Add("Imbuing: 80");
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            from.SendMessage("Selecione um livro sem propriedades magicas para encantar");
+            if (from.Skills[SkillName.Imbuing].Value <= 80)
+            {
+                from.SendMessage("Voce precisa de pelo menos 80 Imbuing para usar isto");
+                return;
+            }
+            from.SendMessage("Selecione uma arma sem propriedades magicas para encantar");
             from.Target = new InternalTarget(this);
             base.OnDoubleClick(from);
         }

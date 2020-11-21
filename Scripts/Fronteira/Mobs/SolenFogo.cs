@@ -59,8 +59,8 @@ namespace Server.Mobiles
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
         public override bool ReacquireOnMovement { get { return !Controlled; } }
         public override bool HasBreath { get { return true; } } // fire breath enabled
-        public override int BreathFireDamage { get { return 60; } }
-        public override int BreathColdDamage { get { return 60; } }
+        public override int BreathFireDamage { get { return 35; } }
+        public override int BreathColdDamage { get { return 35; } }
         public override bool AutoDispel { get { return !Controlled; } }
 
         public SolenFogo(Serial serial)

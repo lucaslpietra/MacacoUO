@@ -171,14 +171,12 @@ namespace Server.Engines.BulkOrders
             {
                 Shard.Debug("Tem Context");
                 var entry = context.Entries[type];
-
                 if (entry != null)
                 {
                     Shard.Debug("Lendo deeds cacheadas");
-                    if (entry.CachedDeeds > 0)
+                    if (entry.CachedDeeds > (type== BODType.Taming ? BulkOrderSystem.MaxCachedDeeds-1 : 0))
                     {
                         entry.CachedDeeds--;
-
                         return true;
                     }
                     else if (entry.LastBulkOrder + TimeSpan.FromHours(Delay) < DateTime.UtcNow)
@@ -797,6 +795,7 @@ namespace Server.Engines.BulkOrders
             Entries[BODType.Cooking] = new BODEntry();
             Entries[BODType.Alchemy] = new BODEntry();
             Entries[BODType.Inscription] = new BODEntry();
+            Entries[BODType.Taming] = new BODEntry();
         }
 
         public void CheckNextBulkOrder()

@@ -176,7 +176,7 @@ namespace Server.Mobiles
 
         public override bool OnBeforeDeath()
         {
-            this.SpillAcid(4);
+            this.SpillAcid(4, 20, "Acido de Formiga");
 
             return base.OnBeforeDeath();
         }
