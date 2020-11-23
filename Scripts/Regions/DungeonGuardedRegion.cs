@@ -243,7 +243,12 @@ namespace Server.Regions
 			}
 		}
 
-		public override void OnGotBeneficialAction(Mobile helper, Mobile helped)
+        public override void AlterLightLevel(Mobile m, ref int global, ref int personal)
+        {
+            global = LightCycle.DungeonLevel;
+        }
+
+        public override void OnGotBeneficialAction(Mobile helper, Mobile helped)
 		{
 			base.OnGotBeneficialAction(helper, helped);
 
