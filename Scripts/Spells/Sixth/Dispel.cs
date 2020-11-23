@@ -97,7 +97,6 @@ namespace Server.Spells.Sixth
                                 AOS.Damage(golem, 50, DamageType.Spell, from);
                                 m.FixedEffect(0x3779, 10, 20);
                                 return;
-
                             } else
                             {
                                 m.SendMessage("Voce nao conseguiu dissipar a energia");

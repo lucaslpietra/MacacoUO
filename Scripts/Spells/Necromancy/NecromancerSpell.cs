@@ -2,6 +2,7 @@ using System;
 using Server.Items;
 using Server.Mobiles;
 using Server.Network;
+using Server.Ziden;
 
 namespace Server.Spells.Necromancy
 {
@@ -62,9 +63,22 @@ namespace Server.Spells.Necromancy
             return karma;
         }
 
+        public override bool ValidateCast(Mobile from)
+        {
+            if (from.IsPlayer() && from.RP)
+            {
+                var anel = from.FindItemOnLayer(Layer.Ring);
+                if (!(anel is AnelNecro))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public virtual bool CheckResisted(Mobile target, int circle)
         {
-          
+
             if (target == Caster)
                 return false;
 

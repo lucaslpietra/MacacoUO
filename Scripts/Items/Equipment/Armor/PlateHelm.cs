@@ -17,6 +17,8 @@ namespace Server.Items
         {
         }
 
+        public override int MaxMageryCircle { get { return 3; } }
+
         public override int BasePhysicalResistance
         {
             get

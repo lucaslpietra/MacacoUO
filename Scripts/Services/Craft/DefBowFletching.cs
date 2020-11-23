@@ -251,8 +251,8 @@ namespace Server.Engines.Craft
             AddSubRes(typeof(AshBoard), "Pinho", 70.0, "Voce nao sabe usar esta madeira");
             AddSubRes(typeof(YewBoard), "Mogno", 80.0, "Voce nao sabe usar esta madeira");
             AddSubRes(typeof(HeartwoodBoard), "Eucalipto", 90.0, "Voce nao sabe usar esta madeira");
-            AddSubRes(typeof(BloodwoodBoard), "Carmesim", 100.0, "Voce nao sabe usar esta madeira");
-            AddSubRes(typeof(FrostwoodBoard), "Gelo", 101.0, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(BloodwoodBoard), "Carmesim", 101.0, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(FrostwoodBoard), "Gelo", 106.0, "Voce nao sabe usar esta madeira");
             #endregion
 
             this.Resmelt = true;

@@ -1129,7 +1129,7 @@ namespace Server
 		{
 			if (newRegion != null && m.NetState != null)
 			{
-				m.CheckLightLevels(false);
+				m.CheckLightLevels(false); 
 
 				if (oldRegion == null || oldRegion.Music != newRegion.Music)
 				{

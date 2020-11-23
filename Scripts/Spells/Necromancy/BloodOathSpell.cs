@@ -49,6 +49,7 @@ namespace Server.Spells.Necromancy
                 return false;
 
             t.DoExpire();
+            m_Table.Remove(m);
             return true;
         }
 
@@ -109,7 +110,8 @@ namespace Server.Spells.Necromancy
                 */
 
 
-            if(CheckResisted(m, 5)) {
+            if (CheckResisted(m, 5))
+            {
                 m.SendMessage("Voce sente seu corpo resistindo a magia");
                 return;
             }

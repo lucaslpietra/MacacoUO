@@ -178,6 +178,9 @@ namespace Server.Misc
                 else
                     rate = 0.75;
 
+                if (from.Int >= 100)
+                    rate -= 0.25;
+
                 rate += armorPenalty;
 
                 if (!from.Meditating)

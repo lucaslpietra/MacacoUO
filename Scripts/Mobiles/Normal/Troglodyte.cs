@@ -12,7 +12,7 @@ namespace Server.Mobiles
         public Troglodyte()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)// NEED TO CHECK
         {
-            this.Name = "a troglodyte";
+            this.Name = "um troglodita";
             this.Body = 267;
             this.BaseSoundID = 0x59F; 
 

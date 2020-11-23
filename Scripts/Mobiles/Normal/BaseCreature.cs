@@ -6397,6 +6397,13 @@ namespace Server.Mobiles
 
         public override void OnSingleClick(Mobile from)
         {
+            var pl = from as PlayerMobile;
+            if(pl != null)
+            {
+                if (this.Region is DungeonRegion && pl.GlobalLight > 20 && pl.PersonalLight < 10)
+                    return;
+            }
+          
             var cor = 0x3B2;
             if (Controlled && Commandable)
             {
@@ -7236,7 +7243,7 @@ namespace Server.Mobiles
 
         public long NextReacquireTime { get { return m_NextReacquireTime; } set { m_NextReacquireTime = value; } }
 
-        public virtual TimeSpan ReacquireDelay { get { return TimeSpan.FromSeconds(15.0); } }
+        public virtual TimeSpan ReacquireDelay { get { return TimeSpan.FromSeconds(7.0); } }
         public virtual bool ReacquireOnMovement { get { return false; } }
 
         public virtual bool AcquireOnApproach { get { return m_Paragon || ApproachWait; } }

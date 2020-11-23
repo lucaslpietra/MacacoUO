@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public Titan()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a titan";
+            this.Name = "titan";
             this.Body = 76;
             this.BaseSoundID = 609;
 

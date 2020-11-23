@@ -1,5 +1,6 @@
 using System;
 using Server.Mobiles;
+using Server.Ziden;
 
 namespace Server.Spells.Ninjitsu
 {
@@ -62,7 +63,20 @@ namespace Server.Spells.Ninjitsu
                 return 7;
             }
         }
-     
+
+        public override bool ValidateCast(Mobile from)
+        {
+            if (from.IsPlayer() && from.RP)
+            {
+                var anel = from.FindItemOnLayer(Layer.Ring);
+                if (!(anel is AnelNinja))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public override bool CheckCast()
         {
             int mana = 0; //this.AjustaMana(this.RequiredMana/4);

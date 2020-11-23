@@ -7,6 +7,7 @@ using Server.Items;
 using Server.Misc;
 using Server.Network;
 using Server.Regions;
+using Server.Spells.First;
 
 namespace Server.Mobiles
 {
@@ -275,6 +276,10 @@ namespace Server.Mobiles
                 return;
 
             var dist = this.GetDistance(Jogador);
+            if(Shard.DebugEnabled)
+            {
+                Shard.Debug("Distancia do mestre " +Jogador.Name+": " + dist, this);
+            }
             if (dist > 20)
             {
                 this.DebugSay("Teleportando");
@@ -290,6 +295,15 @@ namespace Server.Mobiles
             SetHits(1000);
 
             VerificaLocal();
+
+            if(Jogador.Region is DungeonRegion || Jogador.Region is DungeonGuardedRegion)
+            {
+                if(!Jogador.HasAction(typeof(LightCycle))) {
+                    var spell = new NightSightSpell(this, null);
+                    spell.InstantTarget = Jogador;
+                    spell.Cast();
+                }
+            }
 
             if (!IsCooldown("passo"))
             {

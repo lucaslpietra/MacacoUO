@@ -59,7 +59,7 @@ namespace Server.Items
         {
 			ServerStart = DateTime.UtcNow;
 
-            Timer.DelayCall(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2), ClockTime.Tick_Callback);
+            // Timer.DelayCall(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2), ClockTime.Tick_Callback);
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -96,10 +96,12 @@ namespace Server.Items
 
             totalMinutes = (int)(timeSpan.TotalSeconds / SecondsPerUOMinute);
 
+            /*
             if (map != null)
 			{
                 totalMinutes += map.MapIndex * 320;
 			}
+            */
 
             // Really on OSI this must be by subserver
             totalMinutes += x / 16;
@@ -262,7 +264,6 @@ namespace Server.Items
                             m.PlaySound(1635);
                     }
                 }
-
                 ie.Free();
             }
         }

@@ -11,7 +11,7 @@ using Server.Engines.BulkOrders;
 using Server.Engines.CannedEvil;
 using Server.Engines.Craft;
 using Server.Engines.Help;
-using Server.Engines.PartySystem;
+using Server.Engines.PartySystem; 
 using Server.Engines.Points;
 using Server.Engines.Quests;
 using Server.Engines.Shadowguard;
@@ -1457,6 +1457,12 @@ namespace Server.Mobiles
             ns.Send(new PersonalLightLevel(this, personal));
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int GlobalLight { get { return m_LastGlobalLight;  } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int PersonalLight { get { return m_LastPersonalLight;  } }
+
         public override bool SendSpeedControl(SpeedControlType type)
         {
             AnimalFormContext context = AnimalForm.GetContext(this);
@@ -2727,7 +2733,6 @@ namespace Server.Mobiles
                 {
                     SendMessage("Voce saiu da protecao dos guardas"); // You have left the protection of the town guards.
                 }
-
                 m_LastProtectedMessage = isProtected;
             }
         }
@@ -2735,6 +2740,11 @@ namespace Server.Mobiles
         public override void MoveToWorld(Point3D loc, Map map)
         {
             base.MoveToWorld(loc, map);
+
+            if (Wisp != null)
+            {
+                Wisp.MoveToWorld(loc, map);
+            }
 
             RecheckTownProtection();
 

@@ -132,6 +132,8 @@ namespace Server.Gumps
                         }
                     }
 
+                    PackItem(from, new Torch());
+
                     if (k.Code == 8)
                     {
                         if (newCharacter)

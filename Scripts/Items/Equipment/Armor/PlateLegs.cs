@@ -25,7 +25,7 @@ namespace Server.Items
         {
             get
             {
-                return -8;
+                return -5;
             }
         }
         public override int BasePhysicalResistance

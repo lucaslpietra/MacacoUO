@@ -38,8 +38,8 @@ namespace Server.Spells.First
                 new LightCycle.NightSightTimer(targ).Start();
                 int level = (int)(LightCycle.DungeonLevel * ((Core.AOS ? targ.Skills[SkillName.Magery].Value : Caster.Skills[SkillName.Magery].Value) / 100));
 
-                if (level < 0)
-                    level = 0;
+                if (level < 1)
+                    level = 1;
 
                 targ.LightLevel = level;
 

@@ -957,12 +957,10 @@ namespace Server
         public virtual void ComputeLightLevels(out int global, out int personal)
         {
             ComputeBaseLightLevels(out global, out personal);
-            /*
             if (m_Region != null)
             {
                 m_Region.AlterLightLevel(this, ref global, ref personal);
             }
-            */
         }
 
         public virtual void ComputeBaseLightLevels(out int global, out int personal)
@@ -1441,7 +1439,6 @@ namespace Server
             for (int i = 0; i < m_SkillMods.Count;)
             {
                 SkillMod mod = m_SkillMods[i];
-
                 if (mod.CheckCondition())
                 {
                     ++i;
@@ -1455,20 +1452,14 @@ namespace Server
 
         public virtual void AddSkillMod(SkillMod mod)
         {
-            //Console.WriteLine("ADD MODD " + mod.Value + " - ");
-
             if (mod == null)
             {
                 return;
             }
 
             ValidateSkillMods();
-
-            //Console.WriteLine("VALID");
-
             if (!m_SkillMods.Contains(mod))
             {
-                //Console.WriteLine("NO CONTAINS");
                 m_SkillMods.Add(mod);
                 mod.Owner = this;
 
@@ -1476,7 +1467,6 @@ namespace Server
 
                 if (sk != null)
                 {
-                    //Console.WriteLine("UP");
                     sk.Update();
                 }
             }
@@ -1650,6 +1640,15 @@ namespace Server
         private Dictionary<Type, long> _combatTimes = new Dictionary<Type, long>();
 
         public Dictionary<Type, long> NextCombatTimes = new Dictionary<Type, long>();
+
+        public bool HasAction(object toCheck)
+        {
+            if (_actions == null)
+            {
+                _actions = new List<object>();
+            }
+            return _actions.Contains(toCheck);
+        }
 
         public bool BeginAction(object toLock)
         {
@@ -6776,6 +6775,8 @@ namespace Server
             }
         }
 
+
+
         [CommandProperty(AccessLevel.GameMaster)]
         public int LightLevel
         {
@@ -8919,8 +8920,7 @@ namespace Server
         {
             get
             {
-                var max = ((RawInt * 3) + RawStr) / 4;
-                return Math.Max(35, max);
+                return Math.Max(25, RawInt); 
             }
         }
         #endregion

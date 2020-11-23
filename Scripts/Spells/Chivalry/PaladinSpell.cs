@@ -1,8 +1,7 @@
 #region References
 using System;
 using Server.Misc.Custom;
-using Server.Mobiles;
-using Server.Network;
+using Server.Ziden;
 #endregion
 
 namespace Server.Spells.Chivalry
@@ -35,7 +34,20 @@ namespace Server.Spells.Chivalry
 			return v / div;
 		}
 
-		public override bool CheckCast()
+        public override bool ValidateCast(Mobile from)
+        {
+            if (from.IsPlayer() && from.RP)
+            {
+                var anel = from.FindItemOnLayer(Layer.Ring);
+                if (!(anel is AnelChiv))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public override bool CheckCast()
 		{
 			int mana = AjustaMana(RequiredMana);
             int stam = 0;//ScaleStamina(RequiredMana/8);

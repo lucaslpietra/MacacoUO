@@ -432,8 +432,8 @@ namespace Server.Engines.Craft
 
             // Weapons
             AddCraft(typeof(ShepherdsCrook), 1044566, 1023713, 78.9, 103.9, typeof(Board), 1044041, 7, 1044351);
-            AddCraft(typeof(QuarterStaff), 1044566, 1023721, 73.6, 98.6, typeof(Board), 1044041, 6, 1044351);
-            AddCraft(typeof(GnarledStaff), 1044566, 1025112, 78.9, 103.9, typeof(Board), 1044041, 7, 1044351);
+            AddCraft(typeof(QuarterStaff), 1044566, 1023721, 73.6, 88.6, typeof(Board), 1044041, 6, 1044351);
+            AddCraft(typeof(GnarledStaff), 1044566, 1025112, 78.9, 88.9, typeof(Board), 1044041, 7, 1044351);
 
             if (Core.SE)
             {
@@ -486,7 +486,7 @@ namespace Server.Engines.Craft
             #endregion
 
             AddCraft(typeof(Club), 1044566, 1025043, 65.0, 90.0, typeof(Board), 1044041, 9, 1044351);
-            AddCraft(typeof(BlackStaff), 1044566, 1023568, 81.5, 106.5, typeof(Board), 1044041, 9, 1044351);
+            AddCraft(typeof(BlackStaff), 1044566, 1023568, 71.5, 80, typeof(Board), 1044041, 9, 1044351);
 
             if (Core.TOL)
             {
@@ -1000,8 +1000,8 @@ namespace Server.Engines.Craft
             AddSubRes(typeof(AshBoard), "Pinho", 70.0, "Voce nao sabe usar esta madeira");
             AddSubRes(typeof(YewBoard), "Mogno", 80.0, "Voce nao sabe usar esta madeira");
             AddSubRes(typeof(HeartwoodBoard), "Eucalipto", 90.0, "Voce nao sabe usar esta madeira");
-            AddSubRes(typeof(BloodwoodBoard), "Carmesim", 100.0, "Voce nao sabe usar esta madeira");
-            AddSubRes(typeof(FrostwoodBoard), "Gelo", 101.0, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(BloodwoodBoard), "Carmesim", 101.0, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(FrostwoodBoard), "Gelo", 106.0, "Voce nao sabe usar esta madeira");
         }
     }
 }
