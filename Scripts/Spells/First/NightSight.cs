@@ -36,7 +36,7 @@ namespace Server.Spells.First
             if (targ.BeginAction(typeof(LightCycle)))
             {
                 new LightCycle.NightSightTimer(targ).Start();
-                int level = (int)(LightCycle.DungeonLevel * ((Core.AOS ? targ.Skills[SkillName.Magery].Value : Caster.Skills[SkillName.Magery].Value) / 100));
+                int level = (int)(LightCycle.DungeonLevel * (((Core.AOS ? targ.Skills[SkillName.Magery].Value : Caster.Skills[SkillName.Magery].Value) / 100)) * 0.7);
 
                 if (level < 1)
                     level = 1;
@@ -50,7 +50,7 @@ namespace Server.Spells.First
             }
             else
             {
-                Caster.SendMessage("{0} already have nightsight.", Caster == targ ? "You" : "They");
+                Caster.SendMessage("{0} ja tem visao noturna.", Caster == targ ? "Voce" : "");
             }
         }
 

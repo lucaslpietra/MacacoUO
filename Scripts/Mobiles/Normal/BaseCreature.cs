@@ -6397,14 +6397,14 @@ namespace Server.Mobiles
 
         public override void OnSingleClick(Mobile from)
         {
+            /*
             var pl = from as PlayerMobile;
             if(pl != null)
             {
                 if (this.Region is DungeonRegion && pl.GlobalLight > 20 && pl.PersonalLight < 10)
                     return;
             }
-          
-            var cor = 0x3B2;
+            */
             if (Controlled && Commandable)
             {
                 string number;

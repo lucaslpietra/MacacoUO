@@ -62,7 +62,7 @@ namespace Server.SkillHandlers
                 else
                     p = src.Location;
 
-                double srcSkill = src.Skills[SkillName.DetectHidden].Value;
+                double srcSkill = src.Skills[SkillName.DetectHidden].Value + 10;
                 int range = Math.Max(2, (int)(srcSkill / 10.0));
 
                 if (!src.CheckSkillMult(SkillName.DetectHidden, 0.0, 100.0))
@@ -88,7 +88,7 @@ namespace Server.SkillHandlers
                             Shard.Debug("Detect Points: " + ss + " HidePoints " + ts);
 
                             var distance = (int)trg.GetDistanceToSqrt(p);
-                            if(distance <= 2)
+                            if(distance <= 3)
                             {
                                 ss += 50;
                             }

@@ -107,14 +107,14 @@ namespace Server.Items
         {
             get
             {
-                return 20;
+                return 26;
             }
         }
         public override int OldSpeed
         {
             get
             {
-                return 40;
+                return 42;
             }
         }
         public override int DefMaxRange

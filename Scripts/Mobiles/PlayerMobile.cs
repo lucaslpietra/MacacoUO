@@ -4250,6 +4250,10 @@ namespace Server.Mobiles
             {
                 this.UnstoreMount();
             }
+
+            this.Hits = HitsMax;
+            this.Stam = 10;
+            this.Mana = 0;
         }
 
         public override double RacialSkillBonus

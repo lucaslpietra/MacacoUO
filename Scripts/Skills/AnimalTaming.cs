@@ -215,7 +215,7 @@ namespace Server.SkillHandlers
                                 creature.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 502802, from.NetState);
                                 // Someone else is already taming this.
                             }
-                            else if (creature.CanAngerOnTame && 0.95 >= Utility.RandomDouble())
+                            else if (creature.CanAngerOnTame && 0.9 >= Utility.RandomDouble())
                             {
                                 creature.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 502805, from.NetState);
                                 // You seem to anger the beast!

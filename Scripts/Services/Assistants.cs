@@ -85,7 +85,7 @@ namespace Server.Misc
 
 			public static void Configure()
 			{
-                DisallowFeature(Features.FilterLight);
+                //DisallowFeature(Features.FilterLight);
                 DisallowFeature(Features.DequipOnCast);
                 DisallowFeature(Features.PoisonedChecks);
             }

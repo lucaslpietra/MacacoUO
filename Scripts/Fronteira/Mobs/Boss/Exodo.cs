@@ -150,9 +150,9 @@ namespace Server.Mobiles
                             pl.SendMessage("Por ter ajudado um iniciante nesta missao voce recebeu essencias magicas e pedras preciosas");
                             var ess = new EssenciaMagica();
                             ess.Amount = 125 + Utility.Random(75);
-                            pl.AddItem(ess);
-                            pl.AddItem(new SacolaJoias());
-                            pl.AddItem(new SacolaJoias());
+                            pl.PlaceInBackpack(ess);
+                            pl.PlaceInBackpack(new SacolaJoias());
+                            pl.PlaceInBackpack(new SacolaJoias());
                         }
                     }
                 }

@@ -34,7 +34,7 @@ namespace Server.Items
             if (from.BeginAction(typeof(LightCycle)))
             {
                 new LightCycle.NightSightTimer(from).Start();
-                from.LightLevel = LightCycle.DungeonLevel / 2;
+                from.LightLevel = LightCycle.DungeonLevel;
 
                 from.FixedParticles(0x376A, 9, 32, 5007, EffectLayer.Waist);
                 from.PlaySound(0x1E3);
@@ -44,7 +44,7 @@ namespace Server.Items
             }
             else
             {
-                from.SendMessage("You already have nightsight.");
+                from.SendMessage("Voce ja tem visao noturna.");
             }
         }
     }

@@ -68,6 +68,15 @@ namespace Server.Fronteira.Quests
         // registra tds possiveis bixos q tem no shard
         public static void RegistraBixo(BaseCreature bc)
         {
+            if (bc == null || (bc.Map != Map.Felucca && bc.Map != Map.Trammel))
+                return;
+
+            if (bc.ControlMaster != null)
+                return;
+
+            if (bc.Owners != null && bc.Owners.Count > 0)
+                return;
+
             if (bc != null && bc.Tamable)
             {
                 if (bc.MinTameSkill < 50)
