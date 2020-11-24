@@ -69,7 +69,7 @@ namespace Server.Ziden.Kills
                     {
                         ns.Mobile.SendMessage(78, msg);
                         PointsSystem.PontosLogin.AwardPoints(ns.Mobile, 1);
-                        if(ns.Mobile.RP && Utility.RandomBool() && ns.Mobile.Deaths > 0)
+                        if(ns.Mobile.RP && ns.Mobile.Deaths > 0 && ns.Mobile.Alive)
                         {
                             ns.Mobile.Deaths--;
                             ns.Mobile.SendMessage(string.Format("Regenerou uma Morte: {0}/5 ", ns.Mobile.Deaths));

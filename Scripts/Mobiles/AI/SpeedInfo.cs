@@ -52,7 +52,7 @@ namespace Server
 			if (sp == null)
 				return false;
 
-			activeSpeed = sp.ActiveSpeed * 0.8;
+			activeSpeed = sp.ActiveSpeed * 0.9;
 			passiveSpeed = sp.PassiveSpeed;
 
 			return true;
