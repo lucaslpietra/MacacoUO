@@ -9,6 +9,7 @@ namespace Server.Items
         [Constructable]
         public DetectiveBoots()
         {
+            Name = "Botas do Detetive";
             Hue = 0x455;
             Level = Utility.RandomMinMax(0, 2);
         }
@@ -56,7 +57,7 @@ namespace Server.Items
             set
             {
                 this.m_Level = Math.Max(Math.Min(2, value), 0);
-                this.Attributes.BonusInt = 2 + this.m_Level;
+                this.Attributes.BonusDex = 1 + this.m_Level;
                 this.InvalidateProperties();
             }
         }

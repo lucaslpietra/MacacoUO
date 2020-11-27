@@ -6884,8 +6884,6 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
-
-
             MeerMage.StopEffect(this, false);
 
             if (IsBonded)
@@ -6961,9 +6959,20 @@ namespace Server.Mobiles
             else
             {
                 Shard.Debug("Bixo Death sem bond");
+                /*
                 if (Utility.RandomDouble() <= 0.02)
                 {
                     ChaveDg.CriaChave(c);
+                }
+                */
+
+                foreach(var i in c.Items)
+                {
+                    if(i is Key)
+                    {
+                        i.LootType = LootType.Blessed;
+                        i.DuraSegundos = 60 * 60 * 12; // 12 horas
+                    }
                 }
 
                 var goldMult = GoldHour.GOLD_MULT;

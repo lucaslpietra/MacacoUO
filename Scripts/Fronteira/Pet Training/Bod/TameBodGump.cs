@@ -123,7 +123,8 @@ namespace Server.Engines.BulkOrders
                     return;
                 }
 
-                if (deed.Nome == bc.Name && (bc is Bird || bc.Name.ToLower() == "cavalo" || deed.Cor == bc.Hue))
+                // if (deed.Nome == bc.Name && (bc is Bird || bc.Name.ToLower() == "cavalo" || deed.Cor == bc.Hue))
+                if (deed.Nome == bc.Name)
                 {
                     bc.Delete();
                     deed.QuantidadeAtual++;

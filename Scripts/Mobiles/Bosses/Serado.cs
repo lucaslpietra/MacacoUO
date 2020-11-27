@@ -12,7 +12,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Melee)
         {
             Name = "Serado";
-            Title = "the awakened";
+            Title = "o enfraquecido";
 
             Body = 249;
             Hue = 0x96C;
@@ -36,7 +36,8 @@ namespace Server.Mobiles
             SetResistance(ResistanceType.Poison, 90);
             SetResistance(ResistanceType.Energy, 50);
 
-            SetSkill(SkillName.MagicResist, 120.0);
+            SetSkill(SkillName.MagicResist, 0);
+            SetSkill(SkillName.Parry, 50);
             SetSkill(SkillName.Tactics, 120.0);
             SetSkill(SkillName.Wrestling, 70.0);
             SetSkill(SkillName.Poisoning, 150.0);
@@ -48,6 +49,15 @@ namespace Server.Mobiles
 
             SetWeaponAbility(WeaponAbility.DoubleStrike);
             SetAreaEffect(AreaEffect.PoisonBreath);
+
+            if (Utility.RandomDouble() < 0.33)
+                AddItem(new DetectiveBoots());
+
+            else if (Utility.RandomDouble() < 0.33)
+                AddItem(new EmbroideredOakLeafCloak());
+
+            else if (Utility.RandomDouble() < 0.33)
+                AddItem(new LieutenantOfTheBritannianRoyalGuard());
         }
 
         public Serado(Serial serial)
@@ -188,6 +198,9 @@ namespace Server.Mobiles
         {
             double hitsLost = (HitsMax - Hits) / (double)HitsMax;
 
+            // Resist T2A
+            VirtualArmor = 30 + (int)(hitsLost * (500));
+
             SetResistance(ResistanceType.Physical, 30 + (int)(hitsLost * (95 - 30)));
             SetResistance(ResistanceType.Fire, 60 + (int)(hitsLost * (95 - 60)));
             SetResistance(ResistanceType.Cold, 60 + (int)(hitsLost * (95 - 60)));
@@ -243,10 +256,12 @@ namespace Server.Mobiles
 
                     DoHarmful(m);
 
-                    AOS.Damage(m, this, Utility.RandomMinMax(20, 25), true, 0, 0, 0, 100, 0);
-
+                    if(m is BaseCreature)
+                        AOS.Damage(m, this, Utility.RandomMinMax(50, 150), true, 0, 0, 0, 100, 0);
+                    else
+                        AOS.Damage(m, this, Utility.RandomMinMax(20, 25), true, 0, 0, 0, 100, 0);
                     m.FixedParticles(0x36BD, 1, 10, 0x1F78, 0xA6, 0, (EffectLayer)255);
-                    m.ApplyPoison(this, Poison.Lethal);
+                    m.ApplyPoison(this, Poison.Greater);
                 }
             }
         }

@@ -69,7 +69,8 @@ namespace Server.SkillHandlers
                     {
                         string message = String.Format("Voce nota {0} bisbilhotando na sua mochila!", from.Name);
                         ((PlayerMobile)from).PermaFlags.Add(root);
-                        root.Send(new AsciiMessage(-1, -1, MessageType.Label, 946, 3, "", message));                        
+                        root.Send(new AsciiMessage(-1, -1, MessageType.Label, 946, 3, "", message));
+                        from.CriminalAction(false);
                     }
                 }
 

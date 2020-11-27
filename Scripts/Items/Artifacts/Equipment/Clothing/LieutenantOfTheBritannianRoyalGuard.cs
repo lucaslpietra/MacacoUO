@@ -10,10 +10,11 @@ namespace Server.Items
         [Constructable]
         public LieutenantOfTheBritannianRoyalGuard()
         {
+            Name = "Faixa da Guarda Real de Rhodes";
             Hue = 0xe8;
-            Attributes.BonusInt = 5;
-            Attributes.RegenMana = 2;
-            Attributes.LowerRegCost = 10;
+            Attributes.BonusInt = 2;
+            //Attributes.RegenMana = 2;
+            //Attributes.LowerRegCost = 10;
         }
 
         public LieutenantOfTheBritannianRoyalGuard(Serial serial)
