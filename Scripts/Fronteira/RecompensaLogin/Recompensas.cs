@@ -42,7 +42,4 @@ namespace Server.Ziden.RecompensaLogin
             Rewards.Add(new CollectionItem(typeof(EtherealHorse), 0x20DD, "Cavalo Magico", 0, 24 * 30)); // Yew
         }
     }
-
-
-
 }

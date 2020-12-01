@@ -192,7 +192,7 @@ namespace Server.Spells
                 //if(Circle < SpellCircle.Third)
                 //    return TimeSpan.FromSeconds(1.25);
 
-                var bonusEval = ((Caster.Skills.EvalInt.Value + Caster.Skills.Meditation.Value) / 200) * 0.3;
+                var bonusEval = ((Caster.Skills.EvalInt.Value + Caster.Skills.Focus.Value) / 200) * 0.3;
                 return TimeSpan.FromSeconds(0.5 + (0.6-bonusEval) * (int)Circle);
             }
             return base.GetCastDelay();
