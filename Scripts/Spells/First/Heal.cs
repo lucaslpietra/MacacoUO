@@ -1,6 +1,7 @@
 using System;
 using Server.Mobiles;
 using Server.Network;
+using Server.Spells.Fourth;
 using Server.Targeting;
 
 namespace Server.Spells.First
@@ -76,6 +77,14 @@ namespace Server.Spells.First
                     var inscriptBonus = (int)(this.Caster.Skills[SkillName.Inscribe].Value * 0.04);
                     toHeal += inscriptBonus;
                 }
+
+                var scalar = GreaterHealSpell.GetPoisonScalar(m.Poison);
+                if (scalar < 1 && !m.IsCooldown("poisonmsg"))
+                {
+                    m.SetCooldown("poisonmsg");
+                    m.SendMessage(78, "Voce curou menos vida por estar envenenado. Quanto mais forte o veneno, mais dificil se curar.");
+                }
+                toHeal = (int)(toHeal * scalar);
 
                 //m.Heal( toHeal, Caster );
                 SpellHelper.Heal(toHeal, m, this.Caster);

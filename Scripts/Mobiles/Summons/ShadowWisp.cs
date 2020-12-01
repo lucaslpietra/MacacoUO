@@ -108,9 +108,11 @@ namespace Server.Mobiles
                 {
                     m.FixedEffect(0x37C4, 1, 12, 1109, 3); // At player
                     var mana = 1 - (m.Karma / 1000);
-                    m.Mana += mana;
+                    mana = Math.Min(12, mana);
+                   
                     if(mana > 0)
                     {
+                        m.Mana += mana;
                         DamageNumbers.ShowDamage(mana, m, m, 2124);
                     } else if(m==caster)
                     {

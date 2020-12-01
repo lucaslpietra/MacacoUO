@@ -236,7 +236,7 @@ namespace Server.Spells.Third
             this.FinishSequence();
         }
 
-        // public override bool PunishSpellMovementIfRepeated { get { return true; } }
+        public override bool PunishSpellMovementIfRepeated { get { return true; } }
 
         public class InternalTarget : Target
         {

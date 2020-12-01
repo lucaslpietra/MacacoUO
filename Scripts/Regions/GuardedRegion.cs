@@ -200,9 +200,12 @@ namespace Server.Regions
 			}
 		}
 
-        /*
+        
 		public override void OnAggressed(Mobile aggressor, Mobile aggressed, bool criminal)
 		{
+            if (aggressor is PlayerMobile)
+                return;
+
 			base.OnAggressed(aggressor, aggressed, criminal);
 
             if (!IsDisabled() && aggressor != aggressed && criminal && Utility.InRange(aggressor.Location, aggressed.Location, 12))
@@ -211,7 +214,7 @@ namespace Server.Regions
 			}
 		}
       
-
+        /*
 		public override void OnGotBeneficialAction(Mobile helper, Mobile helped)
 		{
 			base.OnGotBeneficialAction(helper, helped);
@@ -228,10 +231,14 @@ namespace Server.Regions
 				CheckGuardCandidate(helper);
 			}
 		}
+        */
 
 		public override void OnCriminalAction(Mobile m, bool message)
 		{
-			base.OnCriminalAction(m, message);
+            if (m is PlayerMobile)
+                return;
+
+            base.OnCriminalAction(m, message);
 
 			if (!IsDisabled())
 			{

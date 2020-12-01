@@ -23,7 +23,7 @@ namespace Server.Gumps
         {
             this.Closable = true;
             this.Disposable = true;
-            this.Dragable = false;
+            this.Dragable = true;
             this.Resizable = false;
 
             AddPage(0);

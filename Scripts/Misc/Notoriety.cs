@@ -153,6 +153,13 @@ namespace Server.Misc
                 } 
             }
 
+            if(from.Player && target is BaseCreature)
+            {
+                var master = ((BaseCreature)target).ControlMaster;
+                if (!from.RP && master != null && master.RP)
+                    return false;
+            }
+
             if (map != null && (map.Rules & MapRules.HarmfulRestrictions) == 0)
                 return true; // In felucca, anything goes
 

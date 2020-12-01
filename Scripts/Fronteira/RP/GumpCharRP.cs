@@ -58,7 +58,7 @@ namespace Server.Gumps
             NORMAL,
         }
 
-        public static Point3D CharRP = new Point3D(839, 1820, 1);
+        public static Point3D CharRP = new Point3D(1769, 1128, 1);
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {

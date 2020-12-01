@@ -1615,7 +1615,6 @@ namespace Server.Engines.Craft
 
             if (typeRes != null)
             {
-                Shard.Debug("RES " + typeRes.Name);
                 CraftResource res = CraftResources.GetFromType(typeRes);
                 if (res >= CraftResource.Cobre && res <= CraftResource.Dourado)
                 {
@@ -1639,11 +1638,11 @@ namespace Server.Engines.Craft
                 }
                 else if (res == CraftResource.Vibranium)
                 {
-                    chance -= 0.6;
+                    chance -= 0.5;
                 }
                 else if (res == CraftResource.Adamantium)
                 {
-                    chance -= 0.7;
+                    chance -= 0.6;
                 }
 
                 else if (res == CraftResource.Pinho)
@@ -1652,31 +1651,31 @@ namespace Server.Engines.Craft
                 }
                 else if (res == CraftResource.Carvalho)
                 {
-                    chance -= 0.2;
+                    chance -= 0.15;
                 }
                 else if (res == CraftResource.Mogno)
                 {
-                    chance -= 0.25;
+                    chance -= 2;
                 }
                 else if (res == CraftResource.Eucalipto)
                 {
-                    chance -= 0.4;
+                    chance -= 0.3;
                 }
                 else if (res == CraftResource.Carmesim)
                 {
-                    chance -= 0.5;
+                    chance -= 0.4;
                 }
                 else if (res == CraftResource.Gelo)
                 {
-                    chance -= 0.7;
+                    chance -= 0.5;
                 }
                 else if (res == CraftResource.CouroBarbed)
                 {
-                    chance -= 0.7;
+                    chance -= 0.6;
                 }
                 else if (res == CraftResource.CouroHorned)
                 {
-                    chance -= 0.4;
+                    chance -= 0.35;
                 }
             }
 

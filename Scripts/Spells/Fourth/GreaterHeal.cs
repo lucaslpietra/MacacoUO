@@ -20,6 +20,24 @@ namespace Server.Spells.Fourth
         {
         }
 
+        public static double GetPoisonScalar(Poison p)
+        {
+            if (p == null)
+                return 1;
+
+            if (p == Poison.Lesser)
+                return 0.9;
+            else if (p == Poison.Regular)
+                return 0.8;
+            else if (p == Poison.Greater)
+                return 0.7;
+            else if (p == Poison.Deadly)
+                return 0.5;
+            else if (p == Poison.Lethal)
+                return 0.3;
+            return 1;
+        }
+
         public override SpellCircle Circle
         {
             get
@@ -70,7 +88,7 @@ namespace Server.Spells.Fourth
 
                 var inscriptBonus = (int)(inscript * 0.15);
                 toHeal += inscriptBonus;
-                
+
                 /*
                 if(this.Caster.GetRepeatedTypes(this.GetType(), TimeSpan.FromSeconds(20)) >= 2)
                 {
@@ -80,6 +98,16 @@ namespace Server.Spells.Fourth
                 */
 
                 //m.Heal( toHeal, Caster );
+
+                var scalar = GetPoisonScalar(m.Poison);
+                if(scalar < 1 && !m.IsCooldown("poisonmsg"))
+                {
+                    m.SetCooldown("poisonmsg");
+                    m.SendMessage(78, "Voce curou menos vida por estar envenenado. Quanto mais forte o veneno, mais dificil se curar.");
+                }
+                toHeal = (int)(toHeal * scalar);
+
+
                 SpellHelper.Heal(toHeal, m, this.Caster);
 
                 Caster.MovingParticles(m, 0x376A, 7, 0, false, false, 9502, 0x376A, 0x1F2);

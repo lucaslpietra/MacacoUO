@@ -71,7 +71,7 @@ namespace Server.Items
 
         public virtual bool RequiresSecondarySkill(Mobile from)
         {
-            return true;
+            return false;
         }
 
         public void ApplyCooldown(Mobile from) {
@@ -115,6 +115,8 @@ namespace Server.Items
 
         public virtual double GetRequiredSecondarySkill(Mobile from)
         {
+            return 0;
+            /*
             if (!RequiresSecondarySkill(from))
                 return 0.0;
 
@@ -126,6 +128,7 @@ namespace Server.Items
                 return 100.0;
 
             return 200.0;
+            */
         }
 
         public virtual SkillName GetSecondarySkill(Mobile from)

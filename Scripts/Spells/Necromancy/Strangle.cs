@@ -118,6 +118,8 @@ namespace Server.Spells.Necromancy
                 return;
             }
 
+            m.SendMessage("Voce sente uma magia negra te estrangular. Quanto mais stamina lhe faltar mais dano ira receber.");
+
             if (Server.Spells.Mysticism.StoneFormSpell.CheckImmunity(m))
             {
                 Caster.SendLocalizedMessage(1095250); // Your target resists strangle.
@@ -132,10 +134,10 @@ namespace Server.Spells.Necromancy
 
                 //Calculations for the buff bar
                 double spiritlevel = Caster.Skills[SkillName.SpiritSpeak].Value / 10;
-                if (spiritlevel < 4)
-                    spiritlevel = 4;
-                int d_MinDamage = (int)(4.0 * strength);
-                int d_MaxDamage = (int)(((spiritlevel + 1) * 3) * strength);
+                if (spiritlevel < 3)
+                    spiritlevel = 3;
+                int d_MinDamage = (int)(2.0 * strength);
+                int d_MaxDamage = (int)(((spiritlevel + 1) * 2) * strength);
                 string args = String.Format("{0}\t{1}", d_MinDamage, d_MaxDamage);
 
                 int i_Count = (int)spiritlevel;
@@ -248,7 +250,7 @@ namespace Server.Spells.Necromancy
 
                     double damage = m_MinBaseDamage + (Utility.RandomDouble() * (m_MaxBaseDamage - m_MinBaseDamage));
 
-                    damage *= (3 - (((double)m_Target.Stam / m_Target.StamMax) * 2));
+                    damage *= (2.2 - (((double)m_Target.Stam / m_Target.StamMax) * 2));
 
                     if (damage < 1)
                         damage = 1;

@@ -9,8 +9,10 @@ using System.Text;
 
 using Server.Commands.Generic;
 using Server.Engines.BulkOrders;
+using Server.Gumps;
 using Server.Items;
 using Server.Misc;
+using Server.Mobiles;
 using Server.Network;
 #endregion
 
@@ -22,8 +24,22 @@ namespace Server.Commands
         {
             CommandSystem.Register("powerhour", AccessLevel.Administrator, OnAction);
 
+            EventSink.Login += OnLogin;
+
             Inicial();
 
+        }
+
+        public static void OnLogin(LoginEventArgs e)
+        {
+            if(SkillCheck.BONUS_GERAL != 0)
+            {
+                e.Mobile.SendGump(new AnuncioGump(e.Mobile as PlayerMobile, "Bonus de XP esta Ativo"));
+            }
+            if (GoldHour.GOLD_MULT != 0)
+            {
+                e.Mobile.SendGump(new AnuncioGump(e.Mobile as PlayerMobile, "Bonus de GOLD esta Ativo"));
+            }
         }
 
         public static void Inicial()

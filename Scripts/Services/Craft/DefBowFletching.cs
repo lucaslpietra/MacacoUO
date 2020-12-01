@@ -164,7 +164,7 @@ namespace Server.Engines.Craft
             index = this.AddCraft(typeof(CompositeBow), 1044566, 1029922, 65.0, 105, typeof(Board), 1044041, 8, 1044351);
             this.AddRes(index, typeof(Cloth), "Pano", 5, "Voce precisa de Pano para fazer isto");
 
-            this.AddCraft(typeof(RepeatingCrossbow), 1044566, 1029923, 90.0, 100, typeof(Board), 1044041, 10, 1044351);
+            this.AddCraft(typeof(RepeatingCrossbow), 1044566, 1029923, 80.0, 100, typeof(Board), 1044041, 10, 1044351);
             index = AddCraft(typeof(Yumi), 1044566, 1030224, 70.0, 95, typeof(Board), 1044041, 10, 1044351);
 
 

@@ -30,10 +30,10 @@ namespace Server
 			}
 			else
 			{
-				Register(new PoisonImpl("Lesser", 0, 4, 26, 2.500, 3.5, 4, 10, 2));
-				Register(new PoisonImpl("Regular", 1, 5, 26, 3.125, 3.5, 4, 10, 2));
-				Register(new PoisonImpl("Greater", 2, 6, 26, 6.250, 3.5, 4, 10, 2));
-				Register(new PoisonImpl("Deadly", 3, 7, 26, 12.500, 3.5, 4.0, 10, 2));
+				Register(new PoisonImpl("Lesser", 0, 4, 26, 2.500, 3.5, 4.2, 10, 2));
+				Register(new PoisonImpl("Regular", 1, 5, 26, 3.125, 3.5, 4.2, 10, 2));
+				Register(new PoisonImpl("Greater", 2, 6, 26, 6.250, 3.5, 4.2, 10, 2));
+				Register(new PoisonImpl("Deadly", 3, 7, 26, 12.500, 3.5, 4.2, 10, 2));
 				Register(new PoisonImpl("Lethal", 4, 9, 26, 20.000, 3.5, 5.0, 10, 2));
 			}
 

@@ -1199,12 +1199,15 @@ namespace Server.Items
             if (RP)
                 list.Add("[ RP ]");
 
-            return;
-
             if (OwnerName != null)
             {
                 list.Add(1153213, OwnerName);
             }
+
+            return;
+
+
+         
 
             if (m_Crafter != null)
                 list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
