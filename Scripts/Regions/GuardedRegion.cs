@@ -245,7 +245,6 @@ namespace Server.Regions
 				CheckGuardCandidate(m);
 			}
 		}
-       */
 
         public void CheckGuardCandidate(Mobile m)
         {
