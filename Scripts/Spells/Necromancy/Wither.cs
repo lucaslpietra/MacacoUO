@@ -73,6 +73,13 @@ namespace Server.Spells.Necromancy
                         if (m!=null && m.IsControlledBy(this.Caster))
                             continue;
 
+                        var bc = m as BaseCreature;
+                        if (bc != null && bc.ControlMaster == this.Caster)
+                            continue;
+
+                        if (m.Party != null && m.Party == this.Caster.Party)
+                            continue;
+
                         this.Caster.DoHarmful(id);
 
                         if (m != null)

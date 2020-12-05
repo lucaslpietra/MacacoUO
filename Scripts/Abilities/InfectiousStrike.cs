@@ -19,7 +19,7 @@ namespace Server.Items
         
         public override bool RequiresSecondarySkill(Mobile from)
         {
-            return false;
+            return true;
         }
         
         public override SkillName GetSecondarySkill(Mobile from)
@@ -87,11 +87,21 @@ namespace Server.Items
             if (weaponPoison.Level > maxLevel) // If they don't have enough Poisoning Skill for the potion strength, lower it.
                 weaponPoison = Poison.GetPoison(maxLevel);
 
-            if (weaponPoison != null)
-                Shard.Debug("Poison level " + weaponPoison.Level + " - Max Level " + maxLevel);
-            else
-                Shard.Debug("Poison Null");
+            if(Shard.DebugEnabled)
+            {
+                if (weaponPoison != null)
+                    Shard.Debug("Poison level " + weaponPoison.Level + " - Max Level " + maxLevel);
+                else
+                    Shard.Debug("Poison Null");
+            }
 
+            if (attacker.Skills[SkillName.Poisoning].Value < 70)
+                weaponPoison = Poison.Lesser;
+
+            if (attacker.Skills[SkillName.Poisoning].Value < 90 && weaponPoison.Level > Poison.Regular.Level)
+                weaponPoison = Poison.Regular;
+
+            /*
             if ((attacker.Skills[SkillName.Poisoning].Value / 150.0) > Utility.RandomDouble())
             {
             	if (weaponPoison !=null && weaponPoison.Level + 1 <= maxLevel)
@@ -108,6 +118,7 @@ namespace Server.Items
 	                }
             	}
             }
+            */
 
             defender.PlaySound(0xDD);
             defender.FixedParticles(0x3728, 244, 25, 9941, 1266, 0, EffectLayer.Waist);

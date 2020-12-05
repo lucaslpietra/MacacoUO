@@ -42,6 +42,12 @@ namespace Server.Mobiles
             Karma = -22500;
 
             VirtualArmor = 130;
+
+            AddItem(new TheMostKnowledgePerson());
+            var capa = new HumilityCloak();
+            capa.Hue = 1154;
+            capa.Name = "Capa do Rikktor";
+            AddItem(capa);
         }
 
         public Rikktor(Serial serial)

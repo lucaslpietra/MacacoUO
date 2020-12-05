@@ -52,7 +52,10 @@ namespace Server.Items
 
 	public class BankCheck : Item
 	{
-		private int m_Worth;
+
+        public override bool NaoPodeBancoRP { get { return false; } }
+
+        private int m_Worth;
 
 		public BankCheck(Serial serial)
 			: base(serial)

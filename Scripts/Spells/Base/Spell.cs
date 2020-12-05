@@ -981,6 +981,12 @@ namespace Server.Spells
             }
             */
 
+            if(Caster.Meditating)
+            {
+                Caster.Meditating = false;
+                Caster.SendMessage(12, "Você parou de meditar");
+            }
+            
             m_StartCastTime = Core.TickCount;
 
             if (Core.AOS && m_Caster.Spell is Spell && ((Spell)m_Caster.Spell).State == SpellState.Sequencing)

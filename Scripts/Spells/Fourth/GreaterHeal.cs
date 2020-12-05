@@ -26,15 +26,15 @@ namespace Server.Spells.Fourth
                 return 1;
 
             if (p == Poison.Lesser)
-                return 0.9;
+                return 0.95;
             else if (p == Poison.Regular)
-                return 0.8;
+                return 0.85;
             else if (p == Poison.Greater)
-                return 0.7;
+                return 0.75;
             else if (p == Poison.Deadly)
-                return 0.5;
+                return 0.65;
             else if (p == Poison.Lethal)
-                return 0.3;
+                return 0.55;
             return 1;
         }
 

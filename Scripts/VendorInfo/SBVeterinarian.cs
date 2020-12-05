@@ -31,7 +31,7 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
-                Add(new GenericBuyInfo(typeof(Bandage), 6, 20, 0xE21, 0, true));
+                //Add(new GenericBuyInfo(typeof(Bandage), 6, 20, 0xE21, 0, true));
                 Add(new AnimalBuyInfo(1, typeof(PackHorse), 616, 10, 291, 0));
                 Add(new AnimalBuyInfo(1, typeof(PackLlama), 523, 10, 292, 0));
             }
@@ -41,7 +41,7 @@ namespace Server.Mobiles
         {
             public InternalSellInfo()
             {
-                Add(typeof(Bandage), 1);
+                //Add(typeof(Bandage), 1);
             }
         }
     }

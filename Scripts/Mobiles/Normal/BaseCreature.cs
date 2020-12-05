@@ -6519,11 +6519,7 @@ namespace Server.Mobiles
                     }
                     else if (TreasureMapChance >= Utility.RandomDouble())
                     {
-                        Map map = Map;
-
-                        if (map == Map.Trammel && Siege.SiegeShard)
-                            map = Map.Felucca;
-
+                        Map map = Map.Felucca;
                         PackItem(new TreasureMap(treasureLevel, map));
                     }
                 }

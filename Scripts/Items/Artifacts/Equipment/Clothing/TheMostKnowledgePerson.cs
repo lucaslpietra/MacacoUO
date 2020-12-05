@@ -13,12 +13,18 @@ namespace Server.Items
             : base(0x2684)
         {
             Hue = 0x117;
-            Attributes.BonusHits = 3 + Utility.RandomMinMax(0, 2);
+            //Attributes.Bonus
+            //Attributes.BonusHits = 3 + Utility.RandomMinMax(0, 2);
         }
 
         public TheMostKnowledgePerson(Serial serial)
             : base(serial)
         {
+        }
+
+        public override int BaseIntBonus
+        {
+            get { return 1; }
         }
 
         public override int LabelNumber

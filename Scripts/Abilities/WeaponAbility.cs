@@ -204,11 +204,13 @@ namespace Server.Items
             double reqSecondarySkill = GetRequiredSecondarySkill(from);
             SkillName secondarySkill = GetSecondarySkill(from);
 
+            /*
             if (weaponSkill == SkillName.Wrestling && reqSecondarySkill > 0)
             {
                 secondarySkill = SkillName.ArmsLore;
                 reqSecondarySkill = 100;
             }
+            */
 
             if (from.Skills[secondarySkill].Base < reqSecondarySkill)
             {
@@ -216,11 +218,13 @@ namespace Server.Items
                 return false;
             }
 
+            /*
             if (!(weapon is BaseStaff) && skill.SkillName != SkillName.Wrestling && from.Skills[SkillName.Anatomy].Value < reqSkill)
             {
                 from.SendMessage("Requisito mínimo para usar esta habilidade: "+reqSkill+" Anatomy");
                 return false;
             }
+            */
 
             if (skill != null && skill.Base >= reqSkill)
                 return true;

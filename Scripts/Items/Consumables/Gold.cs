@@ -6,6 +6,9 @@ namespace Server.Items
 {
     public class Gold : Item
     {
+
+        public override bool NaoPodeBancoRP { get { return false; } }
+
         [Constructable]
         public Gold()
             : this(1)

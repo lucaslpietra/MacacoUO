@@ -55,18 +55,12 @@ namespace Server.Engines.Quests
 
         public static void Initialize()
         {
-            if (Core.TOL)
+            if (true)
             {
                 if (TramInstance == null)
                 {
                     TramInstance = new CorpseOfBennetYardley();
                     TramInstance.MoveToWorld(new Point3D(5688, 653, 0), Map.Trammel);
-                }
-
-                if (FelInstance == null)
-                {
-                    FelInstance = new CorpseOfBennetYardley();
-                    FelInstance.MoveToWorld(new Point3D(5688, 653, 0), Map.Felucca);
                 }
             }
         }

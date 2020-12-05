@@ -93,6 +93,9 @@ namespace Server.Mobiles
                 }
 
                 var defender = (Mobile)this.Combatant;
+                if (defender == null || defender.Map == null || !defender.Alive)
+                    return;
+
                 SpellHelper.Turn(this, defender);
                 var locPlayerGo = GetPoint(defender, this.Direction);
                 if (defender.Map.CanFit(locPlayerGo, locPlayerGo.Z))

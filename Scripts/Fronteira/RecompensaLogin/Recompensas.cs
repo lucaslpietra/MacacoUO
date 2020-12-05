@@ -29,7 +29,7 @@ namespace Server.Ziden.RecompensaLogin
             Rewards.Add(new CollectionItem(typeof(CaixaDeGold), 0xE21, "Caixa com 10k Moedas", 0, 24 * 5));
             Rewards.Add(new CollectionItem(typeof(SkillBook), 0xEFA, "Livro Cientifico</br>Upa uma skill de 0.1 a 0.5", 0, 24 * 3)); // Yew]
 
-            Rewards.Add(new CollectionItem(typeof(PergaminhoCarregamento), 0x1F35, "Pergaminho do Carregamento<br>+1 Item na mochila", 0, 48));
+            Rewards.Add(new CollectionItem(typeof(PergaminhoCarregamento), 0x1F35, "Pergaminho do Carregamento<br>+1 Item na mochila", 0, 24 * 5));
             Rewards.Add(new CollectionItem(typeof(KegGH), 0x1940, "Keg de Vida Maior", 0, 24 * 5));
             Rewards.Add(new CollectionItem(typeof(KegMana), 0x1940, "Keg de Mana", 0, 24 * 5));
             Rewards.Add(new CollectionItem(typeof(KegStamina), 0x1940, "Keg de Stamina", 0, 24 * 5));
@@ -42,7 +42,4 @@ namespace Server.Ziden.RecompensaLogin
             Rewards.Add(new CollectionItem(typeof(EtherealHorse), 0x20DD, "Cavalo Magico", 0, 24 * 30)); // Yew
         }
     }
-
-
-
 }

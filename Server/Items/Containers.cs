@@ -86,6 +86,13 @@ namespace Server.Items
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
+            if (from.RP && dropped.NaoPodeBancoRP)
+            {
+                from.SendMessage("Voce apenar pode guardar ouro no banco");
+                return false;
+            }
+               
+
             if ((from == m_Owner && m_Open) || from.AccessLevel >= AccessLevel.GameMaster)
             {
                 return base.OnDragDrop(from, dropped);
@@ -96,6 +103,12 @@ namespace Server.Items
 
         public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
         {
+            if (from.RP && item.NaoPodeBancoRP)
+            {
+                from.SendMessage("Voce apenar pode guardar ouro no banco !");
+                return false;
+            }
+
             if ((from == m_Owner && m_Open) || from.AccessLevel >= AccessLevel.GameMaster)
             {
                 return base.OnDragDropInto(from, item, p);

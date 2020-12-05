@@ -64,7 +64,6 @@ namespace Server.Items
                 mMapCutout = ZMapList.MapCutouts[i];
                 Bounds = mMapCutout.Rect;
             }
-
         }
 
         public override void DisplayTo(Mobile from)

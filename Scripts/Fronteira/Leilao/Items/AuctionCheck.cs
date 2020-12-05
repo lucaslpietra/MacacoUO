@@ -70,7 +70,9 @@ namespace Server.Leilaum
 	/// </summary>
 	public abstract class AuctionCheck : Item
 	{
-		protected Guid m_Auction;
+        public override bool NaoPodeBancoRP { get { return false; } }
+
+        protected Guid m_Auction;
 		protected string m_Message;
 		protected string m_ItemName;
 		protected Mobile m_Owner;

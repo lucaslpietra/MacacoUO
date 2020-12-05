@@ -672,6 +672,9 @@ namespace Server
 
     public class Item : IEntity, IHued, IComparable<Item>, ISerializable, ISpawnable
     {
+
+        public virtual bool NaoPodeBancoRP { get { return true; } }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public bool RP { get; set; }
 
@@ -5292,7 +5295,6 @@ namespace Server
                 HandleInvalidTransfer(from);
                 return false;
             }
-
             return target.OnDragDropInto(from, this, p);
         }
 

@@ -187,6 +187,9 @@ namespace Server.Items
 
             var n = (ld.Name ?? String.Empty).ToLower();
 
+            if(Shard.DebugEnabled)
+                Shard.Debug("Nome do tile: " + n);
+
             if (n != "dirt" && n != "grass" && n != "jungle" && n != "forest" && n != "snow")
             {
                 return false;
@@ -282,46 +285,6 @@ namespace Server.Items
             }
 
             return Point2D.Zero;
-        }
-
-
-        public static Point2D GetRandomLocation(Map map, bool eodon)
-        {
-            if (!NewChestLocations)
-                return GetRandomClassicLocation();
-
-            Rectangle2D[] recs;
-
-            int x = 0;
-            int y = 0;
-
-            Shard.Erro("Gerando mapa do tesouro cagado");
-            return new Point2D(0, 0);
-            /*
-            if (map == Map.Trammel || map == Map.Felucca)
-                recs = m_FelTramWrap;
-            else if (map == Map.Tokuno)
-                recs = m_TokunoWrap;
-            else if (map == Map.Malas)
-                recs = m_MalasWrap;
-            else if (map == Map.Ilshenar)
-                recs = m_IlshenarWrap;
-            else if (eodon)
-                recs = m_EodonWrap;
-            else
-                recs = m_TerMurWrap;
-
-            while (true)
-            {
-                Rectangle2D rec = recs[Utility.Random(recs.Length)];
-
-                x = Utility.Random(rec.X, rec.Width);
-                y = Utility.Random(rec.Y, rec.Height);
-
-                if (ValidateLocation(x, y, map))
-                    return new Point2D(x, y);
-            }
-            */
         }
 
         public static Point2D GetRandomLocation()
@@ -470,13 +433,11 @@ namespace Server.Items
         [Constructable]
         public TreasureMap(int level, Map map) : base(-1)
         {
+            map = Map.Felucca;
             m_Level = level;
             m_Map = map;
 
-            if (level == 0)
-                m_Location = GetRandomHavenLocation();
-            else
-                m_Location = GetRandomLocation();
+            m_Location = GetRandomLocation();
 
             Width = 200;
             Height = 200;
@@ -521,11 +482,11 @@ namespace Server.Items
             if (m.Backpack == null)
                 return false;
 
-            List<BaseHarvestTool> items = m.Backpack.FindItemsByType<BaseHarvestTool>();
+            List<Item> items = m.Backpack.FindItemsByType<Item>();
 
-            foreach (BaseHarvestTool tool in items)
+            foreach (Item tool in items)
             {
-                if (tool.HarvestSystem == Engines.Harvest.Mining.System)
+                if(tool is Pickaxe || tool is Shovel)
                     return true;
             }
 
@@ -600,7 +561,7 @@ namespace Server.Items
                 }
                 else if (!HasDiggingTool(from))
                 {
-                    from.SendMessage("Voce precisa ter a digging tool to dig for treasure.");
+                    from.SendMessage("Voce precisa ter uma picareta para cavar o tesouro.");
                 }
                 else if (from.Map != map)
                 {
@@ -621,9 +582,9 @@ namespace Server.Items
 
                     if (skillValue >= 100.0)
                         maxRange = 4;
-                    else if (skillValue >= 81.0)
+                    else if (skillValue >= 91.0)
                         maxRange = 3;
-                    else if (skillValue >= 51.0)
+                    else if (skillValue >= 81.0)
                         maxRange = 2;
                     else
                         maxRange = 1;
@@ -872,6 +833,13 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
+
+            if(this.m_Map != Map.Felucca)
+            {
+                from.SendMessage("Este mapa parece nao ter nada importante...");
+                return;
+            }
+
             if (!from.InRange(GetWorldLocation(), 2))
             {
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
@@ -881,7 +849,17 @@ namespace Server.Items
             if (!m_Completed && m_Decoder == null)
                 Decode(from);
             else
+            {
+                if (from.Skills.Cartography.Value > 100)
+                {
+                    from.QuestArrow = new QuestArrow(from, Pins[0].ToPoint3D());
+                    from.QuestArrow.Update();
+                } else
+                {
+                    from.SendMessage(78, "Quem sabe com mais de 100 de cartografia nao ficaria mais facil encontrar o local...");
+                }
                 DisplayTo(from);
+            }
         }
 
         private double GetMinSkillLevel()

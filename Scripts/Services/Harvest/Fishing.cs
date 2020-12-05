@@ -85,6 +85,8 @@ namespace Server.Engines.Harvest
             fish.PackFullMessage = "Você não tem espaço na mochila para guardar o peixe"; // You do not have room in your backpack for a fish.
             fish.ToolBrokeMessage = "Sua vara de pescar quebrou!"; // You broke your fishing pole.
 
+            fish.RandomizeVeins = true;
+
             res = new HarvestResource[]
             {
                 new HarvestResource(00.0, 00.0, 120.0, 1043297, typeof(Fish))
@@ -277,8 +279,8 @@ namespace Server.Engines.Harvest
                 if (junkproof && i == 5 && 0.80 >= Utility.RandomDouble())
                     continue;
 
-                if (!deepWater && entry.m_DeepWater)
-                    continue;
+                //if (!deepWater && entry.m_DeepWater)
+                //    continue;
 
                 if (skillBase >= entry.m_ReqSkill)
                 {
@@ -475,10 +477,10 @@ namespace Server.Engines.Harvest
                         {
                             switch (sos.Level)
                             {
-                                case 0: chest = new SOSChest(Utility.RandomBool() ? 0xE43 : 0xE41); chest.MaxItems = 120;  break;
-                                case 1: chest = new SOSChest(0xA306); chest.MaxItems = 150;  break;
+                                case 0: chest = new SOSChest(Utility.RandomBool() ? 0xE43 : 0xE41); chest.MaxItems = 120; break;
+                                case 1: chest = new SOSChest(0xA306); chest.MaxItems = 150; break;
                                 case 2: chest = new SOSChest(Utility.RandomBool() ? 0xE43 : 0xE41); chest.MaxItems = 200; break;
-                                case 3: chest = new SOSChest(0xA308); chest.MaxItems = 350;  break;
+                                case 3: chest = new SOSChest(0xA308); chest.MaxItems = 350; break;
                                 default:
                                     if (.33 > Utility.RandomDouble())
                                     {
@@ -794,7 +796,9 @@ namespace Server.Engines.Harvest
             if (!base.BeginHarvesting(from, tool))
                 return false;
 
-            from.SendMessage("Nao pode fazer isto montado"); // What water do you want to fish in?
+
+            from.SendMessage("Em que aguas deseja pescar ?"); // What water do you want to fish in?
+
             return true;
         }
 
@@ -805,7 +809,7 @@ namespace Server.Engines.Harvest
 
             if (from.Mounted || from.Flying)
             {
-                from.SendMessage("Nao pode fazer isto montado");// You can't fish while riding!
+                from.SendMessage("Nao pode fazer isto montado ou voando");// You can't fish while riding!
                 return false;
             }
 
@@ -816,6 +820,7 @@ namespace Server.Engines.Harvest
         {
             if (!base.CheckHarvest(from, tool, def, toHarvest))
                 return false;
+
 
             if (from.Mounted || from.Flying)
             {
@@ -1080,6 +1085,7 @@ namespace Server.Engines.Harvest
             bool deepWater = IsDeepWater(from, loc, map);
             double value = from.Skills[SkillName.Fishing].Value;
 
+            /*
             if (deepWater && value < 75.0)
             {// can't fish here yet {
                 from.SendMessage("Estas aguas sao profundas e voce nao consegue pescar aqui ainda");
@@ -1092,6 +1098,7 @@ namespace Server.Engines.Harvest
                 from.SendMessage("Estas aguas sao profundas e voce nao consegue pescar muito bem aqui ainda");
                 return true;
             }
+            */
 
             return base.CheckHarvestSkill(map, loc, from, res, def);
         }

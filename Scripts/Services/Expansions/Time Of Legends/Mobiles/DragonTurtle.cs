@@ -20,7 +20,7 @@ namespace Server.Mobiles
         [Constructable]
 		public DragonTurtle() : base(AIType.AI_Mage)
 		{
-			Name = "a dragon turtle";
+			Name = "tartaruga dragao";
             Body = 1288;
             BaseSoundID = 362;
 			

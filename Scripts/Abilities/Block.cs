@@ -28,7 +28,7 @@ namespace Server.Items
 
         public override SkillName GetSecondarySkill(Mobile from)
         {
-            return from.Skills[SkillName.Ninjitsu].Base > from.Skills[SkillName.Bushido].Base ? SkillName.Ninjitsu : SkillName.Bushido;
+            return SkillName.Ninjitsu;
         }
 
         public static bool IsBlocking(Mobile m)

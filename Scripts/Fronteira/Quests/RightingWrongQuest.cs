@@ -206,12 +206,12 @@ Seus servicos sao muito bons.Se ainda quer continuar, um de nossos camaradas foi
         {
             base.OnAccept();
 
-            /*
+            
             Orders = new RoyalBritannianGuardOrders();
             Owner.Backpack.DropItem(Orders);
 
             Owner.SendLocalizedMessage("Vore recebeu um item de missao"); // You received a Quest Item!
-            */
+            
         }
 
         public void CompleteQuest()

@@ -14,11 +14,6 @@ namespace Server.Items
         {
         }
 
-        public override SkillName GetSecondarySkill(Mobile from)
-        {
-            return SkillName.Tactics;
-        }
-
         public override int BaseMana
         {
             get
