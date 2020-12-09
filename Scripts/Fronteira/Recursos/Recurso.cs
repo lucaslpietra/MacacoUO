@@ -97,6 +97,17 @@ namespace Server.Fronteira.Recursos
                 return SkillName.Lumberjacking;
         }
 
+        public override void OnDelete()
+        {
+            if (_folha != null)
+            {
+                _folha.Delete();
+                _folha = null;
+            }
+              
+            base.OnDelete();
+        }
+
         public void Coleta(Mobile from)
         {
             Item i = GetItem();
