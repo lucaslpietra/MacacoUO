@@ -164,15 +164,34 @@ namespace Server.Fronteira.Recursos
 
             from.SendMessage("Voce coletou o recurso");
 
-            if(coleta==3)
+            var tool = from.Weapon as BaseWeapon;
+            if (tool is IUsesRemaining && (tool is BaseHarvestTool || tool is Pickaxe || tool is SturdyPickaxe || tool is GargoylesPickaxe || Siege.SiegeShard))
+            {
+                IUsesRemaining toolWithUses = (IUsesRemaining)tool;
+
+                toolWithUses.ShowUsesRemaining = true;
+
+                if (toolWithUses.UsesRemaining > 0)
+                    --toolWithUses.UsesRemaining;
+
+                if (toolWithUses.UsesRemaining < 1)
+                {
+                    tool.Delete();
+                    from.SendMessage("Sua ferramenta quebrou");
+                }
+            }
+
+            if (coleta==3)
             {
                 Delete();
                 if (_folha != null)
                 {
                     _folha.Delete();
                 }
+            } else
+            {
+                new ColetaTimer(this, from).Start();
             }
-        
         }
 
         public bool Metal()

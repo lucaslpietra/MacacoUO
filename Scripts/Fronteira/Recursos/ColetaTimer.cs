@@ -13,7 +13,7 @@ namespace Server.Fronteira.Recursos
         public Mobile _from;
         public int n;
 
-        public ColetaTimer(Recurso s, Mobile f) : base(TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(3), 4)
+        public ColetaTimer(Recurso s, Mobile f) : base(TimeSpan.FromSeconds(1.5), TimeSpan.FromSeconds(1.5), 4)
         {
 
             if(s.Coletando != null && s.Coletando != f)
@@ -30,6 +30,7 @@ namespace Server.Fronteira.Recursos
             {
                 _from.SendMessage("Voce talvez precise de outra ferramenta em suas maos para coletar isto");
                 Stop();
+                n = -1;
             }
         }
 
@@ -44,6 +45,9 @@ namespace Server.Fronteira.Recursos
 
         protected override void OnTick()
         {
+            if (n == -1)
+                return;
+
             n++;
             if (!_from.Alive || _from.GetDistanceToSqrt(_recurso) > 3)
                 return;
