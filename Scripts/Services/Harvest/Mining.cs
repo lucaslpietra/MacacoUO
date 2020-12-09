@@ -3,6 +3,7 @@ using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
 using System.Linq;
+using Server.Services.Harvest;
 
 namespace Server.Engines.Harvest
 {
@@ -40,6 +41,16 @@ namespace Server.Engines.Harvest
                 return this.m_Sand;
             }
         }
+
+        public static Dificuldade COBRE = new Dificuldade(65, 80);
+        public static Dificuldade BRONZE = new Dificuldade(70, 85);
+        public static Dificuldade DOURADO = new Dificuldade(75, 90);
+        public static Dificuldade NIOBIO = new Dificuldade(80, 95);
+        public static Dificuldade LAZURITA = new Dificuldade(85, 100);
+        public static Dificuldade QUARTZO = new Dificuldade(95, 105);
+        public static Dificuldade BERILO = new Dificuldade(100, 110);
+        public static Dificuldade VIBRANIUM = new Dificuldade(101, 125);
+        public static Dificuldade ADAMANTIUM = new Dificuldade(105, 135);
 
         private Mining()
         {
@@ -93,15 +104,15 @@ namespace Server.Engines.Harvest
             res = new HarvestResource[]
             {
               new HarvestResource(00.0, 00.0, 90.0, "Você encontrou minério de Ferro e colocou em sua mochila", typeof(IronOre), typeof(Granite)),
-                new HarvestResource(65.0, 25, 100, "Você encontrou minério de Cobre e colocou em sua mochila", typeof(CopperOre), typeof(CopperGranite), typeof(CopperElemental)),
-                new HarvestResource(70, 30, 110.0, "Você encontrou minério de Bronze e colocou em sua mochila", typeof(BronzeOre), typeof(BronzeGranite), typeof(BronzeElemental)),
-                new HarvestResource(75, 35, 115.0, "Você encontrou minério de Dourado e colocou em sua mochila", typeof(SilverOre), typeof(GoldGranite), typeof(GoldenElemental)),
-                new HarvestResource(80, 40, 120.0, "Você encontrou minério de Nióbio e colocou em sua mochila", typeof(NiobioOre), typeof(AgapiteGranite), typeof(AgapiteElemental)),
-                new HarvestResource(90, 45, 125.0, "Você encontrou minério de Lazurita e colocou em sua mochila", typeof(LazuritaOre), typeof(VeriteGranite), typeof(VeriteElemental)),
-                new HarvestResource(95, 60, 130.0, "Você encontrou minério de Quartzo e colocou em sua mochila", typeof(QuartzoOre), typeof(ValoriteGranite), typeof(ValoriteElemental)),
-                new HarvestResource(100, 55, 135.0, "Você encontrou minério de Berillo e colocou em sua mochila", typeof(BeriloOre),    typeof(DullCopperGranite), typeof(DullCopperElemental)),
-                new HarvestResource(103, 90.9, 139.0, "Você encontrou minério de Vibranium e colocou em sua mochila", typeof(VibraniumOre), typeof(ShadowIronGranite), typeof(ShadowIronElemental)),
-                 new HarvestResource(105, 90.9, 139.0, "Você encontrou minério de Adamantium e colocou em sua mochila", typeof(AdamantiumOre), typeof(ValoriteGranite), typeof(AdamantiumElemental)),
+                new HarvestResource(COBRE.Required, COBRE.Min, COBRE.Max, "Você encontrou minério de Cobre e colocou em sua mochila", typeof(CopperOre), typeof(CopperGranite), typeof(CopperElemental)),
+                new HarvestResource(BRONZE.Required, BRONZE.Min, BRONZE.Max, "Você encontrou minério de Bronze e colocou em sua mochila", typeof(BronzeOre), typeof(BronzeGranite), typeof(BronzeElemental)),
+                new HarvestResource(DOURADO.Required, DOURADO.Min, DOURADO.Max, "Você encontrou minério de Dourado e colocou em sua mochila", typeof(SilverOre), typeof(GoldGranite), typeof(GoldenElemental)),
+                new HarvestResource(NIOBIO.Required, NIOBIO.Min, NIOBIO.Max, "Você encontrou minério de Nióbio e colocou em sua mochila", typeof(NiobioOre), typeof(AgapiteGranite), typeof(AgapiteElemental)),
+                new HarvestResource(LAZURITA.Required, LAZURITA.Min, LAZURITA.Max, "Você encontrou minério de Lazurita e colocou em sua mochila", typeof(LazuritaOre), typeof(VeriteGranite), typeof(VeriteElemental)),
+                new HarvestResource(QUARTZO.Required, QUARTZO.Min, QUARTZO.Max, "Você encontrou minério de Quartzo e colocou em sua mochila", typeof(QuartzoOre), typeof(ValoriteGranite), typeof(ValoriteElemental)),
+                new HarvestResource(BERILO.Required, BERILO.Min, BERILO.Max, "Você encontrou minério de Berillo e colocou em sua mochila", typeof(BeriloOre),    typeof(DullCopperGranite), typeof(DullCopperElemental)),
+                new HarvestResource(VIBRANIUM.Required, VIBRANIUM.Min, VIBRANIUM.Max, "Você encontrou minério de Vibranium e colocou em sua mochila", typeof(VibraniumOre), typeof(ShadowIronGranite), typeof(ShadowIronElemental)),
+                 new HarvestResource(ADAMANTIUM.Required, ADAMANTIUM.Min, ADAMANTIUM.Max, "Você encontrou minério de Adamantium e colocou em sua mochila", typeof(AdamantiumOre), typeof(ValoriteGranite), typeof(AdamantiumElemental)),
             };
 
             veins = new HarvestVein[]
@@ -211,6 +222,7 @@ namespace Server.Engines.Harvest
             this.Definitions.Add(sand);
             #endregion
         }
+
 
         public override Type GetResourceType(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc, HarvestResource resource)
         {

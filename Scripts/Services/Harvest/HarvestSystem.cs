@@ -8,6 +8,7 @@ using Server.Mobiles;
 using System.Linq;
 using Server.Gumps;
 using Server.Regions;
+using Server.Fronteira.Recursos;
 
 namespace Server.Engines.Harvest
 {
@@ -400,18 +401,39 @@ namespace Server.Engines.Harvest
         public virtual bool CheckHarvestSkill(Map map, Point3D loc, Mobile from, HarvestResource resource, HarvestDefinition def)
         {
             Shard.Debug(msg);
-            if(from.Skills[def.Skill].Value >= resource.ReqSkill)
+
+            var mult = 1.0;
+
+            if (def.Skill == SkillName.Mining)
             {
-                if (from.Skills[def.Skill].Value - 5 < resource.ReqSkill)
-                    return from.CheckSkillMult(def.Skill, resource.MinSkill, resource.MaxSkill, 5);
-                else if (from.Skills[def.Skill].Value - 10 < resource.ReqSkill)
-                    return from.CheckSkillMult(def.Skill, resource.MinSkill, resource.MaxSkill, 4);
-                else if (from.Skills[def.Skill].Value - 15 < resource.ReqSkill)
-                    return from.CheckSkillMult(def.Skill, resource.MinSkill, resource.MaxSkill, 3);
-                else if (from.Skills[def.Skill].Value - 20 < resource.ReqSkill)
-                    return from.CheckSkillMult(def.Skill, resource.MinSkill, resource.MaxSkill, 2);
-                return from.CheckSkillMult(def.Skill, resource.MinSkill, resource.MaxSkill);
+                if(from.Skills[def.Skill].Value >= 65)
+                    mult = 0.5;
+                else if (from.Skills[def.Skill].Value >= 75)
+                    mult = 0.3;
+                else if (from.Skills[def.Skill].Value >= 85)
+                    mult = 0.1;
             }
+            else if (def.Skill == SkillName.Lumberjacking)
+            {
+                if (from.Skills[def.Skill].Value >= 65)
+                    mult = 0.5;
+                else if (from.Skills[def.Skill].Value >= 75)
+                    mult = 0.3;
+                else if (from.Skills[def.Skill].Value >= 85)
+                    mult = 0.1;
+            }
+
+            if(mult < 1 && !from.IsCooldown("msgmult"))
+            {
+                from.SetCooldown("msgmult", TimeSpan.FromMinutes(10));
+                from.SendMessage(78, "Voce pode subir suas habilidades muito mais rapidamente procurando recursos pelo mapa");
+            }
+
+            if (from.Skills[def.Skill].Value >= resource.ReqSkill)
+            {
+                return from.CheckSkillMult(def.Skill, resource.MinSkill, resource.MaxSkill, mult);
+            }
+
             return false;
                
         }
@@ -720,6 +742,11 @@ namespace Server.Engines.Harvest
                 tileID = obj.TileID;
                 map = from.Map;
                 loc = obj.Location;
+            } else if(toHarvest is Recurso)
+            {
+                tileID = ((Item)toHarvest).Serial;
+                map = from.Map;
+                loc = ((Item)toHarvest).Location;
             }
             else
             {

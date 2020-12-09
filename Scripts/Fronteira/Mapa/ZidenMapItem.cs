@@ -1,4 +1,5 @@
 using Server.Gumps;
+using Server.Scripts.Custom.RelporMap;
 using Server.Ziden;
 
 namespace Server.Items
@@ -18,7 +19,7 @@ namespace Server.Items
         {
             if (index != -1)
             {
-                mMapCutout = ZMapList.MapCutouts[index];
+                mMapCutout = RelPorMapList.MapCutouts[index];
                 Bounds = mMapCutout.Rect;
             }
             else
@@ -33,7 +34,7 @@ namespace Server.Items
             int x = x1 + w / 2;
             int y = y1 + h / 2;
             int i = 0;
-            foreach (MapCutout cutout in ZMapList.MapCutouts)
+            foreach (MapCutout cutout in RelPorMapList.MapCutouts)
             {
                 if (cutout.Rect.Contains(new Point2D(x, y)))
                 {
@@ -41,9 +42,9 @@ namespace Server.Items
                 }
                 i++;
             }
-            if (i < ZMapList.MapCutouts.Length)
+            if (i < RelPorMapList.MapCutouts.Length)
             {
-                mMapCutout = ZMapList.MapCutouts[i];
+                mMapCutout = RelPorMapList.MapCutouts[i];
                 Bounds = mMapCutout.Rect;
             }
         }
@@ -51,7 +52,7 @@ namespace Server.Items
         public override void SetDisplay(int x, int y)
         {
             int i = 0;
-            foreach (MapCutout cutout in ZMapList.MapCutouts)
+            foreach (MapCutout cutout in RelPorMapList.MapCutouts)
             {
                 if (cutout.Rect.Contains(new Point2D(x, y)))
                 {
@@ -59,9 +60,9 @@ namespace Server.Items
                 }
                 i++;
             }
-            if (i < ZMapList.MapCutouts.Length)
+            if (i < RelPorMapList.MapCutouts.Length)
             {
-                mMapCutout = ZMapList.MapCutouts[i];
+                mMapCutout = RelPorMapList.MapCutouts[i];
                 Bounds = mMapCutout.Rect;
             }
         }
@@ -112,7 +113,7 @@ namespace Server.Items
             int index = reader.ReadInt();
 
             if (index != -1)
-                mMapCutout = ZMapList.MapCutouts[index];
+                mMapCutout = RelPorMapList.MapCutouts[index];
             else
                 mMapCutout = null;
         }

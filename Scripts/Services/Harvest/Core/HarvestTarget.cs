@@ -1,6 +1,7 @@
 using System;
 using Server.Engines.Quests;
 using Server.Engines.Quests.Hag;
+using Server.Fronteira.Recursos;
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
@@ -39,8 +40,6 @@ namespace Server.Engines.Harvest
                     system.StartHarvesting(from, m_Tool, newTarget);
                     return;
                 }
-                // targeted = new LandTarget(from.Location, from.Map);
-                // Shard.Debug("Target Self");
             }
 
             if (from is PlayerMobile)
@@ -49,28 +48,34 @@ namespace Server.Engines.Harvest
                 player.LastTarget = targeted;
             }
 
-            if (m_System is Mining)
+            if(targeted is Recurso)
             {
 
-             
+                var recurso = (Recurso)targeted;
+                if(recurso.Metal())
+                {
+                    
+                }
 
+                new ColetaTimer((Recurso)targeted, from).Start();
+                return;
+            }
+
+            if (m_System is Mining)
+            {
                 if (targeted is StaticTarget)
                 {
                     int itemID = ((StaticTarget)targeted).ItemID;
-
                     // grave
                     if (itemID == 0xED3 || itemID == 0xEDF || itemID == 0xEE0 || itemID == 0xEE1 || itemID == 0xEE2 || itemID == 0xEE8)
                     {
                         PlayerMobile player = from as PlayerMobile;
-
                         if (player != null)
                         {
                             QuestSystem qs = player.Quest;
-
                             if (qs is WitchApprenticeQuest)
                             {
                                 FindIngredientObjective obj = qs.FindObjective(typeof(FindIngredientObjective)) as FindIngredientObjective;
-
                                 if (obj != null && !obj.Completed && obj.Ingredient == Ingredient.Bones)
                                 {
                                     player.SendLocalizedMessage(1055037); // You finish your grim work, finding some of the specific bones listed in the Hag's recipe.

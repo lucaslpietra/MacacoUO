@@ -6156,6 +6156,11 @@ namespace Server
         {
             ObjectPropertyList opl = PropertyList;
 
+            if(Shard.DebugEnabled)
+            {
+                Shard.Debug("AOS CLICK Header OPL: " + opl.Header);
+            }
+
             if (opl.Header > 0)
             {
                 from.Send(new MessageLocalized(m_Serial, m_ItemID, MessageType.Label, 0x3B2, 3, opl.Header, Name, opl.HeaderArgs));

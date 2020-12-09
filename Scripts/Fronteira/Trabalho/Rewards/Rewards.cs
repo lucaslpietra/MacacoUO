@@ -1301,6 +1301,10 @@ namespace Server.Engines.BulkOrders
             RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Carpentry<br>Aumenta seu cap de carpentry para de 110 para 115.", 0x481, RewardType.PS115, PowerScroll, 15));
             RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 120 Carpentry<br>Aumenta seu cap de carpentry para de 115 para 120.", 0x481, RewardType.PS120, PowerScroll, 20));
 
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 105 Lumberjacking<br>Aumenta seu cap de Lumberjacking para de 100 para 105.", 0x481, RewardType.PS105, PowerScroll2, 5));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 110 Lumberjacking<br>Aumenta seu cap de Lumberjacking para de 105 para 110.", 0x481, RewardType.PS110, PowerScroll2, 10));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 115 Lumberjacking<br>Aumenta seu cap de Lumberjacking para de 110 para 115.", 0x481, RewardType.PS115, PowerScroll2, 15));
+            RewardCollection.Add(new BODCollectionItem(0x14F0, "PowerScroll 120 Lumberjacking<br>Aumenta seu cap de Lumberjacking para de 115 para 120.", 0x481, RewardType.PS120, PowerScroll2, 20));
 
         }
 
@@ -1312,7 +1316,18 @@ namespace Server.Engines.BulkOrders
             throw new InvalidOperationException();
         }
 
+
+        private static Item CreatePowerScroll2(int type)
+        {
+            if (type == 5 || type == 10 || type == 15 || type == 20)
+                return new PowerScroll(SkillName.Lumberjacking, 100 + type);
+
+            throw new InvalidOperationException();
+        }
+
+
         private static readonly ConstructCallback PowerScroll = new ConstructCallback(CreatePowerScroll);
+        private static readonly ConstructCallback PowerScroll2 = new ConstructCallback(CreatePowerScroll2);
 
         #region Constructors
 

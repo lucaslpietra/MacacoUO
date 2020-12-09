@@ -96,6 +96,7 @@ namespace Server.Engines.Craft
             this.AddCraft(typeof(SeaChart), 1044448, 1015232, 35.0, 95.0, typeof(BlankMap), 1044449, 1, 1044450);
             this.AddCraft(typeof(WorldMap), 1044448, 1015233, 39.5, 99.5, typeof(BlankMap), 1044449, 1, 1044450);
 
+            /*
             int index = AddCraft(typeof(TatteredWallMapSouth), 1044448, 1072891, 90.0, 150.0, typeof(TreasureMap), 1073494, 10, 1073495);
             AddRes(index, typeof(TreasureMap), 1073498, 5, 1073499);
             AddRes(index, typeof(TreasureMap), 1073500, 3, 1073501);
@@ -112,6 +113,7 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(UnabridgedAtlasOfEodon), 1156721, 1, 1156722);
 
             //AddRecipe(index, (int)CartographyRecipes.EodonianWallMap);
+            */
         }
 
         public int ConsumeTatteredWallMapRes(Mobile from, ConsumeType type)

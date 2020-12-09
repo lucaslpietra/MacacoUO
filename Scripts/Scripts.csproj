@@ -212,6 +212,12 @@
     <Compile Include="Fronteira\Pet Training\Bod\TameBodGump.cs" />
     <Compile Include="Fronteira\Pvm\EXP.cs" />
     <Compile Include="Fronteira\Pet Training\Bod\Tamavel.cs" />
+    <Compile Include="Fronteira\Recursos\ColetaTimer.cs" />
+    <Compile Include="Fronteira\Recursos\Recurso.cs" />
+    <Compile Include="Fronteira\RP\ClassesRP\CapClasse.cs" />
+    <Compile Include="Fronteira\RP\ClassesRP\ClasseRP.cs" />
+    <Compile Include="Fronteira\RP\ClassesRP\ControleClasses.cs" />
+    <Compile Include="Fronteira\RP\ClassesRP\Guerreiro.cs" />
     <Compile Include="Fronteira\RP\CmdContaRp.cs" />
     <Compile Include="Fronteira\RP\Ficharp.cs" />
     <Compile Include="Fronteira\RP\GumpCharRP.cs" />
@@ -616,6 +622,7 @@
     <Compile Include="Items\Functional\Pergaminhos\PergaminhoDeBencao.cs" />
     <Compile Include="Mobiles\AI\RunnerAI.cs" />
     <Compile Include="Mobiles\Normal\Lobster.cs" />
+    <Compile Include="Mobiles\Normal\Boura.cs" />
     <Compile Include="Mobiles\NPCs\Muambeiro.cs" />
     <Compile Include="Mobiles\NPCs\ComissionPlayerVendor.cs" />
     <Compile Include="Mobiles\NPCs\Taverneiro.cs" />
@@ -720,6 +727,7 @@
     <Compile Include="Regions\RPGuardedRegion.cs" />
     <Compile Include="Regions\Hall.cs" />
     <Compile Include="Regions\ColdRegion.cs" />
+    <Compile Include="Services\Harvest\Dificuldade.cs" />
     <Compile Include="Services\UltimaStore\Doou.cs" />
     <Compile Include="Services\UltimaStore\Codigos.cs" />
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlCast.cs" />

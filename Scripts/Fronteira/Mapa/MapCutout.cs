@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Server.Scripts.Custom.RelporMap
 {
+    /*
     public class RelPorMapList
     {
         public static readonly Point2D mOffset = new Point2D(400, 500);
@@ -82,4 +83,5 @@ namespace Server.Scripts.Custom.RelporMap
             mRect = rect;
         }
     }
+    */
 }

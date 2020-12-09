@@ -7,7 +7,7 @@ namespace Server.Mobiles
     public abstract class BaseShieldGuard : BaseCreature
     {
         public BaseShieldGuard()
-            : base(AIType.AI_Melee, FightMode.Aggressor, 14, 1, 0.8, 1.6)
+            : base(AIType.AI_Melee, FightMode.Closest, 14, 1, 0.1, 1.6)
         {
             this.InitStats(1000, 1000, 1000);
             this.Title = "o guarda";
@@ -104,6 +104,11 @@ namespace Server.Mobiles
                 return true;
 
             return base.HandlesOnSpeech(from);
+        }
+
+        public override bool IsEnemy(Mobile m)
+        {
+            return m.Murderer || m.Criminal;
         }
 
         public override void OnSpeech(SpeechEventArgs e)

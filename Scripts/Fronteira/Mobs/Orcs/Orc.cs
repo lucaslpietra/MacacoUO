@@ -18,17 +18,19 @@ namespace Server.Mobiles
             // olha a gambiarra... eh pq o bixo ainda nao tem backpack aqui :S
             Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
             {
-                this.Backpack.DropItem(new Bandage(Utility.Random(1) + 2));
-
-                switch (Utility.Random(5))
+                if(this.Alive && !this.Deleted && this.Backpack != null)
                 {
-                    case 0: this.Backpack.DropItem(new RecipeScroll((int)CookRecipesExp.Dough)); break;
-                    case 1: this.Backpack.DropItem(new RecipeScroll((int)CookRecipesExp.BreadLoaf)); break;
-                    case 2: this.Backpack.DropItem(new BreadLoaf()); break;
-                }
-                PackReg(2, 10);
-            });
+                    this.Backpack.DropItem(new Bandage(Utility.Random(1) + 2));
 
+                    switch (Utility.Random(5))
+                    {
+                        case 0: this.Backpack.DropItem(new RecipeScroll((int)CookRecipesExp.Dough)); break;
+                        case 1: this.Backpack.DropItem(new RecipeScroll((int)CookRecipesExp.BreadLoaf)); break;
+                        case 2: this.Backpack.DropItem(new BreadLoaf()); break;
+                    }
+                    PackReg(2, 10);
+                }
+            });
         }
 
         public BaseOrc(Serial serial)

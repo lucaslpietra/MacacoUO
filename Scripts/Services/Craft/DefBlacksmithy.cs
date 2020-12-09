@@ -406,7 +406,7 @@ namespace Server.Engines.Craft
             index = AddCraft(typeof(CloseHelm), 1011079, 1025128, 37.9, 87.9, typeof(IronIngot), 1044036, 15, 1044037);
             index = AddCraft(typeof(Helmet), 1011079, 1025130, 37.9, 87.9, typeof(IronIngot), 1044036, 15, 1044037);
             index = AddCraft(typeof(NorseHelm), 1011079, 1025134, 37.9, 87.9, typeof(IronIngot), 1044036, 15, 1044037);
-            index = AddCraft(typeof(PlateHelm), 1011079, 1025138, 62.6, 112.6, typeof(IronIngot), 1044036, 15, 1044037);
+            index = AddCraft(typeof(PlateHelm), 1011079, 1025138, 62.6, 100.0, typeof(IronIngot), 1044036, 15, 1044037);
 
             /*
             if (!Shard.WARSHARD)

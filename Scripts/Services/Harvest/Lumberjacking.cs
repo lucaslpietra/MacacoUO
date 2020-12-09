@@ -2,6 +2,7 @@ using System;
 using Server.Items;
 using Server.Network;
 using System.Linq;
+using Server.Services.Harvest;
 
 namespace Server.Engines.Harvest
 {
@@ -29,6 +30,13 @@ namespace Server.Engines.Harvest
                 return this.m_Definition;
             }
         }
+
+        public static Dificuldade CARVALHO = new Dificuldade(65, 90);
+        public static Dificuldade PINHO = new Dificuldade(80, 110);
+        public static Dificuldade MOGNO = new Dificuldade(90, 120);
+        public static Dificuldade EUCALIPTO = new Dificuldade(100, 140);
+        public static Dificuldade CARMESIN = new Dificuldade(101, 140);
+        public static Dificuldade GELO = new Dificuldade(105, 140);
 
         private Lumberjacking()
         {
@@ -79,12 +87,12 @@ namespace Server.Engines.Harvest
             res = new HarvestResource[]
             {
                     new HarvestResource(00.0, 00.0, 100.0, 1072540, typeof(Log)),
-                    new HarvestResource(65.0, 25.0, 105.0, 1072541, typeof(OakLog)),
-                    new HarvestResource(80.0, 40.0, 120.0, 1072542, typeof(AshLog)),
-                    new HarvestResource(95.0, 55.0, 135.0, 1072543, typeof(YewLog)),
-                    new HarvestResource(100.0, 60.0, 140.0, 1072544, typeof(HeartwoodLog)),
-                    new HarvestResource(101.0, 60.0, 140.0, 1072545, typeof(BloodwoodLog)),
-                    new HarvestResource(105.0, 60.0, 140.0, 1072546, typeof(FrostwoodLog)),
+                    new HarvestResource(CARVALHO.Required, CARVALHO.Min, CARVALHO.Max, 1072541, typeof(OakLog)),
+                    new HarvestResource(PINHO.Required, PINHO.Min, PINHO.Max, 1072542, typeof(AshLog)),
+                    new HarvestResource(MOGNO.Required, MOGNO.Min, MOGNO.Max, 1072543, typeof(YewLog)),
+                    new HarvestResource(EUCALIPTO.Required, EUCALIPTO.Min, EUCALIPTO.Max, 1072544, typeof(HeartwoodLog)),
+                    new HarvestResource(CARMESIN.Required, CARMESIN.Min, CARMESIN.Max, 1072545, typeof(BloodwoodLog)),
+                    new HarvestResource(GELO.Required, GELO.Min, GELO.Max, 1072546, typeof(FrostwoodLog)),
             };
 
             veins = new HarvestVein[]
@@ -96,16 +104,6 @@ namespace Server.Engines.Harvest
                     new HarvestVein(03.0, 0.5, res[4], res[0]), // Heartwood
                     new HarvestVein(02.0, 0.5, res[5], res[0]), // Bloodwood
                     new HarvestVein(01.0, 0.5, res[6], res[0]), // Frostwood
-
-                    /*
-                    new HarvestVein(49.0, 0.0, res[0], null), // Ordinary Logs
-                    new HarvestVein(30.0, 0.5, res[1], res[0]), // Oak
-                    new HarvestVein(10.0, 0.5, res[2], res[0]), // Ash
-                    new HarvestVein(06.0, 0.5, res[3], res[0]), // Yew              //Alterado Alfa
-                    new HarvestVein(05.0, 0.5, res[4], res[0]), // Heartwood
-                    new HarvestVein(00.0, 0.5, res[5], res[0]), // Bloodwood
-                    new HarvestVein(00.0, 0.5, res[6], res[0]), // Frostwood
-                    */
             };
 
             lumber.BonusResources = new BonusHarvestResource[]
@@ -130,6 +128,8 @@ namespace Server.Engines.Harvest
             #endregion
         }
 
+
+
         public static Type Converte(Type type)
         {
             var newType = type;
@@ -149,6 +149,7 @@ namespace Server.Engines.Harvest
                 newType = typeof(FrostwoodBoard);
             return newType;
         }
+
 
         public override Type MutateType(Type type, Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc, HarvestResource resource)
         {

@@ -1,5 +1,6 @@
 using System;
 using Server;
+using Server.Scripts.Custom.RelporMap;
 using Server.Ziden;
 
 namespace Server.Items
@@ -30,7 +31,7 @@ namespace Server.Items
 
         public override void SetDisplay(int x, int y)
         {
-            mMapCutout = ZMapList.WorldMapCutout;
+            mMapCutout = RelPorMapList.WorldMapCutout;
         }
         public override string DefaultName { get { return "Mapa Mundi"; } } // world map
 

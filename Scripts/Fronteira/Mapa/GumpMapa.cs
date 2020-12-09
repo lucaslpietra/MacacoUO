@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Server.Commands;
 using Server.Network;
+using Server.Scripts.Custom.RelporMap;
 using Server.Ziden;
 
 namespace Server.Gumps
@@ -17,7 +18,7 @@ namespace Server.Gumps
 
         public static void CmdMapa(CommandEventArgs e)
         {
-            e.Mobile.SendGump(new ZMapGump(e.Mobile, ZMapList.WorldMapCutout, new List<Point2D>()));
+            e.Mobile.SendGump(new ZMapGump(e.Mobile, RelPorMapList.WorldMapCutout, new List<Point2D>()));
         }
     }
 
