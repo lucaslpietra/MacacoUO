@@ -249,10 +249,6 @@ namespace Server.Fronteira.Recursos
                 }
                 if (folha != 0)
                 {
-                    if (this.timer != null)
-                    {
-                        this.timer.Stop();
-                    }
                     this.timer = Timer.DelayCall(TimeSpan.FromSeconds(0.1), () =>
                     {
                         if (this.Deleted)
