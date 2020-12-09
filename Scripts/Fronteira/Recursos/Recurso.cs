@@ -184,6 +184,12 @@ namespace Server.Fronteira.Recursos
             {
                 _folha.Delete();
                 _folha = null;
+            } else
+            {
+                if (this.timer != null)
+                {
+                    this.timer.Stop();
+                }
             }
 
             if (CraftResources.GetType(_resource) == CraftResourceType.Metal)
@@ -214,7 +220,7 @@ namespace Server.Fronteira.Recursos
                 }
                 if (folha != 0)
                 {
-                    Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+                    this.timer = Timer.DelayCall(TimeSpan.FromSeconds(0.1), () =>
                     {
                         if (this.Deleted)
                             return;
@@ -224,11 +230,14 @@ namespace Server.Fronteira.Recursos
                         _folha.Hue = this.Hue;
                         _folha.Movable = false;
                         _folha.MoveToWorld(Location, Map);
+                        this.timer = null;
                     });
                 }
                 this.ItemID = caule;
             }
         }
+
+        Timer timer;
 
         public Item GetItem()
         {
