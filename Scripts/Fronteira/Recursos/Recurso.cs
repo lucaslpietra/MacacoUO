@@ -12,6 +12,8 @@ namespace Server.Fronteira.Recursos
         private CraftResource _resource;
         private ItemQuality _quality;
 
+        private int coleta = 0;
+
         public Mobile Coletando = null;
 
         [Constructable]
@@ -134,23 +136,27 @@ namespace Server.Fronteira.Recursos
                     return;
                 }
             }
-
-            if (from.Skills[skill].Value < diff.Required - 10)
+            coleta++;
+            if (coleta==3)
             {
-                if(from.Skills[skill].Value < 65)
-                    SkillCheck.Gain(from, from.Skills[skill], 10);
-                else if (from.Skills[skill].Value < 75)
-                    SkillCheck.Gain(from, from.Skills[skill], 8);
-                else if (from.Skills[skill].Value < 85)
-                    SkillCheck.Gain(from, from.Skills[skill], 5);
-                else if (from.Skills[skill].Value < 95)
-                    SkillCheck.Gain(from, from.Skills[skill], 2);
+                if (from.Skills[skill].Value < diff.Required - 10)
+                {
+                    if (from.Skills[skill].Value < 65)
+                        SkillCheck.Gain(from, from.Skills[skill], 10);
+                    else if (from.Skills[skill].Value < 75)
+                        SkillCheck.Gain(from, from.Skills[skill], 8);
+                    else if (from.Skills[skill].Value < 85)
+                        SkillCheck.Gain(from, from.Skills[skill], 5);
+                    else if (from.Skills[skill].Value < 95)
+                        SkillCheck.Gain(from, from.Skills[skill], 2);
+                    else
+                        SkillCheck.Gain(from, from.Skills[skill], 1);
+                }
                 else
-                    SkillCheck.Gain(from, from.Skills[skill], 1);
-            } else
-            {
-                if(Utility.RandomDouble() < 0.05)
-                    SkillCheck.Gain(from, from.Skills[skill], 1);
+                {
+                    if (Utility.RandomDouble() < 0.05)
+                        SkillCheck.Gain(from, from.Skills[skill], 1);
+                }
             }
 
             if (!from.PlaceInBackpack(i))
@@ -158,11 +164,15 @@ namespace Server.Fronteira.Recursos
 
             from.SendMessage("Voce coletou o recurso");
 
-            Delete();
-            if (_folha != null)
+            if(coleta==3)
             {
-                _folha.Delete();
+                Delete();
+                if (_folha != null)
+                {
+                    _folha.Delete();
+                }
             }
+        
         }
 
         public bool Metal()
@@ -220,6 +230,10 @@ namespace Server.Fronteira.Recursos
                 }
                 if (folha != 0)
                 {
+                    if (this.timer != null)
+                    {
+                        this.timer.Stop();
+                    }
                     this.timer = Timer.DelayCall(TimeSpan.FromSeconds(0.1), () =>
                     {
                         if (this.Deleted)
@@ -262,7 +276,7 @@ namespace Server.Fronteira.Recursos
             return null;
         }
 
-        public int Quantidade { get { return Metal() ? 8 : 15 * (1 + (int)_quality) + Utility.Random(Metal() ? 8 : 15 * (1 + (int)_quality)); } }
+        public int Quantidade { get { return 1 + (int)_quality + Utility.Random(2); } }
 
         public override void OnDoubleClick(Mobile from)
         {
