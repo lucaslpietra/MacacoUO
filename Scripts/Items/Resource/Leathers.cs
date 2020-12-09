@@ -80,7 +80,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 2: // Reset from Resource System
                     this.m_Resource = this.DefaultResource;
@@ -115,12 +115,7 @@ namespace Server.Items
 
             if (!CraftResources.IsStandard(this.m_Resource))
             {
-                int num = CraftResources.GetLocalizationNumber(this.m_Resource);
-
-                if (num > 0)
-                    list.Add(num);
-                else
-                    list.Add(CraftResources.GetName(this.m_Resource));
+                list.Add(CraftResources.GetName(this.m_Resource));
             }
         }
     }

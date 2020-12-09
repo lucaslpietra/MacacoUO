@@ -39,12 +39,7 @@ namespace Server.Items
 
             if (!CraftResources.IsStandard(this.Resource))
             {
-                int num = CraftResources.GetLocalizationNumber(this.Resource);
-
-                if (num > 0)
-                    v = String.Format("#{0}", num);
-                else
-                    v = CraftResources.GetName(this.Resource);
+                v = CraftResources.GetName(this.Resource);
             }
 
             list.Add(1061119, v); // ~1_LEATHER_TYPE~ runic sewing kit
@@ -56,12 +51,7 @@ namespace Server.Items
 
             if (!CraftResources.IsStandard(this.Resource))
             {
-                int num = CraftResources.GetLocalizationNumber(this.Resource);
-
-                if (num > 0)
-                    v = String.Format("#{0}", num);
-                else
-                    v = CraftResources.GetName(this.Resource);
+                v = CraftResources.GetName(this.Resource);
             }
 
             this.LabelTo(from, 1061119, v); // ~1_LEATHER_TYPE~ runic sewing kit

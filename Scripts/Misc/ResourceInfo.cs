@@ -859,11 +859,14 @@ namespace Server.Items
         /// <summary>
         /// Returns the <see cref="CraftResourceInfo.Number"/> property of '<paramref name="resource"/>' -or- 0 if an invalid resource was specified.
         /// </summary>
-        public static int GetLocalizationNumber(CraftResource resource)
+        public static string GetLocalizationNumber(CraftResource resource)
         {
+            return resource.ToString();
+            /*
             CraftResourceInfo info = GetInfo(resource);
 
             return (info == null ? 0 : info.Number);
+            */
         }
 
         /// <summary>

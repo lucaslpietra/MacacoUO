@@ -59,12 +59,7 @@ namespace Server.Items
 
             if (!CraftResources.IsStandard(this.Resource))
             {
-                int num = CraftResources.GetLocalizationNumber(this.Resource);
-
-                if (num > 0)
-                    list.Add(num);
-                else
-                    list.Add(CraftResources.GetName(this.Resource));
+                list.Add(CraftResources.GetName(this.Resource));
             }
         }
 

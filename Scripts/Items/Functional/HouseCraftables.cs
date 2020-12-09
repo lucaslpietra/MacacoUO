@@ -184,7 +184,7 @@ namespace Server.Items
         {
             if (!CraftResources.IsStandard(_Resource))
             {
-                list.Add(1050039, String.Format("#{0}\t{1}", CraftResources.GetLocalizationNumber(_Resource).ToString(), GetNameString())); // ~1_NUMBER~ ~2_ITEMNAME~
+                list.Add(1050039, String.Format("{1} de \t{0}", CraftResources.GetLocalizationNumber(_Resource).ToString(), GetNameString())); // ~1_NUMBER~ ~2_ITEMNAME~
             }
             else
             {
@@ -716,7 +716,7 @@ namespace Server.Items
         {
             if (!CraftResources.IsStandard(_Resource))
             {
-                list.Add(1050039, String.Format("#{0}\t{1}", CraftResources.GetLocalizationNumber(_Resource).ToString(), GetNameString())); // ~1_NUMBER~ ~2_ITEMNAME~
+                list.Add(1050039, String.Format("{1} de \t{0}", CraftResources.GetLocalizationNumber(_Resource).ToString(), GetNameString())); // ~1_NUMBER~ ~2_ITEMNAME~
             }
             else
             {
@@ -901,7 +901,7 @@ namespace Server.Items
         {
             if (!CraftResources.IsStandard(_Resource))
             {
-                list.Add(1050039, String.Format("#{0}\t{1}", CraftResources.GetLocalizationNumber(_Resource).ToString(), GetNameString())); // ~1_NUMBER~ ~2_ITEMNAME~
+                list.Add(1050039, String.Format("{1} de \t{0}", CraftResources.GetLocalizationNumber(_Resource).ToString(), GetNameString())); // ~1_NUMBER~ ~2_ITEMNAME~
             }
             else
             {
