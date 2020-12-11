@@ -1527,7 +1527,7 @@ namespace Server
 				ContextMenu(e);
 			}
 		}
-
+        
 		public static void InvokeWorldBroadcast(WorldBroadcastEventArgs e)
 		{
 			if (WorldBroadcast != null)

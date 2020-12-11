@@ -1227,6 +1227,12 @@ namespace Server.Mobiles
             if (dropped is BodTamer)
             {
                 var bod = dropped as BodTamer;
+
+                if(bod.BoundTo != null && bod.BoundTo != from.Name)
+                {
+                    return false;
+                }
+
                 if (bod.Quantidade > bod.QuantidadeAtual)
                 {
                     from.SendMessage("Esta ordem nao esta completa...");

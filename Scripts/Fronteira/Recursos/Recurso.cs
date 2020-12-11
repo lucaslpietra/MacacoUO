@@ -136,26 +136,44 @@ namespace Server.Fronteira.Recursos
                     return;
                 }
             }
+            ushort exp = 10;
+
             coleta++;
             if (coleta==3)
             {
-                if (from.Skills[skill].Value < diff.Required - 10)
+                exp += 90;
+                var dif = Math.Abs(from.Skills[skill].Value - diff.Required);
+                if (dif < 30)
                 {
                     if (from.Skills[skill].Value < 65)
-                        SkillCheck.Gain(from, from.Skills[skill], 10);
+                        exp += 10000;
                     else if (from.Skills[skill].Value < 75)
-                        SkillCheck.Gain(from, from.Skills[skill], 8);
+                        exp += 8000;
                     else if (from.Skills[skill].Value < 85)
-                        SkillCheck.Gain(from, from.Skills[skill], 5);
+                        exp += 4000;
                     else if (from.Skills[skill].Value < 95)
-                        SkillCheck.Gain(from, from.Skills[skill], 2);
-                    else
-                        SkillCheck.Gain(from, from.Skills[skill], 1);
+                        exp += 2000;
+                    else if (from.Skills[skill].Value < 110)
+                        exp += 1100;
+                    else 
+                        exp += 800;
+                }
+            }
+
+            while (exp > 0)
+            {
+                if (exp >= 1000)
+                {
+                    exp -= 1000;
+                    SkillCheck.Gain(from, from.Skills[skill]);
                 }
                 else
                 {
-                    if (Utility.RandomDouble() < 0.05)
-                        SkillCheck.Gain(from, from.Skills[skill], 1);
+                    if (from.Skills[skill].IncreaseExp(exp))
+                    {
+                        SkillCheck.Gain(from, from.Skills[skill]);
+                    }
+                    exp = 0;
                 }
             }
 
@@ -165,7 +183,7 @@ namespace Server.Fronteira.Recursos
             from.SendMessage("Voce coletou o recurso");
 
             var tool = from.Weapon as BaseWeapon;
-            if (tool is IUsesRemaining && (tool is BaseHarvestTool || tool is Pickaxe || tool is SturdyPickaxe || tool is GargoylesPickaxe || Siege.SiegeShard))
+            if (tool is IUsesRemaining && (tool is BaseAxe || tool is Pickaxe || tool is SturdyPickaxe || tool is GargoylesPickaxe || Siege.SiegeShard))
             {
                 IUsesRemaining toolWithUses = (IUsesRemaining)tool;
 

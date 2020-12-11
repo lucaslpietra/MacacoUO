@@ -7,13 +7,24 @@ namespace Server.Items
     {
         public override int LabelNumber { get { return 1152265; } } // mysterious tunnel       
         private Point3D m_PointDest;
-        
+        private Map m_Map;
+
         [CommandProperty(AccessLevel.GameMaster)]
         public Point3D PointDest
         {
             get { return m_PointDest; }
             set { m_PointDest = value; }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Map MapDest
+        {
+            get { return m_Map; }
+            set { m_Map = value; }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public string Mensagem { get; set; }
 
         [Constructable]
         public MysteriousTunnel()
@@ -32,21 +43,27 @@ namespace Server.Items
         {
             if (m is PlayerMobile)
             {
+                if (m_Map == null || m_Map == Map.Internal)
+                    m_Map = m.Map;
+
                 Point3D loc = PointDest;
-                m.MoveToWorld(loc, this.Map);
-                BaseCreature.TeleportPets(m, loc, this.Map);
-                m.SendMessage("Voce entrou no tunel");
+                m.MoveToWorld(loc, m_Map);
+                BaseCreature.TeleportPets(m, loc, m_Map);
+                if (Mensagem == null)
+                    m.SendMessage("Voce entrou no tunel");
+                else
+                    m.SendMessage(Mensagem);
             }
         }
-
-      
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
 
             writer.Write(this.m_PointDest);
+            writer.Write(this.m_Map);
+            writer.Write(Mensagem);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -55,6 +72,11 @@ namespace Server.Items
             int version = reader.ReadInt();
 
             this.m_PointDest = reader.ReadPoint3D();
+            if(version >= 1)
+            {
+                this.m_Map = reader.ReadMap();
+                Mensagem = reader.ReadString();
+            }
         }
     }
 }

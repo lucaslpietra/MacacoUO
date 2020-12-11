@@ -110,6 +110,10 @@ namespace Server.Mobiles
         {
             return m.Murderer || m.Criminal;
         }
+        
+        public override bool Murderer {  get { return false; } }
+
+        public override bool AlwaysMurderer { get { return false; } }
 
         public override void OnSpeech(SpeechEventArgs e)
         {

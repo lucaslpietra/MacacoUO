@@ -103,7 +103,9 @@ namespace Server.Engines.BulkOrders
         {
             var skill = tamer.Skills.AnimalTaming.Value;
             var tamavel = Tamavel.Sorteia(skill);
-            return new BodTamer(tamavel.Item1, tamavel.Item2);
+            var bod = new BodTamer(tamavel.Item1, tamavel.Item2);
+            bod.BoundTo = tamer.Name;
+            return bod;
         }
 
         public static void EntregaBodTamer(PlayerMobile from, BaseVendor vendor)

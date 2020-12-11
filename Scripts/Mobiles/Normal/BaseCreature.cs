@@ -4264,7 +4264,7 @@ namespace Server.Mobiles
         public bool BardProvoked { get { return m_bBardProvoked; } set { m_bBardProvoked = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool BardPacified { get { return m_bBardPacified; } set { m_bBardPacified = value; } }
+        public bool BardPacified { get { return m_bBardPacified; } set { m_bBardPacified = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile BardMaster { get { return m_bBardMaster; } set { m_bBardMaster = value; } }
@@ -6353,6 +6353,12 @@ namespace Server.Mobiles
             {
                 list.Add(EngravedText); // <BASEFONT COLOR=#668cff>Branded: ~1_VAL~<BASEFONT COLOR=#FFFFFF>
             }
+            
+            if(BardPacified)
+            {
+                var tempo = (BardEndTime - DateTime.UtcNow).TotalSeconds;
+                list.Add("Pacificado por " + (int)tempo + " segundos");
+            }
 
             if (DisplayWeight)
             {
@@ -8404,8 +8410,32 @@ namespace Server.Mobiles
 
         public void Pacify(Mobile master, DateTime endtime)
         {
+            if (peaceTimer != null && peaceTimer.Running)
+                peaceTimer.Stop();
+
             BardPacified = true;
             BardEndTime = endtime;
+
+            var seconds = (endtime - DateTime.UtcNow).TotalSeconds;
+            peaceTimer = new PeaceTime(seconds, this);
+            peaceTimer.Start();
+        }
+
+        Timer peaceTimer;
+
+        private class PeaceTime : Timer
+        {
+            BaseCreature creature;
+
+            public PeaceTime(double secs, BaseCreature c) : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), (int)secs)
+            {
+                creature = c;
+            }
+
+            protected override void OnTick()
+            {
+                creature.InvalidateProperties();
+            }
         }
 
         public override Mobile GetDamageMaster(Mobile damagee)
