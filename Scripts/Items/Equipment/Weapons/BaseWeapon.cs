@@ -21,6 +21,7 @@ using Server.Spells.Sixth;
 using Server.Spells.Spellweaving;
 using Server.Spells.SkillMasteries;
 using Server.Gumps;
+using Server.Fronteira.Talentos;
 #endregion
 
 namespace Server.Items
@@ -1790,6 +1791,21 @@ namespace Server.Items
 
             canSwing = diffZ < 10;
 
+            if(attacker.RP && attacker.Mounted && attacker is PlayerMobile && ((PlayerMobile)attacker).Talentos.GetNivel(Talento.Hipismo) <= 1)
+            {
+                if(Utility.RandomDouble() < 0.05)
+                {
+                    attacker.Mount.Rider = null;
+                    attacker.SendMessage("Voce se desequilibrou da sua montaria ao atacar");
+                    AOS.Damage(attacker, Utility.Random(5, 10));
+                    attacker.PlayHurtSound();
+                    attacker.PlayDamagedAnimation();
+                    attacker.Paralyze(TimeSpan.FromSeconds(1));
+                }
+            }
+
+        
+
             if (Core.AOS)
             {
                 canSwing = (!attacker.Paralyzed && !attacker.Frozen);
@@ -2487,6 +2503,23 @@ namespace Server.Items
             WeaponAbility a = WeaponAbility.GetCurrentAbility(attacker);
             SpecialMove move = SpecialMove.GetCurrentMove(attacker);
 
+            if (damageable is PlayerMobile)
+            {
+                var tomou = damageable as PlayerMobile;
+                if (tomou.RP && tomou.Mounted && tomou.Talentos.GetNivel(Talento.Hipismo) <= 2)
+                {
+                    if (Utility.RandomDouble() < 0.3)
+                    {
+                        tomou.Mount.Rider = null;
+                        tomou.SendMessage("Voce se desequilibrou da sua montaria ao receber o golpe");
+                        AOS.Damage(tomou, Utility.Random(5, 10));
+                        tomou.PlayHurtSound();
+                        tomou.PlayDamagedAnimation();
+                        tomou.Paralyze(TimeSpan.FromSeconds(1));
+                    }
+                }
+            }
+        
             bool ranged = this is BaseRanged;
             int phys, fire, cold, pois, nrgy, chaos, direct;
 

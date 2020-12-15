@@ -12,10 +12,11 @@ public class AntiParaPotion : BasePotion
     }
 
     [Constructable]
-    public AntiParaPotion(): base(3849, PotionEffect.AntiParalize)
+    public AntiParaPotion(): base(3836, PotionEffect.AntiParalize)
     {
         Name = "Pocao Anti Paralizia";
-        Hue = 2543;
+        Hue = 2550;
+        Stackable = true;
     }
 
     public AntiParaPotion(Serial serial)

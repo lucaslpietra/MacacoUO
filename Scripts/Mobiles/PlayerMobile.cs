@@ -53,6 +53,7 @@ using Server.Engines.TexasHoldem;
 using Server.Ziden;
 using Server.Commands;
 using Server.Fronteira.RP;
+using Server.Fronteira.Talentos;
 #endregion
 
 namespace Server.Mobiles
@@ -136,6 +137,8 @@ namespace Server.Mobiles
         public WispGuia Wisp = null;
         public int Anuncios = 0;
 
+        public Talentos Talentos = new Talentos();
+
         [CommandProperty(AccessLevel.GameMaster)]
         public int Vidas { get; set; }
 
@@ -148,6 +151,16 @@ namespace Server.Mobiles
             set
             {
                 FichaRP.Patente = value;
+                if(value==PatenteRP.Desertor)
+                {
+                    SendMessage(38, "Voce agora e um desertor, e nao tera mais protecao");
+                    PlaySound(0x5B3);
+                    return;
+                } else
+                {
+                    SendMessage(78, "Sua patente agora eh "+value.ToString());
+                    PlaySound(0x5B5);
+                }
             }
         }
 
@@ -5169,6 +5182,9 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 47:
+                    Talentos.Deserialize(reader);
+                    goto case 46;
                 case 46:
                     FichaRP.Deserialize(reader);
                     goto case 45;
@@ -5647,7 +5663,8 @@ namespace Server.Mobiles
             CheckKillDecay();
             CheckAtrophies(this);
             base.Serialize(writer);
-            writer.Write(46); // version
+            writer.Write(47); // version
+            Talentos.Serialize(writer);
             FichaRP.Serialize(writer);
             writer.Write(Vidas);
             writer.Write(Famoso);
@@ -6175,6 +6192,19 @@ namespace Server.Mobiles
             if (Party != null && NetState != null)
             {
                 Waypoints.UpdateToParty(this);
+            }
+
+            if(RP && Mounted && Talentos.GetNivel(Talento.Hipismo) <= 1 && (d & Direction.Running) != 0)
+            {
+                if(Utility.RandomDouble() < 0.02)
+                {
+                    this.Mount.Rider = null;
+                    SendMessage("Voce caiu da sua montaria");
+                    AOS.Damage(this, Utility.Random(5, 10), DamageType.Melee);
+                    this.PlayHurtSound();
+                    this.PlayDamagedAnimation();
+                    this.Paralyze(TimeSpan.FromSeconds(1));
+                }
             }
 
             if (PokerGame != null)

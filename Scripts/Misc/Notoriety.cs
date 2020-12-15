@@ -117,6 +117,11 @@ namespace Server.Misc
             return CheckBeneficialStatus(GetGuildStatus(from), GetGuildStatus(target));
         }
 
+        private static bool ProtecaoRP(PlayerMobile from)
+        {
+            return from != null && from.RP && from.PatenteRP != Fronteira.RP.PatenteRP.Desertor;
+        }
+
         public static bool Mobile_AllowHarmful(Mobile from, IDamageable damageable)
         {
             var target = damageable as Mobile;
@@ -134,7 +139,7 @@ namespace Server.Misc
 
             if (from != null && !from.Player && !(bc != null && bc.GetMaster() != null && bc.GetMaster().IsPlayer()))
             {
-                if (targPlayer != null && targPlayer.RP && bc!=null && bc.GetMaster() != null && !bc.GetMaster().RP)
+                if (targPlayer != null && ProtecaoRP(targPlayer) && bc!=null && bc.GetMaster() != null && !bc.GetMaster().RP)
                     return false;
 
                 if (!CheckAggressor(from.Aggressors, target) && !CheckAggressed(from.Aggressed, target) && target is PlayerMobile &&
@@ -142,11 +147,11 @@ namespace Server.Misc
                     return false;
             }
 
-            // PVP
+            // PVPs
             if (from.Player && targPlayer != null)
             {
                 var targ = targPlayer as PlayerMobile;
-                if (targ.RP != from.RP)
+                if (targ.RP != from.RP && ProtecaoRP(targ))
                 {
                     from.SendMessage("Voce nao pode atacar um jogador com o modo de jogo RP difetente do seu.");
                     return false;
@@ -156,7 +161,7 @@ namespace Server.Misc
             if(from.Player && target is BaseCreature)
             {
                 var master = ((BaseCreature)target).ControlMaster;
-                if (!from.RP && master != null && master.RP)
+                if (!from.RP && master != null && master.RP && ProtecaoRP(master as PlayerMobile))
                     return false;
             }
 

@@ -71,6 +71,7 @@ namespace Server.Gumps
                         from.MoveToWorld(CharRP, Map.Felucca);
                         from.SendMessage("Voce criou um personagem RP");
                         from.RP = true;
+                        from.PatenteRP = Fronteira.RP.PatenteRP.Aspirante;
                         from.Young = false;
                         //var acc = from.Account as Account;
                         //acc.RP = false;

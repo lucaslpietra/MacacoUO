@@ -10,6 +10,7 @@ using Server.ContextMenus;
 using Server.Regions;
 using Server.Multis;
 using Server.Engines.CannedEvil;
+using Server.Misc;
 
 namespace Server.Items
 {
@@ -783,6 +784,7 @@ namespace Server.Items
                     m_From.EndAction(typeof(TreasureMap));
 
                     m_Chest.Temporary = false;
+                    m_Chest.Movable = true;
                     m_TreasureMap.Completed = true;
                     m_TreasureMap.CompletedBy = m_From;
 
@@ -902,6 +904,8 @@ namespace Server.Items
 
             from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 503019); // You successfully decode a treasure map!
             Decoder = from;
+
+            SkillCheck.Gain(from, from.Skills.Cartography, 5);
 
             PlayerMobile player = from as PlayerMobile;
             //if (player != null)

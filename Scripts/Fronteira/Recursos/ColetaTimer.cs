@@ -15,8 +15,7 @@ namespace Server.Fronteira.Recursos
 
         public ColetaTimer(Recurso s, Mobile f) : base(TimeSpan.FromSeconds(1.5), TimeSpan.FromSeconds(1.5), 4)
         {
-
-            if(s.Coletando != null && s.Coletando != f)
+            if(s.Coletando != null)
             {
                 return;
             }
@@ -49,11 +48,26 @@ namespace Server.Fronteira.Recursos
                 return;
 
             n++;
-            if (!_from.Alive || _from.GetDistanceToSqrt(_recurso) > 3)
+            if(_recurso == null || _from == null)
+            {
+                Stop();
                 return;
+            }
+
+            if (!_from.Alive || _from.GetDistanceToSqrt(_recurso) > 3)
+            {
+                _recurso.Coletando = null;
+                Stop();
+                return;
+            }
 
             if (_recurso == null || _recurso.Deleted || (_recurso.Coletando != null && _recurso.Coletando != _from))
+            {
+                if(_recurso != null)
+                    _recurso.Coletando = null;
+                Stop();
                 return;
+            }
 
             Anim();
             if(n==3)

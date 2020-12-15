@@ -14,6 +14,12 @@ namespace Server.Gumps
         {
             int totalGold = Banker.GetBalance(from); //from.TotalGold;
 
+            if(!from.IsCooldown("cruz"))
+            {
+                from.SetCooldown("cruz");
+                from.SendMessage(78, "Voce pode doar dinheiro em ankhs para usar magias de Chivalry");
+            }
+
             if (offer > totalGold)
                 offer = totalGold;
             else if (offer < 0)
@@ -32,7 +38,8 @@ namespace Server.Gumps
             AddLabel(87, 274, 53, total);
 
             AddLabel(137, 274, 0, "Doar:");
-            AddLabel(172, 274, 53, offer.ToString());
+            //AddLabel(172, 274, 53, offer.ToString());
+            AddTextEntry(172, 274, 100, 20, 53, 0, offer.ToString());
 
             AddButton(105, 230, 5220, 5220, 2, GumpButtonType.Reply, 0);
             AddButton(113, 230, 5222, 5222, 2, GumpButtonType.Reply, 0);
@@ -57,6 +64,16 @@ namespace Server.Gumps
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
+            int offer = 0;
+            var txt = info.GetTextEntry(0).Text;
+            if (Shard.DebugEnabled)
+                Shard.Debug("QTD Doar: " + txt);
+            if (txt != null && int.TryParse(txt, out offer))
+            {
+                Shard.Debug("Doando oq foi digitado");
+                m_Offer = offer;
+            }
+
             switch ( info.ButtonID )
             {
                 case 0:
@@ -70,8 +87,6 @@ namespace Server.Gumps
                 case 3:
                 case 4:
                     {
-                        int offer = 0;
-
                         switch ( info.ButtonID )
                         {
                             case 1:
@@ -106,7 +121,7 @@ namespace Server.Gumps
                         if (m_Offer <= 0)
                         {
                             // You have decided to tithe no gold to the shrine.
-                            m_From.SendMessage("Voce decidiu nao doar nada");
+                            m_From.SendMessage("Voce preferiu nao doar nada");
                             break;
                         }
 

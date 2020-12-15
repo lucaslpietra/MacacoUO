@@ -77,9 +77,8 @@ namespace Server.Mobiles
                     dMin = mob.DamageMin;
                     dMax = mob.DamageMax;
                     hue = mob.Hue;
-                    mob.SetDamage(dMin * 7, dMax * 7);
-                    mob.DamageMin = Math.Min(70, mob.DamageMin);
-                    mob.DamageMax = Math.Min(100, mob.DamageMax);
+                    mob.DamageMin = Math.Min(40, mob.DamageMin * 3);
+                    mob.DamageMax = Math.Min(70, mob.DamageMax * 3);
                     mob.SetSkill(SkillName.Wrestling, 300);
                     mob.PublicOverheadMessage(Network.MessageType.Emote, 32, false, "* fica enfurecido *");
                   

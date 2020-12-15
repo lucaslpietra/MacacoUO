@@ -490,8 +490,20 @@ namespace Server.SkillHandlers
                     if (stolen is AddonComponent)
                     {
                         BaseAddon addon = ((AddonComponent)stolen).Addon as BaseAddon;
-                        from.AddToBackpack(addon.Deed);
-                        addon.Delete();
+                        if(addon != null)
+                        {
+                            if(addon.Deed != null)
+                                from.AddToBackpack(addon.Deed);
+                            else
+                            {
+                                addon.Movable = true;
+                                from.AddToBackpack(addon);
+                            }
+                            addon.Delete();
+                        } else
+                        {
+                            from.SendMessage(38, "Erro - reportar como reproduzir pra staff");
+                        }
                     }
                     else
                     {

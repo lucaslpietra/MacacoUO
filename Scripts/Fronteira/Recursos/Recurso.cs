@@ -28,7 +28,9 @@ namespace Server.Fronteira.Recursos
             Constroi(type);
         }
 
-        public Recurso(Serial s) : base(s) { }
+        public Recurso(Serial s) : base(s) {
+            
+        }
 
 
         public void Constroi(CraftResourceType type)
@@ -39,6 +41,13 @@ namespace Server.Fronteira.Recursos
             else
                 Resource = MadeiraRandom();
             Movable = false;
+            Timer.DelayCall(TimeSpan.FromHours(4), () =>
+            {
+                if(!this.Deleted && this.Coletando == null)
+                {
+                    this.Delete();
+                }
+            });
         }
 
         public static ItemQuality QualidadeRandom()
@@ -136,27 +145,27 @@ namespace Server.Fronteira.Recursos
                     return;
                 }
             }
-            ushort exp = 10;
+            ushort exp = 1;
 
             coleta++;
             if (coleta==3)
             {
-                exp += 90;
+                exp += 99;
                 var dif = Math.Abs(from.Skills[skill].Value - diff.Required);
                 if (dif < 30)
                 {
                     if (from.Skills[skill].Value < 65)
                         exp += 10000;
                     else if (from.Skills[skill].Value < 75)
-                        exp += 8000;
+                        exp += 5000;
                     else if (from.Skills[skill].Value < 85)
-                        exp += 4000;
-                    else if (from.Skills[skill].Value < 95)
                         exp += 2000;
+                    else if (from.Skills[skill].Value < 95)
+                        exp += 1000;
                     else if (from.Skills[skill].Value < 110)
-                        exp += 1100;
-                    else 
                         exp += 800;
+                    else 
+                        exp += 500;
                 }
             }
 
@@ -381,6 +390,13 @@ namespace Server.Fronteira.Recursos
             _resource = (CraftResource)reader.ReadInt();
             _quality = (ItemQuality)reader.ReadInt();
             _folha = reader.ReadItem();
+            Timer.DelayCall(TimeSpan.FromHours(4), () =>
+            {
+                if (!this.Deleted && this.Coletando == null)
+                {
+                    this.Delete();
+                }
+            });
         }
     }
 }

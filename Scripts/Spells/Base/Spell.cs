@@ -22,6 +22,7 @@ using System.Linq;
 using Server.Spells.Fifth;
 using Server.Spells.Sixth;
 using Server.Misc.Custom;
+using Server.Fronteira.Talentos;
 #endregion
 
 namespace Server.Spells
@@ -981,13 +982,29 @@ namespace Server.Spells
             }
             */
 
-            if(Caster.Meditating)
+
+
+            if(this.Caster.Meditating)
             {
-                Caster.Meditating = false;
-                Caster.SendMessage(12, "Você parou de meditar");
+                this.Caster.Meditating = false;
+                this.Caster.SendMessage(12, "Você parou de meditar");
             }
             
             m_StartCastTime = Core.TickCount;
+
+            if (Caster.RP && Caster.Mounted && Caster is PlayerMobile && ((PlayerMobile)Caster).Talentos.GetNivel(Talento.Hipismo) <= 1)
+            {
+                if (Utility.RandomDouble() < 0.05)
+                {
+                    Caster.Mount.Rider = null;
+                    Caster.SendMessage("Voce se desequilibrou da sua montaria ao tentar conjurar a magia");
+                    AOS.Damage(Caster, Utility.Random(5, 10));
+                    Caster.PlayHurtSound();
+                    Caster.PlayDamagedAnimation();
+                    Caster.Paralyze(TimeSpan.FromSeconds(1));
+                    return false;
+                }
+            }
 
             if (Core.AOS && m_Caster.Spell is Spell && ((Spell)m_Caster.Spell).State == SpellState.Sequencing)
             {
@@ -995,13 +1012,13 @@ namespace Server.Spells
             }
 
             var item = m_Caster.FindItemOnLayer(Layer.OneHanded);
-            if (item != null && !item.AllowEquipedCast(Caster))
+            if (item != null && !item.AllowEquipedCast(this.Caster))
             {
                 if (this is MagerySpell || this is NecromancerSpell)
                 {
-                    if (Caster.Paralyzed)
+                    if (this.Caster.Paralyzed)
                     {
-                        Caster.SendMessage("Você não pode conjurar magias com arma nas mãos");
+                        this.Caster.SendMessage("Você não pode conjurar magias com arma nas mãos");
                         return false;
                     }
 
@@ -1012,13 +1029,13 @@ namespace Server.Spells
             }
 
             var item2 = m_Caster.FindItemOnLayer(Layer.TwoHanded);
-            if (item2 != null && !item2.AllowEquipedCast(Caster))
+            if (item2 != null && !item2.AllowEquipedCast(this.Caster))
             {
                 if (this is MagerySpell || this is NecromancerSpell)
                 {
-                    if (Caster.Paralyzed)
+                    if (this.Caster.Paralyzed)
                     {
-                        Caster.SendMessage("Você não pode conjurar magias com arma nas mãos");
+                        this.Caster.SendMessage("Você não pode conjurar magias com arma nas mãos");
                         return false;
                     }
                     m_Caster.ClearHand(item2);
@@ -1084,7 +1101,7 @@ namespace Server.Spells
                     m_Caster.SendMessage(0x22, "Faltam reagentes para a magia. Voce pode comprar reagentes no npc Mago ou planta-los."); // More reagents are needed for this spell.
                     return false;
                 }
-                if (Shard.SPHERE_STYLE && Caster is PlayerMobile)
+                if (Shard.SPHERE_STYLE && this.Caster is PlayerMobile)
                     return CastaMagiaSphere();
                 return CastMagiaPadrao();
             }

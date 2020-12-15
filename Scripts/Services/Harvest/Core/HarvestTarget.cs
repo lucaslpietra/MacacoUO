@@ -50,15 +50,30 @@ namespace Server.Engines.Harvest
 
             if(targeted is Recurso)
             {
-
-                var recurso = (Recurso)targeted;
-                if(recurso.Metal())
-                {
-                    
-                }
-
                 new ColetaTimer((Recurso)targeted, from).Start();
                 return;
+            } else if(targeted is Item)
+            {
+                Recurso r = null;
+                var i = targeted as Item;
+                Shard.Debug(i.Name);
+                if(i.Name != null && i.Name.Contains("Folha"))
+                {
+                    var items = i.Map.GetItemsInRange(i.Location, 0);
+                    foreach (var it in items)
+                    {
+                        if(it is Recurso)
+                        {
+                            r = (Recurso)it;
+                        }
+                    }
+                    items.Free();
+                    if(r != null)
+                    {
+                        new ColetaTimer(r, from).Start();
+                        return;
+                    }
+                }
             }
 
             if (m_System is Mining)

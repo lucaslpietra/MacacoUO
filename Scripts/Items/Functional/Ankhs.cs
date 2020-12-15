@@ -82,7 +82,6 @@ namespace Server.Items
                 : base(6198, TitheRange)
             {
                 m_Mobile = mobile;
-
                 Enabled = m_Mobile.Alive;
             }
 

@@ -4,6 +4,7 @@ using Server.Items;
 using Server.Network;
 using System.Collections.Generic;
 using Server.Regions;
+using Server.Fronteira.Talentos;
 
 namespace Server.Mobiles
 {
@@ -141,6 +142,21 @@ namespace Server.Mobiles
                     }
                     else
                     {
+
+                        if(value.RP)
+                        {
+                            var pl = value as PlayerMobile;
+                            if (pl == null)
+                                return;
+
+                            if(pl.Talentos.GetNivel(Talento.Hipismo) == 0)
+                            {
+                                pl.SendMessage("Voce nao sabe montar em animais.");
+                                return;
+                            }
+
+                        }
+
                         if (this.Hidden)
                             this.Hidden = false;
 

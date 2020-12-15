@@ -68,25 +68,32 @@ namespace Server.Spells.Necromancy
 
                     foreach (var id in AcquireIndirectTargets(Caster.Location, 5))
                     {
-                        Mobile m = id as Mobile;
+                        Mobile target = id as Mobile;
 
-                        if (m!=null && m.IsControlledBy(this.Caster))
+                        if (target!=null && target.IsControlledBy(this.Caster))
                             continue;
 
-                        var bc = m as BaseCreature;
-                        if (bc != null && bc.ControlMaster == this.Caster)
+                        var targetBc = target as BaseCreature;
+                        if (targetBc != null && targetBc.ControlMaster == this.Caster)
                             continue;
 
-                        if (m.Party != null && m.Party == this.Caster.Party)
+                        if (target.Party != null && target.Party == this.Caster.Party)
+                            continue;
+
+                        var thisBc = this.Caster as BaseCreature;
+                        if (thisBc != null && thisBc.ControlMaster == target)
+                            continue;
+
+                        if (thisBc != null && targetBc != null && thisBc.ControlMaster != null && thisBc.ControlMaster == targetBc.ControlMaster)
                             continue;
 
                         this.Caster.DoHarmful(id);
 
-                        if (m != null)
+                        if (target != null)
                         {
                             //m.FixedParticles(0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255);
                             Caster.MovingParticles(
-                                m,//IEntity to
+                                target,//IEntity to
                                 0x374A,//int itemID,
                                 10, // int speed,
                                 17, // int duration,
@@ -106,19 +113,19 @@ namespace Server.Spells.Necromancy
                         }
 
                         double damage = Utility.RandomMinMax(20, 30);
-                        damage *= GetDamageScalar(m);
+                        damage *= GetDamageScalar(target);
 
-                        int karma = m != null ? m.Karma / 100 : 0;
+                        int karma = target != null ? target.Karma / 100 : 0;
 
                         damage *= 300 + karma + (this.GetDamageSkill(this.Caster) * 10);
                         damage /= 1000;
                         damage *= 0.75;
 
-                        if(m != null)
+                        if(target != null)
                         {
-                            if (CheckResisted(m, 7))
+                            if (CheckResisted(target, 7))
                             {
-                                m.SendMessage("Voce sente seu corpo resistindo a magia");
+                                target.SendMessage("Voce sente seu corpo resistindo a magia");
                                 damage *= 0.75;
                             }
                         }
@@ -129,7 +136,7 @@ namespace Server.Spells.Necromancy
                         {
                             if (Core.SA)
                             {
-                                sdiBonus = SpellHelper.GetSpellDamageBonus(Caster, m, CastSkill, m is PlayerMobile);
+                                sdiBonus = SpellHelper.GetSpellDamageBonus(Caster, target, CastSkill, target is PlayerMobile);
                             }
                             else
                             {
