@@ -255,6 +255,17 @@ namespace Server.Spells
             CheckCasterDisruption(false, 0, 0, 0, 0, 0);
         }
 
+        public virtual bool CheckMovement(Mobile caster)
+        {
+            if (IsCasting && BlocksMovement && (!(m_Caster is BaseCreature) || ((BaseCreature)m_Caster).FreezeOnCast))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+
         public virtual void CheckCasterDisruption(bool checkElem = false, int phys = 0, int fire = 0, int cold = 0, int pois = 0, int nrgy = 0)
         {
             if (Caster.AccessLevel > AccessLevel.VIP)
@@ -371,12 +382,22 @@ namespace Server.Spells
 				m_Caster.SendLocalizedMessage(500111); // You are frozen and can not move.
 				return false;
 			}
-            
+
+            if(Caster.RP && Caster.Player && IsCasting && BlocksMovement)
+            {
+                var nivel = ((PlayerMobile)Caster).Talentos.GetNivel(Talento.Concentracao);
+                if (nivel == 0)
+                {
+                    m_Caster.SendMessage("Voce esta conjurando uma magia e nao consegue se mover");
+                    return false;
+                }
+            }
             return true;
         }
 
         public virtual bool DoStep(Mobile caster)
         {
+          
             if (caster.SpellSteps > 1 && this is MarkSpell)
             {
                 Disturb(DisturbType.Moved);
@@ -387,6 +408,17 @@ namespace Server.Spells
             var maxDistance = 15;
             if (!caster.Mounted)
                 maxDistance = 8;
+            if (Caster.RP && Caster.Player)
+            {
+                var lvl = ((PlayerMobile)Caster).Talentos.GetNivel(Talento.Concentracao);
+                if (lvl == 3)
+                    return true;
+                else if(lvl<=1)
+                {
+                    maxDistance /= 2;
+                }
+            }
+
             bool repeatedNerf = false;
             if (MagerySpell.MovementNerfWhenRepeated.IndexOf(this.GetType()) == -1)
             {

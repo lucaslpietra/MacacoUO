@@ -1,5 +1,6 @@
 using Server.Items;
 using Server.Misc;
+using Server.Mobiles;
 using Server.Services.Harvest;
 using System;
 
@@ -121,13 +122,6 @@ namespace Server.Fronteira.Recursos
 
         public void Coleta(Mobile from)
         {
-            Item i = GetItem();
-            if (i == null)
-            {
-                from.SendMessage(38, "Erro, favor reportar a staff...");
-                return;
-            }
-
             var diff = Dificuldade.GetDificuldade(_resource);
             var skill = GetSkill();
             if (diff != null)
@@ -183,6 +177,21 @@ namespace Server.Fronteira.Recursos
                         SkillCheck.Gain(from, from.Skills[skill]);
                     }
                     exp = 0;
+                }
+            }
+            Item i = GetItem();
+            if (i == null)
+            {
+                from.SendMessage(38, "Erro, favor reportar a staff...");
+                return;
+            }
+            if(from.Player && from.RP)
+            {
+                var talento = ((PlayerMobile)from).Talentos.GetNivel(Talentos.Talento.Naturalista);
+                i.Amount += talento * 2;
+                if(talento==3)
+                {
+                    i.Amount += 3;
                 }
             }
 

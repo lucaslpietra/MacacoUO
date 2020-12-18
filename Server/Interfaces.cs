@@ -74,6 +74,7 @@ namespace Server
 		bool OnCasterEquiping(Item item);
 		bool OnCasterUsingObject(object o);
 		bool OnCastInTown(Region r);
+        bool CheckMovement(Mobile m);
 	}
 
 	public interface IParty

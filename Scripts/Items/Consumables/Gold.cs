@@ -132,7 +132,28 @@ namespace Server.Items
 			((Container)parent).UpdateTotals();
 		}
 
-	    public override int GetTotal(TotalType type)
+        public override void OnDoubleClick(Mobile from)
+        {
+            if(!from.RP)
+            {
+                from.SendMessage("Bom e velho dinheiro...");
+                return;
+            }  else if(from.Player)
+            {
+                var pl = (PlayerMobile)from;
+                var mamo = pl.Talentos.GetNivel(Fronteira.Talentos.Talento.Mamonita);
+                if(mamo > 0)
+                {
+                    pl.Mamonita = !pl.Mamonita;
+                    pl.SendMessage("Golpe mamonita " + (pl.Mamonita ? "ligado" : "desligado"));
+                } else
+                {
+                    pl.SendMessage("Talvez voce aprenda algum talento que use moedas para algo");
+                }
+            }
+        }
+
+        public override int GetTotal(TotalType type)
         {
             int baseTotal = base.GetTotal(type);
 

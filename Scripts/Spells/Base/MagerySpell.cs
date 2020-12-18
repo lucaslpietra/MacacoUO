@@ -1,4 +1,5 @@
 using System;
+using Server.Fronteira.Talentos;
 using Server.Items;
 using Server.Mobiles;
 using Server.Network;
@@ -59,6 +60,13 @@ namespace Server.Spells
 
         public override bool ValidateCast(Mobile from)
         {
+            if(from.RP && from.Player)
+            {
+                var talento = ((PlayerMobile)from).Talentos.GetNivel(Talento.ArmaduraMagica);
+                if (talento >= 1)
+                    return true;
+            }
+            
             var circleMax = this.CicloArmadura(from);
             if(circleMax < (int)this.Circle+1)
             {
@@ -148,6 +156,14 @@ namespace Server.Spells
         public virtual double GetResistPercentForCircle(Mobile target, SpellCircle circle)
         {
             var resist = target.Skills[SkillName.MagicResist].Value;
+            if(target.Player)
+            {
+                var talento = ((PlayerMobile)target).Talentos.GetNivel(Talento.PeleArcana);
+                resist += talento * 5;
+                if (talento == 3)
+                    resist += 5;
+            }
+
             var cap = resist / 5;
 
             var magery = Caster.Skills[CastSkill].Value;
@@ -189,11 +205,14 @@ namespace Server.Spells
             {
                 if(Caster is BaseCreature)
                     return TimeSpan.FromSeconds(0.5 + 0.40 * (int)Circle);
-                //if(Circle < SpellCircle.Third)
-                //    return TimeSpan.FromSeconds(1.25);
 
+                double bonusRP = 0;
+                if(Caster.RP && Caster.Player)
+                {
+                    bonusRP = -0.2 + ((PlayerMobile)Caster).Talentos.GetNivel(Talento.Sagacidade) * 0.1;
+                }
                 var bonusEval = ((Caster.Skills.EvalInt.Value + Caster.Skills.Focus.Value) / 200) * 0.3;
-                return TimeSpan.FromSeconds(0.5 + (0.6-bonusEval) * (int)Circle);
+                return TimeSpan.FromSeconds(0.5 + (0.6-bonusEval-bonusRP) * (int)Circle);
             }
             return base.GetCastDelay();
         }

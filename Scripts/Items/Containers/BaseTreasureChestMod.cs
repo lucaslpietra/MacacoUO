@@ -24,7 +24,17 @@ namespace Server.Items
 		public override bool IsDecoContainer{get{ return false; }}
         public abstract int GetLevel();
 
-		public BaseTreasureChestMod( int itemID ) : base ( itemID )
+        public override void LockPick(Mobile from)
+        {
+            base.LockPick(from);
+            if(from.RP)
+            {
+                foreach (var i in this.Items)
+                    i.RP = true;
+            }
+        }
+
+        public BaseTreasureChestMod( int itemID ) : base ( itemID )
 		{
             Name = "Tesouro nivel "+GetLevel();
 			Locked = true;

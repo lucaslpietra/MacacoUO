@@ -29,7 +29,6 @@ namespace Server.Ziden.Kills
         public static bool Enabled = true;
         public static void Initialize()
         {
-
             CommandSystem.Register("pvm", AccessLevel.Player, Cmd);
             EventSink.CreatureDeath += CreatureDeath;
         }
@@ -101,8 +100,6 @@ namespace Server.Ziden.Kills
                                     pl.SendMessage(78, "Digite .xp para usar sua EXP para subir skills");
                                 }
                             }
-                          
-                          
                         }
                         PointsSystem.PontosPvmEterno.AwardPoints(pl, pontos / 2, false, false);
                         if (pl.RP)

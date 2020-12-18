@@ -1412,6 +1412,18 @@ namespace Server.Engines.Craft
                 }
             }
 
+            if(from.RP && from.Player)
+            {
+                var forjador = ((PlayerMobile)from).Talentos.GetNivel(Fronteira.Talentos.Talento.Forjador);
+                chance *= (0.7 + (forjador * 0.3));
+            } else if(!from.RP)
+            {
+                if (chance > 0.9)
+                    chance = 0.9;
+                else 
+                    chance -= 0.05;
+            }
+
             if (chance > 0)
             {
                 return chance + bonus;

@@ -857,8 +857,6 @@ namespace Server.Items
 
             var dex = healer.Dex < 35 ? 35 : healer.Dex * 1.5;
 
-            
-
             if (dex > 190)
                 dex = 190;
 
@@ -884,18 +882,18 @@ namespace Server.Items
             {
                 seconds = Math.Ceiling((double)4 - dex / 60);
                 seconds = Math.Max(seconds, 2);
-            }
-            else if (dex >= 100)
+            } else
             {
-                seconds = 5.0 + resDelay;
+                seconds = 7.4 + (0.6 * ((double)(120 - dex) / 10));
             }
-            else if (dex >= 80)
+
+            if(healer != patient && healer.RP && patient.Player && healer.Player)
             {
-                seconds = 6.0 + resDelay;
-            }
-            else
-            {
-                seconds = 7.0 + resDelay;
+                var talento = ((PlayerMobile)healer).Talentos.GetNivel(Fronteira.Talentos.Talento.Curandeiro);
+                seconds -= talento * 2;
+                if (seconds < 2)
+                    seconds = 2;
+            
             }
 
             return TimeSpan.FromSeconds(seconds);

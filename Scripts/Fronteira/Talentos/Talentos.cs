@@ -13,6 +13,11 @@ namespace Server.Fronteira.Talentos
             return 0;
         }
 
+        public void Wipa()
+        {
+            _niveis.Clear();
+        }
+
         public void SetNivel(Talento t, int nivel)
         {
             _niveis[t] = nivel;

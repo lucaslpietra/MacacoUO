@@ -1,28 +1,29 @@
 
 namespace Server.Fronteira.RP.ClassesRP
 {
-    public class Guerreiro : ClasseRP
+    public class Arqueiro : ClasseRP
     {
         private static CapClasse Caps;
 
-        public Guerreiro()
+        public Arqueiro()
         {
             if(Caps == null)
             {
                 Caps = new CapClasse();
-                Caps.S70.Add(SkillName.Swords);
-                Caps.S70.Add(SkillName.Tactics);
-                Caps.S70.Add(SkillName.Macing);
+                Caps.S70.Add(SkillName.Archery);
+                Caps.S70.Add(SkillName.ArmsLore);
                 Caps.S70.Add(SkillName.Anatomy);
-                Caps.S70.Add(SkillName.Fencing);
+                Caps.S70.Add(SkillName.Hiding);
 
-                Caps.S60.Add(SkillName.Healing);
-                Caps.S50.Add(SkillName.Parry);
+                Caps.S50.Add(SkillName.Healing);
+                Caps.S50.Add(SkillName.Tactics);
+                Caps.S50.Add(SkillName.Lumberjacking);
+                Caps.S50.Add(SkillName.Tracking);
                 Caps.S50.Add(SkillName.MagicResist);
 
-                Caps.S50.Add(SkillName.ArmsLore);
-                Caps.S50.Add(SkillName.Mining);
-                Caps.S50.Add(SkillName.Blacksmith);
+                Caps.S40.Add(SkillName.Fletching);
+                Caps.S40.Add(SkillName.Carpentry);
+                Caps.S40.Add(SkillName.Fencing);
             }
         }
 
@@ -33,7 +34,7 @@ namespace Server.Fronteira.RP.ClassesRP
 
         public override string GetNome()
         {
-            return "Guerreiro";
+            return "Mago";
         }
 
         public override string Desc()

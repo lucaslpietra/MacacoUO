@@ -53,8 +53,7 @@ namespace Server.Misc
                 {
                     if (m.Hunger == 0)
                     {
-                        m.Kill();
-                        m.SendMessage(38, "Voce morreu de fome...");
+                        m.SendMessage(38, "Voce esta faminto...");
                     }
                     else
                         m.SendMessage(38, "Voce esta com muita fome... coma algo para nao desmaiar !");
@@ -73,8 +72,7 @@ namespace Server.Misc
                 {
                     if (m.Thirst == 0)
                     {
-                        m.Kill();
-                        m.SendMessage(38, "Voce morreu desidratado...");
+                        m.SendMessage(38, "Voce esta com muita sede...");
                     }
                     else
                         m.SendMessage(38, "Voce esta com muita sede... beba algo para se hidratar !");

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Server.Mobiles;
 using Server.Network;
 using Server.Spells;
 using Server.Spells.Necromancy;
@@ -148,6 +149,12 @@ namespace Server.Items
             // Using a special move within 3 seconds of the previous special move costs double mana 
             if (GetContext(from) != null)
                 stamina *= 2;
+
+            if(from.RP && from.Player)
+            {
+                var nivel = ((PlayerMobile)from).Talentos.GetNivel(Fronteira.Talentos.Talento.Brutalidade);
+                stamina = (int)(stamina * 1 - nivel * 0.2);
+            }
 
             return StrangleSpell.ScaleStamina(from, (int)(stamina * 1.25));
         }

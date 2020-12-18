@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Server.Fronteira.Talentos;
 using Server.Items;
 using Server.Mobiles;
 using Server.Spells;
@@ -27,11 +28,16 @@ namespace Server.Misc
             Mobile.ManaRegenRateHandler = new RegenRateHandler(Mobile_ManaRegenRate);
             Mobile.StamRegenRateHandler = new RegenRateHandler(Mobile_StamRegenRate);
             Mobile.HitsRegenRateHandler = new RegenRateHandler(Mobile_HitsRegenRate);
-
         }
 
         public static double GetArmorOffset(Mobile from)
         {
+            if (from.RP && from.Player)
+            {
+                var talento = ((PlayerMobile)from).Talentos.GetNivel(Talento.ArmaduraMagica);
+                if (talento == 3)
+                    return 0;
+            }
             double rating = 0.0;
 
             //if (!Core.AOS) - Removida influência do escudo no rate
@@ -44,6 +50,12 @@ namespace Server.Misc
             rating += GetArmorMeditationValue(from.LegsArmor as BaseArmor);
             rating += GetArmorMeditationValue(from.ChestArmor as BaseArmor);
 
+            if (from.RP && from.Player)
+            {
+                var talento = ((PlayerMobile)from).Talentos.GetNivel(Talento.ArmaduraMagica);
+                if (talento == 2)
+                    return rating / 6;
+            }
             return rating / 4;
         }
 

@@ -2992,6 +2992,20 @@ namespace Server.Mobiles
                         continue;
                     }
 
+                    if(m.RP && m.Player)
+                    {
+                        var talento = ((PlayerMobile)m).Talentos.GetNivel(Fronteira.Talentos.Talento.Silencioso);
+                        if(Utility.RandomDouble() < talento * 0.31)
+                        {
+                            if(!m.IsCooldown("silenc"))
+                            {
+                                m.PrivateOverheadMessage("* silencioso *");
+                                m.SetCooldown("silenc", TimeSpan.FromSeconds(10));
+                            }
+                            continue;
+                        }
+                    }
+
                     // Does it have to be a player?
                     if (bPlayerOnly && !m.Player)
                     {

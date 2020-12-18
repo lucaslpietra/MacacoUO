@@ -132,6 +132,7 @@ namespace Server.Mobiles
 
     public partial class PlayerMobile : Mobile, IHonorTarget
     {
+        public bool Mamonita = false;
         public int RankingFama = 0;
         public int NivelBanco = 0;
         public WispGuia Wisp = null;
@@ -163,6 +164,13 @@ namespace Server.Mobiles
                 }
             }
         }
+
+        public override int VirtualArmorMod { get
+            {
+                var talento = Talentos.GetNivel(Talento.ProtecaoPesada);
+                return base.VirtualArmorMod + talento == 3 ? 20 : talento * 5;
+            }
+            set { base.VirtualArmorMod = value; } }
 
         public static List<PlayerMobile> Instances { get; private set; }
 
@@ -2328,7 +2336,9 @@ namespace Server.Mobiles
             get
             {
                 var stats = (RawStr + RawDex + RawInt) / 225d;
-                return 70 + (int)(stats * 30);
+                var talento = Talentos.GetNivel(Talento.Perseveranca);
+                var bonus = talento < 3 ? talento * 10 : 40;
+                return 70 + (int)(stats * 30) + bonus;
             }
         }
 
@@ -2337,7 +2347,9 @@ namespace Server.Mobiles
         {
             get
             {
-                return Math.Max(10, base.StamMax + AosAttributes.GetValue(this, AosAttribute.BonusStam));
+                var talento = Talentos.GetNivel(Talento.FisicoPerfeito);
+                var bonus = talento < 3 ? talento * 10 : 40;
+                return Math.Max(10, base.StamMax + AosAttributes.GetValue(this, AosAttribute.BonusStam)) + bonus;
             }
         }
 
@@ -2346,9 +2358,11 @@ namespace Server.Mobiles
         {
             get
             {
+                var talento = Talentos.GetNivel(Talento.Sabedoria);
+                var bonus = talento < 3 ? talento * 10 : 40;
                 return base.ManaMax + AosAttributes.GetValue(this, AosAttribute.BonusMana) +
                        MasteryInfo.IntuitionBonus(this) +
-                       UraliTranceTonic.GetManaBuff(this);
+                       UraliTranceTonic.GetManaBuff(this) + bonus;
             }
         }
         #endregion

@@ -63,7 +63,6 @@ namespace Server.Gumps
         public override void OnResponse(NetState sender, RelayInfo info)
         {
             var from = sender.Mobile as PlayerMobile;
-
             switch (info.ButtonID)
             {
                 case (int)Buttons.RP:
@@ -71,7 +70,7 @@ namespace Server.Gumps
                         from.MoveToWorld(CharRP, Map.Felucca);
                         from.SendMessage("Voce criou um personagem RP");
                         from.RP = true;
-                        from.PatenteRP = Fronteira.RP.PatenteRP.Aspirante;
+                        from.PatenteRP = Fronteira.RP.PatenteRP.Recruta;
                         from.Young = false;
                         //var acc = from.Account as Account;
                         //acc.RP = false;
@@ -86,7 +85,6 @@ namespace Server.Gumps
                         from.SendGump(new GumpLore(from));
                         break;
                     }
-
             }
         }
     }

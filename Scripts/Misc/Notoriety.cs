@@ -119,7 +119,7 @@ namespace Server.Misc
 
         private static bool ProtecaoRP(PlayerMobile from)
         {
-            return from != null && from.RP && from.PatenteRP != Fronteira.RP.PatenteRP.Desertor;
+            return from != null && from.RP;
         }
 
         public static bool Mobile_AllowHarmful(Mobile from, IDamageable damageable)

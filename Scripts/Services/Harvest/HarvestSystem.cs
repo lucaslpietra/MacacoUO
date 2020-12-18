@@ -306,6 +306,7 @@ namespace Server.Engines.Harvest
                                     gasto += 2;
                                 if (minSkill > 90)
                                     gasto += 2;
+
                             } else if(wilds)
                             {
                                 gasto += 3;

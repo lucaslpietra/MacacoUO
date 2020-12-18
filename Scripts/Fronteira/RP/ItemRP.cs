@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-/*
 namespace Server.Fronteira.RP
 {
 
@@ -42,12 +41,13 @@ namespace Server.Fronteira.RP
 
         public static void CheckEquip(CheckEquipItemEventArgs e)
         {
+            /*
             if(e.Mobile.RP && ! e.Item.RP)
             {
                 e.Block = true;
                 e.Mobile.SendMessage(38, "Voce nao pode usar items que nao foram obtidos por personagens que nao sao personagens RP");
             }
+            */;
         }
     }
 }
-*/

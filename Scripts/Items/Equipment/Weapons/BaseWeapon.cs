@@ -1569,6 +1569,17 @@ namespace Server.Items
             if (forceInfo != null && forceInfo.Defender == defender)
                 bonus -= forceInfo.DefenseChanceMalus;
 
+            if(defender.Player)
+            {
+                var esquiva = ((PlayerMobile)defender).Talentos.GetNivel(Talento.Esquiva);
+                bonus -= esquiva * (attacker.Player ? 3 : 10);
+            }
+
+            if (attacker.Player)
+            {
+                var acerto = ((PlayerMobile)attacker).Talentos.GetNivel(Talento.Precisao);
+                bonus += acerto * (attacker.Player ? 3 : 10);
+            }
 
             double chance = ourValue / (theirValue * 1.8);
             chance *= 1.0 + ((double)bonus / 100);
@@ -2131,6 +2142,30 @@ namespace Server.Items
 
             var mods = new Tuple<int, bool>(damage, false);
 
+            if(defender.Player)
+            {
+                var perto = defender.GetEntitiesInRange(defender.Map, 2);
+                foreach(var mob in perto)
+                {
+                    var pl = mob as PlayerMobile;
+                    if (pl == null)
+                        continue;
+
+                    var def = pl.Talentos.GetNivel(Talento.Defensor);
+                    var chanceBlockGrupo = def * pl.Skills.Parry.Value * 0.15;
+                    if(chanceBlockGrupo > 0 && Utility.RandomDouble() < chanceBlockGrupo)
+                    {
+                        pl.MoveToWorld(mob.Location, mob.Map);
+                        pl.OverheadMessage("* pulou e bloqueou *");
+                        damage = (int)(damage * 0.2);
+                        blocked = true;
+                        defender.FixedEffect(0x37B9, 10, 16);
+                        defender.SendMessage(mob.Name + " bloqueou o ataque em voce");
+                    }
+                }
+                
+            }
+
             if (defender.Player || defender.Skills[SkillName.Parry].Value > 50 || (defender is BaseCreature &&
                                                             ((BaseCreature)defender).Controlled &&
                                                             defender.Skills[SkillName.Wrestling].Base >= 100))
@@ -2273,7 +2308,6 @@ namespace Server.Items
 
             var virtualArmor = defender.ArmorRating;
 
-
             WeaponAbility a = WeaponAbility.GetCurrentAbility(attacker);
             SpecialMove move = SpecialMove.GetCurrentMove(attacker);
 
@@ -2286,6 +2320,33 @@ namespace Server.Items
                 virtualArmor = 0;
                 Shard.Debug("Ignorou armadura", attacker);
                 damage = (int)(damage * 0.9);
+            }
+
+            if(attacker.RP && attacker.Hunger < 5 || attacker.Thirst < 5)
+            {
+                damage /= 2;
+            }
+            if(defender.RP && defender.Hunger < 5 || defender.Thirst < 5)
+            {
+                damage *= 2;
+            }
+
+            if(attacker.Player && attacker.RP)
+            {
+                var pl = (PlayerMobile)attacker;
+                var potencia = pl.Talentos.GetNivel(Talento.Potencia);
+                damage = (int)(damage * (1 + potencia * 0.1));
+                if (potencia == 3)
+                    damage += damage / 5;
+                var mamo = pl.Talentos.GetNivel(Fronteira.Talentos.Talento.Mamonita);
+                if (pl.Mamonita && mamo > 0 && Banker.Withdraw(attacker, mamo * 100))
+                {
+                    attacker.PrivateOverheadMessage("-"+(mamo*100), 76);
+                    damage += mamo == 3 ? 30 : mamo == 2? 15 : 5;
+                    attacker.MovingEffect(defender, 0x0EEC, 20, 3, true, true);
+                    attacker.PlaySound(0x2E6);
+                    Effects.SendMovingParticles(defender, new Entity(Serial.Zero, new Point3D(defender.X, defender.Y, defender.Z + 15), defender.Map), 0x0EEC, 15, 0, false, true, 0, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+                }
             }
 
             if (Shard.DebugEnabled)
@@ -2490,10 +2551,17 @@ namespace Server.Items
             if (defender != null)
                 PlayHurtAnimation(defender);
 
-            attacker.PlaySound(GetHitAttackSound(attacker, defender));
-
-            if (defender != null)
-                defender.PlaySound(GetHitDefendSound(attacker, defender));
+            if (attacker.Player && ((PlayerMobile)attacker).Mamonita)
+            {
+                attacker.PlaySound(0x2E6);
+                defender.PlaySound(0x2E6);
+            }   
+            else
+            {
+                attacker.PlaySound(GetHitAttackSound(attacker, defender));
+                if (defender != null)
+                    defender.PlaySound(GetHitDefendSound(attacker, defender));
+            }  
 
             int damage = ComputeDamage(attacker, defender);
 

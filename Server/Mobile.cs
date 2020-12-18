@@ -1397,9 +1397,11 @@ namespace Server
         public List<SkillMod> SkillMods { get { return m_SkillMods; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int VirtualArmorMod
+        public virtual int VirtualArmorMod
         {
-            get { return m_VirtualArmorMod; }
+            get {
+                return m_VirtualArmorMod;
+            }
             set
             {
                 if (m_VirtualArmorMod != value)
@@ -3307,7 +3309,8 @@ namespace Server
 
             if ((m_Direction & Direction.Mask) == (d & Direction.Mask))
             {
-                if (m_Paralyzed || m_Frozen)
+
+                if (m_Paralyzed || m_Frozen || (m_Spell != null && !m_Spell.CheckMovement(this)))
                 {
                     SendMessage("Voce esta paralizado e nao pode se mover"); // You are frozen and can not move.
                     return false;
