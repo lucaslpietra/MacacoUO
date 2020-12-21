@@ -64,7 +64,17 @@ namespace Server.Engines.Craft
         CloseHelm = 999,
         Helm = 1000,
         PlateHelm = 1001,
-        NorseHelm = 1002
+        NorseHelm = 1002,
+
+        // armas novas
+        BoneHarvester = 1003,
+        CrescentBlade = 1004,
+        BladedStaff = 1005,
+        DoubleBladedStaff = 1006,
+        Lance = 1007,
+        Scythe = 1008,
+        Pike = 1009
+
     }
     #endregion
 
@@ -351,7 +361,7 @@ namespace Server.Engines.Craft
             AddCraft(typeof(PlateLegs), 1111704, 1025137, 78.8, 105.0, typeof(IronIngot), 1044036, 20, 1044037);
             AddCraft(typeof(PlateChest), 1111704, 1046431, 75.0, 105.0, typeof(IronIngot), 1044036, 25, 1044037);
             AddCraft(typeof(FemalePlateChest), 1111704, 1046430, 44.1, 105.0, typeof(IronIngot), 1044036, 20, 1044037);
-            
+
             AddCraft(typeof(DragonBardingDeed), 1111704, 1053012, 72.5, 122.5, typeof(IronIngot), 1044036, 750, 1044037);
 
             if (Core.SE)
@@ -462,7 +472,7 @@ namespace Server.Engines.Craft
             if (Core.AOS)
             {
                 AddCraft(typeof(ChaosShield), 1011080, 1027107, 85.0, 135.0, typeof(IronIngot), 1044036, 25, 1044037);
-              
+
             }
 
             if (Core.SA)
@@ -483,17 +493,15 @@ namespace Server.Engines.Craft
 
             #region Bladed
 
-            if (Core.AOS)
-            {
-                AddCraft(typeof(BoneHarvester), 1011081, 1029915, 33.0, 83.0, typeof(IronIngot), 1044036, 10, 1044037);
-            }
+
+            index = AddCraft(typeof(BoneHarvester), 1011081, 1029915, 33.0, 83.0, typeof(IronIngot), 1044036, 10, 1044037);
+            AddRecipe(index, (int)SmithRecipes.BoneHarvester);
 
             AddCraft(typeof(Broadsword), 1011081, 1023934, 35.4, 85.4, typeof(IronIngot), 1044036, 10, 1044037);
 
-            if (Core.AOS)
-            {
-                AddCraft(typeof(CrescentBlade), 1011081, 1029921, 45.0, 95.0, typeof(IronIngot), 1044036, 14, 1044037);
-            }
+
+            index = AddCraft(typeof(CrescentBlade), 1011081, 1029921, 45.0, 95.0, typeof(IronIngot), 1044036, 14, 1044037);
+            AddRecipe(index, (int)SmithRecipes.CrescentBlade);
 
             AddCraft(typeof(Cutlass), 1011081, 1025185, 24.3, 74.3, typeof(IronIngot), 1044036, 8, 1044037);
             AddCraft(typeof(Dagger), 1011081, 1023921, -0.4, 49.6, typeof(IronIngot), 1044036, 3, 1044037);
@@ -758,35 +766,39 @@ namespace Server.Engines.Craft
 
             AddCraft(typeof(Bardiche), 1011083, 1023917, 31.7, 81.7, typeof(IronIngot), 1044036, 18, 1044037);
 
-            if (Core.AOS)
-            {
-                AddCraft(typeof(BladedStaff), 1011083, 1029917, 40.0, 90.0, typeof(IronIngot), 1044036, 12, 1044037);
-            }
 
-            if (Core.AOS)
-            {
-                AddCraft(typeof(DoubleBladedStaff), 1011083, 1029919, 45.0, 95.0, typeof(IronIngot), 1044036, 16, 1044037);
-            }
+            index = AddCraft(typeof(BladedStaff), 1011083, 1029917, 40.0, 90.0, typeof(IronIngot), 1044036, 12, 1044037);
+            if (!Core.AOS)
+                AddRecipe(index, (int)SmithRecipes.BladedStaff);
+
+
+            index = AddCraft(typeof(DoubleBladedStaff), 1011083, 1029919, 45.0, 95.0, typeof(IronIngot), 1044036, 16, 1044037);
+            if (!Core.AOS)
+                AddRecipe(index, (int)SmithRecipes.DoubleBladedStaff);
 
             AddCraft(typeof(Halberd), 1011083, 1025183, 39.1, 89.1, typeof(IronIngot), 1044036, 20, 1044037);
 
-            if (Core.AOS)
-            {
-                AddCraft(typeof(Lance), 1011083, 1029920, 48.0, 98.0, typeof(IronIngot), 1044036, 20, 1044037);
-            }
 
-            if (Core.AOS)
-            {
-                AddCraft(typeof(Pike), 1011083, 1029918, 47.0, 97.0, typeof(IronIngot), 1044036, 12, 1044037);
-            }
+            index = AddCraft(typeof(Lance), 1011083, 1029920, 48.0, 98.0, typeof(IronIngot), 1044036, 20, 1044037);
+            if (!Core.AOS)
+                AddRecipe(index, (int)SmithRecipes.Lance);
+
+            index = AddCraft(typeof(Scythe), 1011083, 1029914, 39.0, 89.0, typeof(IronIngot), 1044036, 14, 1044037);
+            if (!Core.AOS)
+                AddRecipe(index, (int)SmithRecipes.Scythe);
+
+            index = AddCraft(typeof(Pike), 1011083, 1029918, 47.0, 97.0, typeof(IronIngot), 1044036, 12, 1044037);
+            if (!Core.AOS)
+                AddRecipe(index, (int)SmithRecipes.Pike);
+
+
 
             AddCraft(typeof(Pitchfork), 1011083, "Garfo do Fazendeiro", 45.3, 95.3, typeof(IronIngot), 1044036, 8, 1044037);
             AddCraft(typeof(ShortSpear), 1011083, 1025123, 45.3, 95.3, typeof(IronIngot), 1044036, 6, 1044037);
 
-            if (Core.AOS)
-            {
-                AddCraft(typeof(Scythe), 1011083, 1029914, 39.0, 89.0, typeof(IronIngot), 1044036, 14, 1044037);
-            }
+
+
+
 
             AddCraft(typeof(Spear), 1011083, 1023938, 49.0, 99.0, typeof(IronIngot), 1044036, 12, 1044037);
             AddCraft(typeof(WarFork), 1011083, 1025125, 42.9, 92.9, typeof(IronIngot), 1044036, 12, 1044037);

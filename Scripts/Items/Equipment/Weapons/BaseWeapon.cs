@@ -2322,19 +2322,25 @@ namespace Server.Items
                 damage = (int)(damage * 0.9);
             }
 
-            if(attacker.RP && attacker.Hunger < 5 || attacker.Thirst < 5)
+            if(attacker.Player && attacker.RP && (attacker.Hunger < 5 || attacker.Thirst < 5))
             {
                 damage /= 2;
+                Shard.Debug("50% Dano Fome", attacker);
             }
-            if(defender.RP && defender.Hunger < 5 || defender.Thirst < 5)
+            if(defender.Player && defender.RP && (defender.Hunger < 5 || defender.Thirst < 5))
             {
                 damage *= 2;
+                Shard.Debug("Dobro Dano Fome", defender);
             }
 
             if(attacker.Player && attacker.RP)
             {
+                if (Shard.DebugEnabled)
+                    Shard.Debug("Dano antes talentos " + damage);
                 var pl = (PlayerMobile)attacker;
                 var potencia = pl.Talentos.GetNivel(Talento.Potencia);
+             
+
                 damage = (int)(damage * (1 + potencia * 0.1));
                 if (potencia == 3)
                     damage += damage / 5;
@@ -2347,6 +2353,8 @@ namespace Server.Items
                     attacker.PlaySound(0x2E6);
                     Effects.SendMovingParticles(defender, new Entity(Serial.Zero, new Point3D(defender.X, defender.Y, defender.Z + 15), defender.Map), 0x0EEC, 15, 0, false, true, 0, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
                 }
+                if (Shard.DebugEnabled)
+                    Shard.Debug("Dano depois talentos " + damage);
             }
 
             if (Shard.DebugEnabled)
@@ -4347,9 +4355,14 @@ namespace Server.Items
                 Shard.Debug("Scaled Weapon Damage: " + damage, attacker);
             }
             // pre-AOS, halve damage if the defender is a player or the attacker is not a player
-            if (defender is PlayerMobile || !(attacker is PlayerMobile))
+            if (defender is PlayerMobile || (!(attacker is PlayerMobile) && !(attacker is BaseHire)))
             {
                 Shard.Debug("Half Damage on players");
+                damage = (int)(damage / 2.0);
+            }
+            if(attacker is BaseHire && defender is PlayerMobile)
+            {
+                Shard.Debug("Half Damage de mercs vs players");
                 damage = (int)(damage / 2.0);
             }
 

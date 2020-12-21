@@ -3307,10 +3307,15 @@ namespace Server
             Point3D newLocation = m_Location;
             Point3D oldLocation = newLocation;
 
+            if ((m_Spell != null && !m_Spell.CheckMovement(this)))
+            {
+                return false;
+            }
+
             if ((m_Direction & Direction.Mask) == (d & Direction.Mask))
             {
 
-                if (m_Paralyzed || m_Frozen || (m_Spell != null && !m_Spell.CheckMovement(this)))
+                if (m_Paralyzed || m_Frozen)
                 {
                     SendMessage("Voce esta paralizado e nao pode se mover"); // You are frozen and can not move.
                     return false;
@@ -12128,7 +12133,7 @@ namespace Server
             PublicOverheadMessage(type, hue, ascii, text, true);
         }
 
-        public void NewFontPublicMessage(MessageType type, int hue, bool ascii, string text)
+        public void NewFontPublicMessage(MessageType type, int hue, bool ascii, string text, int font = 0)
         {
             if (m_Map != null)
             {
@@ -12137,7 +12142,7 @@ namespace Server
                 //if (hue == 0)
                 //    hue = 0xB7;
 
-                p = new UnicodeMessage(m_Serial, Body, type, hue, 0, m_Language, Name, text);
+                p = new UnicodeMessage(m_Serial, Body, type, hue, font, m_Language, Name, text);
 
                 p.Acquire();
 

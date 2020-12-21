@@ -129,8 +129,6 @@ namespace Server.Spells
 
             n /= 100.0;
 
-         
-
             if (n <= 0.0)
                 return false;
 
@@ -162,6 +160,16 @@ namespace Server.Spells
                 resist += talento * 5;
                 if (talento == 3)
                     resist += 5;
+            }
+
+            if(Caster.Player && Caster.RP)
+            {
+                var talento = ((PlayerMobile)target).Talentos.GetNivel(Talento.Concentracao);
+                resist -= talento * 5;
+                if (talento == 3)
+                    resist -= 5;
+                if (resist < 0)
+                    resist = 0;
             }
 
             var cap = resist / 5;

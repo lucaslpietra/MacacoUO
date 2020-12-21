@@ -78,9 +78,9 @@ namespace Server.Fronteira.Talentos
 
             _talentos.Add(Talento.Concentracao, new DefTalentos()
             {
-                Desc1 = "Alguns passos conjurando magias",
-                Desc2 = "Muitos passos conjurando magias",
-                Desc3 = "Anda livremente conjurando magias",
+                Desc1 = "+5% Penetracao Magic Resist",
+                Desc2 = "+5% Penetracao Magic Resist",
+                Desc3 = "+10% Penetracao Magic Resist",
                 Icone = 39820,
                 Nome = "Concentracao"
             });

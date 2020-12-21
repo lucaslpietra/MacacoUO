@@ -17,7 +17,7 @@ namespace Server.Services
                 color = 0;
                 dmg = "+" + (-damage);
             }
-            to.NewFontPublicMessage(Network.MessageType.Regular, hue, false, dmg);
+            to.NewFontPublicMessage(Network.MessageType.Regular, hue, false, dmg, 3);
             /*
             PlayerMobile attacker = null;
             if (from is PlayerMobile)

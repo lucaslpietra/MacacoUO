@@ -567,7 +567,7 @@ namespace Server.Engines.Craft
 
         public bool IsMarkable(Type type)
         {
-         
+
             for (int i = 0; i < m_MarkableTable.Length; ++i)
             {
                 if (type == m_MarkableTable[i] || type.IsSubclassOf(m_MarkableTable[i]))
@@ -1405,23 +1405,21 @@ namespace Server.Engines.Craft
             if (typeof(BaseWeapon).IsAssignableFrom(ItemType) || typeof(BaseArmor).IsAssignableFrom(ItemType))
             {
                 chance *= (from.Skills[SkillName.ArmsLore].Value / 100);
-                if(from.Skills[SkillName.ArmsLore].Value < 50 && !from.IsCooldown("dicaalore"))
+                if (from.Skills[SkillName.ArmsLore].Value < 50 && !from.IsCooldown("dicaalore"))
                 {
                     from.SetCooldown("dicaalore");
                     from.SendMessage(78, "Para criar mais armas e armaduras excepcionais, upe a skill Arms Lore");
                 }
             }
 
-            if(from.RP && from.Player)
+            if (from.RP && from.Player)
             {
                 var forjador = ((PlayerMobile)from).Talentos.GetNivel(Fronteira.Talentos.Talento.Forjador);
                 chance *= (0.7 + (forjador * 0.3));
-            } else if(!from.RP)
+            }
+            else if (!from.RP)
             {
-                if (chance > 0.9)
-                    chance = 0.9;
-                else 
-                    chance -= 0.05;
+                chance -= 0.05;
             }
 
             if (chance > 0)
@@ -1582,7 +1580,7 @@ namespace Server.Engines.Craft
                             }
                         }
 
-                        if(craftSystem.MainSkill == SkillName.Alchemy)
+                        if (craftSystem.MainSkill == SkillName.Alchemy)
                         {
                             n += 1;
                         }
@@ -2180,6 +2178,12 @@ namespace Server.Engines.Craft
 
                 tool.UsesRemaining--;
 
+                if (from.Skills[this.m_System.MainSkill].Value < 70 && !from.IsCooldown("crafttip"))
+                {
+                    from.SetCooldown("crafttip", TimeSpan.FromHours(1));
+                    from.SendMessage(78, "Voce poderia treinar suas habilidades muito mais rapido falando 'trabalho' aos NPCs.");
+                }
+
                 #region Mondain's Legacy
                 if (tool is HammerOfHephaestus)
                 {
@@ -2206,6 +2210,8 @@ namespace Server.Engines.Craft
                 {
                     num = craftSystem.PlayEndingEffect(from, false, true, toolBroken, endquality, makersMark, this);
                 }
+
+           
 
                 bool queryFactionImbue = false;
                 int availableSilver = 0;

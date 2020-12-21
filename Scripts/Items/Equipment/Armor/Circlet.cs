@@ -31,6 +31,8 @@ namespace Server.Items
                 return 5;
             }
         }
+        public override int OldIntBonus { get { return 5; } }
+
         public override int BaseColdResistance
         {
             get

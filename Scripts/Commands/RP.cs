@@ -26,6 +26,8 @@ namespace Server.Commands
         [Usage("modorp")]
         private static void OnAction(CommandEventArgs e)
         {
+            e.Mobile.SendMessage("Comando desabilitado temporariamente");
+            /*
             var pl = e.Mobile as PlayerMobile;
             pl.RP = !pl.RP;
             if (pl.RP)
@@ -38,6 +40,7 @@ namespace Server.Commands
                 pl.OverheadMessage("[RP OFF]");
                 pl.SendMessage("Modo RP Desligado");
             }
+            */
         }
     }
 }

@@ -21,6 +21,15 @@ namespace Server.Mobiles
         public override bool CanDetectHidden { get { return false; } }
         public override bool CanAutoStable { get { return Beg; } }
 
+        public override int HitsMax
+        {
+            get
+            {
+                return 80 + this.Str / 2;
+            } 
+           
+        }
+
         public BaseHire(AIType AI)
             : base(AI, FightMode.Aggressor, 10, 1, 0.1, 4.0)
         {
@@ -110,7 +119,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return true;
+                return !this.Beg;
             }
         }
 
@@ -118,6 +127,9 @@ namespace Server.Mobiles
 
         public override bool OnBeforeDeath()
         {
+            if (!this.KeepsItemsOnDeath)
+                return;
+
             // Stop the pay timer if its running 
             if (m_PayTimer != null)
                 m_PayTimer.Stop();
@@ -140,6 +152,9 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
+            if (!this.KeepsItemsOnDeath)
+                return;
+
             if (m_GoldOnDeath > 0)
                 c.DropItem(new Gold(m_GoldOnDeath));
 
