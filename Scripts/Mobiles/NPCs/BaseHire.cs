@@ -128,7 +128,7 @@ namespace Server.Mobiles
         public override bool OnBeforeDeath()
         {
             if (!this.KeepsItemsOnDeath)
-                return;
+                return base.OnBeforeDeath();
 
             // Stop the pay timer if its running 
             if (m_PayTimer != null)
@@ -153,7 +153,10 @@ namespace Server.Mobiles
         public override void OnDeath(Container c)
         {
             if (!this.KeepsItemsOnDeath)
+            {
+                base.OnDeath(c);
                 return;
+            }
 
             if (m_GoldOnDeath > 0)
                 c.DropItem(new Gold(m_GoldOnDeath));

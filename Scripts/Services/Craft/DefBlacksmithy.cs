@@ -6,7 +6,6 @@ using Server.Items;
 
 namespace Server.Engines.Craft
 {
-
     #region Mondain's Legacy
     public enum SmithRecipes
     {
