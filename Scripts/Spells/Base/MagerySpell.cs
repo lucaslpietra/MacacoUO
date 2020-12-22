@@ -164,7 +164,7 @@ namespace Server.Spells
 
             if(Caster.Player && Caster.RP)
             {
-                var talento = ((PlayerMobile)target).Talentos.GetNivel(Talento.Concentracao);
+                var talento = ((PlayerMobile)Caster).Talentos.GetNivel(Talento.Concentracao);
                 resist -= talento * 5;
                 if (talento == 3)
                     resist -= 5;

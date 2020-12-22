@@ -226,6 +226,14 @@
     <Compile Include="Fronteira\RP\ObjetoFicha.cs" />
     <Compile Include="Fronteira\RP\Patentes.cs" />
     <Compile Include="Fronteira\RP\TeleporterRP.cs" />
+    <Compile Include="Fronteira\Talentos\CmdTalentos.cs" />
+    <Compile Include="Fronteira\Talentos\DefTalentos.cs" />
+    <Compile Include="Fronteira\Talentos\GumpLivroTalentos.cs" />
+    <Compile Include="Fronteira\Talentos\Talento.cs" />
+    <Compile Include="Fronteira\Talentos\TalentoBook.cs" />
+    <Compile Include="Fronteira\Talentos\Talentos.cs" />
+    <Compile Include="Fronteira\Talentos\TalentosGump.cs" />
+    <Compile Include="Fronteira\Talentos\ValeTalento.cs" />
     <Compile Include="Fronteira\Talismans\TalismanMagico.cs" />
     <Compile Include="Fronteira\Tutorial\WispGump.cs" />
     <Compile Include="Fronteira\XML\XmlSiege\BaseSiegeProjectile.cs" />
