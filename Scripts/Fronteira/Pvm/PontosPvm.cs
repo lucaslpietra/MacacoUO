@@ -27,8 +27,12 @@ namespace Server.Ziden.Kills
         public override double MaxPoints { get { return double.MaxValue; } }
         public override bool ShowOnLoyaltyGump { get { return true; } }
         public static bool Enabled = true;
+
         public static void Initialize()
         {
+            if (Shard.RP)
+                return;
+
             CommandSystem.Register("pvm", AccessLevel.Player, Cmd);
             EventSink.CreatureDeath += CreatureDeath;
         }

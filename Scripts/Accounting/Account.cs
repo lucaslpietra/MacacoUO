@@ -492,7 +492,7 @@ namespace Server.Accounting
         [CommandProperty(AccessLevel.Administrator)]
         public bool RP
         {
-            get { return GetFlag(2); }
+            get { return Shard.RP || GetFlag(2); }
             set
             {
                 SetFlag(2, value);

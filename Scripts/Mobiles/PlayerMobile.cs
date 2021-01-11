@@ -272,7 +272,8 @@ namespace Server.Mobiles
             }
 
             AnimalFormContext context = AnimalForm.GetContext(this);
-            Shard.Debug("ANIMAL CTX = " + (context == null), this);
+            if(Shard.DebugEnabled)
+                Shard.Debug("ANIMAL CTX = " + (context == null), this);
             if (context != null && context.SpeedBoost)
             {
                 Shard.Debug("Cortando Speed Boost", this);
@@ -4206,7 +4207,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public override bool RP
         {
-            get { return GetFlag(PlayerFlag.RP); }
+            get { return Shard.RP || GetFlag(PlayerFlag.RP); }
             set
             {
 
