@@ -77,6 +77,5 @@ namespace Server.Gumps
                 pl.SendGump(new ClassGump(classe));
             }
         }
-
     }
 }

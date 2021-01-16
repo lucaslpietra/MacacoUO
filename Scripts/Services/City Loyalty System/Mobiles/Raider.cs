@@ -67,7 +67,6 @@ namespace Server.Mobiles
             SetWearable(new GoldEarrings());
 
             Item bow;
-
             switch (Utility.Random(4))
             {
                 default:
@@ -76,9 +75,7 @@ namespace Server.Mobiles
                 case 2: bow = new Bow(); PackItem(new Arrow(25)); break;
                 case 3: bow = new HeavyCrossbow(); PackItem(new Bolt(25)); break;
             }
-
             SetWearable(bow);
-
             ControlSlots = 0;
         }
 
@@ -111,7 +108,6 @@ namespace Server.Mobiles
 
                 return true;
             }
-
             return false;
         }
 

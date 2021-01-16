@@ -66,174 +66,57 @@ namespace Server.Items
 
         public override int OnHit(BaseWeapon weapon, int damage)
         {
-            if (Core.AOS || Shard.POL_STYLE)
+            if (this.ArmorAttributes.SelfRepair > Utility.Random(10))
             {
-                if (this.ArmorAttributes.SelfRepair > Utility.Random(10))
-                {
-                    this.HitPoints += 2;
-                }
-                else
-                {
-                    double halfArmor = this.ArmorRating / 2.0;
-                    int absorbed = (int)(halfArmor + (halfArmor * Utility.RandomDouble()));
-
-                    if (absorbed < 2)
-                        absorbed = 2;
-
-                    int wear;
-
-                    if (weapon.Type == WeaponType.Bashing)
-                        wear = (absorbed / 2);
-                    else
-                        wear = Utility.RandomBool() ? Utility.Random(1) : 0;
-
-                    if (wear > 0 && this.MaxHitPoints > 0)
-                    {
-                        if (this.HitPoints >= wear)
-                        {
-                            this.HitPoints -= wear;
-                            wear = 0;
-                        }
-                        else
-                        {
-                            wear -= this.HitPoints;
-                            this.HitPoints = 0;
-                        }
-
-                        if (wear > 0)
-                        {
-                            if (this.MaxHitPoints > wear)
-                            {
-                                this.MaxHitPoints -= wear;
-
-                                if (this.Parent is Mobile)
-                                    ((Mobile)this.Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
-                            }
-                            else
-                            {
-                                this.Delete();
-                            }
-                        }
-                    }
-                }
-
-                return 0;
+                this.HitPoints += 2;
             }
             else
             {
-                Mobile owner = this.Parent as Mobile;
-                if (owner == null)
-                    return damage;
+                double halfArmor = this.ArmorRating / 2.0;
+                int absorbed = (int)(halfArmor + (halfArmor * Utility.RandomDouble()));
 
-                double ar = this.ArmorRating;
-                double chance = (owner.Skills[SkillName.Parry].Value - (ar * 2.0)) / 100.0;
+                if (absorbed < 2)
+                    absorbed = 2;
 
-                Shard.Debug("Chance base: " + chance);
-                if(weapon is BaseRanged)
+                int wear;
+
+                if (weapon.Type == WeaponType.Bashing)
+                    wear = (absorbed / 2);
+                else
+                    wear = Utility.RandomBool() ? Utility.Random(1) : 0;
+
+                if (wear > 0 && this.MaxHitPoints > 0)
                 {
-                    chance += owner.Skills[SkillName.Parry].Value * 0.00002; // Parry +2% chance block ranged qnd GM
-                }
-
-                Shard.Debug("Chance Parry: " + chance, owner);
-
-                if (chance < 0.01)
-                    chance = 0.01;
-                /*
-                FORMULA: Displayed AR = ((Parrying Skill * Base AR of Shield) ÷ 200) + 1 
-
-                FORMULA: % Chance of Blocking = parry skill - (shieldAR * 2)
-
-                FORMULA: Melee Damage Absorbed = (AR of Shield) / 2 | Archery Damage Absorbed = AR of Shield 
-                */
-                if (owner.CheckSkill(SkillName.Parry, chance))
-                {
-                    if (weapon.Skill == SkillName.Archery)
-                        damage -= (int)ar;
+                    if (this.HitPoints >= wear)
+                    {
+                        this.HitPoints -= wear;
+                        wear = 0;
+                    }
                     else
-                        damage -= (int)(ar / 2.0);
-
-                    if (damage < 0)
-                        damage = 0;
-
-                    Mobile attacker = weapon.Parent as Mobile;
-                    if (weapon != null)
                     {
-                        Shard.Debug("Arma batendo no escudo: " + weapon.GetType().Name);
-                      
-                        if(attacker != null)
-                            attacker.SendMessage("Seu ataque foi bloqueado");
+                        wear -= this.HitPoints;
+                        this.HitPoints = 0;
                     }
-                     
-                    owner.FixedEffect(0x37B9, 10, 16);
-                    owner.Animate(AnimationType.Parry, 0);
-                    var defender = owner;
-                    HonorableExecution.RemovePenalty(defender);
 
-                    if (CounterAttack.IsCountering(defender))
+                    if (wear > 0)
                     {
-                        if (weapon != null)
+                        if (this.MaxHitPoints > wear)
                         {
-                            var combatant = defender.Combatant;
+                            this.MaxHitPoints -= wear;
 
-                            defender.FixedParticles(0x3779, 1, 15, 0x158B, 0x0, 0x3, EffectLayer.Waist);
-                            weapon.OnSwing(defender, attacker);
-
-                            if (combatant != null && defender.Combatant != combatant && combatant.Alive)
-                                defender.Combatant = combatant;
+                            if (this.Parent is Mobile)
+                                ((Mobile)this.Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
                         }
-
-                        CounterAttack.StopCountering(defender);
-                    }
-
-                    if (Confidence.IsConfident(defender))
-                    {
-                        defender.SendLocalizedMessage(1063117);
-                        // Your confidence reassures you as you successfully block your opponent's blow.
-
-                        double bushido = defender.Skills.Bushido.Value;
-
-                        defender.Hits += Utility.RandomMinMax(1, (int)(bushido / 12)) + MasteryInfo.AnticipateHitBonus(defender) / 10;
-                        defender.Stam += Utility.RandomMinMax(1, (int)(bushido / 5)) + MasteryInfo.AnticipateHitBonus(defender) / 10;
-                    }
-                    SkillMasterySpell.OnParried(attacker, defender);
-
-                    if (25 > Utility.Random(100)) // 25% chance to lower durability
-                    {
-                        int wear = Utility.Random(2);
-
-                        if (wear > 0 && this.MaxHitPoints > 0)
+                        else
                         {
-                            if (this.HitPoints >= wear)
-                            {
-                                this.HitPoints -= wear;
-                                wear = 0;
-                            }
-                            else
-                            {
-                                wear -= this.HitPoints;
-                                this.HitPoints = 0;
-                            }
-
-                            if (wear > 0)
-                            {
-                                if (this.MaxHitPoints > wear)
-                                {
-                                    this.MaxHitPoints -= wear;
-
-                                    if (this.Parent is Mobile)
-                                        ((Mobile)this.Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, true, "Seu escudo foi avariado"); // Your equipment is severely damaged.
-                                }
-                                else
-                                {
-                                    this.Delete();
-                                }
-                            }
+                            this.Delete();
                         }
                     }
                 }
-
-                return damage;
             }
+
+            return 0;
+
         }
 
         public override int GetLuckBonus()

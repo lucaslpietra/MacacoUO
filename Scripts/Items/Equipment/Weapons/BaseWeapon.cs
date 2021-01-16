@@ -2394,8 +2394,7 @@ namespace Server.Items
 
                 if (defender is PlayerMobile)
                 {
-                    //virtualArmor *= 1.05;
-                    scalar *= 2;
+                    scalar *= 3;
                 }
 
                 //int from = (int)(virtualArmor * scalar) / 2;

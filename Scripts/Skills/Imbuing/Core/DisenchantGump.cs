@@ -57,7 +57,7 @@ namespace Server.Gumps
             AddHtml(308, 245, 221, 26, @"Clique em OK para encantar", (bool)false, (bool)false);
             AddBackground(352, 62, 100, 100, 9250);
             AddImage(392, 168, 4035);
-            AddBackground(308, 189, 187, 46, 302);
+            AddBackground(308, 189, 187, 46, 302); 
             AddHtml(360, 202, 128, 22, cristais+" Essencias", (bool)false, (bool)false);
             AddItem(328, 212, 7847);
             AddItem(330, 201, 7847);

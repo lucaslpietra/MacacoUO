@@ -153,50 +153,59 @@ namespace Server.Spells
 
         public virtual double GetResistPercentForCircle(Mobile target, SpellCircle circle)
         {
-            var resist = target.Skills[SkillName.MagicResist].Value;
-            if(target.Player)
+            if(!Shard.POL_STYLE)
             {
-                var talento = ((PlayerMobile)target).Talentos.GetNivel(Talento.PeleArcana);
-                resist += talento * 5;
-                if (talento == 3)
-                    resist += 5;
-            }
-
-            if(Caster.Player && Caster.RP)
+                double value = GetResistSkill(target);
+                double firstPercent = value / 5.0;
+                double secondPercent = value - (((Caster.Skills[CastSkill].Value - 20.0) / 5.0) + (1 + (int)circle) * 5.0);
+                return (firstPercent > secondPercent ? firstPercent : secondPercent) / 2.0; // Seems should be about half of what stratics says.
+            } else
             {
-                var talento = ((PlayerMobile)Caster).Talentos.GetNivel(Talento.Concentracao);
-                resist -= talento * 5;
-                if (talento == 3)
-                    resist -= 5;
-                if (resist < 0)
-                    resist = 0;
+                var resist = target.Skills[SkillName.MagicResist].Value;
+                if (target.Player)
+                {
+                    var talento = ((PlayerMobile)target).Talentos.GetNivel(Talento.PeleArcana);
+                    resist += talento * 5;
+                    if (talento == 3)
+                        resist += 5;
+                }
+
+                if (Caster.Player && Caster.RP)
+                {
+                    var talento = ((PlayerMobile)Caster).Talentos.GetNivel(Talento.Concentracao);
+                    resist -= talento * 5;
+                    if (talento == 3)
+                        resist -= 5;
+                    if (resist < 0)
+                        resist = 0;
+                }
+
+                var cap = resist / 5;
+
+                var magery = Caster.Skills[CastSkill].Value;
+                var circ = 1 + (double)circle;
+
+                var chance = ((magery * 2) / 10 + circ * circ);
+
+                if (Shard.DebugEnabled)
+                    Shard.Debug("Chance Base: " + chance + " circulo " + circ);
+
+                chance = resist - chance;
+                if (chance < cap)
+                    chance = cap;
+
+                if (Shard.SPHERE_STYLE)
+                    chance *= 0.35; // sem pre cast mais dificil de resistir
+                else
+                    chance *= 0.80;
+
+                if (Caster is BaseCreature && target is PlayerMobile)
+                    chance /= 1.5;
+
+                Shard.Debug("Chance RS: " + chance, target);
+
+                return chance;
             }
-
-            var cap = resist / 5;
-
-            var magery = Caster.Skills[CastSkill].Value;
-            var circ = 1 + (double)circle;
-
-            var chance = ((magery * 2) / 10 + circ * circ);
-
-            if(Shard.DebugEnabled)
-                Shard.Debug("Chance Base: " + chance+" circulo "+circ);
-
-            chance = resist - chance;
-            if (chance < cap)
-                chance = cap;
-
-            if(Shard.SPHERE_STYLE)
-                chance *= 0.35; // sem pre cast mais dificil de resistir
-            else
-                chance *= 0.80;
-
-            if (Caster is BaseCreature && target is PlayerMobile)
-                chance /= 1.5;
-
-            Shard.Debug("Chance RS: " + chance, target);
-
-            return chance;
         }
 
         public virtual double GetResistPercent(Mobile target)
@@ -214,13 +223,7 @@ namespace Server.Spells
                 if(Caster is BaseCreature)
                     return TimeSpan.FromSeconds(0.5 + 0.40 * (int)Circle);
 
-                double bonusRP = 0;
-                if(Caster.RP && Caster.Player)
-                {
-                    bonusRP = -0.2 + ((PlayerMobile)Caster).Talentos.GetNivel(Talento.Sagacidade) * 0.1;
-                }
-                var bonusEval = ((Caster.Skills.EvalInt.Value + Caster.Skills.Focus.Value) / 200) * 0.3;
-                return TimeSpan.FromSeconds(0.5 + (0.6-bonusEval-bonusRP) * (int)Circle);
+                return TimeSpan.FromSeconds(0.5 + (0.25 * (int)Circle));
             }
             return base.GetCastDelay();
         }

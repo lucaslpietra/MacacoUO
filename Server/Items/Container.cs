@@ -1638,13 +1638,12 @@ namespace Server.Items
         }
 
         private static int m_GlobalMaxItems = 100;
-        private static int m_GlobalMaxWeight = 5000;
+        private static int m_GlobalMaxWeight = 500;
 
         public static int GlobalMaxItems { get { return m_GlobalMaxItems; } set { m_GlobalMaxItems = value; } }
         public static int GlobalMaxWeight { get { return m_GlobalMaxWeight; } set { m_GlobalMaxWeight = value; } }
 
-        public Container(int itemID)
-            : base(itemID)
+        public Container(int itemID): base(itemID)
         {
             m_GumpID = -1;
             m_DropSound = -1;

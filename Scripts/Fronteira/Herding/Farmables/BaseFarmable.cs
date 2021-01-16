@@ -12,8 +12,10 @@ namespace Server.Items
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Colhidas { get; set; }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public string nomeQuemPlantou { get; set; }
+
         public long plantouQuando;
 
         public BaseFarmable(int itemID)
