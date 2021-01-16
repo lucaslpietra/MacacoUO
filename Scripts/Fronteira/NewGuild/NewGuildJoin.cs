@@ -38,23 +38,33 @@ namespace Server.Scripts.New.Adam.NewGuild
                 return;
             }
 
-
-
-            if (pm.Profession == 0)
+            if (Shard.RP)
             {
-                if(pm.ContaRP)
+                if (pm.Profession == 0)
                 {
-                    pm.SendMessage("Escolha seu kit de skills iniciais");
-                    pm.SendGump(new GumpCharRP(pm));
-                } else
-                {
-                    pm.SendMessage("Escolha se deseja criar um personagem RP ou NORMAL");
+                    pm.SendMessage("Escolha sua classe");
                     pm.SendGump(new ClassGump());
                 }
             }
             else
             {
-                SendStarterGuild(pm);
+                if (pm.Profession == 0)
+                {
+                    if (pm.ContaRP)
+                    {
+                        pm.SendMessage("Escolha seu kit de skills iniciais");
+                        pm.SendGump(new GumpCharRP(pm));
+                    }
+                    else
+                    {
+                        pm.SendMessage("Escolha se deseja criar um personagem RP ou NORMAL");
+                        pm.SendGump(new NonRPClassGump());
+                    }
+                }
+                else
+                {
+                    SendStarterGuild(pm);
+                }
             }
         }
 
@@ -84,7 +94,7 @@ namespace Server.Scripts.New.Adam.NewGuild
                 var NGP = new NewGuildPersistence();
             }
 
-            foreach(var guilda in BaseGuild.List.Values)
+            foreach (var guilda in BaseGuild.List.Values)
             {
                 Shard.Debug("Guilda Existe: " + guilda.Abbreviation);
             }
@@ -96,7 +106,8 @@ namespace Server.Scripts.New.Adam.NewGuild
                 asked.Add(pm.Serial);
                 pm.SendGump(new NewPlayerGuildJoinGump(g, pm));
 
-            } else
+            }
+            else
             {
                 TutorialNoob.InicializaWisp(pm);
                 Shard.Debug("Nao achei guilda noob com tag " + Abrev);

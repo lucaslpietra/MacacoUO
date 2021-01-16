@@ -42,7 +42,7 @@ namespace Server.Gumps
             {
                 case (int)Buttons.Button1:
                     {
-                        from.SendGump(new ClassGump());
+                        from.SendGump(new NonRPClassGump());
                         break;
                     }
             }

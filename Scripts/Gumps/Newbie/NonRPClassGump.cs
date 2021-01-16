@@ -1,11 +1,7 @@
 
-using System;
-using Server;
-using Server.Gumps;
 using Server.Network;
 using Server.Commands;
 using Server.Gumps.Newbie;
-using Server.Misc;
 using Server.Items;
 using Server.Mobiles;
 using Server.Scripts.New.Adam.NewGuild;
@@ -14,7 +10,7 @@ using Server.Misc.Custom;
 
 namespace Server.Gumps
 {
-    public class ClassGump : Gump
+    public class NonRPClassGump : Gump
     {
         string chosen = null;
         string desc = null;
@@ -22,7 +18,7 @@ namespace Server.Gumps
         private StarterKits.Kit k;
         private bool newCharacter;
 
-        public ClassGump(StarterKits.Kit kit = null, bool newCharacter = true) : base(0, 0)
+        public NonRPClassGump(StarterKits.Kit kit = null, bool newCharacter = true) : base(0, 0)
         {
             this.Closable = !newCharacter;
             this.Disposable = !newCharacter;
@@ -233,8 +229,8 @@ namespace Server.Gumps
                     if (skill.Value > 0)
                         k.Skills.Add(skill.SkillName, (int)skill.Value);
                 }
-                from.CloseGump(typeof(ClassGump));
-                from.SendGump(new ClassGump(k, newCharacter));
+                from.CloseGump(typeof(NonRPClassGump));
+                from.SendGump(new NonRPClassGump(k, newCharacter));
                 return;
             }
 
@@ -242,8 +238,8 @@ namespace Server.Gumps
 
             if (kit != null)
             {
-                from.CloseGump(typeof(ClassGump));
-                from.SendGump(new ClassGump(kit, newCharacter));
+                from.CloseGump(typeof(NonRPClassGump));
+                from.SendGump(new NonRPClassGump(kit, newCharacter));
             }
         }
     }

@@ -15,7 +15,7 @@ namespace Server.Commands
         [Description("test.")]
         public static void Cmd(CommandEventArgs arg)
         {
-            arg.Mobile.SendGump(new ClassGump());
+            arg.Mobile.SendGump(new NonRPClassGump());
         }
     }
 }

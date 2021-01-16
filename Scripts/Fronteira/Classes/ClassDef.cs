@@ -19,14 +19,42 @@ namespace Server.Fronteira.Classes
             _classes[ID] = classe;
         }
 
+        public static List<ClassePersonagem> GetClasses()
+        {
+            return _classes.Values.ToList();
+        }
+
+        public static ClassePersonagem GetClasse(int id)
+        {
+            if (!_classes.ContainsKey(id))
+                return null;
+            return _classes[id];
+        }
+
+        private static void AddClass(ClassePersonagem classe)
+        {
+            var id = _classes.Count + 1;
+            classe.ID = id;
+            _classes[id] = classe;
+        }
+
         static ClassDef()
         {
             if (_classes.Count != 0)
                 return;
 
-            _classes.Add(1, new ClassePersonagem(1, "Guerreiro", new SkillName[] {
-                SkillName.Tactics, SkillName.Anatomy, SkillName.Healing
+            AddClass(new ClassePersonagem("Guerreiro", 5553, new SkillName[] {
+                SkillName.Tactics, SkillName.Anatomy, SkillName.Swords
             }));
+
+            AddClass(new ClassePersonagem("Arqueiro", 5577, new SkillName[] {
+                SkillName.Archery, SkillName.Anatomy, SkillName.Tactics
+            }));
+
+            AddClass(new ClassePersonagem("Mago", 5555, new SkillName[] {
+                SkillName.Magery, SkillName.Meditation, SkillName.EvalInt
+            }));
+
         }
     }
 }
