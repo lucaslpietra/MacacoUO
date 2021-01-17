@@ -132,7 +132,6 @@ namespace Server.Mobiles
 
     public partial class PlayerMobile : Mobile, IHonorTarget
     {
-        #region Var declarations
         public bool Mamonita = false;
         public int RankingFama = 0;
         public int NivelBanco = 0;
@@ -140,133 +139,6 @@ namespace Server.Mobiles
         public int Anuncios = 0;
 
         public Talentos Talentos = new Talentos();
-
-        private double m_Desmaio; //Variável que armazena os pontos de Desmaio
-        private Timer m_ExpireDeathTimer; //Controle de tempo de desmaio
-        private Timer m_DesmaioTimer; // Criada variável para Timer de recuperar Desmaio
-
-
-        #endregion
-
-        public override bool CanRegenDesmaio { get { return (Alive && (Desmaio > 0.0)); } }
-
-        /// <summary>
-        ///     Gets or sets the current Desmaio of the Mobile. This value ranges from 0 to <see cref="DesmaioMax" />, inclusive.
-        /// </summary>
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public override double Desmaio
-        {
-            get { return m_Desmaio; }
-            set
-            {
-                if (Deleted)
-                {
-                    return;
-                }
-
-                if (value < 0.0)
-                {
-                    value = 0.0;
-                }
-                else if (value >= DesmaioMax)
-                {
-                    value = DesmaioMax;
-
-                    if (m_DesmaioTimer != null)
-                    {
-                        m_DesmaioTimer.Stop();
-                    }
-                }
-
-                if (value < DesmaioMax)
-                {
-                    if (CanRegenDesmaio)
-                    {
-                        if (m_DesmaioTimer == null)
-                        {
-                            m_DesmaioTimer = new DesmaioTimer(this);
-                        }
-
-                        m_DesmaioTimer.Start();
-                    }
-                    else if (m_DesmaioTimer != null)
-                    {
-                        m_DesmaioTimer.Stop();
-                    }
-                }
-
-                //if (m_Desmaio != value)
-                //{
-                double oldValue = m_Desmaio;
-                m_Desmaio = value;
-                OnDesmaioChange(oldValue);
-                //}
-            }
-        }
-        public void OnDesmaioChange(double oldValue)
-        { }
-
-        /// <summary>
-        ///     Overridable. Gets the maximum Desmaio of the Mobile. By default, this returns:
-        ///     <c>
-        ///         <see cref="Int" />
-        ///     </c>
-        /// </summary>
-        [CommandProperty(AccessLevel.GameMaster)]
-        public virtual double DesmaioMax { get { return 4.0; } }
-
-
-        #region PlayerOnlyTimers
-        private class DesmaioTimer : Timer
-        {
-            private readonly Mobile m_Owner;
-
-            public DesmaioTimer(Mobile m)
-                : base(GetDesmaioRegenRate(m), GetDesmaioRegenRate(m))
-            {
-                Priority = TimerPriority.FiveSeconds;
-                m_Owner = m;
-            }
-
-            protected override void OnTick()
-            {//TODO: Ajustar a quantidade de regen de DP por Tick antes do lançamento
-                if (m_Owner.CanRegenDesmaio) // m_Owner.Alive
-                {
-                    m_Owner.Desmaio += 0.1;
-                }
-
-                Delay = Interval = GetDesmaioRegenRate(m_Owner);
-            }
-        }
-
-        //FLS: Evento de contagem de tempo para acordar do desmaio
-
-        private static TimeSpan m_ExpireDeathDelay = TimeSpan.FromSeconds(15.0); //TODO: Ajustar o tempo de acordar de desmaio 
-
-        public static TimeSpan ExpireDeathDelay { get { return m_ExpireDeathDelay; } set { m_ExpireDeathDelay = value; } }
-
-        private class ExpireDeathTimer : Timer
-        {
-            private readonly Mobile m_Mobile;
-
-            public ExpireDeathTimer(Mobile m)
-                : base(m_ExpireDeathDelay)
-            {
-                Priority = TimerPriority.FiveSeconds;
-                m_Mobile = m;
-            }
-
-            protected override void OnTick()
-            {
-                if (!m_Mobile.Alive)
-                {
-                    m_Mobile.Resurrect();
-                }
-            }
-        }
-
-        #endregion
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Vidas { get; set; }
@@ -1296,11 +1168,6 @@ namespace Server.Mobiles
             {
                 Timer.DelayCall(TimeSpan.Zero, CheckPets);
             }
-        }
-        public override void DefaultMobileInit()
-        {
-            base.DefaultMobileInit();
-            m_Desmaio = 4.0;
         }
 
         #region Enhanced Client
@@ -4349,131 +4216,8 @@ namespace Server.Mobiles
             }
         }
 
-
-        public override void OnBeforeResurrect()
-        {
-            Item a = FindItemOnLayer(Layer.InnerTorso);
-            if (a != null)
-            {
-                a.Movable = true;
-                a.Delete();
-                Console.WriteLine("Teste");
-            }
-            //FLS: Leva a alminha pra perto do corpo
-            if (Player)
-            {
-                if (!Corpse.Deleted)
-                {
-                    Map = Corpse.Map;
-                    Location = Corpse.Location;
-                }
-                else
-                {
-                    return;
-                }
-            }
-        }
-
-        /// <summary>
-        ///     Overridable. Event invoked after the Mobile is <see cref="Resurrect">resurrected</see>.
-        ///     <seealso cref="Resurrect" />
-        /// </summary>
-        public override void OnAfterResurrect()
-        {
-            //FLS: equipa o que sobrou do corpo e apaga ele
-            if (Player)
-            {
-                if (!Corpse.Deleted)
-                {
-                    Use(Corpse);
-                    Corpse.Delete();
-                }
-
-                Emote("*Acorda do Desmaio*");
-
-                //FLS: Wake up sounds 
-                Random som = new Random();
-                if (Female)
-                {
-                    PlaySound(0x325 + som.Next(7)); //0x325 a 0x32B (7 sons de oomph) female f_oomph_01.wav até f_oomph_07.wav
-                }
-                else
-                {
-                    PlaySound(0x435 + som.Next(9)); //0x435 a 0x43D (9 sons de oomph) male m_oomph_01.wav até m_oomph_09.wav
-                }
-            }
-        }
-
-        public override void Resurrect()
-        {
-
-            if (!Alive)
-            {
-                if (!Region.OnResurrect(this))
-                {
-                    return;
-                }
-
-                if (!CheckResurrect())
-                {
-                    return;
-                }
-
-                OnBeforeResurrect();
-
-                BankBox box = FindBankNoCreate();
-
-                if (box != null && box.Opened)
-                {
-                    box.Close();
-                }
-
-                Poison = null;
-
-                Warmode = false;
-
-                Hits = 10;
-                Stam = StamMax;
-                Mana = 0;
-
-                BodyMod = 0;
-                Body = Race.AliveBody(this);
-
-                ProcessDeltaQueue();
-
-                for (int i = Items.Count - 1; i >= 0; --i)
-                {
-                    if (i >= Items.Count)
-                    {
-                        continue;
-                    }
-
-                    Item item = Items[i];
-
-                    if (item.ItemID == 8270)
-                    {
-                        item.Delete();
-                    }
-                }
-
-                SendIncomingPacket();
-                //SendIncomingPacket();
-
-                if (m_ExpireDeathTimer != null)
-                {
-                    m_ExpireDeathTimer.Stop();
-                }
-
-                OnAfterResurrect();
-
-                //Send( new DeathStatus( false ) );
-            }
-        }
-
-
-
         public static int MAX_MORTES = 5;
-        /*
+
         public override void OnDeathsChange(int oldValue)
         {
             if (this.RP && oldValue < this.Deaths) // ganhou ponto de death
@@ -4539,7 +4283,6 @@ namespace Server.Mobiles
             this.Stam = 10;
             this.Mana = 0;
         }
-        */
 
         public override double RacialSkillBonus
         {
@@ -4823,34 +4566,6 @@ namespace Server.Mobiles
             }
 
             base.OnDeath(c);
-
-            //Sistema de demaios
-            SetLocation(new Point3D(1503, 1630, 10), true); //definir local da sala dos mortos
-            Random perdaDesmaio = new Random();
-            double perda = 0.5 + perdaDesmaio.NextDouble();
-            Desmaio -= perda;
-
-            if (Desmaio <= 0.0)
-            {
-                Send(DeathStatus.Instantiate(true));
-                Send(DeathStatus.Instantiate(false));
-                SendGump(new AnuncioGump(this, "!!! VOCE MORREU !!!"));
-                PublicOverheadMessage(MessageType.Emote, 332, false, "*MORTO*");
-                return;
-            }
-            else if (Desmaio <= 1.5)
-            {
-                SendGump(new AnuncioGump(this, "!!! VOCÊ PODE MORRER SE DESMAIAR NOVAMENTE !!!"));
-                PrivateOverheadMessage(MessageType.Emote, 88, false, "*DESMAIADO*", NetState);
-            }
-            else
-            {
-                SendGump(new AnuncioGump(this, "!!! VOCÊ DESMAIOU !!!"));
-                PrivateOverheadMessage(MessageType.Emote, 88, false, "*DESMAIADO*", NetState);
-            }
-
-            m_ExpireDeathTimer = new ExpireDeathTimer(this);
-            m_ExpireDeathTimer.Start();
 
             m_EquipSnapshot = null;
 
@@ -5482,9 +5197,6 @@ namespace Server.Mobiles
 
             switch (version)
             {
-                case 48:
-                    m_Desmaio = reader.ReadDouble(); //Deserialize desmaio
-                    goto case 47;
                 case 47:
                     Talentos.Deserialize(reader);
                     goto case 46;
@@ -5966,9 +5678,9 @@ namespace Server.Mobiles
             CheckKillDecay();
             CheckAtrophies(this);
             base.Serialize(writer);
-            writer.Write(48); // version
-            writer.Write(m_Desmaio); //Serializa desmaio
+            writer.Write(47); // version
             Talentos.Serialize(writer);
+            FichaRP.Serialize(writer);
             writer.Write(Vidas);
             writer.Write(Famoso);
             writer.Write(LastDungeonEntrance);
@@ -6151,48 +5863,6 @@ namespace Server.Mobiles
         }
         #endregion
 
-
-
-
-        public override void CheckStatTimers()
-        {
-            base.CheckStatTimers();
-            if (Desmaio < DesmaioMax)
-            {
-                if (CanRegenDesmaio)
-                {
-                    if (m_DesmaioTimer == null)
-                    {
-                        m_DesmaioTimer = new DesmaioTimer(this);
-                    }
-
-                    m_DesmaioTimer.Start();
-                }
-                else if (m_DesmaioTimer != null)
-                {
-                    m_DesmaioTimer.Stop();
-                }
-            }
-            else
-            {
-                Desmaio = DesmaioMax;
-            }
-        }
-
-        public override void ResetStatTimers()
-        {
-            base.ResetStatTimers();
-            
-            if (m_DesmaioTimer != null)
-                m_DesmaioTimer.Stop();
-
-            if (CanRegenDesmaio && Desmaio < DesmaioMax)
-            {
-                m_DesmaioTimer = new DesmaioTimer(this);
-                m_DesmaioTimer.Start();
-            }
-        }
-
         public static void CheckAtrophies(Mobile m)
         {
             SacrificeVirtue.CheckAtrophy(m);
@@ -6330,12 +6000,6 @@ namespace Server.Mobiles
         public override void OnAfterDelete()
         {
             base.OnAfterDelete();
-
-            //Para o timer de desmaio
-            if (m_DesmaioTimer != null)
-            {
-                m_DesmaioTimer.Stop();
-            }
 
             Instances.Remove(this);
 

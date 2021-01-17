@@ -652,20 +652,6 @@ namespace Server
         #region Regeneration
         private static RegenRateHandler m_HitsRegenRate, m_StamRegenRate, m_ManaRegenRate;
         private static TimeSpan m_DefaultHitsRate, m_DefaultStamRate, m_DefaultManaRate;
-        protected static RegenRateHandler m_DesmaioRegenRate; //Adicionado Regen Rate para Desmaio
-        protected static TimeSpan m_DefaultDesmaioRate; //Adicionado Regen Rate Default para Desmaio
-
-        public static TimeSpan GetDesmaioRegenRate(Mobile m)
-        {
-            if (m_DesmaioRegenRate == null)
-            {
-                return m_DefaultDesmaioRate;
-            }
-            else
-            {
-                return m_DesmaioRegenRate(m);
-            }
-        }
 
         public static RegenRateHandler HitsRegenRateHandler { get { return m_HitsRegenRate; } set { m_HitsRegenRate = value; } }
 
@@ -678,11 +664,6 @@ namespace Server
         public static RegenRateHandler ManaRegenRateHandler { get { return m_ManaRegenRate; } set { m_ManaRegenRate = value; } }
 
         public static TimeSpan DefaultManaRate { get { return m_DefaultManaRate; } set { m_DefaultManaRate = value; } }
-
-        public static RegenRateHandler DesmaioRegenRateHandler { get { return m_DesmaioRegenRate; } set { m_DesmaioRegenRate = value; } }
-
-        public static TimeSpan DefaultDesmaioRate { get { return m_DefaultDesmaioRate; } set { m_DefaultDesmaioRate = value; } }
-
 
         public static TimeSpan GetHitsRegenRate(Mobile m)
         {
@@ -2079,10 +2060,6 @@ namespace Server
         public virtual bool CanRegenHits { get { return Alive && (RegenThroughPoison || !Poisoned); } }
         public virtual bool CanRegenStam { get { return Alive; } }
         public virtual bool CanRegenMana { get { return Alive; } }
-        public virtual bool CanRegenDesmaio { get { return false; } }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public virtual double Desmaio {get { return 0.0; } set { return;} }
 
         #region Timers
         private class ManaTimer : Timer
@@ -11353,7 +11330,7 @@ namespace Server
             Timer.DelayCall(EventSink.InvokeMobileCreated, new MobileCreatedEventArgs(this));
         }
 
-        public virtual void DefaultMobileInit()
+        public void DefaultMobileInit()
         {
             m_StatCap = Config.Get("PlayerCaps.TotalStatCap", 225);
             m_StrCap = Config.Get("PlayerCaps.StrCap", 125);
