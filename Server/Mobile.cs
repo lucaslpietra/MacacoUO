@@ -4381,8 +4381,6 @@ namespace Server
                 eable.Free();
             }
 
-            Deaths++;
-
             OnDeath(c);
         }
 
@@ -4446,7 +4444,7 @@ namespace Server
             }
             else
             {
-                Send(DeathStatus.Instantiate(true));
+                //Send(DeathStatus.Instantiate(true));
 
                 Warmode = false;
 
@@ -4475,7 +4473,7 @@ namespace Server
 
                 ProcessDeltaQueue();
 
-                Send(DeathStatus.Instantiate(false));
+                //Send(DeathStatus.Instantiate(false));
 
                 CheckStatTimers();
             }
