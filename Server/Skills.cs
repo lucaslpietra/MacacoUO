@@ -619,10 +619,10 @@ namespace Server
 
         public int Localization { get { return 1044060 + SkillID; } }
 
-        public static double HARD = 0.38f;
-        public static double MEDIUM = 0.70f;
+        public static double HARD = 0.1f;
+        public static double MEDIUM = 0.5f;
         public static double EASY = 0.9f;
-        public static double COMBAT = 0.25;
+        public static double COMBAT = 0.05;
 
         private static SkillInfo[] m_Table = new SkillInfo[58]
         {
@@ -674,7 +674,7 @@ namespace Server
             new SkillInfo(45, "Mining", 20.0, 0.0, 0.0, "Minerador", null, 2.0, 0.0, 0.0, MEDIUM, StatCode.Str, StatCode.Dex),
             new SkillInfo(46, "Meditation", 0.0, 0.0, 0.0, "Meditador", null, 0.0, 0.0, 1.0, COMBAT, StatCode.Int, StatCode.Str),
             new SkillInfo(47, "Stealth", 0.0, 0.0, 0.0, "Ladino", null, 0.0, 1.0, 0.0, COMBAT, StatCode.Dex, StatCode.Int),
-            new SkillInfo(48, "Remove Trap", 0.0, 0.0, 0.0, "Trapeiro", null, 0.0, 0.0, 0.0, EASY, StatCode.Dex, StatCode.Int),
+            new SkillInfo(48, "Remove Trap", 0.0, 0.0, 0.0, "Trapeiro", null, 0.0, 0.0, 0.0, MEDIUM, StatCode.Dex, StatCode.Int),
             new SkillInfo(49, "Necromancy", 0.0, 0.0, 0.0, "Necromante", null, 0.0, 0.0, 1.5, COMBAT, StatCode.Int, StatCode.Str, true ),
             new SkillInfo(50, "Focus", 0.0, 0.0, 0.0, "Concentrador", null, 0.0, 0.0, 0.0, COMBAT, StatCode.Dex, StatCode.Int),
             new SkillInfo(51, "Chivalry", 0.0, 0.0, 0.0, "Paladino", null, 1.0, 0.0, 1.0, COMBAT, StatCode.Str, StatCode.Int, true ),

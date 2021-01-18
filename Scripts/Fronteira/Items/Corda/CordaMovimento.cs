@@ -35,7 +35,7 @@ namespace Server.Fronteira.Items.Corda
                 }
 
                 var corda = CordaAmarrada.Arrastando[pl];
-                pl.Arrastando.MoveToWorld(pl.Location, pl.Map);
+               
                 corda.MoveToWorld(new Point3D(pl.Location.X, pl.Location.Y, pl.Location.Z + 7), pl.Map);
                 if (!pl.IsCooldown("arrastarmsg"))
                 {
@@ -43,9 +43,17 @@ namespace Server.Fronteira.Items.Corda
                     pl.OverheadMessage("* arrastou *");
                 }
 
-                pl.Direction = pl.GetDirectionTo(pl.Arrastando);
+                var i = pl.Arrastando as Item;
+                if(i != null)
+                {
+                    i.MoveToWorld(pl.Location, pl.Map);
+                } else
+                {
+                    ((PlayerMobile)pl.Arrastando).MoveToWorld(pl.Location, pl.Map);
+                }
+               
                 pl.Freeze(TimeSpan.FromSeconds(0.6));
-                pl.Arrastando.Direction = pl.Direction;
+ 
             }
         }
     }

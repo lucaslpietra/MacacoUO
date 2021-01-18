@@ -259,14 +259,9 @@ namespace Server.Spells
         {
             if (caster.Player && IsCasting && BlocksMovement && (!(m_Caster is BaseCreature) || ((BaseCreature)m_Caster).FreezeOnCast))
             {
-                //var nivel = ((PlayerMobile)Caster).Talentos.GetNivel(Talento.Concentracao);
-                //if (nivel == 0)
-                //{
-                m_Caster.SendMessage("Voce esta conjurando uma magia e nao consegue se mover");
+                //m_Caster.SendMessage("Voce esta conjurando uma magia e nao consegue se mover");
                 return false;
-                //}
             }
-
             return true;
         }
 

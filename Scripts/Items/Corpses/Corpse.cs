@@ -9,6 +9,7 @@ using Server.Engines.Quests;
 using Server.Engines.Quests.Doom;
 using Server.Engines.Quests.Haven;
 using Server.Engines.XmlSpawner2;
+using Server.Fronteira.Items.Corda;
 using Server.Guilds;
 using Server.Misc;
 using Server.Mobiles;
@@ -78,7 +79,7 @@ namespace Server.Items
         Murderer = 0x00000200,
     }
 
-    public class Corpse : Container, ICarvable
+    public class Corpse : Container, ICarvable, IArrastavel
     {
         private Mobile m_Owner; // Whos corpse is this?
         private Mobile m_Killer; // Who killed the owner?

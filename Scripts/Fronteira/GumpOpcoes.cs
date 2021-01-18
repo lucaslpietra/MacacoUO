@@ -24,13 +24,22 @@ namespace Server.Gumps
             if (extras < 0)
                 extras = 0;
             extras *= 30;
-            AddBackground(182, 188, 456, 119 + extras, 9200);
+
+            var maiorOptionX = 0;
+            foreach(var opt in options)
+            {
+                if (opt.Length > maiorOptionX)
+                    maiorOptionX = opt.Length;
+            }
+
+            var tamanhoX = 50 + (maiorOptionX * 10);
+            AddBackground(182, 188, tamanhoX, 119 + extras, 9200);
             AddHtml(196, 207, 200, 21, titulo, (bool)false, (bool)false);
 
             var posY = 0;
             for (var x= 0; x < options.Length; x++)
             {
-                AddHtml(213, 246+posY, 411, 23, options[x], (bool)true, (bool)false);
+                AddHtml(213, 246+posY, tamanhoX - 50, 23, options[x], (bool)true, (bool)false);
                 AddButton(185, 243+posY, 2472, 2472, x+1, GumpButtonType.Reply, 0);
                 posY += 30;
             }

@@ -2894,7 +2894,6 @@ namespace Server.Items
             if (RP)
                 list.Add("[ RP ]");
 
-
             if (!Core.AOS)
                 return;
 

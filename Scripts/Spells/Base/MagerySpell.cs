@@ -9,22 +9,27 @@ namespace Server.Spells
 {
     public abstract class MagerySpell : Spell
     {
-        public virtual void SayMantra()
+        public override void SayMantra()
         {
             if (Info.Mantra != null && Info.Mantra.Length > 0 && (m_Caster.Player || (m_Caster is BaseCreature && ((BaseCreature)m_Caster).ShowSpellMantra)))
             {
-                m_Caster.PublicOverheadMessage(MessageType.Regular, 0, false, Info.Mantra);
-                /*
-                if (m_Caster is PlayerMobile)
+                var eable = m_Caster.Map.GetClientsInRange(m_Caster.Location);
+                foreach (NetState state in eable)
                 {
-                    m_Caster.PublicOverheadMessage(MessageType.Emote, 1153, false, m_Info.Mantra);
+                    if (state.Mobile.CanSee(m_Caster))
+                    {
+                        if(state.Mobile == m_Caster || state.Mobile.Skills.Magery.Value > 50)
+                        {
+                            m_Caster.PrivateOverheadMessage(Info.Mantra);
+                        } else
+                        {
+                            m_Caster.PrivateOverheadMessage("* conjurando *", state.Mobile);
+                        }
+                    }
                 }
-                else
-                    m_Caster.PublicOverheadMessage(MessageType.Regular, 0, false, "* conjurando uma magia *");
-                //m_Caster.PublicOverheadMessage(MessageType.Spell, m_Caster.SpeechHue, true, m_Info.Mantra, false);
-                */
             }
         }
+
         // Magias q vao ficar mais dificeis castar andando
         public static readonly Type[] MovementNerfWhenRepeated =
         {
@@ -60,15 +65,15 @@ namespace Server.Spells
 
         public override bool ValidateCast(Mobile from)
         {
-            if(from.RP && from.Player)
+            if (from.RP && from.Player)
             {
                 var talento = ((PlayerMobile)from).Talentos.GetNivel(Talento.ArmaduraMagica);
                 if (talento >= 1)
                     return true;
             }
-            
+
             var circleMax = this.CicloArmadura(from);
-            if(circleMax < (int)this.Circle+1)
+            if (circleMax < (int)this.Circle + 1)
             {
                 from.SendMessage("Esta armadura e muito pesada para esta magia");
                 return false;
@@ -153,13 +158,14 @@ namespace Server.Spells
 
         public virtual double GetResistPercentForCircle(Mobile target, SpellCircle circle)
         {
-            if(!Shard.POL_STYLE)
+            if (!Shard.POL_STYLE)
             {
                 double value = GetResistSkill(target);
                 double firstPercent = value / 5.0;
                 double secondPercent = value - (((Caster.Skills[CastSkill].Value - 20.0) / 5.0) + (1 + (int)circle) * 5.0);
                 return (firstPercent > secondPercent ? firstPercent : secondPercent) / 2.0; // Seems should be about half of what stratics says.
-            } else
+            }
+            else
             {
                 var resist = target.Skills[SkillName.MagicResist].Value;
                 if (target.Player)
@@ -220,7 +226,7 @@ namespace Server.Spells
 
             if (!Core.AOS)
             {
-                if(Caster is BaseCreature)
+                if (Caster is BaseCreature)
                     return TimeSpan.FromSeconds(0.5 + 0.40 * (int)Circle);
 
                 return TimeSpan.FromSeconds(0.5 + (0.25 * (int)Circle));

@@ -133,7 +133,7 @@ namespace Server.Mobiles
 
     public partial class PlayerMobile : Mobile, IHonorTarget
     {
-        public PlayerMobile Arrastando;
+        public object Arrastando;
         public bool Mamonita = false;
         public int RankingFama = 0;
         public int NivelBanco = 0;
@@ -6226,6 +6226,11 @@ namespace Server.Mobiles
             base.OnSingleClick(from);
         }
 
+        public bool Correndo()
+        {
+            return (this.Direction & Direction.Running) != 0;
+        }
+
         protected override bool OnMove(Direction d)
         {
             if (Party != null && NetState != null)
@@ -6238,6 +6243,7 @@ namespace Server.Mobiles
                 if(Utility.RandomDouble() < 0.02)
                 {
                     this.Mount.Rider = null;
+                    OverheadMessage("* caiu *");
                     SendMessage("Voce caiu da sua montaria");
                     AOS.Damage(this, Utility.Random(5, 10), DamageType.Melee);
                     this.PlayHurtSound();

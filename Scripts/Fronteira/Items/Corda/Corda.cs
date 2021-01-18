@@ -1,3 +1,4 @@
+using Server.Fronteira.Items.Corda;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Targeting;
@@ -38,7 +39,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if(this.RootParent != from)
+            if (this.RootParent != from)
             {
                 from.SendMessage("Precisa estar em sua mochila");
                 return;
@@ -54,58 +55,93 @@ namespace Server.Items
 
         private static Dictionary<Serial, CordaAmarrada> _presos = new Dictionary<Serial, CordaAmarrada>();
 
-        public void TrySolta(PlayerMobile p)
+        public void TrySolta(object o)
         {
-            if (Preso(p))
+            var p = o as PlayerMobile;
+
+            if(p != null)
             {
-                if (p.Alive)
+                if (Preso(p))
                 {
-                    p.OverheadMessage("* se soltou *");
-                    p.SendMessage("Voce se soltou");
+                    if (p.Alive)
+                    {
+                        p.OverheadMessage("* se soltou *");
+                        p.SendMessage("Voce se soltou");
+                    }
+                    p.Frozen = false;
                 }
-                p.Frozen = false;
-                var i = _presos[p.Serial];
+                if(_presos.ContainsKey(p.Serial))
+                {
+                    var i = _presos[p.Serial];
+                    if (i != null)
+                        i.Delete();
+                    _presos.Remove(p.Serial);
+                    var corda = new Rope();
+                    corda.MoveToWorld(p.Location, p.Map);
+                }
+            } else if(o is Item)
+            {
+                var ii = (Item)o;
+                var i = _presos[ii.Serial];
                 if (i != null)
                     i.Delete();
-                _presos.Remove(p.Serial);
+                _presos.Remove(ii.Serial);
                 var corda = new Rope();
-                corda.MoveToWorld(p.Location, p.Map);
-            } 
+                corda.MoveToWorld(ii.Location, ii.Map);
+            }
+          
         }
 
         private Timer t;
 
-        public void Prende(PlayerMobile p)
+        public void Prende(object o)
         {
-            if (p.Mounted)
+            PlayerMobile p = o as PlayerMobile;
+            if (p != null && p.Mounted)
             {
                 return;
             }
 
-            if (p.Alive)
+            if (p != null)
             {
-                if(Preso(p))
+                if (p.Alive)
                 {
-                    p.OverheadMessage("* apertado *");
-                    p.SendMessage("Sua corda foi apertada.");
-                } else
-                {
-                    p.OverheadMessage("* amarrado *");
-                    p.SendMessage("Voce foi amarrado.");
+                    if (Preso(p))
+                    {
+                        p.OverheadMessage("* apertado *");
+                        p.SendMessage("Sua corda foi apertada.");
+                    }
+                    else
+                    {
+                        p.OverheadMessage("* amarrado *");
+                        p.SendMessage("Voce foi amarrado.");
+                    }
                 }
-            }
-            var tempo = TimeSpan.FromMinutes(26 - p.Str / 4);
-            p.Freeze(tempo);
-            if (t != null && t.Running)
-                t.Stop();
+                var tempo = TimeSpan.FromMinutes(26 - p.Str / 4);
+                p.Freeze(tempo);
+                if (t != null && t.Running)
+                    t.Stop();
 
-            t = Timer.DelayCall(tempo - TimeSpan.FromMinutes(0.5), () =>
+                t = Timer.DelayCall(tempo - TimeSpan.FromMinutes(0.5), () =>
+                {
+                    TrySolta(p);
+                });
+            }
+
+            var cordaAmarrada = new CordaAmarrada(o, this);
+            if (p != null)
             {
-                TrySolta(p);
-            });
-            var cordaAmarrada = new CordaAmarrada(p, this);
-            cordaAmarrada.MoveToWorld(new Point3D(p.Location.X, p.Location.Y, p.Location.Z + 7), p.Map);
-            _presos.Add(p.Serial, cordaAmarrada);
+                cordaAmarrada.MoveToWorld(new Point3D(p.Location.X, p.Location.Y, p.Location.Z + 7), p.Map);
+                _presos.Add(p.Serial, cordaAmarrada);
+            }
+            else if (o is Item)
+            {
+                var i = (Item)o;
+                var loc = i.Location;
+                cordaAmarrada.MoveToWorld(new Point3D(loc.X, loc.Y, loc.Z + 2), i.Map);
+                _presos.Add(i.Serial, cordaAmarrada);
+            }
+            
             this.Delete();
         }
 
@@ -121,13 +157,24 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                var pl = (PlayerMobile)targeted;
+                var pl = targeted as PlayerMobile;
                 if (pl != null)
                 {
+                    if (!pl.Alive)
+                        return;
+
                     corda.QuemPrendeu = from as PlayerMobile;
                     from.SendMessage("Tentando gentilmente amarrar " + pl.Name);
                     from.OverheadMessage("* estende uma corda *");
                     pl.SendGump(new ConfirmaPreso(corda));
+                    return;
+                }
+                var item = targeted as IArrastavel;
+                if (item != null)
+                {
+                    corda.QuemPrendeu = from as PlayerMobile;
+                    corda.Prende(item);
+                    from.OverheadMessage("* amarrou *");
                 }
             }
         }
@@ -163,7 +210,7 @@ namespace Server.Items
                     corda.QuemPrendeu.SendMessage("Muito longe");
                     return;
                 }
-                if(from.Mounted)
+                if (from.Mounted)
                 {
                     corda.QuemPrendeu.SendMessage("Voce nao consegue amarrar alguem montado");
                     return;
@@ -180,6 +227,6 @@ namespace Server.Items
         }
     }
 
- 
+
 
 }
