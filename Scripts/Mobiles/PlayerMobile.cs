@@ -4232,25 +4232,57 @@ namespace Server.Mobiles
 
         public override void OnDeathsChange(int oldValue)
         {
-            if (this.RP && oldValue < this.Deaths) // ganhou ponto de death
+            if (RP) // ganhou ponto de death
             {
-                this.SendMessage("Voce agora tem " + this.Deaths + "/5 Mortes...");
-                if (this.Deaths >= MAX_MORTES)
+                //this.SendMessage("Voce agora tem " + this.Deaths + "/5 Mortes...");
+                if (Deaths >= MAX_MORTES)
                 {
-                    this.SendGump(new AnuncioGump(this, "!!! VOCE MORREU !!!"));
-                    this.SendMessage(38, "!!! VOCE MORREU !!!");
+                    SendGump(new AnuncioGump(this, "!!! VOCE MORREU !!!"));
+                    SendMessage(38, "!!! VOCE MORREU !!!");
                 }
             }
             else
             {
-                this.SendMessage("Suas Mortes: " + Deaths);
+                SendMessage("Suas Mortes: " + Deaths);
             }
             base.OnDeathsChange(oldValue);
         }
 
+        public override void OnConnected()
+        {
+            //Caso esteja morto 
+            if (RP) // ganhou ponto de death
+            {
+                if (Deaths >= MAX_MORTES)
+                {
+                    SendGump(new AnuncioGump(this, "!!! VOCÊ ESTÁ MORTO !!!"));
+                    PrivateOverheadMessage(MessageType.Emote, 88, false, "!!! VOCÊ ESTÁ MORTO !!!", NetState);
+                }
+                else if (!Alive && (m_ExpireDeathTimer == null))
+                {
+                    m_ExpireDeathTimer = new ExpireDeathTimer(this);
+                    m_ExpireDeathTimer.Start();
+                }
+            }
+            else
+            {
+                SendMessage("Suas Mortes: " + Deaths);
+            }
+        }
 
         public override void Resurrect()
         {
+
+            if (!Corpse.Deleted) //FE: Leva a alminha pra perto do corpo se ele ainda existir
+            {
+                Map = Corpse.Map;
+                Location = Corpse.Location;
+            }
+            else
+            {
+                SendMessage("Seu corpo já se decompôs!");
+                return;
+            }
 
             if (RP && Deaths >= MAX_MORTES)
             {
@@ -4264,13 +4296,15 @@ namespace Server.Mobiles
 
             if (Alive && !wasAlive)
             {
-                Item deathRobe = new DeathRobe();
-
-                if (!EquipItem(deathRobe))
+                if (!RP)
                 {
-                    deathRobe.Delete();
-                }
+                    Item deathRobe = new DeathRobe();
 
+                    if (!EquipItem(deathRobe))
+                    {
+                        deathRobe.Delete();
+                    }
+                }
                 ClearScreen();
                 SendEverything();
 
@@ -4294,6 +4328,34 @@ namespace Server.Mobiles
             this.Hits = HitsMax;
             this.Stam = 10;
             this.Mana = 0;
+
+            //FE: para o contador de ressurreição quando ressuscitado
+            if (m_ExpireDeathTimer != null)
+            {
+                m_ExpireDeathTimer.Stop();
+            }
+
+            //FE: equipa o que sobrou do corpo e apaga ele
+            if (!Corpse.Deleted)
+            {
+                Use(Corpse);
+                Corpse.Delete();
+            }
+
+            Emote("*Acorda do Desmaio*");
+
+            //FE: Wake up sounds
+            //TODO: Verificar porque alguns sons estão errados (Alinhar com o patch novo)
+            Random som = new Random();
+            if (Female)
+            {
+                PlaySound(0x325 + som.Next(7)); //0x325 a 0x32B (7 sons de oomph) female f_oomph_01.wav até f_oomph_07.wav
+            }
+            else
+            {
+                PlaySound(0x435 + som.Next(9)); //0x435 a 0x43D (9 sons de oomph) male m_oomph_01.wav até m_oomph_09.wav
+            }
+
         }
 
         public override double RacialSkillBonus
@@ -4549,6 +4611,35 @@ namespace Server.Mobiles
             return res;
         }
 
+        //FE: Evento de contagem de tempo para acordar do desmaio
+
+        private Timer m_ExpireDeathTimer; //FLS controle de tempo de desmaio
+
+        private static TimeSpan m_ExpireDeathDelay = TimeSpan.FromMinutes(3.0); //Definir o tempo padrão
+
+        public static TimeSpan ExpireDeathDelay { get { return m_ExpireDeathDelay; } set { m_ExpireDeathDelay = value; } }
+
+        private class ExpireDeathTimer : Timer
+        {
+            private readonly Mobile m_Mobile;
+
+            public ExpireDeathTimer(Mobile m)
+                : base(m_ExpireDeathDelay)
+            {
+                Priority = TimerPriority.FiveSeconds;
+                m_Mobile = m;
+            }
+
+            protected override void OnTick()
+            {
+                if (!m_Mobile.Alive)
+                {
+                    m_Mobile.Resurrect();
+                }
+            }
+        }
+        //FE: Fim do Evento
+
         public override void OnDeath(Container c)
         {
             if (NetState != null && NetState.IsEnhancedClient)
@@ -4578,6 +4669,53 @@ namespace Server.Mobiles
             }
 
             base.OnDeath(c);
+
+            //FE: Sistema de demaios BEGIN
+            if (RP)
+            {
+                SetLocation(new Point3D(1503, 1630, 10), true); //definir local da sala dos mortos
+                double azar = Utility.RandomDouble();
+                if (azar > 0.8)
+                {
+                    Deaths += 2;
+                }
+                else if (azar > 0.2)
+                {
+                    Deaths++;
+                }
+
+                if (Deaths >= MAX_MORTES)
+                {
+                    Send(DeathStatus.Instantiate(true));
+                    Send(DeathStatus.Instantiate(false));
+                    SendGump(new AnuncioGump(this, "!!! VOCÊ MORREU !!!"));
+                    SendMessage(38, "!!! VOCÊ MORREU !!!");
+                    PrivateOverheadMessage(MessageType.Emote, 88, false, "!!! VOCÊ MORREU !!!", NetState);
+                }
+                else if (this.Deaths >= (MAX_MORTES-2))
+                {
+                    PrivateOverheadMessage(MessageType.Emote, 88, false, "!!! MORIBUNDO !!!", NetState);
+                    SendGump(new AnuncioGump(this, "!!! VOCÊ ESTÁ DESMAIADO E MORIBUNDO !!!"));
+                    SendMessage(38, "!!! VOCÊ ESTÁ DESMAIADO E MORIBUNDO !!!");
+                    PrivateOverheadMessage(MessageType.Emote, 88, false, "!!! VOCÊ ESTÁ DESMAIADO E MORIBUNDO !!!", NetState);
+                }
+                else
+                {
+                    SendGump(new AnuncioGump(this, "!!! VOCÊ ESTÁ DESMAIADO !!!"));
+                    SendMessage(38, "!!! VOCÊ ESTÁ DESMAIADO !!!");
+                    PrivateOverheadMessage(MessageType.Emote, 88, false, "!!! DESMAIADO !!!", NetState);
+                }
+            }
+            else
+            {
+                Deaths++;
+                Send(DeathStatus.Instantiate(true));
+                Send(DeathStatus.Instantiate(false));
+            }
+
+            m_ExpireDeathTimer = new ExpireDeathTimer(this);
+            m_ExpireDeathTimer.Start();
+            //FE Sistema de desmaios END
 
             m_EquipSnapshot = null;
 
