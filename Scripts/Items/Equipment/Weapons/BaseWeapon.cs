@@ -236,22 +236,6 @@ namespace Server.Items
             set { _OwnerName = value; InvalidateProperties(); }
         }
 
-        /* Weapon internals work differently now (Mar 13 2003)
-        *
-        * The attributes defined below default to -1.
-        * If the value is -1, the corresponding virtual 'Aos/Old' property is used.
-        * If not, the attribute value itself is used. Here's the list:
-        *  - MinDamage
-        *  - MaxDamage
-        *  - Speed
-        *  - HitSound
-        *  - MissSound
-        *  - StrRequirement, DexRequirement, IntRequirement
-        *  - WeaponType
-        *  - WeaponAnimation
-        *  - MaxRange
-        */
-
         #region Var declarations
         // Instance values. These values are unique to each weapon.
         private WeaponDamageLevel m_DamageLevel;
@@ -2394,8 +2378,7 @@ namespace Server.Items
 
                 if (defender is PlayerMobile)
                 {
-                    //virtualArmor *= 1.05;
-                    scalar *= 2;
+                    scalar *= 3;
                 }
 
                 //int from = (int)(virtualArmor * scalar) / 2;
@@ -5966,12 +5949,7 @@ namespace Server.Items
                 }
                 if (DamageLevel > 0)
                 {
-                    if (this.Skill == SkillName.Macing)
-                        list.AddTwoValues("Impacto", "+" + (int)DamageLevel * 2);
-                    else if (this.Skill == SkillName.Swords)
-                        list.AddTwoValues("Corte", "+" + (int)DamageLevel * 2);
-                    else if (this.Skill == SkillName.Fencing)
-                        list.AddTwoValues("Perfuracao", "+" + (int)DamageLevel * 2);
+                    list.AddTwoValues("Poder", "+"+(int)DamageLevel * 2);
                 }
                 if (AccuracyLevel > 0)
                 {
@@ -5979,10 +5957,11 @@ namespace Server.Items
                 }
             }
 
+            /*
             var b = GetdDamageBonusSoPraMostrarProClient();
-
             list.AddTwoValues("Dano", (OldMinDamage + b) + " - " + (OldMaxDamage + b));
             list.AddTwoValues("Velocidade ", Speed.ToString());
+            */
 
             if (m_MaxHits > 0)
             {

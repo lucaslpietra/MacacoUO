@@ -42,7 +42,7 @@ namespace Server.Misc
 
         static SkillCheck()
         {
-            _AntiMacroCode = false;//Config.Get("PlayerCaps.EnableAntiMacro", false);
+            _AntiMacroCode = true;//Config.Get("PlayerCaps.EnableAntiMacro", false);
 
             _StatGainDelay = Config.Get("PlayerCaps.PlayerStatTimeDelay", TimeSpan.FromMinutes(15.0));
             _PetStatGainDelay = Config.Get("PlayerCaps.PetStatTimeDelay", TimeSpan.FromMinutes(5.0));
@@ -190,12 +190,7 @@ namespace Server.Misc
             SkillName.AnimalTaming
         };
 
-        public static double BONUS_GERAL = 0; 
-
-        private static double BONUS_DUNGEON = 0.35;
-        //private static double BONUS_PVM = 1.2;
-        private static double BONUS_CIDADE = 0;
-        private static double BONUS_CASA = -0.1;
+        public static double BONUS_GERAL = 0;
 
         public static double GetExp(double skill, double skillDifficulty, bool work, bool pvm, double gcBonus = 0)
         {
@@ -231,7 +226,6 @@ namespace Server.Misc
                         gc = 0.006;
                 }
             }
-           
 
             if (skill < 50)
                 gc *= 3;
@@ -255,72 +249,6 @@ namespace Server.Misc
             work = Work.Any(s => s == skill.SkillName);
             
             var gcBonus = 0.0;
-
-         
-            if (from.IsCooldown("matoumob"))
-            {
-                /*
-                if (!Work.Any(s => s == skill.SkillName))
-                {
-                    gcBonus += BONUS_PVM;
-                    pvm = true;
-                }
-                */
-            }
-            /*
-            if (from.Region.IsPartOf<DungeonGuardedRegion>() && !work)
-            {
-                if (skill.Value < 70)
-                {
-                    gcBonus += BONUS_DUNGEON;
-                }
-            }
-            */
-            /*
-            if (!Shard.WARSHARD && from is PlayerMobile)
-            {
-                var player = (PlayerMobile)from;
-                /*
-                if (guardReg)
-                {
-                    if (!player.IsCooldown("skill_warn"))
-                    {
-                        player.SetCooldown("skill_warn", TimeSpan.FromHours(12));
-                        player.PrivateOverheadMessage(Network.MessageType.Regular, 0, false, "Por estar em cidade voce esta destraido e seu aprendizado esta comprometido", player.NetState);
-                    }
-                }
-            
-                if (houseReg)
-                {
-                    if (!player.IsCooldown("skill_warn3"))
-                    {
-                        player.SetCooldown("skill_warn3", TimeSpan.FromHours(12));
-
-                        player.PrivateOverheadMessage(Network.MessageType.Regular, 0, false, "Por estar em uma casa voce esta muito relaxado e seu aprendizado esta muito comprometido", player.NetState);
-                    }
-                }
-                
-                else if (dgBonus)
-                {
-                    if (!player.IsCooldown("skill_warn2"))
-                    {
-                        player.SetCooldown("skill_warn2", TimeSpan.FromHours(12));
-                        player.PrivateOverheadMessage(Network.MessageType.Regular, 0, false, "Por estar em uma regiao perigosa voce consegue aprender skills que nao sejam de trabalho mais rapidamente", player.NetState);          
-                    }
-                }
-                
-             
-                else if (dgNoob)
-                {
-                    if (!player.IsCooldown("skill_warn22"))
-                    {
-                        player.SetCooldown("skill_warn22", TimeSpan.FromHours(12));
-                        player.PrivateOverheadMessage(Network.MessageType.Regular, 38, false, "Por suas habilidades serem maior que 70, seu aprendizado na dungeon newbie eh comprometido.", player.NetState);
-                    }
-                }
-               
-            }
-            */
 
             var gc = GetExp(skill.Value, skill.Info.GainFactor, work, false, gcBonus) * mult;
 

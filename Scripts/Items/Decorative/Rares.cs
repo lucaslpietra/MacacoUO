@@ -2,46 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    public class Rope : Item, ICommodity
-    {
-        [Constructable]
-        public Rope()
-            : this(1)
-        {
-        }
-
-        [Constructable]
-        public Rope(int amount)
-            : base(0x14F8)
-        {
-            this.Stackable = true;
-            this.Weight = 1.0;
-            this.Amount = amount;
-        }
-
-        public Rope(Serial serial)
-            : base(serial)
-        {
-        }
-
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0);
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
     public class IronWire : Item, ICommodity
     {
         [Constructable]

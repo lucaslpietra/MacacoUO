@@ -183,7 +183,7 @@ namespace Server.Gumps
                     }
                     else
                     {
-                        player.SendGump(new ClassGump(null, false));
+                        player.SendGump(new NonRPClassGump(null, false));
                     }
                 }
             } catch (Exception e)

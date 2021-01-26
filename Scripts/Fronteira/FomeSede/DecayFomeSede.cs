@@ -6,8 +6,7 @@ namespace Server.Misc
 {
     public class DecayFomeSede : Timer
     {
-        public DecayFomeSede()
-            : base(TimeSpan.FromMinutes(10), TimeSpan.FromMinutes(10))
+        public DecayFomeSede() : base(TimeSpan.FromMinutes(10), TimeSpan.FromMinutes(10))
         {
             this.Priority = TimerPriority.OneMinute;
         }
@@ -38,9 +37,7 @@ namespace Server.Misc
                 {
                     if (state.Mobile.RP)
                         state.Mobile.SendGump(new FomeSede(state.Mobile));
-                }
-
-
+                } 
             }
         }
 

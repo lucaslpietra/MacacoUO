@@ -28,7 +28,6 @@ namespace Server.Items
             {
                 if (IsSecure)
                     return 0;
-
                 return base.DefaultMaxWeight;
             }
         }

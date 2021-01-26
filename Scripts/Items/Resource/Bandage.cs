@@ -26,8 +26,6 @@ namespace Server.Items
 
         public override double DefaultWeight { get { return 0.1; } }
 
-        
-
         [Constructable]
         public Bandage()
             : this(1)
@@ -258,13 +256,42 @@ namespace Server.Items
 
         public void Slip()
         {
-            m_Healer.SendMessage("Seus Dedos Escorregam"); // Your fingers slip!
             ++m_Slips;
+            m_Healer.SendMessage("Seus dedos escorregam [- "+m_Slips*SLIP_MULT+" cura]"); // Your fingers slip!
         }
 
         public BandageContext(Mobile healer, Mobile patient, TimeSpan delay)
             : this(healer, patient, delay, false)
         { }
+
+        public static void Initialize()
+        {
+            EventSink.Movement += Move;
+        }
+
+        public static void Move(MovementEventArgs e)
+        {
+            var pl = e.Mobile as PlayerMobile;
+            if(pl != null)
+            {
+                var ctx = BandageContext.GetContext(pl);
+                if(ctx != null)
+                {
+                    var chance = 0.9;
+                    if (!pl.Correndo())
+                        chance = 0.3;
+                    if(Utility.RandomDouble() < chance)
+                    {
+                        ctx.Slip();
+                        if(!pl.IsCooldown("dicabands"))
+                        {
+                            pl.SetCooldown("dicabands");
+                            pl.SendMessage(78, "Evite se movimentar ou lutar enquanto se cura para uma cura mais eficiente");
+                        }
+                    }
+                }
+            }
+        }
 
         public BandageContext(Mobile healer, Mobile patient, TimeSpan delay, bool enhanced, Corpse corpse=null)
         {
@@ -444,11 +471,13 @@ namespace Server.Items
                 toHeal += m_Patient.HitsMax / 170;
             }
 
-            toHeal -= m_Slips * 4;
+            toHeal -= m_Slips * SLIP_MULT;
             if(Shard.DebugEnabled)
                 Shard.Debug("To Heal: " + toHeal + " Escorregadas: " + m_Slips, m_Healer);
             return toHeal;
         }
+
+        public static int SLIP_MULT = 3;
 
         public void EndHeal()
         {
@@ -620,7 +649,6 @@ namespace Server.Items
             {
                 healerNumber = "Voce estancou o sangramento"; // You bind the wound and stop the bleeding
                 patientNumber = "Seu sangramento foi curado"; // The bleeding wounds have healed, you are no longer bleeding!
-
                 BleedAttack.EndBleed(m_Patient, false);
             }
             else if (MortalStrike.IsWounded(m_Patient))

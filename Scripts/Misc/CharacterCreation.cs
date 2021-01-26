@@ -155,7 +155,7 @@ namespace Server.Misc
 
                 pm.Profession = 0;
 
-                if (pm.IsPlayer() && pm.Account.Young)
+                if (pm.IsPlayer() && pm.Account.Young && !Shard.RP)
                     young = pm.Young = true;
             }
 

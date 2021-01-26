@@ -9,25 +9,25 @@ namespace Server.Fronteira.Classes
 {
     public class ClassePersonagem
     {
-
         public int ID;
         public string Nome;
+        public int Icone;
 
-        public HashSet<SkillName> Skills = new HashSet<SkillName>();
+        public HashSet<SkillName> ClassSkills = new HashSet<SkillName>();
 
-        public ClassePersonagem(int id, string nome, params SkillName[] skills)
+        public ClassePersonagem(string nome, int icone, params SkillName[] skills)
         {
-            this.ID = id;
             this.Nome = nome;
             foreach (var s in skills)
-                Skills.Add(s);
+                ClassSkills.Add(s);
+            this.Icone = icone;
         }
 
         public void ViraClasse(PlayerMobile player, ClassePersonagem classe)
         {
             foreach(var skill in player.Skills)
             {
-                if(Skills.Contains(skill.SkillName))
+                if(ClassSkills.Contains(skill.SkillName))
                 {
                     skill.Cap = 100;
                 } else

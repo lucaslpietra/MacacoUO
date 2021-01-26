@@ -257,19 +257,11 @@ namespace Server.Spells
 
         public virtual bool CheckMovement(Mobile caster)
         {
-            /*
-            if (caster.RP && caster.Player && IsCasting && BlocksMovement && (!(m_Caster is BaseCreature) || ((BaseCreature)m_Caster).FreezeOnCast))
+            if (caster.Player && IsCasting && BlocksMovement && (!(m_Caster is BaseCreature) || ((BaseCreature)m_Caster).FreezeOnCast))
             {
-                var nivel = ((PlayerMobile)Caster).Talentos.GetNivel(Talento.Concentracao);
-                if (nivel == 0)
-                {
-                    m_Caster.SendMessage("Voce esta conjurando uma magia e nao consegue se mover");
-                    return false;
-                }
-                return true;
+                //m_Caster.SendMessage("Voce esta conjurando uma magia e nao consegue se mover");
+                return false;
             }
-            */
-
             return true;
         }
 
@@ -378,13 +370,13 @@ namespace Server.Spells
         }
 
         // NAO USADO
-		public virtual bool OnCasterMoving(Direction d)
+        public virtual bool OnCasterMoving(Direction d)
         {
             if (Shard.CAST_CLASSICO && IsCasting && BlocksMovement && (!(m_Caster is BaseCreature) || ((BaseCreature)m_Caster).FreezeOnCast))
-			{
-				m_Caster.SendLocalizedMessage(500111); // You are frozen and can not move.
-				return false;
-			}
+            {
+                m_Caster.SendLocalizedMessage(500111); // You are frozen and can not move.
+                return false;
+            }
 
             /*
             if(Caster.RP && Caster.Player && IsCasting && BlocksMovement)
@@ -402,7 +394,7 @@ namespace Server.Spells
 
         public virtual bool DoStep(Mobile caster)
         {
-          
+
             if (caster.SpellSteps > 1 && this is MarkSpell)
             {
                 Disturb(DisturbType.Moved);
@@ -464,7 +456,7 @@ namespace Server.Spells
                 }
 
                 // Nao da disturb quando equipa
-                if(Shard.CAST_CLASSICO)
+                if (Shard.CAST_CLASSICO)
                     Disturb(DisturbType.EquipRequest);
             }
 
@@ -497,7 +489,7 @@ namespace Server.Spells
             {
                 return true;
             }
-        
+
             if (this is MagerySpell || this is NecromancerSpell)
             {
                 if (ElementalBall.UseElementalBall(Caster))
@@ -1019,12 +1011,12 @@ namespace Server.Spells
 
 
 
-            if(this.Caster.Meditating)
+            if (this.Caster.Meditating)
             {
                 this.Caster.Meditating = false;
                 this.Caster.SendMessage(12, "Você parou de meditar");
             }
-            
+
             m_StartCastTime = Core.TickCount;
 
             if (Caster.RP && Caster.Mounted && Caster is PlayerMobile && ((PlayerMobile)Caster).Talentos.GetNivel(Talento.Hipismo) <= 1)

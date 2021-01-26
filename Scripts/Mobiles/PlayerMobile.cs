@@ -54,6 +54,7 @@ using Server.Ziden;
 using Server.Commands;
 using Server.Fronteira.RP;
 using Server.Fronteira.Talentos;
+using Server.Fronteira.Items;
 #endregion
 
 namespace Server.Mobiles
@@ -132,6 +133,7 @@ namespace Server.Mobiles
 
     public partial class PlayerMobile : Mobile, IHonorTarget
     {
+        public object Arrastando;
         public bool Mamonita = false;
         public int RankingFama = 0;
         public int NivelBanco = 0;
@@ -1421,7 +1423,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return 40 + (int)(4.5 * Str) + (int)(Skills[SkillName.Camping].Value * 2);
+                return 30 + (int)(5.5 * Str) + (int)(Skills[SkillName.Camping].Value * 2);
             }
         }
 
@@ -2597,8 +2599,64 @@ namespace Server.Mobiles
             }
         }
 
+        public bool SmoothForceEquip(Item item)
+        {
+            if (item is BaseWeapon)
+            {
+                if (item.Layer == Layer.TwoHanded)
+                {
+                    if (item is BaseShield)
+                    {
+                        FreeEquip(Layer.TwoHanded);
+                    }
+                    else
+                    {
+                        FreeEquip(Layer.TwoHanded);
+                        FreeEquip(Layer.OneHanded);
+                    }
+                }
+                else
+                {
+                    var escudo = FindItemOnLayer(Layer.TwoHanded);
+                    if (escudo != null && escudo is BaseShield)
+                    {
+                        FreeEquip(Layer.OneHanded);
+                    }
+                    else
+                    {
+                        FreeEquip(Layer.TwoHanded);
+                        FreeEquip(Layer.OneHanded);
+                    }
+                }
+            }
+
+            if (item is BaseArmor)
+            {
+                var ar = (BaseArmor)item;
+                FreeEquip(ar.Layer);
+            }
+            else if (item is BaseClothing)
+            {
+                var ar = (BaseClothing)item;
+                FreeEquip(ar.Layer);
+            }
+            Backpack.RemoveItem(item);
+            if (!EquipItem(item))
+            {
+                Backpack.AddItem(item);
+                return false;
+            }
+            PlaySound(0x57);
+            return true;
+        }
+
         public override void Use(Item item)
         {
+            if(this.Frozen)
+            {
+                return;
+            }
+
             if (this.Paralyzed)
             {
                 if (item is Container)
@@ -2615,53 +2673,8 @@ namespace Server.Mobiles
             // AUTO EQUIP SPHERE
             if ((item is BaseClothing || item is BaseWeapon || item is BaseArmor && !(item is Dagger)) && item.IsChildOf(Backpack))
             {
-                if (item is BaseWeapon)
-                {
-                    if (item.Layer == Layer.TwoHanded)
-                    {
-                        if (item is BaseShield)
-                        {
-                            FreeEquip(Layer.TwoHanded);
-                        }
-                        else
-                        {
-                            FreeEquip(Layer.TwoHanded);
-                            FreeEquip(Layer.OneHanded);
-                        }
-                    }
-                    else
-                    {
-                        var escudo = FindItemOnLayer(Layer.TwoHanded);
-                        if (escudo != null && escudo is BaseShield)
-                        {
-                            FreeEquip(Layer.OneHanded);
-                        }
-                        else
-                        {
-                            FreeEquip(Layer.TwoHanded);
-                            FreeEquip(Layer.OneHanded);
-                        }
-                    }
-                }
-
-                if (item is BaseArmor)
-                {
-                    var ar = (BaseArmor)item;
-                    FreeEquip(ar.Layer);
-                }
-                else if (item is BaseClothing)
-                {
-                    var ar = (BaseClothing)item;
-                    FreeEquip(ar.Layer);
-                }
-                Backpack.RemoveItem(item);
-                if (!EquipItem(item))
-                    Backpack.AddItem(item);
-                PlaySound(0x57);
-                return;
+                SmoothForceEquip(item);
             }
-
-
 
             if (item is Bandage)
             {
@@ -3654,7 +3667,6 @@ namespace Server.Mobiles
                     return;
                 }
             }
-
             base.OnDoubleClick(from);
         }
 
@@ -6276,18 +6288,30 @@ namespace Server.Mobiles
             }
         }
 
+        public string GetLetraSexo()
+        {
+            return Female ? "a" : "o";
+        }
+
         public override void OnSingleClick(Mobile from)
         {
-            if (this.RP)
-            {
-                this.PrivateOverheadMessage(MessageType.Regular, 0x35, true, "[ Personagem RP ]", from.NetState);
-            }
+            if(Rope.Preso(this))
+                this.PrivateOverheadMessage(MessageType.Regular, 0x35, true, "* amarrad"+GetLetraSexo()+" *", from.NetState);
 
-            if (from != null && !from.RP && this.RP && !from.IsCooldown("avisorp"))
+            if (!Shard.RP)
             {
-                from.SetCooldown("avisorp", TimeSpan.FromMinutes(10));
-                from.SendMessage(78, "[ATENCAO] Voce esta se aproximando de jogadores em modo RP. Atrapalhar jogadores RP podera resultar em Jail e ate Ban !");
+                if (this.RP)
+                {
+                    this.PrivateOverheadMessage(MessageType.Regular, 0x35, true, "[ Personagem RP ]", from.NetState);
+                }
+
+                if (from != null && !from.RP && this.RP && !from.IsCooldown("avisorp"))
+                {
+                    from.SetCooldown("avisorp", TimeSpan.FromMinutes(10));
+                    from.SendMessage(78, "[ATENCAO] Voce esta se aproximando de jogadores em modo RP. Atrapalhar jogadores RP podera resultar em Jail e ate Ban !");
+                }
             }
+          
 
             /*
             if (Map == Faction.Facet)
@@ -6340,6 +6364,11 @@ namespace Server.Mobiles
             base.OnSingleClick(from);
         }
 
+        public bool Correndo()
+        {
+            return (this.Direction & Direction.Running) != 0;
+        }
+
         protected override bool OnMove(Direction d)
         {
             if (Party != null && NetState != null)
@@ -6352,6 +6381,7 @@ namespace Server.Mobiles
                 if(Utility.RandomDouble() < 0.02)
                 {
                     this.Mount.Rider = null;
+                    OverheadMessage("* caiu *");
                     SendMessage("Voce caiu da sua montaria");
                     AOS.Damage(this, Utility.Random(5, 10), DamageType.Melee);
                     this.PlayHurtSound();
@@ -6768,14 +6798,21 @@ namespace Server.Mobiles
                     list.Add("{0}, {1}", Utility.FixHtml(title), Utility.FixHtml(guild.Name));
                 }
             }
-            if (RP)
+
+            if(Rope.Preso(this))
+                list.Add(Gump.Cor("<CENTER>[ Amarrad"+GetLetraSexo()+" ]</CENTER>", "red"));
+
+            if (RP && !Shard.RP)
             {
                 list.Add(Gump.Cor("<CENTER>[ Personagem RP ]</CENTER>", "yellow"));
                 if (Deaths >= 5)
                     list.Add(Gump.Cor("<CENTER>MORTO</CENTER>", "red"));
-            }
-               
 
+            } else if(Shard.RP)
+            {
+                if (Deaths >= 5)
+                    list.Add(Gump.Cor("<CENTER>MORTO</CENTER>", "red"));
+            }
         }
         #endregion
 
@@ -6810,15 +6847,6 @@ namespace Server.Mobiles
                         SendMessage(78, "Sua fada foi-se embora, pois voce ja esta ficando forte");
                         SendMessage(78, "Enquanto voce tiver (Novato) no seu nome PKs nao podem te matar e voce nao pode ser roubado.");
                     }
-                    /*
-                    Account acc = Account as Account;
-
-                    if (acc != null)
-                    {
-                        acc.RemoveYoungStatus(1019036);
-                        // You have successfully obtained a respectable skill level, and have outgrown your status as a young player!
-                    }
-                    */
                 }
 
             }

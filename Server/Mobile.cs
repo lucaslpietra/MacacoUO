@@ -506,14 +506,14 @@ namespace Server
 
     #region Delegates
     public delegate bool SkillCheckTargetHandler(
-        Mobile from, SkillName skill, object target, double minSkill, double maxSkill, double mult=1);
+        Mobile from, SkillName skill, object target, double minSkill, double maxSkill, double mult = 1);
 
 
-    public delegate bool SkillCheckLocationHandler(Mobile from, SkillName skill, double minSkill, double maxSkill, double mult=1);
+    public delegate bool SkillCheckLocationHandler(Mobile from, SkillName skill, double minSkill, double maxSkill, double mult = 1);
 
     public delegate bool SkillCheckDirectTargetHandler(Mobile from, SkillName skill, object target, double chance, double mult = 1);
 
-    public delegate bool SkillCheckDirectLocationHandler(Mobile from, SkillName skill, double chance, double mult=1);
+    public delegate bool SkillCheckDirectLocationHandler(Mobile from, SkillName skill, double chance, double mult = 1);
 
     public delegate TimeSpan RegenRateHandler(Mobile from);
 
@@ -1200,7 +1200,8 @@ namespace Server
                     if (noto == Notoriety.CanBeAttacked && Player)
                     {
                         from.Send(new MessageLocalized(m_Serial, Body, MessageType.Label, hue, 3, opl.Header, "(Atacavel)", opl.HeaderArgs));
-                    } else if(noto == Notoriety.Criminal && Player)
+                    }
+                    else if (noto == Notoriety.Criminal && Player)
                     {
                         from.Send(new MessageLocalized(m_Serial, Body, MessageType.Label, hue, 3, opl.Header, "(Criminoso)", opl.HeaderArgs));
                     }
@@ -1399,7 +1400,8 @@ namespace Server
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual int VirtualArmorMod
         {
-            get {
+            get
+            {
                 return m_VirtualArmorMod;
             }
             set
@@ -1710,7 +1712,11 @@ namespace Server
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual int Thirst { get { return m_Thirst; } set {
+        public virtual int Thirst
+        {
+            get { return m_Thirst; }
+            set
+            {
                 var oldValue = m_Thirst;
                 m_Thirst = value;
                 EventSink.InvokeHungerChanged(new HungerChangedEventArgs(this, oldValue, false));
@@ -2204,11 +2210,11 @@ namespace Server
 
             long aux;
 
-          
+
 
             protected override void OnTick()
             {
-                if(Shard.TROCA_ARMA_RAPIDA && m_Mobile.Weapon != null)
+                if (Shard.TROCA_ARMA_RAPIDA && m_Mobile.Weapon != null)
                 {
                     if (m_Mobile.NextCombatTimes.TryGetValue(m_Mobile.Weapon.GetType(), out aux))
                     {
@@ -2243,7 +2249,7 @@ namespace Server
                         weapon.OnBeforeSwing(m_Mobile, combatant); //OnBeforeSwing for checking in regards to being hidden and whatnot
                         m_Mobile.RevealingAction();
 
-                        if(Shard.TROCA_ARMA_RAPIDA)
+                        if (Shard.TROCA_ARMA_RAPIDA)
                         {
                             //Shard.Debug("Hit setando combat time");
                             m_Mobile.NextCombatTimes[m_Mobile.Weapon.GetType()] = Core.TickCount + (int)weapon.OnSwing(m_Mobile, combatant).TotalMilliseconds;
@@ -3720,9 +3726,6 @@ namespace Server
 
         public virtual bool CheckShove(Mobile shoved)
         {
-            if (shoved.Player)
-                return true;
-
             if (!shoved.Alive || !Alive || shoved.IsDeadBondedPet || IsDeadBondedPet)
             {
                 return true;
@@ -3735,31 +3738,18 @@ namespace Server
             if (!m_Pushing)
             {
                 m_Pushing = true;
-
-                int number;
-
-                if (this.AccessLevel > AccessLevel.VIP)
+                if (Stam == StamMax)
                 {
-                    number = shoved.m_Hidden ? 1019041 : 1019040;
+                    if ((shoved.Str > 20 && this.Str < 99) || shoved.Str >= 200)
+                    {
+                        Stam -= 10;
+                    }
+                    RevealingAction();
                 }
                 else
                 {
-                    if (Stam == StamMax)
-                    {
-                        number = shoved.m_Hidden ? 1019043 : 1019042;
-                        if((shoved.Str > 20 && this.Str < 99) || shoved.Str >= 200)
-                        {
-                            Stam -= 10;
-                        }
-                        RevealingAction();
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    return false;
                 }
-
-                //SendMessage("Voce empurrou o alvo por estar descansado");
             }
             return true;
         }
@@ -7751,7 +7741,7 @@ namespace Server
 
         public virtual bool SendGump(Gump g)
         {
-            if(!IsStaff())
+            if (!IsStaff())
             {
                 CloseGump(g.GetType());
             }
@@ -8926,7 +8916,7 @@ namespace Server
         {
             get
             {
-                return Math.Max(25, RawInt); 
+                return Math.Max(25, RawInt);
             }
         }
         #endregion
@@ -10158,7 +10148,7 @@ namespace Server
 
         public virtual void MoveToWorld(Point3D newLocation, Map map)
         {
-            
+
             if (m_Deleted)
             {
                 return;
@@ -12160,6 +12150,31 @@ namespace Server
             }
         }
 
+        public void OverheadMessage(string msg, int hue, Func<Mobile, bool> Condition)
+        {
+            if (m_Map != null)
+            {
+                Packet p = null;
+
+                p = new AsciiMessage(m_Serial, Body, MessageType.Regular, hue, 3, Name, msg);
+                p.Acquire();
+
+                var eable = m_Map.GetClientsInRange(m_Location);
+
+                foreach (NetState state in eable)
+                {
+                    if (Condition(state.Mobile) && state.Mobile.CanSee(this))
+                    {
+                        state.Send(p);
+                    }
+                }
+
+                Packet.Release(p);
+
+                eable.Free();
+            }
+        }
+
         public void PublicOverheadMessage(MessageType type, int hue, bool ascii, string text, bool noLineOfSight)
         {
             if (m_Map != null)
@@ -12730,6 +12745,11 @@ namespace Server
             LocalOverheadMessage(MessageType.Regular, hue, true, msg);
         }
 
+        public void PrivateOverheadMessage(string msg, Mobile to, int hue = 0)
+        {
+            PrivateOverheadMessage(MessageType.Regular, 0, true, msg, to.NetState);
+        }
+
         public void NonlocalOverheadMessage(MessageType type, int hue, int number, string args)
         {
             var str = Lang.Trans(number);
@@ -12905,7 +12925,7 @@ namespace Server
 
         public void SendMessage(int hue, string text)
         {
-            if(hue==78)
+            if (hue == 78)
             {
 
             }
@@ -13121,7 +13141,7 @@ namespace Server
         /// </summary>
         public virtual void OnRegionChange(Region Old, Region New)
         {
-          
+
         }
 
         private Item m_MountItem;
@@ -13233,16 +13253,17 @@ namespace Server
                         type = "";
                     }
 
-                    if(guild.Name.Length <= 20)
+                    if (guild.Name.Length <= 20)
                     {
                         string text = String.Format(title.Length <= 0 ? "[{1}]{2}" : "[{0}, {1}]{2}", title, guild.Name, type);
                         PrivateOverheadMessage(MessageType.Regular, SpeechHue, true, text, from.NetState);
-                    } else
+                    }
+                    else
                     {
                         string text = String.Format(title.Length <= 0 ? "[{1}]{2}" : "[{0}, {1}]{2}", title, guild.Abbreviation, type);
                         PrivateOverheadMessage(MessageType.Regular, SpeechHue, true, text, from.NetState);
                     }
-                   
+
                 }
             }
 
@@ -13260,11 +13281,11 @@ namespace Server
             {
                 var noto = Notoriety.Compute(from, this);
                 hue = Notoriety.GetHue(noto);
-                
+
                 if (noto == Notoriety.CanBeAttacked && !this.Player)
                     hue = Notoriety.GetHue(Notoriety.Criminal);
 
-                if(noto==Notoriety.CanBeAttacked && this.Player)
+                if (noto == Notoriety.CanBeAttacked && this.Player)
                 {
                     PrivateOverheadMessage(MessageType.Label, hue, m_AsciiClickMessage, "(Atacavel)", from.NetState);
                 }
@@ -13272,7 +13293,7 @@ namespace Server
                 {
                     PrivateOverheadMessage(MessageType.Label, hue, m_AsciiClickMessage, "(Criminoso)", from.NetState);
                 }
-                
+
             }
 
             string name = Name;
@@ -13320,7 +13341,7 @@ namespace Server
             PrivateOverheadMessage(MessageType.Label, hue, m_AsciiClickMessage, val, from.NetState);
         }
 
-        public bool CheckSkillMult(SkillName skill, double minSkill, double maxSkill, double mult=1)
+        public bool CheckSkillMult(SkillName skill, double minSkill, double maxSkill, double mult = 1)
         {
             if (m_SkillCheckLocationHandler == null)
             {
@@ -13332,7 +13353,7 @@ namespace Server
             }
         }
 
-        public bool CheckSkill(SkillName skill, double chance, double mult=1)
+        public bool CheckSkill(SkillName skill, double chance, double mult = 1)
         {
             if (m_SkillCheckDirectLocationHandler == null)
             {
@@ -13344,7 +13365,7 @@ namespace Server
             }
         }
 
-        public bool CheckTargetSkillMinMax(SkillName skill, object target, double minSkill, double maxSkill, double mult=1)
+        public bool CheckTargetSkillMinMax(SkillName skill, object target, double minSkill, double maxSkill, double mult = 1)
         {
             if (m_SkillCheckTargetHandler == null)
             {
@@ -13356,7 +13377,7 @@ namespace Server
             }
         }
 
-        public bool CheckTargetSkill(SkillName skill, object target, double chance, double mult=1)
+        public bool CheckTargetSkill(SkillName skill, object target, double chance, double mult = 1)
         {
             if (m_SkillCheckDirectTargetHandler == null)
             {

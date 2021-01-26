@@ -2536,7 +2536,7 @@ namespace Server
                     m_Mods = new List<SkillMod>();
 
                 SkillMod sk = new DefaultSkillMod(skill, true, bonus);
-                sk.ObeyCap = !Shard.POL_STYLE; // passa do cap se for estilo t2a/pol
+                sk.ObeyCap = !Core.AOS; // passa do cap se for estilo t2a
                 m.AddSkillMod(sk);
                 m_Mods.Add(sk);
             }

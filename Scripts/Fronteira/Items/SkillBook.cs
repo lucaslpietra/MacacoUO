@@ -12,7 +12,6 @@ namespace Server.Items
 {
     public class SkillBook : Item
     {
-
         private class SkillRecord
         {
             public String name;
@@ -26,6 +25,7 @@ namespace Server.Items
                 idx = new_idx;
             }
         }
+
         [Constructable]
         public SkillBook()
          : base(0xEFA)
