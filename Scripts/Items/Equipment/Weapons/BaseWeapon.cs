@@ -1555,14 +1555,18 @@ namespace Server.Items
 
             if(defender.Player)
             {
-                var esquiva = ((PlayerMobile)defender).Talentos.GetNivel(Talento.Esquiva);
-                bonus -= esquiva * (attacker.Player ? 3 : 10);
+                if(((PlayerMobile)defender).Talentos.Tem(Talento.Esquiva))
+                {
+                    bonus -= 10;
+                }
             }
 
             if (attacker.Player)
             {
-                var acerto = ((PlayerMobile)attacker).Talentos.GetNivel(Talento.Precisao);
-                bonus += acerto * (attacker.Player ? 3 : 10);
+                if (((PlayerMobile)defender).Talentos.Tem(Talento.Precisao))
+                {
+                    bonus -= 10;
+                }
             }
 
             double chance = ourValue / (theirValue * 1.8);
@@ -1786,9 +1790,9 @@ namespace Server.Items
 
             canSwing = diffZ < 10;
 
-            if(attacker.RP && attacker.Mounted && attacker is PlayerMobile && ((PlayerMobile)attacker).Talentos.GetNivel(Talento.Hipismo) <= 1)
+            if(attacker.RP && attacker.Mounted && attacker is PlayerMobile && !((PlayerMobile)attacker).Talentos.Tem(Talento.Hipismo))
             {
-                if(Utility.RandomDouble() < 0.05)
+                if(Utility.RandomDouble() < 0.01)
                 {
                     attacker.Mount.Rider = null;
                     attacker.SendMessage("Voce se desequilibrou da sua montaria ao atacar");
@@ -2135,9 +2139,12 @@ namespace Server.Items
                     if (pl == null)
                         continue;
 
-                    var def = pl.Talentos.GetNivel(Talento.Defensor);
-                    var chanceBlockGrupo = def * pl.Skills.Parry.Value * 0.15;
-                    if(chanceBlockGrupo > 0 && Utility.RandomDouble() < chanceBlockGrupo)
+                    var def = pl.Talentos.Tem(Talento.Defensor);
+                    var chanceBlockGrupo = 0.0;
+                    if (def)
+                        chanceBlockGrupo = 0.3; // 30%
+
+                    if (chanceBlockGrupo > 0 && Utility.RandomDouble() < chanceBlockGrupo)
                     {
                         pl.MoveToWorld(mob.Location, mob.Map);
                         pl.OverheadMessage("* pulou e bloqueou *");
@@ -2322,13 +2329,11 @@ namespace Server.Items
                 if (Shard.DebugEnabled)
                     Shard.Debug("Dano antes talentos " + damage);
                 var pl = (PlayerMobile)attacker;
-                var potencia = pl.Talentos.GetNivel(Talento.Potencia);
-             
+                if(pl.Talentos.Tem(Talento.Potencia))
+                    damage = (int)(damage * 0.2);
 
-                damage = (int)(damage * (1 + potencia * 0.1));
-                if (potencia == 3)
-                    damage += damage / 5;
-                var mamo = pl.Talentos.GetNivel(Fronteira.Talentos.Talento.Mamonita);
+                /*
+                var mamo = pl.Talentos.Tem(Fronteira.Talentos.Talento.Mamonita);
                 if (pl.Mamonita && mamo > 0 && Banker.Withdraw(attacker, mamo * 100))
                 {
                     attacker.PrivateOverheadMessage("-"+(mamo*100), 76);
@@ -2337,6 +2342,8 @@ namespace Server.Items
                     attacker.PlaySound(0x2E6);
                     Effects.SendMovingParticles(defender, new Entity(Serial.Zero, new Point3D(defender.X, defender.Y, defender.Z + 15), defender.Map), 0x0EEC, 15, 0, false, true, 0, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
                 }
+                */
+
                 if (Shard.DebugEnabled)
                     Shard.Debug("Dano depois talentos " + damage);
             }
@@ -2565,9 +2572,9 @@ namespace Server.Items
             if (damageable is PlayerMobile)
             {
                 var tomou = damageable as PlayerMobile;
-                if (tomou.RP && tomou.Mounted && tomou.Talentos.GetNivel(Talento.Hipismo) <= 2)
+                if (tomou.RP && tomou.Mounted && !tomou.Talentos.Tem(Talento.Hipismo))
                 {
-                    if (Utility.RandomDouble() < 0.3)
+                    if (Utility.RandomDouble() < 0.01)
                     {
                         tomou.Mount.Rider = null;
                         tomou.SendMessage("Voce se desequilibrou da sua montaria ao receber o golpe");

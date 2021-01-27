@@ -148,13 +148,6 @@ namespace Server.Mobiles
                             var pl = value as PlayerMobile;
                             if (pl == null)
                                 return;
-
-                            if(pl.Talentos.GetNivel(Talento.Hipismo) == 0)
-                            {
-                                pl.SendMessage("Voce nao sabe montar em animais.");
-                                return;
-                            }
-
                         }
 
                         if (this.Hidden)

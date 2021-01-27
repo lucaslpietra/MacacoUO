@@ -1019,7 +1019,7 @@ namespace Server.Spells
 
             m_StartCastTime = Core.TickCount;
 
-            if (Caster.RP && Caster.Mounted && Caster is PlayerMobile && ((PlayerMobile)Caster).Talentos.GetNivel(Talento.Hipismo) <= 1)
+            if (Caster.RP && Caster.Mounted && Caster is PlayerMobile && !((PlayerMobile)Caster).Talentos.Tem(Talento.Hipismo))
             {
                 if (Utility.RandomDouble() < 0.05)
                 {

@@ -65,12 +65,14 @@ namespace Server.Spells
 
         public override bool ValidateCast(Mobile from)
         {
+            /*
             if (from.RP && from.Player)
             {
-                var talento = ((PlayerMobile)from).Talentos.GetNivel(Talento.ArmaduraMagica);
+                if(((PlayerMobile)from).Talentos.Tem(Talento.ArmaduraMagica);
                 if (talento >= 1)
                     return true;
             }
+            */
 
             var circleMax = this.CicloArmadura(from);
             if (circleMax < (int)this.Circle + 1)
@@ -170,20 +172,14 @@ namespace Server.Spells
                 var resist = target.Skills[SkillName.MagicResist].Value;
                 if (target.Player)
                 {
-                    var talento = ((PlayerMobile)target).Talentos.GetNivel(Talento.PeleArcana);
-                    resist += talento * 5;
-                    if (talento == 3)
-                        resist += 5;
+                    if(((PlayerMobile)target).Talentos.Tem(Talento.PeleArcana))
+                        resist += 10;
                 }
 
                 if (Caster.Player && Caster.RP)
                 {
-                    var talento = ((PlayerMobile)Caster).Talentos.GetNivel(Talento.Concentracao);
-                    resist -= talento * 5;
-                    if (talento == 3)
-                        resist -= 5;
-                    if (resist < 0)
-                        resist = 0;
+                    if (((PlayerMobile)target).Talentos.Tem(Talento.Concentracao))
+                        resist -= 10;
                 }
 
                 var cap = resist / 5;

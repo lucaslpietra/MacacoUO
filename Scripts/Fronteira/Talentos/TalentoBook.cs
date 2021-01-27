@@ -6,6 +6,7 @@ namespace Server.Fronteira.Talentos
 {
     public class TalentoBook : Item
     {
+        /*
         [Constructable]
         public TalentoBook() : base(0x225A)
         {
@@ -43,13 +44,12 @@ namespace Server.Fronteira.Talentos
                 from.CloseGump(typeof(GumpLivroTalento));
 
             from.SendGump(new GumpLivroTalento(pl, this));
-
         }
+        */
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
         }
 
         public override void Deserialize(GenericReader reader)

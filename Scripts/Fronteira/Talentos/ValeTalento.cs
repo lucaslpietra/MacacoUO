@@ -5,6 +5,7 @@ namespace Server.Fronteira.Talentos
 {
     public class ValeTalento : Item
     {
+        /*
         [CommandProperty(AccessLevel.GameMaster)]
         public Talento Talento { get; set; }
 
@@ -52,19 +53,21 @@ namespace Server.Fronteira.Talentos
             Effects.SendTargetParticles(from, 0x375A, 35, 90, 78, 0x00, 9502, (EffectLayer)255, 0x100);
 
         }
+        */
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
             writer.Write(0);
-            writer.Write((int)Talento);
+            //writer.Write((int)Talento);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             var v = reader.ReadInt();
-            Talento = (Talento)reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

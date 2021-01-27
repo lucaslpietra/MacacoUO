@@ -139,6 +139,7 @@ namespace Server.Fronteira.Talentos
                 Nome = "Naturalista"
             });
 
+            /*
             _talentos.Add(Talento.Mamonita, new DefTalentos()
             {
                 Desc1 = "Usa 100 moedas +5 Dano",
@@ -147,6 +148,7 @@ namespace Server.Fronteira.Talentos
                 Icone = 39854,
                 Nome = "Mamonita"
             });
+            */
 
             _talentos.Add(Talento.PeleArcana, new DefTalentos()
             {

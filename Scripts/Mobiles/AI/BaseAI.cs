@@ -2994,15 +2994,17 @@ namespace Server.Mobiles
 
                     if(m.RP && m.Player)
                     {
-                        var talento = ((PlayerMobile)m).Talentos.GetNivel(Fronteira.Talentos.Talento.Silencioso);
-                        if(Utility.RandomDouble() < talento * 0.31)
+                        if(((PlayerMobile)m).Talentos.Tem(Fronteira.Talentos.Talento.Silencioso))
                         {
-                            if(!m.IsCooldown("silenc"))
+                            if (Utility.RandomDouble() < 0.9)
                             {
-                                m.PrivateOverheadMessage("* silencioso *");
-                                m.SetCooldown("silenc", TimeSpan.FromSeconds(10));
+                                if (!m.IsCooldown("silenc"))
+                                {
+                                    m.PrivateOverheadMessage("* silencioso *");
+                                    m.SetCooldown("silenc", TimeSpan.FromSeconds(10));
+                                }
+                                continue;
                             }
-                            continue;
                         }
                     }
 

@@ -12,15 +12,17 @@ namespace Server.Fronteira.Classes
         public int ID;
         public string Nome;
         public int Icone;
+        public string Desc;
 
         public HashSet<SkillName> ClassSkills = new HashSet<SkillName>();
 
-        public ClassePersonagem(string nome, int icone, params SkillName[] skills)
+        public ClassePersonagem(string nome, int icone, string descricao, params SkillName[] skills)
         {
             this.Nome = nome;
             foreach (var s in skills)
                 ClassSkills.Add(s);
             this.Icone = icone;
+            this.Desc = descricao;
         }
 
         public void ViraClasse(PlayerMobile player, ClassePersonagem classe)

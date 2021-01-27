@@ -187,9 +187,7 @@ namespace Server.Fronteira.Recursos
             }
             if(from.Player && from.RP)
             {
-                var talento = ((PlayerMobile)from).Talentos.GetNivel(Talentos.Talento.Naturalista);
-                i.Amount += talento * 2;
-                if(talento==3)
+                if(((PlayerMobile)from).Talentos.Tem(Talentos.Talento.Naturalista))
                 {
                     i.Amount += 3;
                 }

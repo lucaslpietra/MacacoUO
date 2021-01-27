@@ -34,7 +34,7 @@ namespace Server.Fronteira.Talentos
         // Bonus harvest
         Naturalista,
         // Ataques pesados usando dinheiro
-        Mamonita,
+        // Mamonita,
 
         // Resist Magias
         PeleArcana,

@@ -54,7 +54,6 @@ using Server.Ziden;
 using Server.Commands;
 using Server.Fronteira.RP;
 using Server.Fronteira.Talentos;
-using Server.Fronteira.Items;
 #endregion
 
 namespace Server.Mobiles
@@ -169,8 +168,7 @@ namespace Server.Mobiles
 
         public override int VirtualArmorMod { get
             {
-                var talento = Talentos.GetNivel(Talento.ProtecaoPesada);
-                return base.VirtualArmorMod + talento == 3 ? 20 : talento * 5;
+                return base.VirtualArmorMod + (Talentos.Tem(Talento.ProtecaoPesada) ? 10 : 0);
             }
             set { base.VirtualArmorMod = value; } }
 
@@ -2339,8 +2337,9 @@ namespace Server.Mobiles
             get
             {
                 var stats = (RawStr + RawDex + RawInt) / 225d;
-                var talento = Talentos.GetNivel(Talento.Perseveranca);
-                var bonus = talento < 3 ? talento * 10 : 40;
+                var bonus = 0;
+                if(Talentos.Tem(Talento.Perseveranca))
+                    bonus = 40;
                 return 70 + (int)(stats * 30) + bonus;
             }
         }
@@ -2350,8 +2349,9 @@ namespace Server.Mobiles
         {
             get
             {
-                var talento = Talentos.GetNivel(Talento.FisicoPerfeito);
-                var bonus = talento < 3 ? talento * 10 : 40;
+                var bonus = 0;
+                if (Talentos.Tem(Talento.FisicoPerfeito))
+                    bonus = 40;
                 return Math.Max(10, base.StamMax + AosAttributes.GetValue(this, AosAttribute.BonusStam)) + bonus;
             }
         }
@@ -2361,8 +2361,10 @@ namespace Server.Mobiles
         {
             get
             {
-                var talento = Talentos.GetNivel(Talento.Sabedoria);
-                var bonus = talento < 3 ? talento * 10 : 40;
+                var bonus = 0;
+                if (Talentos.Tem(Talento.Sabedoria))
+                    bonus = 40;
+
                 return base.ManaMax + AosAttributes.GetValue(this, AosAttribute.BonusMana) +
                        MasteryInfo.IntuitionBonus(this) +
                        UraliTranceTonic.GetManaBuff(this) + bonus;
@@ -5209,8 +5211,11 @@ namespace Server.Mobiles
 
             switch (version)
             {
-                case 47:
+                case 48:
                     Talentos.Deserialize(reader);
+                    goto case 46;
+                case 47:
+                    Talentos.DeserialzieOld(reader);
                     goto case 46;
                 case 46:
                     FichaRP.Deserialize(reader);
@@ -5690,7 +5695,7 @@ namespace Server.Mobiles
             CheckKillDecay();
             CheckAtrophies(this);
             base.Serialize(writer);
-            writer.Write(47); // version
+            writer.Write(48); // version
             Talentos.Serialize(writer);
             FichaRP.Serialize(writer);
             writer.Write(Vidas);
@@ -6238,9 +6243,9 @@ namespace Server.Mobiles
                 Waypoints.UpdateToParty(this);
             }
 
-            if(RP && Mounted && Talentos.GetNivel(Talento.Hipismo) <= 1 && (d & Direction.Running) != 0)
+            if(RP && Mounted && !Talentos.Tem(Talento.Hipismo) && (d & Direction.Running) != 0)
             {
-                if(Utility.RandomDouble() < 0.02)
+                if(Utility.RandomDouble() < 0.01)
                 {
                     this.Mount.Rider = null;
                     OverheadMessage("* caiu *");

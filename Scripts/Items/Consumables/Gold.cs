@@ -134,6 +134,8 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
+            from.SendMessage("Bom e velho dinheiro...");
+            /*
             if(!from.RP)
             {
                 from.SendMessage("Bom e velho dinheiro...");
@@ -151,6 +153,7 @@ namespace Server.Items
                     pl.SendMessage("Talvez voce aprenda algum talento que use moedas para algo");
                 }
             }
+            */
         }
 
         public override int GetTotal(TotalType type)

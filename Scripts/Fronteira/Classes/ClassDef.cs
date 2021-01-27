@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Fronteira.Classes
 {
@@ -43,15 +40,15 @@ namespace Server.Fronteira.Classes
             if (_classes.Count != 0)
                 return;
 
-            AddClass(new ClassePersonagem("Guerreiro", 5553, new SkillName[] {
+            AddClass(new ClassePersonagem("Guerreiro", 40344, "Nego parrudaum", new SkillName[] {
                 SkillName.Tactics, SkillName.Anatomy, SkillName.Swords
             }));
 
-            AddClass(new ClassePersonagem("Arqueiro", 5577, new SkillName[] {
+            AddClass(new ClassePersonagem("Arqueiro", 40345, "Neguim dos tiro", new SkillName[] {
                 SkillName.Archery, SkillName.Anatomy, SkillName.Tactics
             }));
 
-            AddClass(new ClassePersonagem("Mago", 5555, new SkillName[] {
+            AddClass(new ClassePersonagem("Mago", 40346, "Mano das firebola", new SkillName[] {
                 SkillName.Magery, SkillName.Meditation, SkillName.EvalInt
             }));
 

@@ -114,9 +114,12 @@ namespace Server
             if (m != null && phys == 0 && fire == 100 && cold == 0 && pois == 0 && nrgy == 0)
                 Mobiles.MeerMage.StopEffect(m, true);
 
+            bool ranged = type == DamageType.Ranged;
+            BaseQuiver quiver = null;
+
+            #region danot2a
             if (!Core.AOS)
             {
-
                 Shard.Debug("Aplicando Dano" + damage, m);
                 if (ArmorPierce.IsUnderEffects(m))
                 {
@@ -249,28 +252,28 @@ namespace Server
                     DamageNumbers.ShowDamage(damage, damageDealer, m, hue);
                     m.Damage(damage, damageDealer);
                 }
-                return damage;
-            }
 
-            if (m != null)
-            {
-                if (m.Talisman != null && m.Talisman is ITalismanProtection)
+                if (m != null)
                 {
-                    ITalismanProtection prot = m.Talisman as ITalismanProtection;
-                    if (prot != null)
+                    if (m.Talisman != null && m.Talisman is ITalismanProtection)
                     {
-                        damage = prot.Protection.ScaleDamage(damageDealer, damage);
+                        ITalismanProtection prot = m.Talisman as ITalismanProtection;
+                        if (prot != null)
+                        {
+                            damage = prot.Protection.ScaleDamage(damageDealer, damage);
+                        }
                     }
                 }
+
+                if (quiver != null)
+                    damage += damage * quiver.DamageIncrease / 100;
+                return damage;
             }
+            #endregion
 
-            bool ranged = type == DamageType.Ranged;
-            BaseQuiver quiver = null;
-
+            // CODIGO AOS //
             if (quiver != null)
                 damage += damage * quiver.DamageIncrease / 100;
-
-            return damage;
 
             #region Mondain's Legacy
 

@@ -6,6 +6,7 @@ namespace Server.Commands
 {
     public class CmdTalentos
     {
+        /*
         public static void Initialize()
         {
             CommandSystem.Register("talentos", AccessLevel.Player, new CommandEventHandler(CMD));
@@ -75,5 +76,6 @@ namespace Server.Commands
                 }
             }
         }
+        */
     }
 }

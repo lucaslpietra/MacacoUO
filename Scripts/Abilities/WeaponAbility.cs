@@ -152,8 +152,8 @@ namespace Server.Items
 
             if(from.RP && from.Player)
             {
-                var nivel = ((PlayerMobile)from).Talentos.GetNivel(Fronteira.Talentos.Talento.Brutalidade);
-                stamina = (int)(stamina * 1 - nivel * 0.2);
+                if(((PlayerMobile)from).Talentos.Tem(Fronteira.Talentos.Talento.Brutalidade))
+                    stamina = (int)(stamina * (1 - 0.6));
             }
 
             return StrangleSpell.ScaleStamina(from, (int)(stamina * 1.25));

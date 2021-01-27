@@ -4,43 +4,48 @@ namespace Server.Fronteira.Talentos
 {
     public class Talentos
     {
-        public Dictionary<Talento, int> _niveis = new Dictionary<Talento, int>();
+        private HashSet<Talento> _talentos = new HashSet<Talento>();
 
-        public int GetNivel(Talento t)
+        public bool Tem(Talento t)
         {
-            if (_niveis.ContainsKey(t))
-                return _niveis[t];
-            return 0;
+            return _talentos.Contains(t);
         }
 
         public void Wipa()
         {
-            _niveis.Clear();
+            _talentos.Clear();
         }
 
-        public void SetNivel(Talento t, int nivel)
+        public void Aprende(Talento t)
         {
-            _niveis[t] = nivel;
+            _talentos.Add(t);
         }
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write(_niveis.Count);
-            foreach(var key in _niveis.Keys)
+            writer.Write(_talentos.Count);
+            foreach(var talento in _talentos)
             {
-                writer.Write((int)key);
-                writer.Write(_niveis[key]);
+                writer.Write((int)talento);
             }
         }
 
         public void Deserialize(GenericReader reader)
         {
             var ct = reader.ReadInt();
+            for (var x = 0; x < ct; x++)
+            {
+                _talentos.Add((Talento)reader.ReadInt());
+            }
+        }
+
+        public void DeserialzieOld(GenericReader reader)
+        {
+            var ct = reader.ReadInt();
             for(var x = 0; x < ct; x++)
             {
-                var k = (Talento)reader.ReadInt();
-                var v = reader.ReadInt();
-                _niveis.Add(k, v);
+               reader.ReadInt();
+               reader.ReadInt();
             }
         }
     }

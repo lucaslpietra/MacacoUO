@@ -34,14 +34,10 @@ namespace Server.Misc
         {
             if (from.RP && from.Player)
             {
-                var talento = ((PlayerMobile)from).Talentos.GetNivel(Talento.ArmaduraMagica);
-                if (talento == 3)
+                if(((PlayerMobile)from).Talentos.Tem(Talento.ArmaduraMagica))
                     return 0;
             }
             double rating = 0.0;
-
-            //if (!Core.AOS) - Removida influência do escudo no rate
-            //rating += GetArmorMeditationValue(from.ShieldArmor as BaseArmor);
 
             rating += GetArmorMeditationValue(from.NeckArmor as BaseArmor);
             rating += GetArmorMeditationValue(from.HandArmor as BaseArmor);
@@ -50,12 +46,6 @@ namespace Server.Misc
             rating += GetArmorMeditationValue(from.LegsArmor as BaseArmor);
             rating += GetArmorMeditationValue(from.ChestArmor as BaseArmor);
 
-            if (from.RP && from.Player)
-            {
-                var talento = ((PlayerMobile)from).Talentos.GetNivel(Talento.ArmaduraMagica);
-                if (talento == 2)
-                    return rating / 6;
-            }
             return rating / 4;
         }
 

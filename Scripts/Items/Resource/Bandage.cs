@@ -917,13 +917,9 @@ namespace Server.Items
 
             if(healer != patient && healer.RP && patient.Player && healer.Player)
             {
-                var talento = ((PlayerMobile)healer).Talentos.GetNivel(Fronteira.Talentos.Talento.Curandeiro);
-                seconds -= talento * 2;
-                if (seconds < 2)
-                    seconds = 2;
-            
+                if(((PlayerMobile)healer).Talentos.Tem(Fronteira.Talentos.Talento.Curandeiro))
+                    seconds -= 5;
             }
-
             return TimeSpan.FromSeconds(seconds);
         }
     }
