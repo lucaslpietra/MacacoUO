@@ -537,6 +537,8 @@ namespace Server
     public class Mobile : IEntity, IHued, IComparable<Mobile>, ISerializable, ISpawnable, IDamageable
     {
 
+        public int Temperatura;
+
         public virtual bool RP { get { return false; } set { } }
 
         public string LastTraducao = null;
