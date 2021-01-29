@@ -1,3 +1,4 @@
+using Server.Misc;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -80,34 +81,44 @@ namespace Server.Fronteira.Clima
                     Shard.Debug("Timer");
 
                 Danos.Clear();
-                foreach (var manolo in _emTemp)
+                foreach (var player in _emTemp)
                 {
-                    if (!manolo.Alive)
+                    if (!player.Alive)
                         continue;
 
                     if (Shard.DebugEnabled)
-                        Shard.Debug("Vendo temperatura do manolo " + manolo.Name);
+                        Shard.Debug("Vendo temperatura do manolo " + player.Name);
 
-                    if (manolo.Temperatura < 0)
+                    if (player.Temperatura < 0)
                     {
-                        var dano = (-manolo.Temperatura - manolo.ColdResistance) * 3;
+                        var dano = (-player.Temperatura - player.ColdResistance) * 3;
                         if (dano > 25)
                             dano = 25;
                         if (dano > 0)
                         {
-                            manolo.Stam -= dano;
-                            manolo.SendMessage("Voce esta com frio");
-                            Danos.Add(manolo, dano);
-                        
-                            if (manolo.Female)
-                                manolo.PlaySound(0x332);
+                            player.Stam -= dano;
+                            player.SendMessage("Voce esta com frio");
+                            Danos.Add(player, dano);
+                            if (player.Female)
+                                player.PlaySound(0x332);
                             else
-                                manolo.PlaySound(0x444);
+                                player.PlaySound(0x444);
                         }
                     }
-                    else if (manolo.Temperatura > 0)
+                    else if (player.Temperatura > 0)
                     {
-                        //var dano = manolo.ColdResistance - manolo.Temperatura;
+                        var resistFinal = player.FireResistance - player.ColdResistance;
+                        var dano = (player.Temperatura - resistFinal) * 2;
+                        if (dano > 25) dano = 25;
+                        Danos.Add(player, dano);
+                        if(dano > 0)
+                        {
+                            player.SendMessage("Voce esta com calor");
+                            if(Utility.RandomDouble() < 0.2)
+                            {
+                                DecayFomeSede.ThirstDecay(player);
+                            }
+                        }
                     }
                 }
 
