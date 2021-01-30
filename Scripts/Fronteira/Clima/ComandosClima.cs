@@ -9,6 +9,10 @@ namespace Server.Fronteira.Clima
 {
     public class ComandosClima
     {
+
+        public static int MAX = 10;
+        public static int MIN = -10;
+
         public static void Initialize()
         {
             CommandSystem.Register("settemperatura", AccessLevel.Administrator, new CommandEventHandler(CMD));

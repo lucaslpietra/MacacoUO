@@ -539,6 +539,8 @@ namespace Server
 
         public int Temperatura;
 
+        public bool AvisoTemperatura = false;
+
         public virtual bool RP { get { return false; } set { } }
 
         public string LastTraducao = null;

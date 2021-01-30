@@ -1173,9 +1173,15 @@ namespace Server.Items
             base.AddWeightProperty(list);
 
             if (IsVvVItem)
-                list.Add(1154937); // VvV Item
+                list.Add(1154937); // VvV Item 
+        }
 
-           
+        public override bool OnEquip(Mobile from)
+        {
+            var eq = base.OnEquip(from);
+            if (eq && from.RP && (m_AosResistances.Cold != 0 || m_AosResistances.Fire != 0))
+                from.SendGump(new GumpTemperatura(from));
+            return eq;
         }
 
         public override void AddNameProperties(ObjectPropertyList list)
@@ -1202,6 +1208,12 @@ namespace Server.Items
             if (OwnerName != null)
             {
                 list.Add(1153213, OwnerName);
+            }
+
+
+            if(m_AosResistances.Cold > 0)
+            {
+                list.Add("DEBUG: RESIST FRIO: " + m_AosResistances.Cold);
             }
 
             return;

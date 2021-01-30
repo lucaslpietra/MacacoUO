@@ -1,3 +1,4 @@
+using Server.Gumps;
 using Server.Misc;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,10 @@ namespace Server.Fronteira.Clima
 {
     public class Clima
     {
+        public static readonly int MAX = 20;
+
+        public static readonly int MIN = -20;
+
         private static HashSet<Mobile> _emTemp = new HashSet<Mobile>();
 
         private static Dictionary<string, int> _temperaturas = new Dictionary<string, int>();
@@ -38,7 +43,7 @@ namespace Server.Fronteira.Clima
         private static void Salva(GenericWriter writer)
         {
             writer.Write(_temperaturas.Count);
-            foreach(var temp in _temperaturas)
+            foreach (var temp in _temperaturas)
             {
                 writer.Write(temp.Key);
                 writer.Write(temp.Value);
@@ -48,7 +53,7 @@ namespace Server.Fronteira.Clima
         private static void Carrega(GenericReader reader)
         {
             var ct = reader.ReadInt();
-            for(var x= 0; x < ct; x++)
+            for (var x = 0; x < ct; x++)
             {
                 var k = reader.ReadString();
                 var v = reader.ReadInt();
@@ -97,12 +102,23 @@ namespace Server.Fronteira.Clima
                         if (dano > 0)
                         {
                             player.Stam -= dano;
-                            player.SendMessage("Voce esta com frio");
-                            Danos.Add(player, dano);
+                            player.SendMessage("Voce esta com frio e precisa de roupas mais quentes para se esquentar");
+
                             if (player.Female)
                                 player.PlaySound(0x332);
                             else
                                 player.PlaySound(0x444);
+
+                            if (player.AvisoTemperatura)
+                            {
+                                Danos.Add(player, dano);
+                            }
+                            else
+                            {
+                                player.SendMessage(78, "Se voce permanecer muito tempo em um local frio sem roupas adequadas sofrera dano e perda de stamina");
+                                player.AvisoTemperatura = true;
+                            }
+
                         }
                     }
                     else if (player.Temperatura > 0)
@@ -110,23 +126,29 @@ namespace Server.Fronteira.Clima
                         var resistFinal = player.FireResistance - player.ColdResistance;
                         var dano = (player.Temperatura - resistFinal) * 2;
                         if (dano > 25) dano = 25;
-                        Danos.Add(player, dano);
-                        if(dano > 0)
+                       
+                        if (dano > 0)
                         {
                             player.SendMessage("Voce esta com calor");
-                            if(Utility.RandomDouble() < 0.2)
+                            DecayFomeSede.ThirstDecay(player);
+                            if (player.AvisoTemperatura)
                             {
-                                DecayFomeSede.ThirstDecay(player);
+                                Danos.Add(player, dano);
+                            }
+                            else
+                            {
+                                player.SendMessage(78, "Se voce permanecer muito tempo em um local quente sem roupas apropriadas ira receber dano e ficar com sede mais rapidamente");
+                                player.AvisoTemperatura = true;
                             }
                         }
+
                     }
                 }
 
-                foreach(var m in Danos)
+                foreach (var m in Danos)
                 {
                     AOS.Damage(m.Key, m.Value, DamageType.Spell);
                 }
-
             }
         }
 
@@ -134,11 +156,14 @@ namespace Server.Fronteira.Clima
         {
             var tempVeia = Clima.GetTemperatura(e.OldRegion);
             var tempNova = Clima.GetTemperatura(e.NewRegion);
+            e.From.Temperatura = tempNova;
 
             if (tempNova != 0)
             {
+                e.From.AvisoTemperatura = false;
                 _emTemp.Add(e.From);
                 Shard.Debug("Trackeando Temp", e.From);
+                e.From.SendGump(new GumpTemperatura(e.From));
             }
             else
             {
@@ -155,7 +180,7 @@ namespace Server.Fronteira.Clima
             {
                 e.From.SendMessage("Voce sente o clima esfriar");
             }
-            e.From.Temperatura = tempNova;
+          
         }
 
         public static void SetTemperatura(Region region, int graus)
