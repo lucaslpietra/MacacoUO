@@ -24,6 +24,16 @@ namespace Server.Fronteira.Classes
             this.Icone = icone;
             this.Desc = descricao;
         }
+        public ClassePersonagem(string nome, int icone, string descricao, int identificador, params SkillName[] skills)
+        {
+            this.Nome = nome;
+            foreach (var s in skills)
+                ClassSkills.Add(s);
+            this.Icone = icone;
+            this.Desc = descricao;
+            this.ID = identificador;
+        }
+
 
         public void ViraClasse(PlayerMobile player, ClassePersonagem classe)
         {

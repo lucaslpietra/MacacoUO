@@ -252,6 +252,9 @@
     <Compile Include="Fronteira\XML\XmlSiege\XmlChestSiege.cs" />
     <Compile Include="Fronteira\XML\XmlSiege\XmlDrag.cs" />
     <Compile Include="Fronteira\XML\XmlSiege\XmlSiege.cs" />
+    <Compile Include="Gumps\CharacterCreationRP\ClassSelection.cs" />
+    <Compile Include="Gumps\CharacterCreationRP\CharDetailsA.cs" />
+    <Compile Include="Gumps\CharacterCreationRP\RaceSelection.cs" />
     <Compile Include="Items\Addons\Randoms\abby addons\AbbygifttobaleAddon.cs" />
     <Compile Include="Items\Addons\Randoms\abby addons\birdhouseAddon.cs" />
     <Compile Include="Items\Addons\Randoms\abby addons\blanksoutharchAddon.cs" />
