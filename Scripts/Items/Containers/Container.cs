@@ -10,189 +10,16 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public abstract class BaseContainer : Container, IEngravable, IResource, ICraftable
+    public abstract class BaseContainer : Container, IEngravable
     {
-        //Version 1001 variables: Begin
-        private Mobile m_Crafter;
-        private ItemQuality m_Quality;
-        private int m_UsesRemaining;
-        private bool m_RepairMode;
-        private CraftResource _Resource;
-        private bool _PlayerConstructed;
-        //Version 1001 variables: End
-        public virtual int OnCraft(
-            int quality,
-            bool makersMark,
-            Mobile from,
-            CraftSystem craftSystem,
-            Type typeRes,
-            ITool tool,
-            CraftItem craftItem,
-            int resHue)
-        {
-            if (typeRes == null)
-            {
-                typeRes = craftItem.Resources.GetAt(0).ItemType;
-            }
-
-            Resource = CraftResources.GetFromType(typeRes);
-
-            PlayerConstructed = true;
-
-            Quality = (ItemQuality)quality;
-
-            if (makersMark)
-                Crafter = from;
-
-            return quality;
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public CraftResource Resource
-        {
-            get { return _Resource; }
-            set
-            {
-                _Resource = value;
-                Hue = CraftResources.GetHue(_Resource);
-                InvalidateProperties();
-                ScaleUses();
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Crafter
-        {
-            get { return m_Crafter; }
-            set { m_Crafter = value; InvalidateProperties(); }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public ItemQuality Quality
-        {
-            get { return m_Quality; }
-            set
-            {
-                UnscaleUses();
-                m_Quality = value;
-                InvalidateProperties();
-                ScaleUses();
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool PlayerConstructed
-        {
-            get { return _PlayerConstructed; }
-            set
-            {
-                _PlayerConstructed = value; InvalidateProperties();
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int UsesRemaining
-        {
-            get { return m_UsesRemaining; }
-            set { m_UsesRemaining = value; InvalidateProperties(); }
-        }
-
-        public void ScaleUses()
-        {
-            m_UsesRemaining = (m_UsesRemaining * GetUsesScalar()) / 100;
-            InvalidateProperties();
-        }
-
-        public void UnscaleUses()
-        {
-            m_UsesRemaining = (m_UsesRemaining * 100) / GetUsesScalar();
-        }
-
-        public int GetUsesScalar()
-        {
-            var scalar = 10000;
-            if (m_Quality == ItemQuality.Low)
-                scalar -= 7000;
-            if (m_Quality == ItemQuality.Exceptional)
-                scalar += 5000;
-            if (Resource == CraftResource.Cobre)
-                scalar += 5000;
-            else if (Resource == CraftResource.Bronze)
-                scalar += 8000;
-            else if (Resource == CraftResource.Dourado)
-                scalar += 9000;
-            else if (Resource == CraftResource.Niobio)
-                scalar += 10000;
-            else if (Resource == CraftResource.Lazurita)
-                scalar += 13000;
-            else if (Resource == CraftResource.Quartzo)
-                scalar += 25000;
-            else if (Resource == CraftResource.Berilo)
-                scalar += 13000;
-            else if (Resource == CraftResource.Vibranium)
-                scalar += 13000;
-            else if (Resource == CraftResource.Adamantium)
-                scalar += 13000;
-            else if (Resource == CraftResource.Carmesim)
-                scalar += 25000;
-            else if (Resource == CraftResource.Gelo)
-                scalar += 25000;
-            else if (Resource == CraftResource.Eucalipto)
-                scalar += 15000;
-            else if (Resource == CraftResource.Mogno)
-                scalar += 12000;
-            else if (Resource == CraftResource.Pinho)
-                scalar += 10000;
-            else if (Resource == CraftResource.Carvalho)
-                scalar += 5000;
-            return scalar;
-        }
-
-        public bool ShowUsesRemaining
-        {
-            get { return true; }
-            set { }
-        }
-
-        public virtual bool BreakOnDepletion { get { return false; } }
-
-        public virtual CraftSystem CraftSystem { get; }
         public BaseContainer(int itemID)
-            : this(Utility.RandomMinMax(100, 150), itemID)
-        {
-        }
-
-        public BaseContainer(int uses, int itemID)
             : base(itemID)
         {
-            m_UsesRemaining = uses;
-            m_Quality = ItemQuality.Normal;
         }
 
         public BaseContainer(Serial serial)
             : base(serial)
         {
-        }
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            if (m_Crafter != null)
-                list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
-
-            if (m_Quality == ItemQuality.Exceptional)
-                list.Add(1060636); // exceptional
-
-            if (Resource != CraftResource.None)
-                list.Add("Feito de " + Resource.ToString());
-
-            list.Add("Usos Restantes: " + m_UsesRemaining.ToString()); // uses remaining: ~1_val~
-        }
-
-        public virtual void DisplayDurabilityTo(Mobile m)
-        {
-            LabelToAffix(m, 1017323, AffixType.Append, ": " + m_UsesRemaining.ToString()); // Durability
         }
 
         public override int DefaultMaxWeight
@@ -205,25 +32,23 @@ namespace Server.Items
             }
         }
 
+        private string m_EngravedText = string.Empty;
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public string EngravedText
+        {
+            get { return m_EngravedText; }
+            set
+            {
+                if (value != null)
+                    m_EngravedText = value;
+                else
+                    m_EngravedText = string.Empty;
+                InvalidateProperties();
+            }
+        }
 
-		private string m_EngravedText = string.Empty;
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public string EngravedText
-		{
-			get { return m_EngravedText; }
-			set
-			{
-				if (value != null)
-					m_EngravedText = value;
-				else
-					m_EngravedText = string.Empty;
-				InvalidateProperties();
-			}
-		}
-
-		public override bool IsAccessibleTo(Mobile m)
+        public override bool IsAccessibleTo(Mobile m)
         {
             if (!BaseHouse.CheckAccessible(m, this))
                 return false;
@@ -439,20 +264,11 @@ namespace Server.Items
                 ((Mobile)RootParent).InvalidateProperties();
         }
 
-        public override void OnSingleClick(Mobile from)
-        {
-            DisplayDurabilityTo(from);
-
-            base.OnSingleClick(from);
-        }
-
         public override void OnDoubleClick(Mobile from)
         {
             if (from.IsStaff() || RootParent is PlayerVendor ||
                 (from.InRange(GetWorldLocation(), 2) && (Parent != null || (Z >= from.Z - 8 && Z <= from.Z + 16))))
             {
-                if(this is CreatureBackpack)
-                UsesRemaining -= 1;
                 Open(from);
             }
             else
@@ -461,15 +277,15 @@ namespace Server.Items
             }
         }
 
-		public override void AddNameProperty(ObjectPropertyList list)
-		{
-			base.AddNameProperty(list);
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            base.AddNameProperty(list);
 
-			if(!String.IsNullOrEmpty(EngravedText))
-			{
+            if (!String.IsNullOrEmpty(EngravedText))
+            {
                 list.Add(1072305, Utility.FixHtml(EngravedText)); // Engraved: ~1_INSCRIPTION~
-			}
-		}
+            }
+        }
 
         public override bool DropToWorld(Mobile m, Point3D p)
         {
@@ -478,7 +294,7 @@ namespace Server.Items
             return base.DropToWorld(m, p);
         }
 
-		public virtual void Open(Mobile from)
+        public virtual void Open(Mobile from)
         {
             DisplayTo(from);
         }
@@ -513,41 +329,22 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-			writer.Write(1001); // Version
-			writer.Write(m_EngravedText);
-
-            //Version 1001 variables: Begin
-            writer.Write(_PlayerConstructed);
-            writer.Write((int)_Resource);
-            writer.Write(m_RepairMode);
-            writer.Write((Mobile)m_Crafter);
-            writer.Write((int)m_Quality);
-            writer.Write((int)m_UsesRemaining);
-            //Version 1001 variables: End
+            writer.Write(1000); // Version
+            writer.Write(m_EngravedText);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-			int version = reader.PeekInt();
-			switch(version)
-			{
-                case 1001:
-                    {
-                        _PlayerConstructed = reader.ReadBool();
-                        _Resource = (CraftResource)reader.ReadInt();
-                        m_RepairMode = reader.ReadBool();
-                        m_Crafter = reader.ReadMobile();
-                        m_Quality = (ItemQuality)reader.ReadInt();
-                        m_UsesRemaining = reader.ReadInt();
-                        goto case 1000;
-                    }
-				case 1000:
-					reader.ReadInt();
-					m_EngravedText = reader.ReadString();
-					break;
-			}
+            int version = reader.PeekInt();
+            switch (version)
+            {
+                case 1000:
+                    reader.ReadInt();
+                    m_EngravedText = reader.ReadString();
+                    break;
+            }
         }
     }
 
@@ -996,7 +793,7 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-            if(version >= 1)
+            if (version >= 1)
             {
                 m_Resource = (CraftResource)reader.ReadInt();
             }
@@ -1010,7 +807,7 @@ namespace Server.Items
             if (Shard.DebugEnabled)
             {
                 Shard.Debug("TYPERES: " + typeRes.Name);
-                var ct = craftItem.Resources.Count -1;
+                var ct = craftItem.Resources.Count - 1;
                 while (ct >= 0)
                 {
                     var res = craftItem.Resources.GetAt(ct);
@@ -1223,9 +1020,9 @@ namespace Server.Items
             : base(serial)
         {
         }
-		
-		public override double DefaultWeight { get { return 5; } } 
-		public override int LabelNumber { get { return 1022472; } } // metal box
+
+        public override double DefaultWeight { get { return 5; } }
+        public override int LabelNumber { get { return 1022472; } } // metal box
 
         public override void Serialize(GenericWriter writer)
         {
@@ -1513,7 +1310,7 @@ namespace Server.Items
 
             if (version == 0 && Weight == 15)
                 Weight = -1;
-			
+
             if (version < 2)
                 GumpID = 0x10B;
         }

@@ -42,11 +42,19 @@ namespace Server.Gumps.CharacterCreationRP
 
         public ClassSelectionGump(int selectedRace, ClassePersonagem selectedClasse, List<int> selectedSkills) : base(0,0)
         {
+            this.Closable = false;
+            this.Disposable = false;
+            this.Dragable = false;
+            this.Resizable = false;
+
+            int classeID = 9999;
+
             raceEscolhida = selectedRace;
 
             if (selectedClasse != null)
             {
                 classeEscolhida = selectedClasse;
+                classeID = classeEscolhida.ID;
             }
             if (selectedSkills != null)
             {
@@ -90,16 +98,16 @@ namespace Server.Gumps.CharacterCreationRP
                     case 11: //Aludia
                         if (totalCount % 2 == 0)
                         {
-                            AddButton(CBbaseX, CBbaseY + (22 * classCount), 40308, 40310, classe.ID, GumpButtonType.Reply, 0);
-                            AddLabel(CLbaseX, CLbaseY + (22 * classCount), 1153, classe.Nome);
+                            AddButton(CBbaseX, CBbaseY + (24 * classCount), ((classe.ID == classeID) ? 40310 : 40308), ((classe.ID == classeID) ? 40308 : 40310), classe.ID, GumpButtonType.Reply, 0);
+                            AddLabel(CLbaseX, CLbaseY + (24 * classCount), 1153, classe.Nome);
                             classCount++;
                         }
                         break;
                     case 22: //Daru
                         if (totalCount % 2 == 1)
                         {
-                            AddButton(CBbaseX, CBbaseY + (22 * classCount), 40308, 40310, classe.ID, GumpButtonType.Reply, 0);
-                            AddLabel(CLbaseX, CLbaseY + (22 * classCount), 1153, classe.Nome);
+                            AddButton(CBbaseX, CBbaseY + (24 * classCount), ((classe.ID == classeID) ? 40310 : 40308), ((classe.ID == classeID) ? 40308 : 40310), classe.ID, GumpButtonType.Reply, 0);
+                            AddLabel(CLbaseX, CLbaseY + (24 * classCount), 1153, classe.Nome);
                             classCount++;
                         }
                         break;
@@ -113,7 +121,7 @@ namespace Server.Gumps.CharacterCreationRP
                 (bool)false, (bool)true);
 
             //Lista de skills da classe. Parte inferior do Gump
-            AddLabel(317, 493, 1153, @"Skills da Classe");
+            AddLabel(317, 493, 1153, @"Skills da Classe (3)");
             
             if (classeEscolhida != null)
             {
@@ -147,10 +155,12 @@ namespace Server.Gumps.CharacterCreationRP
                     totalCount++;
                 }
             }
-            //Botão para passagem de página (Avanço)
-            AddButton(843, 575, 4005, 4006, 999, GumpButtonType.Reply, 0);
+
             //Botão para passagem de página (Retorno)
             AddButton(77, 575, 4014, 4016, -999, GumpButtonType.Reply, 0);
+            //Botão para passagem de página (Avanço)
+            AddButton(843, 575, 4005, 4006, 999, GumpButtonType.Reply, 0);
+            
         }
 
         //Não aceita inicialização sem ter informação da raça
@@ -167,29 +177,29 @@ namespace Server.Gumps.CharacterCreationRP
             //Console.WriteLine(String.Format("Botão da classe clicado. ID = {0}", info.ButtonID));
             if (info.ButtonID == 999)
             {
-                if(skillsEscolhidas.Count == 3)
-                    Console.WriteLine("Atingiu condição de passar de página");
-                else
-                    Console.WriteLine("Numero de skills selecionadas está errado");
-            }
-            else if ()
-            {
-                if (caller.HasGump(typeof(ClassSelectionGump)))
+                if (skillsEscolhidas.Count == 3)
                 {
-                    caller.CloseGump(typeof(ClassSelectionGump));
+                    Console.WriteLine("Atingiu condição de passar de página");
+                    caller.SendGump(new CharDetailsAGump(raceEscolhida, classeEscolhida, skillsEscolhidas, null, null));
+                    return;
                 }
+                else
+                {
+                    Console.WriteLine("Numero de skills selecionadas está errado");
+                    caller.SendGump(new ClassSelectionGump(raceEscolhida, classeEscolhida, skillsEscolhidas));
+                }
+            }
+            else if (info.ButtonID == -999)
+            {
                 caller.SendGump(new RaceSelectionGump());
+                return;
             }
             else
             {
                 classeEscolhida = ClassDef.GetClasse(info.ButtonID);
                 skillsEscolhidas = null;
+                caller.SendGump(new ClassSelectionGump(raceEscolhida, classeEscolhida, skillsEscolhidas));
             }
-            if (caller.HasGump(typeof(ClassSelectionGump)))
-            {
-                caller.CloseGump(typeof(ClassSelectionGump));
-            }
-            caller.SendGump(new ClassSelectionGump(raceEscolhida, classeEscolhida, skillsEscolhidas));
         }
     }
 }

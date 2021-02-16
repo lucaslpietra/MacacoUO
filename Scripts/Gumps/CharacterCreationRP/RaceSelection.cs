@@ -37,9 +37,9 @@ namespace Server.Gumps.CharacterCreationRP
 
         public RaceSelectionGump() : base(0, 0)
         {
-            this.Closable = true;
-            this.Disposable = true;
-            this.Dragable = true;
+            this.Closable = false;
+            this.Disposable = false;
+            this.Dragable = false;
             this.Resizable = false;
 
             AddPage(0);
