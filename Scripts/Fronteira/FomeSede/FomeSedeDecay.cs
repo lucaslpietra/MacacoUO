@@ -29,12 +29,11 @@ namespace Server.Misc
         {
             foreach (NetState state in NetState.Instances)
             {
-                if (state.Mobile != null && state.Mobile.IsPlayer())
+                if (state.Mobile != null && state.Mobile.IsPlayer() && state.Mobile.Alive)
                 {
                     HungerDecay(state.Mobile);
                     ThirstDecay(state.Mobile);
-                    if (state.Mobile.RP)
-                        state.Mobile.SendGump(new FomeSede(state.Mobile));
+                    state.Mobile.SendGump(new FomeSede(state.Mobile));
                 }
             }
         }
@@ -64,7 +63,7 @@ namespace Server.Misc
                 {
                     m.SendMessage(38, "Voce esta ficando com sede.");
                 }
-                if (m.RP && m.Thirst <= 10 && m.Thirst > 6)
+                if (m.Thirst <= 10 && m.Thirst > 6)
                 {
                     m.SendMessage(38, "Voce esta com sede.");
                 }

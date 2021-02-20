@@ -27,21 +27,38 @@ namespace Server.Misc
         {
             foreach (NetState state in NetState.Instances)
             {
-                if (state.Mobile != null && state.Mobile.IsPlayer())
+                if (state.Mobile != null && state.Mobile.IsPlayer() && state.Mobile.Alive)
                 {
                     PlayerMobile playerMobile = state.Mobile as PlayerMobile;
                     if (playerMobile.Hunger <= 6 || playerMobile.Thirst <= 6)
                     {
                         CustomAnimations.GritarDeDorAnimation(playerMobile);
                         playerMobile.Damage(1);
-                        if (playerMobile.Hunger <= 6)
+                        if (playerMobile.Thirst <= 2)
                         {
-                            playerMobile.SendMessage(38, "Voce esta morrendo de fome!");
+                            playerMobile.SendMessage(38, "Voce desmaiou de tanto passar sede!");
+                            playerMobile.Kill();
+                            playerMobile.Hunger = 6;
+                            playerMobile.Thirst = 6;
                         }
-
-                        if (playerMobile.Thirst <= 6)
+                        else if (playerMobile.Hunger <= 2)
                         {
-                            playerMobile.SendMessage(38, "Voce esta morrendo de sede!");
+                            playerMobile.SendMessage(38, "Voce desmaiou de tanto passar fome!");
+                            playerMobile.Kill();
+                            playerMobile.Hunger = 6;
+                            playerMobile.Thirst = 6;
+                        }
+                        else
+                        {
+                            if (playerMobile.Hunger <= 6)
+                            {
+                                playerMobile.SendMessage(38, "Voce esta morrendo de fome!");
+                            }
+
+                            if (playerMobile.Thirst <= 6)
+                            {
+                                playerMobile.SendMessage(38, "Voce esta morrendo de sede!");
+                            }
                         }
                     }
                 }
