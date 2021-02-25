@@ -115,7 +115,7 @@ namespace Server.Gumps.CharacterCreationRP
                 totalCount++;
             }
 
-            //Campo de descrição da classe. Lado esquerdo do Gump
+            //Campo de instruções
             AddHtml(73, 298, 173, 271,
                 @"À esquerda estão listadas as classes da raça escolhida.<br>Abaixo estão listadas todas as skills que você pode escolher treinar naquela classe.<br>Você pode selecionar até 3 skills para o seu char começar com algum treinamento.<br>Todas as skills permitidas da classe podem ser treinadas e/ou esquecidas livremente durante o jogo.<br>Escolha as 3 skills que seu personagem iniciará com alguma habilidade.<br>Caso queira reconsiderar o povo que escolheu, use o botão abaixo para voltar.",
                 (bool)false, (bool)true);
@@ -150,8 +150,8 @@ namespace Server.Gumps.CharacterCreationRP
                     if(skillsEscolhidas != null){ marcado = skillsEscolhidas.Contains((int)skill); }
                     else { marcado = false; }
 
-                    AddCheck(SBbaseX + (100 * (totalCount % 5)), SBbaseY + (22 * linhaCount), 40308, 40310, marcado, (int)skill);
-                    AddLabel(SLbaseX + (100 * (totalCount % 5)), SLbaseY + (22 * linhaCount), 1153, skill.ToString());
+                    AddCheck(SBbaseX + (104 * (totalCount % 5)), SBbaseY + (22 * linhaCount), 40308, 40310, marcado, (int)skill);
+                    AddLabel(SLbaseX + (104 * (totalCount % 5)), SLbaseY + (22 * linhaCount), 1153, skill.ToString());
                     totalCount++;
                 }
             }
@@ -179,13 +179,13 @@ namespace Server.Gumps.CharacterCreationRP
             {
                 if (skillsEscolhidas.Count == 3)
                 {
-                    Console.WriteLine("Atingiu condição de passar de página");
+                    //Console.WriteLine("Atingiu condição de passar de página");
                     caller.SendGump(new CharDetailsAGump(raceEscolhida, classeEscolhida, skillsEscolhidas, null, null));
                     return;
                 }
                 else
                 {
-                    Console.WriteLine("Numero de skills selecionadas está errado");
+                    //Console.WriteLine("Numero de skills selecionadas está errado");
                     caller.SendGump(new ClassSelectionGump(raceEscolhida, classeEscolhida, skillsEscolhidas));
                 }
             }
@@ -200,6 +200,7 @@ namespace Server.Gumps.CharacterCreationRP
                 skillsEscolhidas = null;
                 caller.SendGump(new ClassSelectionGump(raceEscolhida, classeEscolhida, skillsEscolhidas));
             }
+            return;
         }
     }
 }

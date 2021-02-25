@@ -69,17 +69,17 @@ namespace Server.Gumps.CharacterCreationRP
             {
                 case 11:
                     {
-                        Console.WriteLine("Aludia");
+                        //Console.WriteLine("Aludia");
                         break;
                     }
                 case 22:
                     {
-                        Console.WriteLine("Daru");
+                        //Console.WriteLine("Daru");
                         break;
                     }
                 default:
                     {
-                        Console.WriteLine("Deu Ruim no Gump da Raça");
+                        //Console.WriteLine("Deu Ruim no Gump da Raça");
                         break;
                     }
             }

@@ -11,7 +11,7 @@ using Server.Fronteira.Classes;
 
 namespace Server.Gumps.CharacterCreationRP
 {
-    public class CharDetailsBGump : Gump
+    public class FinishCharGump : Gump
     {
         Mobile caller;
         int raceEscolhida;
@@ -95,32 +95,32 @@ namespace Server.Gumps.CharacterCreationRP
 
         public static void Initialize()
         {
-            //CommandSystem.Register("CharDetailsB", AccessLevel.Administrator, new CommandEventHandler(CharDetailsBGump_OnCommand));
+            //CommandSystem.Register("CharDetailsB", AccessLevel.Administrator, new CommandEventHandler(FinishCharGump_OnCommand));
         }
 
         [Usage("")]
         [Description("Gump de seleção detalhes B na criação de personagem.")]
-        public static void CharDetailsBGump_OnCommand(CommandEventArgs e)
+        public static void FinishCharGump_OnCommand(CommandEventArgs e)
         {
             Mobile caller = e.Mobile;
 
-            if (caller.HasGump(typeof(CharDetailsBGump)))
-                caller.CloseGump(typeof(CharDetailsBGump));
-            caller.SendGump(new CharDetailsBGump(caller));
+            if (caller.HasGump(typeof(FinishCharGump)))
+                caller.CloseGump(typeof(FinishCharGump));
+            caller.SendGump(new FinishCharGump(caller));
         }
 
-        public CharDetailsBGump() : base(0, 0)
+        public FinishCharGump() : base(0, 0)
         {
             return;
         }
 
-        public CharDetailsBGump(Mobile from) : this()
+        public FinishCharGump(Mobile from) : this()
         {
             caller = from;
         }
 
 
-        public CharDetailsBGump(int selectedRace, ClassePersonagem selectedClasse, List<int> selectedSkills, List<int> detailAint, List<string> detailAstr, List<int> detailBint, List<int> selectedDefeitos, List<int> selectedQualidades, List<int> selectedSkillsComplementares) : base(0, 0)
+        public FinishCharGump(int selectedRace, ClassePersonagem selectedClasse, List<int> selectedSkills, List<int> detailAint, List<string> detailAstr, List<int> detailBint, List<int> selectedDefeitos, List<int> selectedQualidades, List<int> selectedSkillsComplementares) : base(0, 0)
         {
             this.Closable = false;
             this.Disposable = false;
@@ -158,202 +158,163 @@ namespace Server.Gumps.CharacterCreationRP
             {
                 skillsComplementaresEscolhidas = selectedSkillsComplementares;
             }
-            else
-            {
-                skillsComplementaresEscolhidas = new List<int>();
-            }
-
+            
             //inicializa qualidades
             if (selectedQualidades != null)
             {
                 qualidadesEscolhidas = selectedQualidades;
             }
-            else
-            {
-                qualidadesEscolhidas = new List<int>();
-            }
-
+            
             //inicializa defeitos
             if (selectedDefeitos != null)
             {
                 defeitosEscolhidos = selectedDefeitos;
             }
-            else
-            {
-                defeitosEscolhidos = new List<int>();
-            }
-
+            
             //inicializa detalhes da tela B
             if (detailBint != null)
             {
                 detailsBInteirosEscolhidos = detailBint;
             }
-            else
-            {
-                detailsBInteirosEscolhidos = new List<int>();
-                detailsBInteirosEscolhidos.Insert(0, 1);  //Tipo de cabelo
-                detailsBInteirosEscolhidos.Insert(1, detailsAInteirosEscolhidos[0] == 5 ? 62758: 53530); //Tipo de vestimenta
-                detailsBInteirosEscolhidos.Insert(2, detailsAInteirosEscolhidos[0] == 5 ? 0 : 63251); //Tipo de vestimenta
-                detailsBInteirosEscolhidos.Insert(3, detailsAInteirosEscolhidos[0] == 5 ? 63155 : 53179); //Tipo de vestimenta
-                detailsBInteirosEscolhidos.Insert(4, 0); //ID do tipo de vestimenta
 
-            }
+            //armazena em variaveis com nomes mais intuitivos os valores pertinentes para criação do personagem
 
-            int idSexo, idIdade;
+            int idRace, idSexo, idIdade, valorStr, valorDex, valorInt, idImagem, idCabelo;
+            int[] idVestimenta = new int[4];
+            string nome, descricaofisica;
 
+            idRace = raceEscolhida;
             idSexo = detailsAInteirosEscolhidos[0];
             idIdade = detailsAInteirosEscolhidos[1];
+            valorStr = detailsAInteirosEscolhidos[2];
+            valorDex = detailsAInteirosEscolhidos[3];
+            valorInt = detailsAInteirosEscolhidos[4];
+            idImagem = detailsAInteirosEscolhidos[5];
+            nome = detailsAStringsEscolhidos[0];
+            descricaofisica = detailsAStringsEscolhidos[1];
+            idCabelo = detailsBInteirosEscolhidos[0];
+            idVestimenta[0] = detailsBInteirosEscolhidos[1];
+            idVestimenta[1] = detailsBInteirosEscolhidos[2];
+            idVestimenta[2] = detailsBInteirosEscolhidos[3];
+            idVestimenta[3] = detailsBInteirosEscolhidos[4];
 
             AddPage(0);
-            AddImage(0, -1, idSexo == 5 ? 40321 : 40320);
+            AddImage(0, 0, 40322);
+
+            AddHtml(314, 120, 273, 19, String.Format("<BASEFONT color=#ffffff size=6><CENTER><B>{0}</B></CENTER></BASEFONT>", nome), (bool)false, (bool)false);
+            //AddLabel(314, 120, 1153, String.Format("<BASEFONT color=#ffffff size=7><B>{0}</B></BASEFONT>"), nome);
+
             AddHtml(73, 298, 173, 271,
                 @"Instruções da tela aqui.",
                 (bool)false, (bool)true);
 
-            //Opções de Defeitos
+            AddLabel(318, 166, 1153, @"Raça:");
+            AddLabel(364, 167, 556, idRace == 11 ? "Aludia" : "Daru");
 
-            AddLabel(318, 123, 1153, @"Defeitos:");
+            AddLabel(437, 166, 1153, @"Classe:");
+            AddLabel(495, 166, 556, classeEscolhida.Nome);
 
-            int LbaseX = 338; //Posição 'x' base do label do Defeito
-            int LbaseY = 148; //Posição 'y' base do label do Defeito //22 entre cada label
-            int BbaseX = 318; //Posição 'x' base do button do Defeito
-            int BbaseY = 152; //Posição 'y' base do button do Defeito //22 entre cada label
+            AddLabel(318, 200, 1153, @"Sexo:");
+            AddLabel(365, 200, 556, idSexo == 5? "Fem":"Mas");
+
+            AddLabel(442, 200, 1153, @"Idade:");
+            AddLabel(496, 200, 556, idIdade == 15 ? "Jovem" : idIdade == 16 ? (idSexo == 5 ? "Madura" : "Maduro") : idSexo == 5 ? "Velha" : "Velho");
+
+            AddLabel(318, 233, 1153, @"Atributos:");
+            AddLabel(318, 264, 1153, @"Força:");
+            AddLabel(355, 264, 556, valorStr.ToString());
+            AddLabel(389, 264, 1153, @"Destreza:");
+            AddLabel(445, 264, 556, valorDex.ToString());
+            AddLabel(475, 264, 1153, @"Inteligencia:");
+            AddLabel(542, 264, 556, valorInt.ToString());
+
+            AddLabel(318, 315, 1153, @"Defeitos:");
+            int LbaseX = 317; //Posição 'x' base do label do Defeito
+            int LbaseY = 337; //Posição 'y' base do label do Defeito //22 entre cada label
             int linhaCount = 0;
             int totalCount = 0;
-            bool marcado = false;
-            foreach (KeyValuePair<int, string> defeito in listaDefeitos)
-            {
-                if ((totalCount > 0) && (totalCount % 3 == 0))
-                {
-                    linhaCount++;
-                }
-                if (defeitosEscolhidos != null) { marcado = defeitosEscolhidos.Contains((int)defeito.Key); }
-                else { marcado = false; }
 
-                AddButton(BbaseX + (124 * (totalCount % 3)), BbaseY + (22 * linhaCount), marcado ? 40310 : 40308, marcado ? 40308 : 40310, 100 + defeito.Key, GumpButtonType.Reply, 0);
-                AddLabel(LbaseX + (124 * (totalCount % 3)), LbaseY + (22 * linhaCount), 1153, defeito.Value);
-                totalCount++;
-            }
-            AddHtml(704, 129, 159, 100, @"Descrição do Defeito", (bool)false, (bool)true); //Descrição do defeito selecionado
-
-
-            //Opções de Qualidades
-
-            AddLabel(318, 255, 1153, @"Qualidades:");
-            LbaseX = 338; //Posição 'x' base do label da Qualidade
-            LbaseY = 280; //Posição 'y' base do label da Qualidade //22 entre cada label
-            BbaseX = 318; //Posição 'x' base do button da Qualidade
-            BbaseY = 284; //Posição 'y' base do button da Qualidade //22 entre cada label
-            linhaCount = 0;
-            totalCount = 0;
-            marcado = false;
-            foreach (KeyValuePair<int, string> qualidade in listaQualidades)
-            {
-                if ((totalCount > 0) && (totalCount % 3 == 0))
-                {
-                    linhaCount++;
-                }
-                if (qualidadesEscolhidas != null) { marcado = qualidadesEscolhidas.Contains((int)qualidade.Key); }
-                else { marcado = false; }
-
-                AddButton(BbaseX + (124 * (totalCount % 3)), BbaseY + (22 * linhaCount), marcado ? 40310 : 40308, marcado ? 40308 : 40310, 300 + qualidade.Key, GumpButtonType.Reply, 0);
-                AddLabel(LbaseX + (124 * (totalCount % 3)), LbaseY + (22 * linhaCount), 1153, qualidade.Value);
-                totalCount++;
-            }
-
-            AddHtml(704, 261, 159, 100, @"Descrição da Qualidade", (bool)false, (bool)true); //Descrição da qualidade selecionada
-
-
-            //Seleção de skills complementares
-
-            switch (classeEscolhida.ID)
-            {
-                case 20: //classes crafters
-                case 21:
-                    listaSkillsComplementares = new List<SkillName>() { SkillName.AnimalLore, SkillName.Begging, SkillName.Camping, SkillName.Healing, SkillName.Forensics, SkillName.MagicResist, SkillName.Snooping, SkillName.Stealing, SkillName.Lockpicking, SkillName.Wrestling, SkillName.Tracking, SkillName.Swords, SkillName.Macing, SkillName.Fencing, SkillName.Tactics, SkillName.Parry, SkillName.Magery, SkillName.EvalInt};
-                    break;
-                default: //demais classes
-                    listaSkillsComplementares = new List<SkillName>() { SkillName.Cooking, SkillName.Fishing, SkillName.Herding, SkillName.Inscribe, SkillName.Cartography, SkillName.Tailoring, SkillName.Fletching, SkillName.Carpentry, SkillName.Lumberjacking, SkillName.ArmsLore, SkillName.Alchemy, SkillName.Mining};
-                    break;
-            }
-
-            AddLabel(320, 382, 1153, @"Outras Habilidades:");
-
-            LbaseX = 338; //Posição 'x' base do label das Skills Complementares
-            LbaseY = 407; //Posição 'y' base do label das Skills Complementares //22 entre cada label
-            BbaseX = 318; //Posição 'x' base do button das Skills Complementares
-            BbaseY = 411; //Posição 'y' base do button das Skills Complementares //22 entre cada label
-            linhaCount = 0;
-            totalCount = 0;
-            marcado = false;
-            foreach (SkillName skill in listaSkillsComplementares)
+            foreach (int defeito in defeitosEscolhidos)
             {
                 if ((totalCount > 0) && (totalCount % 2 == 0))
                 {
                     linhaCount++;
                 }
-                if (skillsComplementaresEscolhidas != null) { marcado = skillsComplementaresEscolhidas.Contains((int)skill); }
-                else { marcado = false; }
-
-                AddCheck(BbaseX + (104 * (totalCount % 2)), BbaseY + (22 * linhaCount), 40308, 40310, marcado, (int)skill);
-                AddLabel(LbaseX + (104 * (totalCount % 2)), LbaseY + (22 * linhaCount), 1153, skill.ToString());
+                AddLabel(LbaseX + (124 * (totalCount % 2)), LbaseY + (21 * linhaCount), 556, listaDefeitos[defeito]);
                 totalCount++;
             }
 
-            //Seleção de Cabelos
-
-            AddLabel(690, 378, 1153, @"Cabelo:");
-            LbaseX = 708; //Posição 'x' base do label do Cabelo
-            LbaseY = 402; //Posição 'y' base do label do Cabelo //22 entre cada label
-            BbaseX = 688; //Posição 'x' base do button do Cabelo
-            BbaseY = 406; //Posição 'y' base do button do Cabelo //22 entre cada label
+            AddLabel(318, 389, 1153, @"Qualidades:");
+            LbaseX = 317; //Posição 'x' base do label da Qualidade
+            LbaseY = 409; //Posição 'y' base do label da Qualidade //22 entre cada label
             linhaCount = 0;
             totalCount = 0;
-            marcado = false;
-            foreach (KeyValuePair<int, int> cabelo in idSexo == 5? listaCabelosF : listaCabelosM) // 5 é feminino
+
+            foreach (int qualidade in qualidadesEscolhidas)
             {
-                if ((totalCount > 0) && (totalCount % 4 == 0))
+                if ((totalCount > 0) && (totalCount % 2 == 0))
                 {
                     linhaCount++;
                 }
-                if (cabelo.Key == detailsBInteirosEscolhidos[0]) { marcado = true; }
-                else { marcado = false; }
-                AddButton(BbaseX + (45 * (totalCount % 4)), BbaseY + (20 * linhaCount), marcado ? 40310 : 40308, marcado ? 40308 : 40310, 500 + cabelo.Key, GumpButtonType.Reply, 0);
-                AddLabel(LbaseX + (45 * (totalCount % 4)), LbaseY + (20 * linhaCount), 1153, cabelo.Key.ToString());
+                AddLabel(LbaseX + (124 * (totalCount % 2)), LbaseY + (21 * linhaCount), 556, listaQualidades[qualidade]);
                 totalCount++;
             }
 
-            AddImage(521, 359, detailsAInteirosEscolhidos[0] == 5? listaCabelosF[detailsBInteirosEscolhidos[0]] : listaCabelosM[detailsBInteirosEscolhidos[0]]); //cabelo
+            AddLabel(318, 459, 1153, @"Habilidades Treinadas:");
+            LbaseX = 317; //Posição 'x' base do label da Habilidade
+            LbaseY = 485; //Posição 'y' base do label da Habilidade //22 entre cada label
+            linhaCount = 0;
+            totalCount = 0;
 
-            //Peças de roupa
-
-            AddLabel(690, 502, 1153, @"Roupa:");
-
-            //classe.ID == classeID) ? 40310 : 40308)
-            AddButton(691, 537, detailsBInteirosEscolhidos[4] == 0 ? 40310 : 40308, detailsBInteirosEscolhidos[4] == 0 ? 40308 : 40310, 0, GumpButtonType.Reply, 0);
-            AddLabel(714, 535, 1153, @"Vestimenta tipo 1");
-
-            AddButton(691, 558, detailsBInteirosEscolhidos[4] == 1 ? 40310 : 40308, detailsBInteirosEscolhidos[4] == 1 ? 40308 : 40310, 1, GumpButtonType.Reply, 0);
-            AddLabel(714, 555, 1153, @"Vestimenta tipo 2");
-
-            AddButton(691, 579, detailsBInteirosEscolhidos[4] == 2 ? 40310 : 40308, detailsBInteirosEscolhidos[4] == 2 ? 40308 : 40310, 2, GumpButtonType.Reply, 0);
-            AddLabel(714, 577, 1153, @"Vestimenta tipo 3");
-
-            if (detailsBInteirosEscolhidos[3] != 0) { AddImage(521, 359, detailsBInteirosEscolhidos[3]); } //botas
-            if (detailsBInteirosEscolhidos[2] != 0) { AddImage(521, 359, detailsBInteirosEscolhidos[2]); } //calça
-            if (detailsBInteirosEscolhidos[1] != 0) { AddImage(521, 359, detailsBInteirosEscolhidos[1]); } //camiseta
+            foreach (int habilidadeT in skillsEscolhidas)
+            {
+                if ((totalCount > 0) && (totalCount % 2 == 0))
+                {
+                    linhaCount++;
+                }
+                AddLabel(LbaseX + (124 * (totalCount % 2)), LbaseY + (21 * linhaCount), 556, SkillInfo.Table[habilidadeT].Name);
+                totalCount++;
+            }
             
+            AddLabel(318, 535, 1153, @"Habilidades Complementares:");
+            LbaseX = 317; //Posição 'x' base do label da Habilidade
+            LbaseY = 556; //Posição 'y' base do label da Habilidade //22 entre cada label
+            linhaCount = 0;
+            totalCount = 0;
+
+            foreach (int habilidadeC in skillsComplementaresEscolhidas)
+            {
+                if ((totalCount > 0) && (totalCount % 2 == 0))
+                {
+                    linhaCount++;
+                }
+                AddLabel(LbaseX + (124 * (totalCount % 2)), LbaseY + (21 * linhaCount), 556, SkillInfo.Table[habilidadeC].Name);
+                totalCount++;
+            }
+
+            AddLabel(615, 368, 1153, @"Descrição Física:");
+            AddHtml(612, 398, 258, 174, descricaofisica, (bool)false, (bool)true);
             
+            AddLabel(613, 579, 1153, @"Cabelo:");
+            AddLabel(666, 579, 556, idCabelo.ToString());
 
-            //358, 362, 363, 357
+            AddLabel(698, 579, 1153, @"Roupa:");
+            AddLabel(754, 579, 556, String.Format("Tipo {0}",idVestimenta[3]));
+
+            /*
+            AddButton(826, 582, 2074, 2075, 0, GumpButtonType.Reply, 0);
+            AddButton(316, 581, 2071, 2072, 0, GumpButtonType.Reply, 0);
+            */
 
 
+            //imagem do char
+            AddImage(616, 132, idImagem);
 
 
             //Botão para passagem de página (Retorno)
             AddButton(77, 575, 4014, 4016, -999, GumpButtonType.Reply, 0);
             //Botão para passagem de página (Avanço)
-            AddButton(843, 575, 4005, 4006, 999, GumpButtonType.Reply, 0);
+            AddButton(826, 582, 2074, 2075, 999, GumpButtonType.Reply, 0);
 
         }
 
@@ -362,18 +323,20 @@ namespace Server.Gumps.CharacterCreationRP
         public override void OnResponse(NetState sender, RelayInfo info)
         {
             caller = sender.Mobile;
+
+            /*
             skillsComplementaresEscolhidas = info.Switches.CastToList<int>();
 
             if (info.ButtonID == -999)
             {
-                caller.SendGump(new CharDetailsAGump(raceEscolhida, classeEscolhida, skillsEscolhidas, detailsAInteirosEscolhidos, detailsAStringsEscolhidos));
+                caller.SendGump(new CharDetailsBGump(raceEscolhida, classeEscolhida, skillsEscolhidas, detailsAInteirosEscolhidos, detailsAStringsEscolhidos, detailsBInteirosEscolhidos, defeitosEscolhidos, qualidadesEscolhidas, skillsComplementaresEscolhidas));
                 return;
             }
             else if (info.ButtonID == 999)
             {
                 if (skillsComplementaresEscolhidas.Count == 2)
                 {
-                    caller.SendGump(new FinishCharGump(raceEscolhida, classeEscolhida, skillsEscolhidas, detailsAInteirosEscolhidos, detailsAStringsEscolhidos, detailsBInteirosEscolhidos, defeitosEscolhidos, qualidadesEscolhidas, skillsComplementaresEscolhidas));
+                    //caller.SendGump(new FinishCharGump(raceEscolhida, classeEscolhida, skillsEscolhidas, detailsAInteirosEscolhidos, detailsAStringsEscolhidos, detailsBInteirosEscolhidos, defeitosEscolhidos, qualidadesEscolhidas, skillsComplementaresEscolhidas));
                     return;
                 }
             }
@@ -471,11 +434,13 @@ namespace Server.Gumps.CharacterCreationRP
             }
             else if (info.ButtonID < 700)
             { //cabelos
+                Console.WriteLine();
                 int cabelos = info.ButtonID - 500;
-                //Console.WriteLine(String.Format("Cabelo ID: %0",cabelos));
+                Console.WriteLine(String.Format("Cabelo ID: %0",cabelos));
                 detailsBInteirosEscolhidos[0] = cabelos;
             }
-            caller.SendGump(new CharDetailsBGump(raceEscolhida, classeEscolhida, skillsEscolhidas, detailsAInteirosEscolhidos, detailsAStringsEscolhidos,detailsBInteirosEscolhidos,defeitosEscolhidos,qualidadesEscolhidas,skillsComplementaresEscolhidas));
+            */
+            caller.SendGump(new FinishCharGump(raceEscolhida, classeEscolhida, skillsEscolhidas, detailsAInteirosEscolhidos, detailsAStringsEscolhidos,detailsBInteirosEscolhidos,defeitosEscolhidos,qualidadesEscolhidas,skillsComplementaresEscolhidas));
             return;
         }
     }

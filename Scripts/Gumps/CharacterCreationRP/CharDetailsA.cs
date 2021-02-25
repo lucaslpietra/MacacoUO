@@ -132,10 +132,10 @@ namespace Server.Gumps.CharacterCreationRP
             AddLabel(402, 219, 1153, @"Jovem");
 
             AddButton(446, 222, idIdade == 16 ? 40310 : 40308, idIdade == 16 ? 40308 : 40310, 16, GumpButtonType.Reply, 0);
-            AddLabel(468, 219, 1153, @"Maduro");
+            AddLabel(468, 219, 1153, idSexo == 5? "Madura" : "Maduro");
 
             AddButton(522, 221, idIdade == 17 ? 40310 : 40308, idIdade == 17 ? 40308 : 40310, 17, GumpButtonType.Reply, 0);
-            AddLabel(544, 219, 1153, @"Velho");
+            AddLabel(544, 219, 1153, idSexo == 5 ? "Velha" : "Velho");
 
             //Seleção de atributos
 
@@ -207,7 +207,7 @@ namespace Server.Gumps.CharacterCreationRP
             {
                 case 5:
                     {
-                        Console.WriteLine("feminino");
+                        //Console.WriteLine("feminino");
                         detailsAInteirosEscolhidos[0] = 5;
                         //Ajusta imagem quando mudou o sexo do personagem
                         if (detailsAInteirosEscolhidos[1] == 15) //jovem
@@ -226,7 +226,7 @@ namespace Server.Gumps.CharacterCreationRP
                     }
                 case 6:
                     {
-                        Console.WriteLine("masculino");
+                        //Console.WriteLine("masculino");
                         detailsAInteirosEscolhidos[0] = 6;
                         //Ajusta imagem quando mudou o sexo do personagem
                         if (detailsAInteirosEscolhidos[1] == 15) //jovem
@@ -284,7 +284,7 @@ namespace Server.Gumps.CharacterCreationRP
                     }
                 case -10:
                     {
-                        Console.WriteLine("-STR");
+                       //Console.WriteLine("-STR");
                         if (detailsAInteirosEscolhidos[2] > 10)
                         {
                             detailsAInteirosEscolhidos[2]--;
@@ -293,7 +293,7 @@ namespace Server.Gumps.CharacterCreationRP
                     }
                 case 10:
                     {
-                        Console.WriteLine("+STR");
+                        //Console.WriteLine("+STR");
                         if (detailsAInteirosEscolhidos[2] + detailsAInteirosEscolhidos[3] + detailsAInteirosEscolhidos[4] < atributosMax) //TODO: Sinalizar no gump quanto ja foi utilizado
                         {
                             detailsAInteirosEscolhidos[2]++;
@@ -302,7 +302,7 @@ namespace Server.Gumps.CharacterCreationRP
                     }
                 case -20:
                     {
-                        Console.WriteLine("-DEX");
+                        //Console.WriteLine("-DEX");
                         if (detailsAInteirosEscolhidos[3] > 10)
                         {
                             detailsAInteirosEscolhidos[3]--;
@@ -312,7 +312,7 @@ namespace Server.Gumps.CharacterCreationRP
                     }
                 case 20:
                     {
-                        Console.WriteLine("+DEX");
+                        //Console.WriteLine("+DEX");
                         if (detailsAInteirosEscolhidos[2] + detailsAInteirosEscolhidos[3] + detailsAInteirosEscolhidos[4] < atributosMax) //TODO: Sinalizar no gump quanto ja foi utilizado
                         {
                             detailsAInteirosEscolhidos[3]++;
@@ -322,7 +322,7 @@ namespace Server.Gumps.CharacterCreationRP
                     }
                 case -30:
                     {
-                        Console.WriteLine("-INT");
+                        //Console.WriteLine("-INT");
                         if (detailsAInteirosEscolhidos[4] > 10)
                         {
                             detailsAInteirosEscolhidos[4]--;
@@ -332,7 +332,7 @@ namespace Server.Gumps.CharacterCreationRP
                     }
                 case 30:
                     {
-                        Console.WriteLine("+INT");
+                        //Console.WriteLine("+INT");
                         if (detailsAInteirosEscolhidos[2] + detailsAInteirosEscolhidos[3] + detailsAInteirosEscolhidos[4] < atributosMax) //TODO: Sinalizar no gump quanto ja foi utilizado
                         {
                             detailsAInteirosEscolhidos[4]++;
@@ -344,7 +344,7 @@ namespace Server.Gumps.CharacterCreationRP
                     {
                         //idImagem homem 40359 a 40518
                         //idImagem mulher 40519 a 40679
-                        Console.WriteLine("-IMG");
+                        //Console.WriteLine("-IMG");
                         if (detailsAInteirosEscolhidos[0] == 5) //feminino
                         {
                             if (detailsAInteirosEscolhidos[1] == 15) //jovem
@@ -422,7 +422,7 @@ namespace Server.Gumps.CharacterCreationRP
                     {
                         //idImagem homem 40359 a 40518
                         //idImagem mulher 40519 a 40679
-                        Console.WriteLine("+IMG");
+                        //Console.WriteLine("+IMG");
                         if (detailsAInteirosEscolhidos[0] == 5) //feminino
                         {
                             if (detailsAInteirosEscolhidos[1] == 15) //jovem
@@ -499,13 +499,13 @@ namespace Server.Gumps.CharacterCreationRP
                     }
                 case -999:
                     {
-                        Console.WriteLine("Voltar para Classe");
+                        //Console.WriteLine("Voltar para Classe");
                         caller.SendGump(new ClassSelectionGump(raceEscolhida, classeEscolhida, skillsEscolhidas));
                         return;
                     }
                 case 999:
                     {
-                        Console.WriteLine("Avançar para Detalhes B");
+                        //Console.WriteLine("Avançar para Detalhes B");
                         if ((detailsAInteirosEscolhidos[2] + detailsAInteirosEscolhidos[3] + detailsAInteirosEscolhidos[4] == atributosMax) && detailsAStringsEscolhidos[0] != "" && detailsAStringsEscolhidos[1] != "")
                         {
                             caller.SendGump(new CharDetailsBGump(raceEscolhida, classeEscolhida, skillsEscolhidas, detailsAInteirosEscolhidos, detailsAStringsEscolhidos, null, null, null, null));
@@ -515,7 +515,7 @@ namespace Server.Gumps.CharacterCreationRP
                     }
                 default:
                     {
-                        Console.WriteLine("Char Detail A");
+                        //Console.WriteLine("Char Detail A");
                         break;
                     }
             }
