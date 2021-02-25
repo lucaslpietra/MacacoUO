@@ -63,7 +63,7 @@ namespace Server.Fronteira.Clima
 
         public static void Loga(LoginEventArgs e)
         {
-            //var 
+            //var
         }
 
         public static int GetProtecao(Mobile m)
@@ -126,11 +126,11 @@ namespace Server.Fronteira.Clima
                         var resistFinal = player.FireResistance - player.ColdResistance;
                         var dano = (player.Temperatura - resistFinal) * 2;
                         if (dano > 25) dano = 25;
-                       
+
                         if (dano > 0)
                         {
                             player.SendMessage("Voce esta com calor");
-                            DecayFomeSede.ThirstDecay(player);
+                            FomeSedeDecay.ThirstDecay(player);
                             if (player.AvisoTemperatura)
                             {
                                 Danos.Add(player, dano);
@@ -180,7 +180,7 @@ namespace Server.Fronteira.Clima
             {
                 e.From.SendMessage("Voce sente o clima esfriar");
             }
-          
+
         }
 
         public static void SetTemperatura(Region region, int graus)
