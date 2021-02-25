@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Engines.Craft;
-using Server.Engines.XmlSpawner2;
 using Server.Factions;
 using Server.Network;
-using Server.Mobiles;
 using AMA = Server.Items.ArmorMeditationAllowance;
 using AMT = Server.Items.ArmorMaterialType;
 using System.Linq;
@@ -560,6 +558,10 @@ namespace Server.Items
 
         public override void AddResistanceProperties(ObjectPropertyList list)
         {
+            if (ColdResistance != 0)
+            {
+                list.AddTwoValues("DEBUG: RESIST FRIO", "+" + ColdResistance.ToString());
+            }
             /*
             if(ColdResistance != 0)
             {
@@ -1228,12 +1230,17 @@ namespace Server.Items
             }
         }
 
+        private int GetBaseColdBonus()
+        {
+            return 0;
+        }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public int ColdBonus
         {
             get
             {
-                return m_ColdBonus;
+                return m_ColdBonus + GetBaseColdBonus();
             }
             set
             {
@@ -1311,7 +1318,7 @@ namespace Server.Items
             get
             {
                 // return BasePhysicalResistance + GetProtOffset() + m_PhysicalBonus;
-                return GetProtOffset() + m_PhysicalBonus;
+                return GetResistenciaBase() + m_PhysicalBonus;
             }
         }
 
@@ -1319,7 +1326,7 @@ namespace Server.Items
         {
             get
             {
-                return GetProtOffset() + m_FireBonus;
+                return GetResistenciaBase() + FireBonus;
             }
         }
 
@@ -1327,7 +1334,7 @@ namespace Server.Items
         {
             get
             {
-                return GetProtOffset() + m_ColdBonus;
+                return GetResistenciaBase() + ColdBonus;
             }
         }
 
@@ -1335,7 +1342,7 @@ namespace Server.Items
         {
             get
             {
-                return GetProtOffset() + m_PoisonBonus;
+                return GetResistenciaBase() + m_PoisonBonus;
             }
         }
 
@@ -1343,7 +1350,7 @@ namespace Server.Items
         {
             get
             {
-                return GetProtOffset() + m_EnergyBonus;
+                return GetResistenciaBase() + m_EnergyBonus;
             }
         }
 
@@ -1394,8 +1401,10 @@ namespace Server.Items
             }
         }
 
-        public int GetProtOffset()
+        // base pra todas armaduras, 0
+        public int GetResistenciaBase()
         {
+            /*
             switch (m_Protection)
             {
                 case ArmorProtectionLevel.Guarding:
@@ -1407,7 +1416,7 @@ namespace Server.Items
                 case ArmorProtectionLevel.Invulnerability:
                     return 4;
             }
-
+            */
             return 0;
         }
 

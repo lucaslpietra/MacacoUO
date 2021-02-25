@@ -33,6 +33,15 @@ namespace Server.Scripts.New.Adam.NewGuild
             if (pm == null)
                 return;
 
+
+            //////// PREPARATIVOS FE //////
+            if(pm.AccessLevel == AccessLevel.Player)
+            {
+                pm.SendGump(new LockRP());
+                pm.Freeze(TimeSpan.FromDays(1));
+                return;
+            }
+
             if (Shard.WARSHARD)
             {
                 return;
@@ -57,8 +66,8 @@ namespace Server.Scripts.New.Adam.NewGuild
                     }
                     else
                     {
-                        pm.SendMessage("Escolha se deseja criar um personagem RP ou NORMAL");
-                        pm.SendGump(new NonRPClassGump());
+                        //pm.SendMessage("Escolha se deseja criar um personagem RP ou NORMAL");
+                        //pm.SendGump(new NonRPClassGump());
                     }
                 }
                 else

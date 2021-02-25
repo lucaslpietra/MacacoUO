@@ -6,6 +6,7 @@ namespace Server.Fronteira.Talentos
 {
     public class TalentoBook : Item
     {
+        public TalentoBook(Serial s) : base(s) { }
         /*
         [Constructable]
         public TalentoBook() : base(0x225A)

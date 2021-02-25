@@ -5,6 +5,7 @@ namespace Server.Fronteira.Talentos
 {
     public class ValeTalento : Item
     {
+        public ValeTalento(Serial s) : base(s) { }
         /*
         [CommandProperty(AccessLevel.GameMaster)]
         public Talento Talento { get; set; }
