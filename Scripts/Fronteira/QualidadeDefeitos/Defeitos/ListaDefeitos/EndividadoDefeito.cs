@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server.Fronteira.Idade;
 using Server.Mobiles;
 using Server.Network;
@@ -31,6 +31,7 @@ namespace Server.Fronteira.QualidadeDefeitos.ListaDefeitos
                     {
                         if (!Banker.Withdraw(playerMobile, 200))
                         {
+                            /*
                             if (playerMobile.GetPropertyValue($"{playerMobile.Account.Username} endividado", out int value))
                             {
                                 int contatorEndividado = ++value;
@@ -48,6 +49,7 @@ namespace Server.Fronteira.QualidadeDefeitos.ListaDefeitos
                             {
                                 playerMobile.SetPropertyValue($"{playerMobile.Account.Username} endividado", 1);
                             }
+                            */
                         }
                     }
                 }

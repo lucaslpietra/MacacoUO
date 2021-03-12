@@ -1,4 +1,4 @@
-﻿using Server.Engines.XmlSpawner2;
+using Server.Engines.XmlSpawner2;
 
 namespace Server.Fronteira.QualidadeDefeitos
 {
@@ -10,15 +10,15 @@ namespace Server.Fronteira.QualidadeDefeitos
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile From
         {
-            get => _From;
-            set => _From = value;
+            get { return _From; }
+            set { _From = value;}
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Qualidades Qualidades
         {
-            get => _Qualidades;
-            set => _Qualidades = value;
+            get { return _Qualidades; }
+            set { _Qualidades = value; }
         }
 
         public QualidadesXmlAttachment(ASerial serial, Mobile from, Qualidades qualidade)
