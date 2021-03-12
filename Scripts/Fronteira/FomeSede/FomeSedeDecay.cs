@@ -20,9 +20,17 @@ namespace Server.Misc
         public static void Hunger(HungerChangedEventArgs e)
         {
             if (e.Hunger && e.OldValue < e.Mobile.Hunger)
+            {
+                if (e.Mobile.HasGump(typeof(FomeSede)))
+                    e.Mobile.CloseGump(typeof(FomeSede));
                 e.Mobile.SendGump(new FomeSede(e.Mobile));
+            }
             if (!e.Hunger && e.OldValue < e.Mobile.Thirst)
+            {
+                if (e.Mobile.HasGump(typeof(FomeSede)))
+                    e.Mobile.CloseGump(typeof(FomeSede));
                 e.Mobile.SendGump(new FomeSede(e.Mobile));
+            }
         }
 
         public static void FoodDecay()

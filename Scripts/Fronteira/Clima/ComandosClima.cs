@@ -31,7 +31,7 @@ namespace Server.Fronteira.Clima
             }
             var temperatura = Clima.GetTemperatura(arg.Mobile.Region);
             mobile.SendMessage("Temperatura da regiao local: " + temperatura);
-            mobile.SendMessage("Sua protecao contra frio: " + Clima.GetProtecao(mobile));
+            mobile.SendMessage(String.Format ("Sua protecao contra frio: {0}", Clima.GetProtecao(mobile)));
         }
 
         [Usage("")]

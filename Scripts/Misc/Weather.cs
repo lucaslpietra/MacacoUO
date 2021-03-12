@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Server.Fronteira.Clima;
 using Server.Items;
 using Server.Network;
 
@@ -336,6 +337,7 @@ namespace Server.Misc
 
         public virtual void OnTick()
         {
+
             if (this.m_Stage == 0)
             {
                 this.m_Active = (this.m_ChanceOfPercipitation > Utility.Random(100));
@@ -358,7 +360,7 @@ namespace Server.Misc
                 temperature = this.m_Temperature;
 
                 if (this.m_ExtremeTemperature)
-                    temperature *= -1;
+                    temperature *= (Utility.Random(5) == 0? -1 : 2); //Quando for clima extremo, 20% de chance de inversão de temperatura e 80% de ser intensificação da temperatura
 
                 if (this.m_Stage < 15)
                 {
@@ -401,9 +403,17 @@ namespace Server.Misc
                     if (!contains)
                         continue;
 
-                    if (weatherPacket == null)
-                        weatherPacket = Packet.Acquire(new Server.Network.Weather(type, density, temperature));
+                    //mob.Temperatura += Clima.GetTemperatura(mob.Region)+temperature; // altera a temperaura atual do mob
 
+                    if (density == 0)
+                        type = 0xFE;
+                    else if (mob.Temperatura > -10)
+                        type = 0;
+                    else
+                        type = 2;
+
+                    if (weatherPacket == null)
+                        weatherPacket = Packet.Acquire(new Server.Network.Weather(type, density, mob.Temperatura)); // Ajuste para a temperatura máximas para nevar ser 10
                     ns.Send(weatherPacket);
                 }
 

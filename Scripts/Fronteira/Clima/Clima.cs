@@ -8,9 +8,9 @@ namespace Server.Fronteira.Clima
 {
     public class Clima
     {
-        public static readonly int MAX = 20;
+        public static readonly int MAX = 50;
 
-        public static readonly int MIN = -20;
+        public static readonly int MIN = -50;
 
         private static HashSet<Mobile> _emTemp = new HashSet<Mobile>();
 
@@ -22,6 +22,7 @@ namespace Server.Fronteira.Clima
         {
             EventSink.OnEnterRegion += EnterRegion;
             EventSink.Login += Loga;
+            EventSink.Logout += Desloga;
             EventSink.WorldLoad += OnLoad;
             EventSink.WorldSave += OnSave;
             var timer = new Loop();
@@ -63,12 +64,76 @@ namespace Server.Fronteira.Clima
 
         public static void Loga(LoginEventArgs e)
         {
-            //var
+            Mobile mob = e.Mobile;
+            if (Shard.DebugEnabled)
+                Shard.Debug("trackeando Temperatura", mob);
+            _emTemp.Add(mob);
+
+            var tempVeia = mob.Temperatura;
+            var tempNova = Clima.GetTemperatura(mob.Region);
+
+            switch (mob.Map.Season)
+            {
+                case 0: //primavera
+                    tempNova += 5;
+                    break;
+                case 1: //verão
+                    tempNova += 10;
+                    break;
+                case 2: //outono
+                    tempNova -= 5;
+                    break;
+                case 3: //inverno
+                    tempNova -= 10;
+                    break;
+                case 4: //desolation
+                    tempNova *= 2;
+                    break;
+                default:
+                    break;
+            }
+            mob.Temperatura = tempNova;
+
+            if (tempVeia < tempNova)
+            {
+                mob.SendMessage("Voce sente o clima esquentar");
+               
+                if (mob.HasGump(typeof(FomeSede)))
+                        mob.CloseGump(typeof(FomeSede));
+                    mob.SendGump(new FomeSede(mob));
+
+            }
+            else if (tempVeia > tempNova)
+            {
+                mob.SendMessage("Voce sente o clima esfriar");
+
+                if (mob.HasGump(typeof(FomeSede)))
+                    mob.CloseGump(typeof(FomeSede));
+                mob.SendGump(new FomeSede(mob));
+            } 
+        }
+        public static void Desloga(LogoutEventArgs e)
+        {
+            Mobile mob = e.Mobile;
+            if (Shard.DebugEnabled)
+                Shard.Debug("trackeando Temperatura", mob);
+            _emTemp.Remove(mob);
         }
 
         public static int GetProtecao(Mobile m)
         {
-            return m.ColdResistance;
+            if (Shard.DebugEnabled)
+                Shard.Debug(String.Format("Prot Calor: {0} Prot Frio: {1} ", m.FireResistance, m.ColdResistance), m);
+            return m.FireResistance - m.ColdResistance;
+        }
+
+        public static int GetSensacaoTermica(Mobile m)
+        {
+            int protecao = GetProtecao(m);
+            int sensacao = m.Temperatura - protecao;
+            if (Shard.DebugEnabled)
+                Shard.Debug(String.Format("Temperatura: {0} Proteção: {1} Sensação: {2}", m.Temperatura, protecao, sensacao), m);
+            return sensacao;
         }
 
         private class Loop : Timer
@@ -82,8 +147,9 @@ namespace Server.Fronteira.Clima
 
             protected override void OnTick()
             {
+                int SensacaoTermica;
                 if (Shard.DebugEnabled)
-                    Shard.Debug("Timer");
+                    Shard.Debug("Timer de Clima");
 
                 Danos.Clear();
                 foreach (var player in _emTemp)
@@ -94,54 +160,109 @@ namespace Server.Fronteira.Clima
                     if (Shard.DebugEnabled)
                         Shard.Debug("Vendo temperatura do manolo " + player.Name);
 
-                    if (player.Temperatura < 0)
+                    //Atualiza temperatura dos Players
+
+                    var tempVeia = player.Temperatura;
+                    var tempNova = Clima.GetTemperatura(player.Region);
+
+                    switch (player.Map.Season)
                     {
-                        var dano = (-player.Temperatura - player.ColdResistance) * 3;
-                        if (dano > 25)
-                            dano = 25;
-                        if (dano > 0)
+                        case 0: //primavera
+                            tempNova += 5;
+                            break;
+                        case 1: //verão
+                            tempNova += 10;
+                            break;
+                        case 2: //outono
+                            tempNova -= 5;
+                            break;
+                        case 3: //inverno
+                            tempNova -= 10;
+                            break;
+                        case 4: //desolation
+                            tempNova *= 2;
+                            break;
+                        default:
+                            break;
+                    }
+                    foreach (Weather tempo in Weather.GetWeatherList(player.Map)) { 
+                        if(tempo.IntersectsWith(new Rectangle2D(player.X, player.Y, 1, 1)))
                         {
-                            player.Stam -= dano;
-                            player.SendMessage("Voce esta com frio e precisa de roupas mais quentes para se esquentar");
-
-                            if (player.Female)
-                                player.PlaySound(0x332);
-                            else
-                                player.PlaySound(0x444);
-
-                            if (player.AvisoTemperatura)
-                            {
-                                Danos.Add(player, dano);
-                            }
-                            else
-                            {
-                                player.SendMessage(78, "Se voce permanecer muito tempo em um local frio sem roupas adequadas sofrera dano e perda de stamina");
-                                player.AvisoTemperatura = true;
-                            }
-
+                            tempNova += tempo.Temperature;
+                            break;
                         }
                     }
-                    else if (player.Temperatura > 0)
+
+                    player.Temperatura = tempNova;
+
+                    if (tempVeia < tempNova)
                     {
-                        var resistFinal = player.FireResistance - player.ColdResistance;
-                        var dano = (player.Temperatura - resistFinal) * 2;
-                        if (dano > 25) dano = 25;
+                        player.SendMessage("Voce sente o clima esquentar");
 
-                        if (dano > 0)
+                        if (player.HasGump(typeof(FomeSede)))
+                            player.CloseGump(typeof(FomeSede));
+                        player.SendGump(new FomeSede(player));
+                    }
+                    else if (tempVeia > tempNova)
+                    {
+                        player.SendMessage("Voce sente o clima esfriar");
+
+                        if (player.HasGump(typeof(FomeSede)))
+                            player.CloseGump(typeof(FomeSede));
+                        player.SendGump(new FomeSede(player));
+                    }
+
+                    SensacaoTermica = Clima.GetSensacaoTermica(player);
+
+                    //Calcula efeitos nocivo no personagem
+                    if (SensacaoTermica <= -10) //Só causa efeitos de frios com sensação térmica de pelo menos -10 no valor base
+                    {
+                        var dano = (Math.Abs(SensacaoTermica)-10)/2; 
+                        if (dano > 25) // O dano máximo de frio é 25
+                            dano = 25;
+
+                        player.Stam -= dano;
+                        player.SendMessage("Voce esta com frio e precisa de roupas mais quentes para se esquentar");
+
+                        if (player.Female)
+                            player.PlaySound(0x332);
+                        else
+                            player.PlaySound(0x444);
+
+                        if (player.AvisoTemperatura)
                         {
-                            player.SendMessage("Voce esta com calor");
-                            FomeSedeDecay.ThirstDecay(player);
-                            if (player.AvisoTemperatura)
-                            {
-                                Danos.Add(player, dano);
-                            }
-                            else
-                            {
-                                player.SendMessage(78, "Se voce permanecer muito tempo em um local quente sem roupas apropriadas ira receber dano e ficar com sede mais rapidamente");
-                                player.AvisoTemperatura = true;
-                            }
+                            Danos.Add(player, dano);
                         }
+                        else
+                        {
+                            player.SendMessage(78, "Se voce permanecer muito tempo em um local frio sem roupas adequadas sofrera dano e perda de stamina");
+                            player.AvisoTemperatura = true;
+                        }
+                    }
+                    else if (SensacaoTermica >= 10)
+                    {
 
+                        var dano = (Math.Abs(SensacaoTermica) - 10) / 2;
+                        if (dano > 25) // O dano máximo e calor é 25
+                            dano = 25;
+
+                        player.SendMessage("Voce esta com calor");
+                        FomeSedeDecay.ThirstDecay(player); //aumenta a sede mais rápido
+                        player.Stam -= dano;
+
+                        if (player.AvisoTemperatura)
+                        {
+                            Danos.Add(player, dano);
+                        }
+                        else
+                        {
+                            player.SendMessage(78, "Se voce permanecer muito tempo em um local quente sem roupas apropriadas ira receber dano e ficar com sede mais rapidamente");
+                            player.AvisoTemperatura = true;
+                        }
+                    }
+                    else
+                    {
+                        player.AvisoTemperatura = false;
                     }
                 }
 
@@ -154,35 +275,54 @@ namespace Server.Fronteira.Clima
 
         private static void EnterRegion(OnEnterRegionEventArgs e)
         {
-            var tempVeia = Clima.GetTemperatura(e.OldRegion);
+            Mobile mob = e.From;
+            var tempVeia = mob.Temperatura;
             var tempNova = Clima.GetTemperatura(e.NewRegion);
-            e.From.Temperatura = tempNova;
 
-            if (tempNova != 0)
+            switch (mob.Map.Season)
             {
-                e.From.AvisoTemperatura = false;
-                _emTemp.Add(e.From);
-                Shard.Debug("Trackeando Temp", e.From);
-                e.From.SendGump(new GumpTemperatura(e.From));
-            }
-            else
-            {
-                Shard.Debug("Parei trackear Temp", e.From);
-                _emTemp.Remove(e.From);
+                case 0: //primavera
+                    tempNova += 5;
+                    break;
+                case 1: //verão
+                    tempNova += 10;
+                    break;
+                case 2: //outono
+                    tempNova -= 5;
+                    break;
+                case 3: //inverno
+                    tempNova -= 10;
+                    break;
+                case 4: //desolation
+                    tempNova *= 2;
+                    break;
+                default:
+                    break;
             }
 
+            mob.Temperatura = tempNova;
 
             if (tempVeia < tempNova)
             {
-                e.From.SendMessage("Voce sente o clima esquentar");
+                mob.SendMessage("Voce sente o clima esquentar");
+
+                if (mob.HasGump(typeof(FomeSede)))
+                    mob.CloseGump(typeof(FomeSede));
+                mob.SendGump(new FomeSede(mob));
+
             }
             else if (tempVeia > tempNova)
             {
-                e.From.SendMessage("Voce sente o clima esfriar");
+                mob.SendMessage("Voce sente o clima esfriar");
+
+                if (mob.HasGump(typeof(FomeSede)))
+                    mob.CloseGump(typeof(FomeSede));
+                mob.SendGump(new FomeSede(mob));
             }
 
         }
 
+        
         public static void SetTemperatura(Region region, int graus)
         {
             _temperaturas[region.Name] = graus;
@@ -192,7 +332,12 @@ namespace Server.Fronteira.Clima
         {
             int temperatura = 0; // neutro
             if (region.Name != null)
-                _temperaturas.TryGetValue(region.Name, out temperatura);
+            {
+                if (_temperaturas.ContainsKey(region.Name))
+                {
+                    temperatura = _temperaturas[region.Name];
+                }
+            }
             return temperatura;
         }
 

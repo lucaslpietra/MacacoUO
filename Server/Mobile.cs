@@ -539,6 +539,15 @@ namespace Server
 
         public int Temperatura;
 
+        public virtual int SensacaoTermica {
+        get
+            {
+                int protecao = this.FireResistance - this.ColdResistance;
+                int sensacao = this.Temperatura - protecao;
+                return sensacao;
+            }
+        }
+
         public bool AvisoTemperatura = false;
 
         public virtual bool RP { get { return false; } set { } }

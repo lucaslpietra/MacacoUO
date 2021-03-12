@@ -27,13 +27,12 @@ namespace Server.Gumps
             this.Resizable = false;
 
             AddPage(0);
-            AddBackground(-7, 87, 145, 54, 9200);
-            AddItem(-15, 94, 2429);
-            AddItem(-17, 114, 2544);
-            AddImageTiled(20, 98, 110, 12, 2053);
-            AddImageTiled(20, 118, 110, 12, 2053);
-            AddImageTiled(20, 98, (int)(caller.Hunger * 5.5), 12, 2054);
-            AddImageTiled(20, 118, (int)(caller.Thirst * 5.5), 12, 2054);
+            AddImage(0, 0, 40299);
+            //AddItem(-15, 94, 2429);
+            //AddItem(-17, 114, 2544);
+            AddImageTiled(50, 20, (int)(caller.Hunger * 5.5), 8, 41);
+            AddImageTiled(50, 49, (int)(caller.Thirst * 5.5), 8, 41);
+            AddImage(92 + caller.Temperatura, 86, 5600);
             caller.SendMessage("Digite .fome para ver sua fome ou sede");
         }
 
