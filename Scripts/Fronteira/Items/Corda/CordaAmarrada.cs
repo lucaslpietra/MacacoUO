@@ -12,7 +12,9 @@ namespace Server.Items
         private object Preso;
         private Rope Corda;
 
-        public CordaAmarrada(object preso, Rope corda) : base(0x268C)
+        private static int ITEMID = 0x268C;
+
+        public CordaAmarrada(object preso, Rope corda) : base(ITEMID)
         {
             Corda = corda;
             Preso = preso;
@@ -64,6 +66,10 @@ namespace Server.Items
 
         public void Arrasta(PlayerMobile from, object target)
         {
+            var mob = target as Mobile;
+            if (!mob.Alive && mob.Corpse != null)
+                target = mob.Corpse;
+
             if (from.Str < 90)
             {
                 from.SendMessage("Voce nao e forte suficiente para arrastar isto");
@@ -124,6 +130,7 @@ namespace Server.Items
             if (Utility.Random(100) < chanceSucesso)
             {
                 Corda.TrySolta(target);
+                return;
             }
             else
             {

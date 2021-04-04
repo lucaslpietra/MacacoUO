@@ -28,6 +28,8 @@ namespace Server.Items
         private ItemQuality m_Quality;
         private int m_UsesRemaining;
 
+        public bool AutoHarvest { get { return false; } }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Crafter
         {

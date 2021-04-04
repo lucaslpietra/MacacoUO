@@ -1,5 +1,7 @@
 using System;
+using Server.Fronteira.Animations;
 using Server.Gumps;
+using Server.Mobiles;
 using Server.Network;
 
 namespace Server.Misc
@@ -15,6 +17,41 @@ namespace Server.Misc
         {
             new FomeSedeDecay().Start();
             EventSink.HungerChanged += Hunger;
+        }
+
+        private static void CheckMorte(PlayerMobile playerMobile)
+        {
+            if (playerMobile.Hunger <= 6 || playerMobile.Thirst <= 6)
+            {
+                CustomAnimations.GritarDeDorAnimation(playerMobile);
+                playerMobile.Damage(1);
+                if (playerMobile.Thirst <= 2)
+                {
+                    playerMobile.SendMessage(38, "Voce desmaiou de tanto passar sede!");
+                    playerMobile.Kill();
+                    playerMobile.Hunger = 6;
+                    playerMobile.Thirst = 6;
+                }
+                else if (playerMobile.Hunger <= 2)
+                {
+                    playerMobile.SendMessage(38, "Voce desmaiou de tanto passar fome!");
+                    playerMobile.Kill();
+                    playerMobile.Hunger = 6;
+                    playerMobile.Thirst = 6;
+                }
+                else
+                {
+                    if (playerMobile.Hunger <= 6)
+                    {
+                        playerMobile.SendMessage(38, "Voce esta morrendo de fome!");
+                    }
+
+                    if (playerMobile.Thirst <= 6)
+                    {
+                        playerMobile.SendMessage(38, "Voce esta morrendo de sede!");
+                    }
+                }
+            }
         }
 
         public static void Hunger(HungerChangedEventArgs e)

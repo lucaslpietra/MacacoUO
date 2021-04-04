@@ -83,6 +83,7 @@ namespace Server.Gumps.CharacterCreationRP
                         break;
                     }
             }
+
             caller.SendGump(new ClassSelectionGump(info.Switches[0],null,null));
             return;
         }

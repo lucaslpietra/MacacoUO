@@ -20,63 +20,6 @@ namespace Server.Scripts.New.Adam.NewGuild
     {
         public static string Abrev = "Noob";
 
-        public static void Initialize()
-        {
-            Console.WriteLine("Carregando sistema de guilda dos novatos");
-            EventSink.Login += OnLogin;
-        }
-
-        private static void OnLogin(LoginEventArgs e)
-        {
-            var pm = e.Mobile as PlayerMobile;
-
-            if (pm == null)
-                return;
-
-
-            //////// PREPARATIVOS FE //////
-            if(pm.AccessLevel == AccessLevel.Player)
-            {
-                pm.SendGump(new LockRP());
-                pm.Freeze(TimeSpan.FromDays(1));
-                return;
-            }
-
-            if (Shard.WARSHARD)
-            {
-                return;
-            }
-
-            if (Shard.RP)
-            {
-                if (pm.Profession == 0)
-                {
-                    pm.SendMessage("Escolha sua classe");
-                    pm.SendGump(new ClassGump());
-                }
-            }
-            else
-            {
-                if (pm.Profession == 0)
-                {
-                    if (pm.ContaRP)
-                    {
-                        pm.SendMessage("Escolha seu kit de skills iniciais");
-                        pm.SendGump(new GumpCharRP(pm));
-                    }
-                    else
-                    {
-                        //pm.SendMessage("Escolha se deseja criar um personagem RP ou NORMAL");
-                        //pm.SendGump(new NonRPClassGump());
-                    }
-                }
-                else
-                {
-                    SendStarterGuild(pm);
-                }
-            }
-        }
-
         public static HashSet<Serial> asked = new HashSet<Serial>();
 
         public static void SendStarterGuild(PlayerMobile pm)

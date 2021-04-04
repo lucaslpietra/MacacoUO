@@ -17,6 +17,8 @@ namespace Server.Items
         {
         }
 
+        public bool AutoHarvest { get { return true; } }
+
         public BaseAxe(Serial serial)
             : base(serial)
         {

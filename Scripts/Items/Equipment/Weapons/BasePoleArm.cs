@@ -17,6 +17,8 @@ namespace Server.Items
         {
         }
 
+        public bool AutoHarvest { get { return false; } }
+
         public override int DefHitSound
         {
             get

@@ -135,7 +135,7 @@ namespace Server.Gumps.CharacterCreationRP
                 int SBbaseX = 318; //Posição 'x' base do button da classe
                 int SBbaseY = 525; //Posição 'y' base do button da classe //22 entre cada label
 
-                HashSet<SkillName> skills = classeEscolhida.ClassSkills; //Armazena a lista de skills da classe atualmente selecionada
+                var skills = classeEscolhida.ClassSkills.Keys; //Armazena a lista de skills da classe atualmente selecionada
                 List <SkillInfo> tabelaSkills = SkillInfo.Table.CastToList<SkillInfo>(); //Armazena a tabela com os nomes de exibição das skills, entre outras informações
 
                 int linhaCount = 0;
@@ -185,6 +185,7 @@ namespace Server.Gumps.CharacterCreationRP
                 }
                 else
                 {
+                    caller.SendMessage("Escolha 3 skills iniciais");
                     //Console.WriteLine("Numero de skills selecionadas está errado");
                     caller.SendGump(new ClassSelectionGump(raceEscolhida, classeEscolhida, skillsEscolhidas));
                 }

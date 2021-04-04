@@ -123,7 +123,15 @@ namespace Server.Engines.Harvest
             if ((item != null && item == tool) || h2item != null && h2item == tool)
             {
                 EventSink.InvokeResourceHarvestAttempt(new ResourceHarvestAttemptEventArgs(from, tool, sys));
-                from.Target = new HarvestTarget(tool, sys);
+              
+                if(tool is IHarvestTool && ((IHarvestTool)tool).AutoHarvest)
+                {
+                    var autoTarget = new HarvestTarget(tool, sys);
+                    autoTarget.PublicTarget(from, from);
+                } else
+                {
+                    from.Target = new HarvestTarget(tool, sys);
+                }
             }
             else
             {
@@ -964,6 +972,8 @@ namespace Server
     public interface IHarvestTool : IEntity
     {
         Engines.Harvest.HarvestSystem HarvestSystem { get; }
+
+        bool AutoHarvest { get; }
     }
 
     [AttributeUsage(AttributeTargets.Class)]

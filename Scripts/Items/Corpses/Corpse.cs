@@ -1310,6 +1310,13 @@ namespace Server.Items
         {
             if (from.IsStaff() || from.InRange(GetWorldLocation(), 2))
             {
+
+                var corda = Rope.GetCordaAmarrada(this.Owner);
+                if(corda != null && from != this.Owner)
+                {
+                    corda.OnDoubleClick(from);
+                }
+
                 #region Self Looting
                 bool selfLoot = (checkSelfLoot && (from == m_Owner));
 

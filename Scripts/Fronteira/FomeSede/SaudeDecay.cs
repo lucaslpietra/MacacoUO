@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server.Fronteira.Animations;
 using Server.Gumps;
 using Server.Mobiles;
@@ -15,7 +15,8 @@ namespace Server.Misc
 
         public static void Initialize()
         {
-            new SaudeDecay().Start();
+            /* Desabilitado e movido check pro FomeSedeDecay */
+            //new SaudeDecay().Start();
         }
 
         protected override void OnTick()

@@ -16,6 +16,8 @@ namespace Server.Items
             Name = "Picareta";
         }
 
+        public bool AutoHarvest { get { return true; } }
+
         public Pickaxe(Serial serial)
             : base(serial)
         {

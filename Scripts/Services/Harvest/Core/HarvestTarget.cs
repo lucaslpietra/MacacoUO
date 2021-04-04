@@ -22,6 +22,11 @@ namespace Server.Engines.Harvest
             DisallowMultis = true;
         }
 
+        public void PublicTarget(Mobile from, object targeted)
+        {
+            OnTarget(from, targeted);
+        }
+
         protected override void OnTarget(Mobile from, object targeted)
         {
 

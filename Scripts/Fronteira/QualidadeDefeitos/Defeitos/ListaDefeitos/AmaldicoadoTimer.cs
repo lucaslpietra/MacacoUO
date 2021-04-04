@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Server.Engines.XmlSpawner2;
 using Server.Mobiles;
@@ -16,7 +16,8 @@ namespace Server.Fronteira.QualidadeDefeitos.ListaDefeitos
 
         public static void Initialize()
         {
-            new AmaldicoadoTimer().Start();
+            // TODO: Esse codigo vai ser bem lagante. Netstate tb nao vai listar animais.
+            // new AmaldicoadoTimer().Start();
         }
 
         protected override void OnTick()

@@ -974,7 +974,7 @@ namespace Server.Commands.Generic
 			AccessLevel = AccessLevel.GameMaster;
 			Supports = CommandSupport.AllMobiles;
 			Commands = value ? new[] {"Kill"} : new[] {"Resurrect", "Res"};
-			ObjectTypes = ObjectTypes.Mobiles;
+			ObjectTypes = ObjectTypes.All;
 
 			if (value)
 			{
@@ -990,7 +990,17 @@ namespace Server.Commands.Generic
 
 		public override void Execute(CommandEventArgs e, object obj)
 		{
-			var mob = (Mobile)obj;
+            Mobile mob = null;
+            if (obj is Mobile)
+                mob = (Mobile)obj;
+            else if (obj is Corpse)
+                mob = ((Corpse)obj).Owner;
+
+            if(mob==null)
+            {
+                e.Mobile.SendMessage("Alvo invalido");
+                return;
+            }
 			var from = e.Mobile;
 
 			if (m_Value)

@@ -4270,15 +4270,25 @@ namespace Server.Mobiles
             }
         }
 
+        public override void Kill()
+        {
+            base.Kill();
+            var cordaAmarrada = Rope.GetCordaAmarrada(this);
+            if (cordaAmarrada != null)
+            {
+                cordaAmarrada.Visible = false;
+            }
+        }
+
         public override void Resurrect()
         {
 
-            if (!Corpse.Deleted) //FE: Leva a alminha pra perto do corpo se ele ainda existir
+            if (RP && Corpse != null && !Corpse.Deleted) //FE: Leva a alminha pra perto do corpo se ele ainda existir
             {
                 Map = Corpse.Map;
                 Location = Corpse.Location;
             }
-            else
+            else if(!this.IsStaff() && RP)
             {
                 SendMessage("Seu corpo já se decompôs!");
                 return;
@@ -4343,6 +4353,14 @@ namespace Server.Mobiles
             }
 
             Emote("*Acorda do Desmaio*");
+            var cordaAmarrada = Rope.GetCordaAmarrada(this);
+            if (cordaAmarrada != null)
+            {
+                this.Frozen = true;
+                cordaAmarrada.Visible = true;
+                Emote("* amarrado *");
+            }
+                
 
             //FE: Wake up sounds
             //TODO: Verificar porque alguns sons estão errados (Alinhar com o patch novo)

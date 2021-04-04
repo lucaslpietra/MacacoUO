@@ -1,4 +1,4 @@
-﻿using Server.Engines.XmlSpawner2;
+using Server.Engines.XmlSpawner2;
 using Server.Mobiles;
 
 namespace Server.Fronteira.QualidadeDefeitos.ListaDefeitos

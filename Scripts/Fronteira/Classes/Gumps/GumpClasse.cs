@@ -56,7 +56,7 @@ namespace Server.Gumps
                 AddImage(480, 164, classeEscolhida.Icone);
                 AddHtml(705, 180, 212, 301, classeEscolhida.Desc, (bool)true, (bool)true);
                 var strSkills = "";
-                foreach (var skill in classeEscolhida.ClassSkills)
+                foreach (var skill in classeEscolhida.ClassSkills.Keys)
                 {
                     strSkills += skill.GetName() + " ";
                 }

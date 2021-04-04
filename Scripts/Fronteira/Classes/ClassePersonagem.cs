@@ -14,13 +14,13 @@ namespace Server.Fronteira.Classes
         public int Icone;
         public string Desc;
 
-        public HashSet<SkillName> ClassSkills = new HashSet<SkillName>();
-
+        public Dictionary<SkillName, ushort> ClassSkills = new Dictionary<SkillName, ushort>();
+        
         public ClassePersonagem(string nome, int icone, string descricao, params SkillName[] skills)
         {
             this.Nome = nome;
             foreach (var s in skills)
-                ClassSkills.Add(s);
+                ClassSkills.Add(s, 100);
             this.Icone = icone;
             this.Desc = descricao;
         }
@@ -28,7 +28,7 @@ namespace Server.Fronteira.Classes
         {
             this.Nome = nome;
             foreach (var s in skills)
-                ClassSkills.Add(s);
+                ClassSkills.Add(s, 100);
             this.Icone = icone;
             this.Desc = descricao;
             this.ID = identificador;
@@ -39,9 +39,9 @@ namespace Server.Fronteira.Classes
         {
             foreach(var skill in player.Skills)
             {
-                if(ClassSkills.Contains(skill.SkillName))
+                if(ClassSkills.ContainsKey(skill.SkillName))
                 {
-                    skill.Cap = 100;
+                    skill.Cap = ClassSkills[skill.SkillName];
                 } else
                 {
                     skill.Cap = 0;
