@@ -8,7 +8,7 @@ using Server.Targeting;
 
 namespace Server.Engines.Harvest
 {
-    public class HarvestTarget : Target
+    public class HarvestTarget : Target 
     {
         private readonly Item m_Tool;
         private readonly HarvestSystem m_System;

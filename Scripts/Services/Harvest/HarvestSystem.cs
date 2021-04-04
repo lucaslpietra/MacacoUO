@@ -123,15 +123,7 @@ namespace Server.Engines.Harvest
             if ((item != null && item == tool) || h2item != null && h2item == tool)
             {
                 EventSink.InvokeResourceHarvestAttempt(new ResourceHarvestAttemptEventArgs(from, tool, sys));
-              
-                if(tool is IHarvestTool && ((IHarvestTool)tool).AutoHarvest)
-                {
-                    var autoTarget = new HarvestTarget(tool, sys);
-                    autoTarget.PublicTarget(from, from);
-                } else
-                {
-                    from.Target = new HarvestTarget(tool, sys);
-                }
+                from.Target = new HarvestTarget(tool, sys);
             }
             else
             {
@@ -237,13 +229,14 @@ namespace Server.Engines.Harvest
                     bool guards = from.Region != null && from.Region is GuardedRegion;
                     bool wilds = from.Region == null || !(from.Region is DungeonRegion);
 
-                    if(guards)
+                    if (guards)
                     {
-                        if(MineriosFodas.Contains(type))
+                        if (MineriosFodas.Contains(type))
                         {
                             type = typeof(IronOre);
                             Shard.Debug("Virou iron");
-                        } else if(MadeirasFodas.Contains(type))
+                        }
+                        else if (MadeirasFodas.Contains(type))
                         {
                             type = typeof(Log);
                         }
@@ -288,10 +281,10 @@ namespace Server.Engines.Harvest
                         if (from.AccessLevel <= AccessLevel.VIP)
                         {
                             var minSkill = resource.MinSkill;
-                            var gasto = amount;                    
-                            if(guards)
-                            { 
-                                if (!from.IsCooldown("msgminerio") && def.Skill == SkillName.Mining )
+                            var gasto = amount;
+                            if (guards)
+                            {
+                                if (!from.IsCooldown("msgminerio") && def.Skill == SkillName.Mining)
                                 {
                                     from.SetCooldown("msgminerio", TimeSpan.FromHours(1));
                                     from.SendMessage(78, "Dentro da protecao voce encontra menos minerios que em dungeons ou cavernas");
@@ -315,7 +308,8 @@ namespace Server.Engines.Harvest
                                 if (minSkill > 90)
                                     gasto += 2;
 
-                            } else if(wilds)
+                            }
+                            else if (wilds)
                             {
                                 gasto += 3;
                             }
@@ -363,7 +357,7 @@ namespace Server.Engines.Harvest
                         {
                             EventSink.InvokeResourceHarvestSuccess(new ResourceHarvestSuccessEventArgs(from, tool, item, bonusItem, this));
                         }, 100);
-                        
+
                     }
 
                     #region High Seas
@@ -415,7 +409,7 @@ namespace Server.Engines.Harvest
 
             if (def.Skill == SkillName.Mining)
             {
-                if(from.Skills[def.Skill].Value >= 65)
+                if (from.Skills[def.Skill].Value >= 65)
                     mult = 0.5;
                 else if (from.Skills[def.Skill].Value >= 75)
                     mult = 0.3;
@@ -432,7 +426,7 @@ namespace Server.Engines.Harvest
                     mult = 0.1;
             }
 
-            if(mult < 1 && !from.IsCooldown("msgmult"))
+            if (mult < 1 && !from.IsCooldown("msgmult"))
             {
                 from.SetCooldown("msgmult", TimeSpan.FromMinutes(10));
                 from.SendMessage(78, "Voce pode subir suas habilidades muito mais rapidamente procurando recursos pelo mapa");
@@ -444,7 +438,7 @@ namespace Server.Engines.Harvest
             }
 
             return false;
-               
+
         }
 
         public virtual void OnToolUsed(Mobile from, Item tool, bool caughtSomething)
@@ -751,7 +745,8 @@ namespace Server.Engines.Harvest
                 tileID = obj.TileID;
                 map = from.Map;
                 loc = obj.Location;
-            } else if(toHarvest is Recurso)
+            }
+            else if (toHarvest is Recurso)
             {
                 tileID = ((Item)toHarvest).Serial;
                 map = from.Map;
