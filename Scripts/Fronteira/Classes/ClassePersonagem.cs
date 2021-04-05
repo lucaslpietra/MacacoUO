@@ -56,7 +56,7 @@ namespace Server.Fronteira.Classes
             this.Desc = descricao;
         }
 
-        public void ViraClasse(PlayerMobile player, ClassePersonagem classe)
+        public void ViraClasse(PlayerMobile player)
         {
             foreach(var skill in player.Skills)
             {
@@ -69,7 +69,7 @@ namespace Server.Fronteira.Classes
                 }
             }
             player.Profession = ID;
-            player.SendMessage("Voce agora e da classe " + classe.Nome);
+            player.SendMessage("Voce agora e da classe " + this.Nome);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Server.Fronteira.Talentos
                     m.Skills[SkillName.Necromancy].Cap = 90;
                     m.Skills[SkillName.Meditation].Cap = 80;
                     break;
-                case Talento.Comandante:
+                case Talento.Comandante: // ja upa pra 100 pq essa precisa de 100 nas 2 pra ser util
                     m.Skills[SkillName.Begging].Cap = 100;
                     m.Skills[SkillName.Forensics].Cap = 100;
                     break;

@@ -1,6 +1,7 @@
 using Server.Network;
 using Server.Commands;
 using Server.Fronteira.Classes;
+using Server.Mobiles;
 
 namespace Server.Gumps
 {
@@ -26,13 +27,16 @@ namespace Server.Gumps
 
         public static string TUTORIAL_DOS_MAMAO = @"À esquerda estão listadas as classes da raça escolhida. Abaixo estão listadas todas as skills que você pode escolher treinar naquela classe. Você vai começar com 30 de cada uma das skills específicas da classe. A quantidade máxima de skill que um char pode ter é 700. Todas as skills permitidas da classe podem ser treinadas e esquecidas durante o jogo. Dentro de cada classe existem duas subclasses que liberam mais skills enquanto seu char vai evoluindo. Essa é uma ótima maneira de você testar várias builds diferentes dentro da mesma classe.";
 
+        private ClassePersonagem escolhida;
+
         public GumpClasse(ClassePersonagem classeEscolhida) : base(0, 0)
         {
             this.Closable = true;
             this.Disposable = true;
             this.Dragable = true;
             this.Resizable = false;
-
+            this.escolhida = classeEscolhida;
+               
             AddPage(0);
             AddImage(43, 24, 40318);
 
@@ -58,7 +62,7 @@ namespace Server.Gumps
                 var strSkills = "";
                 foreach (var skill in classeEscolhida.ClassSkills.Keys)
                 {
-                    strSkills += skill.GetName() + " ";
+                    strSkills += classeEscolhida.ClassSkills[skill] + " "+skill.GetName() + " | " ;
                 }
                 AddHtml(345, 544, 574, 55, Gump.Cor(strSkills, "white"), (bool)false, (bool)false);
                 AddHtml(704, 146, 207, 22, Gump.Cor(classeEscolhida.Nome, "white"), (bool)false, (bool)false);
@@ -76,8 +80,11 @@ namespace Server.Gumps
         {
             Mobile from = sender.Mobile;
 
-            if (info.ButtonID == 0)
-                return;
+            if (info.ButtonID == 666 && escolhida != null)
+            {
+                escolhida.ViraClasse(from as PlayerMobile);
+            }
+                
 
             if(info.ButtonID != 666)
             {

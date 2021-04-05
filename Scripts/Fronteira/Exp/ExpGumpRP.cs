@@ -51,6 +51,7 @@ namespace Server.Gumps
             foreach(var s in Enum.GetValues(typeof(SkillName))) {
                 var skill = (SkillName)s;
                 if (UpComXP.Contains(skill)) continue;
+                if (SkillCheck.Work.Contains(skill)) continue;
                 UpComRepeticao.Add(skill);
             }
         }
@@ -78,7 +79,7 @@ namespace Server.Gumps
 
                 AddHtml(251, 268 + x, 153, 21, skill.Value+" " +skill.Name, (bool)false, (bool)false);
                 AddButton(407, 270 + x, 55, 55, 0, GumpButtonType.Reply, skill.SkillID);
-                AddImage(467, 226 + x, 58);
+                AddImage(467, 272 + x, 58);
                 AddHtml(424, 270 + x, 40, 18, SkillExpGump.GetCustoUp(from, s), (bool)false, (bool)false);
                 AddHtml(487, 270 + x, 70, 18, @"Max "+(int)skill.Cap, (bool)false, (bool)false);
                 total += skill.Value;
@@ -116,10 +117,10 @@ namespace Server.Gumps
             AddImage(247, 250, 50);
             AddHtml(377, 99, 46, 19, @"Skills", (bool)false, (bool)false);
             AddHtml(300, 139, 98, 21, @"123 Exp", (bool)false, (bool)false);
-            AddImage(307, 205, 50);
+            AddImage(307, 250, 50);
             AddHtml(449, 141, 108, 18, total+" / "+capTotal, (bool)false, (bool)false);
         
-            AddImage(413, 205, 50);
+            AddImage(413, 250, 50);
             AddHtml(449, 159, 108, 18, pct+"%", (bool)false, (bool)false);
             AddHtml(449, 122, 54, 19, @"Total:", (bool)false, (bool)false);
 
