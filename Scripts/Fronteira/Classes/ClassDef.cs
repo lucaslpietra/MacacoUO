@@ -30,6 +30,7 @@ namespace Server.Fronteira.Classes
             var id = _classes.Count + 1;
             classe.ID = id;
             _classes[id] = classe;
+            classe.Talentos = talentos;
         }
 
         // TODO: Fazer os powerscolls de 90 a 100 nas skills

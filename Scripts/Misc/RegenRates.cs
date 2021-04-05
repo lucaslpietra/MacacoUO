@@ -217,7 +217,7 @@ namespace Server.Misc
         {
             int points = AosAttributes.GetValue(from, AosAttribute.RegenHits);
             if (from is PlayerMobile && ((PlayerMobile)from).Talentos.Tem(Talento.Regeneracao))
-                points += 4;
+                points += 2;
             return points;
             /*
             int points = AosAttributes.GetValue(from, AosAttribute.RegenHits);

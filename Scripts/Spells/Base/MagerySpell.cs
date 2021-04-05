@@ -178,7 +178,7 @@ namespace Server.Spells
 
                 if (Caster.Player && Caster.RP)
                 {
-                    if (((PlayerMobile)target).Talentos.Tem(Talento.Concentracao))
+                    if (((PlayerMobile)Caster).Talentos.Tem(Talento.Concentracao))
                         resist -= 10;
                 }
 
@@ -225,7 +225,17 @@ namespace Server.Spells
                 if (Caster is BaseCreature)
                     return TimeSpan.FromSeconds(0.5 + 0.40 * (int)Circle);
 
-                return TimeSpan.FromSeconds(0.5 + (0.25 * (int)Circle));
+                if (Caster.Weapon is BaseStaff || !(Caster is PlayerMobile))
+                    return TimeSpan.FromSeconds(0.5 + (0.25 * (int)Circle));
+                else
+                {
+                    if (!Caster.IsCooldown("dicacast"))
+                    {
+                        Caster.SetCooldown("dicacast", TimeSpan.FromHours(5));
+                        Caster.SendMessage(78, "Voce casta mais lentamente por nao estar portando um cajado");
+                    }
+                    return TimeSpan.FromSeconds(0.5 + (0.55 * (int)Circle));
+                }
             }
             return base.GetCastDelay();
         }

@@ -137,6 +137,11 @@ namespace Server.Mobiles
         public WispGuia Wisp = null;
         public int Anuncios = 0;
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public byte Nivel { get; set; }
+
+        public int ExpTotal;
+
         public Talentos Talentos = new Talentos();
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -449,6 +454,30 @@ namespace Server.Mobiles
         private DateTime m_LastOnline;
         private RankDefinition m_GuildRank;
         private bool m_NextEnhanceSuccess;
+
+        public bool TemTalentoNovo()
+        {
+            return Talentos.Quantidade() < Nivel - 1;
+        }
+
+        public void GanhaExp(int pontos)
+        {
+            PointsSystem.Exp.AwardPoints(this, pontos, false, false);
+            ExpTotal += pontos;
+            if (!IsCooldown("xpp"))
+            {
+                SetCooldown("xpp", TimeSpan.FromHours(1));
+                SendMessage(78, "Digite .xp para usar sua EXP para subir skills");
+            }
+
+            if(Nivel < 11 && ExpTotal > ExpProximoNivel())
+            {
+                ExpTotal = 0;
+                Nivel += 1;
+                SendMessage(78, "Voce ganhou um novo ponto de talento ! Digite .talento para usa-lo !");
+                this.SendGump(new AnuncioGump(this, "Digite .talento para usar seu ponto de talento"));
+            }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool NextEnhanceSuccess { get { return m_NextEnhanceSuccess; } set { m_NextEnhanceSuccess = value; } }
@@ -4346,9 +4375,9 @@ namespace Server.Mobiles
             }
 
             //FE: equipa o que sobrou do corpo e apaga ele
-            if (!Corpse.Deleted)
+            if (Corpse != null && !Corpse.Deleted)
             {
-                Use(Corpse);
+                ((Corpse)Corpse).AutoLoot(this);
                 Corpse.Delete();
             }
 
@@ -5015,6 +5044,7 @@ namespace Server.Mobiles
 
         public PlayerMobile()
         {
+            Nivel = 1;
             Instances.Add(this);
 
             m_AutoStabled = new List<Mobile>();
@@ -5365,6 +5395,10 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 49:
+                    Nivel = reader.ReadByte();
+                    ExpTotal = reader.ReadInt();
+                    goto case 48;
                 case 48:
                     Talentos.Deserialize(reader);
                     goto case 46;
@@ -5385,7 +5419,6 @@ namespace Server.Mobiles
                     goto case 42;
 
                 case 42:
-                    //Exp.Deserialize(reader);
                     goto case 41;
                 case 41:
                     NivelBanco = reader.ReadInt();
@@ -5826,6 +5859,14 @@ namespace Server.Mobiles
 
         public ObjetoFicha FichaRP = new ObjetoFicha();
 
+        public int ExpProximoNivel()
+        {
+            var V = (int)Math.Pow(Nivel * 10, 2);
+            if (V <= 0)
+                V = 1;
+            return V;
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             //cleanup our anti-macro table
@@ -5849,7 +5890,9 @@ namespace Server.Mobiles
             CheckKillDecay();
             CheckAtrophies(this);
             base.Serialize(writer);
-            writer.Write(48); // version
+            writer.Write(49); // version
+            writer.Write(Nivel);
+            writer.Write(ExpTotal);
             Talentos.Serialize(writer);
             FichaRP.Serialize(writer);
             writer.Write(Vidas);

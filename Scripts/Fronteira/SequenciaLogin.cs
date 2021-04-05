@@ -24,15 +24,6 @@ namespace Server.Fronteira
             if (pm == null)
                 return;
 
-
-            //////// PREPARATIVOS FE //////
-            if (pm.AccessLevel == AccessLevel.Player)
-            {
-                pm.SendGump(new LockRP());
-                pm.Freeze(TimeSpan.FromDays(1));
-                return;
-            }
-
             if (Shard.WARSHARD)
             {
                 return;

@@ -1411,106 +1411,7 @@ namespace Server.Items
 
                         Timer.DelayCall(TimeSpan.FromSeconds(3), () =>
                         {
-                            looteando = false;
-                            if (from == null || !from.Alive || this.Deleted)
-                            {
-                                if (from != null)
-                                {
-                                    from.SendMessage("Seu corpo se foi");
-                                }
-                                return;
-                            }
-
-                            if (from.GetDistance(this) > 3)
-                            {
-                                from.SendMessage("Voce esta muito longe para pegar seus pertences");
-                                return;
-                            }
-                            Shard.Debug("Autolooteando", from);
-                            SetFlag(CorpseFlag.SelfLooted, true);
-
-                            var items = new List<Item>(Items);
-
-                            bool gathered = false;
-
-                            for (int k = 0; k < EquipItems.Count; ++k)
-                            {
-                                Item item2 = EquipItems[k];
-
-                                if (!items.Contains(item2) && item2.IsChildOf(from.Backpack))
-                                {
-                                    items.Add(item2);
-                                    gathered = true;
-                                }
-                            }
-
-                            bool didntFit = false;
-
-                            Container pack = from.Backpack;
-
-                            bool checkRobe = true;
-
-                            for (int i = 0; !didntFit && i < items.Count; ++i)
-                            {
-                                Item item = items[i];
-                                Point3D loc = item.Location;
-
-                                if ((item.Layer == Layer.Hair || item.Layer == Layer.FacialHair) || !item.Movable)
-                                {
-                                    continue;
-                                }
-
-                                if (checkRobe)
-                                {
-                                    DeathRobe robe = from.FindItemOnLayer(Layer.OuterTorso) as DeathRobe;
-
-                                    if (robe != null)
-                                    {
-                                        robe.Delete();
-                                    }
-                                }
-
-                                if (m_EquipItems.Contains(item) && from.EquipItem(item))
-                                {
-                                    gathered = true;
-                                }
-                                else if (pack != null && pack.CheckHold(from, item, false, true))
-                                {
-                                    pack.AddItem(item);
-                                    item.Location = loc;
-                                    gathered = true;
-                                }
-                                else
-                                {
-                                    didntFit = true;
-                                }
-                            }
-
-                            if (gathered && !didntFit)
-                            {
-                                SetFlag(CorpseFlag.Carved, true);
-
-                                if (ItemID == 0x2006)
-                                {
-                                    ProcessDelta();
-                                    SendRemovePacket();
-                                    ItemID = Utility.Random(0xECA, 9); // bone graphic
-                                    Hue = 0;
-                                    ProcessDelta();
-                                }
-
-                                from.PlaySound(0x3E3);
-                                from.OverheadMessage("* pegou pertences *");
-                                from.SendLocalizedMessage("Voce pegou seus pertences"); // You quickly gather all of your belongings.
-                                items.Clear();
-                                m_EquipItems.Clear();
-                                return;
-                            }
-
-                            if (gathered && didntFit)
-                            {
-                                from.SendLocalizedMessage("Voce pegou alguns de seus pertences o resto ficou no corpo"); // You gather some of your belongings. The rest remain on the corpse.
-                            }
+                            AutoLoot(from);
                         });
                     }
                     return;
@@ -1589,6 +1490,113 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(500446); // That is too far away.
                 return;
+            }
+        }
+
+        public void AutoLoot(Mobile from, bool msg = true)
+        {
+            looteando = false;
+            if (from == null || !from.Alive || this.Deleted)
+            {
+                if (from != null)
+                {
+                    from.SendMessage("Seu corpo se foi");
+                }
+                return;
+            }
+
+            if (from.GetDistance(this) > 3)
+            {
+                from.SendMessage("Voce esta muito longe para pegar seus pertences");
+                return;
+            }
+            Shard.Debug("Autolooteando", from);
+            SetFlag(CorpseFlag.SelfLooted, true);
+
+            var items = new List<Item>(Items);
+
+            bool gathered = false;
+
+            for (int k = 0; k < EquipItems.Count; ++k)
+            {
+                Item item2 = EquipItems[k];
+
+                if (!items.Contains(item2) && item2.IsChildOf(from.Backpack))
+                {
+                    items.Add(item2);
+                    gathered = true;
+                }
+            }
+
+            bool didntFit = false;
+
+            Container pack = from.Backpack;
+
+            bool checkRobe = true;
+
+            for (int i = 0; !didntFit && i < items.Count; ++i)
+            {
+                Item item = items[i];
+                Point3D loc = item.Location;
+
+                if ((item.Layer == Layer.Hair || item.Layer == Layer.FacialHair) || !item.Movable)
+                {
+                    continue;
+                }
+
+                if (checkRobe)
+                {
+                    DeathRobe robe = from.FindItemOnLayer(Layer.OuterTorso) as DeathRobe;
+
+                    if (robe != null)
+                    {
+                        robe.Delete();
+                    }
+                }
+
+                if (m_EquipItems.Contains(item) && from.EquipItem(item))
+                {
+                    gathered = true;
+                }
+                else if (pack != null && pack.CheckHold(from, item, false, true))
+                {
+                    pack.AddItem(item);
+                    item.Location = loc;
+                    gathered = true;
+                }
+                else
+                {
+                    didntFit = true;
+                }
+            }
+
+            if (gathered && !didntFit)
+            {
+                SetFlag(CorpseFlag.Carved, true);
+
+                if (ItemID == 0x2006)
+                {
+                    ProcessDelta();
+                    SendRemovePacket();
+                    ItemID = Utility.Random(0xECA, 9); // bone graphic
+                    Hue = 0;
+                    ProcessDelta();
+                }
+
+                from.PlaySound(0x3E3);
+                if(msg)
+                {
+                    from.OverheadMessage("* pegou pertences *");
+                    from.SendLocalizedMessage("Voce pegou seus pertences"); // You quickly gather all of your belongings.
+                }
+                items.Clear();
+                m_EquipItems.Clear();
+                return;
+            }
+
+            if (gathered && didntFit)
+            {
+                from.SendLocalizedMessage("Voce pegou alguns de seus pertences o resto ficou no corpo"); // You gather some of your belongings. The rest remain on the corpse.
             }
         }
 

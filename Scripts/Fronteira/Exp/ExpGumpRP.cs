@@ -6,12 +6,13 @@ using Server.Network;
 using Server.Commands;
 using System.Collections.Generic;
 using Server.Misc;
+using Server.Engines.Points;
+using Server.Mobiles;
 
 namespace Server.Gumps
 {
     public class ExpGumpRP : Gump
     {
-        Mobile caller;
 
         private static List<SkillName> UpComXP = new List<SkillName>();
         private static List<SkillName> UpComRepeticao = new List<SkillName>();
@@ -56,7 +57,7 @@ namespace Server.Gumps
             }
         }
 
-        public ExpGumpRP(Mobile from) : base(0, 0)
+        public ExpGumpRP(PlayerMobile from) : base(0, 0)
         {
             this.Closable = true;
             this.Disposable = true;
@@ -78,7 +79,7 @@ namespace Server.Gumps
                 var skill = from.Skills[s];
 
                 AddHtml(251, 268 + x, 153, 21, skill.Value+" " +skill.Name, (bool)false, (bool)false);
-                AddButton(407, 270 + x, 55, 55, 0, GumpButtonType.Reply, skill.SkillID);
+                AddButton(407, 270 + x, 55, 55, skill.SkillID, GumpButtonType.Reply, 0);
                 AddImage(467, 272 + x, 58);
                 AddHtml(424, 270 + x, 40, 18, SkillExpGump.GetCustoUp(from, s), (bool)false, (bool)false);
                 AddHtml(487, 270 + x, 70, 18, @"Max "+(int)skill.Cap, (bool)false, (bool)false);
@@ -116,10 +117,14 @@ namespace Server.Gumps
 
             AddImage(247, 250, 50);
             AddHtml(377, 99, 46, 19, @"Skills", (bool)false, (bool)false);
-            AddHtml(300, 139, 98, 21, @"123 Exp", (bool)false, (bool)false);
+            AddHtml(303, 141, 98, 21, string.Format("{0} EXP", PointsSystem.Exp.GetPoints(from)), (bool)false, (bool)false);
             AddImage(307, 250, 50);
             AddHtml(449, 141, 108, 18, total+" / "+capTotal, (bool)false, (bool)false);
-        
+
+            var expFalta = from.ExpProximoNivel() - from.ExpTotal;
+            AddHtml(649, 141, 408, 18, "EXP para proximo talento: "+ expFalta, (bool)false, (bool)false);
+
+
             AddImage(413, 250, 50);
             AddHtml(449, 159, 108, 18, pct+"%", (bool)false, (bool)false);
             AddHtml(449, 122, 54, 19, @"Total:", (bool)false, (bool)false);
@@ -140,15 +145,40 @@ namespace Server.Gumps
         {
             Mobile from = sender.Mobile;
 
-            switch (info.ButtonID)
+            if (Shard.DebugEnabled)
+                Shard.Debug("Button ID " + info.ButtonID);
+
+            if (info.ButtonID <= 0)
             {
-                case 0:
-                    {
-
-                        break;
-                    }
-
+                return;
             }
+
+            var skill = from.Skills[info.ButtonID].SkillName;
+
+            var exp = SkillExpGump.GetPontos(from, skill);
+            var expAtual = PointsSystem.Exp.GetPoints(from);
+
+            if (exp > expAtual)
+            {
+                from.SendMessage(string.Format("Voce precisa de {0} EXP para subir a skill {1}", exp, skill.ToString()));
+                return;
+            }
+
+            var old = from.Skills[skill].Value;
+            SkillCheck.Gain(from, from.Skills[skill], 1);
+            var nw = from.Skills[skill].Value;
+
+            if (nw > old)
+            {
+                from.FixedParticles(0x375A, 9, 20, 5016, EffectLayer.Waist);
+                from.PlaySound(0x1FD);
+                PointsSystem.Exp.DeductPoints(from, exp, false);
+            }
+            else
+            {
+                from.SendMessage("A skill chegou no limite ou voce chegou no seu cap e precisa setar alguma skill para baixar na janela de skills.");
+            }
+            from.SendGump(new ExpGumpRP(from as PlayerMobile));
         }
     }
 }

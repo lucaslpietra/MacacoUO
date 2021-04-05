@@ -30,11 +30,12 @@ namespace Server.Ziden.Kills
 
         public static void Initialize()
         {
+            EventSink.CreatureDeath += CreatureDeath;
+
             if (Shard.RP)
                 return;
 
             CommandSystem.Register("pvm", AccessLevel.Player, Cmd);
-            EventSink.CreatureDeath += CreatureDeath;
         }
 
         [Usage("Kills")]
@@ -74,6 +75,9 @@ namespace Server.Ziden.Kills
             if (SkillCheck.BONUS_GERAL != 0)
                 exp = (int)(exp * SkillCheck.BONUS_GERAL);
 
+            if (Shard.DebugEnabled)
+                Shard.Debug("Rolando XP " + exp);
+
             if (bc != null && bc.GetLootingRights() != null)
             {
                 foreach (var m in bc.GetLootingRights())
@@ -97,20 +101,16 @@ namespace Server.Ziden.Kills
                             } else
                             {
                                 c.PrivateOverheadMessage(Network.MessageType.Regular, 66, false, string.Format("+{0} EXP", exp), pl.NetState);
-                                PointsSystem.Exp.AwardPoints(pl, pontos, false, false);
-                                if (!pl.IsCooldown("xpp"))
-                                {
-                                    pl.SetCooldown("xpp", TimeSpan.FromHours(1));
-                                    pl.SendMessage(78, "Digite .xp para usar sua EXP para subir skills");
-                                }
+                                pl.GanhaExp(pontos);
                             }
                         }
                         PointsSystem.PontosPvmEterno.AwardPoints(pl, pontos / 2, false, false);
+                        var pts = PointsSystem.PontosPvm.AwardPoints(pl, pontos, false, false);
                         if (pl.RP)
                         {
                             continue;
                         }
-                        var pts = PointsSystem.PontosPvm.AwardPoints(pl, pontos, false, false);
+                      
                         if (pts > 500 && !pl.IsCooldown("pvmp"))
                         {
                             pl.SetCooldown("pvmp", TimeSpan.FromHours(1));

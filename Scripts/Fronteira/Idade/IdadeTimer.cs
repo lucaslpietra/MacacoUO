@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server.Mobiles;
 using Server.Network;
 
@@ -24,6 +24,7 @@ namespace Server.Fronteira.Idade
         private void VerificaIdades()
         {
             var vaiMorrer = Utility.RandomBool();
+            if (!vaiMorrer) return;
             foreach (NetState state in NetState.Instances)
             {
                 if (state.Mobile != null && state.Mobile.IsPlayer() && state.Mobile.Alive && vaiMorrer &&

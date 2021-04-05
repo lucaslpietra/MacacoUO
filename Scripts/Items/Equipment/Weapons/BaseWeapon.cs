@@ -1563,7 +1563,7 @@ namespace Server.Items
 
             if (attacker.Player)
             {
-                if (((PlayerMobile)defender).Talentos.Tem(Talento.Precisao))
+                if (((PlayerMobile)attacker).Talentos.Tem(Talento.Precisao))
                 {
                     bonus -= 10;
                 }

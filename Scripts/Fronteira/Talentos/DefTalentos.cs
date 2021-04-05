@@ -8,12 +8,13 @@ namespace Server.Fronteira.Talentos
 
         public static DefTalentos GetDef(Talento t)
         {
+            if (!_talentos.ContainsKey(t))
+                throw new System.Exception("Talento " + t.ToString() + " nao ta registrado nas definicoes");
             return _talentos[t];
         }
 
         static DefTalentos()
         {
-
             _talentos.Add(Talento.Porretes, new DefTalentos()
             {
                 Desc1 = "+15% Dano com Macefight",
@@ -77,6 +78,14 @@ namespace Server.Fronteira.Talentos
                 Nome = "Resistente"
             });
 
+
+            _talentos.Add(Talento.Regeneracao, new DefTalentos()
+            {
+                Desc1 = "+200% Regen de Vida Passivo",
+                Icone = 39831,
+                Nome = "Eterno"
+            });
+
             _talentos.Add(Talento.Bloqueador, new DefTalentos()
             {
                 Desc1 = "Max 90 Parry",
@@ -88,7 +97,7 @@ namespace Server.Fronteira.Talentos
             {
                 Desc1 = "Max 90 Chivalry, Max 80 Meditation",
                 Icone = 40861,
-                Nome = "Finta"
+                Nome = "Paladino"
             });
 
             _talentos.Add(Talento.Comandante, new DefTalentos()
@@ -102,7 +111,7 @@ namespace Server.Fronteira.Talentos
             {
                 Desc1 = "Max 90 Necromancy, Max 80 Meditation",
                 Icone = 40861,
-                Nome = "Finta"
+                Nome = "Necrowar"
             });
 
             _talentos.Add(Talento.Finta, new DefTalentos()

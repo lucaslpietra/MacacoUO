@@ -6,6 +6,11 @@ namespace Server.Fronteira.Talentos
     {
         private HashSet<Talento> _talentos = new HashSet<Talento>();
 
+        public int Quantidade()
+        {
+            return _talentos.Count;
+        }
+
         public bool Tem(Talento t)
         {
             return _talentos.Contains(t);

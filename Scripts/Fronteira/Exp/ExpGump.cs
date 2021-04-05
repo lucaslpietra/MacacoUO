@@ -8,6 +8,7 @@ using Server.Commands;
 using System.Collections.Generic;
 using Server.Engines.Points;
 using Server.Misc;
+using Server.Mobiles;
 
 namespace Server.Gumps
 {
@@ -65,7 +66,7 @@ namespace Server.Gumps
                     e.Mobile.SendMessage("Gump de xp ja aberto");
                     return;
                 }
-                e.Mobile.SendGump(new ExpGumpRP(e.Mobile));
+                e.Mobile.SendGump(new ExpGumpRP(e.Mobile as PlayerMobile));
                 return;
             }
             if (e.Mobile.HasGump(typeof(SkillExpGump)))
@@ -82,7 +83,7 @@ namespace Server.Gumps
 
         public static int GetPontos(Mobile m, SkillName s)
         {
-            V = (int)Math.Pow(m.Skills[s].Base / 10, 4.2) / 20;
+            V = (int)Math.Pow(m.Skills[s].Base / 10, 4.2) / 17;
             if (V <= 0)
                 V = 1;
             return V;

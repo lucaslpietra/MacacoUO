@@ -43,7 +43,8 @@ namespace Server.Fronteira.Classes
         public string Desc;
 
         public Dictionary<SkillName, ushort> ClassSkills = new Dictionary<SkillName, ushort>();
-        
+        public OpcaoTalentos[] Talentos;
+
         public ClassePersonagem(string nome, int icone, string descricao, params SkillClasse[] skills)
         {
             this.Nome = nome;
