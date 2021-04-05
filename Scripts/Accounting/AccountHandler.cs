@@ -46,7 +46,7 @@ namespace Server.Misc
         private static readonly CityInfo[] Cidades = new CityInfo[]
         {
            // new CityInfo("Pau no Cu", "Pau no Cu", 1136, 1924, 6, Map.Felucca),
-           new CityInfo("Cidade Bolsominion", "Cidade Bolsominion", 5160, 1810 0, Map.Felucca)
+           new CityInfo("Cidade Bolsominion", "Cidade Bolsominion", 5160, 1810, 0, Map.Felucca)
         };
 
         private static readonly CityInfo[] StartingCities = new CityInfo[]
