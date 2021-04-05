@@ -329,22 +329,41 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(1000); // Version
-            writer.Write(m_EngravedText);
+			writer.Write(1001); // Version
+			writer.Write(m_EngravedText);
+
+            //Version 1001 variables: Begin
+            writer.Write(_PlayerConstructed);
+            writer.Write((int)_Resource);
+            writer.Write(m_RepairMode);
+            writer.Write((Mobile)m_Crafter);
+            writer.Write((int)m_Quality);
+            writer.Write((int)m_UsesRemaining);
+            //Version 1001 variables: End
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-            int version = reader.PeekInt();
-            switch (version)
-            {
-                case 1000:
-                    reader.ReadInt();
-                    m_EngravedText = reader.ReadString();
-                    break;
-            }
+			int version = reader.PeekInt();
+			switch(version)
+			{
+                case 1001:
+                    {
+                        _PlayerConstructed = reader.ReadBool();
+                        _Resource = (CraftResource)reader.ReadInt();
+                        m_RepairMode = reader.ReadBool();
+                        m_Crafter = reader.ReadMobile();
+                        m_Quality = (ItemQuality)reader.ReadInt();
+                        m_UsesRemaining = reader.ReadInt();
+                        goto case 1000;
+                    }
+				case 1000:
+					reader.ReadInt();
+					m_EngravedText = reader.ReadString();
+					break;
+			}
         }
     }
 
