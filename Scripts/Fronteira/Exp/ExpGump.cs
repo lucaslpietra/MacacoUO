@@ -58,6 +58,16 @@ namespace Server.Gumps
         [Description("Makes a call to your custom gump.")]
         public static void SkillsGump_OnCommand(CommandEventArgs e)
         {
+            if(Shard.RP)
+            {
+                if (e.Mobile.HasGump(typeof(ExpGumpRP)))
+                {
+                    e.Mobile.SendMessage("Gump de xp ja aberto");
+                    return;
+                }
+                e.Mobile.SendGump(new ExpGumpRP(e.Mobile));
+                return;
+            }
             if (e.Mobile.HasGump(typeof(SkillExpGump)))
             {
                 e.Mobile.SendMessage("Gump de xp ja aberto");

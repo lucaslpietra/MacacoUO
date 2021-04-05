@@ -1931,6 +1931,8 @@ namespace Server.Items
                         chance += parry / 600;
                 }
 
+                if (attacker is PlayerMobile && ((PlayerMobile)attacker).Talentos.Tem(Talento.Finta))
+                    chance -= 20;
 
                 if (attacker != null)
                 {
@@ -2221,14 +2223,15 @@ namespace Server.Items
             Layer.InnerLegs,
         };
 
-        public virtual Tuple<int, bool> AbsorbDamage(Mobile attacker, Mobile defender, int damage)
+        public virtual Tuple<int, bool> AbsorbDamage(Mobile attacker, Mobile defender, int d)
         {
+            var damage = (double)d;
             if (Core.AOS)
             {
-                return AbsorbDamageAOS(attacker, defender, damage);
+                return AbsorbDamageAOS(attacker, defender, (int)damage);
             }
 
-            var mods = ParryModifidaDano(attacker, defender, damage);
+            var mods = ParryModifidaDano(attacker, defender, (int)damage);
             damage = mods.Item1;
             var blocked = mods.Item2;
 
@@ -2292,7 +2295,7 @@ namespace Server.Items
             if (armor != null)
             {
                 var oldDmg = damage;
-                armor.OnHit(this, damage);
+                armor.OnHit(this, (int)damage);
                 if(Shard.DebugEnabled)
                     Shard.Debug("Armor mitigou " + (oldDmg - damage) + " dano", defender);
             }
@@ -2330,7 +2333,22 @@ namespace Server.Items
                     Shard.Debug("Dano antes talentos " + damage);
                 var pl = (PlayerMobile)attacker;
                 if(pl.Talentos.Tem(Talento.Potencia))
-                    damage = (int)(damage * 0.2);
+                    damage += (int)(damage * 0.1);
+
+                if (pl.Weapon is BaseBashing && !pl.Talentos.Tem(Talento.Porretes))
+                    damage *= 0.85;
+
+                if (pl.Weapon is BaseSword && !pl.Talentos.Tem(Talento.Espadas))
+                    damage *= 0.85;
+
+                if (pl.Weapon is BaseSpear && !pl.Talentos.Tem(Talento.Lancas))
+                    damage *= 0.85;
+
+                if (pl.Weapon is BaseAxe && !pl.Talentos.Tem(Talento.Machados))
+                    damage *= 0.85;
+
+                if (pl.Weapon is BasePoleArm && !pl.Talentos.Tem(Talento.Hastes))
+                    damage *= 0.85;
 
                 /*
                 var mamo = pl.Talentos.Tem(Fronteira.Talentos.Talento.Mamonita);
@@ -2351,7 +2369,7 @@ namespace Server.Items
             if (Shard.DebugEnabled)
                 Shard.Debug("Armor Rating: " + virtualArmor);
 
-            var armorMiti = XmlAttach.OnArmorHit(attacker, defender, armorItem, this, damage);
+            var armorMiti = XmlAttach.OnArmorHit(attacker, defender, armorItem, this, (int)damage);
             //var shieldMiti = XmlAttach.OnArmorHit(attacker, defender, shield, this, damage);
             damage -= armorMiti;
             //damage -= shieldMiti;
@@ -2405,7 +2423,7 @@ namespace Server.Items
 
             if(Shard.DebugEnabled)
                 Shard.Debug("Dano depois da reducao de armor " + damage);
-            return new Tuple<int, bool>(damage, mods.Item2);
+            return new Tuple<int, bool>((int)damage, mods.Item2);
         }
 
         public virtual int GetPackInstinctBonus(Mobile attacker, Mobile defender)

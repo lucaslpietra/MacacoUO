@@ -1,3 +1,4 @@
+using Server.Fronteira.Talentos;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -5,10 +6,6 @@ namespace Server.Fronteira.Classes
 {
     public static class ClassDef
     {
-        public static SkillName[] SKILLS_PUBLICAS = new SkillName[] {
-            SkillName.Hiding, SkillName.DetectHidden
-        };
-
         private static Dictionary<int, ClassePersonagem> _classes = new Dictionary<int, ClassePersonagem>();
 
         public static void _add(int ID, ClassePersonagem classe)
@@ -28,23 +25,89 @@ namespace Server.Fronteira.Classes
             return _classes[id];
         }
 
-        private static void AddClass(ClassePersonagem classe)
+        private static void AddClass(ClassePersonagem classe, params OpcaoTalentos[] talentos)
         {
             var id = _classes.Count + 1;
             classe.ID = id;
             _classes[id] = classe;
         }
 
+        // TODO: Fazer os powerscolls de 90 a 100 nas skills
         static ClassDef()
         {
             if (_classes.Count != 0)
                 return;
 
+            // TODO - mudar o nome das coisa pruns nome doido q ceis curte
             AddClass(new ClassePersonagem("Guerreiro", 40324,
-               "Os Anteras existem muito antes de serem chamados de Anteras.<br>Desde o primeiro homem que derramou sangue por Kaludes que os livros sagrados são lidos e seguidos por esse seleto grupo de guerreiros.<br>O livro conta a historia do Deus dos Céus e todo seu percurso para conseguir trazer força e poder aos seus seguidores.<br>Os Aludes gostam de acreditar que Kaludes conseguiu sua mais difícil façanha, mas muitos acreditam que é a fé que dá poder aos Anteras.<br>Os segredos dos livros sagrados são passados de pais para filhos e filhas e assim essa classe segue uma linhagem pura.<br>Os guerreiros Anteras são fortes o suficiente para vestir armaduras pesadas, empunhar armas maciças e conjurar alguns feitiços provindos da certeza de que Kaludes os acompanha.<br>Todos os membros da classe se provam guerreiros habilidosos antes de serem designados a sua escolha final entre ser um Guerreiro da luz ou da sombra.<br>Ambos de extrema importância.<br><b>Anteras da Luz</b>: Os Anteras da luz são conhecidos pelo reino como protetores da justiça divina e guardadores de um conhecimento ancestral e secreto. Entre seus lemas, estão a de honrar o nome da família e proteger os mitos de Kaludes acima de todas as coisas.<br><b>Anteras da Sombra</b>: Os Anteras das sombras surgiram pouco depois dos Anteras da luz, mas eles não carregam o mesmo julgamento que eles.<br>São vistos pelos Aludes como desonrados, medíocres e aberrações. Os Aludes não podem estar mais errados, são mal compreendidos por serem regidos por Kalam, o Deus da Terra, por muitos não vistos nem como uma divindade.<br>Kalam foi peça fundamental nas conquistas de Kaludes.<br>Os Anteras das sombras foram criados pelos mesmos ensinamentos, pelo mesmo livro e pelos mesmos mestres.<br>A luz para controlar a luz, e a sombra para conter a sombra.",
-               0, new SkillName[] {
-                SkillName.AnimalLore, SkillName.Begging, SkillName.Camping, SkillName.Healing, SkillName.Forensics, SkillName.MagicResist, SkillName.Snooping, SkillName.Stealing, SkillName.Lockpicking, SkillName.Wrestling, SkillName.Tracking, SkillName.Swords, SkillName.Focus, SkillName.Parry, SkillName.Macing
-           }));
+               "Toca porrada",
+               new SkillClasse[] {
+                    new SkillClasse(SkillName.Wrestling, 90), new SkillClasse(SkillName.Swords, 90),  new SkillClasse(SkillName.Fencing, 90),
+                   new SkillClasse(SkillName.Macing, 90),  new SkillClasse(SkillName.Tactics, 90),
+                    new SkillClasse(SkillName.Healing, 80), new SkillClasse(SkillName.Anatomy, 80),
+                    new SkillClasse(SkillName.MagicResist, 70),
+
+                    new SkillClasse(SkillName.Lumberjacking, 60),  new SkillClasse(SkillName.Blacksmith, 60), new SkillClasse(SkillName.Mining, 60), new SkillClasse(SkillName.Parry, 60),
+                    new SkillClasse(SkillName.Fishing, 60),  new SkillClasse(SkillName.Focus, 50),  new SkillClasse(SkillName.Cooking, 60)
+           }),
+              new OpcaoTalentos(Talento.Experiente, Talento.Esquiva, Talento.Precisao),                      // 1
+              new OpcaoTalentos(Talento.Espadas, Talento.Lancas, Talento.Porretes),                          // 2
+              new OpcaoTalentos(Talento.Curandeiro, Talento.Ladrao, Talento.Finta),                          // 3
+              new OpcaoTalentos(Talento.ProtecaoPesada, Talento.PeleArcana, Talento.Perseveranca),           // 4
+              new OpcaoTalentos(Talento.Paladino, Talento.Necrowar, Talento.Comandante), // 5
+              new OpcaoTalentos(Talento.Hipismo, Talento.ArmaduraPesada, Talento.Potencia),    // 6
+              new OpcaoTalentos(Talento.Bloqueador, Talento.ResistSpell, Talento.Brutalidade),               // 7
+              new OpcaoTalentos(Talento.Defensor, Talento.Rastreador, Talento.Magia),                        // 8
+              new OpcaoTalentos(Talento.FisicoPerfeito, Talento.Machados, Talento.Hastes),           // 9
+              new OpcaoTalentos(Talento.ArmaduraMagica, Talento.Sabedoria, Talento.Regeneracao) // 10
+           );
+
+            AddClass(new ClassePersonagem("Ladino", 40324,
+             "Toca flecha",
+             new SkillClasse[] {
+                    new SkillClasse(SkillName.Archery, 90), new SkillClasse(SkillName.Hiding, 90),  new SkillClasse(SkillName.Anatomy, 90),
+                    new SkillClasse(SkillName.Tactics, 90),  new SkillClasse(SkillName.Lockpicking, 70),
+                    new SkillClasse(SkillName.Healing, 70), new SkillClasse(SkillName.Fencing, 70), new SkillClasse(SkillName.MagicResist, 70),
+                    new SkillClasse(SkillName.Poisoning, 70),  new SkillClasse(SkillName.Begging, 60), new SkillClasse(SkillName.Focus, 60),
+
+                    new SkillClasse(SkillName.Camping, 60), new SkillClasse(SkillName.Fletching, 60), new SkillClasse(SkillName.RemoveTrap, 60),
+                    new SkillClasse(SkillName.DetectHidden, 60), new SkillClasse(SkillName.Tracking, 40)
+            }));
+
+            AddClass(new ClassePersonagem("Mago", 40324,
+             "Toca magia",
+             new SkillClasse[] {
+                    new SkillClasse(SkillName.Magery, 90), new SkillClasse(SkillName.EvalInt, 90),  new SkillClasse(SkillName.Meditation, 90), new SkillClasse(SkillName.SpiritSpeak, 90),  new SkillClasse(SkillName.MagicResist, 90),
+                    new SkillClasse(SkillName.Wrestling, 80), new SkillClasse(SkillName.Macing, 80),
+                    new SkillClasse(SkillName.Poisoning, 70),  new SkillClasse(SkillName.Alchemy, 60), new SkillClasse(SkillName.Herding, 60), new SkillClasse(SkillName.Healing, 60),
+
+                    new SkillClasse(SkillName.Tailoring, 60), new SkillClasse(SkillName.Fencing, 60), new SkillClasse(SkillName.Fishing, 60),
+                    new SkillClasse(SkillName.ItemID, 60),  new SkillClasse(SkillName.Forensics, 40),  new SkillClasse(SkillName.Imbuing, 40)
+            }));
+
+            AddClass(new ClassePersonagem("Bardo", 40324,
+           "Toca viola",
+           new SkillClasse[] {
+                    new SkillClasse(SkillName.Musicianship, 90), new SkillClasse(SkillName.Peacemaking, 90),  new SkillClasse(SkillName.Discordance, 90), new SkillClasse(SkillName.Provocation, 90),
+                    new SkillClasse(SkillName.Fencing, 80),  new SkillClasse(SkillName.Wrestling, 80),  new SkillClasse(SkillName.Archery, 70), new SkillClasse(SkillName.MagicResist, 70),
+                    new SkillClasse(SkillName.Tactics, 70),  new SkillClasse(SkillName.Healing, 60), new SkillClasse(SkillName.Anatomy, 60),
+
+                    new SkillClasse(SkillName.Lumberjacking, 60), new SkillClasse(SkillName.Carpentry, 60), new SkillClasse(SkillName.Fishing, 60),
+                    new SkillClasse(SkillName.Camping, 60),  new SkillClasse(SkillName.Magery, 50),
+          }));
+
+            AddClass(new ClassePersonagem("Campones", 40324,
+              "Toca mao de obra",
+              new SkillClasse[] {
+                    new SkillClasse(SkillName.Mining, 90), new SkillClasse(SkillName.Lumberjacking, 90),  new SkillClasse(SkillName.Fishing, 90), new SkillClasse(SkillName.Tinkering, 90),  new SkillClasse(SkillName.Cooking, 90),
+                    new SkillClasse(SkillName.Wrestling, 80), new SkillClasse(SkillName.Macing, 80), new SkillClasse(SkillName.Swords, 70),
+                    new SkillClasse(SkillName.Tactics, 60),  new SkillClasse(SkillName.Healing, 60), new SkillClasse(SkillName.Anatomy, 60),
+
+                    new SkillClasse(SkillName.Blacksmith, 90), new SkillClasse(SkillName.Carpentry, 90), new SkillClasse(SkillName.Alchemy, 60),
+                    new SkillClasse(SkillName.Fletching, 90),  new SkillClasse(SkillName.Camping, 80),  new SkillClasse(SkillName.Tailoring, 80),
+                    new SkillClasse(SkillName.Herding, 80),  new SkillClasse(SkillName.MagicResist, 40),
+             }));
+
 
             /*
             AddClass(new ClassePersonagem("Anteras", 40324,

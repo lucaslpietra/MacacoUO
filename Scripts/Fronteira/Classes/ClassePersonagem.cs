@@ -1,3 +1,4 @@
+using Server.Fronteira.Talentos;
 using Server.Mobiles;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,33 @@ using System.Threading.Tasks;
 
 namespace Server.Fronteira.Classes
 {
+
+    public class SkillClasse
+    {
+        public ushort Cap;
+        public SkillName skill;
+
+        public SkillClasse(SkillName n, ushort c)
+        {
+            this.Cap = c;
+            this.skill = n;
+        }
+    }
+
+    public class OpcaoTalentos
+    {
+        public Talento T1;
+        public Talento T2;
+        public Talento T3;
+
+        public OpcaoTalentos(Talento t1, Talento t2, Talento t3)
+        {
+            this.T1 = t1;
+            this.T2 = t2;
+            this.T3 = t3;
+        }
+    }
+
     public class ClassePersonagem
     {
         public int ID;
@@ -16,24 +44,17 @@ namespace Server.Fronteira.Classes
 
         public Dictionary<SkillName, ushort> ClassSkills = new Dictionary<SkillName, ushort>();
         
-        public ClassePersonagem(string nome, int icone, string descricao, params SkillName[] skills)
+        public ClassePersonagem(string nome, int icone, string descricao, params SkillClasse[] skills)
         {
             this.Nome = nome;
             foreach (var s in skills)
-                ClassSkills.Add(s, 100);
+            {
+                if (ClassSkills.ContainsKey(s.skill)) throw new Exception("Classe " + nome + " ja tinha a skill " + s.skill);
+                ClassSkills.Add(s.skill, s.Cap);
+            }
             this.Icone = icone;
             this.Desc = descricao;
         }
-        public ClassePersonagem(string nome, int icone, string descricao, int identificador, params SkillName[] skills)
-        {
-            this.Nome = nome;
-            foreach (var s in skills)
-                ClassSkills.Add(s, 100);
-            this.Icone = icone;
-            this.Desc = descricao;
-            this.ID = identificador;
-        }
-
 
         public void ViraClasse(PlayerMobile player, ClassePersonagem classe)
         {

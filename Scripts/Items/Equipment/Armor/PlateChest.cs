@@ -33,7 +33,7 @@ namespace Server.Items
         {
             get
             {
-                return -7;
+                return -8;
             }
         }
         public override int BaseFireResistance

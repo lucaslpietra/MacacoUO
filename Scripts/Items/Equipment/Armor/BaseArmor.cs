@@ -8,6 +8,8 @@ using AMA = Server.Items.ArmorMeditationAllowance;
 using AMT = Server.Items.ArmorMaterialType;
 using System.Linq;
 using Server.Gumps;
+using Server.Mobiles;
+using Server.Fronteira.Talentos;
 
 namespace Server.Items
 {
@@ -2590,6 +2592,9 @@ namespace Server.Items
             int strBonus = ComputeStatBonus(StatType.Str);
             int dexBonus = ComputeStatBonus(StatType.Dex);
             int intBonus = ComputeStatBonus(StatType.Int);
+
+            if (dexBonus < 0 && from is PlayerMobile && ((PlayerMobile)from).Talentos.Tem(Talento.ArmaduraPesada))
+                dexBonus = 0;
 
             if (strBonus != 0 || dexBonus != 0 || intBonus != 0)
             {

@@ -216,6 +216,11 @@ namespace Server.Misc
         public static int HitPointRegen(Mobile from)
         {
             int points = AosAttributes.GetValue(from, AosAttribute.RegenHits);
+            if (from is PlayerMobile && ((PlayerMobile)from).Talentos.Tem(Talento.Regeneracao))
+                points += 4;
+            return points;
+            /*
+            int points = AosAttributes.GetValue(from, AosAttribute.RegenHits);
 
             if (from is BaseCreature)
                 points += ((BaseCreature)from).DefaultHitsRegen;
@@ -245,6 +250,7 @@ namespace Server.Misc
                 points += handler(from);
 
             return points;
+            */
         }
 
         public static int StamRegen(Mobile from)

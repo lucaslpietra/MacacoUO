@@ -10,7 +10,7 @@ namespace Server.Gumps
 
         public static void Initialize()
         {
-            CommandSystem.Register("mostrateteia", AccessLevel.Administrator, new CommandEventHandler(_OnCommand));
+            CommandSystem.Register("testeclasses", AccessLevel.Administrator, new CommandEventHandler(_OnCommand));
         }
 
         [Usage("")]
