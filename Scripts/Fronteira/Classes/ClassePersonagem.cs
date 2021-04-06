@@ -23,15 +23,15 @@ namespace Server.Fronteira.Classes
 
     public class OpcaoTalentos
     {
-        public Talento T1;
-        public Talento T2;
-        public Talento T3;
+        public Talento T1 { get { return Talentos[0]; } }
+        public Talento T2 { get { return Talentos[1]; } }
+        public Talento T3 { get { return Talentos[2]; } }
+
+        public Talento[] Talentos;
 
         public OpcaoTalentos(Talento t1, Talento t2, Talento t3)
         {
-            this.T1 = t1;
-            this.T2 = t2;
-            this.T3 = t3;
+            Talentos = new Talento[] { t1, t2, t3 };
         }
     }
 

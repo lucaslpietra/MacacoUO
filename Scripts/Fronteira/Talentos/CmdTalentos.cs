@@ -10,11 +10,22 @@ namespace Server.Commands
 
         public static void Initialize()
         {
-            CommandSystem.Register("talentos", AccessLevel.Player, new CommandEventHandler(CMD));
+            CommandSystem.Register("talento", AccessLevel.Player, new CommandEventHandler(CMD));
+            CommandSystem.Register("talentos", AccessLevel.Player, new CommandEventHandler(CMD2));
         }
 
         [Usage("talentos")]
         [Description("Visualiza seus talentos")]
+        public static void CMD2(CommandEventArgs arg)
+        {
+            var player = arg.Mobile as PlayerMobile;
+            if (player == null) return;
+            var talentos = player.Talentos.ToArray();
+            player.SendGump(new GumpLivroTalento(player, talentos));
+        }
+
+        [Usage("talento")]
+        [Description("Aprende um talento novo")]
         public static void CMD(CommandEventArgs arg)
         {
             var pl = arg.Mobile as PlayerMobile;
@@ -26,14 +37,16 @@ namespace Server.Commands
                 if(classe != null)
                 {
                     var talentosDoNivel = classe.Talentos[pl.Nivel - 1];
-                    pl.SendGump(new GumpTalento(pl, talentosDoNivel));
+                    pl.SendGump(new GumpAprenderTalento(pl, talentosDoNivel));
                 } else
                 {
                     pl.SendMessage("Deu algo ruim, voce nao tem classe...");
                 }
             } else
             {
-                pl.SendMessage("Voce nao tem nenhum talento novo");
+                pl.SendMessage("Voce nao tem nenhum talento novo. Digite .xp para ver quanto XP voce precisa para seu proximo talento.");
+                if (pl.Talentos.Quantidade() > 0)
+                    pl.SendMessage("Digite .talentos para ver seus talentos");
                 if (pl.IsStaff())
                     pl.SendMessage("Voce ta nivel " + pl.Nivel.ToString() + " e tem " + pl.Talentos.Quantidade() + " talentos");
             }

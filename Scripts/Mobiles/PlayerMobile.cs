@@ -169,6 +169,22 @@ namespace Server.Mobiles
             }
         }
 
+        public void AprendeTalento(Talento t)
+        {
+            this.Talentos.Aprende(t);
+            var def = DefTalentos.GetDef(t);
+            SendMessage("Voce aprendeu o talento " + def.Nome);
+            SendMessage(def.Desc1);
+            SendMessage(78, "Use .talentos para ver seus talentos");
+            var from = this;
+            Effects.SendLocationParticles(EffectItem.Create(from.Location, from.Map, EffectItem.DefaultDuration), 0, 0, 0, 78, 0, 5060, 0);
+            Effects.PlaySound(from.Location, from.Map, 0x243);
+            Effects.SendMovingParticles(new Entity(Serial.Zero, new Point3D(from.X - 6, from.Y - 6, from.Z + 15), from.Map), from, 0x36D4, 7, 0, false, true, 78, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+            Effects.SendMovingParticles(new Entity(Serial.Zero, new Point3D(from.X - 4, from.Y - 6, from.Z + 15), from.Map), from, 0x36D4, 7, 0, false, true, 78, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+            Effects.SendMovingParticles(new Entity(Serial.Zero, new Point3D(from.X - 6, from.Y - 4, from.Z + 15), from.Map), from, 0x36D4, 7, 0, false, true, 78, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+            Effects.SendTargetParticles(from, 0x375A, 35, 90, 78, 0x00, 9502, (EffectLayer)255, 0x100);
+        }
+
         public override int VirtualArmorMod { get
             {
                 return base.VirtualArmorMod + (Talentos.Tem(Talento.ProtecaoPesada) ? 10 : 0);

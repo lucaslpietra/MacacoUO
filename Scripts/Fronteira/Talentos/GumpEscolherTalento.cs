@@ -17,10 +17,13 @@ using Server.Fronteira.Talentos;
 
 namespace Server.Gumps
 {
-    public class GumpTalento : Gump
+    public class GumpAprenderTalento : Gump
     {
-        public GumpTalento(PlayerMobile from, OpcaoTalentos opcoes) : base(0, 0)
+        OpcaoTalentos opcoes;
+
+        public GumpAprenderTalento(PlayerMobile from, OpcaoTalentos opcoes) : base(0, 0)
         {
+            this.opcoes = opcoes;
             this.Closable = true;
             this.Disposable = true;
             this.Dragable = true;
@@ -47,9 +50,9 @@ namespace Server.Gumps
             AddHtml(279, 223, 129, 49, t1.Desc1, (bool)false, (bool)false);
             AddHtml(433, 223, 129, 49, t2.Desc1, (bool)false, (bool)false);
             AddHtml(586, 221, 129, 49, t3.Desc1, (bool)false, (bool)false);
-            AddButton(307, 279, 247, 248, 0, GumpButtonType.Reply, 0);
-            AddButton(467, 278, 247, 248, 0, GumpButtonType.Reply, 0);
-            AddButton(624, 280, 247, 248, 0, GumpButtonType.Reply, 0);
+            AddButton(307, 279, 247, 248, 1, GumpButtonType.Reply, 0);
+            AddButton(467, 278, 247, 248, 2, GumpButtonType.Reply, 0);
+            AddButton(624, 280, 247, 248, 3, GumpButtonType.Reply, 0);
 
             AddImage(272, 135, 50);
             AddImage(415, 135, 50);
@@ -60,26 +63,19 @@ namespace Server.Gumps
             AddImage(738, 69, 10460);
             AddImage(738, 313, 10460);
             AddImage(235, 312, 10460);
-
-
-
         }
-
-
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
-            Mobile from = sender.Mobile;
+            var from = sender.Mobile as PlayerMobile;
 
-            switch (info.ButtonID)
-            {
-                case 0:
-                    {
+            var botao = info.ButtonID;
+            Shard.Debug("Botao " + botao);
+            if (botao == 0) return;
+            var talento = this.opcoes.Talentos[botao-1];
 
-                        break;
-                    }
+            from.AprendeTalento(talento);
 
-            }
         }
     }
 }

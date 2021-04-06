@@ -1,10 +1,16 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Fronteira.Talentos
 {
     public class Talentos
     {
         private HashSet<Talento> _talentos = new HashSet<Talento>();
+
+        public Talento [] ToArray()
+        {
+            return _talentos.ToArray();
+        }
 
         public int Quantidade()
         {

@@ -20,12 +20,11 @@ namespace Server.Gumps
             var caller = e.Mobile;
             if (caller.HasGump(typeof(GumpLivroTalento)))
                 caller.CloseGump(typeof(GumpLivroTalento));
-            caller.SendGump(new GumpLivroTalento(caller as PlayerMobile));
+            Talento[] Talentos = Enum.GetValues(typeof(Talento)).CastToArray<Talento>();
+            caller.SendGump(new GumpLivroTalento(caller as PlayerMobile, Talentos));
         }
 
-        private static Talento[] Talentos = Enum.GetValues(typeof(Talento)).CastToArray<Talento>();
-
-        public GumpLivroTalento(PlayerMobile p) : base(0, 0)
+        public GumpLivroTalento(PlayerMobile p, Talento [] Talentos) : base(0, 0)
         {
             this.Closable = true;
             this.Disposable = true;
