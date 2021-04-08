@@ -9,6 +9,7 @@ namespace Server.Fronteira.QualidadeDefeitos
     {
         private Mobile _From = null;
         private Defeitos _Defeitos = null;
+        private int _EndividadoCount = 1;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile From
@@ -24,8 +25,23 @@ namespace Server.Fronteira.QualidadeDefeitos
             set => _Defeitos = value;
         }
 
-        public DefeitosXmlAttachment(ASerial serial, Mobile from, Defeitos defeitos)
-            : base(serial)
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int EndividadoCount
+        {
+            get => _EndividadoCount;
+            set {
+                if (_EndividadoCount == 1 && value == -1)
+                {
+                    _EndividadoCount = 1;
+                }
+                else
+                {
+                    _EndividadoCount = value;
+                }
+            }
+        }
+
+        public DefeitosXmlAttachment(Mobile from, Defeitos defeitos)
         {
             From = from;
             Defeitos = defeitos;
@@ -37,6 +53,7 @@ namespace Server.Fronteira.QualidadeDefeitos
             // version 0
             writer.Write((int) 0);
             writer.Write((Mobile) From);
+            writer.Write(EndividadoCount);
 
             Defeitos.Serialize(writer);
         }
@@ -47,6 +64,7 @@ namespace Server.Fronteira.QualidadeDefeitos
             // version 0
             int version = reader.ReadInt();
             From = reader.ReadMobile();
+            EndividadoCount = reader.ReadInt();
 
             Defeitos.Deserialize(reader);
         }

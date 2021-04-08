@@ -161,6 +161,23 @@ namespace Server
 
     public delegate void TargetByResourceMacroEventHandler(TargetByResourceMacroEventArgs e);
 
+    public delegate void AttackEventHandler(AttackEventArgs e);
+
+    public class AttackEventArgs : EventArgs
+    {
+        private readonly Mobile m_Attacker;
+        private readonly Mobile m_Defender;
+
+        public AttackEventArgs(Mobile attacker, Mobile defender)
+        {
+            m_Attacker = attacker;
+            m_Defender = defender;
+        }
+
+        public Mobile Attacker { get { return m_Attacker; } }
+        public Mobile Defender { get { return m_Defender; } }
+    }
+
 	public class OnItemObtainedEventArgs : EventArgs
 	{
 		private readonly Mobile m_Mobile;
@@ -1504,6 +1521,16 @@ namespace Server
         public static event UnequipMacroEventHandler UnequipMacro;
         public static event TargetByResourceMacroEventHandler TargetByResourceMacro;
 
+        public static event AttackEventHandler OnAttack;
+
+        public static void InvokeAttack(AttackEventArgs e)
+        {
+            if (OnAttack != null)
+            {
+                OnAttack(e);
+            }
+        }
+
 		public static void InvokeOnItemObtained(OnItemObtainedEventArgs e)
 		{
 			if (OnItemObtained != null)
@@ -1527,7 +1554,7 @@ namespace Server
 				ContextMenu(e);
 			}
 		}
-        
+
 		public static void InvokeWorldBroadcast(WorldBroadcastEventArgs e)
 		{
 			if (WorldBroadcast != null)
@@ -2161,6 +2188,7 @@ namespace Server
             TargetedSpell = null;
             TargetedSkill = null;
             TargetedItemUse = null;
+            OnAttack = null;
         }
 	}
 }

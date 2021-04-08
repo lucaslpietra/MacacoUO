@@ -629,6 +629,8 @@ namespace Server.Network
             if (m != null)
             {
                 from.Attack(m);
+
+                EventSink.InvokeAttack(new AttackEventArgs(attacker: from, defender: m));
             }
         }
 
@@ -1796,7 +1798,7 @@ namespace Server.Network
             /* 640x480    5     18   15
              * 800x600    5     18   18
              * 1024x768   5     24   24
-             * 1152x864   5     24   24 
+             * 1152x864   5     24   24
              * 1280x720   5     24   24
              */
 

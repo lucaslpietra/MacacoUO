@@ -7,6 +7,6 @@
         ImunidadeFerro,
         Herdeiro,
         Conhecedor,
-        MingalGarantido
+        MingauGarantido
     }
 }

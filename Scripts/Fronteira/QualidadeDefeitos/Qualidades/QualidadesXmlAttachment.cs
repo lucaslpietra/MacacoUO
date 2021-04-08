@@ -1,4 +1,7 @@
-﻿using Server.Engines.XmlSpawner2;
+﻿using System;
+using Server.Engines.XmlSpawner2;
+using Server.Items;
+using Server.Mobiles;
 
 namespace Server.Fronteira.QualidadeDefeitos
 {
@@ -21,8 +24,33 @@ namespace Server.Fronteira.QualidadeDefeitos
             set => _Qualidades = value;
         }
 
-        public QualidadesXmlAttachment(ASerial serial, Mobile from, Qualidades qualidade)
-            : base(serial)
+        public override void OnWeaponHit(Mobile attacker, Mobile defender, BaseWeapon weapon, int damageGiven)
+        {
+            if (attacker == null || defender == null)
+                return;
+
+            if (!attacker.Player)
+                return;
+
+            PlayerMobile playerMobile = attacker as PlayerMobile;
+            QualidadesXmlAttachment qualidadesXmlAttachment =
+                XmlAttach.FindAttachment(playerMobile, typeof(QualidadesXmlAttachment)) as QualidadesXmlAttachment;
+            if (qualidadesXmlAttachment != null && qualidadesXmlAttachment.Qualidades.TemQualidade(Qualidade.Sadismo))
+            {
+                //Recupera 30% da stamina mais rapido ao causar dano
+                //TODO Verificar esse caso do regen, pq atual recupera no total
+                attacker.Stam += Int32.Parse((attacker.Stam * 0.3).ToString());
+            }
+
+            base.OnWeaponHit(attacker, defender, weapon, damageGiven);
+        }
+
+        public override int OnArmorHit(Mobile attacker, Mobile defender, Item armor, BaseWeapon weapon, int damageGiven)
+        {
+            return base.OnArmorHit(attacker, defender, armor, weapon, damageGiven);
+        }
+
+        public QualidadesXmlAttachment(Mobile from, Qualidades qualidade)
         {
             From = from;
             Qualidades = qualidade;

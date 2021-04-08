@@ -29,7 +29,7 @@ namespace Server.Fronteira.QualidadeDefeitos.ListaDefeitos
                     XmlAttach.FindAttachment(playerMobile, typeof(DefeitosXmlAttachment)) as DefeitosXmlAttachment;
                 if (defeitosXmlAttachment != null && defeitosXmlAttachment.Defeitos.TemDefeito(Defeito.Asma))
                 {
-                    playerMobile.Stam -= 2; //Perde mais 30% de estamina ao correr a pe
+                    playerMobile.Stam -= 2; //TODO verificar o calculo de valor da corrida
                 }
             }
         }
