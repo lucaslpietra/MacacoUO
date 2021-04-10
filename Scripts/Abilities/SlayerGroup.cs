@@ -1,6 +1,8 @@
 using System;
 using Server.Mobiles;
 using Server.Engines.Shadowguard;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server.Items
 {

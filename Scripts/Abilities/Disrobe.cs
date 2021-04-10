@@ -1,4 +1,6 @@
 using System;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -19,6 +21,13 @@ namespace Server.Items
                 return 20;
             }
         }// Not Sure what amount of mana a creature uses.
+
+        public override bool CheckWeaponSkill(Mobile from)
+        {
+            return  (from is PlayerMobile) && ((PlayerMobile)from).Talentos.Tem(Talento.Hab_Disrobe);
+        }
+
+
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
             if (!this.Validate(attacker))

@@ -6,6 +6,8 @@ using Server.Spells;
 using Server.Spells.Ninjitsu;
 using Server.Network;
 using System.Linq;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server.Items
 {

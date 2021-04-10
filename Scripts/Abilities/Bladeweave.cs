@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Server;
 using Server.Items;
 using Server.Mobiles;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -39,6 +41,12 @@ namespace Server.Items
         }
 
         public override int BaseMana { get { return 30; } }
+
+        public override bool CheckWeaponSkill(Mobile from)
+        {
+            return  (from is PlayerMobile) && ((PlayerMobile)from).Talentos.Tem(Talento.BladeWeaving);
+        }
+
 
         public override bool OnBeforeSwing(Mobile attacker, Mobile defender)
         {

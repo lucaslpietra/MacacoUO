@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -36,6 +38,12 @@ namespace Server.Items
             damageMalus = info.m_DamageMalus;
             return true;
         }
+
+        public override bool CheckWeaponSkill(Mobile from)
+        {
+            return  (from is PlayerMobile) && ((PlayerMobile)from).Talentos.Tem(Talento.Hab_DefenseMastery);
+        }
+
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {

@@ -1,5 +1,7 @@
 using System;
 using Server.Mobiles;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -40,6 +42,12 @@ namespace Server.Items
 
             return true;
         }
+
+        public override bool CheckWeaponSkill(Mobile from)
+        {
+            return  (from is PlayerMobile) && ((PlayerMobile)from).Talentos.Tem(Talento.Hab_NerveStrike);
+        }
+
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {

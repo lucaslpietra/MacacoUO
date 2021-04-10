@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
+using Server.Fronteira.Talentos;
 using Server.Mobiles;
 
 namespace Server.Items
@@ -30,6 +33,12 @@ namespace Server.Items
         {
             return SkillName.Ninjitsu;
         }
+
+                public override bool CheckWeaponSkill(Mobile from)
+        {
+            return  (from is PlayerMobile) && ((PlayerMobile)from).Talentos.Tem(Talento.Hab_Block);
+        }
+
 
         public static bool IsBlocking(Mobile m)
         {

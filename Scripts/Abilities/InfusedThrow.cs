@@ -1,5 +1,7 @@
 using System;
 using Server.Mobiles;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -10,6 +12,12 @@ namespace Server.Items
     public class InfusedThrow : WeaponAbility
     {
         public override int BaseMana { get { return 25; } }
+
+
+        public override bool CheckWeaponSkill(Mobile from)
+        {
+            return  (from is PlayerMobile) && ((PlayerMobile)from).Talentos.Tem(Talento.Hab_InfusedThrow);
+        }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Server.Mobiles;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -22,6 +24,12 @@ namespace Server.Items
         {
             return from.Skills[SkillName.Ninjitsu].Base > from.Skills[SkillName.Bushido].Base ? SkillName.Ninjitsu : SkillName.Bushido;
         }
+
+        public override bool CheckWeaponSkill(Mobile from)
+        {
+            return  (from is PlayerMobile) && ((PlayerMobile)from).Talentos.Tem(Talento.Hab_Feint);
+        }
+
 
 		public override void OnHit( Mobile attacker, Mobile defender, int damage )
 		{

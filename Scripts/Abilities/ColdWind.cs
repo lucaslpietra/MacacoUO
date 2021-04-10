@@ -1,6 +1,8 @@
 using Server.Network;
 using System;
 using System.Collections.Generic;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -29,6 +31,12 @@ namespace Server.Items
                 return 1.5;
             }
         }
+
+        public override bool CheckWeaponSkill(Mobile from)
+        {
+            return  (from is PlayerMobile) && ((PlayerMobile)from).Talentos.Tem(Talento.Hab_ColWind);
+        }
+
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
             if (!Validate(attacker) || !CheckMana(attacker, true))

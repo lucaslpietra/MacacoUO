@@ -1,6 +1,8 @@
 // Created by Peoharen
 using System;
 using System.Collections.Generic;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server
 {

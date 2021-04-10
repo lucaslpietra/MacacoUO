@@ -7,6 +7,8 @@ using Server.Spells;
 using Server.Engines.PartySystem;
 using Server.Network;
 using Server.Mobiles;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -28,6 +30,11 @@ namespace Server.Items
 
         private static Dictionary<Mobile, Timer> m_Registry = new Dictionary<Mobile, Timer>();
         public static Dictionary<Mobile, Timer> Registry { get { return m_Registry; } }
+
+                public override bool CheckWeaponSkill(Mobile from)
+        {
+            return  (from is PlayerMobile) && ((PlayerMobile)from).Talentos.Tem(Talento.Hab_FrenziedWirlwing);
+        }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {

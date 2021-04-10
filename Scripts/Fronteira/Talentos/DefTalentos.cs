@@ -15,6 +15,232 @@ namespace Server.Fronteira.Talentos
 
         static DefTalentos()
         {
+
+            _talentos.Add(Talento.Hab_ColWind, new DefTalentos()
+            {
+                Desc1 = "Permite usar ColdWind",
+                Icone = 20495,
+                Nome = "Bafo Frio"
+            });
+
+            // nao achei o q diabos disrobe siginifica no uo
+            _talentos.Add(Talento.Hab_Disrobe, new DefTalentos()
+            {
+                Desc1 = "Permite usar Disrobe",
+                Icone = 21014,
+                Nome = "Fazer Disrobar"
+            });
+
+            _talentos.Add(Talento.Hab_MysticArc, new DefTalentos()
+            {
+                Desc1 = "Permite usar Mystic Arc",
+                Icone = 21022,
+                Nome = "Tiro Ricocheteado"
+            });
+
+            _talentos.Add(Talento.Hab_InfusedThrow, new DefTalentos()
+            {
+                Desc1 = "Permite usar Infused Throw",
+                Icone = 21005,
+                Nome = "Arremesso Incutido"
+            });
+
+            _talentos.Add(Talento.Hab_ForceOfNature, new DefTalentos()
+            {
+                Desc1 = "Permite usar Force Of Nature",
+                Icone = 20491,
+                Nome = "Forca da Natureza"
+            });
+
+            _talentos.Add(Talento.Hab_SerpentArrow, new DefTalentos()
+            { 
+                Desc1 = "Permite usar Serpent Arrow",
+                Icone = 20480,
+                Nome = "Tiro Venenoso"
+            });
+
+            _talentos.Add(Talento.Hab_PsyAttack, new DefTalentos()
+            {
+                Desc1 = "Permite usar Psychic Attack",
+                Icone = 20949,
+                Nome = "Ataque Psiquico"
+            });
+#
+            _talentos.Add(Talento.Hab_LightArrow, new DefTalentos()
+            {
+                Desc1 = "Permite usar Lightning Arrow",
+                Icone = 21017,
+                Nome = "Tiro Eletrico"
+            });
+
+            _talentos.Add(Talento.Hab_ForceArrow, new DefTalentos()
+            {
+                Desc1 = "Permite usar Force Arrow",
+                Icone = 20488,
+                Nome = "Tiro Vertigem"
+            });
+
+            _talentos.Add(Talento.Hab_Bladeweave, new DefTalentos()
+            {
+                Desc1 = "Permite usar Bladeweave",
+                Icone = 20744,
+                Nome = "Arma Inteligente"
+            });
+
+            _talentos.Add(Talento.Hab_ArmorPierce, new DefTalentos()
+            {
+                Desc1 = "Permite usar Armor Pierce",
+                Icone = 20992,
+                Nome = "Quebra-Armadura"
+            });
+
+            _talentos.Add(Talento.Hab_Doubleshot, new DefTalentos()
+            {
+                Desc1 = "Permite usar Double Shot",
+                Icone = 21001,
+                Nome = "Tiro Duplo"
+            });
+
+            _talentos.Add(Talento.Hab_DuelWeild, new DefTalentos()
+            {
+                Desc1 = "Permite usar Dual Wield",
+                Icone = 20998,
+                Nome = "Apunhalda Dupla"
+            });
+
+            _talentos.Add(Talento.Hab_Feint, new DefTalentos()
+            {
+                Desc1 = "Permite usar Feint",
+                Icone = 21022,
+                Nome = "Esquiva"
+            });
+
+            _talentos.Add(Talento.Hab_TalonStrike, new DefTalentos()
+            {
+                Desc1 = "Permite usar Talon Strike",
+                Icone = 20741,
+                Nome = "Apunhalada Perigosa"
+            });
+
+            _talentos.Add(Talento.Hab_NerveStrike, new DefTalentos()
+            {
+                Desc1 = "Permite usar Nerve Strike",
+                Icone = 20496,
+                Nome = "Ataque Nervoso"
+            });
+
+            _talentos.Add(Talento.Hab_DefenseMastery, new DefTalentos()
+            {
+                Desc1 = "Permite usar Defense Mastery",
+                Icone = 20742,
+                Nome = "Defesa Aumentada"
+            });
+
+            _talentos.Add(Talento.Hab_Block, new DefTalentos()
+            {
+                Desc1 = "Permite usar Block",
+                Icone = 20994,
+                Nome = "Bloqueia"
+            });
+
+            _talentos.Add(Talento.Hab_FrenziedWirlwing, new DefTalentos()
+            {
+                Desc1 = "Permite usar Frenzied Whirlwind",
+                Icone = 21000,
+                Nome = "Ataque Agressivo"
+            });
+
+            _talentos.Add(Talento.Hab_RidingSwipe, new DefTalentos()
+            {
+                Desc1 = "Permite usar Riding Swipe",
+                Icone = 21005,
+                Nome = "Ataque a Montaria"
+            });
+
+            _talentos.Add(Talento.Hab_Wirlwind, new DefTalentos()
+            {
+                Desc1 = "Permite usar Whirlwind Attack",
+                Icone = 21004,
+                Nome = "Ataque em Area"
+            });
+
+            _talentos.Add(Talento.Hab_Shadowstrike, new DefTalentos()
+            {
+                Desc1 = "Permite usar Shadow Strike",
+                Icone = 21008,
+                Nome = "Apunhalada Escondida"
+            });
+
+            _talentos.Add(Talento.Hab_ParalizeBlow, new DefTalentos()
+            {
+                Desc1 = "Permite usar Paralyzing Blow",
+                Icone = 21010,
+                Nome = "Porrada Paralizante"
+            });
+
+            _talentos.Add(Talento.Hab_MovingSHot, new DefTalentos()
+            {
+                Desc1 = "Permite usar Moving Shot",
+                Icone = 21016,
+                Nome = "Tiro em Movimento"
+            });
+
+            _talentos.Add(Talento.Hab_AtaqueMortal, new DefTalentos()
+            {
+                Desc1 = "Permite usar Mortal Strike",
+                Icone = 24012,
+                Nome = "Apunhalada Mortal"
+            });
+
+            _talentos.Add(Talento.Hab_Infectar, new DefTalentos()
+            {
+                Desc1 = "Permite usar Infectious Strike",
+                Icone = 23013,
+                Nome = "Apunhalada Infecciosa"
+            });
+
+            _talentos.Add(Talento.Hab_DoubleStrike, new DefTalentos()
+            {
+                Desc1 = "Permite usar Double Strike",
+                Icone = 23010,
+                Nome = "Apunhalada Dupla"
+            });
+
+            _talentos.Add(Talento.Hab_Dismount, new DefTalentos()
+            {
+                Desc1 = "Permite usar Dismount",
+                Icone = 20997,
+                Nome = "Desmonta"
+            });
+
+            _talentos.Add(Talento.Hab_Disarm, new DefTalentos()
+            {
+                Desc1 = "Permite usar Disarm",
+                Icone = 23005,
+                Nome = "Desarma"
+            });
+
+            _talentos.Add(Talento.Hab_CrushingBlow, new DefTalentos()
+            {
+                Desc1 = "Permite usar Crushing Blow",
+                Icone = 23002,
+                Nome = "Porrada Esmagadora"
+            });
+
+            _talentos.Add(Talento.Hab_BleedAttack, new DefTalentos()
+            {
+                Desc1 = "Permite usar Bleed Attack",
+                Icone = 20737,
+                Nome = "Fazer Sangrar"
+            });
+
+            _talentos.Add(Talento.Hab_ArmorIgnore, new DefTalentos()
+            {
+                Desc1 = "Permite usar Armor Ignore",
+                Icone = 2304,
+                Nome = "Ignorar Armaduras"
+            });
+
             _talentos.Add(Talento.Porretes, new DefTalentos()
             {
                 Desc1 = "+15% Dano com Macefight",

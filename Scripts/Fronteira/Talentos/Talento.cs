@@ -50,6 +50,38 @@ namespace Server.Fronteira.Talentos
     public enum Talento
     {
         /// TALENTOS DE SKILLS ///
+        Hab_ArmorIgnore,
+        Hab_BleedAttack,
+        Hab_CrushingBlow,
+        Hab_Disarm,
+        Hab_Dismount,
+        Hab_DoubleStrike,
+        Hab_Infectar,
+        Hab_AtaqueMortal,
+        Hab_MovingSHot,
+        Hab_ParalizeBlow,
+        Hab_Shadowstrike,
+        Hab_Wirlwind,
+        Hab_RidingSwipe,
+        Hab_FrenziedWirlwing,
+        Hab_Block,
+        Hab_DefenseMastery,
+        Hab_NerveStrike,
+        Hab_TalonStrike,
+        Hab_Feint,
+        Hab_DuelWeild,
+        Hab_Doubleshot,
+        Hab_ArmorPierce,
+        Hab_Bladeweave,
+        Hab_ForceArrow,
+        Hab_LightArrow,
+        Hab_PsyAttack,
+        Hab_SerpentArrow,
+        Hab_ForceOfNature,
+        Hab_InfusedThrow,
+        Hab_MysticArc,
+        Hab_Disrobe,
+        Hab_ColWind,
 
         // "SubClasses"
 

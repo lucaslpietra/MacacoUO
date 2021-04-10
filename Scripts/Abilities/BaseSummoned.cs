@@ -1,5 +1,7 @@
 // Created by Peoharen for the Mobile Abilities Package.
 using System;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server.Mobiles
 {

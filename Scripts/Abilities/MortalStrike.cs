@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -34,6 +36,12 @@ namespace Server.Items
                 return 0.8;
             }
         }
+
+        public override bool CheckWeaponSkill(Mobile from)
+        {
+            return  (from is PlayerMobile) && ((PlayerMobile)from).Talentos.Tem(Talento.Hab_AtaqueMortal);
+        }
+
         public static bool IsWounded(Mobile m)
         {
             return m_Table.ContainsKey(m);

@@ -1,6 +1,8 @@
 using System;
 using Server;
 using System.Collections.Generic;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -11,6 +13,12 @@ namespace Server.Items
         }
 
         public override int BaseMana { get { return 35; } }
+
+        public override bool CheckWeaponSkill(Mobile from)
+        {
+            return  (from is PlayerMobile) && ((PlayerMobile)from).Talentos.Tem(Talento.Hab_ForceOfNature);
+        }
+
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {

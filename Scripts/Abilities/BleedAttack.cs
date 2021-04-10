@@ -4,6 +4,8 @@ using Server.Mobiles;
 using Server.Network;
 using Server.Spells;
 using Server.Spells.Necromancy;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -31,6 +33,11 @@ namespace Server.Items
         public static bool IsBleeding(Mobile m)
         {
             return m_BleedTable.ContainsKey(m);
+        }
+
+        public override bool CheckWeaponSkill(Mobile from)
+        {
+            return  (from is PlayerMobile) && ((PlayerMobile)from).Talentos.Tem(Talento.Hab_BleedAttack);
         }
 
         public static void BeginBleed(Mobile m, Mobile from, bool splintering = false)

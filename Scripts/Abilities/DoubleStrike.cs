@@ -1,3 +1,7 @@
+
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
+
 namespace Server.Items
 {
 	/// <summary>
@@ -17,6 +21,11 @@ namespace Server.Items
                 wep.InDoubleStrike = true;
 
             return true;
+        }
+
+        public override bool CheckWeaponSkill(Mobile from)
+        {
+            return  (from is PlayerMobile) && ((PlayerMobile)from).Talentos.Tem(Talento.Hab_DoubleStrike);
         }
 
 		public override void OnHit(Mobile attacker, Mobile defender, int damage)

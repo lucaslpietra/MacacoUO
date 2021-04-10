@@ -1,6 +1,8 @@
 using System;
 using Server.Mobiles;
 using System.Collections.Generic;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -38,6 +40,11 @@ namespace Server.Items
             }
 
             return base.CheckSkills(from);
+        }
+
+        public override bool CheckWeaponSkill(Mobile from)
+        {
+            return  (from is PlayerMobile) && ((PlayerMobile)from).Talentos.Tem(Talento.Hab_RidingSwipe);
         }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)

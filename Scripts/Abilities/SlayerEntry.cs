@@ -1,4 +1,6 @@
 using System;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server.Items
 {

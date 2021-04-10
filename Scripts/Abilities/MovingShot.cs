@@ -1,4 +1,6 @@
 using System;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -33,6 +35,13 @@ namespace Server.Items
                 return false;
             }
         }
+
+        public override bool CheckWeaponSkill(Mobile from)
+        {
+            return  (from is PlayerMobile) && ((PlayerMobile)from).Talentos.Tem(Talento.Hab_MovingSHot);
+        }
+
+
         public override bool OnBeforeSwing(Mobile attacker, Mobile defender)
         {
             return (this.Validate(attacker) && this.CheckMana(attacker, true));

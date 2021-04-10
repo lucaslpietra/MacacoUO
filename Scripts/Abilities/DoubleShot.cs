@@ -1,4 +1,6 @@
 using System;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -32,6 +34,11 @@ namespace Server.Items
         public override SkillName GetSecondarySkill(Mobile from)
         {
             return SkillName.Tactics;
+        }
+
+        public override bool CheckWeaponSkill(Mobile from)
+        {
+            return  (from is PlayerMobile) && ((PlayerMobile)from).Talentos.Tem(Talento.Hab_Doubleshot);
         }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)

@@ -4,6 +4,8 @@ using Server.Mobiles;
 using Server.Network;
 using Server.Spells;
 using Server.Spells.Necromancy;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -269,7 +271,10 @@ namespace Server.Items
 
         public virtual bool CheckSkills(Mobile from)
         {
-            return CheckWeaponSkill(from);
+            var check = CheckWeaponSkill(from);
+            if (Shard.RP && !check)
+                from.SendMessage("Voce precisa aprender o talento para usar esta habilidade");
+            return check;
         }
 
         public virtual double GetSkillTotal(Mobile from)

@@ -1,5 +1,7 @@
 using Server.Mobiles;
 using System;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -31,6 +33,11 @@ namespace Server.Items
         public override bool RequiresSecondarySkill(Mobile from)
         {
             return false;
+        }
+
+        public override bool CheckWeaponSkill(Mobile from)
+        {
+            return  (from is PlayerMobile) && ((PlayerMobile)from).Talentos.Tem(Talento.Hab_Shadowstrike);
         }
 
         public override bool CheckSkills(Mobile from)

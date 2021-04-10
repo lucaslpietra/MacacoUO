@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Server.Fronteira.Talentos;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -17,6 +19,11 @@ namespace Server.Items
             {
                 return 20;
             }
+        }
+
+        public override bool CheckWeaponSkill(Mobile from)
+        {
+            return  (from is PlayerMobile) && ((PlayerMobile)from).Talentos.Tem(Talento.Hab_MysticArc);
         }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
