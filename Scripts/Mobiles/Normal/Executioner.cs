@@ -56,8 +56,8 @@ namespace Server.Mobiles
             if (Utility.RandomDouble() < 0.05)
                 this.AddItem(Decos.RandomDeco());
 
-            this.SetWeaponAbility(WeaponAbility.BleedAttack);
-            this.SetWeaponAbility(WeaponAbility.ParalyzingBlow);
+            this.SetWeaponAbility(Habilidade.BleedAttack);
+            this.SetWeaponAbility(Habilidade.ParalyzingBlow);
         }
 
         public Executioner(Serial serial)

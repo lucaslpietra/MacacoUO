@@ -88,7 +88,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Rich, 1);
         }
 
-        public override WeaponAbility GetWeaponAbility()
+        public override Habilidade GetWeaponAbility()
         {
             BaseWeapon wep = Weapon as BaseWeapon;
 

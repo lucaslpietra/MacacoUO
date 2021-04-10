@@ -140,6 +140,9 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public byte Nivel { get; set; }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public byte PontosTalento { get; set; }
+
         public int ExpTotal;
 
         public Talentos Talentos = new Talentos();
@@ -169,13 +172,26 @@ namespace Server.Mobiles
             }
         }
 
+        public void DesaprendeTalento(Talento t)
+        {
+            var def = DefTalentos.GetDef(t);
+            this.Talentos.Desaprende(t);
+            SendMessage("Voce desaprendeu " + def.Desc1);
+            // TODO:  Inverter  TalentoEffect.GanhaEfeito(this, t); pra perder os caps
+        }
+
         public void AprendeTalento(Talento t)
         {
+           
             this.Talentos.Aprende(t);
             var def = DefTalentos.GetDef(t);
             SendMessage("Voce aprendeu o talento " + def.Nome);
             SendMessage(def.Desc1);
             SendMessage(78, "Use .talentos para ver seus talentos");
+            if (Talentos.IsHabilidade(t))
+                SendMessage(78, "Este talento pode ser ativado ! Use .habilidades para ver suas habilidades !");
+
+            TalentoEffect.GanhaEfeito(this, t);
             var from = this;
             Effects.SendLocationParticles(EffectItem.Create(from.Location, from.Map, EffectItem.DefaultDuration), 0, 0, 0, 78, 0, 5060, 0);
             Effects.PlaySound(from.Location, from.Map, 0x243);
@@ -473,7 +489,7 @@ namespace Server.Mobiles
 
         public bool TemTalentoNovo()
         {
-            return Talentos.Quantidade() < Nivel - 1;
+            return PontosTalento > 0;
         }
 
         public void GanhaExp(int pontos)
@@ -490,6 +506,7 @@ namespace Server.Mobiles
             {
                 ExpTotal = 0;
                 Nivel += 1;
+                PontosTalento += 1;
                 SendMessage(78, "Voce ganhou um novo ponto de talento ! Digite .talento para usa-lo !");
                 this.SendGump(new AnuncioGump(this, "Digite .talento para usar seu ponto de talento"));
             }
@@ -5411,6 +5428,9 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 50:
+                    PontosTalento = reader.ReadByte();
+                    goto case 49;
                 case 49:
                     Nivel = reader.ReadByte();
                     ExpTotal = reader.ReadInt();
@@ -5906,7 +5926,8 @@ namespace Server.Mobiles
             CheckKillDecay();
             CheckAtrophies(this);
             base.Serialize(writer);
-            writer.Write(49); // version
+            writer.Write(50); // version
+            writer.Write(PontosTalento);
             writer.Write(Nivel);
             writer.Write(ExpTotal);
             Talentos.Serialize(writer);

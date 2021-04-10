@@ -44,7 +44,7 @@ namespace Server.Mobiles
                 PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
 
-            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
+            SetWeaponAbility(Habilidade.ParalyzingBlow);
         }
 
         public MinotaurScout(Serial serial)

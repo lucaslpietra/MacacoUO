@@ -6,13 +6,13 @@ namespace Server.Mobiles
 {
 	public class AnimatedSeed : BaseCreature
 	{
-		public override WeaponAbility GetWeaponAbility()
+		public override Habilidade GetWeaponAbility()
 		{
 			switch ( Utility.Random( 5 ) )
 			{
 				default:
-				case 0: return WeaponAbility.DoubleStrike;
-				case 4: return WeaponAbility.ArmorIgnore;
+				case 0: return Habilidade.DoubleStrike;
+				case 4: return Habilidade.ArmorIgnore;
 			}
 		}
 

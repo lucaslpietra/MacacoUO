@@ -65,7 +65,7 @@ namespace Server.Mobiles
 
             this.VirtualArmor = 35;
 
-            SetWeaponAbility(WeaponAbility.ShadowStrike);
+            SetWeaponAbility(Habilidade.ShadowStrike);
 
             SolenHelper.PackPicnicBasket(this);
 

@@ -11,7 +11,7 @@ namespace Server.Mobiles
     [CorpseName("an orcish corpse")]
     public class PirateCrew : BaseCreature
     {
-        public override WeaponAbility GetWeaponAbility()
+        public override Habilidade GetWeaponAbility()
         {
             Item weapon = FindItemOnLayer(Layer.TwoHanded);
 

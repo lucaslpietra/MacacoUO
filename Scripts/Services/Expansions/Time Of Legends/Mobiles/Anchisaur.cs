@@ -46,8 +46,8 @@ namespace Server.Mobiles
             Fame = 8000;
             Karma = -8000;
 
-            SetWeaponAbility(WeaponAbility.Disarm);
-            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
+            SetWeaponAbility(Habilidade.Disarm);
+            SetWeaponAbility(Habilidade.ParalyzingBlow);
         }
 
         public override void GenerateLoot()

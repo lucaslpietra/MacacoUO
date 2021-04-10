@@ -47,8 +47,8 @@ namespace Server.Mobiles
 
             VirtualArmor = 54;
 
-            SetWeaponAbility(WeaponAbility.MortalStrike);
-            SetWeaponAbility(WeaponAbility.WhirlwindAttack);
+            SetWeaponAbility(Habilidade.MortalStrike);
+            SetWeaponAbility(Habilidade.WhirlwindAttack);
         }
 
         public AbyssalAbomination(Serial serial)

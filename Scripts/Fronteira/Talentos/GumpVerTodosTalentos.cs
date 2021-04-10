@@ -56,7 +56,7 @@ namespace Server.Gumps
                     var def2 = DefTalentos.GetDef(t2);
 
                     this.AddButton(503, 390, def2.Icone, def2.Icone, (int)t2 + 1, GumpButtonType.Reply, 0);
-                    this.AddHtml(451, 433, 146, 112, def.Desc1, (bool)false, (bool)false);
+                    this.AddHtml(451, 433, 146, 112, def2.Desc1, (bool)false, (bool)false);
                     this.AddHtml(451, 368, 145, 20, def2.Nome, (bool)false, (bool)false);
                 }
                 page = page + 1;

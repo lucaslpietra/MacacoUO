@@ -36,7 +36,7 @@ namespace Server.Mobiles
             Fame = 20000;
             Karma = -20000;
 
-            SetWeaponAbility(WeaponAbility.Dismount);
+            SetWeaponAbility(Habilidade.Dismount);
         }
 
         public TormentedMinotaur(Serial serial)

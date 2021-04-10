@@ -1,12 +1,15 @@
 
 using Server.Engines.Points;
+using Server.Items;
 using Server.Mobiles;
+using System.Collections.Generic;
 
 namespace Server.Fronteira.Talentos
 {
 
     public static class TalentoEffect
     {
+
         public static void GanhaEfeito(PlayerMobile m, Talento t)
         {
             switch (t)
@@ -47,8 +50,10 @@ namespace Server.Fronteira.Talentos
         }
     }
 
-    public enum Talento
+    public enum Talento // sempre adicionar no fim da lista
     {
+        Nenhum,
+
         /// TALENTOS DE SKILLS ///
         Hab_ArmorIgnore,
         Hab_BleedAttack,
@@ -82,6 +87,7 @@ namespace Server.Fronteira.Talentos
         Hab_MysticArc,
         Hab_Disrobe,
         Hab_ColWind,
+        Hab_Concussion,
 
         // "SubClasses"
 

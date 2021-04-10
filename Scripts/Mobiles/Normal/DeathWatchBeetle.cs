@@ -68,7 +68,7 @@ namespace Server.Mobiles
             MinTameSkill = 41.1;
             ControlSlots = 1;
 
-            SetWeaponAbility(WeaponAbility.CrushingBlow);
+            SetWeaponAbility(Habilidade.CrushingBlow);
         }
 
         public DeathwatchBeetle(Serial serial)
@@ -149,7 +149,7 @@ namespace Server.Mobiles
 
             if (version == 0)
             {
-                SetWeaponAbility(WeaponAbility.CrushingBlow);
+                SetWeaponAbility(Habilidade.CrushingBlow);
             }
         }
     }

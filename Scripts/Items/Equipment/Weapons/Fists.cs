@@ -13,18 +13,18 @@ namespace Server.Items
             EventSink.StunRequest += new StunRequestEventHandler(EventSink_StunRequest);
         }
 
-        public override WeaponAbility PrimaryAbility
+        public override Habilidade PrimaryAbility
         {
             get
             {
-                return WeaponAbility.Disarm;
+                return Habilidade.Disarm;
             }
         }
-        public override WeaponAbility SecondaryAbility
+        public override Habilidade SecondaryAbility
         {
             get
             {
-                return WeaponAbility.ParalyzingBlow;
+                return Habilidade.ParalyzingBlow;
             }
         }
 

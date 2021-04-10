@@ -40,7 +40,7 @@ namespace Server.Mobiles
 
             VirtualArmor = 54;
 
-            SetWeaponAbility(WeaponAbility.Dismount);
+            SetWeaponAbility(Habilidade.Dismount);
         }
 
         public PatchworkSkeleton(Serial serial)

@@ -54,7 +54,7 @@ namespace Server.Mobiles
             MinTameSkill = 93.9;
 
             SetSpecialAbility(SpecialAbility.RuneCorruption);
-            SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetWeaponAbility(Habilidade.BleedAttack);
         }
 
         public RuneBeetle(Serial serial)
@@ -156,7 +156,7 @@ namespace Server.Mobiles
                 if (version == 1)
                 {
                     SetSpecialAbility(SpecialAbility.RuneCorruption);
-                    SetWeaponAbility(WeaponAbility.BleedAttack);
+                    SetWeaponAbility(Habilidade.BleedAttack);
                 }
             }
         }

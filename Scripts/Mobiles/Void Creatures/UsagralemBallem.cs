@@ -50,9 +50,9 @@ namespace Server.Mobiles
 
             this.PackItem(new DaemonBone(30));
 
-            SetWeaponAbility(WeaponAbility.DoubleStrike);
-            SetWeaponAbility(WeaponAbility.WhirlwindAttack);
-            SetWeaponAbility(WeaponAbility.CrushingBlow);
+            SetWeaponAbility(Habilidade.DoubleStrike);
+            SetWeaponAbility(Habilidade.WhirlwindAttack);
+            SetWeaponAbility(Habilidade.CrushingBlow);
         }
 
         public override void OnDeath(Container c)

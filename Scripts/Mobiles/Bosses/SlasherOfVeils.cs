@@ -63,7 +63,7 @@ namespace Server.Mobiles
 
             SetSpecialAbility(SpecialAbility.AngryFire);
             SetSpecialAbility(SpecialAbility.ManaDrain);
-            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
+            SetWeaponAbility(Habilidade.ParalyzingBlow);
         }
 
         public SlasherOfVeils(Serial serial)

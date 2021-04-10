@@ -52,8 +52,8 @@ namespace Server.Mobiles
             m_Timer = new HideTimer(this);
             m_Timer.Start();
 
-            SetWeaponAbility(WeaponAbility.DualWield);
-            SetWeaponAbility(WeaponAbility.ForceOfNature);
+            SetWeaponAbility(Habilidade.DualWield);
+            SetWeaponAbility(Habilidade.ForceOfNature);
         }
 
         public Paralithode(Serial serial)

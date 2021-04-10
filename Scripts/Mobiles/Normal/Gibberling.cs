@@ -41,7 +41,7 @@ namespace Server.Mobiles
 
             VirtualArmor = 27;
 
-            SetWeaponAbility(WeaponAbility.Dismount);
+            SetWeaponAbility(Habilidade.Dismount);
         }
 
         public Gibberling(Serial serial)

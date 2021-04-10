@@ -41,7 +41,7 @@ namespace Server.Mobiles
 
             VirtualArmor = 50;
 
-            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
+            SetWeaponAbility(Habilidade.ParalyzingBlow);
         }
 
         public ClanSSW(Serial serial)

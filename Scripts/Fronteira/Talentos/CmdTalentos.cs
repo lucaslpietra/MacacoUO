@@ -1,7 +1,9 @@
 using Server.Fronteira.Classes;
+using Server.Fronteira.Talentos;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Targeting;
+using System;
 
 namespace Server.Commands
 {
@@ -12,6 +14,52 @@ namespace Server.Commands
         {
             CommandSystem.Register("talento", AccessLevel.Player, new CommandEventHandler(CMD));
             CommandSystem.Register("talentos", AccessLevel.Player, new CommandEventHandler(CMD2));
+            CommandSystem.Register("aprendetalento", AccessLevel.Administrator, new CommandEventHandler(CMD3));
+            CommandSystem.Register("desaprendetalento", AccessLevel.Administrator, new CommandEventHandler(CMD4));
+        }
+
+        [Usage("aprendetalento")]
+        private static void CMD3(CommandEventArgs e)
+        {
+            var talentoStr = e.GetString(0);
+            try
+            {
+                var talento = (Talento)System.Enum.Parse(typeof(Talento), talentoStr);
+                ((PlayerMobile)e.Mobile).AprendeTalento(talento);
+            }
+            catch (Exception ex)
+            {
+                var ts = System.Enum.GetValues(typeof(Talento));
+                var s = "";
+                foreach(var t in ts)
+                {
+                    s += t.ToString() + " ";
+                }
+                e.Mobile.SendMessage("Nao achei este talento. Talentos registrados: "+s);
+
+            }
+        }
+
+        [Usage("desaprendetalento")]
+        private static void CMD4(CommandEventArgs e)
+        {
+            var talentoStr = e.GetString(0);
+            try
+            {
+                var talento = (Talento)System.Enum.Parse(typeof(Talento), talentoStr);
+                ((PlayerMobile)e.Mobile).DesaprendeTalento(talento);
+            }
+            catch (Exception ex)
+            {
+                var ts = System.Enum.GetValues(typeof(Talento));
+                var s = "";
+                foreach (var t in ts)
+                {
+                    s += t.ToString() + " ";
+                }
+                e.Mobile.SendMessage("Nao achei este talento. Talentos registrados: " + s);
+
+            }
         }
 
         [Usage("talentos")]

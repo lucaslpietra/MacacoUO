@@ -596,7 +596,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public double BardingDifficulty { get { return BaseInstrument.GetBaseDifficulty(this); } }
 
-        public virtual WeaponAbility TryGetWeaponAbility()
+        public virtual Habilidade TryGetWeaponAbility()
         {
             if (_Profile != null && _Profile.WeaponAbilities != null && _Profile.WeaponAbilities.Length > 0)
             {
@@ -662,7 +662,7 @@ namespace Server.Mobiles
             PetTrainingHelper.GetAbilityProfile(this, true).AddAbility(ability, false);
         }
 
-        public void SetWeaponAbility(WeaponAbility ability)
+        public void SetWeaponAbility(Habilidade ability)
         {
             PetTrainingHelper.GetAbilityProfile(this, true).AddAbility(ability, false);
         }
@@ -682,7 +682,7 @@ namespace Server.Mobiles
             PetTrainingHelper.GetAbilityProfile(this, true).RemoveAbility(ability);
         }
 
-        public void RemoveWeaponAbility(WeaponAbility ability)
+        public void RemoveWeaponAbility(Habilidade ability)
         {
             PetTrainingHelper.GetAbilityProfile(this, true).RemoveAbility(ability);
         }
@@ -862,7 +862,7 @@ namespace Server.Mobiles
 
         public virtual double WeaponAbilityChance { get { return 0.4; } }
 
-        public virtual WeaponAbility GetWeaponAbility()
+        public virtual Habilidade GetWeaponAbility()
         {
             XmlWeaponAbility a = (XmlWeaponAbility)XmlAttach.FindAttachment(this, typeof(XmlWeaponAbility));
             if (a != null)

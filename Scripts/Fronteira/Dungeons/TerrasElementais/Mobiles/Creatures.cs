@@ -288,7 +288,7 @@ namespace Server.Mobiles
                 case 4: PackItem(new BlackPowder(Utility.RandomMinMax(1, 5))); break;
             }
 
-            SetWeaponAbility(WeaponAbility.ArmorIgnore);
+            SetWeaponAbility(Habilidade.ArmorIgnore);
         }
 
         public override MeatType MeatType { get { return MeatType.Ribs; } }
@@ -1815,7 +1815,7 @@ namespace Server.Mobiles
             Fame = 8500;
             Karma = -8500;
 
-            SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetWeaponAbility(Habilidade.BleedAttack);
             SetSpecialAbility(SpecialAbility.LifeLeech);
         }
 

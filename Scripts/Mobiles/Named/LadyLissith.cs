@@ -45,7 +45,7 @@ namespace Server.Mobiles
                 PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
 
-            SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetWeaponAbility(Habilidade.BleedAttack);
         }
 
         public LadyLissith(Serial serial)

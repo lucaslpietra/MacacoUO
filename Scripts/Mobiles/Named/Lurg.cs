@@ -44,7 +44,7 @@ namespace Server.Mobiles
                 PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
 
-            SetWeaponAbility(WeaponAbility.CrushingBlow);
+            SetWeaponAbility(Habilidade.CrushingBlow);
         }
 
         public Lurg(Serial serial)

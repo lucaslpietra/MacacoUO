@@ -32,18 +32,18 @@ namespace Server.Items
                 return Mining.System;
             }
         }
-        public override WeaponAbility PrimaryAbility
+        public override Habilidade PrimaryAbility
         {
             get
             {
-                return WeaponAbility.DoubleStrike;
+                return Habilidade.DoubleStrike;
             }
         }
-        public override WeaponAbility SecondaryAbility
+        public override Habilidade SecondaryAbility
         {
             get
             {
-                return WeaponAbility.Disarm;
+                return Habilidade.Disarm;
             }
         }
         public override int AosStrengthReq

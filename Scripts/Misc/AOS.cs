@@ -923,7 +923,7 @@ namespace Server
                 if (HitLower.IsUnderAttackEffect(m))
                     value -= 25; // Under Hit Lower Attack effect -> 25% malus
 
-                WeaponAbility ability = WeaponAbility.GetCurrentAbility(m);
+                Habilidade ability = Habilidade.GetCurrentAbility(m);
 
                 if (ability != null)
                     value += ability.AccuracyBonus;

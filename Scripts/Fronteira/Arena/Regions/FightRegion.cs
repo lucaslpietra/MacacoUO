@@ -215,7 +215,7 @@ namespace Server.TournamentSystem
  
             if (system != null && system.CurrentFight != null && index != 0 && system.CurrentFight.HasRule(FightRules.NoSpecials))
             {
-                WeaponAbility.ClearCurrentAbility(e.Mobile);  //this returns ability for penalty?
+                Habilidade.ClearCurrentAbility(e.Mobile);  //this returns ability for penalty?
                 e.Mobile.SendMessage("You have agreed to not using weapon special moves during this fight!");
             }
         }

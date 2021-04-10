@@ -42,7 +42,7 @@ namespace Server.Mobiles
             ControlSlots = 1;
             MinTameSkill = 85.5;
 
-            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
+            SetWeaponAbility(Habilidade.ParalyzingBlow);
         }
 
         public IceHound(Serial serial)

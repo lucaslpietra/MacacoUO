@@ -73,7 +73,7 @@ namespace Server.Gumps
             Shard.Debug("Botao " + botao);
             if (botao == 0) return;
             var talento = this.opcoes.Talentos[botao-1];
-
+            from.PontosTalento -= 1;
             from.AprendeTalento(talento);
 
         }

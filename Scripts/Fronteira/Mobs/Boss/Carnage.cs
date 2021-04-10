@@ -56,8 +56,8 @@ namespace Server.Mobiles
             PackItem(new SkillBook());
             PackItem(new LivroAntigo());
             PackItem(Decos.RandomDeco());
-            SetWeaponAbility(WeaponAbility.BleedAttack);
-            SetWeaponAbility(WeaponAbility.WhirlwindAttack);
+            SetWeaponAbility(Habilidade.BleedAttack);
+            SetWeaponAbility(Habilidade.WhirlwindAttack);
 
             last = DateTime.UtcNow;
         }

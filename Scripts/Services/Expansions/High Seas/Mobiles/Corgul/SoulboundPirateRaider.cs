@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public override bool ClickTitle { get { return false; } }
         public override bool AlwaysMurderer { get { return true; } }
 
-        public override WeaponAbility GetWeaponAbility()
+        public override Habilidade GetWeaponAbility()
         {
             Item weapon = FindItemOnLayer(Layer.TwoHanded);
 

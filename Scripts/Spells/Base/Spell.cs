@@ -973,7 +973,7 @@ namespace Server.Spells
                     m_Caster.ClearHands();
                 }
 
-                WeaponAbility.ClearCurrentAbility(m_Caster);
+                Habilidade.ClearCurrentAbility(m_Caster);
 
                 m_CastTimer = new CastTimer(this, castDelay);
                 //m_CastTimer.Start();

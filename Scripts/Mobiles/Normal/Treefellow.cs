@@ -38,7 +38,7 @@ namespace Server.Mobiles
             VirtualArmor = 24;
             PackItem(new Log(Utility.RandomMinMax(23, 34)));
 
-            SetWeaponAbility(WeaponAbility.Dismount);
+            SetWeaponAbility(Habilidade.Dismount);
         }
 
         public Treefellow(Serial serial)

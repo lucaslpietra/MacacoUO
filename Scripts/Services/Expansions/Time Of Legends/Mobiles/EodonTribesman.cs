@@ -198,7 +198,7 @@ namespace Server.Mobiles
             return valid;
         }
 
-        public override WeaponAbility GetWeaponAbility()
+        public override Habilidade GetWeaponAbility()
         {
             BaseWeapon wep = Weapon as BaseWeapon;
 

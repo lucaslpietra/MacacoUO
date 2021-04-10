@@ -8,9 +8,9 @@ namespace Server.Mobiles
 	[CorpseName( "a hiryu corpse" )]
 	public class WildHiryu : BaseAnimal
 	{
-		public override WeaponAbility GetWeaponAbility()
+		public override Habilidade GetWeaponAbility()
 		{
-			return WeaponAbility.Dismount;
+			return Habilidade.Dismount;
 		}
 
 		public override bool StatLossAfterTame { get { return true; } }

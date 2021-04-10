@@ -37,7 +37,7 @@ namespace Server.Mobiles
 
             VirtualArmor = 32;
 
-            SetWeaponAbility(WeaponAbility.ConcussionBlow);
+            SetWeaponAbility(Habilidade.ConcussionBlow);
         }
 
         public Moloch(Serial serial)

@@ -47,7 +47,7 @@ namespace Server.Mobiles
             Karma = -4500;
 
             Tamable = false;
-            SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetWeaponAbility(Habilidade.BleedAttack);
         }
 
         public LeatherWolf(Serial serial)

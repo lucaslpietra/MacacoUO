@@ -7,8 +7,8 @@ namespace Server.Items
 {
     public class FoicinhaAssinada : BaseBoline
     {
-        public override WeaponAbility PrimaryAbility { get { return WeaponAbility.InfectiousStrike; } }
-        public override WeaponAbility SecondaryAbility { get { return WeaponAbility.ShadowStrike; } }
+        public override Habilidade PrimaryAbility { get { return Habilidade.InfectiousStrike; } }
+        public override Habilidade SecondaryAbility { get { return Habilidade.ShadowStrike; } }
 
         public override int AosStrengthReq { get { return 10; } }
         public override int AosMinDamage { get { return 6; } }

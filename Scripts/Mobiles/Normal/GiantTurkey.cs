@@ -36,11 +36,11 @@ namespace Server.Mobiles
             SetSkill(SkillName.Wrestling, 100.0, 120.0);
             SetSkill(SkillName.Anatomy, 75.0, 80.0);
 
-            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
-            SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetWeaponAbility(Habilidade.ParalyzingBlow);
+            SetWeaponAbility(Habilidade.BleedAttack);
             SetAreaEffect(AreaEffect.EssenceOfDisease);
             SetSpecialAbility(SpecialAbility.HowlOfCacophony);
-            SetWeaponAbility(WeaponAbility.Dismount);
+            SetWeaponAbility(Habilidade.Dismount);
         }
 
         public override int Meat { get { return 30; } }

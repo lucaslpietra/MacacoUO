@@ -44,7 +44,7 @@ namespace Server.Mobiles
 
             this.VirtualArmor = 50;
 
-            SetWeaponAbility(WeaponAbility.Disarm);
+            SetWeaponAbility(Habilidade.Disarm);
 
             SolenHelper.PackPicnicBasket(this);
 

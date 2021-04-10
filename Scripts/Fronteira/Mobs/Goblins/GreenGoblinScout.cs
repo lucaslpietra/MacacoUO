@@ -44,7 +44,7 @@ namespace Server.Mobiles
             Fame = 1500;
 			Karma = -1500;
 
-            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
+            SetWeaponAbility(Habilidade.ParalyzingBlow);
 		}
 
 		public GreenGoblinScout(Serial serial)

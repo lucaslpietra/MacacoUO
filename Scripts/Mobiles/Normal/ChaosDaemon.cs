@@ -40,7 +40,7 @@ namespace Server.Mobiles
 
             VirtualArmor = 15;
 
-            SetWeaponAbility(WeaponAbility.CrushingBlow);
+            SetWeaponAbility(Habilidade.CrushingBlow);
         }
 
         public ChaosDaemon(Serial serial)

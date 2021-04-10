@@ -9,9 +9,9 @@ namespace Server.Engines.XmlSpawner2
 {
 	public class XmlWeaponAbility : XmlAttachment
 	{
-		private WeaponAbility m_Ability = null;    // default data
+		private Habilidade m_Ability = null;    // default data
 
-		public WeaponAbility WeaponAbility
+		public Habilidade WeaponAbility
 		{
 			get { return m_Ability;  }
 			set { m_Ability = value;  }
@@ -35,12 +35,12 @@ namespace Server.Engines.XmlSpawner2
 			{
 				if (value != null)
 				{
-					FieldInfo finfo = typeof(WeaponAbility).GetField(value);
-					if (finfo != null && finfo.IsStatic && finfo.FieldType == typeof(WeaponAbility))
+					FieldInfo finfo = typeof(Habilidade).GetField(value);
+					if (finfo != null && finfo.IsStatic && finfo.FieldType == typeof(Habilidade))
 					{
 						try
 						{
-							m_Ability = (WeaponAbility)finfo.GetValue(null);
+							m_Ability = (Habilidade)finfo.GetValue(null);
 						}
 						catch { }
 					}

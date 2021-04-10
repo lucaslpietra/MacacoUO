@@ -9,9 +9,9 @@ namespace Server.Mobiles
     {
         private static readonly Hashtable m_Table = new Hashtable();
 
-        public override WeaponAbility GetWeaponAbility()
+        public override Habilidade GetWeaponAbility()
         {
-            return WeaponAbility.BleedAttack;
+            return Habilidade.BleedAttack;
         }
 
 

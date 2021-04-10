@@ -46,8 +46,8 @@ namespace Server.Mobiles
 
             VirtualArmor = 19;
 
-            SetWeaponAbility(WeaponAbility.MortalStrike);
-            SetWeaponAbility(WeaponAbility.ColdWind);
+            SetWeaponAbility(Habilidade.MortalStrike);
+            SetWeaponAbility(Habilidade.ColdWind);
         }
 
         public Wight(Serial serial)

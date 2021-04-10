@@ -297,8 +297,8 @@ namespace Server.Items
         #endregion
 
         #region Virtual Properties
-        public virtual WeaponAbility PrimaryAbility { get { return null; } }
-        public virtual WeaponAbility SecondaryAbility { get { return null; } }
+        public virtual Habilidade PrimaryAbility { get { return null; } }
+        public virtual Habilidade SecondaryAbility { get { return null; } }
 
         public virtual int DefMaxRange { get { return 1; } }
         public virtual int DefHitSound { get { return 0; } }
@@ -1762,11 +1762,11 @@ namespace Server.Items
         {
             Mobile defender = damageable as Mobile;
 
-            WeaponAbility a = WeaponAbility.GetCurrentAbility(attacker);
+            Habilidade a = Habilidade.GetCurrentAbility(attacker);
 
             if (a != null && (!a.OnBeforeSwing(attacker, defender)))
             {
-                WeaponAbility.ClearCurrentAbility(attacker);
+                Habilidade.ClearCurrentAbility(attacker);
             }
 
             SpecialMove move = SpecialMove.GetCurrentMove(attacker);
@@ -1837,18 +1837,18 @@ namespace Server.Items
                 if (attacker is BaseCreature)
                 {
                     BaseCreature bc = (BaseCreature)attacker;
-                    WeaponAbility ab = bc.TryGetWeaponAbility();
+                    Habilidade ab = bc.TryGetWeaponAbility();
 
                     if (ab != null)
                     {
                         if (bc.WeaponAbilityChance > Utility.RandomDouble())
                         {
                             Shard.Debug("PvM Weapon Ability Setado", bc);
-                            WeaponAbility.SetCurrentAbility(bc, ab);
+                            Habilidade.SetCurrentAbility(bc, ab);
                         }
                         else
                         {
-                            WeaponAbility.ClearCurrentAbility(bc);
+                            Habilidade.ClearCurrentAbility(bc);
                         }
                     }
                 }
@@ -2302,10 +2302,10 @@ namespace Server.Items
 
             var virtualArmor = defender.ArmorRating;
 
-            WeaponAbility a = WeaponAbility.GetCurrentAbility(attacker);
+            Habilidade a = Habilidade.GetCurrentAbility(attacker);
             SpecialMove move = SpecialMove.GetCurrentMove(attacker);
 
-            WeaponAbility weavabil;
+            Habilidade weavabil;
             bool bladeweaving = Bladeweave.BladeWeaving(attacker, out weavabil);
             bool ignoreArmor = (a is ArmorIgnore || (move != null && move.IgnoreArmor(attacker)) || (bladeweaving && weavabil is ArmorIgnore));
 
@@ -2584,7 +2584,7 @@ namespace Server.Items
             if(Shard.DebugEnabled)
                 Shard.Debug("Dano Base Final: " + damage, attacker);
 
-            WeaponAbility a = WeaponAbility.GetCurrentAbility(attacker);
+            Habilidade a = Habilidade.GetCurrentAbility(attacker);
             SpecialMove move = SpecialMove.GetCurrentMove(attacker);
 
             if (damageable is PlayerMobile)
@@ -2969,7 +2969,7 @@ namespace Server.Items
                 {
                     if (true) // Core.SE || (a != null && a.CheckMana(attacker, true)))
                     {
-                        WeaponAbility.ClearCurrentAbility(attacker);
+                        Habilidade.ClearCurrentAbility(attacker);
                         SpecialMove.ClearCurrentMove(attacker);
 
                         attacker.SendLocalizedMessage("Seu ataque foi bloqueado"); // Your attack was parried!
@@ -3043,7 +3043,7 @@ namespace Server.Items
 
             if (a != null && !a.OnBeforeDamage(attacker, defender))
             {
-                WeaponAbility.ClearCurrentAbility(attacker);
+                Habilidade.ClearCurrentAbility(attacker);
                 a = null;
             }
 
@@ -3962,7 +3962,7 @@ namespace Server.Items
             if (defender != null)
                 defender.PlaySound(GetMissDefendSound(attacker, defender));
 
-            WeaponAbility ability = WeaponAbility.GetCurrentAbility(attacker);
+            Habilidade ability = Habilidade.GetCurrentAbility(attacker);
 
             if (ability != null)
             {

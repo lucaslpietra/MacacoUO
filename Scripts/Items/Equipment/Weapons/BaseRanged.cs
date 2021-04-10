@@ -70,7 +70,7 @@ namespace Server.Items
 
             // Make sure we've been standing still for .25/.5/1 second depending on Era
             if (nextShoot <= Core.TickCount ||
-                (WeaponAbility.GetCurrentAbility(attacker) is MovingShot))
+                (Habilidade.GetCurrentAbility(attacker) is MovingShot))
             {
                 bool canSwing = (!attacker.Paralyzed && !attacker.Frozen);
 
@@ -90,17 +90,17 @@ namespace Server.Items
                     if (attacker is BaseCreature)
                     {
                         BaseCreature bc = (BaseCreature)attacker;
-                        WeaponAbility ab = bc.TryGetWeaponAbility();
+                        Habilidade ab = bc.TryGetWeaponAbility();
 
                         if (ab != null)
                         {
                             if (bc.WeaponAbilityChance > Utility.RandomDouble())
                             {
-                                WeaponAbility.SetCurrentAbility(bc, ab);
+                                Habilidade.SetCurrentAbility(bc, ab);
                             }
                             else
                             {
-                                WeaponAbility.ClearCurrentAbility(bc);
+                                Habilidade.ClearCurrentAbility(bc);
                             }
                         }
                     }
@@ -204,7 +204,7 @@ namespace Server.Items
 
         public virtual bool OnFired(Mobile attacker, IDamageable damageable)
         {
-            WeaponAbility ability = WeaponAbility.GetCurrentAbility(attacker);
+            Habilidade ability = Habilidade.GetCurrentAbility(attacker);
 
             // Respect special moves that use no ammo
             if (ability != null && ability.ConsumeAmmo == false)

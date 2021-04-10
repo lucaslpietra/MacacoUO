@@ -39,8 +39,8 @@ namespace Server.Mobiles
 
             VirtualArmor = 54;
 
-            SetWeaponAbility(WeaponAbility.CrushingBlow);
-            SetWeaponAbility(WeaponAbility.Dismount);
+            SetWeaponAbility(Habilidade.CrushingBlow);
+            SetWeaponAbility(Habilidade.Dismount);
         }
 
         public Ravager(Serial serial)

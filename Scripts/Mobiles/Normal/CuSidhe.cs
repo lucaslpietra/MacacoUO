@@ -67,7 +67,7 @@ namespace Server.Mobiles
             PackGold(500, 800);
             // TODO 0-2 spellweaving scroll
 
-            SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetWeaponAbility(Habilidade.BleedAttack);
         }
 
         public CuSidhe(Serial serial)
@@ -202,7 +202,7 @@ namespace Server.Mobiles
 
             if (version == 1)
             {
-                SetWeaponAbility(WeaponAbility.BleedAttack);
+                SetWeaponAbility(Habilidade.BleedAttack);
             }
         }
     }

@@ -47,7 +47,7 @@ namespace Server.Mobiles
 
             PackItem(new Eggs(2));
 
-            SetWeaponAbility(WeaponAbility.DoubleStrike);
+            SetWeaponAbility(Habilidade.DoubleStrike);
         }
 
         public Yamandon(Serial serial)

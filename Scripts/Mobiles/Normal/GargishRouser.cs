@@ -120,7 +120,7 @@ namespace Server.Mobiles
         public override TimeSpan PeaceInterval { get { return TimeSpan.FromSeconds(60); } }
         public override TimeSpan ProvokeInterval { get { return TimeSpan.FromSeconds(60); } }
 
-		public override WeaponAbility GetWeaponAbility()
+		public override Habilidade GetWeaponAbility()
         {
 			if(Weapon is BaseWeapon)
             {
@@ -129,7 +129,7 @@ namespace Server.Mobiles
 				return ((BaseWeapon)Weapon).SecondaryAbility;
 			}
 			
-			return WeaponAbility.WhirlwindAttack;
+			return Habilidade.WhirlwindAttack;
         }
 
         public override void GenerateLoot()

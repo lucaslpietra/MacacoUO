@@ -39,7 +39,7 @@ namespace Server.Mobiles
 
             VirtualArmor = 34;
 
-            SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetWeaponAbility(Habilidade.BleedAttack);
             AddItem(new RawSteakExp());
         }
 

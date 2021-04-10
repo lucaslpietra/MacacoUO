@@ -47,7 +47,7 @@ namespace Server.Mobiles
 			Karma = -6000;
 
             VirtualArmor = 40; 
-            SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetWeaponAbility(Habilidade.BleedAttack);
 		}
 
 		public override void GenerateLoot()

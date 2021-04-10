@@ -140,7 +140,7 @@ namespace Server.Spells.SkillMasteries
             m_DispelDifficulty = 91 + (int)((caster.Skills[SkillName.Spellweaving].Base * 83) / 5.2);
             _StartTime = DateTime.UtcNow + TimeSpan.FromSeconds(3);
 
-            SetWeaponAbility(WeaponAbility.WhirlwindAttack);
+            SetWeaponAbility(Habilidade.WhirlwindAttack);
         }
 
         public override Poison PoisonImmune { get { return Poison.Greater; } }

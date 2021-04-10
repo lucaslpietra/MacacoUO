@@ -20,18 +20,18 @@ namespace Server.Items
         {
         }
 
-        public override WeaponAbility PrimaryAbility
+        public override Habilidade PrimaryAbility
         {
             get
             {
-                return WeaponAbility.PsychicAttack;
+                return Habilidade.PsychicAttack;
             }
         }
-        public override WeaponAbility SecondaryAbility
+        public override Habilidade SecondaryAbility
         {
             get
             {
-                return WeaponAbility.BleedAttack;
+                return Habilidade.BleedAttack;
             }
         }
         public override int AosStrengthReq

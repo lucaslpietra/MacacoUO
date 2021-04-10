@@ -40,18 +40,18 @@ namespace Server.Items
                 return new Bolt();
             }
         }
-        public override WeaponAbility PrimaryAbility
+        public override Habilidade PrimaryAbility
         {
             get
             {
-                return WeaponAbility.ConcussionBlow;
+                return Habilidade.ConcussionBlow;
             }
         }
-        public override WeaponAbility SecondaryAbility
+        public override Habilidade SecondaryAbility
         {
             get
             {
-                return WeaponAbility.MortalStrike;
+                return Habilidade.MortalStrike;
             }
         }
         public override int AosStrengthReq

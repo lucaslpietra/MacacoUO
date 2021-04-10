@@ -21,18 +21,18 @@ namespace Server.Items
             Name = "Kris";
         }
 
-        public override WeaponAbility PrimaryAbility
+        public override Habilidade PrimaryAbility
         {
             get
             {
-                return WeaponAbility.ArmorIgnore;
+                return Habilidade.ArmorIgnore;
             }
         }
-        public override WeaponAbility SecondaryAbility
+        public override Habilidade SecondaryAbility
         {
             get
             {
-                return WeaponAbility.InfectiousStrike;
+                return Habilidade.InfectiousStrike;
             }
         }
         public override int AosStrengthReq

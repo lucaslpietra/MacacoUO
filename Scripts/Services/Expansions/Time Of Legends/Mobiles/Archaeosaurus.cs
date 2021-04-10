@@ -44,8 +44,8 @@ namespace Server.Mobiles
             Fame = 8100;
             Karma = -8100;
 
-            SetWeaponAbility(WeaponAbility.BleedAttack);
-            SetWeaponAbility(WeaponAbility.TalonStrike);
+            SetWeaponAbility(Habilidade.BleedAttack);
+            SetWeaponAbility(Habilidade.TalonStrike);
         }
 
         public override void GenerateLoot()

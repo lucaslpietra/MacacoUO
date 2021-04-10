@@ -471,8 +471,8 @@ namespace Server.Mobiles
             Fame = 35000;
             Karma = -35000;
 
-            SetWeaponAbility(WeaponAbility.Disarm);
-            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
+            SetWeaponAbility(Habilidade.Disarm);
+            SetWeaponAbility(Habilidade.ParalyzingBlow);
         }
 
         public override bool TeleportsTo { get { return true; } }

@@ -49,7 +49,7 @@ namespace Server.Mobiles
             _NextFreeze = DateTime.UtcNow;
 
             CanSwim = true;
-            SetWeaponAbility(WeaponAbility.ArmorIgnore);
+            SetWeaponAbility(Habilidade.ArmorIgnore);
             SetSpecialAbility(SpecialAbility.TailSwipe);
         }
 

@@ -51,7 +51,7 @@ namespace Server.Mobiles
                 PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
 
-            SetWeaponAbility(WeaponAbility.MortalStrike);
+            SetWeaponAbility(Habilidade.MortalStrike);
         }
 
         public Virulent(Serial serial)

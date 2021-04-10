@@ -77,7 +77,7 @@ namespace Server.Mobiles
 
             AddItem(new ExodusChest());
 
-            SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetWeaponAbility(Habilidade.BleedAttack);
             AddItem(new Gold(5000));
         }
 

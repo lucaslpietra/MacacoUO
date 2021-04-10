@@ -53,8 +53,8 @@ namespace Server.Mobiles
 
             VirtualArmor = 54;
 
-            SetWeaponAbility(WeaponAbility.ConcussionBlow);
-            SetWeaponAbility(WeaponAbility.CrushingBlow);
+            SetWeaponAbility(Habilidade.ConcussionBlow);
+            SetWeaponAbility(Habilidade.CrushingBlow);
         }
 
         public ShadowKnight(Serial serial)

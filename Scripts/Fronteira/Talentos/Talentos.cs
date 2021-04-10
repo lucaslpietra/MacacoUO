@@ -12,6 +12,22 @@ namespace Server.Fronteira.Talentos
             return _talentos.ToArray();
         }
 
+        public List<Talento> Habilidades()
+        {
+            var habs = new List<Talento>();
+            foreach(var talento in _talentos)
+            {
+                if (IsHabilidade(talento))
+                    habs.Add(talento);
+            }
+            return habs;
+        }
+
+        public static bool IsHabilidade(Talento t)
+        {
+            return t.ToString().StartsWith("Hab_");
+        }
+
         public int Quantidade()
         {
             return _talentos.Count;
@@ -25,6 +41,11 @@ namespace Server.Fronteira.Talentos
         public void Wipa()
         {
             _talentos.Clear();
+        }
+
+        public void Desaprende(Talento t)
+        {
+            _talentos.Remove(t);
         }
 
         public void Aprende(Talento t)

@@ -52,8 +52,8 @@ namespace Server.Mobiles
 
             Tamable = false;
 
-            SetWeaponAbility(WeaponAbility.Bladeweave);
-            SetWeaponAbility(WeaponAbility.TalonStrike);
+            SetWeaponAbility(Habilidade.Bladeweave);
+            SetWeaponAbility(Habilidade.TalonStrike);
         }
 
         public StygianDragon(Serial serial)

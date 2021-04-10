@@ -44,9 +44,9 @@ namespace Server.Items
             SetSkill(SkillName.Tactics, 82.0, 94.8);
             SetSkill(SkillName.Wrestling, 94.4, 108.4);
 
-            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
-            SetWeaponAbility(WeaponAbility.Disarm);
-            SetWeaponAbility(WeaponAbility.ArmorPierce);
+            SetWeaponAbility(Habilidade.ParalyzingBlow);
+            SetWeaponAbility(Habilidade.Disarm);
+            SetWeaponAbility(Habilidade.ArmorPierce);
         }
 
         public override double WeaponAbilityChance { get { return 0.45; } }

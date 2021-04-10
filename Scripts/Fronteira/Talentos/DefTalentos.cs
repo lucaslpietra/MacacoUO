@@ -15,6 +15,12 @@ namespace Server.Fronteira.Talentos
 
         static DefTalentos()
         {
+            _talentos.Add(Talento.Hab_Concussion, new DefTalentos()
+            {
+                Desc1 = "Permite usar Concussion Blow",
+                Icone = 20495,
+                Nome = "Golpe de Contusao"
+            });
 
             _talentos.Add(Talento.Hab_ColWind, new DefTalentos()
             {
@@ -65,7 +71,7 @@ namespace Server.Fronteira.Talentos
                 Icone = 20949,
                 Nome = "Ataque Psiquico"
             });
-#
+
             _talentos.Add(Talento.Hab_LightArrow, new DefTalentos()
             {
                 Desc1 = "Permite usar Lightning Arrow",

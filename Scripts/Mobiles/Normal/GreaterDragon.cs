@@ -48,7 +48,7 @@ namespace Server.Mobiles
             ControlSlots = 5;
             MinTameSkill = 104.7;
 
-            SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetWeaponAbility(Habilidade.BleedAttack);
         }
 
         public GreaterDragon(Serial serial)
@@ -183,7 +183,7 @@ namespace Server.Mobiles
 
             if (version == 2)
             {
-                SetWeaponAbility(WeaponAbility.BleedAttack);
+                SetWeaponAbility(Habilidade.BleedAttack);
             }
         }
     }

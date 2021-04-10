@@ -148,7 +148,7 @@ namespace Server.Items
         {
             m_KillSave = damageable.Location;
 
-            if (!(WeaponAbility.GetCurrentAbility(attacker) is MysticArc))
+            if (!(Habilidade.GetCurrentAbility(attacker) is MysticArc))
                 Timer.DelayCall(TimeSpan.FromMilliseconds(333.0), new TimerCallback(ThrowBack));
 
             base.OnHit(attacker, damageable, damageBonus);
@@ -158,7 +158,7 @@ namespace Server.Items
         {
             m_Target = damageable as Mobile;
 
-            if (!(WeaponAbility.GetCurrentAbility(attacker) is MysticArc))
+            if (!(Habilidade.GetCurrentAbility(attacker) is MysticArc))
                 Timer.DelayCall(TimeSpan.FromMilliseconds(333.0), new TimerCallback(ThrowBack));
 
             base.OnMiss(attacker, damageable);

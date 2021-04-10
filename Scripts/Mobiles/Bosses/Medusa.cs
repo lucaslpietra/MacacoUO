@@ -70,7 +70,7 @@ namespace Server.Mobiles
 
             m_Scales = Utility.RandomMinMax(1, 2) + 7;
 
-            SetWeaponAbility(WeaponAbility.MortalStrike);
+            SetWeaponAbility(Habilidade.MortalStrike);
             //SetSpecialAbility(SpecialAbility.VenomousBite);
 
             AddItem(Carnage.GetRandomPS(105));

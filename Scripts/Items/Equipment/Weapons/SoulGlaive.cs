@@ -19,18 +19,18 @@ namespace Server.Items
 
         public override int MinThrowRange { get { return 8; } }
 
-        public override WeaponAbility PrimaryAbility
+        public override Habilidade PrimaryAbility
         {
             get
             {
-                return WeaponAbility.ArmorIgnore;
+                return Habilidade.ArmorIgnore;
             }
         }
-        public override WeaponAbility SecondaryAbility
+        public override Habilidade SecondaryAbility
         {
             get
             {
-                return WeaponAbility.MortalStrike;
+                return Habilidade.MortalStrike;
             }
         }
         public override int AosStrengthReq

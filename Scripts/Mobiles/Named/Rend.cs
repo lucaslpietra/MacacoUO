@@ -42,8 +42,8 @@ namespace Server.Mobiles
             Tamable = false;
 
             SetSpecialAbility(SpecialAbility.GraspingClaw);
-            SetWeaponAbility(WeaponAbility.BleedAttack);
-            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
+            SetWeaponAbility(Habilidade.BleedAttack);
+            SetWeaponAbility(Habilidade.ParalyzingBlow);
         }
 
         public Rend(Serial serial)

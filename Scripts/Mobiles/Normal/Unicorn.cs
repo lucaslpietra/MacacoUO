@@ -48,7 +48,7 @@ namespace Server.Mobiles
             ControlSlots = 2;
             MinTameSkill = 95.1;
 
-            SetWeaponAbility(WeaponAbility.ArmorIgnore);
+            SetWeaponAbility(Habilidade.ArmorIgnore);
         }
 
         public Unicorn(Serial serial)
@@ -182,7 +182,7 @@ namespace Server.Mobiles
 
             if (version == 0)
             {
-                SetWeaponAbility(WeaponAbility.ArmorIgnore);
+                SetWeaponAbility(Habilidade.ArmorIgnore);
             }
         }
     }

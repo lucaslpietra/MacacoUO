@@ -70,7 +70,7 @@ namespace Server.Mobiles
             if (Utility.RandomDouble() < .25)
                 PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
 
-            SetWeaponAbility(WeaponAbility.DoubleStrike);
+            SetWeaponAbility(Habilidade.DoubleStrike);
         }
 
         public YomotsuElder(Serial serial)

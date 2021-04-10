@@ -42,7 +42,7 @@ namespace Server.Mobiles
             VirtualArmor = 26;
             Tamable = false;
 
-            SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetWeaponAbility(Habilidade.BleedAttack);
         }
 
         public SavagePackWolfy(Serial serial)
