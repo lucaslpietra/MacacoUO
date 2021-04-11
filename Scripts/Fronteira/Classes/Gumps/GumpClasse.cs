@@ -20,6 +20,11 @@ namespace Server.Gumps
         {
             var caller = e.Mobile;
 
+            Mostra(caller);
+        }
+
+        public static void Mostra(Mobile caller)
+        {
             if (caller.HasGump(typeof(GumpClasse)))
                 caller.CloseGump(typeof(GumpClasse));
             caller.SendGump(new GumpClasse(ClassDef.GetClasses()[0]));

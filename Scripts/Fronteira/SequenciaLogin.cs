@@ -31,13 +31,11 @@ namespace Server.Fronteira
 
             if (Shard.RP)
             {
-                /*
                 if (pm.Profession == 0)
                 {
                     pm.SendMessage("Escolha sua classe");
-                    pm.SendGump(new ClassGump());
+                    GumpClasse.Mostra(pm);
                 }
-                */
             }
             else
             {

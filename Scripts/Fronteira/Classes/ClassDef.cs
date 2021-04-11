@@ -41,10 +41,10 @@ namespace Server.Fronteira.Classes
 
             // TODO - mudar o nome das coisa pruns nome doido q ceis curte
             AddClass(new ClassePersonagem("Guerreiro", 40324,
-               "Toca porrada",
+               "Toca porrada - JA TEM TALENTO",
                new SkillClasse[] {
                     new SkillClasse(SkillName.Wrestling, 90), new SkillClasse(SkillName.Swords, 90),  new SkillClasse(SkillName.Fencing, 90),
-                   new SkillClasse(SkillName.Macing, 90),  new SkillClasse(SkillName.Tactics, 90),
+                    new SkillClasse(SkillName.Macing, 90),  new SkillClasse(SkillName.Tactics, 90),
                     new SkillClasse(SkillName.Healing, 80), new SkillClasse(SkillName.Anatomy, 80),
                     new SkillClasse(SkillName.MagicResist, 70),
 
@@ -64,7 +64,7 @@ namespace Server.Fronteira.Classes
            );
 
             AddClass(new ClassePersonagem("Ladino", 40324,
-             "Toca flecha",
+             "Toca flecha - NAO TEM TALENTO AINDA",
              new SkillClasse[] {
                     new SkillClasse(SkillName.Archery, 90), new SkillClasse(SkillName.Hiding, 90),  new SkillClasse(SkillName.Anatomy, 90),
                     new SkillClasse(SkillName.Tactics, 90),  new SkillClasse(SkillName.Lockpicking, 70),
@@ -75,6 +75,7 @@ namespace Server.Fronteira.Classes
                     new SkillClasse(SkillName.DetectHidden, 60), new SkillClasse(SkillName.Tracking, 40)
             }));
 
+            /*
             AddClass(new ClassePersonagem("Mago", 40324,
              "Toca magia",
              new SkillClasse[] {
@@ -108,6 +109,7 @@ namespace Server.Fronteira.Classes
                     new SkillClasse(SkillName.Fletching, 90),  new SkillClasse(SkillName.Camping, 80),  new SkillClasse(SkillName.Tailoring, 80),
                     new SkillClasse(SkillName.Herding, 80),  new SkillClasse(SkillName.MagicResist, 40),
              }));
+             */
 
 
             /*

@@ -48,9 +48,20 @@ namespace Server.Gumps
             caller.SendGump(new GumpHabilidades(caller, habs));
         }
 
+        public GumpHabilidades(PlayerMobile player) : base(0, 0)
+        {
+            var habs = player.Talentos.Habilidades();
+            Mostra(player, habs);
+        }
 
         public GumpHabilidades(PlayerMobile player, List<Talento> habilidades) : base(0, 0)
         {
+            Mostra(player, habilidades);
+        }
+
+        public void Mostra(PlayerMobile player, List<Talento> habilidades)
+        {
+            
             Talentos = habilidades;
             this.Closable = true;
             this.Disposable = true;
@@ -81,7 +92,7 @@ namespace Server.Gumps
         public override void OnResponse(NetState sender, RelayInfo info)
         {
             Mobile from = sender.Mobile;
-            Shard.Debug("Button "+info.ButtonID);
+            Shard.Debug("Button " + info.ButtonID);
             if (info.ButtonID != 0)
             {
                 var ativado = Talentos[info.ButtonID - 1];

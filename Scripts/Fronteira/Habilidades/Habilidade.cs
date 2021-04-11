@@ -7,6 +7,7 @@ using Server.Spells.Necromancy;
 using Server.Fronteira.Talentos;
 using Server.Mobiles;
 using System.Collections.Generic;
+using Server.Gumps;
 
 namespace Server.Items
 {
@@ -597,6 +598,14 @@ namespace Server.Items
         {
             m_Table.Remove(m);
 
+            if(Shard.RP && m is PlayerMobile)
+            {
+                var t = typeof(GumpHabilidades);
+                if (m.HasGump(t)) {
+                    m.CloseGump(t);
+                    m.SendGump(new GumpHabilidades(m as PlayerMobile));
+                }
+            }
             if (m.NetState != null)
                 m.Send(ClearWeaponAbility.Instance);
         }
