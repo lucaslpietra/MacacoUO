@@ -16,7 +16,7 @@ namespace Server.Commands
             CommandSystem.Register("talentos", AccessLevel.Player, new CommandEventHandler(CMD2));
             CommandSystem.Register("aprendetalento", AccessLevel.Administrator, new CommandEventHandler(CMD3));
             CommandSystem.Register("desaprendetalento", AccessLevel.Administrator, new CommandEventHandler(CMD4));
-            CommandSystem.Register("resetartalentos", AccessLevel.Administrator, new CommandEventHandler(CMD4));
+            CommandSystem.Register("resetartalentos", AccessLevel.Administrator, new CommandEventHandler(CMD5));
         }
 
         [Usage("aprendetalento")]
@@ -42,7 +42,7 @@ namespace Server.Commands
         }
 
         [Usage("aprendetalento")]
-        private static void CMD4(CommandEventArgs e)
+        private static void CMD5(CommandEventArgs e)
         {
             var pl = e.Mobile as PlayerMobile;
             if (pl == null) return;
