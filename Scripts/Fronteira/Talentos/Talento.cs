@@ -46,6 +46,27 @@ namespace Server.Fronteira.Talentos
                     m.Skills[SkillName.Tracking].Cap = 90;
                     m.Skills[SkillName.DetectHidden].Cap = 90;
                     break;
+                case Talento.Ranger:
+                    m.Skills[SkillName.Veterinary].Cap = 90;
+                    m.Skills[SkillName.AnimalTaming].Cap = 90;
+                    break;
+                case Talento.Assassino:
+                    m.Skills[SkillName.Poisoning].Cap = 90;
+                    m.Skills[SkillName.Tactics].Cap = 90;
+                    m.Skills[SkillName.Alchemy].Cap = 70;
+                    break;
+                case Talento.CacadorDeTesouros:
+                    m.Skills[SkillName.Lockpicking].Cap = 90;
+                    m.Skills[SkillName.RemoveTrap].Cap = 90;
+                    m.Skills[SkillName.Cartography].Cap = 90;
+                    break;
+                case Talento.Provocacao:
+                    m.Skills[SkillName.Musicianship].Cap = 70;
+                    m.Skills[SkillName.Provocation].Cap = 70;
+                    break;
+                case Talento.AnimalLore:
+                    m.Skills[SkillName.AnimalLore].Cap = 90;
+                    break;
             }
         }
     }
@@ -95,8 +116,17 @@ namespace Server.Fronteira.Talentos
         Paladino,
         Necrowar,
         Comandante,
+        AnimalLore,
+
+        Ranger, // 90 taming 90 veterinary
+        Assassino, // 90 Poisoning 90 Tactics 70 alchemy
+        CacadorDeTesouros, // 90 lockpick 90 remove trap 90  cartography 
 
         /// TALENTOS DE HABILIDADES UNICAS //
+
+        Provocacao,
+
+        CorrerStealth,
 
         // 90 Parry
         Bloqueador,
@@ -121,6 +151,7 @@ namespace Server.Fronteira.Talentos
         Porretes,
         Machados,
         Hastes,
+        Adagas,
 
         // Nao perde dex com armadura
         ArmaduraPesada,
@@ -166,6 +197,8 @@ namespace Server.Fronteira.Talentos
         ArmaduraMagica,
         // Inimigos nao reparam tanto
         Silencioso,
+        // Corre em stealth
+        Gatuno,
         // Cura aliados rapido
         Curandeiro,
         // + regen de HP

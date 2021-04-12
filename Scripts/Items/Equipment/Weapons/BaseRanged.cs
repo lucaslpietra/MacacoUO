@@ -74,7 +74,7 @@ namespace Server.Items
             {
                 bool canSwing = (!attacker.Paralyzed && !attacker.Frozen);
 
-                if(canSwing)
+                if (canSwing)
                 {
                     canSwing = AnimalForm.GetContext(attacker) == null;
                 }
@@ -136,16 +136,14 @@ namespace Server.Items
         public override void OnHit(Mobile attacker, IDamageable damageable, double damageBonus)
         {
             if (AmmoType != null && attacker.Player && damageable is Mobile && !((Mobile)damageable).Player && (((Mobile)damageable).Body.IsAnimal || ((Mobile)damageable).Body.IsMonster) &&
-                0.75 >= Utility.RandomDouble())
+          0.75 >= Utility.RandomDouble())
             {
                 var ammo = Ammo;
-
                 if (ammo != null)
                 {
                     ((Mobile)damageable).AddToBackpack(ammo);
                 }
-            }
-
+            } 
             base.OnHit(attacker, damageable, damageBonus);
         }
 

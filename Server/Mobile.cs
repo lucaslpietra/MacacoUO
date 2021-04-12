@@ -3238,6 +3238,7 @@ namespace Server
 
         public bool StealthCorrendo = false;
 
+
         /// <summary>
         ///     Overridable. Event invoked before the Mobile <see cref="Move">moves</see>.
         /// </summary>
@@ -3246,14 +3247,18 @@ namespace Server
         {
             if (m_Hidden && m_AccessLevel <= AccessLevel.VIP)
             {
-                if (m_AllowedStealthSteps-- <= 0 || (Skills[SkillName.Ninjitsu].Value < 100 && !StealthCorrendo && (d & Direction.Running) != 0) || Mounted)
+                if (m_AllowedStealthSteps-- <= 0 || (Skills[SkillName.Ninjitsu].Value < 100 && !CorreEmStealth() && (d & Direction.Running) != 0) || Mounted)
                 {
-                    Shard.Debug("Reveal andar");
                     RevealingAction();
                 }
             }
 
             return true;
+        }
+
+        public virtual bool CorreEmStealth()
+        {
+            return StealthCorrendo;
         }
 
         private static readonly Packet[][] m_MovingPacketCache = new Packet[2][] { new Packet[8], new Packet[8] };

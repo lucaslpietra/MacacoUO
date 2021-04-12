@@ -1557,15 +1557,15 @@ namespace Server.Items
             {
                 if(((PlayerMobile)defender).Talentos.Tem(Talento.Esquiva))
                 {
-                    bonus -= 10;
-                }
+                    bonus -= 15;
+                } 
             }
 
             if (attacker.Player)
             {
                 if (((PlayerMobile)attacker).Talentos.Tem(Talento.Precisao))
                 {
-                    bonus -= 10;
+                    bonus += 25;
                 }
             }
 
@@ -2349,6 +2349,9 @@ namespace Server.Items
 
                 if (pl.Weapon is BasePoleArm && !pl.Talentos.Tem(Talento.Hastes))
                     damage *= 0.85;
+
+                if (pl.Weapon is Dagger && !pl.Talentos.Tem(Talento.Adagas))
+                    damage *= 1.30;
 
                 /*
                 var mamo = pl.Talentos.Tem(Fronteira.Talentos.Talento.Mamonita);

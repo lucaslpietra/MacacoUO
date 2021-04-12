@@ -64,7 +64,6 @@ namespace Server.Fronteira.Classes
                 if(ClassSkills.ContainsKey(skill.SkillName))
                 {
                     skill.Cap = ClassSkills[skill.SkillName];
-                    skill.Base = (int)(skill.Cap / 3);
                 } else
                 {
                     skill.Cap = 0;

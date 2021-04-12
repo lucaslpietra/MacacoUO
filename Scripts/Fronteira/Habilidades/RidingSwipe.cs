@@ -58,7 +58,7 @@ namespace Server.Items
 
             ClearCurrentAbility(attacker);
 
-            int amount = 10 + (int)(10.0 * (attacker.Skills[SkillName.Bushido].Value - 50.0) / 70.0 + 5);
+            int amount = 1 + (int)(10.0 * (attacker.Skills[SkillName.Tactics].Value - 50.0) / 70.0 + 5);
 
             if (!attacker.Mounted)
             {

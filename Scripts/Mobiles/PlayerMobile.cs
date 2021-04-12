@@ -316,6 +316,11 @@ namespace Server.Mobiles
             }
         }
 
+        public override bool CorreEmStealth()
+        {
+            return this.StealthCorrendo || this.Talentos.Tem(Talento.CorrerStealth);
+        }
+
         public void UnstoreMount()
         {
             AnimalFormContext context = AnimalForm.GetContext(this);

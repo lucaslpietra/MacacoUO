@@ -15,6 +15,41 @@ namespace Server.Fronteira.Talentos
 
         static DefTalentos()
         {
+            _talentos.Add(Talento.AnimalLore, new DefTalentos()
+            {
+                Desc1 = "Max 90 Animal Lore",
+                Icone = 40875,
+                Nome = "Biologia"
+            });
+
+            _talentos.Add(Talento.Provocacao, new DefTalentos()
+            {
+                Desc1 = "Max 70 Musicanship & Provocation",
+                Icone = 40875,
+                Nome = "Trovador"
+            });
+
+            _talentos.Add(Talento.CorrerStealth, new DefTalentos()
+            {
+                Desc1 = "Permite Correr em Stealth",
+                Icone = 40851,
+                Nome = "Astuto"
+            });
+
+            _talentos.Add(Talento.Gatuno, new DefTalentos()
+            {
+                Desc1 = "Esconde automatico ao usar stealth",
+                Icone = 39850,
+                Nome = "Gatuno"
+            });
+
+            _talentos.Add(Talento.Adagas, new DefTalentos()
+            {
+                Desc1 = "+30% Bonus de dano com adagas",
+                Icone = 39850,
+                Nome = "Adagas"
+            });
+
             _talentos.Add(Talento.Hab_Concussion, new DefTalentos()
             {
                 Desc1 = "Permite usar Concussion Blow",
@@ -249,35 +284,35 @@ namespace Server.Fronteira.Talentos
 
             _talentos.Add(Talento.Porretes, new DefTalentos()
             {
-                Desc1 = "+15% Dano com Macefight",
+                Desc1 = "+25% Dano com Macefight",
                 Icone = 40861,
                 Nome = "Porretes"
             });
 
             _talentos.Add(Talento.Lancas, new DefTalentos()
             {
-                Desc1 = "+15% Dano com Fencing",
-                Icone = 21019,
+                Desc1 = "+25% Dano com Fencing",
+                Icone = 39036,
                 Nome = "Lancas"
             });
 
             _talentos.Add(Talento.Machados, new DefTalentos()
             {
-                Desc1 = "+15% Dano com Machados",
+                Desc1 = "+25% Dano com Machados",
                 Icone = 21020,
                 Nome = "Machados"
             });
 
             _talentos.Add(Talento.Espadas, new DefTalentos()
             {
-                Desc1 = "+15% Dano com Espadas",
+                Desc1 = "+25% Dano com Espadas",
                 Icone = 21015,
                 Nome = "Espadas"
             });
 
             _talentos.Add(Talento.Hastes, new DefTalentos()
             {
-                Desc1 = "+15% Dano com Armas de Aste",
+                Desc1 = "+25% Dano com Armas de Aste",
                 Icone = 21015,
                 Nome = "Armas de Aste"
             });
@@ -398,7 +433,7 @@ namespace Server.Fronteira.Talentos
 
             _talentos.Add(Talento.Esquiva, new DefTalentos()
             {
-                Desc1 = "+15% Esquiva",
+                Desc1 = "+20% Esquiva",
                 Icone = 39828,
                 Nome = "Agilidade"
             });
@@ -426,7 +461,7 @@ namespace Server.Fronteira.Talentos
 
             _talentos.Add(Talento.Precisao, new DefTalentos()
             {
-                Desc1 = "+10% Acerto",
+                Desc1 = "+25% Acerto",
                 Icone = 39839,
                 Nome = "Precisao"
             });

@@ -70,8 +70,8 @@ namespace Server.Items
                     target.Paralyze(TimeSpan.FromSeconds(duration));
                     t.Hits = 0;
 
-                    from.SendLocalizedMessage(1004013); // You successfully stun your opponent!
-                    target.SendLocalizedMessage(1004014); // You have been stunned!
+                    from.SendLocalizedMessage("Voce paralizou seu oponente"); // You successfully stun your opponent!
+                    target.SendLocalizedMessage("Voce foi paralizado"); // You have been stunned!
                 }
             }
         }

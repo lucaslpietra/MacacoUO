@@ -1,3 +1,4 @@
+using Server.Mobiles;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -5,6 +6,21 @@ namespace Server.Fronteira.Talentos
 {
     public class Talentos
     {
+        public static void Initialize()
+        {
+            EventSink.SkillCapChange += CapChange;
+        }
+
+        public static void CapChange(SkillCapChangeEventArgs e)
+        {
+            if(e is PlayerMobile)
+            {
+                if (e.NewCap > 0 && e.Skill.Base < e.NewCap / 4)
+                    e.Skill.Base = e.NewCap / 4;
+
+            }
+        }
+
         private HashSet<Talento> _talentos = new HashSet<Talento>();
 
         public Talento [] ToArray()

@@ -3001,7 +3001,7 @@ namespace Server.Mobiles
                                 if (!m.IsCooldown("silenc"))
                                 {
                                     m.PrivateOverheadMessage("* silencioso *");
-                                    m.SetCooldown("silenc", TimeSpan.FromSeconds(10));
+                                    m.SetCooldown("silenc", TimeSpan.FromSeconds(5));
                                 }
                                 continue;
                             }

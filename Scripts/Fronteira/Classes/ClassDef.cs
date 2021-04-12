@@ -51,30 +51,47 @@ namespace Server.Fronteira.Classes
                     new SkillClasse(SkillName.Lumberjacking, 60),  new SkillClasse(SkillName.Blacksmith, 60), new SkillClasse(SkillName.Mining, 60), new SkillClasse(SkillName.Parry, 60),
                     new SkillClasse(SkillName.Fishing, 60),  new SkillClasse(SkillName.Focus, 50),  new SkillClasse(SkillName.Cooking, 60)
            }),
-              new OpcaoTalentos(Talento.Experiente, Talento.Esquiva, Talento.Precisao),                      // 1
-              new OpcaoTalentos(Talento.Espadas, Talento.Lancas, Talento.Porretes),                          // 2
-              new OpcaoTalentos(Talento.Curandeiro, Talento.Ladrao, Talento.Finta),                          // 3
-              new OpcaoTalentos(Talento.ProtecaoPesada, Talento.PeleArcana, Talento.Perseveranca),           // 4
-              new OpcaoTalentos(Talento.Paladino, Talento.Necrowar, Talento.Comandante), // 5
-              new OpcaoTalentos(Talento.Hipismo, Talento.ArmaduraPesada, Talento.Potencia),    // 6
-              new OpcaoTalentos(Talento.Bloqueador, Talento.ResistSpell, Talento.Brutalidade),               // 7
-              new OpcaoTalentos(Talento.Defensor, Talento.Rastreador, Talento.Magia),                        // 8
-              new OpcaoTalentos(Talento.FisicoPerfeito, Talento.Machados, Talento.Hastes),           // 9
-              new OpcaoTalentos(Talento.ArmaduraMagica, Talento.Sabedoria, Talento.Regeneracao) // 10
+              new OpcaoTalentos(Talento.Experiente, Talento.Esquiva, Talento.Precisao),                     
+              new OpcaoTalentos(Talento.Hab_BleedAttack, Talento.Hab_CrushingBlow, Talento.Hab_Wirlwind), 
+              new OpcaoTalentos(Talento.Espadas, Talento.Lancas, Talento.Porretes),                        
+              new OpcaoTalentos(Talento.Curandeiro, Talento.Ladrao, Talento.Finta),                         
+              new OpcaoTalentos(Talento.ProtecaoPesada, Talento.PeleArcana, Talento.Perseveranca),         
+              new OpcaoTalentos(Talento.Paladino, Talento.Necrowar, Talento.Comandante),
+              new OpcaoTalentos(Talento.Hipismo, Talento.ArmaduraPesada, Talento.Potencia),   
+              new OpcaoTalentos(Talento.Bloqueador, Talento.ResistSpell, Talento.Brutalidade),             
+              new OpcaoTalentos(Talento.Defensor, Talento.Rastreador, Talento.Magia),
+              new OpcaoTalentos(Talento.FisicoPerfeito, Talento.Machados, Talento.Hastes),        
+              new OpcaoTalentos(Talento.ArmaduraMagica, Talento.Sabedoria, Talento.Regeneracao),
+              new OpcaoTalentos(Talento.Hab_Block, Talento.Hab_AtaqueMortal, Talento.Hab_Bladeweave)
            );
 
             AddClass(new ClassePersonagem("Ladino", 40324,
              "Toca flecha - NAO TEM TALENTO AINDA",
              new SkillClasse[] {
                     new SkillClasse(SkillName.Archery, 90), new SkillClasse(SkillName.Hiding, 90),  new SkillClasse(SkillName.Anatomy, 90),
-                    new SkillClasse(SkillName.Tactics, 90),  new SkillClasse(SkillName.Lockpicking, 70),
+                    new SkillClasse(SkillName.Tactics, 70),  new SkillClasse(SkillName.Lockpicking, 70), 
                     new SkillClasse(SkillName.Healing, 70), new SkillClasse(SkillName.Fencing, 70), new SkillClasse(SkillName.MagicResist, 70),
                     new SkillClasse(SkillName.Poisoning, 70),  new SkillClasse(SkillName.Begging, 60), new SkillClasse(SkillName.Focus, 60),
 
-                    new SkillClasse(SkillName.Camping, 60), new SkillClasse(SkillName.Fletching, 60), new SkillClasse(SkillName.RemoveTrap, 60),
+                    new SkillClasse(SkillName.Camping, 60), new SkillClasse(SkillName.Fletching, 40), new SkillClasse(SkillName.RemoveTrap, 60),
                     new SkillClasse(SkillName.DetectHidden, 60), new SkillClasse(SkillName.Tracking, 40)
-            }));
+            }),
+                new OpcaoTalentos(Talento.Ladrao, Talento.Esquiva, Talento.Precisao),
+                new OpcaoTalentos(Talento.Hab_Doubleshot, Talento.Hab_DoubleStrike, Talento.Hab_DuelWeild),
+                new OpcaoTalentos(Talento.Adagas, Talento.Espadas, Talento.Lancas),
+                new OpcaoTalentos(Talento.Silencioso, Talento.Perseveranca, Talento.Potencia),
+                new OpcaoTalentos(Talento.Gatuno, Talento.Hipismo, Talento.Rastreador),
+                new OpcaoTalentos(Talento.Assassino, Talento.CacadorDeTesouros, Talento.Ranger),
+                new OpcaoTalentos(Talento.Curandeiro, Talento.Regeneracao, Talento.Hab_Infectar),
+                new OpcaoTalentos(Talento.Hab_SerpentArrow, Talento.Hab_AtaqueMortal, Talento.Hab_TalonStrike),
+                new OpcaoTalentos(Talento.Provocacao, Talento.Hab_BleedAttack, Talento.Hab_ArmorIgnore),
+                new OpcaoTalentos(Talento.Brutalidade, Talento.Finta, Talento.Sabedoria),
+                new OpcaoTalentos(Talento.ResistSpell, Talento.Hab_Disarm, Talento.Hab_Dismount),
+                new OpcaoTalentos(Talento.CorrerStealth, Talento.AnimalLore, Talento.Hab_MovingSHot)
+            );
 
+
+            // mago hiding
             /*
             AddClass(new ClassePersonagem("Mago", 40324,
              "Toca magia",
