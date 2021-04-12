@@ -70,8 +70,8 @@ namespace Server.Fronteira.Classes
              new SkillClasse[] {
                     new SkillClasse(SkillName.Archery, 90), new SkillClasse(SkillName.Hiding, 90),  new SkillClasse(SkillName.Anatomy, 90),
                     new SkillClasse(SkillName.Tactics, 70),  new SkillClasse(SkillName.Lockpicking, 70), 
-                    new SkillClasse(SkillName.Healing, 70), new SkillClasse(SkillName.Fencing, 70), new SkillClasse(SkillName.MagicResist, 70),
-                    new SkillClasse(SkillName.Poisoning, 70),  new SkillClasse(SkillName.Begging, 60), new SkillClasse(SkillName.Focus, 60),
+                    new SkillClasse(SkillName.Healing, 70), new SkillClasse(SkillName.Fencing, 70), new SkillClasse(SkillName.MagicResist, 60),
+                    new SkillClasse(SkillName.Poisoning, 50),  new SkillClasse(SkillName.Begging, 60), new SkillClasse(SkillName.Focus, 60),
 
                     new SkillClasse(SkillName.Camping, 60), new SkillClasse(SkillName.Fletching, 40), new SkillClasse(SkillName.RemoveTrap, 60),
                     new SkillClasse(SkillName.DetectHidden, 60), new SkillClasse(SkillName.Tracking, 40)

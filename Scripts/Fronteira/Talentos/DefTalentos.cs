@@ -15,6 +15,14 @@ namespace Server.Fronteira.Talentos
 
         static DefTalentos()
         {
+            _talentos.Add(Talento.Nenhum, new DefTalentos()
+            {
+                Desc1 = "Nenhum",
+                Icone = 40875,
+                Nome = "Nenhum"
+            });
+
+
             _talentos.Add(Talento.AnimalLore, new DefTalentos()
             {
                 Desc1 = "Max 90 Animal Lore",
