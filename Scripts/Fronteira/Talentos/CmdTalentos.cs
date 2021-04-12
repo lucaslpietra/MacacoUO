@@ -16,6 +16,7 @@ namespace Server.Commands
             CommandSystem.Register("talentos", AccessLevel.Player, new CommandEventHandler(CMD2));
             CommandSystem.Register("aprendetalento", AccessLevel.Administrator, new CommandEventHandler(CMD3));
             CommandSystem.Register("desaprendetalento", AccessLevel.Administrator, new CommandEventHandler(CMD4));
+            CommandSystem.Register("resetartalentos", AccessLevel.Administrator, new CommandEventHandler(CMD4));
         }
 
         [Usage("aprendetalento")]
@@ -38,6 +39,19 @@ namespace Server.Commands
                 e.Mobile.SendMessage("Nao achei este talento. Talentos registrados: "+s);
 
             }
+        }
+
+        [Usage("aprendetalento")]
+        private static void CMD4(CommandEventArgs e)
+        {
+            var pl = e.Mobile as PlayerMobile;
+            if (pl == null) return;
+
+            pl.Talentos.Wipa();
+            pl.Nivel = 1;
+            pl.ExpTotal = 0;
+            pl.PontosTalento = 0;
+            pl.SendMessage("Talentos resetados");
         }
 
         [Usage("desaprendetalento")]
