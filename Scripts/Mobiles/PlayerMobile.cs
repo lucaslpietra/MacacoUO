@@ -1486,7 +1486,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return 30 + (int)(5.5 * Str) + (int)(Skills[SkillName.Camping].Value * 2);
+                return 10 + (int)(4 * Str) + (int)(Skills[SkillName.Camping].Value * 2);
             }
         }
 

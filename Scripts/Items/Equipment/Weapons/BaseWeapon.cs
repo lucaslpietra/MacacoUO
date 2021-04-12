@@ -2780,7 +2780,8 @@ namespace Server.Items
 
             if (a != null)
             {
-                percentageBonus += (int)(a.DamageScalar * 100) - 100;
+                var bonus = defender is BaseCreature ? a.DamageScalar * 2 : a.DamageScalar;
+                percentageBonus += (int)(bonus * 100) - 100;
             }
 
             if (move != null)

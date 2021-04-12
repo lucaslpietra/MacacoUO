@@ -1,6 +1,6 @@
 #region References
 using System;
-
+using Server.Fronteira.Talentos;
 using Server.Items;
 using Server.Mobiles;
 using Server.Network;
@@ -99,13 +99,13 @@ namespace Server.SkillHandlers
 
             private class InternalTimer : Timer
             {
-                private readonly Mobile m_From;
+                private readonly PlayerMobile m_From;
                 private readonly Mobile m_Target;
 
                 public InternalTimer(Mobile from, Mobile target)
                     : base(TimeSpan.FromSeconds(2.0))
                 {
-                    m_From = from;
+                    m_From = from as PlayerMobile;
                     m_Target = target;
                     Priority = TimerPriority.TwoFiftyMS;
                 }
@@ -132,12 +132,12 @@ namespace Server.SkillHandlers
                         var delay = TimeSpan.FromSeconds(10);
                         m_From.NextSkillTime = Core.TickCount + (int)delay.TotalMilliseconds / 2;
                     }
-                    else if (m_From.CheckTargetSkillMinMax(SkillName.Begging, m_Target, 0.0, 100.0))
+                    else if (m_From.CheckTargetSkillMinMax(SkillName.Begging, m_Target, 0.0, 100.0) || m_From.Talentos.Tem(Talento.Comandante))
                     {
                         m_Target.SetCooldown("beg" + m_From.Name, TimeSpan.FromHours(2));
                         if (m_Target is BaseHire)
                         {
-                            if(m_From.Skills[SkillName.Forensics].Value >= 100 && m_From.Skills[SkillName.Begging].Value >= 80)
+                            if(m_From.Talentos.Tem(Talento.Comandante) || m_From.Skills[SkillName.Forensics].Value >= 100 && m_From.Skills[SkillName.Begging].Value >= 80)
                             {
                                 var hired = (BaseHire)m_Target;
                                 if (hired.Controlled || hired.IsHired)
@@ -166,13 +166,13 @@ namespace Server.SkillHandlers
 
                         Item item = null;
 
-                        if (m_From.Skills[SkillName.Begging].Value > 80)
+                        if (m_From.Skills[SkillName.Begging].Value > 60)
                         {
                             if (m_Target is Mage || m_Target is Alchemist)
                             {
                                 if (Utility.RandomDouble() < 0.25)
                                 {
-                                    item = new BagOfReagents(25);
+                                    item = new BagOfReagents(15);
                                 }
                             }
                         } 

@@ -25,9 +25,9 @@ namespace Server.Fronteira.Talentos
                     m.Skills[SkillName.Necromancy].Cap = 90;
                     m.Skills[SkillName.Meditation].Cap = 80;
                     break;
-                case Talento.Comandante: // ja upa pra 100 pq essa precisa de 100 nas 2 pra ser util
-                    m.Skills[SkillName.Begging].Cap = 100;
-                    m.Skills[SkillName.Forensics].Cap = 100;
+                case Talento.Comandante: 
+                    m.Skills[SkillName.Begging].Cap = 90;
+                    m.SendMessage(78, "Voce pode convencer mercenarios a se unirem a voce usando a skill Begging");
                     break;
                 case Talento.Curandeiro:
                     m.Skills[SkillName.Healing].Cap = 90;
@@ -59,6 +59,7 @@ namespace Server.Fronteira.Talentos
                     m.Skills[SkillName.Lockpicking].Cap = 90;
                     m.Skills[SkillName.RemoveTrap].Cap = 90;
                     m.Skills[SkillName.Cartography].Cap = 90;
+                    m.Skills[SkillName.DetectHidden].Cap = 90;
                     break;
                 case Talento.Provocacao:
                     m.Skills[SkillName.Musicianship].Cap = 70;

@@ -15,6 +15,27 @@ namespace Server.Fronteira.Talentos
 
         static DefTalentos()
         {
+            _talentos.Add(Talento.CacadorDeTesouros, new DefTalentos()
+            {
+                Desc1 = "Max 90 Lockpick Cartography Remove Trap & Detect Hidden",
+                Icone = 40848,
+                Nome = "Assassino"
+            });
+
+            _talentos.Add(Talento.Assassino, new DefTalentos()
+            {
+                Desc1 = "Max 90 Tactics & Poisoning & 70 Alchemy",
+                Icone = 40848,
+                Nome = "Assassino"
+            });
+
+            _talentos.Add(Talento.Ranger, new DefTalentos()
+            {
+                Desc1 = "Max 90 Veterinary & Animal Taming",
+                Icone = 40848,
+                Nome = "Ranger"
+            });
+
             _talentos.Add(Talento.Nenhum, new DefTalentos()
             {
                 Desc1 = "Nenhum",

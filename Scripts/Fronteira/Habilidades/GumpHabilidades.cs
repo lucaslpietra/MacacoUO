@@ -24,11 +24,45 @@ namespace Server.Gumps
 
         public static void Initialize()
         {
-            CommandSystem.Register("habilidades", AccessLevel.Administrator, new CommandEventHandler(_OnCommand));
+            CommandSystem.Register("habilidades", AccessLevel.Player, new CommandEventHandler(_OnCommand));
+            CommandSystem.Register("usarhabilidade", AccessLevel.Player, new CommandEventHandler(_OnCommand2));
         }
 
-        [Usage("")]
-        [Description("Makes a call to your custom gump.")]
+        [Usage(".usarhabilidade <numero>")]
+        public static void _OnCommand2(CommandEventArgs e)
+        {
+            var caller = e.Mobile as PlayerMobile;
+            if (e.Length <= 0)
+            {
+                caller.SendMessage("Use .usarhabilidade <numero>");
+                return;
+            }
+            try
+            {
+                var index = e.GetInt32(0);
+                var talentos = caller.Talentos.Habilidades();
+                if(index >= talentos.Count)
+                {
+                    var habilidade = Habilidade.Talentos[talentos[index]];
+                    Habilidade.SetCurrentAbility(caller, habilidade);
+                    if(caller.HasGump(typeof(GumpHabilidades)))
+                    {
+                        caller.CloseGump(typeof(GumpHabilidades));
+                        caller.SendGump(new GumpHabilidades(caller, talentos));
+                    }
+                    caller.SendMessage("Voce tem "+talentos.Count+" habilidades entao o numero precisa ser menor que isto");
+                    return;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                caller.SendMessage("Use .usarhabilidade <numero>");
+                return;
+            }
+        }
+
+        [Usage(".habilidades")]
         public static void _OnCommand(CommandEventArgs e)
         {
             var caller = e.Mobile as PlayerMobile;
@@ -61,7 +95,6 @@ namespace Server.Gumps
 
         public void Mostra(PlayerMobile player, List<Talento> habilidades)
         {
-            
             Talentos = habilidades;
             this.Closable = true;
             this.Disposable = true;
@@ -84,6 +117,12 @@ namespace Server.Gumps
                 }
                 botao++;
                 x += 52;
+            }
+
+            if(!player.IsCooldown("dicahabs"))
+            {
+                player.SetCooldown("dicahabs", TimeSpan.FromHours(3));
+                player.SendMessage(78, "Voce pode usar o comando .usarhabilidade para usar habilidades por macro");
             }
         }
 

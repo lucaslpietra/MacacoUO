@@ -52,7 +52,7 @@ namespace Server.Fronteira.Classes
                     new SkillClasse(SkillName.Fishing, 60),  new SkillClasse(SkillName.Focus, 50),  new SkillClasse(SkillName.Cooking, 60)
            }),
               new OpcaoTalentos(Talento.Experiente, Talento.Esquiva, Talento.Precisao),                     
-              new OpcaoTalentos(Talento.Hab_BleedAttack, Talento.Hab_CrushingBlow, Talento.Hab_Wirlwind), 
+              new OpcaoTalentos(Talento.Hab_Block, Talento.Hab_CrushingBlow, Talento.Hab_Wirlwind), 
               new OpcaoTalentos(Talento.Espadas, Talento.Lancas, Talento.Porretes),                        
               new OpcaoTalentos(Talento.Curandeiro, Talento.Ladrao, Talento.Finta),                         
               new OpcaoTalentos(Talento.ProtecaoPesada, Talento.PeleArcana, Talento.Perseveranca),         
@@ -62,7 +62,7 @@ namespace Server.Fronteira.Classes
               new OpcaoTalentos(Talento.Defensor, Talento.Rastreador, Talento.Magia),
               new OpcaoTalentos(Talento.FisicoPerfeito, Talento.Machados, Talento.Hastes),        
               new OpcaoTalentos(Talento.ArmaduraMagica, Talento.Sabedoria, Talento.Regeneracao),
-              new OpcaoTalentos(Talento.Hab_Block, Talento.Hab_AtaqueMortal, Talento.Hab_Bladeweave)
+              new OpcaoTalentos(Talento.Hab_BleedAttack, Talento.Hab_AtaqueMortal, Talento.Hab_Bladeweave)
            );
 
             AddClass(new ClassePersonagem("Ladino", 40324,

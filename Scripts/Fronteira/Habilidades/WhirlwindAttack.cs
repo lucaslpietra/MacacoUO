@@ -71,8 +71,8 @@ namespace Server.Items
 
             if (count > 0)
             {
-                double bushido = attacker.Skills.Bushido.Value;
-                double damageBonus = 1.0 + Math.Pow((count * bushido) / 60, 2) / 100;
+                double tactics = attacker.Skills.Tactics.Value;
+                double damageBonus = 1.0 + Math.Pow((count * tactics) / 60, 2) / 100;
 
                 if (damageBonus > 2.0)
                     damageBonus = 2.0;
