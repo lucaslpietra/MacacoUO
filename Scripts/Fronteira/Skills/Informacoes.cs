@@ -8,16 +8,22 @@ namespace Server.Fronteira.Skills
 {
     public class Informacoes
     {
-
         private static Dictionary<SkillName, string> _infos = new Dictionary<SkillName, string>();
+        private static Dictionary<SkillName, int> _items = new Dictionary<SkillName, int>();
+
+        private static void AddInfo(SkillName skill, int itemID, params string[] linhas)
+        {    
+            _infos[skill] = string.Join("<br>", linhas);
+            _items[skill] = itemID;
+        }
 
         static Informacoes()
         {
-            _infos.Add(
+            AddInfo(
                 SkillName.Alchemy,
-                @"Descricao de alquimista <br>
-                 outra linha <br>
-                 mais outra linha ai n tem br no final");
+                0xEED,
+                "um paragrafo", "outro paragrafo", "infinitos paragrafos"
+            );
         }
     }
 }
