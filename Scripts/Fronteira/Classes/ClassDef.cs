@@ -33,6 +33,7 @@ namespace Server.Fronteira.Classes
             classe.Talentos = talentos;
         }
 
+        // TODO: Botar items de classes necessarios (livros etc)
         // TODO: Fazer os powerscolls de 90 a 100 nas skills
         static ClassDef()
         {
@@ -41,7 +42,7 @@ namespace Server.Fronteira.Classes
 
             // TODO - mudar o nome das coisa pruns nome doido q ceis curte
             AddClass(new ClassePersonagem("Guerreiro", 40324,
-               "Toca porrada - JA TEM TALENTO",
+               "Paladino, Cavaleiro Sombrio, Comandante",
                new SkillClasse[] {
                     new SkillClasse(SkillName.Wrestling, 90), new SkillClasse(SkillName.Swords, 90),  new SkillClasse(SkillName.Fencing, 90),
                     new SkillClasse(SkillName.Macing, 90),  new SkillClasse(SkillName.Tactics, 90),
@@ -51,25 +52,25 @@ namespace Server.Fronteira.Classes
                     new SkillClasse(SkillName.Lumberjacking, 60),  new SkillClasse(SkillName.Blacksmith, 60), new SkillClasse(SkillName.Mining, 60), new SkillClasse(SkillName.Parry, 60),
                     new SkillClasse(SkillName.Fishing, 60),  new SkillClasse(SkillName.Focus, 50),  new SkillClasse(SkillName.Cooking, 60)
            }),
-              new OpcaoTalentos(Talento.Experiente, Talento.Esquiva, Talento.Precisao),                     
-              new OpcaoTalentos(Talento.Hab_Block, Talento.Hab_CrushingBlow, Talento.Hab_Wirlwind), 
-              new OpcaoTalentos(Talento.Espadas, Talento.Lancas, Talento.Porretes),                        
-              new OpcaoTalentos(Talento.Curandeiro, Talento.Ladrao, Talento.Finta),                         
-              new OpcaoTalentos(Talento.ProtecaoPesada, Talento.PeleArcana, Talento.Perseveranca),         
-              new OpcaoTalentos(Talento.Paladino, Talento.Necrowar, Talento.Comandante),
-              new OpcaoTalentos(Talento.Hipismo, Talento.ArmaduraPesada, Talento.Potencia),   
-              new OpcaoTalentos(Talento.Bloqueador, Talento.ResistSpell, Talento.Brutalidade),             
+              new OpcaoTalentos(Talento.Experiente, Talento.Esquiva, Talento.Precisao),
+              new OpcaoTalentos(Talento.Hab_Block, Talento.Hab_CrushingBlow, Talento.Hab_Wirlwind),
+              new OpcaoTalentos(Talento.Espadas, Talento.Lancas, Talento.Porretes),
+              new OpcaoTalentos(Talento.Curandeiro, Talento.Ladrao, Talento.Finta),
+              new OpcaoTalentos(Talento.ProtecaoPesada, Talento.PeleArcana, Talento.Perseveranca),
+              new OpcaoTalentos(Talento.Paladino, Talento.Darknight, Talento.Comandante),
+              new OpcaoTalentos(Talento.Hipismo, Talento.ArmaduraPesada, Talento.Potencia),
+              new OpcaoTalentos(Talento.Bloqueador, Talento.ResistSpell, Talento.Brutalidade),
               new OpcaoTalentos(Talento.Defensor, Talento.Rastreador, Talento.Magia),
-              new OpcaoTalentos(Talento.FisicoPerfeito, Talento.Machados, Talento.Hastes),        
-              new OpcaoTalentos(Talento.ArmaduraMagica, Talento.Sabedoria, Talento.Regeneracao),
-              new OpcaoTalentos(Talento.Hab_BleedAttack, Talento.Hab_AtaqueMortal, Talento.Hab_Bladeweave)
+              new OpcaoTalentos(Talento.FisicoPerfeito, Talento.Machados, Talento.Hastes),
+              new OpcaoTalentos(Talento.Hab_BleedAttack, Talento.Hab_AtaqueMortal, Talento.Hab_Bladeweave),
+              new OpcaoTalentos(Talento.ArmaduraMagica, Talento.Sabedoria, Talento.Regeneracao)
            );
 
             AddClass(new ClassePersonagem("Ladino", 40324,
-             "Toca flecha - NAO TEM TALENTO AINDA",
+             "Assassino, Ranger, Cacador de Tesouro",
              new SkillClasse[] {
                     new SkillClasse(SkillName.Archery, 90), new SkillClasse(SkillName.Hiding, 90),  new SkillClasse(SkillName.Anatomy, 90),
-                    new SkillClasse(SkillName.Tactics, 70),  new SkillClasse(SkillName.Lockpicking, 70), 
+                    new SkillClasse(SkillName.Tactics, 70),  new SkillClasse(SkillName.Lockpicking, 70),
                     new SkillClasse(SkillName.Healing, 70), new SkillClasse(SkillName.Fencing, 70), new SkillClasse(SkillName.MagicResist, 60),
                     new SkillClasse(SkillName.Poisoning, 50),  new SkillClasse(SkillName.Begging, 60), new SkillClasse(SkillName.Focus, 60),
 
@@ -84,26 +85,38 @@ namespace Server.Fronteira.Classes
                 new OpcaoTalentos(Talento.Assassino, Talento.CacadorDeTesouros, Talento.Ranger),
                 new OpcaoTalentos(Talento.Curandeiro, Talento.Regeneracao, Talento.Hab_Infectar),
                 new OpcaoTalentos(Talento.Hab_SerpentArrow, Talento.Hab_AtaqueMortal, Talento.Hab_TalonStrike),
-                new OpcaoTalentos(Talento.Provocacao, Talento.Hab_BleedAttack, Talento.Hab_ArmorIgnore),
-                new OpcaoTalentos(Talento.Brutalidade, Talento.Finta, Talento.Sabedoria),
+                new OpcaoTalentos(Talento.Hab_Shadowstrike, Talento.Hab_BleedAttack, Talento.Hab_ArmorIgnore),
+                new OpcaoTalentos(Talento.Brutalidade, Talento.Finta, Talento.Hipismo),
                 new OpcaoTalentos(Talento.ResistSpell, Talento.Hab_Disarm, Talento.Hab_Dismount),
                 new OpcaoTalentos(Talento.CorrerStealth, Talento.AnimalLore, Talento.Hab_MovingSHot)
             );
 
-
             // mago hiding
-            /*
+
             AddClass(new ClassePersonagem("Mago", 40324,
              "Toca magia",
              new SkillClasse[] {
-                    new SkillClasse(SkillName.Magery, 90), new SkillClasse(SkillName.EvalInt, 90),  new SkillClasse(SkillName.Meditation, 90), new SkillClasse(SkillName.SpiritSpeak, 90),  new SkillClasse(SkillName.MagicResist, 90),
-                    new SkillClasse(SkillName.Wrestling, 80), new SkillClasse(SkillName.Macing, 80),
-                    new SkillClasse(SkillName.Poisoning, 70),  new SkillClasse(SkillName.Alchemy, 60), new SkillClasse(SkillName.Herding, 60), new SkillClasse(SkillName.Healing, 60),
-
-                    new SkillClasse(SkillName.Tailoring, 60), new SkillClasse(SkillName.Fencing, 60), new SkillClasse(SkillName.Fishing, 60),
+                    new SkillClasse(SkillName.Magery, 90), new SkillClasse(SkillName.EvalInt, 90),  new SkillClasse(SkillName.Meditation, 90), new SkillClasse(SkillName.MagicResist, 90),
+                    new SkillClasse(SkillName.Wrestling, 70), new SkillClasse(SkillName.Macing, 70),
+                    new SkillClasse(SkillName.Poisoning, 50),  new SkillClasse(SkillName.Alchemy, 40), new SkillClasse(SkillName.Herding, 30), new SkillClasse(SkillName.Healing, 60),
+                    new SkillClasse(SkillName.Tailoring, 60), new SkillClasse(SkillName.Fencing, 60), new SkillClasse(SkillName.Fishing, 60), new SkillClasse(SkillName.SpiritSpeak, 30),
                     new SkillClasse(SkillName.ItemID, 60),  new SkillClasse(SkillName.Forensics, 40),  new SkillClasse(SkillName.Imbuing, 40)
-            }));
+            }),
+              new OpcaoTalentos(Talento.Elementalismo, Talento.EstudoSagrado, Talento.ArmaduraMagica),
+              new OpcaoTalentos(Talento.Curandeiro, Talento.Herbalismo, Talento.Hipismo),
+              new OpcaoTalentos(Talento.Ladrao, Talento.MentePerfurante, Talento.Investigador),
+              new OpcaoTalentos(Talento.Cajados, Talento.Alquimista, Talento.Livros),
+              new OpcaoTalentos(Talento.Arquimago, Talento.Necromante, Talento.Feiticeiro),
+              new OpcaoTalentos(Talento.Hab_ForceOfNature, Talento.Foco, Talento.Hab_PsyAttack),
+              new OpcaoTalentos(Talento.Hab_Feint, Talento.Hab_Disarm, Talento.Hab_ParalizeBlow),
+              new OpcaoTalentos(Talento.Regeneracao, Talento.ResistSpell, Talento.Silencioso),
+              new OpcaoTalentos(Talento.Provocacao, Talento.Sabedoria, Talento.Pacificador),
+              new OpcaoTalentos(Talento.Esconderijo, Talento.Bloqueador, Talento.Envenenador),
+              new OpcaoTalentos(Talento.Dispel, Talento.Sagacidade, Talento.Esquiva),
+              new OpcaoTalentos(Talento.Dispel, Talento.Sagacidade, Talento.Esquiva)
+            );
 
+            /*
             AddClass(new ClassePersonagem("Bardo", 40324,
            "Toca viola",
            new SkillClasse[] {

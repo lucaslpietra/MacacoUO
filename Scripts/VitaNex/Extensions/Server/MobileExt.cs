@@ -18,6 +18,7 @@ using System.Reflection;
 
 using Server.Accounting;
 using Server.Engines.PartySystem;
+using Server.Fronteira.Talentos;
 using Server.Guilds;
 using Server.Gumps;
 using Server.Items;
@@ -34,6 +35,14 @@ namespace Server
 {
 	public static class MobileExtUtility
 	{
+
+        public static bool TemTalento(this Mobile m, Talento t)
+        {
+            var pl = m as PlayerMobile;
+            if (pl == null) return false;
+            return pl.Talentos.Tem(t);
+        }
+
 		public static bool BeginAction<T>(this Mobile m, T locker, TimeSpan duration)
 		{
 			var o = m.BeginAction(locker);

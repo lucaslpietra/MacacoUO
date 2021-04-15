@@ -99,7 +99,7 @@ namespace Server.Spells.Fifth
 
                 m.PlaySound(0x204);
                 //m.FixedEffect(0x376A, 6, 1);
-                Caster.MovingParticles(m, 0x374A, 7, 0, false, false, 9502, 0x374A, 0x204);
+                Caster.MovingParticles(m, 0x374A, 8, 0, false, false, 9502, 0x374A, 0x204);
 
                 this.HarmfulSpell(m);
             }

@@ -15,25 +15,102 @@ namespace Server.Fronteira.Talentos
 
         static DefTalentos()
         {
+            _talentos.Add(Talento.Dispel, new DefTalentos()
+            {
+                Desc1 = "Magia Dispel tambem remove Debuffs",
+                Icone = 2293,
+                Nome = "Dissipar Magia"
+            });
+
+            _talentos.Add(Talento.Feiticeiro, new DefTalentos()
+            {
+                Desc1 = "Max 90 Spirit Speak, +100% Potencia Buffs/Debuffs",
+                Icone = 2295,
+                Nome = "Magia Metafisica"
+            });
+
+            _talentos.Add(Talento.Necromante, new DefTalentos()
+            {
+                Desc1 = "Max 90 Necromancy & Spirit Speak",
+                Icone = 2300,
+                Nome = "Magia de Sangue"
+            });
+
+            _talentos.Add(Talento.Arquimago, new DefTalentos()
+            {
+                Desc1 = "Max 90 Imbuing, Inscription & Focus",
+                Icone = 2292,
+                Nome = "Magia Arcana"
+            });
+
+            _talentos.Add(Talento.Investigador, new DefTalentos()
+            {
+                Desc1 = "Max 90 Detect Hidden, Forensics & ItemID",
+                Icone = 2297,
+                Nome = "Pacificador"
+            });
+
+            _talentos.Add(Talento.Pacificador, new DefTalentos()
+            {
+                Desc1 = "Max 90 Musicanship & 70 Peacemaking",
+                Icone = 2297,
+                Nome = "Pacificador"
+            });
+
+            _talentos.Add(Talento.Cajados, new DefTalentos()
+            {
+                Desc1 = "Cast 30% Mais Rapido com Cajados",
+                Icone = 40848,
+                Nome = "Ponto de Foco"
+            });
+
+            _talentos.Add(Talento.Esconderijo, new DefTalentos()
+            {
+                Desc1 = "Max 90 Hiding",
+                Icone = 40848,
+                Nome = "Andante das Sombras"
+            });
+
+            _talentos.Add(Talento.Alquimista, new DefTalentos()
+            {
+                Desc1 = "Max 90 Alchemy",
+                Icone = 40848,
+                Nome = "Alquimista"
+            });
+
+            _talentos.Add(Talento.EstudoSagrado, new DefTalentos()
+            {
+                Desc1 = "+25% Curas",
+                Icone = 40849,
+                Nome = "Estudo Sagrado"
+            });
+
+            _talentos.Add(Talento.Elementalismo, new DefTalentos()
+            {
+                Desc1 = "+25% Dano Magico",
+                Icone = 2303,
+                Nome = "Elementalismo"
+            });
+
             _talentos.Add(Talento.CacadorDeTesouros, new DefTalentos()
             {
                 Desc1 = "Max 90 Lockpick Cartography Remove Trap & Detect Hidden",
                 Icone = 40848,
-                Nome = "Assassino"
+                Nome = "Adoracao por Ouro"
             });
 
             _talentos.Add(Talento.Assassino, new DefTalentos()
             {
                 Desc1 = "Max 90 Tactics & Poisoning & 70 Alchemy",
                 Icone = 40848,
-                Nome = "Assassino"
+                Nome = "Frio e Calculista"
             });
 
             _talentos.Add(Talento.Ranger, new DefTalentos()
             {
                 Desc1 = "Max 90 Veterinary & Animal Taming",
                 Icone = 40848,
-                Nome = "Ranger"
+                Nome = "Amante dos Animais"
             });
 
             _talentos.Add(Talento.Nenhum, new DefTalentos()
@@ -393,21 +470,21 @@ namespace Server.Fronteira.Talentos
             {
                 Desc1 = "Max 90 Chivalry, Max 80 Meditation",
                 Icone = 40861,
-                Nome = "Paladino"
+                Nome = "Fe"
             });
 
             _talentos.Add(Talento.Comandante, new DefTalentos()
             {
-                Desc1 = "Max 100 Begging, Max 100 Forensics, Max 100 Parry",
+                Desc1 = "Permite ter aliados NPCS",
                 Icone = 40861,
-                Nome = "Comandante"
+                Nome = "Lideranca"
             });
 
-            _talentos.Add(Talento.Necrowar, new DefTalentos()
+            _talentos.Add(Talento.Darknight, new DefTalentos()
             {
                 Desc1 = "Max 90 Necromancy, Max 80 Meditation",
                 Icone = 40861,
-                Nome = "Necrowar"
+                Nome = "Perdicao"
             });
 
             _talentos.Add(Talento.Finta, new DefTalentos()
@@ -476,16 +553,37 @@ namespace Server.Fronteira.Talentos
 
             _talentos.Add(Talento.Sagacidade, new DefTalentos()
             {
-                Desc1 = "+20% Cast Rapido",
+                Desc1 = "Conjurar se movimentando",
                 Icone = 39819,
                 Nome = "Sagacidade"
             });
 
-            _talentos.Add(Talento.Concentracao, new DefTalentos()
+            _talentos.Add(Talento.Foco, new DefTalentos()
+            {
+                Desc1 = "Max 90 Focus",
+                Icone = 39820,
+                Nome = "Foco"
+            });
+
+            _talentos.Add(Talento.Livros, new DefTalentos()
+            {
+                Desc1 = "50% Economia de Reagentes Usando Livros",
+                Icone = 39820,
+                Nome = "Bom Leitor"
+            });
+
+            _talentos.Add(Talento.Envenenador, new DefTalentos()
+            {
+                Desc1 = "Max 90 Poisoning",
+                Icone = 39820,
+                Nome = "Mestre dos Venenos"
+            });
+
+            _talentos.Add(Talento.MentePerfurante, new DefTalentos()
             {
                 Desc1 = "+10% Penetracao Magic Resist",
                 Icone = 39820,
-                Nome = "Concentracao"
+                Nome = "Mente Afinada"
             });
 
             _talentos.Add(Talento.Precisao, new DefTalentos()

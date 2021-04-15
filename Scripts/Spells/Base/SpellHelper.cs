@@ -19,6 +19,7 @@ using Server.Targeting;
 using Server.Spells.SkillMasteries;
 using Server.Spells.Spellweaving;
 using Server.Services;
+using Server.Fronteira.Talentos;
 
 namespace Server
 {
@@ -418,6 +419,12 @@ namespace Server.Spells
             if (mod != null)
                 offset = Math.Max(mod.Offset, offset);
 
+            if (caster.TemTalento(Talento.Feiticeiro))
+                if(target is BaseCreature)
+                    offset *= 3;
+                else
+                    offset *= 2;
+
             offset *= -1;
 
             target.AddStatMod(new StatMod(type, name, offset, TimeSpan.Zero));
@@ -436,7 +443,10 @@ namespace Server.Spells
                 return TimeSpan.FromSeconds(span);
             }
 
-            return TimeSpan.FromSeconds((caster.Skills[SkillName.Inscribe].Value + caster.Skills[SkillName.Magery].Value) * 1.2);
+            var duration = ((caster.Skills[SkillName.Inscribe].Value/2) + caster.Skills[SkillName.Magery].Value) * 1.2;
+            if (caster.TemTalento(Talento.Feiticeiro))
+                duration *= 2;
+            return TimeSpan.FromSeconds(duration);
         }
 
         public static int GetCurseOffset(Mobile m, StatType type)
@@ -494,7 +504,10 @@ namespace Server.Spells
                 }
             }
 
-            return 1 + (int)(caster.Skills[SkillName.Magery].Value * 0.1);
+            var bonus = (int)(caster.Skills[SkillName.Magery].Value * 0.05);
+            if (caster.TemTalento(Talento.Feiticeiro))
+                bonus += 6;
+            return 1 + bonus;
         }
 
         public static Guild GetGuildFor(Mobile m)
@@ -1536,6 +1549,14 @@ namespace Server.Spells
 
         public static void Heal(int amount, Mobile target, Mobile from, bool message)
         {
+            double cura = amount;
+            var pl = from as PlayerMobile;
+            if (pl != null && pl.Talentos.Tem(Fronteira.Talentos.Talento.EstudoSagrado))
+                cura *= 1.1;
+            else
+                cura *= 0.9;
+            amount = (int)cura;
+
             Spellweaving.ArcaneEmpowermentSpell.AddHealBonus(from, ref amount);
 
             if (amount > 0 && target != from && from is PlayerMobile && target is PlayerMobile)

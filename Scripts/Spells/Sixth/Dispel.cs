@@ -77,6 +77,36 @@ namespace Server.Spells.Sixth
                     m.SendMessage("Nao havia nenhuma magia negativa para dissipar");
             }
 
+            public void RemoveTodosCurse(Mobile m)
+            {
+                if (FeeblemindSpell.RemoveEffects(m))
+                    m.SendMessage("Voce removeu Feeblemind");
+                else if (WeakenSpell.RemoveEffects(m))
+                    m.SendMessage("Voce removeu Weaken");
+                else if (ClumsySpell.RemoveEffects(m))
+                    m.SendMessage("Voce removeu Clumsy");
+                else if (Discordance.RemoveEffect(m))
+                    m.SendMessage("Voce removeu Discordance");
+                else if (CurseSpell.RemoveEffectBool(m))
+                    m.SendMessage("Voce removeu Curse");
+                else if (EvilOmenSpell.TryEndEffect(m))
+                    m.SendMessage("Voce removeu Pressagio");
+                else if (StrangleSpell.RemoveCurse(m))
+                    m.SendMessage("Voce Removeu Estrangular");
+                else if (CorpseSkinSpell.RemoveCurse(m))
+                    m.SendMessage("Voce Removeu Pele Morta");
+                else if (MortalStrike.EndWound(m))
+                    m.SendMessage("Voce Removeu Golpe Mortal");
+                else if (BloodOathSpell.RemoveCurse(m))
+                    m.SendMessage("Voce Removeu Pacto de Sangue");
+                else if (MindRotSpell.ClearMindRotScalar(m))
+                    m.SendMessage("Voce Removeu Mente Podre");
+                else if (SpellPlagueSpell.RemoveFromList(m))
+                    m.SendMessage("Voce Removeu Praga Mistica");
+                else
+                    m.SendMessage("Nao havia nenhuma magia negativa para dissipar");
+            }
+
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is Mobile)
@@ -139,7 +169,28 @@ namespace Server.Spells.Sixth
                                     }
                                 }
                                 from.MovingParticles(m, 0x3779, 10, 0, false, false, 9502, 4019, 0x160);
-                                RemoveUmCurse(m);
+                                if(from.RP && from.TemTalento(Fronteira.Talentos.Talento.Dispel))
+                                {
+                                    EvilOmenSpell.TryEndEffect(m);
+                                    StrangleSpell.RemoveCurse(m);
+                                    CorpseSkinSpell.RemoveCurse(m);
+                                    CurseSpell.RemoveEffect(m);
+                                    MortalStrike.EndWound(m);
+                                    WeakenSpell.RemoveEffects(m);
+                                    FeeblemindSpell.RemoveEffects(m);
+                                    ClumsySpell.RemoveEffects(m);
+                                    BloodOathSpell.RemoveCurse(m);
+                                    MindRotSpell.ClearMindRotScalar(m);
+                                    SpellPlagueSpell.RemoveFromList(m);
+                                    Discordance.RemoveEffect(m);
+                                    if (m.Paralyzed)
+                                        m.Paralyzed = false;
+                                    m.SendMessage("* magias dissipadas *");
+                                    from.OverheadMessage("* dissipando magias *");
+                                    BuffInfo.RemoveBuff(m, BuffIcon.MassCurse);
+                                } 
+                                    
+                               
                             }
                             this.m_Owner.FinishSequence();
                         }

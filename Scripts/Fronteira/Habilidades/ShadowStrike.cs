@@ -77,12 +77,11 @@ namespace Server.Items
                 attacker.Combatant = null;
                 attacker.Warmode = false;
                 attacker.Hidden = true;
-            }
-
-            if(defender is BaseCreature && attacker.Skills[SkillName.Ninjitsu].Value >= 100)
-            {
-                defender.Paralyze(TimeSpan.FromSeconds(2));
-                defender.OverheadMessage("* ?? *");
+                if (defender is BaseCreature)
+                {
+                    defender.Paralyze(TimeSpan.FromSeconds(2));
+                    defender.OverheadMessage("* ?? *");
+                }
             }
         }
     }

@@ -162,6 +162,9 @@ namespace Server.Spells.Fourth
             if (m.Spell != null)
                 m.Spell.OnCasterHurt();
 
+            caster.MovingParticles(m, 0x374A, 8, 0, false, false, 9502, 0x374A, 0x204);
+
+            m.OverheadMessage("* amaldicoado *");
             m.Paralyzed = false;
 
             m.FixedParticles(0x374A, 10, 15, 5028, EffectLayer.Waist);

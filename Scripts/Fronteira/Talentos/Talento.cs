@@ -21,7 +21,7 @@ namespace Server.Fronteira.Talentos
                     m.Skills[SkillName.Chivalry].Cap = 90;
                     m.Skills[SkillName.Meditation].Cap = 80;
                     break;
-                case Talento.Necrowar:
+                case Talento.Darknight:
                     m.Skills[SkillName.Necromancy].Cap = 90;
                     m.Skills[SkillName.Meditation].Cap = 80;
                     break;
@@ -68,6 +68,40 @@ namespace Server.Fronteira.Talentos
                 case Talento.AnimalLore:
                     m.Skills[SkillName.AnimalLore].Cap = 90;
                     break;
+                case Talento.Alquimista:
+                    m.Skills[SkillName.Alchemy].Cap = 90;
+                    break;
+                case Talento.Herbalismo:
+                    m.Skills[SkillName.Herding].Cap = 90;
+                    break;
+                case Talento.Esconderijo:
+                    m.Skills[SkillName.Hiding].Cap = 90;
+                    break;
+                case Talento.Investigador:
+                    m.Skills[SkillName.DetectHidden].Cap = 90;
+                    m.Skills[SkillName.Forensics].Cap = 90;
+                    m.Skills[SkillName.ItemID].Cap = 90;
+                    break;
+                case Talento.Pacificador:
+                    m.Skills[SkillName.Peacemaking].Cap = 70;
+                    m.Skills[SkillName.Musicianship].Cap = 90;
+                    break;
+                case Talento.Arquimago:
+                    m.Skills[SkillName.Inscribe].Cap = 90;
+                    m.Skills[SkillName.Focus].Cap = 90;
+                    m.Skills[SkillName.Imbuing].Cap = 90;
+                    break;
+                case Talento.Necromante:
+                    m.Skills[SkillName.Necromancy].Cap = 90;
+                    m.Skills[SkillName.SpiritSpeak].Cap = 90;
+                    break;
+                case Talento.Foco:
+                    m.Skills[SkillName.Focus].Cap = 90;
+                    break;
+                case Talento.Envenenador:
+                    m.Skills[SkillName.Poisoning].Cap = 90;
+                    break;
+
             }
         }
     }
@@ -110,41 +144,59 @@ namespace Server.Fronteira.Talentos
         Hab_Disrobe,
         Hab_ColWind,
         Hab_Concussion,
+        AnimalLore,
 
         // "SubClasses"
 
         // Subs de Guerreiro
         Paladino,
-        Necrowar,
+        Darknight,
         Comandante,
-        AnimalLore,
+
+        Arquimago, // Inscript + Focus + Imbue
+        Necromante, // Necro Poisoning
+        Feiticeiro, // Buffs & Debuffs fortes
+
 
         Ranger, // 90 taming 90 veterinary
         Assassino, // 90 Poisoning 90 Tactics 70 alchemy
         CacadorDeTesouros, // 90 lockpick 90 remove trap 90  cartography 
-
+      
         /// TALENTOS DE HABILIDADES UNICAS //
 
         Provocacao,
+        Pacificador,
+
+        Dispel,
 
         CorrerStealth,
-
+        Herbalismo, 
         // 90 Parry
         Bloqueador,
         // 90 Magic Resist
         ResistSpell,
         // 90 Tracking
         Rastreador,
+        // 90 Detect Hidden
+        Investigador,
         // 90 Stealing+Snooping
         Ladrao,
         // 90 Magery
         Magia,
+
+        // Dano Magico
+        Elementalismo,
+        // Magias Brancas
+        EstudoSagrado,
+        MagoDeCombate,
 
         // +500 XP "Free"
         Experiente,
 
         // Montar
         Hipismo,
+
+        Alquimista,
 
         // Bonus de dano com armas especificas
         Espadas,
@@ -167,12 +219,17 @@ namespace Server.Fronteira.Talentos
         // Esquiva
         Esquiva,
 
+        Foco,
+
         // Mana
         Sabedoria,
         // Cast Time - TODO
         Sagacidade,
         // Cast Move
-        Concentracao,
+        MentePerfurante,
+
+        Cajados,
+        Livros,
 
         // Bonus Acerto 
         Precisao,
@@ -198,12 +255,15 @@ namespace Server.Fronteira.Talentos
         ArmaduraMagica,
         // Inimigos nao reparam tanto
         Silencioso,
+        Envenenador,
+
         // Corre em stealth
         Gatuno,
         // Cura aliados rapido
         Curandeiro,
         // + regen de HP
-        Regeneracao
+        Regeneracao,
+        Esconderijo,
 
         // Loja anywhere
         // Comerciante,

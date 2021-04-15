@@ -23,9 +23,9 @@ namespace Server.Items
 
             ClearCurrentAbility(attacker);
 
-            attacker.SendLocalizedMessage("Seu tiro lanca energia psiquica"); // Your shot sends forth a wave of psychic energy.
-            defender.SendLocalizedMessage("Sua mente foi afetada por energia psiquica"); // Your mind is attacked by psychic force!
-
+            attacker.SendLocalizedMessage("Seu golpe lanca energia psiquica e afeta o inimigo, fazendo-o mais vulneravel a magias"); // Your shot sends forth a wave of psychic energy.
+            defender.SendLocalizedMessage("Sua mente foi afetada por energia psiquica, voce esta mais vulneravel a magias"); // Your mind is attacked by psychic force!
+            defender.OverheadMessage("* confuso *");
             defender.FixedParticles(0x3789, 10, 25, 5032, EffectLayer.Head);
             defender.PlaySound(0x1F8);
 

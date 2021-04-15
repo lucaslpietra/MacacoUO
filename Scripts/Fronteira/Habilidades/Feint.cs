@@ -50,7 +50,7 @@ namespace Server.Items
             attacker.PlaySound(0x525);
 
             double skill = creature ? attacker.Skills[SkillName.Bushido].Value : 
-                                                   Math.Max(attacker.Skills[SkillName.Ninjitsu].Value, attacker.Skills[SkillName.Bushido].Value);
+                                                 attacker.Skills[SkillName.Tactics].Value;
 
             int bonus = (int)(20.0 + 3.0 * (skill - 50.0) / 7.0);
 

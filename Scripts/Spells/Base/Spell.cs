@@ -260,6 +260,8 @@ namespace Server.Spells
             if (caster.Player && IsCasting && BlocksMovement && (!(m_Caster is BaseCreature) || ((BaseCreature)m_Caster).FreezeOnCast))
             {
                 //m_Caster.SendMessage("Voce esta conjurando uma magia e nao consegue se mover");
+                if (caster.TemTalento(Talento.Sagacidade))
+                    return true;
                 return false;
             }
             return true;
@@ -417,14 +419,7 @@ namespace Server.Spells
             bool repeatedNerf = false;
             if (MagerySpell.MovementNerfWhenRepeated.IndexOf(this.GetType()) == -1)
             {
-                if (this is MagerySpell)
-                {
-                    if (((MagerySpell)this).Circle <= SpellCircle.Fifth)
-                        return true;
-                }
 
-                if (this is CloseWoundsSpell)
-                    return true;
             }
             else
             {
@@ -434,7 +429,8 @@ namespace Server.Spells
             }
 
             caster.SpellSteps++;
-            Shard.Debug("Passos castando: " + caster.SpellSteps);
+            if (Shard.DebugEnabled)
+                Shard.Debug("Passos castando: " + caster.SpellSteps);
 
             if (m_State == SpellState.Casting && caster.SpellSteps > maxDistance)
             {
@@ -483,6 +479,12 @@ namespace Server.Spells
             if ((m_Scroll != null && !(m_Scroll is SpellStone)) || !m_Caster.Player)
             {
                 return true;
+            }
+
+            if (m_Caster.TemTalento(Talento.Livros) && m_Caster.Weapon is Spellbook)
+            {
+                if (60 > Utility.Random(100))
+                    return true;
             }
 
             if (AosAttributes.GetValue(m_Caster, AosAttribute.LowerRegCost) > Utility.Random(100))
@@ -554,8 +556,25 @@ namespace Server.Spells
                 double casterEI = m_Caster.Skills[DamageSkill].Value;
                 double targetRS = target.Skills[SkillName.MagicResist].Value;
 
-                if (casterEI < 80)
-                    casterEI = 80;
+                var pl = m_Caster as PlayerMobile;
+                if (Shard.RP && pl != null && pl.Talentos.Tem(Talento.Elementalismo))
+                {
+                    if (casterEI < 60)
+                        casterEI = 60;
+                    if (pl != null)
+                        scalar += 0.1;
+                    if (target is BaseCreature)
+                        scalar += 0.15;
+                }
+                else
+                    scalar -= 0.15;
+
+                if (PsychicAttack.Registry.ContainsKey(target))
+                    scalar += 0.2;
+
+                if (scalar < 0)
+                    scalar = 0;
+
 
                 //m_Caster.CheckSkill( DamageSkill, 0.0, 120.0 );
 

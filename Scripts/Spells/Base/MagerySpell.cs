@@ -178,7 +178,7 @@ namespace Server.Spells
 
                 if (Caster.Player && Caster.RP)
                 {
-                    if (((PlayerMobile)Caster).Talentos.Tem(Talento.Concentracao))
+                    if (((PlayerMobile)Caster).Talentos.Tem(Talento.MentePerfurante))
                         resist -= 10;
                 }
 
@@ -223,9 +223,10 @@ namespace Server.Spells
             if (!Core.AOS)
             {
                 if (Caster is BaseCreature)
-                    return TimeSpan.FromSeconds(0.5 + 0.40 * (int)Circle);
+                    return TimeSpan.FromSeconds(0.7 + 0.40 * (int)Circle);
 
-                if (Caster.Weapon is BaseStaff || !(Caster is PlayerMobile))
+                var pl = Caster as PlayerMobile;
+                if (pl == null || (pl.Talentos.Tem(Talento.Cajados) && Caster.Weapon is BaseStaff))
                     return TimeSpan.FromSeconds(0.5 + (0.25 * (int)Circle));
                 else
                 {

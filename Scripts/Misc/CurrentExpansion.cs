@@ -27,14 +27,13 @@ namespace Server
 			ObjectPropertyList.Enabled = true;
             PacketHandlers.SingleClickProps = false;
 
-            Mobile.EquipItemDelay = -1;
-
             Mobile.InsuranceEnabled = Core.AOS && !Siege.SiegeShard;
 			Mobile.VisibleDamageType = VisibleDamageType.None;
 			Mobile.GuildClickMessage = !Core.AOS;
 			Mobile.AsciiClickMessage = !Core.AOS;
+            Mobile.EquipItemDelay = 500; // Core.TOL ? 500 : Core.AOS ? 1000 : 500;
 
-			if (!Core.AOS)
+            if (!Core.AOS)
 			{
 				return;
 			}
@@ -46,7 +45,7 @@ namespace Server
 				PacketHandlers.SingleClickProps = true; // single click for everything is overriden to check object property list
 			}
 
-            Mobile.EquipItemDelay = 0; // Core.TOL ? 500 : Core.AOS ? 1000 : 500;
+           
 			Mobile.AOSStatusHandler = AOS.GetStatus;
 		}
 	}
