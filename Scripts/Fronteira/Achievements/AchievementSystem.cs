@@ -80,6 +80,7 @@ namespace Scripts.Mythik.Systems.Achievements
             Categories.Add(new AchievementCategory(5000, 0, "Outro"));
 
             //Achievements.Add(new DiscoveryAchievement(8888, 1, 0x14EB, false, null, "General expo!", "General expo!", 5, "Green Acres"));
+            /*
             Achievements.Add(new DiscoveryAchievement(0, 3, 0x14EB, false, null, "Exodo!", "Descubra a caverna do Exodo", 5, "ExodoDungeon"));
             Achievements.Add(new DiscoveryAchievement(1, 3, 0x14EB, false, null, "Goblins ?", "Encontre uma caverna Goblin", 5, "Edgewich"));
             Achievements.Add(new DiscoveryAchievement(2, 3, 0x14EB, false, null, "Caminho do Necromante", "Encontre a Cripta Necromante", 5, "Blood Dungeon"));
@@ -99,6 +100,8 @@ namespace Scripts.Mythik.Systems.Achievements
             Achievements.Add(new DiscoveryAchievement(2, 1, 0x14EB, false, null, "Forte Fofnolsaern", "Encontre o Forte Fofnolsaern", 5, "Bowan"));
             Achievements.Add(new DiscoveryAchievement(3, 1, 0x14EB, false, null, "Ratown", "Va a vila dos Ratos", 5, "SavageCamp"));
             Achievements.Add(new DiscoveryAchievement(4, 1, 0x14EB, false, null, "Tretonia", "Encontre Tretonia", 5, "Tretonia"));
+            */
+
             /*
             Achievements.Add(new DiscoveryAchievement(1, 2, 0x14EB, false, null, "Britain!", "Discover the City Britain", 5, "Britain"));
             Achievements.Add(new DiscoveryAchievement(2, 2, 0x14EB, false, null, "Minoc!", "Discover the Minoc Township", 5, "Minoc"));
@@ -209,6 +212,7 @@ namespace Scripts.Mythik.Systems.Achievements
             Achievements.Add(new HunterAchievement(1026, 3000, 0x2602, false, null, 1, "Formigas Pretas", "Mate 10 Formigas Trabalhadoras Pretas", 10, typeof(BlackSolenWorker), typeof(BagOfReagents)));
             Achievements.Add(new HunterAchievement(1027, 3000, 0x2602, false, null, 1, "Formigas Guerreiras Vermelhas", "Mate 50 Formigas Guerreiras Vermelhas", 50, typeof(RedSolenWarrior), typeof(SacolaDeOuro3000)));
             Achievements.Add(new HunterAchievement(1028, 3000, 0x2602, false, null, 1, "Formigas Guerreiras Pretas", "Mate 50 Formigas Guerreiras Pretas", 50, typeof(BlackSolenWarrior), typeof(SacolaDeOuro3000)));
+            Achievements.Add(new HunterAchievement(1029, 3000, 0x2602, false, null, 5, "Plantas Carnivoras", "Mate 5 Plantas Carnivoras", 5, typeof(Corpser), typeof(SacolaDeOuro3000)));
 
             // SKILLS
             // BS

@@ -54,7 +54,7 @@ namespace Server.Gumps
                 var id = 40308;
                 if (cl == classeEscolhida)
                     id = 40310;
-                AddButton(344, 180+y, id, 40310, cl.ID, GumpButtonType.Reply, 0);
+                AddButton(344, 180+y, id, 40310, cl.ID+1, GumpButtonType.Reply, 0);
                 y += 20;
             }
 
@@ -72,8 +72,6 @@ namespace Server.Gumps
                 AddHtml(345, 544, 574, 55, Gump.Cor(strSkills, "white"), (bool)false, (bool)false);
                 AddHtml(704, 146, 207, 22, Gump.Cor(classeEscolhida.Nome, "white"), (bool)false, (bool)false);
             }
-
-         
          
             AddHtml(110, 314, 179, 312, Gump.Cor(TUTORIAL_DOS_MAMAO, "white"), (bool)false, (bool)false);
             AddHtml(353, 148, 115, 17, Gump.Cor("Classes", "white"), (bool)false, (bool)false);
@@ -89,11 +87,13 @@ namespace Server.Gumps
             {
                 escolhida.ViraClasse(from as PlayerMobile);
             }
-                
+
+            if (info.ButtonID == 0)
+                return;
 
             if(info.ButtonID != 666)
             {
-                var classe = ClassDef.GetClasse(info.ButtonID);
+                var classe = ClassDef.GetClasse(info.ButtonID-1);
                 from.CloseGump(typeof(GumpClasse));
                 from.SendGump(new GumpClasse(classe));
             }

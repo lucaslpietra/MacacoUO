@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using Server.Engines.Quests;
 using Server.Factions;
+using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
@@ -245,6 +246,14 @@ namespace Server.Misc
             if (mult == 0)
                 return success;
 
+            if(Shard.AVENTURA)
+            {
+                Gain(from, skill, 5);
+                return success;
+            }
+
+            if (ExpGumpRP.UpComXP.Contains(skill.SkillName))
+                return success;
 
             work = Work.Any(s => s == skill.SkillName);
             

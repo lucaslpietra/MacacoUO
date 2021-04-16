@@ -20,10 +20,14 @@ namespace Server.Fronteira.Talentos
                 case Talento.Paladino:
                     m.Skills[SkillName.Chivalry].Cap = 90;
                     m.Skills[SkillName.Meditation].Cap = 80;
+                    m.PlaceInBackpack(new BookOfChivalry());
+                    m.TithingPoints = 500;
                     break;
                 case Talento.Darknight:
                     m.Skills[SkillName.Necromancy].Cap = 90;
                     m.Skills[SkillName.Meditation].Cap = 80;
+                    m.PlaceInBackpack(new NecromancerSpellbook());
+                    m.PlaceInBackpack(new AnimateDeadScroll());
                     break;
                 case Talento.Comandante: 
                     m.Skills[SkillName.Begging].Cap = 90;
@@ -37,6 +41,9 @@ namespace Server.Fronteira.Talentos
                     break;
                 case Talento.Magia:
                     m.Skills[SkillName.Magery].Cap = 90;
+                    m.PlaceInBackpack(new Spellbook());
+                    m.PlaceInBackpack(new FireballScroll());
+                    m.PlaceInBackpack(new HealScroll());
                     break;
                 case Talento.Ladrao:
                     m.Skills[SkillName.Stealing].Cap = 90;
@@ -54,6 +61,9 @@ namespace Server.Fronteira.Talentos
                     m.Skills[SkillName.Poisoning].Cap = 90;
                     m.Skills[SkillName.Tactics].Cap = 90;
                     m.Skills[SkillName.Alchemy].Cap = 70;
+                    m.PlaceInBackpack(new MortarPestle());
+                    m.PlaceInBackpack(new Bottle(10));
+                    m.PlaceInBackpack(new BagOfReagents(20));
                     break;
                 case Talento.CacadorDeTesouros:
                     m.Skills[SkillName.Lockpicking].Cap = 90;
@@ -62,6 +72,7 @@ namespace Server.Fronteira.Talentos
                     m.Skills[SkillName.DetectHidden].Cap = 90;
                     break;
                 case Talento.Provocacao:
+                    m.PlaceInBackpack(new Lute());
                     m.Skills[SkillName.Musicianship].Cap = 70;
                     m.Skills[SkillName.Provocation].Cap = 70;
                     break;
@@ -70,6 +81,9 @@ namespace Server.Fronteira.Talentos
                     break;
                 case Talento.Alquimista:
                     m.Skills[SkillName.Alchemy].Cap = 90;
+                    m.PlaceInBackpack(new MortarPestle());
+                    m.PlaceInBackpack(new Bottle(10));
+                    m.PlaceInBackpack(new BagOfReagents(20));
                     break;
                 case Talento.Herbalismo:
                     m.Skills[SkillName.Herding].Cap = 90;
@@ -83,6 +97,7 @@ namespace Server.Fronteira.Talentos
                     m.Skills[SkillName.ItemID].Cap = 90;
                     break;
                 case Talento.Pacificador:
+                    m.PlaceInBackpack(new Lute());
                     m.Skills[SkillName.Peacemaking].Cap = 70;
                     m.Skills[SkillName.Musicianship].Cap = 90;
                     break;
@@ -92,6 +107,8 @@ namespace Server.Fronteira.Talentos
                     m.Skills[SkillName.Imbuing].Cap = 90;
                     break;
                 case Talento.Necromante:
+                    m.PlaceInBackpack(new NecromancerSpellbook());
+                    m.PlaceInBackpack(new AnimateDeadScroll());
                     m.Skills[SkillName.Necromancy].Cap = 90;
                     m.Skills[SkillName.SpiritSpeak].Cap = 90;
                     break;
@@ -101,7 +118,9 @@ namespace Server.Fronteira.Talentos
                 case Talento.Envenenador:
                     m.Skills[SkillName.Poisoning].Cap = 90;
                     break;
-
+                case Talento.Combate:
+                    m.Skills[SkillName.Tactics].Cap = 90;
+                    break;
             }
         }
     }
@@ -188,7 +207,7 @@ namespace Server.Fronteira.Talentos
         Elementalismo,
         // Magias Brancas
         EstudoSagrado,
-        MagoDeCombate,
+        Combate,
 
         // +500 XP "Free"
         Experiente,
@@ -256,6 +275,8 @@ namespace Server.Fronteira.Talentos
         // Inimigos nao reparam tanto
         Silencioso,
         Envenenador,
+        AlquimiaMagica,
+
 
         // Corre em stealth
         Gatuno,

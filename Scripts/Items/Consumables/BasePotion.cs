@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Server.Commands;
 using Server.Engines.Craft;
+using Server.Fronteira.Talentos;
 using VitaNex.Modules.AutoPvP;
 
 namespace Server.Items
@@ -347,6 +349,9 @@ namespace Server.Items
         {
             if (craftSystem is DefAlchemy)
             {
+
+               
+
                 Container pack = from.Backpack;
 
                 if (pack != null)
@@ -369,6 +374,10 @@ namespace Server.Items
                         if (keg.Type != this.PotionEffect)
                             continue;
 
+                        if (keg.Held < 100 && from.TemTalento(Talento.AlquimiaMagica))
+                        {
+                            ++keg.Held;
+                        }
                         ++keg.Held;
 
                         this.Consume();
@@ -377,6 +386,12 @@ namespace Server.Items
                         return -1; // signal placed in keg
                     }
                 }
+            }
+
+            if (from.TemTalento(Talento.AlquimiaMagica))
+            {
+                var dupe = Dupe.DupeItem(this);
+                from.AddToBackpack(dupe);
             }
 
             return 1;

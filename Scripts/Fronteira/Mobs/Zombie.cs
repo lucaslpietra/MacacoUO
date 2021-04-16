@@ -80,7 +80,7 @@ namespace Server.Mobiles
                             return;
                         }
                         SetCooldown("acido", TimeSpan.FromSeconds(10));
-                        this.SpillAcid(2, power:4, name:"Vomito de zumbi");
+                        this.SpillAcid(2, power:8, name:"Vomito de zumbi");
                         PublicOverheadMessage(Network.MessageType.Emote, 0, false, "* vomita restos podres *");
                     }
 

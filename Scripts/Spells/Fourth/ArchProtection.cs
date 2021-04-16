@@ -114,7 +114,7 @@ namespace Server.Spells.Fourth
             _Table[m] = v;
         }
 
-        public static void RemoveEntry(Mobile m)
+        public static bool RemoveEntry(Mobile m)
         {
             if (_Table.ContainsKey(m))
             {
@@ -124,7 +124,9 @@ namespace Server.Spells.Fourth
                 m.VirtualArmorMod -= v;
                 if (m.VirtualArmorMod < 0)
                     m.VirtualArmorMod = 0;
+                return true;
             }
+            return false;
         }
 
         private class InternalTimer : Timer

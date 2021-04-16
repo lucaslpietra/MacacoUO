@@ -14,7 +14,7 @@ namespace Server.Gumps
     public class ExpGumpRP : Gump
     {
 
-        private static List<SkillName> UpComXP = new List<SkillName>();
+        public static List<SkillName> UpComXP = new List<SkillName>();
         private static List<SkillName> UpComRepeticao = new List<SkillName>();
 
         public static void Initialize()
@@ -48,8 +48,13 @@ namespace Server.Gumps
             UpComXP.Add(SkillName.Provocation);
             UpComXP.Add(SkillName.Discordance);
             UpComXP.Add(SkillName.Peacemaking);
+            UpComXP.Add(SkillName.Stealing);
+            UpComXP.Add(SkillName.Snooping);
+            UpComXP.Add(SkillName.Forensics);
+            UpComXP.Add(SkillName.Veterinary);
+            UpComXP.Add(SkillName.AnimalLore);
 
-            foreach(var s in Enum.GetValues(typeof(SkillName))) {
+            foreach (var s in Enum.GetValues(typeof(SkillName))) {
                 var skill = (SkillName)s;
                 if (UpComXP.Contains(skill)) continue;
                 if (SkillCheck.Work.Contains(skill)) continue;
@@ -94,8 +99,9 @@ namespace Server.Gumps
                 if (from.Skills[s].Cap == 0) continue;
 
                 var skill = from.Skills[s];
-
-                AddHtml(587, 267+x, 153, 21, skill.Value + " / " + skill.Cap + " " + skill.Name, (bool)false, (bool)false);
+                var name = skill.Name;
+                if (name == null) name = skill.SkillName.ToString();
+                AddHtml(587, 267+x, 153, 21, skill.Value + " / " + skill.Cap + " " + name, (bool)false, (bool)false);
                 total += skill.Value;
                 capTotal += skill.Cap;
                 x += 20;
@@ -107,7 +113,9 @@ namespace Server.Gumps
                 if (from.Skills[s].Cap == 0) continue;
 
                 var skill = from.Skills[s];
-                AddHtml(790, 265+x, 153, 21, skill.Value + " / " + skill.Cap + " " + skill.Name, (bool)false, (bool)false);
+                var name = skill.Name;
+                if (name == null) name = skill.SkillName.ToString();
+                AddHtml(790, 265+x, 153, 21, skill.Value + " / " + skill.Cap + " " + name, (bool)false, (bool)false);
                 total += skill.Value;
                 capTotal += skill.Cap;
                 x += 20;
@@ -129,15 +137,15 @@ namespace Server.Gumps
             AddHtml(449, 159, 108, 18, pct+"%", (bool)false, (bool)false);
             AddHtml(449, 122, 54, 19, @"Total:", (bool)false, (bool)false);
 
-            AddHtml(300, 219, 75, 19, @"Combate", (bool)false, (bool)false);
+            AddHtml(300, 219, 175, 19, @"Up Em Combate", (bool)false, (bool)false);
             AddItem(238, 216, 5049);
             AddImage(595, 250, 50);
             AddItem(595, 218, 3717);
-            AddHtml(637, 221, 75, 19, @"Trabalho", (bool)false, (bool)false);
+            AddHtml(637, 221, 175, 19, @"Up Trabalhando", (bool)false, (bool)false);
 
             AddImage(792, 249, 50);
             AddItem(593, 222, 4021);
-            AddHtml(810, 220, 124, 19, @"Conhecimento", (bool)false, (bool)false);
+            AddHtml(810, 220, 124, 19, @"Up Usando", (bool)false, (bool)false);
             AddItem(770, 218, 4029);
         }
 
@@ -165,7 +173,7 @@ namespace Server.Gumps
             }
 
             var old = from.Skills[skill].Value;
-            SkillCheck.Gain(from, from.Skills[skill], 1);
+            SkillCheck.Gain(from, from.Skills[skill], Shard.AVENTURA ? 100: 10);
             var nw = from.Skills[skill].Value;
 
             if (nw > old)

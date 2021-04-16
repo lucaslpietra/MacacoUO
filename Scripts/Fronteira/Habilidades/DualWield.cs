@@ -45,7 +45,7 @@ namespace Server.Items
                     BuffInfo.RemoveBuff(attacker, BuffIcon.DualWield);
                     BuffInfo.AddBuff(attacker, new BuffInfo(BuffIcon.DualWield, 1151294, 1151293, timer.Expires - DateTime.UtcNow, attacker, (timer.DualHitChance * 100).ToString()));
 
-                    attacker.SendLocalizedMessage(timer.DualHitChance == .75 ? 1150283 : 1150282); // Dual wield level increased to peak! : Dual wield level increased!
+                    attacker.SendLocalizedMessage(timer.DualHitChance == .75 ? "Chance de ataque duplo aumentada" : ""); // Dual wield level increased to peak! : Dual wield level increased!
                 }
 
                 ClearCurrentAbility(attacker);
@@ -53,7 +53,7 @@ namespace Server.Items
             }
 
             ClearCurrentAbility(attacker);
-            attacker.SendLocalizedMessage("Voce comeca atacar com as duas armas"); // You begin trying to strike with both your weapons at once.
+            attacker.SendLocalizedMessage("Voce comeca atacar muito rapidamente"); // You begin trying to strike with both your weapons at once.
             attacker.SendLocalizedMessage("Segundos restantes: "+Duration.TotalSeconds.ToString()); // Remaining Duration (seconds):
 
             DualWieldTimer t = new DualWieldTimer(attacker, .25);

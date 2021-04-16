@@ -5905,7 +5905,8 @@ namespace Server.Mobiles
             var V = (int)Math.Pow(Nivel * 10, 2);
             if (V <= 0)
                 V = 1;
-            return V;
+    
+            return Shard.AVENTURA ? V / 10 : V;
         }
 
         public override void Serialize(GenericWriter writer)
@@ -6482,7 +6483,13 @@ namespace Server.Mobiles
                 Waypoints.UpdateToParty(this);
             }
 
-            if(RP && Mounted && !Talentos.Tem(Talento.Hipismo) && (d & Direction.Running) != 0)
+            BandageContext c = BandageContext.GetContext(this);
+            if (c != null && !Talentos.Tem(Talento.Curandeiro) && Utility.RandomDouble() < 0.25)
+            {
+                c.Slip();
+            }
+
+            if (RP && Mounted && !Talentos.Tem(Talento.Hipismo) && (d & Direction.Running) != 0)
             {
                 if(Utility.RandomDouble() < 0.01)
                 {

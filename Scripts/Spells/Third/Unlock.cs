@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Server.Items;
 using Server.Network;
 using Server.Targeting;
@@ -78,6 +78,16 @@ namespace Server.Spells.Third
                         else
                         {
                             int level = (int)(from.Skills[SkillName.Magery].Value * 0.8) - 4;
+
+                            if(cont is BaseTreasureChestMod)
+                            {
+                                var l = ((BaseTreasureChestMod)cont).GetLevel();
+                                if(l > 1)
+                                {
+                                    from.SendLocalizedMessage(501666); // You can't unlock that!
+                                    return;
+                                }
+                            }
 
                             if (level >= cont.RequiredSkill && !(cont is TreasureMapChest && ((TreasureMapChest)cont).Level > 2))
                             {

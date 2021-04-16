@@ -154,20 +154,7 @@ namespace Server.Spells.Sixth
                             
                             else
                             {
-                                if(m == from)
-                                {
-                                    if (MagicReflectSpell.EndReflect(m))
-                                        m.SendMessage("Sua reflexao magica se dissipou");
-                                    if (ProtectionSpell.EndProtection(m))
-                                        m.SendMessage("Sua magia de protecao se dissipou");
-                                    if (ReactiveArmorSpell.EndArmor(m))
-                                        m.SendMessage("Sua armadura reativa se dissipou");
-                                    if(!m.CanBeginAction(typeof(DefensiveSpell)))
-                                    {
-                                        m.SendMessage("Voce pode usar outra magia defensiva.");
-                                        m.EndAction(typeof(DefensiveSpell));
-                                    }
-                                }
+                               
                                 from.MovingParticles(m, 0x3779, 10, 0, false, false, 9502, 4019, 0x160);
                                 if(from.RP && from.TemTalento(Fronteira.Talentos.Talento.Dispel))
                                 {
@@ -185,12 +172,32 @@ namespace Server.Spells.Sixth
                                     Discordance.RemoveEffect(m);
                                     if (m.Paralyzed)
                                         m.Paralyzed = false;
+                                    if (m.Poisoned)
+                                        m.CurePoison(from);
                                     m.SendMessage("* magias dissipadas *");
                                     from.OverheadMessage("* dissipando magias *");
                                     BuffInfo.RemoveBuff(m, BuffIcon.MassCurse);
-                                } 
-                                    
-                               
+                                    m.RemoveStatMod("Holy Bless");
+                                    var dissipado = false;
+                                    if (MagicReflectSpell.EndReflect(m))
+                                        m.OverheadMessage("* dissipado Magic Reflect *");
+                                    if (ProtectionSpell.EndProtection(m))
+                                        m.OverheadMessage("* dissipado Protection *");
+                                    if (ReactiveArmorSpell.EndArmor(m))
+                                        m.OverheadMessage("* dissipado Reactive Armor *");
+                                    if (ArchProtectionSpell.RemoveEntry(m))
+                                        m.OverheadMessage("* dissipado Protection *");
+                                    if (ArchProtectionSpell.RemoveEntry(m))
+                                        m.OverheadMessage("* dissipado Arch Protection *");
+                                    if(m == from)
+                                    {
+                                        if (!m.CanBeginAction(typeof(DefensiveSpell)))
+                                        {
+                                            m.SendMessage("Voce pode usar outra magia defensiva.");
+                                            m.EndAction(typeof(DefensiveSpell));
+                                        }
+                                    }
+                                }     
                             }
                             this.m_Owner.FinishSequence();
                         }

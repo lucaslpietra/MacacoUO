@@ -86,6 +86,7 @@ namespace Server.Gumps
             V = (int)Math.Pow(m.Skills[s].Base / 10, 4.2) / 17;
             if (V <= 0)
                 V = 1;
+
             return V;
         }
 

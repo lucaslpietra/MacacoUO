@@ -1,17 +1,15 @@
 using Server.Gumps;
-using Server.Items;
 using Server.Mobiles;
+using System;
 
 namespace Server.Fronteira.Talentos
 {
     public class TalentoBook : Item
     {
-        public TalentoBook(Serial s) : base(s) { }
-        /*
         [Constructable]
         public TalentoBook() : base(0x225A)
         {
-            Name = "Livro de Especializacao";
+            Name = "Catalogo de Talentos";
         }
 
         public TalentoBook(Serial s) : base(s) { }
@@ -19,24 +17,11 @@ namespace Server.Fronteira.Talentos
         public override void AddNameProperties(ObjectPropertyList list)
         {
             base.AddNameProperties(list);
-            list.Add("Use para ganhar +1 talento");
+            list.Add("Enciclopedia dos Talentos");
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-
-            if (!this.IsChildOf(from.Backpack) && this.Parent != from)
-            {
-                from.SendMessage("Precisa estar em sua mochila");
-                return;
-            }
-
-            if(!from.RP)
-            {
-                from.SendMessage("Voce nao pode usar isto");
-                return;
-            }
-
             var pl = from as PlayerMobile;
             if (pl == null)
                 return;
@@ -44,9 +29,9 @@ namespace Server.Fronteira.Talentos
             if (from.HasGump(typeof(GumpLivroTalento)))
                 from.CloseGump(typeof(GumpLivroTalento));
 
-            from.SendGump(new GumpLivroTalento(pl, this));
+            Talento[] Talentos = Enum.GetValues(typeof(Talento)).CastToArray<Talento>();
+            from.SendGump(new GumpLivroTalento(pl, Talentos));
         }
-        */
 
         public override void Serialize(GenericWriter writer)
         {

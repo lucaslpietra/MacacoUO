@@ -1,4 +1,5 @@
 using Server.Mobiles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,11 +14,13 @@ namespace Server.Fronteira.Talentos
 
         public static void CapChange(SkillCapChangeEventArgs e)
         {
-            if(e is PlayerMobile)
+            if(e.Mobile is PlayerMobile)
             {
                 if (e.NewCap > 0 && e.Skill.Base < e.NewCap / 4)
-                    e.Skill.Base = e.NewCap / 4;
-
+                {
+                    e.Skill.Base = e.NewCap / 2;
+                    e.Skill.Base = Math.Floor(e.Skill.Base / 10) * 10;
+                }
             }
         }
 

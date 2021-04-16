@@ -17,9 +17,16 @@ namespace Server.Fronteira.Talentos
         {
             _talentos.Add(Talento.Dispel, new DefTalentos()
             {
-                Desc1 = "Magia Dispel tambem remove Debuffs",
+                Desc1 = "Magia Dispel tambem remove todos Buffs & Debuffs",
                 Icone = 2293,
                 Nome = "Dissipar Magia"
+            });
+
+            _talentos.Add(Talento.Herbalismo, new DefTalentos()
+            {
+                Desc1 = "Max 90 Farming",
+                Icone = 40865,
+                Nome = "Herbalismo"
             });
 
             _talentos.Add(Talento.Feiticeiro, new DefTalentos()
@@ -119,7 +126,6 @@ namespace Server.Fronteira.Talentos
                 Icone = 40875,
                 Nome = "Nenhum"
             });
-
 
             _talentos.Add(Talento.AnimalLore, new DefTalentos()
             {
@@ -515,7 +521,6 @@ namespace Server.Fronteira.Talentos
                 Nome = "Experiente"
             });
 
-
             _talentos.Add(Talento.Hipismo, new DefTalentos()
             {
                 Desc1 = "Monta sem cair",
@@ -551,6 +556,13 @@ namespace Server.Fronteira.Talentos
                 Nome = "Sabedoria"
             });
 
+            _talentos.Add(Talento.AlquimiaMagica, new DefTalentos()
+            {
+                Desc1 = "Produz 2 Pocoes usando 1 ingrediente",
+                Icone = 23000,
+                Nome = "Alquimia Magica"
+            });
+
             _talentos.Add(Talento.Sagacidade, new DefTalentos()
             {
                 Desc1 = "Conjurar se movimentando",
@@ -577,6 +589,13 @@ namespace Server.Fronteira.Talentos
                 Desc1 = "Max 90 Poisoning",
                 Icone = 39820,
                 Nome = "Mestre dos Venenos"
+            });
+
+            _talentos.Add(Talento.Combate, new DefTalentos()
+            {
+                Desc1 = "Max 90 Tactics & 40 Arms Lore",
+                Icone = 23003,
+                Nome = "Arte do Combate"
             });
 
             _talentos.Add(Talento.MentePerfurante, new DefTalentos()

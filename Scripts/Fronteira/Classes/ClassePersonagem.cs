@@ -59,6 +59,7 @@ namespace Server.Fronteira.Classes
 
         public void ViraClasse(PlayerMobile player)
         {
+            player.Skills.Cap = int.MaxValue;
             foreach(var skill in player.Skills)
             {
                 if(ClassSkills.ContainsKey(skill.SkillName))

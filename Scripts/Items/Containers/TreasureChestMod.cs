@@ -34,7 +34,8 @@ namespace Server.Items
                 AddLoot(new BagOfReagents());
             if (Utility.Random(5) == 1)
                 AddLoot(new BagOfNecroReagents());
-
+            if (Utility.Random(3) == 1)
+                AddLoot(new Bandage(6));
             DropItem(new Gold(30, 100));
 
             var t = Utility.Random(100);
@@ -118,7 +119,8 @@ namespace Server.Items
             if (Utility.Random(5) == 1)
                 AddLoot(new BagOfNecroReagents(20));
             DropItem(new Gold(25, 60));
-
+            if (Utility.Random(3) == 1)
+                AddLoot(new Bandage(6));
             var t = Utility.Random(100);
             var amt = 30;
             if (t <= 1)
@@ -192,7 +194,8 @@ namespace Server.Items
             MaxLockLevel = this.RequiredSkill + 25;
             TrapType = TrapType.MagicTrap;
             TrapPower = 1 * Utility.Random(1, 25);
-
+            if (Utility.Random(3) == 1)
+                AddLoot(new Bandage(6));
 
             if (Utility.Random(3) == 1)
                 AddLoot(new BagOfReagents());
@@ -294,6 +297,8 @@ namespace Server.Items
             AddLoot(Loot.RandomProvision());
             AddLoot(Loot.RandomProvision());
             DropItem(Loot.RandomSeed());
+            if (Utility.Random(3) == 1)
+                AddLoot(new Bandage(10));
 
             AddLoot(new BagOfReagents());
             if (Utility.Random(3) == 1)

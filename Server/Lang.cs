@@ -2001,6 +2001,7 @@ namespace Server
                 case 500450:
                     return "Voce apenas pode fazer isto em criatura mortas";
                 case 1049593: return "Atributos";
+                case 501666: return "Voce nao pode destrancar isto";
                 case 1049578: return "Vida";
                 case 1028335: return "Forca";
                 case 1157565:

@@ -622,7 +622,7 @@ namespace Server
         public static double HARD = 0.1f;
         public static double MEDIUM = 0.5f;
         public static double EASY = 0.9f;
-        public static double COMBAT = 0.05;
+        public static double COMBAT = 0.00;
 
         private static SkillInfo[] m_Table = new SkillInfo[58]
         {
@@ -1117,6 +1117,11 @@ namespace Server
                 m_Highest = skill;
             }
 
+            if(Shard.RP)
+            {
+                m_Owner.SendMessage(390, "Sua habilidade em " + skill.Name + " agora esta em " + skill.Value);
+                return;
+            }
             m_Owner.OnSkillInvalidated(skill);
 
             NetState ns = m_Owner.NetState;

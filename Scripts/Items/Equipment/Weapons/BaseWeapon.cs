@@ -1803,7 +1803,11 @@ namespace Server.Items
                 }
             }
 
-        
+            BandageContext c = BandageContext.GetContext(attacker);
+            if (c != null && !attacker.TemTalento(Talento.Curandeiro) && Utility.RandomDouble() < 0.5)
+            {
+                c.Slip();
+            }
 
             if (Core.AOS)
             {

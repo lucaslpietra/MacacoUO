@@ -60,7 +60,7 @@ namespace Server.Fronteira.Classes
               new OpcaoTalentos(Talento.Paladino, Talento.Darknight, Talento.Comandante),
               new OpcaoTalentos(Talento.Hipismo, Talento.ArmaduraPesada, Talento.Potencia),
               new OpcaoTalentos(Talento.Bloqueador, Talento.ResistSpell, Talento.Brutalidade),
-              new OpcaoTalentos(Talento.Defensor, Talento.Rastreador, Talento.Magia),
+              new OpcaoTalentos(Talento.Defensor, Talento.Rastreador, Talento.Envenenador),
               new OpcaoTalentos(Talento.FisicoPerfeito, Talento.Machados, Talento.Hastes),
               new OpcaoTalentos(Talento.Hab_BleedAttack, Talento.Hab_AtaqueMortal, Talento.Hab_Bladeweave),
               new OpcaoTalentos(Talento.ArmaduraMagica, Talento.Sabedoria, Talento.Regeneracao)
@@ -78,14 +78,14 @@ namespace Server.Fronteira.Classes
                     new SkillClasse(SkillName.DetectHidden, 60), new SkillClasse(SkillName.Tracking, 40)
             }),
                 new OpcaoTalentos(Talento.Ladrao, Talento.Esquiva, Talento.Precisao),
-                new OpcaoTalentos(Talento.Hab_Doubleshot, Talento.Hab_DoubleStrike, Talento.Hab_DuelWeild),
+                new OpcaoTalentos(Talento.Hab_Doubleshot, Talento.Hab_DoubleStrike, Talento.Hab_ParalizeBlow),
                 new OpcaoTalentos(Talento.Adagas, Talento.Espadas, Talento.Lancas),
                 new OpcaoTalentos(Talento.Silencioso, Talento.Perseveranca, Talento.Potencia),
                 new OpcaoTalentos(Talento.Gatuno, Talento.Hipismo, Talento.Rastreador),
                 new OpcaoTalentos(Talento.Assassino, Talento.CacadorDeTesouros, Talento.Ranger),
                 new OpcaoTalentos(Talento.Curandeiro, Talento.Regeneracao, Talento.Hab_Infectar),
                 new OpcaoTalentos(Talento.Hab_SerpentArrow, Talento.Hab_AtaqueMortal, Talento.Hab_TalonStrike),
-                new OpcaoTalentos(Talento.Hab_Shadowstrike, Talento.Hab_BleedAttack, Talento.Hab_ArmorIgnore),
+                new OpcaoTalentos(Talento.Hab_Shadowstrike, Talento.Hab_Infectar, Talento.Hab_ArmorIgnore),
                 new OpcaoTalentos(Talento.Brutalidade, Talento.Finta, Talento.Hipismo),
                 new OpcaoTalentos(Talento.ResistSpell, Talento.Hab_Disarm, Talento.Hab_Dismount),
                 new OpcaoTalentos(Talento.CorrerStealth, Talento.AnimalLore, Talento.Hab_MovingSHot)
@@ -103,17 +103,17 @@ namespace Server.Fronteira.Classes
                     new SkillClasse(SkillName.ItemID, 60),  new SkillClasse(SkillName.Forensics, 40),  new SkillClasse(SkillName.Imbuing, 40)
             }),
               new OpcaoTalentos(Talento.Elementalismo, Talento.EstudoSagrado, Talento.ArmaduraMagica),
-              new OpcaoTalentos(Talento.Curandeiro, Talento.Herbalismo, Talento.Hipismo),
-              new OpcaoTalentos(Talento.Ladrao, Talento.MentePerfurante, Talento.Investigador),
               new OpcaoTalentos(Talento.Cajados, Talento.Alquimista, Talento.Livros),
+              new OpcaoTalentos(Talento.Ladrao, Talento.Esconderijo, Talento.Investigador),
+              new OpcaoTalentos(Talento.Curandeiro, Talento.Herbalismo, Talento.Hipismo),
               new OpcaoTalentos(Talento.Arquimago, Talento.Necromante, Talento.Feiticeiro),
               new OpcaoTalentos(Talento.Hab_ForceOfNature, Talento.Foco, Talento.Hab_PsyAttack),
               new OpcaoTalentos(Talento.Hab_Feint, Talento.Hab_Disarm, Talento.Hab_ParalizeBlow),
               new OpcaoTalentos(Talento.Regeneracao, Talento.ResistSpell, Talento.Silencioso),
               new OpcaoTalentos(Talento.Provocacao, Talento.Sabedoria, Talento.Pacificador),
-              new OpcaoTalentos(Talento.Esconderijo, Talento.Bloqueador, Talento.Envenenador),
-              new OpcaoTalentos(Talento.Dispel, Talento.Sagacidade, Talento.Esquiva),
-              new OpcaoTalentos(Talento.Dispel, Talento.Sagacidade, Talento.Esquiva)
+              new OpcaoTalentos(Talento.Combate, Talento.Bloqueador, Talento.Envenenador),
+              new OpcaoTalentos(Talento.Dispel, Talento.Hab_Infectar, Talento.MentePerfurante),
+              new OpcaoTalentos(Talento.AlquimiaMagica, Talento.Sagacidade, Talento.Esquiva)
             );
 
             /*

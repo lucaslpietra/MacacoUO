@@ -24,6 +24,8 @@ namespace Server
 
         public static bool SPHERE_STYLE { get { return Config.Get("General.TARGET_SPHERE", false); } }
 
+        public static bool AVENTURA { get { return Config.Get("General.AVENTURA", true); } }
+
         public static bool EXP = true;
 
         public static void Erro(string str, Mobile from = null)
