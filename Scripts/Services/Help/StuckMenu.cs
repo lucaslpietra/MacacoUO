@@ -54,7 +54,7 @@ namespace Server.Menus.Questions
             */
             new StuckMenuEntry("Rhodes", new Point3D[]
             {
-              CharacterCreation.INICIO,
+              CharacterCreation.WSHALL,
 
             }, Map.Felucca),
             new StuckMenuEntry("Cabo da Tormenta", new Point3D[]

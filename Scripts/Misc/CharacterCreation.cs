@@ -13,7 +13,7 @@ namespace Server.Misc
 {
     public class CharacterCreation
     {
-        public static Point3D INICIO = new Point3D(5160, 1810, 0);
+        public static Point3D WSHALL = new Point3D(5160, 1810, 0);
 
         private static readonly CityInfo m_NewHavenInfo = new CityInfo(
             "New Haven",

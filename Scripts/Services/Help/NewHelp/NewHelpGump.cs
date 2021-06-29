@@ -3,6 +3,7 @@ using Server;
 using Server.Engines.Help;
 using Server.Gumps;
 using Server.Menus.Questions;
+using Server.Misc;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Network;
@@ -21,7 +22,7 @@ namespace Server.Gumps
             this.AddPage(0);
             var sizeY = 336;
 
-            if(m.IsYoung())
+            if (m.IsYoung())
             {
                 sizeY += 90;
             }
@@ -37,14 +38,14 @@ namespace Server.Gumps
             this.AddHtml(171, 246, 172, 23, @"Estou Preso", (bool)true, (bool)false);
             this.AddHtml(173, 271, 408, 54, @"Voce sera congelado por um minuto e depois sera levado a cidade", (bool)false, (bool)false);
             this.AddButton(140, 244, 2472, 2472, (int)Buttons.Lock, GumpButtonType.Reply, 0);
-            
+
             this.AddHtml(172, 341, 172, 23, @"Aonde devo ir ?", (bool)true, (bool)false);
             this.AddHtml(173, 366, 408, 54, @"Mostra locais que voce possa ter interesse em visitar", (bool)false, (bool)false);
             this.AddButton(140, 340, 2472, 2472, (int)Buttons.Locations, GumpButtonType.Reply, 0);
 
-            if(m.IsYoung())
+            if (m.IsYoung())
             {
-                this.AddHtml(172, 341+90, 172, 23, @"Renunciar Status Novato", (bool)true, (bool)false);
+                this.AddHtml(172, 341 + 90, 172, 23, @"Renunciar Status Novato", (bool)true, (bool)false);
                 this.AddHtml(173, 366 + 90, 408, 54, @"Renuncia de ser um novato", (bool)false, (bool)false);
                 this.AddButton(140, 340 + 90, 2472, 2472, (int)Buttons.Renuncia, GumpButtonType.Reply, 0);
             }
@@ -62,13 +63,16 @@ namespace Server.Gumps
             pombo.Blessed = true;
             pombo.MoveToWorld(from.Location, from.Map);
             pombo.AIObject.MoveTo(new Point3D(from.Location.X + 10, (from.Location.X + 10), 0), false, 10);
-            Timer.DelayCall(TimeSpan.FromSeconds(3), () => {
+            Timer.DelayCall(TimeSpan.FromSeconds(3), () =>
+            {
                 pombo.Say("* pruuu *");
             });
-            Timer.DelayCall(TimeSpan.FromSeconds(9), () => {
+            Timer.DelayCall(TimeSpan.FromSeconds(9), () =>
+            {
                 pombo.Say("* decolando *");
             });
-            Timer.DelayCall(TimeSpan.FromSeconds(10), () => {
+            Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
+            {
                 pombo.Delete();
                 from.SendMessage("Seu pombo correio esta voando para entregar a mensagem");
             });
@@ -82,7 +86,7 @@ namespace Server.Gumps
             var player = (PlayerMobile)sender.Mobile;
             var from = player;
 
-            switch(info.ButtonID)
+            switch (info.ButtonID)
             {
                 case (int)Buttons.Renuncia:
                     if (from.Young && !from.HasGump(typeof(RenounceYoungGump)))
@@ -112,18 +116,38 @@ namespace Server.Gumps
                     {
                         from.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
                     }
-                    else if (from.CanUseStuckMenu() && from.Region.CanUseStuckMenu(from) && !CheckCombat(from) && !from.Frozen && !from.Criminal)
+                    else if (Shard.WARSHARD)
                     {
-                        StuckMenu menu = new StuckMenu(from, from, true);
-
-                        menu.BeginClose();
-
-                        from.SendGump(menu);
+                        if(!CheckCombat(from))
+                        {
+                            from.SendMessage("Voce nao pode fazer isto em combate");
+                            return;
+                        }
+                        var hall = CharacterCreation.WSHALL;
+                        BaseCreature.TeleportPets(from, hall, Map.Malas);
+                        from.PlaySound(0x214);
+                        from.FixedEffect(0x376A, 10, 16);
+                        from.MoveToWorld(hall, Map.Malas);
+                        from.Frozen = false;
+                        from.SendMessage(0x00FE, "Você retornou ao Hall.");
                     }
                     else
                     {
-                        from.SendMessage("Voce precisa aguardar 1 hora para usar a opcao de destravar novamente.");
+                        if (from.CanUseStuckMenu() && from.Region.CanUseStuckMenu(from) && !CheckCombat(from) && !from.Frozen && !from.Criminal)
+                        {
+                            StuckMenu menu = new StuckMenu(from, from, true);
+
+                            menu.BeginClose();
+
+                            from.SendGump(menu);
+                        }
+                        else
+                        {
+                            from.SendMessage("Voce precisa aguardar 1 hora para usar a opcao de destravar novamente.");
+                        }
+
                     }
+
                     return;
             }
         }

@@ -45,8 +45,8 @@ namespace Server.Engines.VvV
 
             if (info.ButtonID == 1)
             {
-                BaseCreature.TeleportPets(User, CharacterCreation.INICIO, Map.Felucca);
-                User.MoveToWorld(CharacterCreation.INICIO, Map.Felucca);
+                BaseCreature.TeleportPets(User, CharacterCreation.WSHALL, Map.Felucca);
+                User.MoveToWorld(CharacterCreation.WSHALL, Map.Felucca);
             }
             else
             {

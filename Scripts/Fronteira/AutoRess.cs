@@ -110,7 +110,7 @@ namespace Server.Gumps
 
         public static void Revive(Mobile m)
         {
-            var hall = CharacterCreation.INICIO;
+            var hall = CharacterCreation.WSHALL;
             BaseCreature.TeleportPets(m, hall, Map.Malas);
             m.PlaySound(0x214);
             m.FixedEffect(0x376A, 10, 16);
