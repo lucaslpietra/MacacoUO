@@ -1441,7 +1441,7 @@ namespace VitaNex.Modules.AutoPvP
 				case 0:
 				{
 					AddHtmlButton(x, y, w, h, o => OnViewTeam(team), team.Name, Color.White, bgcol);
-					AddTooltip(1116493); // Team
+					//AddTooltip(1116493); // Team
 				}
 					break;
 				case 1:
@@ -1518,7 +1518,7 @@ namespace VitaNex.Modules.AutoPvP
 		protected virtual void OnViewTeam(PvPTeam team)
 		{
 			Team = team;
-
+            Shard.Debug("View Team");
 			new PvPTeamUI(User, team, Hide(true)).Send();
 		}
 

@@ -107,7 +107,7 @@ namespace Server.Misc
 
             double rate;
             double armorPenalty = GetArmorOffset(from);
-            Shard.Debug("Armor Penalty " + armorPenalty);
+
             if (Core.ML)
             {
                 double med = from.Skills[SkillName.Meditation].Value;

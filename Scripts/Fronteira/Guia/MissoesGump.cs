@@ -315,7 +315,7 @@ namespace Server.Items
                 from.QuestArrow = new QuestArrow(from, npc.Location);
                 from.QuestArrow.Update();
                 from.CloseAllGumps();
-                from.SendMessage("Voce esta indo ao seu destino no mapa "+npc.Map.Name);
+                from.SendMessage("Voce esta indo ao seu destino "+npc.Location.ToString()+" no mapa "+npc.Map.Name);
             }
 
             switch (index)
