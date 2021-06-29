@@ -4419,7 +4419,7 @@ namespace Server.Mobiles
                 Corpse.Delete();
             }
 
-            Emote("*Acorda do Desmaio*");
+            Emote("*acorda*");
             var cordaAmarrada = Rope.GetCordaAmarrada(this);
             if (cordaAmarrada != null)
             {
@@ -4790,6 +4790,8 @@ namespace Server.Mobiles
                     SendMessage(38, "!!! VOCÊ ESTÁ DESMAIADO !!!");
                     PrivateOverheadMessage(MessageType.Emote, 88, false, "!!! DESMAIADO !!!", NetState);
                 }
+                m_ExpireDeathTimer = new ExpireDeathTimer(this);
+                m_ExpireDeathTimer.Start();
             }
             else
             {
@@ -4798,8 +4800,6 @@ namespace Server.Mobiles
                 Send(DeathStatus.Instantiate(false));
             }
 
-            m_ExpireDeathTimer = new ExpireDeathTimer(this);
-            m_ExpireDeathTimer.Start();
             //FE Sistema de desmaios END
 
             m_EquipSnapshot = null;
