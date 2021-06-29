@@ -256,9 +256,9 @@ namespace Server
 			: this(name, map, parent, ConvertTo3D(area))
 		{ }
 
-        public static MusicName FLORESTA = MusicName.DupresNightInTrinsic;
+        public static MusicName FLORESTA = MusicName.ParoxysmusLair;
         public static MusicName CAVERNA = MusicName.Medieval;
-        public static MusicName DEFAULT = MusicName.Serpents;
+        public static MusicName DEFAULT = MusicName.Medieval;
 
         public Region(string name, Map map, Region parent, params Rectangle3D[] area)
 		{

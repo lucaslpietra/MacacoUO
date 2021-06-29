@@ -2474,11 +2474,8 @@
     <region type="TownRegion" priority="50" name="Luna">
       <rect x="945" y="490" width="91" height="61" />
       <go x="989" y="520" z="-50" />
+      <logoutDelay active="false" />
       <music name="tavern04" />
-      <region>
-        <rect x="986" y="509" width="18" height="21" />
-        <logoutDelay active="false" />
-      </region>
     </region>
     <region type="TownRegion" priority="50" name="Umbra">
       <rect x="2042" y="1265" width="48" height="13" />
