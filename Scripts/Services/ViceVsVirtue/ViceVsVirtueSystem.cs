@@ -25,7 +25,6 @@ namespace Server.Engines.VvV
 
     public enum VvVCity
     {
-        /*
         Britain,
         Jhelom,
         Minoc,
@@ -34,8 +33,6 @@ namespace Server.Engines.VvV
         SkaraBrae,
         Trinsic,
         Yew
-        */
-        Tretonia
     }
 
     public class ViceVsVirtueSystem : PointsSystem

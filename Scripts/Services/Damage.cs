@@ -18,19 +18,6 @@ namespace Server.Services
                 dmg = "+" + (-damage);
             }
             to.NewFontPublicMessage(Network.MessageType.Regular, hue, false, dmg, 3);
-            /*
-            PlayerMobile attacker = null;
-            if (from is PlayerMobile)
-                attacker = from;
-            else if(from is BaseCreature)
-            {
-                var creature = (BaseCreature)from;
-                if(creature.Controlled)
-                {
-                    Mobile b = creature.Owners
-                }
-            }
-            */
         }
     }
 

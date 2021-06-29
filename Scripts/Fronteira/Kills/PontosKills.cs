@@ -19,7 +19,7 @@ namespace Server.Ziden.Kills
         {
             if (Shard.WARSHARD)
             {
-                CommandSystem.Register("pvp", AccessLevel.Player, Cmd);
+                CommandSystem.Register("rankpvp", AccessLevel.Player, Cmd);
                 EventSink.PlayerDeath += new PlayerDeathEventHandler(PlayerDeath);
             }
         }

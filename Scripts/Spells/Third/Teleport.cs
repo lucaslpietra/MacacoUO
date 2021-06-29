@@ -7,6 +7,8 @@ namespace Server.Spells.Third
 {
     public class TeleportSpell : MagerySpell
     {
+
+
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Teleport", "Rel Por",
             215,

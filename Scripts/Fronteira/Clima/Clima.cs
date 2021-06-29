@@ -20,11 +20,14 @@ namespace Server.Fronteira.Clima
 
         public static void Configure()
         {
-            EventSink.OnEnterRegion += EnterRegion;
-            EventSink.Login += Loga;
-            EventSink.Logout += Desloga;
-            EventSink.WorldLoad += OnLoad;
-            EventSink.WorldSave += OnSave;
+            if(Shard.RP)
+            {
+                EventSink.OnEnterRegion += EnterRegion;
+                EventSink.Login += Loga;
+                EventSink.Logout += Desloga;
+                EventSink.WorldLoad += OnLoad;
+                EventSink.WorldSave += OnSave;
+            }
             var timer = new Loop();
             timer.Start();
         }

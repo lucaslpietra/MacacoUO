@@ -6032,7 +6032,7 @@ namespace Server
                 case 37:
                     {
                         m_DisplayGuildAbbr = reader.ReadBool();
-
+                        
                         goto case 36;
                     }
                 case 36:
@@ -6274,7 +6274,6 @@ namespace Server
                 case 2:
                     {
                         m_NameHue = reader.ReadInt();
-
                         goto case 1;
                     }
                 case 1:
@@ -6325,7 +6324,6 @@ namespace Server
                             m_Followers = 0;
                             m_FollowersMax = 5;
                         }
-
                         m_Location = reader.ReadPoint3D();
                         m_Body = new Body(reader.ReadInt());
                         m_Name = reader.ReadString();
@@ -6362,7 +6360,6 @@ namespace Server
                         m_Title = reader.ReadString();
                         m_Profile = reader.ReadString();
                         m_ProfileLocked = reader.ReadBool();
-
                         if (version <= 18)
                         {
                             reader.ReadInt();
@@ -6381,7 +6378,6 @@ namespace Server
 
                         m_StatMods = new List<StatMod>();
                         m_SkillMods = new List<SkillMod>();
-
                         if (reader.ReadBool())
                         {
                             m_StuckMenuUses = new DateTime[reader.ReadInt()];
@@ -6423,7 +6419,6 @@ namespace Server
                         {
                             CheckStatTimers();
                         }
-
                         if (!m_Player && m_Dex <= 100 && m_CombatTimer != null)
                         {
                             m_CombatTimer.Priority = TimerPriority.FiftyMS;
@@ -6432,14 +6427,15 @@ namespace Server
                         {
                             m_CombatTimer.Priority = TimerPriority.EveryTick;
                         }
-
+         
                         UpdateRegion();
-
+                  
                         UpdateResistances();
 
                         break;
                     }
             }
+
 
             if (!m_Player)
             {
@@ -9622,7 +9618,12 @@ namespace Server
                 if (m_Name != value) // I'm leaving out the && m_NameMod == null
                 {
                     string oldName = m_Name;
+                    if(value.StartsWith("a "))
+                    {
+                        value = value.Substring(2);
+                    }
                     m_Name = value;
+                   
                     OnAfterNameChange(oldName, m_Name);
                     Delta(MobileDelta.Name);
                     InvalidateProperties();

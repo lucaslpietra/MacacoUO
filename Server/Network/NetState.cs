@@ -824,47 +824,7 @@ namespace Server.Network
                     x += 1;
                 }
             }
-            if (P == 9 && x > 50)
-            {
-                P = 10;
-            }
-            if (P == 8 && x > 45)
-            {
-                P = 9;
-            }
-            if (P == 7 && x > 40)
-            {
-                P = 8;
-            }
-            else if (P == 6 && x > 35)
-            {
-                P = 7;
-            }
-            else if (P == 5 && x > 30)
-            {
-                P = 6;
-            }
-            else if (P == 4 && x > 25)
-            {
-                P = 5;
-            }
-            else if (P == 3 && x > 20)
-            {
-                P = 4;
-            }
-            else if (P == 2 && x > 15)
-            {
-                P = 3;
-            }
-            else if (P == 1 && x > 10)
-            {
-                P = 2;
-            }
-            else if (P == 0 && x > 5)
-            {
-                P = 1;
-            }
-            return x + P * 4;
+            return x;
         }
 
         private void OnReceive(IAsyncResult asyncResult)

@@ -776,8 +776,10 @@ namespace Server
 			if (failedItems || failedMobiles || failedGuilds || failedData)
 			{
 				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("An error was encountered while loading a saved object");
+				Console.WriteLine("Erro ao deserializar objeto");
 				Utility.PopColor();
+                Console.WriteLine(failed.Message);
+                Console.WriteLine(failed.StackTrace);
 
 				Console.WriteLine(" - Type: {0}", failedType);
 
@@ -792,13 +794,13 @@ namespace Server
 
 				if (!Core.Service)
 				{
-					Console.WriteLine("Delete the object? (y/n)");
+					Console.WriteLine("Deletar objeto? (y/n)");
 
                     if (Console.ReadKey(true).Key == ConsoleKey.Y)
 					{
 						if (failedType != typeof(BaseGuild))
 						{
-							Console.WriteLine("Delete all objects of that type? (y/n)");
+							Console.WriteLine("Deletar todos objetos desse tipo? (y/n)");
 
                             if (Console.ReadKey(true).Key == ConsoleKey.Y)
 							{

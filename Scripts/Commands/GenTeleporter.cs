@@ -101,7 +101,6 @@ namespace Server.Commands
                 try
                 {
                     var mapDest = Map.Parse(parts[7]);
-                    if(mapDest == Map.Ilshenar)
                         c.CreateTeleporter(
                             int.Parse(parts[0]),
                             int.Parse(parts[1]),

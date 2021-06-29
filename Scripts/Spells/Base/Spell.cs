@@ -257,7 +257,7 @@ namespace Server.Spells
 
         public virtual bool CheckMovement(Mobile caster)
         {
-            if (caster.Player && IsCasting && BlocksMovement && (!(m_Caster is BaseCreature) || ((BaseCreature)m_Caster).FreezeOnCast))
+            if (Shard.RP && caster.Player && IsCasting && BlocksMovement && (!(m_Caster is BaseCreature) || ((BaseCreature)m_Caster).FreezeOnCast))
             {
                 //m_Caster.SendMessage("Voce esta conjurando uma magia e nao consegue se mover");
                 if (caster.TemTalento(Talento.Sagacidade))

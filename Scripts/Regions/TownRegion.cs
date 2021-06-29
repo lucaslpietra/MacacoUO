@@ -16,8 +16,10 @@ namespace Server.Regions
 
         public override void OnEnter(Mobile m)
         {
+            Shard.Debug("Pre enter");
             base.OnEnter(m);
 
+            Shard.Debug("VVV enter");
             if (ViceVsVirtueSystem.EnhancedRules && 
                 IsVvVBattleRegion() &&
                 ViceVsVirtueSystem.IsVvVCombatant(m) &&

@@ -1141,8 +1141,7 @@ namespace Server
 
 			Region oldR = oldRegion;
 			Region newR = newRegion;
-
-			while (oldR != newR)
+            while (oldR != newR)
 			{
 				int oldRChild = (oldR != null ? oldR.ChildLevel : -1);
 				int newRChild = (newR != null ? newR.ChildLevel : -1);
@@ -1156,12 +1155,12 @@ namespace Server
 
 				if (newRChild >= oldRChild && newR != null)
 				{
-					newR.OnEnter(m);
+                    newR.OnEnter(m);
 
 					EventSink.InvokeOnEnterRegion(new OnEnterRegionEventArgs(m, oldRegion, newR));
 
 					newR = newR.Parent;
-				}
+                }
 			}
 		}
 

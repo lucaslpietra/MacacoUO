@@ -48,8 +48,7 @@ namespace Server.Fronteira
                     }
                     else
                     {
-                        //pm.SendMessage("Escolha se deseja criar um personagem RP ou NORMAL");
-                        //pm.SendGump(new NonRPClassGump());
+                        pm.SendGump(new NonRPClassGump());
                     }
                 }
                 else

@@ -8,7 +8,7 @@ namespace Server.Mobiles
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         [Constructable]
         public Tanner()
-            : base("the tanner")
+            : base("o peleiro")
         {
             this.SetSkill(SkillName.Tailoring, 36.0, 68.0);
         }

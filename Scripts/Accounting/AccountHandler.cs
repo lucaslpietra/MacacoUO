@@ -21,9 +21,9 @@ namespace Server.Misc
 
     public class AccountHandler
     {
-	    public static PasswordProtection ProtectPasswords = Config.GetEnum(
-		    "Accounts.ProtectPasswords",
-			PasswordProtection.NewSecureCrypt);
+        public static PasswordProtection ProtectPasswords = Config.GetEnum(
+            "Accounts.ProtectPasswords",
+            PasswordProtection.NewSecureCrypt);
 
         private static readonly int MaxAccountsPerIP = Config.Get("Accounts.AccountsPerIp", 1);
         private static readonly bool AutoAccountCreation = Config.Get("Accounts.AutoCreateAccounts", true);
@@ -32,53 +32,57 @@ namespace Server.Misc
 
         private static readonly CityInfo[] StartingCitiesT2A = new CityInfo[]
         {
-            new CityInfo("New Haven",	"New Haven Bank",	1150168, 3503,	2574,	14, Map.Felucca),
-            new CityInfo("Yew", "The Empath Abbey",	1075072, 633,	858,	0, Map.Felucca),
-            new CityInfo("Minoc", "The Barnacle", 1075073, 2476,	413,	15, Map.Felucca),
-            new CityInfo("Britain",	"The Wayfarer's Inn",	1075074, 1602,	1591,	20, Map.Felucca),
-            new CityInfo("Moonglow",	"The Scholars Inn",	1075075, 4408,	1168,	0, Map.Felucca),
-            new CityInfo("Trinsic",	"The Traveler's Inn",	1075076, 1845,	2745,	0, Map.Felucca),
-            new CityInfo("Jhelom", "The Mercenary Inn",	1075078, 1374,	3826,	0, Map.Felucca),
-            new CityInfo("Skara Brae",	"The Falconer's Inn",	1075079, 618,	2234,	0, Map.Felucca),
-            new CityInfo("Vesper", "The Ironwood Inn",	1075080, 2771,	976,	0, Map.Felucca)
+            new CityInfo("New Haven",   "New Haven Bank",   1150168, 3503,  2574,   14, Map.Felucca),
+            new CityInfo("Yew", "The Empath Abbey", 1075072, 633,   858,    0, Map.Felucca),
+            new CityInfo("Minoc", "The Barnacle", 1075073, 2476,    413,    15, Map.Felucca),
+            new CityInfo("Britain", "The Wayfarer's Inn",   1075074, 1602,  1591,   20, Map.Felucca),
+            new CityInfo("Moonglow",    "The Scholars Inn", 1075075, 4408,  1168,   0, Map.Felucca),
+            new CityInfo("Trinsic", "The Traveler's Inn",   1075076, 1845,  2745,   0, Map.Felucca),
+            new CityInfo("Jhelom", "The Mercenary Inn", 1075078, 1374,  3826,   0, Map.Felucca),
+            new CityInfo("Skara Brae",  "The Falconer's Inn",   1075079, 618,   2234,   0, Map.Felucca),
+            new CityInfo("Vesper", "The Ironwood Inn",  1075080, 2771,  976,    0, Map.Felucca)
         };
 
         private static readonly CityInfo[] Cidades = new CityInfo[]
         {
-           // new CityInfo("Pau no Cu", "Pau no Cu", 1136, 1924, 6, Map.Felucca),
-           new CityInfo("Cidade Bolsominion", "Cidade Bolsominion", 5160, 1810, 0, Map.Felucca)
+           new CityInfo("New Haven",    "New Haven Bank",   1150168, 3503,  2574,   14, Map.Trammel),
         };
+
+        private static readonly CityInfo[] CidadesWS = new CityInfo[]
+       {
+           new CityInfo("Warshardonia",    "Warshardonia",   1060642, 1015, 527, -65, Map.Malas),
+       };
 
         private static readonly CityInfo[] StartingCities = new CityInfo[]
         {
-            new CityInfo("New Haven",	"New Haven Bank",	1150168, 3503,	2574,	14),
-            new CityInfo("Yew", "The Empath Abbey",	1075072, 633,	858,	0),
-            new CityInfo("Minoc", "The Barnacle", 1075073, 2476,	413,	15),
-            new CityInfo("Britain",	"The Wayfarer's Inn",	1075074, 1602,	1591,	20),
-            new CityInfo("Moonglow",	"The Scholars Inn",	1075075, 4408,	1168,	0),
-            new CityInfo("Trinsic",	"The Traveler's Inn",	1075076, 1845,	2745,	0),
-            new CityInfo("Jhelom", "The Mercenary Inn",	1075078, 1374,	3826,	0),
-            new CityInfo("Skara Brae",	"The Falconer's Inn",	1075079, 618,	2234,	0),
-            new CityInfo("Vesper", "The Ironwood Inn",	1075080, 2771,	976,	0)
+            new CityInfo("New Haven",   "New Haven Bank",   1150168, 3503,  2574,   14),
+            new CityInfo("Yew", "The Empath Abbey", 1075072, 633,   858,    0),
+            new CityInfo("Minoc", "The Barnacle", 1075073, 2476,    413,    15),
+            new CityInfo("Britain", "The Wayfarer's Inn",   1075074, 1602,  1591,   20),
+            new CityInfo("Moonglow",    "The Scholars Inn", 1075075, 4408,  1168,   0),
+            new CityInfo("Trinsic", "The Traveler's Inn",   1075076, 1845,  2745,   0),
+            new CityInfo("Jhelom", "The Mercenary Inn", 1075078, 1374,  3826,   0),
+            new CityInfo("Skara Brae",  "The Falconer's Inn",   1075079, 618,   2234,   0),
+            new CityInfo("Vesper", "The Ironwood Inn",  1075080, 2771,  976,    0)
         };
 
         private static readonly CityInfo[] StartingCitiesSA = new CityInfo[]
         {
-            new CityInfo("New Haven",	"New Haven Bank",	1150168, 3503,	2574,	14),
-            new CityInfo("Yew", "The Empath Abbey",	1075072, 633,	858,	0),
-            new CityInfo("Minoc", "The Barnacle", 1075073, 2476,	413,	15),
-            new CityInfo("Britain",	"The Wayfarer's Inn",	1075074, 1602,	1591,	20),
-            new CityInfo("Moonglow",	"The Scholars Inn",	1075075, 4408,	1168,	0),
-            new CityInfo("Trinsic",	"The Traveler's Inn",	1075076, 1845,	2745,	0),
-            new CityInfo("Jhelom", "The Mercenary Inn",	1075078, 1374,	3826,	0),
-            new CityInfo("Skara Brae",	"The Falconer's Inn",	1075079, 618,	2234,	0),
-            new CityInfo("Vesper", "The Ironwood Inn",	1075080, 2771,	976,	0),
+            new CityInfo("New Haven",   "New Haven Bank",   1150168, 3503,  2574,   14),
+            new CityInfo("Yew", "The Empath Abbey", 1075072, 633,   858,    0),
+            new CityInfo("Minoc", "The Barnacle", 1075073, 2476,    413,    15),
+            new CityInfo("Britain", "The Wayfarer's Inn",   1075074, 1602,  1591,   20),
+            new CityInfo("Moonglow",    "The Scholars Inn", 1075075, 4408,  1168,   0),
+            new CityInfo("Trinsic", "The Traveler's Inn",   1075076, 1845,  2745,   0),
+            new CityInfo("Jhelom", "The Mercenary Inn", 1075078, 1374,  3826,   0),
+            new CityInfo("Skara Brae",  "The Falconer's Inn",   1075079, 618,   2234,   0),
+            new CityInfo("Vesper", "The Ironwood Inn",  1075080, 2771,  976,    0),
             new CityInfo("Royal City", "Royal City Inn", 1150169, 738, 3486, -19, Map.TerMur)
         };
 
         private static readonly CityInfo[] SiegeStartingCities = new CityInfo[]
         {
-            new CityInfo("Britain",	"The Wayfarer's Inn",	1075074, 1602,	1591,	20, Map.Felucca),
+            new CityInfo("Britain", "The Wayfarer's Inn",   1075074, 1602,  1591,   20, Map.Felucca),
             new CityInfo("Royal City", "Royal City Inn", 1150169, 738, 3486, -19, Map.TerMur)
         };
 
@@ -99,7 +103,7 @@ namespace Server.Misc
         }
         */
 
-		private static readonly bool PasswordCommandEnabled = Config.Get("Accounts.PasswordCommandEnabled", false);
+        private static readonly bool PasswordCommandEnabled = Config.Get("Accounts.PasswordCommandEnabled", false);
 
         private static readonly char[] m_ForbiddenChars = new char[]
         {
@@ -129,18 +133,18 @@ namespace Server.Misc
                 {
                     m_IPTable = new Dictionary<IPAddress, Int32>();
 
-	                foreach (var a in Accounts.GetAccounts().OfType<Account>())
-	                {
-		                if (a.LoginIPs.Length > 0)
-		                {
-			                IPAddress ip = a.LoginIPs[0];
+                    foreach (var a in Accounts.GetAccounts().OfType<Account>())
+                    {
+                        if (a.LoginIPs.Length > 0)
+                        {
+                            IPAddress ip = a.LoginIPs[0];
 
-			                if (m_IPTable.ContainsKey(ip))
-				                m_IPTable[ip]++;
-			                else
-				                m_IPTable[ip] = 1;
-		                }
-	                }
+                            if (m_IPTable.ContainsKey(ip))
+                                m_IPTable[ip]++;
+                            else
+                                m_IPTable[ip] = 1;
+                        }
+                    }
                 }
 
                 return m_IPTable;
@@ -256,10 +260,10 @@ namespace Server.Misc
 
         public static void EventSink_AccountLogin(AccountLoginEventArgs e)
         {
-			// If the login attempt has already been rejected by another event handler
-			// then just return
-			if (e.Accepted == false)
-				return;
+            // If the login attempt has already been rejected by another event handler
+            // then just return
+            if (e.Accepted == false)
+                return;
 
             if (!IPLimiter.SocketBlock && !IPLimiter.Verify(e.State.Address))
             {
@@ -290,7 +294,7 @@ namespace Server.Misc
                     e.Accepted = acct == null ? false : acct.CheckAccess(e.State);
 
                     Shard.Debug("Conta ? " + (acct == null));
-                    if(acct != null)
+                    if (acct != null)
                     {
                         Shard.Debug("Acesso correto ?" + acct.CheckAccess(e.State));
                     }
@@ -416,7 +420,10 @@ namespace Server.Misc
                     e.CityInfo = StartingCitiesSA;
                 }
                 */
-                e.CityInfo = Cidades;
+                if (Shard.WARSHARD)
+                    e.CityInfo = CidadesWS;
+                else
+                    e.CityInfo = Cidades;
             }
 
             if (!e.Accepted)
