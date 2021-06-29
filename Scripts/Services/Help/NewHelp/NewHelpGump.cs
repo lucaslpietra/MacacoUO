@@ -118,7 +118,7 @@ namespace Server.Gumps
                     }
                     else if (Shard.WARSHARD)
                     {
-                        if(!CheckCombat(from))
+                        if(CheckCombat(from))
                         {
                             from.SendMessage("Voce nao pode fazer isto em combate");
                             return;

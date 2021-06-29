@@ -147,8 +147,6 @@ namespace Server.Engines.Craft
             }
         }
 
-        public static bool Enabled = Shard.WARSHARD;
-
         public override void InitCraftList()
         {
             int index = -1;
