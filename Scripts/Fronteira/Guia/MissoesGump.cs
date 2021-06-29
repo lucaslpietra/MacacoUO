@@ -40,8 +40,6 @@ namespace Server.Items
             if (filtro == null || filtro == "")
                 return true;
 
-            
-
             if ((recipe.Name != null && recipe.Name.ToLower().Contains(filtro)) || (recipe.Title != null && recipe.Title.ToLower().Contains(filtro.ToLower())))
                 return true;
             else
@@ -64,7 +62,7 @@ namespace Server.Items
             foreach(var quest in quester.Quests)
             {
                 var q = MondainQuester.GetCachedQuest(from, quest);
-                if (QuestHelper.CanOffer(from, q, false))
+                if (q != null && QuestHelper.CanOffer(from, q, false))
                     return q;
             }
 
@@ -254,32 +252,40 @@ namespace Server.Items
                 if (!CheckFilter(element))
                     continue;
 
-                var quest = this.GetQuest(element, player);
-                if (quest == null)
-                    continue;
-
-                int y = 96 + (tableIndex++ * 32);
-
-                //if (recipe.Amount > 0 && (canDrop || canLocked))
-                //    AddButton(35, y + 2, 5602, 5606, 4 + (i * 2), GumpButtonType.Reply, 0);
-
-
-                AddLabel(61, y, 0x480, String.Format("{0}", i));
-
-                AddHtml(103, y, 230, 32, element.Name, 0xFFFFFF, false, false); // ~1_val~
-
-                //AddLabel(235, y, 0x480, ""+recipe.RecipeID);
-                if(quest.Title is String)
+                try
                 {
-                    AddHtml(316, y, 100, 20, (String)quest.Title, 0xFFFFFF, false, false); // ~1_val~
-                } else
+                    var quest = this.GetQuest(element, player);
+                    if (quest == null)
+                        continue;
+
+                    int y = 96 + (tableIndex++ * 32);
+
+                    //if (recipe.Amount > 0 && (canDrop || canLocked))
+                    //    AddButton(35, y + 2, 5602, 5606, 4 + (i * 2), GumpButtonType.Reply, 0);
+
+
+                    AddLabel(61, y, 0x480, String.Format("{0}", i));
+
+                    AddHtml(103, y, 230, 32, element.Name, 0xFFFFFF, false, false); // ~1_val~
+
+                    //AddLabel(235, y, 0x480, ""+recipe.RecipeID);
+                    if (quest.Title is String)
+                    {
+                        AddHtml(316, y, 100, 20, (String)quest.Title, 0xFFFFFF, false, false); // ~1_val~
+                    }
+                    else
+                    {
+                        AddHtmlLocalized(316, y, 100, 20, (int)quest.Title, 0xFFFFFF, false, false); // ~1_val~
+                    }
+
+
+                    AddButton(421, y - 8, 0x1196, 0x1196, i + 100, GumpButtonType.Reply, 0);
+                    //AddLabel(421, y, 0x480, "BUTAUM");
+                } catch(Exception e)
                 {
-                    AddHtmlLocalized(316, y, 100, 20, (int)quest.Title, 0xFFFFFF, false, false); // ~1_val~
+                    Shard.Erro("Cagou p carregar quest ?");
+                    Shard.Erro(e.StackTrace);
                 }
-               
-
-                AddButton(421, y-8, 0x1196, 0x1196, i + 100, GumpButtonType.Reply, 0);
-                //AddLabel(421, y, 0x480, "BUTAUM");
 
             }
 
@@ -309,7 +315,7 @@ namespace Server.Items
                 from.QuestArrow = new QuestArrow(from, npc.Location);
                 from.QuestArrow.Update();
                 from.CloseAllGumps();
-                from.SendMessage("Voce esta indo ao seu destino.");
+                from.SendMessage("Voce esta indo ao seu destino no mapa "+npc.Map.Name);
             }
 
             switch (index)
