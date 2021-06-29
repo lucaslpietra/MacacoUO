@@ -497,9 +497,9 @@ namespace Server.Items
 				SetOptFlag( ref m_GlobalFlags, OptFlags.PublicMoongates, true );
 				SetOptFlag( ref m_GlobalFlags, OptFlags.Ilshenar, true );
 				SetOptFlag( ref m_GlobalFlags, OptFlags.IlshenarShrines, true );
-				SetOptFlag( ref m_GlobalFlags, OptFlags.Malas, Core.AOS );
-				SetOptFlag( ref m_GlobalFlags, OptFlags.Tokuno, Core.SE );
-				SetOptFlag( ref m_GlobalFlags, OptFlags.TerMur, Core.SA );
+				SetOptFlag( ref m_GlobalFlags, OptFlags.Malas, true );
+				SetOptFlag( ref m_GlobalFlags, OptFlags.Tokuno, true);
+				SetOptFlag( ref m_GlobalFlags, OptFlags.TerMur, true);
 				//SetOptFlag( ref m_GlobalFlags, OptFlags.Thanimur, true );
 				//SetOptFlag( ref m_GlobalFlags, OptFlags.Sosaria, true );
 				SetOptFlag( ref m_GlobalFlags, OptFlags.Custom, true );
