@@ -84,7 +84,7 @@ namespace Server.SkillHandlers
 
         public static TimeSpan OnUse(Mobile m)
         {
-            if (!m.Hidden && (!Shard.RP || m is PlayerMobile && (((PlayerMobile)m).Talentos.Tem(Talento.Gatuno))))
+            if (!m.Hidden && (!m.RP || m is PlayerMobile && (((PlayerMobile)m).Talentos.Tem(Talento.Gatuno))))
             {
                 Hiding.OnUse(m);
             }

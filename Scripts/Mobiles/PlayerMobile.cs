@@ -2792,7 +2792,7 @@ namespace Server.Mobiles
         {
             SkillName.ArmsLore, SkillName.Begging, SkillName.Discordance, SkillName.Forensics, SkillName.Inscribe,
             SkillName.ItemID, SkillName.Meditation, SkillName.Peacemaking, SkillName.Provocation, SkillName.RemoveTrap,
-            SkillName.SpiritSpeak, SkillName.Stealing, SkillName.Jewelcrafting
+            SkillName.SpiritSpeak, SkillName.Stealing, SkillName.TasteID
         };
 
         public override bool AllowSkillUse(SkillName skill)
@@ -6405,7 +6405,7 @@ namespace Server.Mobiles
             if(Rope.Preso(this))
                 this.PrivateOverheadMessage(MessageType.Regular, 0x35, true, "* amarrad"+GetLetraSexo()+" *", from.NetState);
 
-            if (!Shard.RP)
+            if (!Shard.RP && Shard.TITULOS_RP)
             {
                 if (this.RP)
                 {
@@ -6484,7 +6484,7 @@ namespace Server.Mobiles
             }
 
             BandageContext c = BandageContext.GetContext(this);
-            if (c != null && !Talentos.Tem(Talento.Curandeiro) && Utility.RandomDouble() < 0.25)
+            if (RP && c != null && !Talentos.Tem(Talento.Curandeiro) && Utility.RandomDouble() < 0.25)
             {
                 c.Slip();
             }
@@ -6915,7 +6915,7 @@ namespace Server.Mobiles
             if(Rope.Preso(this))
                 list.Add(Gump.Cor("<CENTER>[ Amarrad"+GetLetraSexo()+" ]</CENTER>", "red"));
 
-            if (RP && !Shard.RP)
+            if (Shard.TITULOS_RP && RP && !Shard.RP)
             {
                 list.Add(Gump.Cor("<CENTER>[ Personagem RP ]</CENTER>", "yellow"));
                 if (Deaths >= 5)

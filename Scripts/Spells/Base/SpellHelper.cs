@@ -1551,10 +1551,13 @@ namespace Server.Spells
         {
             double cura = amount;
             var pl = from as PlayerMobile;
-            if (pl != null && pl.Talentos.Tem(Fronteira.Talentos.Talento.EstudoSagrado))
-                cura *= 1.1;
-            else
-                cura *= 0.9;
+            if(pl.RP)
+            {
+                if (pl != null && pl.Talentos.Tem(Fronteira.Talentos.Talento.EstudoSagrado))
+                    cura *= 1.1;
+                else
+                    cura *= 0.9;
+            }
             amount = (int)cura;
 
             Spellweaving.ArcaneEmpowermentSpell.AddHealBonus(from, ref amount);

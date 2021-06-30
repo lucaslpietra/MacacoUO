@@ -52,7 +52,7 @@ namespace Server.Engines.Craft
             craftItem.NeedOven = needCauldron;
         }
 
-        public override SkillName MainSkill { get { return SkillName.Jewelcrafting; } }
+        public override SkillName MainSkill { get { return SkillName.Imbuing; } }
 
         private static CraftSystem m_CraftSystem;
 

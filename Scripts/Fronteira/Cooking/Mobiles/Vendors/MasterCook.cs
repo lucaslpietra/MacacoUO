@@ -12,7 +12,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public MasterCook() : base( "the Master Cook" )
 		{
-            this.SetSkill(SkillName.Jewelcrafting, 36.0, 68.0);
+            this.SetSkill(SkillName.TasteID, 36.0, 68.0);
             this.SetSkill(SkillName.Cooking, 36.0, 68.0);
 		}
 

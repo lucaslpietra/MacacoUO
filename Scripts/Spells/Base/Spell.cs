@@ -257,14 +257,18 @@ namespace Server.Spells
 
         public virtual bool CheckMovement(Mobile caster)
         {
-            if (Shard.RP && caster.Player && IsCasting && BlocksMovement && (!(m_Caster is BaseCreature) || ((BaseCreature)m_Caster).FreezeOnCast))
+            if (caster.Player && IsCasting && BlocksMovement && (!(m_Caster is BaseCreature) || ((BaseCreature)m_Caster).FreezeOnCast))
             {
-                //m_Caster.SendMessage("Voce esta conjurando uma magia e nao consegue se mover");
-                if (caster.TemTalento(Talento.Sagacidade))
-                    return true;
-                return false;
+                if(caster.RP)
+                {
+                    if (caster.TemTalento(Talento.Sagacidade))
+                        return true;
+                    return false;
+                }
+                return Shard.POL_STYLE;
             }
             return true;
+           
         }
 
         public virtual void CheckCasterDisruption(bool checkElem = false, int phys = 0, int fire = 0, int cold = 0, int pois = 0, int nrgy = 0)
@@ -371,28 +375,6 @@ namespace Server.Spells
             FinishSequence();
         }
 
-        // NAO USADO
-        public virtual bool OnCasterMoving(Direction d)
-        {
-            if (Shard.CAST_CLASSICO && IsCasting && BlocksMovement && (!(m_Caster is BaseCreature) || ((BaseCreature)m_Caster).FreezeOnCast))
-            {
-                m_Caster.SendLocalizedMessage(500111); // You are frozen and can not move.
-                return false;
-            }
-
-            /*
-            if(Caster.RP && Caster.Player && IsCasting && BlocksMovement)
-            {
-                var nivel = ((PlayerMobile)Caster).Talentos.GetNivel(Talento.Concentracao);
-                if (nivel == 0)
-                {
-                    m_Caster.SendMessage("Voce esta conjurando uma magia e nao consegue se mover");
-                    return false;
-                }
-            }
-            */
-            return true;
-        }
 
         public virtual bool DoStep(Mobile caster)
         {
@@ -452,7 +434,7 @@ namespace Server.Spells
                 }
 
                 // Nao da disturb quando equipa
-                if (Shard.CAST_CLASSICO)
+                if (!Shard.POL_STYLE)
                     Disturb(DisturbType.EquipRequest);
             }
 
@@ -476,6 +458,9 @@ namespace Server.Spells
 
         public virtual bool ConsumeReagents()
         {
+            if (Shard.WARSHARD)
+                return true;
+
             if ((m_Scroll != null && !(m_Scroll is SpellStone)) || !m_Caster.Player)
             {
                 return true;
@@ -557,17 +542,7 @@ namespace Server.Spells
                 double targetRS = target.Skills[SkillName.MagicResist].Value;
 
                 var pl = m_Caster as PlayerMobile;
-                if (Shard.RP && pl != null && pl.Talentos.Tem(Talento.Elementalismo))
-                {
-                    if (casterEI < 60)
-                        casterEI = 60;
-                    if (pl != null)
-                        scalar += 0.1;
-                    if (target is BaseCreature)
-                        scalar += 0.15;
-                }
-                else
-                    scalar -= 0.15;
+            
 
                 if (PsychicAttack.Registry.ContainsKey(target))
                     scalar += 0.2;
@@ -587,19 +562,27 @@ namespace Server.Spells
                     scalar = (1.0 + ((casterEI - targetRS) / 200.0));
                 }
 
+                if (pl.RP)
+                {
+                    if (pl != null && pl.Talentos.Tem(Talento.Elementalismo))
+                    {
+                        if (casterEI < 60)
+                            casterEI = 60;
+                        if (pl != null)
+                            scalar += 0.1;
+                        if (target is BaseCreature)
+                            scalar += 0.2;
+                    }
+                    else
+                        scalar -= 0.15;
+                }
+
                 scalar += (m_Caster.Skills[CastSkill].Value - 100.0) / 400.0;
 
                 if (!target.Player && !target.Body.IsHuman /*&& !Core.AOS*/)
                 {
                     scalar *= 2.5;
                 }
-
-                /*
-                if(m_Caster.Skills[DamageSkill].Value < 100)
-                {
-                    scalar -= 0.15; // -15% se nao eh GM mage
-                }
-                */
             }
 
             if (target is BaseCreature)

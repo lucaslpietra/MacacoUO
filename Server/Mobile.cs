@@ -1593,7 +1593,7 @@ namespace Server
         [CommandProperty(AccessLevel.GameMaster)]
         public int SkillsCap
         {
-            get { return m_Skills == null ? 0 : m_Skills.Cap; }
+            get { return RP ? m_Skills.Cap * 2 : m_Skills == null ? 0 : m_Skills.Cap; }
             set
             {
                 if (m_Skills != null)
@@ -1907,7 +1907,7 @@ namespace Server
             if (!m_Paralyzed)
             {
                 Paralyzed = true;
-
+                LastParalized = DateTime.UtcNow;
                 m_ParaTimer = new ParalyzedTimer(this, duration);
                 m_ParaTimer.Start();
             }

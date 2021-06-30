@@ -1553,12 +1553,12 @@ namespace Server.Items
             if (forceInfo != null && forceInfo.Defender == defender)
                 bonus -= forceInfo.DefenseChanceMalus;
 
-            if(defender.Player)
+            if (defender.Player)
             {
-                if(((PlayerMobile)defender).Talentos.Tem(Talento.Esquiva))
+                if (((PlayerMobile)defender).Talentos.Tem(Talento.Esquiva))
                 {
                     bonus -= 15;
-                } 
+                }
             }
 
             if (attacker.Player)
@@ -1575,7 +1575,7 @@ namespace Server.Items
             var bonusArmsLore = defender.Skills.ArmsLore.Value / 2000; // 0.05 = 5%
             chance -= bonusArmsLore;
 
-            if(defender is BaseCreature && attacker is PlayerMobile)
+            if (defender is BaseCreature && attacker is PlayerMobile)
             {
                 chance += 0.15; // +15% em PvM
             }
@@ -1790,9 +1790,9 @@ namespace Server.Items
 
             canSwing = diffZ < 10;
 
-            if(attacker.RP && attacker.Mounted && attacker is PlayerMobile && !((PlayerMobile)attacker).Talentos.Tem(Talento.Hipismo))
+            if (attacker.RP && attacker.Mounted && attacker is PlayerMobile && !((PlayerMobile)attacker).Talentos.Tem(Talento.Hipismo))
             {
-                if(Utility.RandomDouble() < 0.01)
+                if (Utility.RandomDouble() < 0.01)
                 {
                     attacker.Mount.Rider = null;
                     attacker.SendMessage("Voce se desequilibrou da sua montaria ao atacar");
@@ -1804,7 +1804,7 @@ namespace Server.Items
             }
 
             BandageContext c = BandageContext.GetContext(attacker);
-            if (c != null && !attacker.TemTalento(Talento.Curandeiro) && Utility.RandomDouble() < 0.5)
+            if (attacker.RP && c != null && !attacker.TemTalento(Talento.Curandeiro) && Utility.RandomDouble() < 0.5)
             {
                 c.Slip();
             }
@@ -2136,10 +2136,10 @@ namespace Server.Items
 
             var mods = new Tuple<int, bool>(damage, false);
 
-            if(defender.Player)
+            if (defender.Player)
             {
                 var perto = defender.GetEntitiesInRange(defender.Map, 2);
-                foreach(var mob in perto)
+                foreach (var mob in perto)
                 {
                     var pl = mob as PlayerMobile;
                     if (pl == null)
@@ -2160,7 +2160,7 @@ namespace Server.Items
                         defender.SendMessage(mob.Name + " bloqueou o ataque em voce");
                     }
                 }
-                
+
             }
 
             if (defender.Player || defender.Skills[SkillName.Parry].Value > 50 || (defender is BaseCreature &&
@@ -2300,7 +2300,7 @@ namespace Server.Items
             {
                 var oldDmg = damage;
                 armor.OnHit(this, (int)damage);
-                if(Shard.DebugEnabled)
+                if (Shard.DebugEnabled)
                     Shard.Debug("Armor mitigou " + (oldDmg - damage) + " dano", defender);
             }
 
@@ -2320,42 +2320,45 @@ namespace Server.Items
                 damage = (int)(damage * 0.9);
             }
 
-            if(attacker.Player && attacker.RP && (attacker.Hunger < 5 || attacker.Thirst < 5))
+            if (attacker.Player && attacker.RP && (attacker.Hunger < 5 || attacker.Thirst < 5))
             {
                 damage /= 2;
                 Shard.Debug("50% Dano Fome", attacker);
             }
-            if(defender.Player && defender.RP && (defender.Hunger < 5 || defender.Thirst < 5))
+            if (defender.Player && defender.RP && (defender.Hunger < 5 || defender.Thirst < 5))
             {
                 damage *= 2;
                 Shard.Debug("Dobro Dano Fome", defender);
             }
 
-            if(attacker.Player && attacker.RP)
+            if (attacker.Player && attacker.RP)
             {
                 if (Shard.DebugEnabled)
                     Shard.Debug("Dano antes talentos " + damage);
                 var pl = (PlayerMobile)attacker;
-                if(pl.Talentos.Tem(Talento.Potencia))
-                    damage += (int)(damage * 0.1);
+                if (pl.RP)
+                {
+                    if (pl.Talentos.Tem(Talento.Potencia))
+                        damage += (int)(damage * 0.1);
 
-                if (pl.Weapon is BaseBashing && !pl.Talentos.Tem(Talento.Porretes))
-                    damage *= 0.85;
+                    if (pl.Weapon is BaseBashing && !pl.Talentos.Tem(Talento.Porretes))
+                        damage *= 0.85;
 
-                if (pl.Weapon is BaseSword && !pl.Talentos.Tem(Talento.Espadas))
-                    damage *= 0.85;
+                    if (pl.Weapon is BaseSword && !pl.Talentos.Tem(Talento.Espadas))
+                        damage *= 0.85;
 
-                if (pl.Weapon is BaseSpear && !pl.Talentos.Tem(Talento.Lancas))
-                    damage *= 0.85;
+                    if (pl.Weapon is BaseSpear && !pl.Talentos.Tem(Talento.Lancas))
+                        damage *= 0.85;
 
-                if (pl.Weapon is BaseAxe && !pl.Talentos.Tem(Talento.Machados))
-                    damage *= 0.85;
+                    if (pl.Weapon is BaseAxe && !pl.Talentos.Tem(Talento.Machados))
+                        damage *= 0.85;
 
-                if (pl.Weapon is BasePoleArm && !pl.Talentos.Tem(Talento.Hastes))
-                    damage *= 0.85;
+                    if (pl.Weapon is BasePoleArm && !pl.Talentos.Tem(Talento.Hastes))
+                        damage *= 0.85;
 
-                if (pl.Weapon is Dagger && !pl.Talentos.Tem(Talento.Adagas))
-                    damage *= 1.30;
+                    if (pl.Weapon is Dagger && !pl.Talentos.Tem(Talento.Adagas))
+                        damage *= 1.30;
+                }
 
                 /*
                 var mamo = pl.Talentos.Tem(Fronteira.Talentos.Talento.Mamonita);
@@ -2421,14 +2424,14 @@ namespace Server.Items
                 var redux = Utility.Random(from, (to - from) + 1);
                 damage -= redux;
 
-                if(Shard.DebugEnabled)
+                if (Shard.DebugEnabled)
                 {
                     Shard.Debug("Virtual Armor: " + virtualArmor + " Scalar: " + scalar + " REDUX " + redux);
                     Shard.Debug("Virtual MinMax: " + from + "/" + to + " - Calculando media", defender);
                 }
             }
 
-            if(Shard.DebugEnabled)
+            if (Shard.DebugEnabled)
                 Shard.Debug("Dano depois da reducao de armor " + damage);
             return new Tuple<int, bool>((int)damage, mods.Item2);
         }
@@ -2578,17 +2581,17 @@ namespace Server.Items
             {
                 attacker.PlaySound(0x2E6);
                 defender.PlaySound(0x2E6);
-            }   
+            }
             else
             {
                 attacker.PlaySound(GetHitAttackSound(attacker, defender));
                 if (defender != null)
                     defender.PlaySound(GetHitDefendSound(attacker, defender));
-            }  
+            }
 
             int damage = ComputeDamage(attacker, defender);
 
-            if(Shard.DebugEnabled)
+            if (Shard.DebugEnabled)
                 Shard.Debug("Dano Base Final: " + damage, attacker);
 
             Habilidade a = Habilidade.GetCurrentAbility(attacker);
@@ -2610,7 +2613,7 @@ namespace Server.Items
                     }
                 }
             }
-        
+
             bool ranged = this is BaseRanged;
             int phys, fire, cold, pois, nrgy, chaos, direct;
 
@@ -2660,7 +2663,7 @@ namespace Server.Items
                 }
             }
 
-            if(this is BaseRanged && attacker.FindItemOnLayer(Layer.Cloak) is BaseQuiver)
+            if (this is BaseRanged && attacker.FindItemOnLayer(Layer.Cloak) is BaseQuiver)
             {
 
             }
@@ -2793,12 +2796,12 @@ namespace Server.Items
                 percentageBonus += (int)(move.GetDamageScalar(attacker, defender) * 100) - 100;
             }
 
-            if(Shard.DebugEnabled)
+            if (Shard.DebugEnabled)
                 Shard.Debug("Null? " + (ConsecratedContext == null));
             if (ConsecratedContext != null && ConsecratedContext.Owner == attacker)
             {
                 percentageBonus += ConsecratedContext.ConsecrateDamageBonus;
-                if(Shard.DebugEnabled)
+                if (Shard.DebugEnabled)
                     Shard.Debug("Bonus Dano Consecrated Weapon: " + ConsecratedContext.ConsecrateDamageBonus);
             }
 
@@ -4363,9 +4366,9 @@ namespace Server.Items
         public virtual int ComputeDamage(Mobile attacker, Mobile defender)
         {
             var baseDamage = GetBaseDamage(attacker);
-          
+
             int damage = (int)ScaleDamageOld(attacker, baseDamage, true);
-            if(Shard.DebugEnabled)
+            if (Shard.DebugEnabled)
             {
                 Shard.Debug("Base Weapon Damage: " + baseDamage, attacker);
                 Shard.Debug("Scaled Weapon Damage: " + damage, attacker);
@@ -4376,7 +4379,7 @@ namespace Server.Items
                 Shard.Debug("Half Damage on players");
                 damage = (int)(damage / 2.0);
             }
-            if(attacker is BaseHire && defender is PlayerMobile)
+            if (attacker is BaseHire && defender is PlayerMobile)
             {
                 Shard.Debug("Half Damage de mercs vs players");
                 damage = (int)(damage / 2.0);
@@ -5982,7 +5985,7 @@ namespace Server.Items
                 }
                 if (DamageLevel > 0)
                 {
-                    list.AddTwoValues("Poder", "+"+(int)DamageLevel * 2);
+                    list.AddTwoValues("Poder", "+" + (int)DamageLevel * 2);
                 }
                 if (AccuracyLevel > 0)
                 {

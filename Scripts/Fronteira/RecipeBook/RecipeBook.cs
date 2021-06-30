@@ -40,7 +40,7 @@ namespace Server.Items
                 case SkillName.Inscribe: return RecipeSkillName.Inscription;
                 case SkillName.Tailoring: return RecipeSkillName.Tailoring;
                 case SkillName.Tinkering: return RecipeSkillName.Tinkering;
-                case SkillName.Jewelcrafting: return RecipeSkillName.Jewelcrafting;
+                case SkillName.Imbuing: return RecipeSkillName.Jewelcrafting;
             }
             return RecipeSkillName.Cooking;
         }

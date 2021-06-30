@@ -328,7 +328,7 @@ namespace Scripts.Mythik.Systems.Achievements
             // JEWEL
             nome = "Joalheiro";
             skill = "Jewelcrafing";
-            skillName = SkillName.Jewelcrafting;
+            skillName = SkillName.TasteID;
             recompensa = typeof(SacolaJoias);
             icone = 0x1374;
             ach = new SkillProgressAchievement(id++, 4000, icone, false, null, 60, nome + " Noob", "Obtenha 60 " + skill, skillName, 5, recompensa);

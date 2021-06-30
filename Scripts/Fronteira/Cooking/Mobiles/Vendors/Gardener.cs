@@ -13,7 +13,7 @@ namespace Server.Mobiles
 		public Gardener() : base( "the Gardener" )
 		{
             this.SetSkill(SkillName.Cooking, 100.0, 120.0);
-            this.SetSkill(SkillName.Jewelcrafting, 80.0, 100.0);
+            this.SetSkill(SkillName.TasteID, 80.0, 100.0);
 		}
 
 		public override void InitSBInfo()

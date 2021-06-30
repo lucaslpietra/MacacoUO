@@ -13,7 +13,7 @@ namespace Server.Engines.Quests
             : base("Zosilem", "the Alchemist")
         {
             SetSkill(SkillName.Alchemy, 85.0, 100.0);
-            SetSkill(SkillName.Jewelcrafting, 65.0, 88.0);
+            SetSkill(SkillName.TasteID, 65.0, 88.0);
         }
 
         public Zosilem(Serial serial)

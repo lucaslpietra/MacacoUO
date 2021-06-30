@@ -66,7 +66,7 @@ namespace Server.Spells.Fifth
                 else
                 {
                     // Algorithm: ((20% of magery) + 7) seconds [- 50% if resisted]
-                    duration = Utility.Random(6, 4);
+                    duration = Utility.Random(4, 3);
    
                     if (duration <= 0 || this.CheckResisted(m))
                     {
@@ -84,10 +84,10 @@ namespace Server.Spells.Fifth
                 if (duration == 0)
                     return;
 
-                var limiteParalize = DateTime.UtcNow - TimeSpan.FromSeconds(10);
+                var limiteParalize = DateTime.UtcNow - TimeSpan.FromSeconds(6);
                 if(m.LastParalized > limiteParalize)
                 {
-                    duration /= 3;
+                    duration /= 2;
                     this.Caster.SendMessage("O alvo foi paralizado demais e esta mais resistente a magia");
                 }
 
@@ -95,7 +95,6 @@ namespace Server.Spells.Fifth
 
                 m.Paralyze(TimeSpan.FromSeconds(duration));
 
-                m.LastParalized = DateTime.UtcNow;
 
                 m.PlaySound(0x204);
                 //m.FixedEffect(0x376A, 6, 1);

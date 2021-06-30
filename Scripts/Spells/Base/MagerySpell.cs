@@ -20,7 +20,7 @@ namespace Server.Spells
                     {
                         if(state.Mobile == m_Caster || state.Mobile.Skills.Magery.Value > 50)
                         {
-                            m_Caster.PrivateOverheadMessage(Info.Mantra);
+                            m_Caster.PrivateOverheadMessage(Info.Mantra, state.Mobile);
                         } else
                         {
                             m_Caster.PrivateOverheadMessage("* conjurando *", state.Mobile);
@@ -226,16 +226,13 @@ namespace Server.Spells
                     return TimeSpan.FromSeconds(0.7 + 0.40 * (int)Circle);
 
                 var pl = Caster as PlayerMobile;
-                if (pl == null || (pl.Talentos.Tem(Talento.Cajados) && Caster.Weapon is BaseStaff))
+                if (!Shard.POL_STYLE || pl == null || (pl.Talentos.Tem(Talento.Cajados) && Caster.Weapon is BaseStaff))
+                    // Delay T2A
                     return TimeSpan.FromSeconds(0.5 + (0.25 * (int)Circle));
                 else
                 {
-                    if (!Caster.IsCooldown("dicacast"))
-                    {
-                        Caster.SetCooldown("dicacast", TimeSpan.FromHours(5));
-                        Caster.SendMessage(78, "Voce casta mais lentamente por nao estar portando um cajado");
-                    }
-                    return TimeSpan.FromSeconds(0.5 + (0.55 * (int)Circle));
+                    // delay POL/Mystic
+                    return TimeSpan.FromSeconds(0.5 + (0.5 * (int)Circle));
                 }
             }
             return base.GetCastDelay();

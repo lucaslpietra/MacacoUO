@@ -69,7 +69,6 @@ namespace Server
 		void OnCasterHurt();
 		void OnCasterKilled();
 		void OnConnectionChanged();
-		bool OnCasterMoving(Direction d);
         bool DoStep(Mobile caster);
 		bool OnCasterEquiping(Item item);
 		bool OnCasterUsingObject(object o);

@@ -207,7 +207,7 @@ namespace Server.Items
 
         public virtual bool CheckWeaponSkill(Mobile from)
         {
-            if (Shard.RP)
+            if (from.RP)
                 return true;
 
             BaseWeapon weapon = from.Weapon as BaseWeapon;
@@ -280,7 +280,7 @@ namespace Server.Items
 
         public virtual bool CheckSkills(Mobile from)
         {
-            if (Shard.RP)
+            if (from.RP)
             {
                 var pl = from as PlayerMobile;
                 if (pl == null) return true;
@@ -384,7 +384,7 @@ namespace Server.Items
                 return false;
             }
 
-            if (Shard.RP)
+            if (from.RP)
                 return CheckMana(from, false);
             return CheckSkills(from) && CheckMana(from, false);
         }
@@ -508,7 +508,7 @@ namespace Server.Items
 
         public static bool IsWeaponAbility(Mobile m, Habilidade a)
         {
-            if (Shard.RP)
+            if (m.RP)
                 return true;
 
             if (a == null)
@@ -598,7 +598,7 @@ namespace Server.Items
         {
             m_Table.Remove(m);
 
-            if(Shard.RP && m is PlayerMobile)
+            if(m.RP && m is PlayerMobile)
             {
                 var t = typeof(GumpHabilidades);
                 if (m.HasGump(t)) {
@@ -621,7 +621,7 @@ namespace Server.Items
 
         private static void EventSink_SetAbility(SetAbilityEventArgs e)
         {
-            if (Shard.RP)
+            if (e.Mobile.RP)
                 e.Mobile.SendMessage("Use .habilidades para ver e usar suas habilidades");
             else
             {

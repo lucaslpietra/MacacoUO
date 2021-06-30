@@ -12,7 +12,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public Brewer() : base( "the Brewer" )
 		{
-			SetSkill( SkillName.Jewelcrafting, 36.0, 68.0 );
+			SetSkill( SkillName.TasteID, 36.0, 68.0 );
 			SetSkill( SkillName.Cooking, 36.0, 68.0 );
 		}
 

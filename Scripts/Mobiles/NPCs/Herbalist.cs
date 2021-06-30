@@ -12,7 +12,7 @@ namespace Server.Mobiles
         { 
             this.SetSkill(SkillName.Alchemy, 80.0, 100.0);
             this.SetSkill(SkillName.Cooking, 80.0, 100.0);
-            this.SetSkill(SkillName.Jewelcrafting, 80.0, 100.0);
+            this.SetSkill(SkillName.TasteID, 80.0, 100.0);
         }
 
         public Herbalist(Serial serial)

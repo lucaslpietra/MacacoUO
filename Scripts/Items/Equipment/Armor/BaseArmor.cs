@@ -2593,7 +2593,7 @@ namespace Server.Items
             int dexBonus = ComputeStatBonus(StatType.Dex);
             int intBonus = ComputeStatBonus(StatType.Int);
 
-            if (dexBonus < 0 && from is PlayerMobile && ((PlayerMobile)from).Talentos.Tem(Talento.ArmaduraPesada))
+            if (from.RP && dexBonus < 0 && from is PlayerMobile && ((PlayerMobile)from).Talentos.Tem(Talento.ArmaduraPesada))
                 dexBonus = 0;
 
             if (strBonus != 0 || dexBonus != 0 || intBonus != 0)

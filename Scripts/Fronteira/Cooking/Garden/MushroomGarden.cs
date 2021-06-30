@@ -98,15 +98,15 @@ namespace Server.Items
 					
 				}
 				
-				else if ( from.CheckTargetSkillMinMax( SkillName.Jewelcrafting, this, 0, 25 ) )
+				else if ( from.CheckTargetSkillMinMax( SkillName.TasteID, this, 0, 25 ) )
 				{
-					if(from.Skills[SkillName.Jewelcrafting].Base<50)
+					if(from.Skills[SkillName.TasteID].Base<50)
 					{
 						from.AddToBackpack( new Mushrooms( this.ItemID ) );
 						from.SendMessage( "Voce pegou alguns cogumelos!" );
 						
 					}
-					else if(from.Skills[SkillName.Jewelcrafting].Base>=50)
+					else if(from.Skills[SkillName.TasteID].Base>=50)
 					{
 					//	switch (Utility.Random(3))
 					//	{

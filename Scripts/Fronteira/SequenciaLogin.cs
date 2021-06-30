@@ -29,7 +29,7 @@ namespace Server.Fronteira
                 return;
             }
 
-            if (Shard.RP)
+            if (pm.RP)
             {
                 if (pm.Profession == 0)
                 {

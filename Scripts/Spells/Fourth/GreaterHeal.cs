@@ -71,7 +71,7 @@ namespace Server.Spells.Fourth
             }
             else if (Shard.SPHERE_STYLE && m.Poisoned)
             {
-                this.Caster.PrivateOverheadMessage("Voce esta envenenado...");
+                this.Caster.PrivateOverheadMessage("Sua cura nao penetra o veneno...");
             }
             else if (Server.Items.MortalStrike.IsWounded(m))
             {

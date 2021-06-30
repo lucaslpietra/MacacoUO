@@ -63,7 +63,7 @@ namespace Server
         Stealing = 33,
         Tailoring = 34,
         AnimalTaming = 35,
-        Jewelcrafting = 36,
+        TasteID = 36,
         Tinkering = 37,
         Tracking = 38,
         Veterinary = 39,
@@ -807,7 +807,7 @@ namespace Server
         public Skill AnimalTaming { get { return this[SkillName.AnimalTaming]; } set { } }
 
         [CommandProperty(AccessLevel.Counselor)]
-        public Skill TasteID { get { return this[SkillName.Jewelcrafting]; } set { } }
+        public Skill TasteID { get { return this[SkillName.TasteID]; } set { } }
 
         [CommandProperty(AccessLevel.Counselor)]
         public Skill Tinkering { get { return this[SkillName.Tinkering]; } set { } }
@@ -1117,7 +1117,7 @@ namespace Server
                 m_Highest = skill;
             }
 
-            if(Shard.RP)
+            if(m_Owner.RP)
             {
                 m_Owner.SendMessage(390, "Sua habilidade em " + skill.Name + " agora esta em " + skill.Value);
                 return;

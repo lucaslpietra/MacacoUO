@@ -30,7 +30,7 @@ namespace Server.Ziden.Tutorial
         
         public static void InicializaWisp(PlayerMobile player)
         {
-            if (Shard.RP)
+            if (player.RP)
                 return;
 
             if (player.Wisp == null && player.Young && !player.RP)

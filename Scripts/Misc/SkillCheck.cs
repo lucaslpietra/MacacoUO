@@ -187,7 +187,7 @@ namespace Server.Misc
         public static SkillName[] Work = new SkillName[] {
             SkillName.Alchemy, SkillName.Blacksmith, SkillName.Fletching,
             SkillName.Mining, SkillName.Tinkering, SkillName.Carpentry,
-            SkillName.Jewelcrafting, SkillName.Cooking, SkillName.Tailoring,
+            SkillName.TasteID, SkillName.Cooking, SkillName.Tailoring,
             SkillName.AnimalTaming
         };
 

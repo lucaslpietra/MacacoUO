@@ -11,7 +11,7 @@ namespace Server.Mobiles
             : base("o fazendeiro")
         {
             this.SetSkill(SkillName.Lumberjacking, 36.0, 68.0);
-            this.SetSkill(SkillName.Jewelcrafting, 36.0, 68.0);
+            this.SetSkill(SkillName.TasteID, 36.0, 68.0);
             this.SetSkill(SkillName.Cooking, 36.0, 68.0);
         }
 

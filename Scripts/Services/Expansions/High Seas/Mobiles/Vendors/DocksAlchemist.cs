@@ -15,7 +15,7 @@ namespace Server.Mobiles
 		public DocksAlchemist() : base( "the alchemist" )
 		{
             SetSkill(SkillName.Alchemy, 85.0, 100.0);
-            SetSkill(SkillName.Jewelcrafting, 65.0, 88.0);
+            SetSkill(SkillName.TasteID, 65.0, 88.0);
 		} 
 
 		public override void InitSBInfo() 

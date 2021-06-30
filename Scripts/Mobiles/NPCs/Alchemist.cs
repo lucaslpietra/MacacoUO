@@ -12,7 +12,7 @@ namespace Server.Mobiles
             : base("o alquimista")
         {
             this.SetSkill(SkillName.Alchemy, 85.0, 100.0);
-            this.SetSkill(SkillName.Jewelcrafting, 65.0, 88.0);
+            this.SetSkill(SkillName.TasteID, 65.0, 88.0);
         }
 
         #region Bulk Orders

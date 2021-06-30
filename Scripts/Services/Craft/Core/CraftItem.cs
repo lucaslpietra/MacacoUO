@@ -1492,7 +1492,7 @@ namespace Server.Engines.Craft
                     {
                         skillNovosResuorces = 90;
                     }
-                    else if (craftSystem.MainSkill == SkillName.Cartography || craftSystem.MainSkill == SkillName.Cooking || craftSystem.MainSkill == SkillName.Alchemy || craftSystem.MainSkill == SkillName.Jewelcrafting || craftSystem.MainSkill == SkillName.Inscribe)
+                    else if (craftSystem.MainSkill == SkillName.Cartography || craftSystem.MainSkill == SkillName.Cooking || craftSystem.MainSkill == SkillName.Alchemy || craftSystem.MainSkill == SkillName.TasteID || craftSystem.MainSkill == SkillName.Inscribe)
                     {
                         skillNovosResuorces = 999;
                     }

@@ -12,7 +12,7 @@ namespace Server.Mobiles
             : base("o cozinheiro")
         {
             this.SetSkill(SkillName.Cooking, 90.0, 100.0);
-            this.SetSkill(SkillName.Jewelcrafting, 75.0, 98.0);
+            this.SetSkill(SkillName.TasteID, 75.0, 98.0);
         }
 
         public Cook(Serial serial)

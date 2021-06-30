@@ -899,7 +899,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    seconds = 8.4 + (0.6 * ((double)(120 - dex) / 10));
+                    seconds = 9.4 + (0.6 * ((double)(120 - dex) / 10));
                 }
             }
             else if (Core.AOS && skill == SkillName.Veterinary)

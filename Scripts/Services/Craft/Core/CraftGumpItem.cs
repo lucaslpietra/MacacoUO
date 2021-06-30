@@ -179,7 +179,7 @@ namespace Server.Engines.Craft
                 if (minSkill < 0)
                     minSkill = 0;
 
-                if(skill.SkillToMake==SkillName.Jewelcrafting)
+                if(skill.SkillToMake==SkillName.TasteID)
                 {
                     this.AddHtml(170, 132 + (i * 20), 200, 18, "Jewelcrafting", LabelColor, false, false);
                 } else

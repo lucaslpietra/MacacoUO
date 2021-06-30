@@ -9,7 +9,7 @@ namespace Server.SkillHandlers
     {
         public static void Initialize()
         {
-            SkillInfo.Table[(int)SkillName.Jewelcrafting].Callback = new SkillUseCallback(OnUse);
+            SkillInfo.Table[(int)SkillName.TasteID].Callback = new SkillUseCallback(OnUse);
         }
 
         public static TimeSpan OnUse(Mobile m)
@@ -43,7 +43,7 @@ namespace Server.SkillHandlers
                 {
                     Food food = (Food)targeted;
 
-                    if (from.CheckTargetSkillMinMax(SkillName.Jewelcrafting, food, 0, 100))
+                    if (from.CheckTargetSkillMinMax(SkillName.TasteID, food, 0, 100))
                     {
                         if (food.Poison != null)
                         {

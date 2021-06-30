@@ -76,6 +76,17 @@ namespace Server.Gumps
             from.PontosTalento -= 1;
             from.AprendeTalento(talento);
 
+            if(Shard.WARSHARD)
+            {
+                var classe = ClassDef.GetClasse(from.Profession);
+                if(classe != null && from.Nivel < classe.Talentos.Length)
+                {
+                    from.Nivel += 1;
+                    from.PontosTalento += 1;
+                    from.SendMessage("Use .talento novamente para aprender mais talentos ou .vertalentos para ver todos possiveis talentos de todas classes");
+                }
+            }
+
         }
     }
 }

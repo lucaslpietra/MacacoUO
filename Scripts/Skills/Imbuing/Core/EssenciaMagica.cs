@@ -96,7 +96,7 @@ namespace Server.Ziden
             this.Consume(100);
             from.PlaceInBackpack(new PedraMagica());
             from.SendMessage("Voce transformou as essencias em um po magico e guardou em uma garrafa");
-            from.CheckSkillMult(SkillName.Jewelcrafting, 0, 80);
+            from.CheckSkillMult(SkillName.TasteID, 0, 80);
             from.PlayAttackAnimation();
         }
 

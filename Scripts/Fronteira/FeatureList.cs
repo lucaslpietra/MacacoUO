@@ -416,7 +416,7 @@ namespace Server.Scripts
                 SkillIntervals.Add(SkillName.Snooping, 1.0);
                 SkillIntervals.Add(SkillName.SpiritSpeak, 1.0);
                 SkillIntervals.Add(SkillName.Stealing, 10.0);
-                SkillIntervals.Add(SkillName.Jewelcrafting, 1.0);
+                SkillIntervals.Add(SkillName.TasteID, 1.0);
                 SkillIntervals.Add(SkillName.Tracking, 10.0);
                 SkillIntervals.Add(SkillName.Lockpicking, 3.0);
                 SkillIntervals.Add(SkillName.Herding, 3.0);
@@ -474,7 +474,7 @@ namespace Server.Scripts
                 SkillConstantMod.Add(SkillName.Snooping, 12.0);
                 SkillConstantMod.Add(SkillName.SpiritSpeak, 5.0);
                 SkillConstantMod.Add(SkillName.Stealing, 3.0);
-                SkillConstantMod.Add(SkillName.Jewelcrafting, 8.0);
+                SkillConstantMod.Add(SkillName.TasteID, 8.0);
                 SkillConstantMod.Add(SkillName.Tracking, 5.0);
                 SkillConstantMod.Add(SkillName.Lockpicking, 6.0);
                 SkillConstantMod.Add(SkillName.Herding, 8.0);
