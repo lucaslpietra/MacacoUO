@@ -321,7 +321,9 @@
     <Compile Include="Fronteira\SequenciaLogin.cs" />
     <Compile Include="Fronteira\Talentos\CmdTalentos.cs" />
     <Compile Include="Fronteira\Talentos\DefTalentos.cs" />
+    <Compile Include="Fronteira\Talentos\GumpEscolherTalento.cs" />
     <Compile Include="Fronteira\Talentos\GumpLivroTalentos.cs" />
+    <Compile Include="Fronteira\Talentos\GumpVerTodosTalentos.cs" />
     <Compile Include="Fronteira\Talentos\Talento.cs" />
     <Compile Include="Fronteira\Talentos\TalentoBook.cs" />
     <Compile Include="Fronteira\Talentos\Talentos.cs" />
@@ -814,6 +816,7 @@
     <Compile Include="Rage\WarShard\Gumps\PedraSkillsAventuraGump.cs" />
     <Compile Include="Rage\WarShard\Gumps\PedraSkillsCombatGump.cs" />
     <Compile Include="Rage\WarShard\Gumps\PedraSkillsWorkerGump.cs" />
+    <Compile Include="Rage\WarShard\Gumps\PedraClassesGump.cs" />
     <Compile Include="Rage\WarShard\Gumps\PedraStatusGump.cs" />
     <Compile Include="Rage\WarShard\Gumps\PedraArmaduraGump.cs" />
     <Compile Include="Rage\WarShard\Gumps\PedraTrabalhoGump.cs" />
@@ -829,6 +832,7 @@
     <Compile Include="Rage\WarShard\Items\PedraArmas.cs" />
     <Compile Include="Rage\WarShard\Items\PedraSkillsCombat.cs" />
     <Compile Include="Rage\WarShard\Items\PedraSkillsWorker.cs" />
+    <Compile Include="Rage\WarShard\Items\PedraClasses.cs" />
     <Compile Include="Rage\WarShard\Items\PedraStatus.cs" />
     <Compile Include="Rage\WarShard\Items\PedraArmadura.cs" />
     <Compile Include="Rage\WarShard\Items\PedraTrabalho.cs" />
