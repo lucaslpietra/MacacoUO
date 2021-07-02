@@ -77,25 +77,26 @@ namespace Server.Mobiles
             base.OnDamage(amount, from, willKill);
         }
 
-        public static bool TentaAtacarMaster(BaseCreature creature, Mobile m)
+        public static bool TentaAtacarMaster(BaseCreature monster, Mobile enemyDealingDamage)
         {
-            if (m == null)
+            if (Shard.DebugEnabled) Shard.Debug(monster.Name + " tentando atacar mestre de " + enemyDealingDamage);
+            if (enemyDealingDamage == null)
                 return false;
 
-            if (creature.Combatant == m)
-                return false;
+            //if (monster.Combatant == enemyDealingDamage)
+            //    return false;
 
-            if (m is BaseCreature)
+            if (enemyDealingDamage is BaseCreature)
             {
-                var summon = (BaseCreature)m;
+                var summon = (BaseCreature)enemyDealingDamage;
                 var master = summon.GetMaster();
                 if (master != null)
                 {
-                    if (creature.GetDistance(m.Location) < 10)
+                    if (monster.GetDistance(master.Location) < 12)
                     {
-                        creature.Combatant = master;
-                        creature.PlayAngerSound();
-                        creature.OverheadMessage("!");
+                        monster.Combatant = master;
+                        monster.PlayAngerSound();
+                        monster.OverheadMessage("!");
                         return true;
                     }
                 }

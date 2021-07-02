@@ -52,7 +52,7 @@ namespace Server.Items
 
     public interface ICombatEquipment : IImbuableEquipement
     {
-        ItemPower ItemPower { get; set; }
+        ElementoPvM ElementoPvM { get; set; }
         ReforgedPrefix ReforgedPrefix { get; set; }
         ReforgedSuffix ReforgedSuffix { get; set; }
         bool PlayerConstructed { get; set; }

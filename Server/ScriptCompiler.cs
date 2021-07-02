@@ -181,7 +181,7 @@ namespace Server
                 return true;
             }
             Utility.PushColor(ConsoleColor.Green);
-            Console.WriteLine("Carregando Scripts");
+            Console.WriteLine("Carregando Scripts Padroes");
 
 			if (File.Exists("Scripts/Output/Scripts.CS.dll"))
 			{

@@ -1155,23 +1155,19 @@ namespace Server.Mobiles
         }
 
         #region PlayerTemplates
-
         public PlayerTemplates Templates = new PlayerTemplates();
         public string CurrentTemplate = "default";
-
         #endregion
 
         public override int GetPacketFlags()
         {
             int flags = base.GetPacketFlags();
-
             return flags;
         }
 
         public override int GetOldPacketFlags()
         {
             int flags = base.GetOldPacketFlags();
-
             return flags;
         }
 

@@ -216,7 +216,10 @@ namespace Server.Mobiles
 
         public const int MaxLoyalty = 100;
 
-        public virtual bool IsSmart { get { return IsParagon || this.Body.IsHuman || this.Body == 24; } }
+        public virtual bool IsSmart { get {
+                return IsParagon || this.Body.IsHuman || this.Body == 24 || this.Body.IsGargoyle || this.Body.IsGhost;
+            }
+        }
 
         private bool _LockDirection;
 

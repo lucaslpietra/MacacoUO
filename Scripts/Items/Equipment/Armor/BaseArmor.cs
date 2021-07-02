@@ -94,7 +94,7 @@ namespace Server.Items
         private int m_PhysicalBonus, m_FireBonus, m_ColdBonus, m_PoisonBonus, m_EnergyBonus;
 
         #region Runic Reforging
-        private ItemPower m_ItemPower;
+        private ElementoPvM m_elementoPvm;
         private ReforgedPrefix m_ReforgedPrefix;
         private ReforgedSuffix m_ReforgedSuffix;
         #endregion
@@ -806,10 +806,10 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ItemPower ItemPower
+        public ElementoPvM ElementoPvM
         {
-            get { return m_ItemPower; }
-            set { m_ItemPower = value; InvalidateProperties(); }
+            get { return m_elementoPvm; }
+            set { m_elementoPvm = value; InvalidateProperties(); }
         }
         #endregion
 
@@ -1772,7 +1772,7 @@ namespace Server.Items
             #region Runic Reforging
             writer.Write((int)m_ReforgedPrefix);
             writer.Write((int)m_ReforgedSuffix);
-            writer.Write((int)m_ItemPower);
+            writer.Write((int)m_elementoPvm);
             #endregion
 
             #region Stygian Abyss
@@ -1998,7 +1998,7 @@ namespace Server.Items
                         #region Runic Reforging
                         m_ReforgedPrefix = (ReforgedPrefix)reader.ReadInt();
                         m_ReforgedSuffix = (ReforgedSuffix)reader.ReadInt();
-                        m_ItemPower = (ItemPower)reader.ReadInt();
+                        m_elementoPvm = (ElementoPvM)reader.ReadInt();
 
                         if (version == 13 && reader.ReadBool())
                         {
@@ -3123,14 +3123,27 @@ namespace Server.Items
             }
         }
 
+        public static string CorElemento(ElementoPvM elemento)
+        {
+            switch(elemento)
+            {
+                case ElementoPvM.Agua: return "blue";
+                case ElementoPvM.Escuridao: return "gray";
+                case ElementoPvM.Fogo: return "orange";
+                case ElementoPvM.Gelo: return "cyan";
+                case ElementoPvM.Vento: return "yellow";
+                case ElementoPvM.Raio: return "purple";
+                case ElementoPvM.Luz: return "white";
+                case ElementoPvM.Terra: return "brown";
+                default: return "white";
+            }
+        }
+
         public override void AddItemPowerProperties(ObjectPropertyList list)
         {
-            if (m_ItemPower != ItemPower.None)
+            if (m_elementoPvm != ElementoPvM.None)
             {
-                if (m_ItemPower <= ItemPower.LegendaryArtifact)
-                    list.Add(1151488 + ((int)m_ItemPower - 1));
-                else
-                    list.Add(1152281 + ((int)m_ItemPower - 9));
+                list.AddTwoValues("Elemento", Gump.Cor(m_elementoPvm.ToString(), CorElemento(m_elementoPvm)));
             }
         }
 

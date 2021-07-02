@@ -259,7 +259,7 @@ namespace Server.Spells
         {
             if (caster.Player && IsCasting && BlocksMovement && (!(m_Caster is BaseCreature) || ((BaseCreature)m_Caster).FreezeOnCast))
             {
-                if(caster.RP)
+                if (caster.RP)
                 {
                     if (caster.TemTalento(Talento.Sagacidade))
                         return true;
@@ -268,7 +268,7 @@ namespace Server.Spells
                 return Shard.POL_STYLE;
             }
             return true;
-           
+
         }
 
         public virtual void CheckCasterDisruption(bool checkElem = false, int phys = 0, int fire = 0, int cold = 0, int pois = 0, int nrgy = 0)
@@ -536,53 +536,51 @@ namespace Server.Spells
             if (target == null)
                 return scalar;
 
-            if (!Core.AOS) //EvalInt stuff for AoS is handled elsewhere
+
+            double casterEI = m_Caster.Skills[DamageSkill].Value;
+            double targetRS = target.Skills[SkillName.MagicResist].Value;
+
+            var pl = m_Caster as PlayerMobile;
+
+
+            if (PsychicAttack.Registry.ContainsKey(target))
+                scalar += 0.2;
+
+            if (scalar < 0)
+                scalar = 0;
+
+
+            //m_Caster.CheckSkill( DamageSkill, 0.0, 120.0 );
+
+            if (casterEI > targetRS)
             {
-                double casterEI = m_Caster.Skills[DamageSkill].Value;
-                double targetRS = target.Skills[SkillName.MagicResist].Value;
+                scalar = (1.0 + ((casterEI - targetRS) / 500.0));
+            }
+            else
+            {
+                scalar = (1.0 + ((casterEI - targetRS) / 200.0));
+            }
 
-                var pl = m_Caster as PlayerMobile;
-            
-
-                if (PsychicAttack.Registry.ContainsKey(target))
-                    scalar += 0.2;
-
-                if (scalar < 0)
-                    scalar = 0;
-
-
-                //m_Caster.CheckSkill( DamageSkill, 0.0, 120.0 );
-
-                if (casterEI > targetRS)
+            if (pl != null && pl.RP)
+            {
+                if (pl != null && pl.Talentos.Tem(Talento.Elementalismo))
                 {
-                    scalar = (1.0 + ((casterEI - targetRS) / 500.0));
+                    if (casterEI < 60)
+                        casterEI = 60;
+                    if (pl != null)
+                        scalar += 0.1;
+                    if (target is BaseCreature)
+                        scalar += 0.2;
                 }
                 else
-                {
-                    scalar = (1.0 + ((casterEI - targetRS) / 200.0));
-                }
+                    scalar -= 0.15;
+            }
 
-                if (pl.RP)
-                {
-                    if (pl != null && pl.Talentos.Tem(Talento.Elementalismo))
-                    {
-                        if (casterEI < 60)
-                            casterEI = 60;
-                        if (pl != null)
-                            scalar += 0.1;
-                        if (target is BaseCreature)
-                            scalar += 0.2;
-                    }
-                    else
-                        scalar -= 0.15;
-                }
+            scalar += (m_Caster.Skills[CastSkill].Value - 100.0) / 400.0;
 
-                scalar += (m_Caster.Skills[CastSkill].Value - 100.0) / 400.0;
-
-                if (!target.Player && !target.Body.IsHuman /*&& !Core.AOS*/)
-                {
-                    scalar *= 2.5;
-                }
+            if (!target.Player && !target.Body.IsHuman /*&& !Core.AOS*/)
+            {
+                scalar *= 2.5;
             }
 
             if (target is BaseCreature)
@@ -670,7 +668,7 @@ namespace Server.Spells
 
         public virtual void DoFizzle()
         {
-            m_Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2, true, "* perdeu a concentracao *"); // The spell fizzles.
+            m_Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2, true, "* magia se dissipa *"); // The spell fizzles.
 
             if (m_Caster.Player)
             {
@@ -826,7 +824,7 @@ namespace Server.Spells
             }
         }
 
-        public int CicloArmadura(Mobile from)
+        public static int CicloArmadura(Mobile from)
         {
             var min = 8;
             var equips = from.GetEquipment();
@@ -1699,7 +1697,7 @@ namespace Server.Spells
 
                     if (m_Spell.m_Caster.Player && m_Spell.m_Caster.Target != originalTarget && m_Spell.Caster.Target != null)
                     {
-                        m_Spell.m_Caster.Target.BeginTimeout(m_Spell.m_Caster, TimeSpan.FromSeconds(2.5));
+                        m_Spell.m_Caster.Target.BeginTimeout(m_Spell.m_Caster, TimeSpan.FromSeconds(10));
                     }
 
                     m_Spell.m_CastTimer = null;

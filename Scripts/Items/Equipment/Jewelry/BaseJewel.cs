@@ -55,7 +55,7 @@ namespace Server.Items
         #endregion
 
         #region Runic Reforging
-        private ItemPower m_ItemPower;
+        private ElementoPvM m_ItemPower;
         private ReforgedPrefix m_ReforgedPrefix;
         private ReforgedSuffix m_ReforgedSuffix;
         #endregion
@@ -346,7 +346,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ItemPower ItemPower
+        public ElementoPvM ElementoPvM
         {
             get { return m_ItemPower; }
             set { m_ItemPower = value; InvalidateProperties(); }
@@ -1101,9 +1101,9 @@ namespace Server.Items
 
         public override void AddItemPowerProperties(ObjectPropertyList list)
         {
-            if (m_ItemPower != ItemPower.None)
+            if (m_ItemPower != ElementoPvM.None)
             {
-                if (m_ItemPower <= ItemPower.LegendaryArtifact)
+                if (m_ItemPower <= ElementoPvM.Escuridao)
                     list.Add(1151488 + ((int)m_ItemPower - 1));
                 else
                     list.Add(1152281 + ((int)m_ItemPower - 9));
@@ -1248,7 +1248,7 @@ namespace Server.Items
                         #region Runic Reforging
                         m_ReforgedPrefix = (ReforgedPrefix)reader.ReadInt();
                         m_ReforgedSuffix = (ReforgedSuffix)reader.ReadInt();
-                        m_ItemPower = (ItemPower)reader.ReadInt();
+                        m_ItemPower = (ElementoPvM)reader.ReadInt();
 
                         if (version < 12 && reader.ReadBool())
                             m_NegativeAttributes.NoRepair = 1;

@@ -7,8 +7,6 @@ namespace Server.Spells.Third
 {
     public class TeleportSpell : MagerySpell
     {
-
-
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Teleport", "Rel Por",
             215,
@@ -174,8 +172,6 @@ namespace Server.Spells.Third
                 }
             }
 
-
-
             if (staticInvalido)
             {
                 this.Caster.SendMessage("Voce nao pode teleportar ali");
@@ -231,7 +227,6 @@ namespace Server.Spells.Third
                     if (item is Server.Spells.Fifth.PoisonFieldSpell.PoisonFieldItem || item is Server.Spells.Fourth.FireFieldSpell.FireFieldItem)
                         item.OnMoveOver(m);
                 }
-
                 eable.Free();
             }
 

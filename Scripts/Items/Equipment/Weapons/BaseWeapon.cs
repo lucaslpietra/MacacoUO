@@ -290,7 +290,7 @@ namespace Server.Items
         #endregion
 
         #region Runic Reforging
-        private ItemPower m_ItemPower;
+        private ElementoPvM m_ItemPower;
         private ReforgedPrefix m_ReforgedPrefix;
         private ReforgedSuffix m_ReforgedSuffix;
         #endregion
@@ -810,7 +810,7 @@ namespace Server.Items
         #region Runic Reforging
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ItemPower ItemPower
+        public ElementoPvM ElementoPvM
         {
             get { return m_ItemPower; }
             set { m_ItemPower = value; InvalidateProperties(); }
@@ -898,7 +898,7 @@ namespace Server.Items
 
         public int GetDurabilityBonus()
         {
-            int bonus = 20;
+            int bonus = 1;
 
             if (m_Quality == ItemQuality.Exceptional)
             {
@@ -929,7 +929,7 @@ namespace Server.Items
                 case CraftResource.Carvalho:
                 case CraftResource.Cobre:
 
-                    bonus += 20;
+                    bonus += 35;
                     break;
                 case CraftResource.Pinho:
                 case CraftResource.Bronze:
@@ -2335,6 +2335,7 @@ namespace Server.Items
             {
                 if (Shard.DebugEnabled)
                     Shard.Debug("Dano antes talentos " + damage);
+
                 var pl = (PlayerMobile)attacker;
                 if (pl.RP)
                 {
@@ -2359,18 +2360,6 @@ namespace Server.Items
                     if (pl.Weapon is Dagger && !pl.Talentos.Tem(Talento.Adagas))
                         damage *= 1.30;
                 }
-
-                /*
-                var mamo = pl.Talentos.Tem(Fronteira.Talentos.Talento.Mamonita);
-                if (pl.Mamonita && mamo > 0 && Banker.Withdraw(attacker, mamo * 100))
-                {
-                    attacker.PrivateOverheadMessage("-"+(mamo*100), 76);
-                    damage += mamo == 3 ? 30 : mamo == 2? 15 : 5;
-                    attacker.MovingEffect(defender, 0x0EEC, 20, 3, true, true);
-                    attacker.PlaySound(0x2E6);
-                    Effects.SendMovingParticles(defender, new Entity(Serial.Zero, new Point3D(defender.X, defender.Y, defender.Z + 15), defender.Map), 0x0EEC, 15, 0, false, true, 0, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
-                }
-                */
 
                 if (Shard.DebugEnabled)
                     Shard.Debug("Dano depois talentos " + damage);
@@ -2413,11 +2402,8 @@ namespace Server.Items
 
                 if (defender is PlayerMobile)
                 {
-                    scalar *= 3;
+                    scalar *= 3.1;
                 }
-
-                //int from = (int)(virtualArmor * scalar) / 2;
-                //int to = (int)(virtualArmor * scalar);
 
                 int from = (int)(virtualArmor * scalar) / 2;
                 int to = (int)(virtualArmor * scalar);
@@ -2820,32 +2806,32 @@ namespace Server.Items
             if (cs1 != CheckSlayerResult.None)
             {
                 if (cs1 == CheckSlayerResult.SuperSlayer)
-                    percentageBonus += 100;
+                    percentageBonus += 75;
                 else if (cs1 == CheckSlayerResult.Slayer)
-                    percentageBonus += 200;
+                    percentageBonus += 150;
             }
 
             if (cs2 != CheckSlayerResult.None)
             {
                 if (cs2 == CheckSlayerResult.SuperSlayer)
-                    percentageBonus += 100;
+                    percentageBonus += 75;
                 else if (cs2 == CheckSlayerResult.Slayer)
-                    percentageBonus += 200;
+                    percentageBonus += 150;
             }
 
             if (suit != CheckSlayerResult.None)
             {
-                percentageBonus += 100;
+                percentageBonus += 75;
             }
 
             if (tal != CheckSlayerResult.None)
             {
-                percentageBonus += 100;
+                percentageBonus += 75;
             }
 
             if (CheckSlayerOpposition(attacker, defender) != CheckSlayerResult.None)
             {
-                percentageBonus += 100;
+                percentageBonus += 75;
                 defender.FixedEffect(0x37B9, 10, 5);
             }
             else if (cs1 != CheckSlayerResult.None || cs2 != CheckSlayerResult.None || suit != CheckSlayerResult.None || tal != CheckSlayerResult.None)
@@ -4239,11 +4225,6 @@ namespace Server.Items
         public virtual double ScaleDamageOld(Mobile attacker, double damage, bool checkSkills)
         {
             var anat = SkillName.Anatomy;
-            if (this is BaseStaff)
-            {
-                anat = SkillName.Magery;
-            }
-
             if (checkSkills)
             {
                 attacker.CheckSkillMult(SkillName.Tactics, 0.0, attacker.Skills[SkillName.Tactics].Cap);
@@ -5012,7 +4993,7 @@ namespace Server.Items
                         #region Runic Reforging
                         m_ReforgedPrefix = (ReforgedPrefix)reader.ReadInt();
                         m_ReforgedSuffix = (ReforgedSuffix)reader.ReadInt();
-                        m_ItemPower = (ItemPower)reader.ReadInt();
+                        m_ItemPower = (ElementoPvM)reader.ReadInt();
 
                         if (version < 18 && reader.ReadBool())
                         {
@@ -6654,9 +6635,9 @@ namespace Server.Items
 
         public override void AddItemPowerProperties(ObjectPropertyList list)
         {
-            if (m_ItemPower != ItemPower.None)
+            if (m_ItemPower != ElementoPvM.None)
             {
-                if (m_ItemPower <= ItemPower.LegendaryArtifact)
+                if (m_ItemPower <= ElementoPvM.Escuridao)
                     list.Add(1151488 + ((int)m_ItemPower - 1));
                 else
                     list.Add(1152281 + ((int)m_ItemPower - 9));

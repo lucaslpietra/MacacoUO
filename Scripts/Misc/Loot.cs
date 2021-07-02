@@ -409,10 +409,10 @@ namespace Server
         public static Type[] NecromancyScrollTypes { get { return m_NecromancyScrollTypes; } }
         public static Type[] SENecromancyScrollTypes { get { return m_SENecromancyScrollTypes; } }
         public static Type[] PaladinScrollTypes { get { return m_PaladinScrollTypes; } }
-        public static Type[] MysticismScrollTypes { get { return m_MysticismScrollTypes; } }
+        public static Type[] MysticismScrollTypes { get { return m_RegularScrollTypes; } }
 
         #region Mondain's Legacy
-        public static Type[] ArcanistScrollTypes { get { return m_ArcanistScrollTypes; } }
+        public static Type[] ArcanistScrollTypes { get { return m_RegularScrollTypes; } }//  m_ArcanistScrollTypes; } }
         #endregion
 
         private static readonly Type[] m_GrimmochJournalTypes = new[]

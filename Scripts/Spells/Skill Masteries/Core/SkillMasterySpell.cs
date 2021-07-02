@@ -76,6 +76,7 @@ namespace Server.Spells.SkillMasteries
 		
 		public override bool CheckCast()
 		{
+            Shard.Debug("Castando mastery");
 			int mana = AjustaMana( RequiredMana );
 
 			if ( !base.CheckCast() )
@@ -83,7 +84,8 @@ namespace Server.Spells.SkillMasteries
 
             if (IsInCooldown(Caster, this.GetType()))
                 return false;
-            
+
+            Shard.Debug("Validando");
             if (Caster.Player && Caster.Skills[CastSkill].Value < RequiredSkill)
                 Caster.SendLocalizedMessage(1115709); // Your skills are not high enough to invoke this mastery ability.
             else if (Caster is PlayerMobile && Caster.Skills.CurrentMastery != CastSkill)
@@ -100,6 +102,7 @@ namespace Server.Spells.SkillMasteries
                 if (CancelsSpecialMove)
                     SpecialMove.ClearCurrentMove(Caster);
 
+                Shard.Debug("Liberado");
                 return true;
             }
 

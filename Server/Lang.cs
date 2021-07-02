@@ -1482,7 +1482,7 @@ namespace Server
             Cache.TryGetValue(msg, out v);
             if (v != null)
                 return v;
-            v = _Trans(msg);
+            v = _TransCliloc(msg);
             if (v != null)
             {
                 Cache[msg] = v;
@@ -1497,7 +1497,7 @@ namespace Server
         }
 
         // Frases do clicloc 
-        public static string _Trans(int msg)
+        public static string _TransCliloc(int msg)
         {
             switch (msg)
             {

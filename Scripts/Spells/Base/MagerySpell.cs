@@ -74,7 +74,7 @@ namespace Server.Spells
             }
             */
 
-            var circleMax = this.CicloArmadura(from);
+            var circleMax = CicloArmadura(from);
             if (circleMax < (int)this.Circle + 1)
             {
                 from.SendMessage("Esta armadura e muito pesada para esta magia");

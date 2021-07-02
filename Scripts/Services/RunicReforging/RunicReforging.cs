@@ -52,24 +52,6 @@ namespace Server.Items
         EnchantedOrigin
     }
 
-    public enum ItemPower
-    {
-        None,
-        Minor,
-        Lesser,
-        Greater,
-        Major,
-        LesserArtifact,
-        GreaterArtifact,
-        MajorArtifact,
-        LegendaryArtifact,
-        ReforgedMinor,
-        ReforgedLesser,
-        ReforgedGreater,
-        ReforgedMajor,
-        ReforgedLegendary
-    }
-
     public static class RunicReforging
     {
         public static bool CanReforge(Mobile from, Item item, CraftSystem crsystem)
@@ -2040,19 +2022,19 @@ namespace Server.Items
                     ((IDurability)item).HitPoints = 255;
                 }
 
-                ItemPower power = ApplyItemPower(item, false);
+                ElementoPvM power = ApplyItemPower(item, false);
 
-                if (artifact && power < ItemPower.LesserArtifact)
+                if (artifact && power < ElementoPvM.Raio)
                 {
                     int extra = 5000;
                     do
                     {
                         ApplyRunicAttributes(item, perclow, perchigh, ref extra, 0, luckchance, false);
                     }
-                    while (ApplyItemPower(item, false) < ItemPower.LesserArtifact);
+                    while (ApplyItemPower(item, false) < ElementoPvM.Raio);
                 }
 
-                if (power == ItemPower.LegendaryArtifact && (item is BaseArmor || item is BaseClothing))
+                if (power == ElementoPvM.Escuridao && (item is BaseArmor || item is BaseClothing))
                 {
                     item.Hue = 2500;
                 }
@@ -2220,10 +2202,10 @@ namespace Server.Items
                 return 0;
 
             int max = Imbuing.GetMaxWeight(item);
-            ItemPower power = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), false);
+            ElementoPvM power = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), false);
             double chance = Utility.RandomDouble();
 
-            if (item is BaseJewel && power >= ItemPower.MajorArtifact)
+            if (item is BaseJewel && power >= ElementoPvM.Luz)
             {
                 if (chance > .25)
                     neg.Antique = 1;
@@ -2236,7 +2218,7 @@ namespace Server.Items
             {
                 default:
                     return 0;
-                case ItemPower.Lesser: // lesser magic
+                case ElementoPvM.Agua: // lesser magic
                     {
                         if (.95 >= chance)
                             return 0;
@@ -2257,7 +2239,7 @@ namespace Server.Items
 
                         return 100;
                     }
-                case ItemPower.Greater:// greater magic
+                case ElementoPvM.Gelo:// greater magic
                     {
                         if (.75 >= chance)
                             return 0;
@@ -2304,7 +2286,7 @@ namespace Server.Items
                             return 100;
                         }
                     }
-                case ItemPower.Major: // major magic
+                case ElementoPvM.Vento: // major magic
                     {
                         if (.50 >= chance)
                             return 0;
@@ -2345,8 +2327,8 @@ namespace Server.Items
                             return 150;
                         }
                     }
-                case ItemPower.LesserArtifact: // lesser arty
-                case ItemPower.GreaterArtifact: // greater arty
+                case ElementoPvM.Raio: // lesser arty
+                case ElementoPvM.Terra: // greater arty
                     {
                         if (0.001 > chance)
                             return 0;
@@ -2374,8 +2356,8 @@ namespace Server.Items
                             return 100;
                         }
                     }
-                case ItemPower.MajorArtifact:
-                case ItemPower.LegendaryArtifact:
+                case ElementoPvM.Luz:
+                case ElementoPvM.Escuridao:
                     {
                         if (0.0001 > Utility.RandomDouble())
                             return 0;
@@ -2399,19 +2381,19 @@ namespace Server.Items
             }
         }
 
-        public static ItemPower ApplyItemPower(Item item, bool playermade)
+        public static ElementoPvM ApplyItemPower(Item item, bool playermade)
         {
-            ItemPower ip = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), playermade);
+            ElementoPvM ip = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), playermade);
 
             if (item is ICombatEquipment)
             {
-                ((ICombatEquipment)item).ItemPower = ip;
+                ((ICombatEquipment)item).ElementoPvM = ip;
             }
 
             return ip;
         }
 
-        public static ItemPower GetItemPower(Item item, int weight, int totalMods, bool playermade)
+        public static ElementoPvM GetItemPower(Item item, int weight, int totalMods, bool playermade)
         {
             // pre-arty uses max imbuing weight + 100
             // arty ranges from pre-arty to a flat 1200
@@ -2419,30 +2401,30 @@ namespace Server.Items
             double arty = 1200 - preArty;
 
             if (totalMods == 0)
-                return ItemPower.None;
+                return ElementoPvM.None;
 
             if (weight < preArty * .4)
-                return playermade ? ItemPower.ReforgedMinor : ItemPower.Minor;
+                return playermade ? ElementoPvM.Vazio1 : ElementoPvM.Fogo;
 
             if (weight < preArty * .6)
-                return playermade ? ItemPower.ReforgedLesser : ItemPower.Lesser;
+                return playermade ? ElementoPvM.Vazio2 : ElementoPvM.Agua;
 
             if (weight < preArty * .8)
-                return playermade ? ItemPower.ReforgedGreater : ItemPower.Greater;
+                return playermade ? ElementoPvM.Vazio3 : ElementoPvM.Gelo;
 
             if (weight <= preArty)
-                return playermade ? ItemPower.ReforgedGreater : ItemPower.Major;
+                return playermade ? ElementoPvM.Vazio3 : ElementoPvM.Vento;
 
             if (weight < preArty + (arty * .2))
-                return playermade ? ItemPower.ReforgedMajor : ItemPower.LesserArtifact;
+                return playermade ? ElementoPvM.Vazio4 : ElementoPvM.Raio;
 
             if (weight < preArty + (arty * .4))
-                return playermade ? ItemPower.ReforgedMajor : ItemPower.GreaterArtifact;
+                return playermade ? ElementoPvM.Vazio4 : ElementoPvM.Terra;
 
             if (weight < preArty + (arty * .7) || totalMods <= 5)
-                return ItemPower.MajorArtifact;
+                return ElementoPvM.Luz;
 
-            return playermade ? ItemPower.ReforgedLegendary : ItemPower.LegendaryArtifact;
+            return playermade ? ElementoPvM.Vazio5 : ElementoPvM.Escuridao;
         }
 
         private static bool ApplyNewAttributes(Item item, int prefixID, int suffixID, int colIndex, int percLow, int percHigh, int resIndex, int preIndex, int luckchance, bool playermade, ref int budget)
@@ -3448,7 +3430,7 @@ namespace Server.Items
             int focus = 0;
             int brittle = 0;
 
-            foreach (var jewel in World.Items.Values.OfType<BaseJewel>().Where(j => j.ItemPower > ItemPower.None))
+            foreach (var jewel in World.Items.Values.OfType<BaseJewel>().Where(j => j.ElementoPvM > ElementoPvM.None))
             {
                 if (jewel.Attributes.CastSpeed > 1)
                 {

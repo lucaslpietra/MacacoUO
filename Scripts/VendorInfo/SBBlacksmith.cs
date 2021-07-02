@@ -120,7 +120,7 @@ namespace Server.Mobiles
                 this.Add(new GenericBuyInfo(typeof(Maul), 21, 20, 0x143B, 0));
                 this.Add(new GenericBuyInfo(typeof(QuarterStaff), 19, 20, 0xE89, 0));
                 this.Add(new GenericBuyInfo(typeof(ShepherdsCrook), 20, 20, 0xE81, 0));
-                this.Add(new GenericBuyInfo(typeof(SmithHammer), 21, 20, 0x13E3, 0));
+                this.Add(new GenericBuyInfo(typeof(SledgeHammer), 21, 20, 0x13E3, 0));
                 this.Add(new GenericBuyInfo(typeof(ShortSpear), 23, 20, 0x1403, 0));
                 this.Add(new GenericBuyInfo(typeof(Spear), 31, 20, 0xF62, 0));
                 this.Add(new GenericBuyInfo(typeof(WarHammer), 25, 20, 0x1439, 0));

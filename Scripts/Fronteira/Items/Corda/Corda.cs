@@ -182,18 +182,14 @@ namespace Server.Items
                     if (!pl.Alive)
                         return;
 
+                    if (pl.Mounted)
+                        return;
+
                     corda.QuemPrendeu = from as PlayerMobile;
                     from.SendMessage("Tentando gentilmente amarrar " + pl.Name);
                     from.OverheadMessage("* estende uma corda *");
                     pl.SendGump(new ConfirmaPreso(corda));
                     return;
-                }
-                var item = targeted as IArrastavel;
-                if (item != null)
-                {
-                    corda.QuemPrendeu = from as PlayerMobile;
-                    corda.Prende(item);
-                    from.OverheadMessage("* amarrou *");
                 }
             }
         }

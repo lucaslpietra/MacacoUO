@@ -122,6 +122,8 @@
     <Compile Include="Commands\Custom\Secure.cs" />
     <Compile Include="Commands\Custom\Trancar.cs" />
     <Compile Include="Fronteira\Animations\CustomAnimations.cs" />
+    <Compile Include="Fronteira\Aspects\Aspect.cs" />
+    <Compile Include="Fronteira\Aspects\AspectType.cs" />
     <Compile Include="Fronteira\Chat\Channels\Alliance.cs" />
     <Compile Include="Fronteira\Chat\Channels\Channel.cs" />
     <Compile Include="Fronteira\Chat\Channels\Guild.cs" />
@@ -14713,6 +14715,10 @@
     <Content Include="Services\UltimaStore\ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fronteira\Fronteira.csproj">
+      <Project>{04dc71f5-99c2-4ab2-b193-6746d84caee9}</Project>
+      <Name>Fronteira</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Server\Server.csproj">
       <Project>{AE4A9EAA-E0EB-4DC9-9604-BE4289F9F6C3}</Project>
       <Name>Server</Name>

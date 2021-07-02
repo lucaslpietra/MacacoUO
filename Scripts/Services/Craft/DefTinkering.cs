@@ -221,38 +221,6 @@ namespace Server.Engines.Craft
         {
             int index = -1;
 
-            /*
-           #region Jewelry
-           AddCraft(typeof(GoldRing), 1044049, 1024234, 65.0, 115.0, typeof(IronIngot), 1044036, 3, 1044037);
-           AddCraft(typeof(GoldBracelet), 1044049, 1024230, 55.0, 105.0, typeof(IronIngot), 1044036, 3, 1044037);
-
-           if (Core.SA)
-           {
-               index = AddCraft(typeof(GargishNecklace), 1044049, 1095784, 60.0, 110.0, typeof(IronIngot), 1044036, 3, 1044037);
-
-               index = AddCraft(typeof(GargishBracelet), 1044049, 1095785, 55.0, 105.0, typeof(IronIngot), 1044036, 3, 1044037);
-
-               index = AddCraft(typeof(GargishRing), 1044049, 1095786, 65.0, 115.0, typeof(IronIngot), 1044036, 3, 1044037);
-
-               index = AddCraft(typeof(GargishEarrings), 1044049, 1095787, 55.0, 105.0, typeof(IronIngot), 1044036, 3, 1044037);
-           }
-
-
-           AddJewelrySet(GemType.SafiraEstrela, typeof(StarSapphire));
-           AddJewelrySet(GemType.Esmeralda, typeof(Emerald));
-           AddJewelrySet(GemType.Safira, typeof(Sapphire));
-           AddJewelrySet(GemType.Ruby, typeof(Ruby));
-           AddJewelrySet(GemType.Citrina, typeof(Citrine));
-           AddJewelrySet(GemType.Ametista, typeof(Amethyst));
-           AddJewelrySet(GemType.Turmalina, typeof(Tourmaline));
-           AddJewelrySet(GemType.Ambrosia, typeof(Amber));
-           AddJewelrySet(GemType.Diamante, typeof(Diamond));
-         
-
-            index = AddCraft(typeof(KrampusMinionEarrings), 1044049, 1125645, 100.0, 500.0, typeof(IronIngot), 1044036, 3, 1044037);
-            AddRecipe(index, (int)TinkerRecipes.KrampusMinionEarrings);
-            #endregion
-              */
             #region Wooden Items
             if (Core.SE)
             {
@@ -354,7 +322,7 @@ namespace Server.Engines.Craft
             AddCraft(typeof(Shovel), 1044046, 1023898, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
             AddCraft(typeof(Hammer), 1044046, 1024138, 30.0, 80.0, typeof(IronIngot), 1044036, 1, 1044037);
             AddCraft(typeof(Tongs), 1044046, 1024028, 35.0, 85.0, typeof(IronIngot), 1044036, 1, 1044037);
-            AddCraft(Core.AOS ? typeof(SmithyHammer) : typeof(SmithHammer), 1044046, 1025091, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
+            //AddCraft(Core.AOS ? typeof(SmithyHammer) : typeof(SmithHammer), 1044046, 1025091, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
             AddCraft(Core.AOS ? typeof(SledgeHammerWeapon) : typeof(SledgeHammer), 1044046, 1024021, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
             AddCraft(typeof(Inshave), 1044046, 1024326, 30.0, 80.0, typeof(IronIngot), 1044036, 2, 1044037);
             AddCraft(typeof(Pickaxe), 1044046, 1023718, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
