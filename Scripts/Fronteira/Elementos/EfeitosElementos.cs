@@ -25,7 +25,7 @@ namespace Server.Fronteira.Elementos
                     break;
                 case ElementoPvM.Agua:
                     efeitos = new string[] {
-                        "Efeito Pocoes",
+                        "Dano Pocoes",
                         "Magic Resist",
                         "Dano Eletrico",
                     };

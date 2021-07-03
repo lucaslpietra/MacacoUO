@@ -6982,7 +6982,7 @@ namespace Server.Mobiles
             }
             else
             {
-                Shard.Debug("Bixo Death sem bond");
+                Shard.Debug("Bixo Death sem bond", this);
                 /*
                 if (Utility.RandomDouble() <= 0.02)
                 {
@@ -7033,6 +7033,7 @@ namespace Server.Mobiles
 
                 if (!Summoned && !m_NoKillAwards)
                 {
+                    Shard.Debug("Has kill awards", this);
                     int totalFame = Fame / 100;
                     int totalKarma = -Karma / 100;
 
@@ -7182,6 +7183,8 @@ namespace Server.Mobiles
                 var e = new CreatureDeathEventArgs(this, LastKiller, c);
 
                 EventSink.InvokeCreatureDeath(e);
+
+                //Shard.Debug("Corpse items " + string.Join(",",c.Items.Select(i => i.Name).ToList()));
 
                 if (!c.Deleted)
                 {

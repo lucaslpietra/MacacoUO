@@ -318,6 +318,12 @@ namespace Server.Items
                     var dmg = GetDamage();
                     if (m.Body.IsHuman)
                         dmg /= 2;
+
+                    if(!m.Player && m_From.Player)
+                    {
+                        dmg += (int)(dmg * m_From.GetBonusElemento(ElementoPvM.Agua));
+                    }
+
                     AOS.Damage(m, m_From, dmg, 0, 100, 0, 0, 0);
                     m.PlaySound(0x208);
                 }

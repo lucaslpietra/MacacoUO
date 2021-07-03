@@ -193,6 +193,11 @@ namespace Server.Items
 
                 int damage = Utility.RandomMinMax(min, max);
 
+                if(!m.Player && from.Player)
+                {
+                    damage += (int)(damage * from.GetBonusElemento(ElementoPvM.Agua));
+                }
+
                 damage += alchemyBonus;
 
                 if (damage > 35)

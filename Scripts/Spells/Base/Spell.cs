@@ -537,7 +537,6 @@ namespace Server.Spells
             if (target == null)
                 return scalar;
 
-
             double casterEI = m_Caster.Skills[DamageSkill].Value;
             double targetRS = target.Skills[SkillName.MagicResist].Value;
 
@@ -609,7 +608,6 @@ namespace Server.Spells
                 {
                     bonus *= 1.5;
                     Shard.Debug("Alvo fraco contra elemento", m_Caster);
-
                 }
                 else if (target.Elemento != ElementoPvM.None && target.Elemento.ForteContra(elemento))
                 {
@@ -618,7 +616,6 @@ namespace Server.Spells
                 }
                 scalar += bonus;
             }
-
             return scalar;
         }
 

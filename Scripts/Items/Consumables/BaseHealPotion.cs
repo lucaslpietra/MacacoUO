@@ -48,7 +48,7 @@ namespace Server.Items
                 }
                 var ratios = (int)max / min;
                 var randomRatio = Utility.RandomMinMax(1, ratios);
-                Shard.Debug("Fiver Pot: Ratio " + ratios + " min " + min + " max " + max);
+                //Shard.Debug("Fiver Pot: Ratio " + ratios + " min " + min + " max " + max);
                 from.Heal(randomRatio * 5);
             }
             else

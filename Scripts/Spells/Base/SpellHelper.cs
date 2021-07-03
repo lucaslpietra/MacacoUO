@@ -1498,7 +1498,7 @@ namespace Server.Spells
             Mobile target = damageable as Mobile;
             int iDamage = (int)damage;
 
-            if (true || delay == TimeSpan.Zero)
+            if (delay == TimeSpan.Zero)
             {
                 if (from is BaseCreature && target != null)
                     ((BaseCreature)from).AlterSpellDamageTo(target, ref iDamage);
@@ -1528,21 +1528,12 @@ namespace Server.Spells
                 if (from != target)
                     NegativeAttributes.OnCombatAction(target);
 
-                if(from.Player && !target.Player)
-                {
-                    var spellSteal = from.GetBonusElemento(ElementoPvM.Fogo);
-                    Shard.Debug("SpellSteal "+spellSteal, from);
-                    var cura = (int)(damageGiven * spellSteal/2);
-                    if(cura > 0)
-                        from.Heal((int)cura);
-                }
+                SpellDamage(from, target, damageGiven);
             }
-            /*
             else
             {
                 new SpellDamageTimerAOS(spell, damageable, from, iDamage, phys, fire, cold, pois, nrgy, chaos, direct, delay, dfa).Start();
             }
-            */
 
             if (target is BaseCreature && from != null && delay == TimeSpan.Zero)
             {
@@ -1550,6 +1541,18 @@ namespace Server.Spells
 
                 c.OnHarmfulSpell(from);
                 c.OnDamagedBySpell(from);
+            }
+        }
+
+        public static void SpellDamage(Mobile from, Mobile target, int damageGiven)
+        {
+            if (from.Player && !target.Player)
+            {
+                var spellSteal = from.GetBonusElemento(ElementoPvM.Fogo);
+                Shard.Debug("SpellSteal " + spellSteal, from);
+                var cura = (int)(damageGiven * spellSteal) / 2;
+                if (cura > 0)
+                    from.Heal((int)cura / 2);
             }
         }
 
@@ -1717,6 +1720,8 @@ namespace Server.Spells
 
                 if (m_From != target)
                     NegativeAttributes.OnCombatAction(target);
+
+                SpellHelper.SpellDamage(m_From, target, damageGiven);
             }
         }
     }

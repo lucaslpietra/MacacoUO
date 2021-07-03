@@ -48,10 +48,10 @@ namespace Server.Spells.Third
                 if (SpellHelper.CheckReflect((int)Circle, ref source, ref target))
                 {
                     Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
-                        {
-                            source.MovingParticles(target, 0x36D4, 7, 0, false, true, 9502, 4019, 0x160);
-                            source.PlaySound(0x15E);
-                        });
+                    {
+                        source.MovingParticles(target, 0x36D4, 7, 0, false, true, 9502, 4019, 0x160);
+                        source.PlaySound(0x15E);
+                    });
                 }
 
                 double damage = 0;
@@ -70,9 +70,7 @@ namespace Server.Spells.Third
 
                         ((Mobile)m).SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                     }
-
                     damage *= GetDamageScalar((Mobile)m, Items.ElementoPvM.Fogo);
-
                 }
 
                 if (damage > 0)
@@ -83,7 +81,6 @@ namespace Server.Spells.Third
                     SpellHelper.Damage(this, target, damage, 0, 100, 0, 0, 0);
                 }
             }
-
             FinishSequence();
         }
 
