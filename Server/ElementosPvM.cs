@@ -3,6 +3,8 @@ namespace Server.Items
 
     public enum ElementoPvM
     {
+
+
         None,
         Luz = 20742,
         Raio = 2288,
@@ -18,6 +20,7 @@ namespace Server.Items
         Vazio3,
         Vazio4,
         Vazio5
-    }
+
+     
 
 }

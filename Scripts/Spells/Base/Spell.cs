@@ -23,6 +23,7 @@ using Server.Spells.Fifth;
 using Server.Spells.Sixth;
 using Server.Misc.Custom;
 using Server.Fronteira.Talentos;
+using Server.Fronteira.Elementos;
 #endregion
 
 namespace Server.Spells
@@ -601,9 +602,21 @@ namespace Server.Spells
                 scalar = 0;
             }
 
-            if(elemento != ElementoPvM.None && !target.Player)
+            if (elemento != ElementoPvM.None && !target.Player)
             {
-                scalar += m_Caster.GetBonusElemento(elemento);
+                var bonus = (m_Caster.GetBonusElemento(elemento) * 1.2);
+                if (target.Elemento != ElementoPvM.None && elemento.ForteContra(target.Elemento))
+                {
+                    bonus *= 1.5;
+                    Shard.Debug("Alvo fraco contra elemento", m_Caster);
+
+                }
+                else if (target.Elemento != ElementoPvM.None && target.Elemento.ForteContra(elemento))
+                {
+                    bonus /= 2;
+                    Shard.Debug("Alvo forte contra elemento", m_Caster);
+                }
+                scalar += bonus;
             }
 
             return scalar;

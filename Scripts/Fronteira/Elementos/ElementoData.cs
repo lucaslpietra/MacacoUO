@@ -6,6 +6,8 @@ namespace Server.Fronteira.Elementos
     [PropertyObject]
     public class ElementoData
     {
+
+ 
         private Dictionary<ElementoPvM, ushort> _niveis = new Dictionary<ElementoPvM, ushort>();
 
         private Dictionary<ElementoPvM, int> _exps = new Dictionary<ElementoPvM, int>();
@@ -104,6 +106,8 @@ namespace Server.Fronteira.Elementos
 
         public ushort GetNivel(ElementoPvM elemento)
         {
+            if (elemento == ElementoPvM.None)
+                return 0;
             return _niveis[elemento];
         }
 
@@ -114,6 +118,8 @@ namespace Server.Fronteira.Elementos
 
         public int GetExp(ElementoPvM elemento)
         {
+            if (elemento == ElementoPvM.None)
+                return 0;
             return _exps[elemento];
         }
 

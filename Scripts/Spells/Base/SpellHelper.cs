@@ -1498,7 +1498,7 @@ namespace Server.Spells
             Mobile target = damageable as Mobile;
             int iDamage = (int)damage;
 
-            if (delay == TimeSpan.Zero)
+            if (true || delay == TimeSpan.Zero)
             {
                 if (from is BaseCreature && target != null)
                     ((BaseCreature)from).AlterSpellDamageTo(target, ref iDamage);
@@ -1531,14 +1531,18 @@ namespace Server.Spells
                 if(from.Player && !target.Player)
                 {
                     var spellSteal = from.GetBonusElemento(ElementoPvM.Fogo);
-                    var cura = damageGiven * spellSteal;
-                    from.Heal((int)cura);
+                    Shard.Debug("SpellSteal "+spellSteal, from);
+                    var cura = (int)(damageGiven * spellSteal/2);
+                    if(cura > 0)
+                        from.Heal((int)cura);
                 }
             }
+            /*
             else
             {
                 new SpellDamageTimerAOS(spell, damageable, from, iDamage, phys, fire, cold, pois, nrgy, chaos, direct, delay, dfa).Start();
             }
+            */
 
             if (target is BaseCreature && from != null && delay == TimeSpan.Zero)
             {

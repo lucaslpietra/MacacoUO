@@ -141,8 +141,8 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public byte Nivel { get; set; }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public override ElementoPvM Elemento { get; set; }
-
 
         public override double GetBonusElemento(ElementoPvM elemento) {
 
@@ -6927,6 +6927,9 @@ namespace Server.Mobiles
 
             if(Rope.Preso(this))
                 list.Add(Gump.Cor("<CENTER>[ Amarrad"+GetLetraSexo()+" ]</CENTER>", "red"));
+
+            if (Elemento != ElementoPvM.None)
+                list.Add(Gump.Cor(Elemento.ToString(), BaseArmor.CorElemento(Elemento)));
 
             if (Shard.TITULOS_RP && RP && !Shard.RP)
             {

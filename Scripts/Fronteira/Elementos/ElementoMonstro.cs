@@ -6,8 +6,48 @@ using System.Linq;
 
 namespace Server.Fronteira.Elementos
 {
-    public class ElementoMonstro
+    public static class ElementoMonstro
     {
+
+        public static Dictionary<ElementoPvM, ElementoPvM[]> Fraquezas = new Dictionary<ElementoPvM, ElementoPvM[]>();
+        public static Dictionary<ElementoPvM, List<ElementoPvM>> Vantagens = new Dictionary<ElementoPvM, List<ElementoPvM>>();
+
+        private static void RegistraFraqueza(ElementoPvM elemento, params ElementoPvM [] fraquezas)
+        {
+            Fraquezas.Add(elemento, fraquezas);
+            foreach(var fraqueza in fraquezas)
+            {
+                if(!Vantagens.ContainsKey(fraqueza))
+                {
+                    Vantagens.Add(fraqueza, new List<ElementoPvM>());
+                }
+                Vantagens[fraqueza].Add(elemento);
+            }
+        }
+
+        public static void Configure()
+        {
+            Shard.Info("Inicializando elementos de monstros");
+            RegistraFraqueza(ElementoPvM.Terra, ElementoPvM.Fogo, ElementoPvM.Gelo);
+            RegistraFraqueza(ElementoPvM.Agua, ElementoPvM.Raio, ElementoPvM.Vento);
+            RegistraFraqueza(ElementoPvM.Gelo, ElementoPvM.Fogo, ElementoPvM.Terra );
+            RegistraFraqueza(ElementoPvM.Vento, ElementoPvM.Raio, ElementoPvM.Agua);
+            RegistraFraqueza(ElementoPvM.Raio, ElementoPvM.Terra, ElementoPvM.Gelo);
+            RegistraFraqueza(ElementoPvM.Fogo, ElementoPvM.Vento, ElementoPvM.Agua);
+            RegistraFraqueza(ElementoPvM.Luz, ElementoPvM.Escuridao);
+            RegistraFraqueza(ElementoPvM.Escuridao, ElementoPvM.Luz);
+        }
+
+        public static bool ForteContra(this ElementoPvM e, ElementoPvM alvo)
+        {
+            return Fraquezas[alvo].Contains(e);
+        }
+
+        public static bool FracoContra(this ElementoPvM e, ElementoPvM alvo)
+        {
+            return Vantagens[alvo].Contains(e);
+        }
+
         private static Dictionary<Type, ElementoPvM> _cache = new Dictionary<Type, ElementoPvM>();
 
         public static ElementoPvM DecideElementoMonstro(BaseCreature creature)
