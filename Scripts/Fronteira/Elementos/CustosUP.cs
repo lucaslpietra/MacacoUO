@@ -1,4 +1,5 @@
 using Server.Items;
+using Server.Ziden.Traducao;
 using System;
 using System.Collections.Generic;
 
@@ -9,14 +10,36 @@ namespace Server.Fronteira.Elementos
         public class Custo
         {
             Type type;
-            short amt;
+            public int itemID;
+            public string name;
+            public short amt;
+            public int hue;
 
             public Custo(Type t, short s)
             {
-                type = t;
+                Item.BypassInitialization = true;
+                var i = (Item)Activator.CreateInstance(t, true);
+                Item.BypassInitialization = false;
+                itemID = i.ItemID;
+
+                Trads.UpdateNomeItem(i);
+                name = i.Name;
+
+                this.type = t;
                 amt = s;
+                hue = i.Hue;
             }
         }
+
+        public static int CustoUpExp(int nivel)
+        {
+            var V = (int)Math.Pow(nivel + 1, 4);
+            if (V <= 0)
+                V = 1;
+
+            return 100 + V;
+        }
+
 
         private static Dictionary<ElementoPvM, Custo[]> _custos = new Dictionary<ElementoPvM, Custo[]>();
 

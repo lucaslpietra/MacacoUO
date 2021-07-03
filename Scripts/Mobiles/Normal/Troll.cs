@@ -1,3 +1,4 @@
+using Server.Items;
 using System;
 
 namespace Server.Mobiles
@@ -9,7 +10,7 @@ namespace Server.Mobiles
         public Troll()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a troll";
+            this.Name = "troll";
             this.Body = Utility.RandomList(53, 54);
             this.BaseSoundID = 461;
 
@@ -38,12 +39,49 @@ namespace Server.Mobiles
             this.Karma = -3500;
 
             this.VirtualArmor = 40;
+
+            if(Utility.RandomDouble() < 0.05)
+            {
+                var livro = new RedBook(1, false);
+                livro.Title = "Poema do Troll";
+                livro.Pages[0].Lines = new string[] {
+                    "carregador",
+                    "carre gador",
+                    "carrega a dor",
+                    "a dor que carrega",
+                    "sem receio",
+                    "teu cu na reta",
+                    "meu pau sem freio"
+                };
+                PackItem(livro);
+            }
+         
         }
 
         public Troll(Serial serial)
             : base(serial)
         {
         }
+
+        public override void OnThink()
+        {
+            if (this.Combatant != null)
+            {
+                if (!this.IsCooldown("act"))
+                {
+                    this.SetCooldown("act", TimeSpan.FromSeconds(10));
+                    this.OverheadMessage(falas[Utility.Random(falas.Length)]);
+                }
+            }
+        }
+
+        private static string[] falas = new string[]
+        {
+            "Puxa meu dedo", "Voce conhece o mario ?",
+            "Conhece o nao nem eu ?", "Eu tava cozinhando, e prendi meu dedo na panela...",
+            "Setembro Chove?"
+
+        };
 
         public override bool CanRummageCorpses
         {

@@ -4,6 +4,7 @@ using Server.Engines.VvV;
 using Server.Gumps;
 using Server.Misc;
 using Server.Mobiles;
+using Server.Regions;
 using Server.Spells;
 using System;
 
@@ -70,7 +71,16 @@ namespace Server.Ziden.Kills
             var c = e.Corpse;
             var killer = e.Killer;
 
-            var exp = pontos; //(int)(pontos * 1.5);
+            var exp = pontos;
+            var dg = false;
+            if(!(bc.Region is DungeonRegion))
+            {
+                dg = true;
+                exp /= 2;
+            }
+
+            if (exp == 0)
+                return;
 
             if (SkillCheck.BONUS_GERAL != 0)
                 exp = (int)(exp * SkillCheck.BONUS_GERAL);
@@ -89,10 +99,15 @@ namespace Server.Ziden.Kills
                         {
                             if(!pl.RP)
                             {
-                                var nexp = exp * 1.5;
+                                if(dg && !pl.IsCooldown("msgdg"))
+                                {
+                                    pl.SetCooldown("msgdg", TimeSpan.FromHours(1));
+                                    pl.SendMessage(78, "Monstros dentro de dungeons dao mais experiencia do que locais como este");
+                                }
+
                                 //pl.SendMessage(78, "Bonus de XP: Semana FULL EXP");
-                                c.PrivateOverheadMessage(Network.MessageType.Regular, 66, false, string.Format("+{0} EXP", nexp), pl.NetState);
-                                PointsSystem.Exp.AwardPoints(pl, nexp, false, false);
+                                c.PrivateOverheadMessage(Network.MessageType.Regular, 66, false, string.Format("+{0} EXP", exp), pl.NetState);
+                                PointsSystem.Exp.AwardPoints(pl, exp, false, false);
                                 if (!pl.IsCooldown("xpp"))
                                 {
                                     pl.SetCooldown("xpp", TimeSpan.FromHours(1));
@@ -105,7 +120,7 @@ namespace Server.Ziden.Kills
                             }
                         }
                         PointsSystem.PontosPvmEterno.AwardPoints(pl, pontos / 2, false, false);
-                        var pts = PointsSystem.PontosPvm.AwardPoints(pl, pontos, false, false);
+                        var pts = PointsSystem.PontosPvm.AwardPoints(pl, pontos / 2, false, false);
                         if (pl.RP)
                         {
                             continue;
@@ -116,8 +131,6 @@ namespace Server.Ziden.Kills
                             pl.SetCooldown("pvmp", TimeSpan.FromHours(1));
                             pl.SendMessage(78, "Voce pode trocar seus pontos PvM por recompensas usando o comando .pvm");
                         }
-                     
-
 
                     }
                 }

@@ -3,6 +3,7 @@ using Server.Commands;
 using Server.Mobiles;
 using Server.Items;
 using Server.Fronteira.Elementos;
+using Server.Leilaum;
 
 namespace Server.Gumps
 {
@@ -64,31 +65,47 @@ namespace Server.Gumps
 
             AddHtml(543, 136, 123, 20, @"Elementos PvM", (bool)false, (bool)false);
             AddBackground(316, 263, 620, 189, 3500);
+            AddImage(254, 62, 10440);
+            AddImage(916, 65, 10441);
 
             if (elemento != ElementoPvM.None)
             {
-                AddHtml(533, 282, 124, 20, @"Nivel: 1 / 100", (bool)false, (bool)false);
-                AddHtml(403, 282, 124, 20, elemento.ToString(), (bool)false, (bool)false);
+                var nivel = pl.Elementos.GetNivel(elemento);
+                AddHtml(533, 282, 124, 20, "Nivel: "+nivel, (bool)false, (bool)false);
+                AddHtml(403, 282, 124, 20, Gump.Cor(elemento.ToString(), BaseArmor.CorElemento(elemento)), (bool)false, (bool)false);
                 AddImage(344, 283, (int)elemento);
                 AddBackground(331, 329, 299, 101, 3500);
 
                 var efeitos = EfeitosElementos.GetEfeitos(elemento);
-                AddHtml(355, 342, 249, 73, string.Join("<br>", efeitos), (bool)false, (bool)false);
+                var bonusAtual = pl.Elementos.BonusPorNivel(nivel);
+                var proximoNivel = pl.Elementos.BonusPorNivel(nivel + 1);
+                var ganho = proximoNivel - bonusAtual;
 
+                var str = "";
+                for (var x= 0; x < efeitos.Length; x++)
+                {
+                    str += Gump.Cor(bonusAtual.ToString("0.00")+"%", "brown")+" -> "+Gump.Cor(proximoNivel.ToString("0.00")+"% ","green")+efeitos[x]+"<br>";
+                }
+                AddHtml(355, 342, 249, 73, str, (bool)false, (bool)false);
                 AddHtml(404, 316, 124, 20, @"Prox Nivel:", (bool)false, (bool)false);
                 AddHtml(728, 315, 124, 20, @"Subir de Nivel", (bool)false, (bool)false);
+
+                var custos = CustosUPElementos.GetCustos(elemento);
+
                 AddBackground(673, 334, 111, 101, 3500);
-                AddHtml(721, 350, 83, 22, @"3", (bool)false, (bool)false);
+                AddHtml(721, 350, 83, 22, custos[0].amt.ToString(), (bool)false, (bool)false);
+                AddHtml(678, 406, 100, 22, custos[0].name, (bool)true, (bool)false);
+                //AddItem(703, 374, custos.Item);
+                NewAuctionGump.AddItemCentered(673, 334, 111, 101, custos[0].itemID, custos[0].hue, this);
+
                 AddBackground(784, 335, 111, 101, 3500);
-                AddItem(703, 374, 3966);
-                AddHtml(678, 406, 100, 22, @"Osso", (bool)true, (bool)false);
-                AddHtml(793, 405, 100, 22, @"Cristal", (bool)true, (bool)false);
-                AddHtml(827, 350, 83, 22, @"555", (bool)false, (bool)false);
-                AddItem(811, 367, 576);
-                AddHtml(534, 317, 124, 20, @"Exp: 0 / 1000", (bool)false, (bool)false);
+                AddHtml(827, 350, 83, 22, custos[1].amt.ToString(), (bool)false, (bool)false);
+                AddHtml(793, 405, 100, 22, custos[1].name, (bool)true, (bool)false);
+                //AddItem(811, 367, 576);
+                NewAuctionGump.AddItemCentered(784, 335, 111, 101, custos[1].itemID, custos[0].hue, this);
+
+                AddHtml(534, 317, 124, 20, "Exp: "+pl.Elementos.GetExp(elemento)+" / "+CustosUPElementos.CustoUpExp(nivel), (bool)false, (bool)false);
                 AddButton(757, 435, 247, 248, (int)ElementoButtons.Upar, GumpButtonType.Reply, 0);
-                AddImage(254, 62, 10440);
-                AddImage(916, 65, 10441);
             }
         }
 

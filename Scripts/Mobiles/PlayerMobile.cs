@@ -52,6 +52,7 @@ using Server.Ziden;
 using Server.Commands;
 using Server.Fronteira.RP;
 using Server.Fronteira.Talentos;
+using Server.Fronteira.Elementos;
 #endregion
 
 namespace Server.Mobiles
@@ -149,6 +150,11 @@ namespace Server.Mobiles
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Vidas { get; set; }
+
+        private ElementoData _elemento = new ElementoData();
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ElementoData Elementos { get { return _elemento; } set { _elemento = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public PatenteRP PatenteRP {
@@ -5429,6 +5435,9 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 51:
+                    Elementos.Deserialize(reader);
+                    goto case 50;
                 case 50:
                     PontosTalento = reader.ReadByte();
                     goto case 49;
@@ -5928,7 +5937,8 @@ namespace Server.Mobiles
             CheckKillDecay();
             CheckAtrophies(this);
             base.Serialize(writer);
-            writer.Write(50); // version
+            writer.Write(51); // version
+            Elementos.Serialize(writer);
             writer.Write(PontosTalento);
             writer.Write(Nivel);
             writer.Write(ExpTotal);
@@ -5937,7 +5947,6 @@ namespace Server.Mobiles
             writer.Write(Vidas);
             writer.Write(Famoso);
             writer.Write(LastDungeonEntrance);
-            //Exp.Serialize(writer);
             writer.Write(NivelBanco);
             writer.Write(CurrentTemplate);
             Templates.Serialize(writer);

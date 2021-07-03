@@ -4277,9 +4277,12 @@ namespace Server.Items
 
             if (Type == WeaponType.Bashing)
             {
+                // Nerfzinho no cajado
                 if (this is BaseStaff)
                 {
-                    modifiers += -0.075;
+                    modifiers += -0.08;
+                    if(attacker.Skills[SkillName.Tactics].Value < 100)
+                        modifiers += -0.08;
                 }
                 double mine = attacker.Skills[SkillName.Mining].Value;
                 mine = (mine / 5.0) / 100.0;
