@@ -77,8 +77,8 @@ namespace Server.Gumps
                 AddBackground(331, 329, 299, 101, 3500);
 
                 var efeitos = EfeitosElementos.GetEfeitos(elemento);
-                var bonusAtual = pl.Elementos.BonusPorNivel(nivel);
-                var proximoNivel = pl.Elementos.BonusPorNivel(nivel + 1);
+                var bonusAtual = pl.Elementos.BonusPorNivel(nivel) * 100;
+                var proximoNivel = pl.Elementos.BonusPorNivel(nivel + 1) * 100;
                 var ganho = proximoNivel - bonusAtual;
 
                 var str = "";
