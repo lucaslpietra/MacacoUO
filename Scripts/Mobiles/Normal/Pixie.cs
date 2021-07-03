@@ -79,7 +79,7 @@ namespace Server.Mobiles
             }
         }
 
-        public override TribeType Tribe { get { return TribeType.Fey; } }
+        public override TribeType Tribe { get { return TribeType.Fada; } }
 
         public override OppositionGroup OppositionGroup
         {

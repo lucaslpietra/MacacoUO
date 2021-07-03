@@ -1,4 +1,5 @@
 using System;
+using Server.Items;
 using Server.Targeting;
 
 namespace Server.Spells.Fifth
@@ -31,7 +32,6 @@ namespace Server.Spells.Fifth
         {
             get
             {
-                //return !Core.AOS;
                 return false;
             }
         }
@@ -76,7 +76,7 @@ namespace Server.Spells.Fifth
                 if(target != null)
                     SpellHelper.CheckReflect((int)Circle, ref from, ref target);
 
-                double damage = GetDamageScalar(m) * ((Caster.Int - target.Int) / 4); //less damage
+                double damage = GetDamageScalar(m, ElementoPvM.Escuridao) * ((Caster.Int - target.Int) / 4); //less damage
                 if (damage > 45)
                     damage = 45;
 

@@ -71,7 +71,8 @@ namespace Server.Spells.Third
                         ((Mobile)m).SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                     }
 
-                    damage *= GetDamageScalar((Mobile)m);
+                    damage *= GetDamageScalar((Mobile)m, Items.ElementoPvM.Fogo);
+
                 }
 
                 if (damage > 0)

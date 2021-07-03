@@ -131,7 +131,7 @@ namespace Server.Spells.Seventh
 
                     if (m != null)
                     {
-                        damage *= GetDamageScalar(m);
+                        damage *= GetDamageScalar(m, ElementoPvM.Terra);
                     }
 
                     Caster.DoHarmful(id);

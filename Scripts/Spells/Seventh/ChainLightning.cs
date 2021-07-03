@@ -4,6 +4,7 @@ using System.Linq;
 
 using Server.Targeting;
 using Server.Mobiles;
+using Server.Items;
 
 namespace Server.Spells.Seventh
 {
@@ -97,7 +98,7 @@ namespace Server.Spells.Seventh
 
                     if (m != null)
                     {
-                        damage *= GetDamageScalar(m);
+                        damage *= GetDamageScalar(m, ElementoPvM.Raio);
                     }
 
                     Effects.SendBoltEffect(id, true, 0, false);

@@ -1,11 +1,4 @@
-using Server.Items;
-using Server.Misc.Custom;
 using Server.Targeting;
-using Server.Mobiles;
-using Server.Network;
-using Server.Targeting;
-using Server.Spells.Ninjitsu;
-using System;
 
 namespace Server.Ziden
 {
@@ -77,7 +70,6 @@ namespace Server.Ziden
 
                     else
                     {
-
                         Item one = from.FindItemOnLayer(Layer.OneHanded);
                         Item two = from.FindItemOnLayer(Layer.TwoHanded);
 
@@ -90,7 +82,6 @@ namespace Server.Ziden
                         var target = targeted as Mobile;
 
                         BolaDeNeve.Consume();
-
 
                         from.Animate(AnimationType.Attack, 4);
                         from.PlaySound(0x13C);

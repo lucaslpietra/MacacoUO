@@ -13,6 +13,7 @@ using Server.Engines.VvV;
 using Server.Engines.XmlSpawner2;
 using Server.Ethics;
 using Server.Factions;
+using Server.Fronteira.Elementos;
 using Server.Fronteira.Quests;
 using Server.Gumps;
 using Server.Items;
@@ -145,13 +146,13 @@ namespace Server.Mobiles
     {
         None,
         Terathan,
-        Ophidian,
-        Savage,
+        Ofidiano,
+        Selvagem,
         Orc,
-        Fey,
-        Undead,
-        GrayGoblin,
-        GreenGoblin
+        Fada,
+        MortoVivo,
+        GoblinCinza,
+        GoblinVerde
     }
     #endregion
 
@@ -213,6 +214,14 @@ namespace Server.Mobiles
             SendMessage("Nao pode fazer isto agora");
             return true;
         }
+
+        private ElementoPvM _elemento;
+
+        public override ElementoPvM Elemento { get {
+                if (_elemento == ElementoPvM.None)
+                    _elemento = ElementoMonstro.DecideElementoMonstro(this);
+                return _elemento;
+            } set { _elemento = value; } }
 
         public const int MaxLoyalty = 100;
 
@@ -1600,14 +1609,14 @@ namespace Server.Mobiles
 
             switch (Tribe)
             {
-                case TribeType.Terathan: return (c.Tribe == TribeType.Ophidian);
-                case TribeType.Ophidian: return (c.Tribe == TribeType.Terathan);
-                case TribeType.Savage: return (c.Tribe == TribeType.Orc);
-                case TribeType.Orc: return (c.Tribe == TribeType.Savage);
-                case TribeType.Fey: return (c.Tribe == TribeType.Undead);
-                case TribeType.Undead: return (c.Tribe == TribeType.Fey);
-                case TribeType.GrayGoblin: return (c.Tribe == TribeType.GreenGoblin);
-                case TribeType.GreenGoblin: return (c.Tribe == TribeType.GrayGoblin);
+                case TribeType.Terathan: return (c.Tribe == TribeType.Ofidiano);
+                case TribeType.Ofidiano: return (c.Tribe == TribeType.Terathan);
+                case TribeType.Selvagem: return (c.Tribe == TribeType.Orc);
+                case TribeType.Orc: return (c.Tribe == TribeType.Selvagem);
+                case TribeType.Fada: return (c.Tribe == TribeType.MortoVivo);
+                case TribeType.MortoVivo: return (c.Tribe == TribeType.Fada);
+                case TribeType.GoblinCinza: return (c.Tribe == TribeType.GoblinVerde);
+                case TribeType.GoblinVerde: return (c.Tribe == TribeType.GoblinCinza);
                 default: return false;
             }
         }
@@ -2891,8 +2900,9 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(26); // version
+            writer.Write(27); // version
 
+            writer.Write((int)Elemento);
             writer.Write(CanMove);
             writer.Write(_LockDirection);
             writer.Write(ApproachWait);
@@ -3079,8 +3089,12 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
+
             switch (version)
             {
+                case 27:
+                    Elemento = (ElementoPvM)reader.ReadInt();
+                    goto case 26;
                 case 26:
                     {
                         CanMove = reader.ReadBool();
@@ -6356,8 +6370,13 @@ namespace Server.Mobiles
             {
                 list.Add(EngravedText); // <BASEFONT COLOR=#668cff>Branded: ~1_VAL~<BASEFONT COLOR=#FFFFFF>
             }
-            
-            if(BardPacified)
+
+            list.Add(Gump.Cor(Elemento.ToString(), BaseArmor.CorElemento(Elemento)));
+
+            if(this.Tribe != TribeType.None)
+                list.Add(this.Tribe.ToString());
+
+            if (BardPacified)
             {
                 var tempo = (BardEndTime - DateTime.UtcNow).TotalSeconds;
                 list.Add("Pacificado por " + (int)tempo + " segundos");

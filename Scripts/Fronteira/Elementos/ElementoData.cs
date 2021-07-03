@@ -129,7 +129,7 @@ namespace Server.Fronteira.Elementos
         {
             if (nivel == 0)
                 return 0;
-            return (0.09 * nivel) / (0.9 + 0.040 * nivel) * 100;
+            return (0.09 * nivel) / (0.9 + 0.040 * nivel);
         }
 
     }

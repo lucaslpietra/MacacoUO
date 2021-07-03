@@ -139,7 +139,7 @@ namespace Server.SkillHandlers
                                         }
                                         var bc = (BaseCreature)m;
 
-                                        if (bc.Tribe == TribeType.Undead)
+                                        if (bc.Tribe == TribeType.MortoVivo)
                                         {
                                             Shard.Debug("Slayer: " + m_Instrument.Slayer);
                                             if (m_Instrument.Slayer != SlayerName.Undeads && m_Instrument.Slayer2 != SlayerName.Undeads)
@@ -261,7 +261,7 @@ namespace Server.SkillHandlers
                                     {
                                         BaseCreature bc = (BaseCreature)targ;
 
-                                        if (bc.Tribe == TribeType.Undead)
+                                        if (bc.Tribe == TribeType.MortoVivo)
                                         {
                                             if (m_Instrument.Slayer != SlayerName.Undeads && m_Instrument.Slayer2 != SlayerName.Undeads)
                                             {

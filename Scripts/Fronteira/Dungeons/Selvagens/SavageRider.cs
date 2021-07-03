@@ -99,7 +99,7 @@ namespace Server.Mobiles
             }
         }
 
-        public override TribeType Tribe { get { return TribeType.Savage; } }
+        public override TribeType Tribe { get { return TribeType.Selvagem; } }
 
         public override OppositionGroup OppositionGroup
         {

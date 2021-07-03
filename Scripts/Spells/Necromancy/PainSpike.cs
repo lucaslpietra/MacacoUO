@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Server;
 using Server.Targeting;
 using Server.Spells.SkillMasteries;
+using Server.Items;
 
 namespace Server.Spells.Necromancy
 {
@@ -85,7 +86,7 @@ namespace Server.Spells.Necromancy
             m.PlaySound(0x210);
 
             double damage = (((GetDamageSkill(Caster) - GetResistSkill(m)) / 10) + (18)) * strength;
-            damage *= GetDamageScalar(m);
+            damage *= GetDamageScalar(m, ElementoPvM.Escuridao);
 
             m.CheckSkillMult(SkillName.MagicResist, 0.0, 120.0);    //Skill check for gain
 

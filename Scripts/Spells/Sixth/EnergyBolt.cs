@@ -1,4 +1,5 @@
 using System;
+using Server.Items;
 using Server.Targeting;
 
 namespace Server.Spells.Sixth
@@ -74,7 +75,7 @@ namespace Server.Spells.Sixth
                     }
 
                     // Scale damage based on evalint and resist
-                    damage *= GetDamageScalar(mob);
+                    damage *= GetDamageScalar(mob, ElementoPvM.Raio);
                 }
 
                 // Do the effects

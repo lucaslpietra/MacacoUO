@@ -65,7 +65,7 @@ namespace Server.Items
             if(m is BaseCreature)
             {
                 var bc = (BaseCreature)m;
-                if(bc.Tribe == TribeType.Undead)
+                if(bc.Tribe == TribeType.MortoVivo)
                 {
                     return;
                 }

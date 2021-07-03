@@ -125,7 +125,7 @@ namespace Server.Spells.SkillMasteries
                 double damage = (Caster.Skills[CastSkill].Base + Caster.Skills[DamageSkill].Base) * ((double)GetMasteryLevel() * .8);
                 damage /= Target is PlayerMobile ? 5.15 : 2.5;
 
-                damage *= GetDamageScalar(Target);
+                damage *= GetDamageScalar(Target, ElementoPvM.Escuridao);
 
                 int sdiBonus = SpellHelper.GetSpellDamageBonus(Caster, Target, CastSkill, Caster.Player && Target.Player);
 

@@ -113,7 +113,7 @@ namespace Server.Spells.Necromancy
                         }
 
                         double damage = Utility.RandomMinMax(20, 30);
-                        damage *= GetDamageScalar(target);
+                        damage *= GetDamageScalar(target, ElementoPvM.Gelo);
 
                         int karma = target != null ? target.Karma / 100 : 0;
 

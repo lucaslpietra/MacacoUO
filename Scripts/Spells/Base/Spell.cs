@@ -529,7 +529,7 @@ namespace Server.Spells
             return m.Skills[SkillName.MagicResist].Value - EvilOmenSpell.GetResistMalus(m);
         }
 
-        public virtual double GetDamageScalar(Mobile target)
+        public virtual double GetDamageScalar(Mobile target, ElementoPvM elemento = ElementoPvM.None)
         {
             double scalar = 1.0;
 
@@ -541,7 +541,6 @@ namespace Server.Spells
             double targetRS = target.Skills[SkillName.MagicResist].Value;
 
             var pl = m_Caster as PlayerMobile;
-
 
             if (PsychicAttack.Registry.ContainsKey(target))
                 scalar += 0.2;
@@ -600,6 +599,11 @@ namespace Server.Spells
             if (Evasion.CheckSpellEvasion(target)) //Only single target spells an be evaded
             {
                 scalar = 0;
+            }
+
+            if(elemento != ElementoPvM.None && !target.Player)
+            {
+                scalar += m_Caster.GetBonusElemento(elemento);
             }
 
             return scalar;

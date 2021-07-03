@@ -4,13 +4,13 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("a dragon corpse")]
-    public class GreaterDragon : BaseCreature
+    public class GreaterDragon : Dragon
     {
         [Constructable]
         public GreaterDragon()
-            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.3, 0.5)
+            : base()
         {
-            Name = "a greater dragon";
+            Name = "dragao anciao";
             Body = Utility.RandomList(12, 59);
             BaseSoundID = 362;
 
@@ -18,7 +18,7 @@ namespace Server.Mobiles
             SetDex(81, 148);
             SetInt(475, 675);
 
-            SetHits(1000, 2000);
+            SetHits(1500, 2500);
             
             SetDamage(24, 33);
 

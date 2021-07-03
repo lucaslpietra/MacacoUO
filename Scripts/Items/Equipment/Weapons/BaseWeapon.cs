@@ -1553,6 +1553,8 @@ namespace Server.Items
             if (forceInfo != null && forceInfo.Defender == defender)
                 bonus -= forceInfo.DefenseChanceMalus;
 
+
+
             if (defender.Player)
             {
                 if (((PlayerMobile)defender).Talentos.Tem(Talento.Esquiva))
@@ -1567,6 +1569,12 @@ namespace Server.Items
                 {
                     bonus += 25;
                 }
+            } else
+            {
+                var bonusElemental = defender.GetBonusElemento(ElementoPvM.Fogo) + defender.GetBonusElemento(ElementoPvM.Vento);
+                if (bonusElemental > 0.9)
+                    bonusElemental = 0.9;
+                bonus -= (int)(bonusElemental * 100);
             }
 
             double chance = ourValue / (theirValue * 1.8);
@@ -3842,7 +3850,7 @@ namespace Server.Items
             if (defender is BaseCreature)
             {
                 var bc = (BaseCreature)defender;
-                if (bc.Tribe == TribeType.Undead)
+                if (bc.Tribe == TribeType.MortoVivo)
                 {
                     b.Hue = 862;
                 }

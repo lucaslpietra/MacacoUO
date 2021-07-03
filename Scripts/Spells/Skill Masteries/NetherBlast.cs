@@ -203,7 +203,7 @@ namespace Server.Spells.SkillMasteries
                     skill /= m.Player ? 3.5 : 2;
 
                     int damage = (int)skill + Utility.RandomMinMax(-3, 3);
-                    damage *= (int)Owner.GetDamageScalar(m);
+                    damage *= (int)Owner.GetDamageScalar(m, ElementoPvM.Escuridao);
 
                     int sdiBonus = SpellHelper.GetSpellDamageBonus(Caster, m, Owner.CastSkill, Caster.Player && m.Player);
 

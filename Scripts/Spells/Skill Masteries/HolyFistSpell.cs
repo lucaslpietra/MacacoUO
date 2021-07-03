@@ -95,7 +95,7 @@ namespace Server.Spells.SkillMasteries
 
                     if (m is Mobile)
                     {
-                        damage *= GetDamageScalar((Mobile)m);
+                        damage *= GetDamageScalar((Mobile)m, ElementoPvM.Luz);
                     }
 
                     int sdiBonus = SpellHelper.GetSpellDamageBonus(Caster, m, CastSkill, m is Mobile ? Caster.Player && ((Mobile)m).Player : false);

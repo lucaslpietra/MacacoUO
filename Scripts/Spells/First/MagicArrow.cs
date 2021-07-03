@@ -1,4 +1,5 @@
 using System;
+using Server.Items;
 using Server.Targeting;
 
 namespace Server.Spells.First
@@ -87,7 +88,7 @@ namespace Server.Spells.First
                         ((Mobile)target).SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                     }
 
-                    damage *= GetDamageScalar((Mobile)target);
+                    damage *= GetDamageScalar((Mobile)target, ElementoPvM.Luz);
                 }
 
                 if (damage > 0)

@@ -141,6 +141,15 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public byte Nivel { get; set; }
 
+        public override ElementoPvM Elemento { get; set; }
+
+
+        public override double GetBonusElemento(ElementoPvM elemento) {
+
+            return Elementos.BonusPorNivel(Elementos.GetNivel(Elemento));
+        }
+
+
         [CommandProperty(AccessLevel.GameMaster)]
         public byte PontosTalento { get; set; }
 
@@ -183,7 +192,6 @@ namespace Server.Mobiles
             var def = DefTalentos.GetDef(t);
             this.Talentos.Desaprende(t);
             SendMessage("Voce desaprendeu " + def.Desc1);
-            // TODO:  Inverter  TalentoEffect.GanhaEfeito(this, t); pra perder os caps
         }
 
         public void AprendeTalento(Talento t)

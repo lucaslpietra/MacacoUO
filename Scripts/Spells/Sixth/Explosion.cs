@@ -1,4 +1,5 @@
 using System;
+using Server.Items;
 using Server.Targeting;
 
 namespace Server.Spells.Sixth
@@ -110,7 +111,7 @@ namespace Server.Spells.Sixth
                             defender.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                         }
 
-                        damage *= m_Spell.GetDamageScalar(defender);
+                        damage *= m_Spell.GetDamageScalar(defender, ElementoPvM.Fogo);
                     }
 
                     if (defender != null)

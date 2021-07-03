@@ -1,4 +1,5 @@
 using System;
+using Server.Items;
 using Server.Targeting;
 
 namespace Server.Spells.Second
@@ -158,7 +159,7 @@ namespace Server.Spells.Second
                             defender.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                         }
 
-                        damage *= m_Spell.GetDamageScalar(defender);
+                        damage *= m_Spell.GetDamageScalar(defender, ElementoPvM.Escuridao);
                     }
 
                     Caster.MovingParticles(defender, 0x374A, 7, 0, false, false, 5013, 5013, 0x1F1);

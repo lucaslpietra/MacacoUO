@@ -119,7 +119,7 @@ namespace Server.Spells.Necromancy
             }
 
             double pvpDamage = damage * (1 + sdiBonus);
-            pvpDamage *= GetDamageScalar(m);
+            pvpDamage *= GetDamageScalar(m, ElementoPvM.Escuridao);
 
             Map map = m.Map;
 

@@ -77,7 +77,7 @@ namespace Server.Spells.SkillMasteries
                             if (count > 2)
                                 damage = damage / count;
 
-                            damage *= GetDamageScalar(mob);
+                            damage *= GetDamageScalar(mob, ElementoPvM.Fogo);
                             Caster.DoHarmful(mob);
                             SpellHelper.Damage(this, mob, damage, 0, 100, 0, 0, 0);
 

@@ -340,6 +340,8 @@ namespace Server
         private readonly Mobile m_Damager;
         private DateTime m_LastDamage;
 
+     
+
         public Mobile Damager { get { return m_Damager; } }
         public int DamageGiven { get; set; }
         public DateTime LastDamage { get { return m_LastDamage; } set { m_LastDamage = value; } }
@@ -536,6 +538,10 @@ namespace Server
     [System.Runtime.InteropServices.ComVisible(true)]
     public class Mobile : IEntity, IHued, IComparable<Mobile>, ISerializable, ISpawnable, IDamageable
     {
+
+        public virtual ElementoPvM Elemento { get; set; }
+
+        public virtual double GetBonusElemento(ElementoPvM elemento) { return 0; }
 
         public int Temperatura;
 

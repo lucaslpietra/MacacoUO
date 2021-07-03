@@ -1,4 +1,5 @@
 using System;
+using Server.Items;
 using Server.Targeting;
 
 namespace Server.Spells.Seventh
@@ -43,8 +44,6 @@ namespace Server.Spells.Seventh
             }
             else if (this.CheckHSequence(m))
             {
-                //SpellHelper.Turn(this.Caster, m);
-
                 Mobile source = this.Caster;
 
                 SpellHelper.CheckReflect((int)this.Circle, ref source, ref m);
@@ -65,7 +64,7 @@ namespace Server.Spells.Seventh
                         ((Mobile)m).SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                     }
 
-                    damage *= this.GetDamageScalar((Mobile)m);
+                    damage *= this.GetDamageScalar((Mobile)m, ElementoPvM.Fogo);
                 }
 
                 if (m != null)
