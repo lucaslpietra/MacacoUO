@@ -53,6 +53,8 @@ namespace Server.Items
 
         public static bool Preso(Mobile p)
         {
+            if (p == null)
+                return false;
             return _presos.ContainsKey(p);
         }
 

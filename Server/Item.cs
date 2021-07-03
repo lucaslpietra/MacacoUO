@@ -6356,7 +6356,7 @@ namespace Server
 
         public virtual bool CheckBlessed(Mobile m)
         {
-            if (Shard.WARSHARD)
+            if (Shard.WARSHARD && m.Player)
                 return true;
 
             if (m == null)
