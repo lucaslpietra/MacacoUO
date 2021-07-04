@@ -5,17 +5,17 @@ using Server.Mobiles;
 namespace Server.Fronteira.Elementos
 {
 
-    public class StackofIngots : Item
+    public class EstatuaElemental : Item
     {
         [Constructable]
-        public StackofIngots()
+        public EstatuaElemental()
             : base(72789)
         {
             Name = "Estatua Elemental";
             Weight = 200;
         }
 
-        public StackofIngots(Serial serial)
+        public EstatuaElemental(Serial serial)
             : base(serial)
         {
         }
