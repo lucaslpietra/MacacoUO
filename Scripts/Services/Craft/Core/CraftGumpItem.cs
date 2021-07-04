@@ -37,21 +37,20 @@ namespace Server.Engines.Craft
 
             AddPage(0);
             AddBackground(0, 0, 530, 417, 5054);
-            /*
-         
-            AddImageTiled(10, 10, 510, 22, 2624);
-            AddImageTiled(10, 37, 150, 148, 2624);
-            AddImageTiled(165, 37, 355, 90, 2624);
-            AddImageTiled(10, 190, 155, 22, 2624);
-            AddImageTiled(10, 240, 150, 57, 2624);
-            AddImageTiled(165, 132, 355, 80, 2624);
-            AddImageTiled(10, 325, 150, 57, 2624);
-            AddImageTiled(165, 217, 355, 80, 2624);
-            AddImageTiled(165, 302, 355, 80, 2624);
-            AddImageTiled(10, 387, 510, 22, 2624);
-            */
-            //AddAlphaRegion(10, 10, 510, 399);
 
+            AddBackground(10, 10, 510, 22, 9350);
+            AddBackground(10, 37, 150, 148, 9350);
+            AddBackground(165, 37, 355, 90, 9350);
+            // AddBackground(10, 190, 155, 22, 9350);
+            // AddBackground(10, 240, 150, 57, 9350);
+            AddBackground(165, 132, 355, 80, 9350);
+            // AddBackground(10, 325, 150, 57, 9350);
+            AddBackground(165, 217, 355, 80, 9350);
+            AddBackground(165, 302, 355, 80, 9350);
+            AddBackground(10, 387, 510, 22, 9350);
+            
+            //AddAlphaRegion(10, 10, 510, 399);
+            //AddBackground(10, 10, 510, 399, 9350);
             AddHtml(170, 40, 150, 20, "Item", false, false); // ITEM
             AddHtml(10, 217, 150, 22, "Materiais", false, false); // <CENTER>MATERIALS</CENTER>
             AddHtml(10, 302, 150, 22, "Outros", false, false); // <CENTER>OTHER</CENTER>

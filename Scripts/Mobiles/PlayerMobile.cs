@@ -10,7 +10,7 @@ using Server.Engines.BulkOrders;
 using Server.Engines.CannedEvil;
 using Server.Engines.Craft;
 using Server.Engines.Help;
-using Server.Engines.PartySystem; 
+using Server.Engines.PartySystem;
 using Server.Engines.Points;
 using Server.Engines.Quests;
 using Server.Engines.Shadowguard;
@@ -141,11 +141,22 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public byte Nivel { get; set; }
 
+        private ElementoPvM _e;
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public override ElementoPvM Elemento { get; set; }
+        public override ElementoPvM Elemento { get { return _e; } set {
+                if(NetState != null)
+                {
+                    InvalidateProperties();
+                }
+                _e = value;
+            }
+        }
 
-        public override double GetBonusElemento(ElementoPvM elemento) {
-
+        public override double GetBonusElemento(ElementoPvM elemento)
+        {
+            if (elemento != Elemento)
+                return 0;
             return Elementos.BonusPorNivel(Elementos.GetNivel(Elemento));
         }
 
@@ -166,7 +177,8 @@ namespace Server.Mobiles
         public ElementoData Elementos { get { return _elemento; } set { _elemento = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public PatenteRP PatenteRP {
+        public PatenteRP PatenteRP
+        {
             get
             {
                 return FichaRP.Patente;
@@ -174,14 +186,15 @@ namespace Server.Mobiles
             set
             {
                 FichaRP.Patente = value;
-                if(value==PatenteRP.Desertor)
+                if (value == PatenteRP.Desertor)
                 {
                     SendMessage(38, "Voce agora e um desertor, e nao tera mais protecao");
                     PlaySound(0x5B3);
                     return;
-                } else
+                }
+                else
                 {
-                    SendMessage(78, "Sua patente agora eh "+value.ToString());
+                    SendMessage(78, "Sua patente agora eh " + value.ToString());
                     PlaySound(0x5B5);
                 }
             }
@@ -196,7 +209,7 @@ namespace Server.Mobiles
 
         public void AprendeTalento(Talento t)
         {
-           
+
             this.Talentos.Aprende(t);
             var def = DefTalentos.GetDef(t);
             SendMessage("Voce aprendeu o talento " + def.Nome);
@@ -215,11 +228,14 @@ namespace Server.Mobiles
             Effects.SendTargetParticles(from, 0x375A, 35, 90, 78, 0x00, 9502, (EffectLayer)255, 0x100);
         }
 
-        public override int VirtualArmorMod { get
+        public override int VirtualArmorMod
+        {
+            get
             {
                 return base.VirtualArmorMod + (Talentos.Tem(Talento.ProtecaoPesada) ? 10 : 0);
             }
-            set { base.VirtualArmorMod = value; } }
+            set { base.VirtualArmorMod = value; }
+        }
 
         public static List<PlayerMobile> Instances { get; private set; }
 
@@ -321,7 +337,7 @@ namespace Server.Mobiles
             }
 
             AnimalFormContext context = AnimalForm.GetContext(this);
-            if(Shard.DebugEnabled)
+            if (Shard.DebugEnabled)
                 Shard.Debug("ANIMAL CTX = " + (context == null), this);
             if (context != null && context.SpeedBoost)
             {
@@ -511,7 +527,7 @@ namespace Server.Mobiles
             return PontosTalento > 0;
         }
 
-        public void GanhaExp(int pontos)
+        public void GanhaExpRP(int pontos)
         {
             PointsSystem.Exp.AwardPoints(this, pontos, false, false);
             ExpTotal += pontos;
@@ -521,7 +537,7 @@ namespace Server.Mobiles
                 SendMessage(78, "Digite .xp para usar sua EXP para subir skills");
             }
 
-            if(Nivel < 11 && ExpTotal > ExpProximoNivel())
+            if (Nivel < 11 && ExpTotal > ExpProximoNivel())
             {
                 ExpTotal = 0;
                 Nivel += 1;
@@ -1555,10 +1571,10 @@ namespace Server.Mobiles
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int GlobalLight { get { return m_LastGlobalLight;  } }
+        public int GlobalLight { get { return m_LastGlobalLight; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int PersonalLight { get { return m_LastPersonalLight;  } }
+        public int PersonalLight { get { return m_LastPersonalLight; } }
 
         public override bool SendSpeedControl(SpeedControlType type)
         {
@@ -2413,7 +2429,7 @@ namespace Server.Mobiles
             {
                 var stats = (RawStr + RawDex + RawInt) / 225d;
                 var bonus = 0;
-                if(Talentos.Tem(Talento.Perseveranca))
+                if (Talentos.Tem(Talento.Perseveranca))
                     bonus = 40;
                 return 70 + (int)(stats * 30) + bonus;
             }
@@ -2729,7 +2745,7 @@ namespace Server.Mobiles
 
         public override void Use(Item item)
         {
-            if(this.Frozen)
+            if (this.Frozen)
             {
                 return;
             }
@@ -4365,7 +4381,7 @@ namespace Server.Mobiles
                 Map = Corpse.Map;
                 Location = Corpse.Location;
             }
-            else if(!this.IsStaff() && RP)
+            else if (!this.IsStaff() && RP)
             {
                 SendMessage("Seu corpo já se decompôs!");
                 return;
@@ -4417,19 +4433,23 @@ namespace Server.Mobiles
             this.Mana = 0;
 
             //FE: para o contador de ressurreição quando ressuscitado
-            if (m_ExpireDeathTimer != null)
+            if (RP)
             {
-                m_ExpireDeathTimer.Stop();
+                if (m_ExpireDeathTimer != null)
+                {
+                    m_ExpireDeathTimer.Stop();
+                }
+
+                //FE: equipa o que sobrou do corpo e apaga ele
+                if (Corpse != null && !Corpse.Deleted)
+                {
+                    ((Corpse)Corpse).AutoLoot(this);
+                    Corpse.Delete();
+                }
+
+                Emote("* vitalizado *");
             }
 
-            //FE: equipa o que sobrou do corpo e apaga ele
-            if (Corpse != null && !Corpse.Deleted)
-            {
-                ((Corpse)Corpse).AutoLoot(this);
-                Corpse.Delete();
-            }
-
-            Emote("*acorda*");
             var cordaAmarrada = Rope.GetCordaAmarrada(this);
             if (cordaAmarrada != null)
             {
@@ -4437,7 +4457,6 @@ namespace Server.Mobiles
                 cordaAmarrada.Visible = true;
                 Emote("* amarrado *");
             }
-                
 
             //FE: Wake up sounds
             //TODO: Verificar porque alguns sons estão errados (Alinhar com o patch novo)
@@ -4787,7 +4806,7 @@ namespace Server.Mobiles
                     SendMessage(38, "!!! VOCÊ MORREU !!!");
                     PrivateOverheadMessage(MessageType.Emote, 88, false, "!!! VOCÊ MORREU !!!", NetState);
                 }
-                else if (this.Deaths >= (MAX_MORTES-2))
+                else if (this.Deaths >= (MAX_MORTES - 2))
                 {
                     PrivateOverheadMessage(MessageType.Emote, 88, false, "!!! MORIBUNDO !!!", NetState);
                     SendGump(new AnuncioGump(this, "!!! VOCÊ ESTÁ DESMAIADO E MORIBUNDO !!!"));
@@ -5918,7 +5937,7 @@ namespace Server.Mobiles
             var V = (int)Math.Pow(Nivel * 10, 2);
             if (V <= 0)
                 V = 1;
-    
+
             return Shard.AVENTURA ? V / 10 : V;
         }
 
@@ -6415,8 +6434,8 @@ namespace Server.Mobiles
 
         public override void OnSingleClick(Mobile from)
         {
-            if(Rope.Preso(this))
-                this.PrivateOverheadMessage(MessageType.Regular, 0x35, true, "* amarrad"+GetLetraSexo()+" *", from.NetState);
+            if (Rope.Preso(this))
+                this.PrivateOverheadMessage(MessageType.Regular, 0x35, true, "* amarrad" + GetLetraSexo() + " *", from.NetState);
 
             if (!Shard.RP && Shard.TITULOS_RP)
             {
@@ -6431,7 +6450,7 @@ namespace Server.Mobiles
                     from.SendMessage(78, "[ATENCAO] Voce esta se aproximando de jogadores em modo RP. Atrapalhar jogadores RP podera resultar em Jail e ate Ban !");
                 }
             }
-          
+
 
             /*
             if (Map == Faction.Facet)
@@ -6504,7 +6523,7 @@ namespace Server.Mobiles
 
             if (RP && Mounted && !Talentos.Tem(Talento.Hipismo) && (d & Direction.Running) != 0)
             {
-                if(Utility.RandomDouble() < 0.01)
+                if (Utility.RandomDouble() < 0.01)
                 {
                     this.Mount.Rider = null;
                     OverheadMessage("* caiu *");
@@ -6845,7 +6864,7 @@ namespace Server.Mobiles
 
             if (RP)
             {
-                prefix = FichaRP.Patente.ToString()+" ";
+                prefix = FichaRP.Patente.ToString() + " ";
             }
 
             if (Famoso || Fame >= 15000)
@@ -6925,11 +6944,11 @@ namespace Server.Mobiles
                 }
             }
 
-            if(Rope.Preso(this))
-                list.Add(Gump.Cor("<CENTER>[ Amarrad"+GetLetraSexo()+" ]</CENTER>", "red"));
+            if (Rope.Preso(this))
+                list.Add(Gump.Cor("<CENTER>[ Amarrad" + GetLetraSexo() + " ]</CENTER>", "red"));
 
             if (Elemento != ElementoPvM.None)
-                list.Add(Gump.Cor(Elemento.ToString(), BaseArmor.CorElemento(Elemento)));
+                list.Add(Gump.Cor(Elemento.ToString()+" Lv "+Elementos.GetNivel(Elemento), BaseArmor.CorElemento(Elemento)));
 
             if (Shard.TITULOS_RP && RP && !Shard.RP)
             {
@@ -6937,7 +6956,8 @@ namespace Server.Mobiles
                 if (Deaths >= 5)
                     list.Add(Gump.Cor("<CENTER>MORTO</CENTER>", "red"));
 
-            } else if(Shard.RP)
+            }
+            else if (Shard.RP)
             {
                 if (Deaths >= 5)
                     list.Add(Gump.Cor("<CENTER>MORTO</CENTER>", "red"));

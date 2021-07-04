@@ -64,16 +64,16 @@ namespace Server.Engines.Craft
             AddPage(0);
 
             AddBackground(0, 0, 530, 497, 5054); // troca 5054 pra 9270
-            /*
-            AddImageTiled(10, 10, 510, 22, 2624);
-            AddImageTiled(10, 292, 150, 45, 2624);
-            AddImageTiled(165, 292, 355, 45, 2624);
-            AddImageTiled(10, 342, 510, 145, 2624);
-            AddImageTiled(10, 37, 200, 250, 2624);
-            AddImageTiled(215, 37, 305, 250, 2624);
-            */
-            //AddAlphaRegion(10, 10, 510, 477);
 
+            AddBackground(10, 10, 510, 22, 9350);
+            AddBackground(10, 292, 150, 45, 9350);
+            AddBackground(165, 292, 355, 45, 9350);
+            AddBackground(10, 342, 510, 145, 9350);
+            AddBackground(10, 37, 200, 250, 9350);
+            AddBackground(215, 37, 305, 250, 9350);
+            
+            //AddAlphaRegion(10, 10, 510, 477);
+            AddBackground(10, 10, 510, 477, 9350);
             if (craftSystem.GumpTitleNumber > 0)
                 AddHtmlLocalized(10, 12, 510, 20, craftSystem.GumpTitleNumber, LabelColor, false, false);
             else

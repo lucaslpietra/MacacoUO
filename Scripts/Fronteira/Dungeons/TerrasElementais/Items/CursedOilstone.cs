@@ -40,7 +40,7 @@ namespace Server.Items
 
                 this.Consume();
 
-                from.AddToBackpack(new WhetstoneOfEnervation());
+                from.AddToBackpack(new PedraElementalSuprema());
                 from.SendLocalizedMessage(1151812); // You have managed to form the items into a rancid smelling, crag covered, hardened lump. In a moment of prescience, you realize what it must be named. The Whetstone of Enervation!
             }
         }

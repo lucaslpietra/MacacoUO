@@ -21,7 +21,7 @@ namespace Server.Items
         {
             get
             {
-                return -1;
+                return -2;
             }
         }
         public override int BasePhysicalResistance
@@ -91,7 +91,7 @@ namespace Server.Items
         {
             get
             {
-                return 40;
+                return 60;
             }
         }
         public override ArmorMaterialType MaterialType

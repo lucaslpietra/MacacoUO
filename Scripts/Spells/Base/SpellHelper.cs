@@ -1548,11 +1548,12 @@ namespace Server.Spells
         {
             if (from.Player && !target.Player)
             {
-                var spellSteal = from.GetBonusElemento(ElementoPvM.Fogo);
-                Shard.Debug("SpellSteal " + spellSteal, from);
-                var cura = (int)(damageGiven * spellSteal) / 2;
-                if (cura > 0)
-                    from.Heal((int)cura / 2);
+                var burnDamage = damageGiven * from.GetBonusElemento(ElementoPvM.Fogo);
+                BurnAttack.BeginBurn(target, from, (int) burnDamage, false);
+
+                var spellSteal = (damageGiven/2) * from.GetBonusElemento(ElementoPvM.Escuridao);
+                if (spellSteal > 0)
+                    from.Heal((int)spellSteal);
             }
         }
 

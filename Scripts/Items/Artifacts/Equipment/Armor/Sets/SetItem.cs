@@ -30,7 +30,7 @@ namespace Server
         Virtuoso,
         Aloron,
         Darden,
-        Chefs
+        Chefs,
     }
 
     public interface ISetItem
@@ -178,14 +178,31 @@ namespace Server
                 Remove(from, setID, from.Items[i]);
             }
 
+
+
+
             if (!self)
                 Remove(from, setID, item);
 
             from.UpdateResistances();
         }
 
+        public static int CountElemento(Mobile m, ElementoPvM e)
+        {
+            var c = 0;
+            foreach(var i in m.GetEquipment())
+            {
+                if (i.Layer != Layer.Arms &&i.Layer != Layer.Neck && i is BaseArmor && ((BaseArmor)i).Elemento == e)
+                    c++;
+            }
+            return c;
+        }
+
         public static void Remove(Mobile from, SetItem setID, Item item)
         {
+          
+
+
             if (item is ISetItem)
             {
                 ISetItem setItem = (ISetItem)item;
@@ -229,7 +246,6 @@ namespace Server
                         if (setItem.LastEquipped)
                         {
                             AddStatBonuses(to, to.Items[i], setItem.SetAttributes.BonusStr, setItem.SetAttributes.BonusDex, setItem.SetAttributes.BonusInt);
-
                             setItem.SetSkillBonuses.AddTo(to);
                         }
 

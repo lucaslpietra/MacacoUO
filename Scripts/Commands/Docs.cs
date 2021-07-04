@@ -541,7 +541,7 @@ namespace Server.Commands
 				html.WriteLine("<!DOCTYPE html>");
 				html.WriteLine("<html>");
 				html.WriteLine("   <head>");
-				html.WriteLine("      <title>RunUO Documentation - Index</title>");
+				html.WriteLine("      <title>Documentacao MacacoUO - Index</title>");
 				html.WriteLine("      <style type=\"text/css\">");
 				html.WriteLine("      body { background-color: white; font-family: Tahoma; color: #000000; }");
 				html.WriteLine("      a, a:visited { color: #000000; }");
@@ -620,7 +620,7 @@ namespace Server.Commands
 				html.WriteLine("<!DOCTYPE html>");
 				html.WriteLine("<html>");
 				html.WriteLine("   <head>");
-				html.WriteLine("      <title>RunUO Documentation - Bulk Orders - Smith Rewards</title>");
+				html.WriteLine("      <title>Documentacao MacacoUO - Bulk Orders - Smith Rewards</title>");
 				html.WriteLine("      <style type=\"text/css\">");
 				html.WriteLine("      body { background-color: white; font-family: Tahoma; color: #000000; }");
 				html.WriteLine("      a, a:visited { color: #000000; }");
@@ -696,7 +696,7 @@ namespace Server.Commands
 				html.WriteLine("<!DOCTYPE html>");
 				html.WriteLine("<html>");
 				html.WriteLine("   <head>");
-				html.WriteLine("      <title>RunUO Documentation - Bulk Orders - Tailor Rewards</title>");
+				html.WriteLine("      <title>Documentacao MacacoUO - Bulk Orders - Tailor Rewards</title>");
 				html.WriteLine("      <style type=\"text/css\">");
 				html.WriteLine("      body { background-color: white; font-family: Tahoma; color: #000000; }");
 				html.WriteLine("      a, a:visited { color: #000000; }");
@@ -1604,7 +1604,7 @@ namespace Server.Commands
 				html.WriteLine("<!DOCTYPE html>");
 				html.WriteLine("<html>");
 				html.WriteLine("   <head>");
-				html.WriteLine("      <title>RunUO Documentation - Body List</title>");
+				html.WriteLine("      <title>Documentacao MacacoUO - Body List</title>");
 				html.WriteLine("      <style type=\"text/css\">");
 				html.WriteLine("      body { background-color: white; font-family: Tahoma; color: #000000; }");
 				html.WriteLine("      a, a:visited { color: #000000; }");
@@ -1700,7 +1700,7 @@ namespace Server.Commands
 				html.WriteLine("<!DOCTYPE html>");
 				html.WriteLine("<html>");
 				html.WriteLine("   <head>");
-				html.WriteLine("      <title>RunUO Documentation - Speech Keywords</title>");
+				html.WriteLine("      <title>Documentacao MacacoUO - Speech Keywords</title>");
 				html.WriteLine("      <style type=\"text/css\">");
 				html.WriteLine("      body { background-color: white; font-family: Tahoma; color: #000000; }");
 				html.WriteLine("      a, a:visited { color: #000000; }");
@@ -2350,7 +2350,7 @@ namespace Server.Commands
 				html.WriteLine("<!DOCTYPE html>");
 				html.WriteLine("<html>");
 				html.WriteLine("   <head>");
-				html.WriteLine("      <title>RunUO Documentation - Constructable Objects</title>");
+				html.WriteLine("      <title>Documentacao MacacoUO - Constructable Objects</title>");
 				html.WriteLine("      <style type=\"text/css\">");
 				html.WriteLine("      body { background-color: white; font-family: Tahoma; color: #000000; }");
 				html.WriteLine("      a, a:visited { color: #000000; }");
@@ -2593,7 +2593,7 @@ namespace Server.Commands
 				nsHtml.WriteLine("<!DOCTYPE html>");
 				nsHtml.WriteLine("<html>");
 				nsHtml.WriteLine("   <head>");
-				nsHtml.WriteLine("      <title>RunUO Documentation - Class Overview - {0}</title>", name);
+				nsHtml.WriteLine("      <title>Documentacao MacacoUO - Class Overview - {0}</title>", name);
 				nsHtml.WriteLine("      <style type=\"text/css\">");
 				nsHtml.WriteLine("      body { background-color: white; font-family: Tahoma; color: #000000; }");
 				nsHtml.WriteLine("      a, a:visited { color: #000000; }");
@@ -2626,7 +2626,7 @@ namespace Server.Commands
 				typeHtml.WriteLine("<!DOCTYPE html>");
 				typeHtml.WriteLine("<html>");
 				typeHtml.WriteLine("   <head>");
-				typeHtml.WriteLine("      <title>RunUO Documentation - Class Overview - {0}</title>", info.TypeName);
+				typeHtml.WriteLine("      <title>Documentacao MacacoUO - Class Overview - {0}</title>", info.TypeName);
 				typeHtml.WriteLine("      <style type=\"text/css\">");
 				typeHtml.WriteLine("      body { background-color: white; font-family: Tahoma; color: #000000; }");
 				typeHtml.WriteLine("      a, a:visited { color: #000000; }");

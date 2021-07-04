@@ -27,9 +27,9 @@ namespace Server.Fronteira.Clima
                 EventSink.Logout += Desloga;
                 EventSink.WorldLoad += OnLoad;
                 EventSink.WorldSave += OnSave;
+                var timer = new Loop();
+                timer.Start();
             }
-            var timer = new Loop();
-            timer.Start();
         }
 
         public static void OnSave(WorldSaveEventArgs e)

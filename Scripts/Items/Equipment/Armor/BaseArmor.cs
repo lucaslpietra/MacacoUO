@@ -806,7 +806,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ElementoPvM ElementoPvM
+        public ElementoPvM Elemento
         {
             get { return m_elementoPvm; }
             set { m_elementoPvm = value; InvalidateProperties(); }
@@ -1627,8 +1627,19 @@ namespace Server.Items
             {
                 Mobile from = (Mobile)parent;
 
-                //if (Core.AOS)
                 m_AosSkillBonuses.AddTo(from);
+                if (from is PlayerMobile && ((PlayerMobile)from).Nivel > 0 && this.Elemento != ElementoPvM.None && from.Elemento != this.Elemento)
+                {
+                    var count = SetHelper.CountElemento(from, this.Elemento);
+                    if (count >= 4 && from.Elemento != this.Elemento)
+                    {
+                        from.PrivateOverheadMessage("* energizado *");
+                        from.SendMessage("Voce sente seu corpo se energizando com energia elemental de " + this.Elemento.ToString());
+                        from.Elemento = this.Elemento;
+                        from.FixedEffect(0x375A, 10, 15);
+                        from.PlaySound(0x1E7);
+                    }
+                }
 
                 #region Mondain's Legacy Sets
                 if (IsSetItem)
@@ -2639,6 +2650,8 @@ namespace Server.Items
 
             Server.Engines.XmlSpawner2.XmlAttach.CheckOnRemoved(this, parent);
 
+
+
             base.OnRemoved(parent);
         }
 
@@ -3125,7 +3138,7 @@ namespace Server.Items
 
         public static string CorElemento(ElementoPvM elemento)
         {
-            switch(elemento)
+            switch (elemento)
             {
                 case ElementoPvM.Agua: return "blue";
                 case ElementoPvM.Escuridao: return "gray";
@@ -3414,6 +3427,23 @@ namespace Server.Items
             {
                 if (IsSetItem && m_SetEquipped)
                     SetHelper.RemoveSetBonus(from, SetID, this);
+
+                if (from.Elemento != ElementoPvM.None)
+                {
+                    if (Elemento == from.Elemento && Layer != Layer.Arms && Layer != Layer.Neck)
+                    {
+                        var count = SetHelper.CountElemento(from, from.Elemento);
+                        if (count <= 4)
+                        {
+                            from.SendMessage("Retirando a armadura, voce perde o poder do elemento " + from.Elemento.ToString());
+                            from.Elemento = ElementoPvM.None;
+                            from.FixedParticles(0x3779, 10, 15, 5002, EffectLayer.Head);
+                            from.PlaySound(0x1DF);
+
+                        }
+                    }
+                }
+
             }
 
             return base.OnDragLift(from);

@@ -20,7 +20,7 @@ namespace Server.Fronteira.Elementos
                     efeitos = new string[] {
                         "Dano de Fogo",
                         "Esquiva",
-                        "LifeSteal Magico"
+                        "Fogo Queima"
                     };
                     break;
                 case ElementoPvM.Agua:
@@ -60,9 +60,9 @@ namespace Server.Fronteira.Elementos
                     break;
                 case ElementoPvM.Gelo:
                     efeitos = new string[] {
-                        "Armadura",
-                        "Dano Fisico",
-                        "Dano Magias Frias"
+                        "Esquiva",
+                        "Resistencia Magica",
+                        "Bonus Coleta Recursos"
                     };
                     break;
                 case ElementoPvM.Vento:

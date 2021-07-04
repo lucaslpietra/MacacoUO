@@ -6,8 +6,6 @@ namespace Server.Fronteira.Elementos
     [PropertyObject]
     public class ElementoData
     {
-
- 
         private Dictionary<ElementoPvM, ushort> _niveis = new Dictionary<ElementoPvM, ushort>();
 
         private Dictionary<ElementoPvM, int> _exps = new Dictionary<ElementoPvM, int>();

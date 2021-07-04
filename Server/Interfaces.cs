@@ -54,7 +54,7 @@ namespace Server
 		void OnBeforeSwing(Mobile attacker, IDamageable damageable);
         TimeSpan OnSwing(Mobile attacker, IDamageable damageable);
 		void GetStatusDamage(Mobile from, out int min, out int max);
-		TimeSpan GetDelay(Mobile attacker);
+		TimeSpan GetDelay(Mobile attacker, Mobile defender=null);
 	}
 
 	public interface IHued

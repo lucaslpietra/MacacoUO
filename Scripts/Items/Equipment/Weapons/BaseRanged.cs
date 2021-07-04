@@ -125,7 +125,7 @@ namespace Server.Items
 
                 attacker.RevealingAction();
 
-                return GetDelay(attacker);
+                return GetDelay(attacker, damageable as Mobile);
             }
 
             attacker.RevealingAction();

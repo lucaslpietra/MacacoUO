@@ -93,14 +93,14 @@ namespace Server.Mobiles
             {
                 if (e.m_HasRight && e.m_Mobile != null)
                 {
-                    if(Utility.RandomDouble() < 0.1)
+                    if(Utility.RandomDouble() < 0.05)
                         e.m_Mobile.AddToBackpack(new ElementalBall());
                     else
                         e.m_Mobile.AddToBackpack(Decos.RandomDeco());
 
                     e.m_Mobile.AddToBackpack(Loot.JoiaRaraRandom(this.Map));
 
-                    e.m_Mobile.AddToBackpack(new Gold(10000));
+                    e.m_Mobile.AddToBackpack(new Gold(2000));
                     e.m_Mobile.SendMessage(78, "Voce ganhou recompensas por ajudar a matar Pedroso");
                     e.m_Mobile.SendMessage(78, "As recompensas foram colocadas em sua mochila");
                 }

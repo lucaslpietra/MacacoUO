@@ -27,7 +27,7 @@ namespace Server.Mobiles
 
             c.PublicOverheadMessage("* dropou 1/3 da pedra elemental *");
 
-            c.DropItem(new ShameCrystal(Utility.RandomMinMax(3, 5)));
+            c.DropItem(new CristalElemental(Utility.RandomMinMax(3, 5)));
 
             Altar = null;
         }

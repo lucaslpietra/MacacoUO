@@ -5,16 +5,16 @@ using Server.Engines.Points;
 
 namespace Server.Items
 {
-	public class ShameCrystal : Item
+	public class CristalElemental : Item
 	{
 
 		[Constructable]
-		public ShameCrystal() : this(1)
+		public CristalElemental() : this(1)
 		{
 		}
 	
 		[Constructable]
-		public ShameCrystal(int amount) : base(16395)
+		public CristalElemental(int amount) : base(16395)
 		{
             Name = "Cristais Elementais";
 			Stackable = true;
@@ -27,12 +27,13 @@ namespace Server.Items
 		{
 			if(IsChildOf(from.Backpack))
 			{
-				PointsSystem.ShameCrystals.AwardPoints(from, this.Amount);
+                from.SendMessage("Voce consumiu os cristais...");
+				PointsSystem.ShameCrystals.AwardPoints(from, this.Amount, true, true);
 				Delete();
 			}
 		}
 		
-		public ShameCrystal(Serial serial) : base(serial)
+		public CristalElemental(Serial serial) : base(serial)
 		{
 		}
 		

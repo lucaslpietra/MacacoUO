@@ -112,7 +112,7 @@ namespace Server.Spells.Necromancy
                             Effects.SendLocationParticles(id, 0x374A, 1, 30, 97, 3, 9502, 0);
                         }
 
-                        double damage = Utility.RandomMinMax(20, 30);
+                        double damage = Utility.RandomMinMax(10, 20);
                         damage *= GetDamageScalar(target, ElementoPvM.Gelo);
 
                         int karma = target != null ? target.Karma / 100 : 0;
@@ -126,7 +126,7 @@ namespace Server.Spells.Necromancy
                             if (CheckResisted(target, 7))
                             {
                                 target.SendMessage("Voce sente seu corpo resistindo a magia");
-                                damage *= 0.75;
+                                damage *= 0.55;
                             }
                         }
 

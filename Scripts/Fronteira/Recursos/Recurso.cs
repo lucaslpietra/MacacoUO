@@ -193,6 +193,13 @@ namespace Server.Fronteira.Recursos
                 }
             }
 
+            if(from.Player)
+            {
+                var bonus = (int)(i.Amount * from.GetBonusElemento(ElementoPvM.Gelo));
+                if (bonus > 0)
+                    i.Amount += bonus;
+            }
+
             if (!from.PlaceInBackpack(i))
                 i.MoveToWorld(from.Location, from.Map);
 

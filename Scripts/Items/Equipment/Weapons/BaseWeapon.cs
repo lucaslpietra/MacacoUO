@@ -810,7 +810,7 @@ namespace Server.Items
         #region Runic Reforging
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ElementoPvM ElementoPvM
+        public ElementoPvM Elemento
         {
             get { return m_ItemPower; }
             set { m_ItemPower = value; InvalidateProperties(); }
@@ -1571,10 +1571,11 @@ namespace Server.Items
                 }
             } else
             {
-                var bonusElemental = defender.GetBonusElemento(ElementoPvM.Fogo) + defender.GetBonusElemento(ElementoPvM.Vento);
-                if (bonusElemental > 0.9)
-                    bonusElemental = 0.9;
+                var bonusElemental = defender.GetBonusElemento(ElementoPvM.Fogo) + defender.GetBonusElemento(ElementoPvM.Vento) + defender.GetBonusElemento(ElementoPvM.Raio) + +defender.GetBonusElemento(ElementoPvM.Gelo);
+                bonusElemental /= 2;
                 bonus -= (int)(bonusElemental * 100);
+                if (bonus < -80)
+                    bonus = -80;
             }
 
             double chance = ourValue / (theirValue * 1.8);
@@ -1664,7 +1665,7 @@ namespace Server.Items
             return attacker.CheckSkill(atkSkill.SkillName, chance);
         }
 
-        public virtual TimeSpan GetDelay(Mobile m)
+        public virtual TimeSpan GetDelay(Mobile m, Mobile defender=null)
         {
             double speed = Speed;
             if (speed == 0)
@@ -1742,16 +1743,23 @@ namespace Server.Items
             }
             else
             {
-                var semBonus = AnimalForm.GetContext(m) != null || this is BaseRanged;
+                var semBonusStr = AnimalForm.GetContext(m) != null || this is BaseRanged;
                 // FORMULA DE SPEED
-                int v = ((m.Dex + (m.Str / (semBonus ? m.Str : 5))) + 100) * (int)speed;
+                int v = ((m.Dex + (m.Str / (semBonusStr ? m.Str : 5))) + 100) * (int)speed;
                 //int v = (m.Dex + 100) * (int)speed;
                 if (v <= 0)
                 {
                     v = 1;
                 }
-                if (semBonus)
+                if (semBonusStr)
                     v = (int)(v * 0.85);
+
+                if(m.Player && defender != null && !defender.Player)
+                {
+                    var bonus = m.GetBonusElemento(ElementoPvM.Vento) / 2;
+                    if (bonus > 0.9) bonus = 0.9;
+                    v += (int)(bonus * v);
+                }
 
                 delayInSeconds = 15000.0 / v;
             }
@@ -1875,7 +1883,7 @@ namespace Server.Items
                 }
             }
 
-            return GetDelay(attacker);
+            return GetDelay(attacker, damageable as Mobile);
         }
 
         #region Sounds
@@ -2052,7 +2060,7 @@ namespace Server.Items
             if (blocked)
             {
                 BaseShield shield = defender.FindItemOnLayer(Layer.TwoHanded) as BaseShield;
-                attacker.SendMessage("O alvo bloqueou seu ataque com o escudo");
+                attacker.SendMessage("O alvo bloqueou seu ataque");
                 defender.SendMessage("Voce bloqueou o ataque");
                 defender.FixedEffect(0x37B9, 10, 16);
                 var bloqueado = 0;
@@ -2314,6 +2322,11 @@ namespace Server.Items
 
             var virtualArmor = defender.ArmorRating;
 
+            if(defender.Player && !attacker.Player)
+            {
+                virtualArmor += (virtualArmor/2) * (defender.GetBonusElemento(ElementoPvM.Terra) + defender.GetBonusElemento(ElementoPvM.Luz));
+            }
+
             Habilidade a = Habilidade.GetCurrentAbility(attacker);
             SpecialMove move = SpecialMove.GetCurrentMove(attacker);
 
@@ -2417,6 +2430,12 @@ namespace Server.Items
                 int to = (int)(virtualArmor * scalar);
                 var redux = Utility.Random(from, (to - from) + 1);
                 damage -= redux;
+
+                if(attacker.Player && !defender.Player)
+                {
+                    var bonus = attacker.GetBonusElemento(ElementoPvM.Terra) + attacker.GetBonusElemento(ElementoPvM.Raio);
+                    damage += damage * bonus;
+                }
 
                 if (Shard.DebugEnabled)
                 {
@@ -2675,8 +2694,6 @@ namespace Server.Items
                     damageBonus -= 0.15;
                     attacker.MovingEffect(damageable, 0x0F53, 18, 1, false, false, 78, 1);
                 }
-
-
 
                 if (transform.Type == typeof(Llama) && this is BaseRanged)
                 {
@@ -2958,6 +2975,15 @@ namespace Server.Items
             percentageBonus += Spells.Mysticism.StoneFormSpell.GetMaxResistBonus(attacker);
 
             damage = AOS.Scale(damage, 100 + percentageBonus);
+
+            if(attacker.Player && !defender.Player)
+            {
+                var bonusCura = attacker.GetBonusElemento(ElementoPvM.Luz);
+                var cura = (damage/2) * bonusCura;
+                if (cura > 0)
+                    attacker.Heal((int)cura);
+            }
+
             #endregion
 
             var mods = AbsorbDamage(attacker, defender, damage);

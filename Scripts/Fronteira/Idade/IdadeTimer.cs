@@ -13,7 +13,8 @@ namespace Server.Fronteira.Idade
 
         public static void Initialize()
         {
-            new IdadeTimer().Start();
+            if(Shard.RP)
+                new IdadeTimer().Start();
         }
 
         protected override void OnTick()

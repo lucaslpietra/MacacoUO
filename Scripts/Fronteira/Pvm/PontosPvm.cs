@@ -1,7 +1,9 @@
 using Server.Commands;
 using Server.Engines.Points;
 using Server.Engines.VvV;
+using Server.Fronteira.Elementos;
 using Server.Gumps;
+using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
 using Server.Regions;
@@ -105,6 +107,19 @@ namespace Server.Ziden.Kills
                                     pl.SendMessage(78, "Monstros dentro de dungeons dao mais experiencia do que locais como este");
                                 }
 
+                                if(pl.Elemento != ElementoPvM.None)
+                                {
+                                    var expElem = pl.Elementos.GetExp(pl.Elemento);
+                                    expElem += exp;
+                                    var lvl = pl.Elementos.GetNivel(pl.Elemento);
+                                    var maxExp = CustosUPElementos.CustoUpExp(lvl);
+                                    if (expElem > maxExp)
+                                    {
+                                        expElem = maxExp;
+                                    }
+                                    pl.Elementos.SetExp(pl.Elemento, expElem);
+                                }
+
                                 //pl.SendMessage(78, "Bonus de XP: Semana FULL EXP");
                                 c.PrivateOverheadMessage(Network.MessageType.Regular, 66, false, string.Format("+{0} EXP", exp), pl.NetState);
                                 PointsSystem.Exp.AwardPoints(pl, exp, false, false);
@@ -116,7 +131,7 @@ namespace Server.Ziden.Kills
                             } else
                             {
                                 c.PrivateOverheadMessage(Network.MessageType.Regular, 66, false, string.Format("+{0} EXP", exp), pl.NetState);
-                                pl.GanhaExp(pontos);
+                                pl.GanhaExpRP(pontos);
                             }
                         }
                         PointsSystem.PontosPvmEterno.AwardPoints(pl, pontos / 2, false, false);

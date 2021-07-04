@@ -165,7 +165,7 @@ namespace Server.Spells
                 double value = GetResistSkill(target);
                 if(target.Player && !Caster.Player)
                 {
-                    value += (int)(value * Caster.GetBonusElemento(ElementoPvM.Agua));
+                    value += (int)(value * (target.GetBonusElemento(ElementoPvM.Agua) + target.GetBonusElemento(ElementoPvM.Luz) + target.GetBonusElemento(ElementoPvM.Escuridao) + target.GetBonusElemento(ElementoPvM.Gelo)));
                 }
                 double firstPercent = value / 5.0;
                 double secondPercent = value - (((Caster.Skills[CastSkill].Value - 20.0) / 5.0) + (1 + (int)circle) * 5.0);
@@ -237,7 +237,7 @@ namespace Server.Spells
                 var pl = Caster as PlayerMobile;
                 if (!Shard.POL_STYLE || pl == null || (pl.Talentos.Tem(Talento.Cajados) && Caster.Weapon is BaseStaff))
                     // Delay T2A
-                    return TimeSpan.FromSeconds(0.5 + (0.25 * (int)Circle));
+                    return TimeSpan.FromSeconds(0.5 + (0.25 * (int)(1+Circle)));
                 else
                 {
                     // delay POL/Mystic

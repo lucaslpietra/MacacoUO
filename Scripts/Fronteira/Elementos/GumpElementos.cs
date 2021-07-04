@@ -11,7 +11,7 @@ namespace Server.Gumps
     {
         public static void Initialize()
         {
-            CommandSystem.Register("elementos", AccessLevel.Player, new CommandEventHandler(_OnCommand));
+            CommandSystem.Register("elementos", AccessLevel.Seer, new CommandEventHandler(_OnCommand));
         }
 
         [Usage("")]
@@ -19,7 +19,6 @@ namespace Server.Gumps
         public static void _OnCommand(CommandEventArgs e)
         {
             var caller = e.Mobile as PlayerMobile;
-
             if (caller.HasGump(typeof(ElementosGump)))
                 caller.CloseGump(typeof(ElementosGump));
             caller.SendGump(new ElementosGump(caller));
@@ -104,7 +103,7 @@ namespace Server.Gumps
                 //AddItem(811, 367, 576);
                 NewAuctionGump.AddItemCentered(784, 335, 111, 101, custos[1].itemID, custos[0].hue, this);
 
-                AddHtml(534, 317, 124, 20, "Exp: "+pl.Elementos.GetExp(elemento)+" / "+CustosUPElementos.CustoUpExp(nivel), (bool)false, (bool)false);
+                AddHtml(534, 317, 324, 20, "Exp: "+pl.Elementos.GetExp(elemento)+" / "+CustosUPElementos.CustoUpExp(nivel), (bool)false, (bool)false);
                 AddButton(757, 435, 247, 248, (int)ElementoButtons.Upar, GumpButtonType.Reply, 0);
             }
         }

@@ -2387,7 +2387,7 @@ namespace Server.Items
 
             if (item is ICombatEquipment)
             {
-                ((ICombatEquipment)item).ElementoPvM = ip;
+                ((ICombatEquipment)item).Elemento = ip;
             }
 
             return ip;
@@ -3430,7 +3430,7 @@ namespace Server.Items
             int focus = 0;
             int brittle = 0;
 
-            foreach (var jewel in World.Items.Values.OfType<BaseJewel>().Where(j => j.ElementoPvM > ElementoPvM.None))
+            foreach (var jewel in World.Items.Values.OfType<BaseJewel>().Where(j => j.Elemento > ElementoPvM.None))
             {
                 if (jewel.Attributes.CastSpeed > 1)
                 {

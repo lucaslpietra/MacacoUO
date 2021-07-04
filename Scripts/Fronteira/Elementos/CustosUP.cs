@@ -33,13 +33,12 @@ namespace Server.Fronteira.Elementos
 
         public static int CustoUpExp(int nivel)
         {
-            var V = (int)Math.Pow(nivel + 1, 4);
+            var V = (int)Math.Pow((nivel + 4) * 2, 3);
             if (V <= 0)
                 V = 1;
 
-            return 100 + V;
+            return V;
         }
-
 
         private static Dictionary<ElementoPvM, Custo[]> _custos = new Dictionary<ElementoPvM, Custo[]>();
 

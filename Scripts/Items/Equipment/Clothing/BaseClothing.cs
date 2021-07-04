@@ -327,7 +327,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ElementoPvM ElementoPvM
+        public ElementoPvM Elemento
         {
             get { return m_ItemPower; }
             set { m_ItemPower = value; InvalidateProperties(); }

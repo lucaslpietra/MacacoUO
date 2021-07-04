@@ -48,6 +48,7 @@ namespace Server.Mobiles
             this.PackItem(ore);
         }
 
+        /*
         public override void OnBeforeDamage(Mobile from, ref int totalDamage, DamageType type)
         {
 
@@ -100,6 +101,7 @@ namespace Server.Mobiles
                 }
             }
         }
+        */
 
         public EarthElemental(Serial serial)
             : base(serial)

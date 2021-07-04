@@ -13,7 +13,7 @@ namespace Server.Mobiles
         [Constructable]
         public WhiteFalcon() : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a white falcon";
+            Name = "falcao branco";
             Body = 5;
             Hue = 1153;
 
@@ -56,7 +56,7 @@ namespace Server.Mobiles
             m.PlaySound(541);
             m.FixedEffect(0x376A, 6, 1);
             m.HueMod = 1152;
-            m.SendMessage("The white falcon's breath turns you to ice!");
+            m.SendMessage("O falcao sopa um sopro gelido!");
             new FreezeAttackTimer(m).Start();
         }
 

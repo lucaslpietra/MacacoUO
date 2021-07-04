@@ -89,14 +89,14 @@ namespace Server.Items
         {
             get
             {
-                return 40;
+                return 60;
             }
         }
         public override int OldDexBonus
         {
             get
             {
-                return -2;
+                return -4;
             }
         }
         public override ArmorMaterialType MaterialType

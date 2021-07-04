@@ -11,12 +11,11 @@ namespace Server.Commands
     {
         public static void Initialize()
         {
-            CommandSystem.Register("#" +
-                "", AccessLevel.Administrator, new CommandEventHandler(CMD));
+            CommandSystem.Register("voltayoung", AccessLevel.Administrator, new CommandEventHandler(CMD));
         }
 
-        [Usage("receitas")]
-        [Description("Camping Menu.")]
+        [Usage("voltayoung")]
+        [Description("Volta todos players q devem ser young pra young.")]
         public static void CMD(CommandEventArgs arg) { 
 
             foreach(var gm in PlayerMobile.Instances)

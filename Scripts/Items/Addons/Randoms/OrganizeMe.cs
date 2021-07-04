@@ -138,39 +138,39 @@ namespace Server.Commands
 
             if (weaponPouch == null)
             {
-                weaponPouch = new OrganizePouch { Name = "Armas", Hue = Utility.RandomMetalHue() };
+                weaponPouch = new OrganizePouch { Name = "Armas", Hue =92 };
             }
             if (armorPouch == null)
             {
-                armorPouch = new OrganizePouch { Name = "Armaduras", Hue = Utility.RandomMetalHue() };
+                armorPouch = new OrganizePouch { Name = "Armaduras", Hue = 82 };
             }
             if (clothingPouch == null)
             {
-                clothingPouch = new OrganizePouch { Name = "Roupas", Hue = Utility.RandomBrightHue() };
+                clothingPouch = new OrganizePouch { Name = "Roupas", Hue = 72 };
             }
             if (jewelPouch == null)
             {
-                jewelPouch = new OrganizePouch { Name = "Joias", Hue = Utility.RandomPinkHue() };
+                jewelPouch = new OrganizePouch { Name = "Joias", Hue =62 };
             }
             if (potionPouch == null)
             {
-                potionPouch = new OrganizePouch {Name = "Pocoes", Hue = Utility.RandomOrangeHue()};
+                potionPouch = new OrganizePouch {Name = "Pocoes", Hue =52};
             }
             if (currencyPouch == null)
             {
-                currencyPouch = new OrganizePouch {Name = "Moedas", Hue = Utility.RandomYellowHue()};
+                currencyPouch = new OrganizePouch {Name = "Moedas", Hue =42};
             }
             if (resourcePouch == null)
             {
-                resourcePouch = new OrganizePouch {Name = "Recursos", Hue = Utility.RandomNondyedHue()};
+                resourcePouch = new OrganizePouch {Name = "Recursos", Hue = 32};
             }
             if (toolPouch == null)
             {
-                toolPouch = new OrganizePouch {Name = "Ferramentas", Hue = Utility.RandomMetalHue()};
+                toolPouch = new OrganizePouch {Name = "Ferramentas", Hue = 22};
             }
             if (regsPouch == null)
             {
-                regsPouch = new OrganizePouch {Name = "Reagents", Hue = Utility.RandomGreenHue()};
+                regsPouch = new OrganizePouch {Name = "Reagents", Hue = 12};
             }
             if (miscPouch == null)
             {
