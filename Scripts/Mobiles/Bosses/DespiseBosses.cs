@@ -87,17 +87,17 @@ namespace Server.Engines.Despise
                 damage -= (int)((double)damage * WispScalar);
         }
 
-        public override void AlterSpellDamageTo(Mobile to, ref int damage)
+        public override void AlterSpellDamageTo(Mobile to, ref int damage, ElementoPvM e)
         {
-            base.AlterSpellDamageTo(to, ref damage);
+            base.AlterSpellDamageTo(to, ref damage, e);
 
             if (m_Wisp != null && !m_Wisp.Deleted && m_Wisp.Alive)
                 damage += (int)((double)damage * WispScalar);
         }
 
-        public override void AlterSpellDamageFrom(Mobile from, ref int damage)
+        public override void AlterSpellDamageFrom(Mobile from, ref int damage, ElementoPvM e)
         {
-            base.AlterSpellDamageFrom(from, ref damage);
+            base.AlterSpellDamageFrom(from, ref damage, e);
 
             if (m_Wisp != null && !m_Wisp.Deleted && m_Wisp.Alive)
                 damage -= (int)((double)damage * WispScalar);

@@ -11,17 +11,14 @@ namespace Server.Gumps
     {
         public static void Initialize()
         {
-            CommandSystem.Register("elementos", AccessLevel.Seer, new CommandEventHandler(_OnCommand));
+            CommandSystem.Register("elementos", AccessLevel.Player, new CommandEventHandler(_OnCommand));
         }
 
         [Usage("")]
         [Description("Makes a call to your custom gump.")]
         public static void _OnCommand(CommandEventArgs e)
         {
-            var caller = e.Mobile as PlayerMobile;
-            if (caller.HasGump(typeof(ElementosGump)))
-                caller.CloseGump(typeof(ElementosGump));
-            caller.SendGump(new ElementosGump(caller));
+            EstatuaElemental.Envia(e.Mobile);
         }
 
         public ElementosGump(PlayerMobile pl, ElementoPvM elemento = ElementoPvM.None) : base(0, 0)
@@ -33,25 +30,54 @@ namespace Server.Gumps
 
             AddPage(0);
             AddBackground(306, 127, 642, 338, 9200);
-            AddImageTiled(362, 201, 96, 7, 40);
+
+            AddImageTiled(362, 201, 110, 10, 2053);
+            var pct = (pl.Elementos.GetExp(ElementoPvM.Fogo) / CustosUPElementos.CustoUpExp(pl.Elementos.GetNivel(ElementoPvM.Fogo))) * 100;
+            AddImageTiled(362, 201, (int)(pct), 10, 2054);
             AddHtml(365, 173, 71, 19, @"Fogo", (bool)false, (bool)false);
-            AddImageTiled(518, 200, 96, 7, 40);
+
+            AddImageTiled(518, 200, 110, 10, 2053);
+            pct = (pl.Elementos.GetExp(ElementoPvM.Raio) / CustosUPElementos.CustoUpExp(pl.Elementos.GetNivel(ElementoPvM.Raio))) * 100;
+            AddImageTiled(518, 200, (int)(pct), 10, 2054);
             AddHtml(521, 172, 71, 19, @"Raio", (bool)false, (bool)false);
-            AddImageTiled(674, 201, 96, 7, 40);
+
+
+            AddImageTiled(674, 201, 110, 10, 2053);
+            pct = (pl.Elementos.GetExp(ElementoPvM.Gelo) / CustosUPElementos.CustoUpExp(pl.Elementos.GetNivel(ElementoPvM.Gelo))) * 100;
+            AddImageTiled(674, 201, (int)(pct), 10, 2054);
             AddHtml(677, 173, 71, 19, @"Gelo", (bool)false, (bool)false);
-            AddImageTiled(830, 200, 96, 7, 40);
+
+            AddImageTiled(830, 200, 110, 10, 2053);
+            pct = (pl.Elementos.GetExp(ElementoPvM.Agua) / CustosUPElementos.CustoUpExp(pl.Elementos.GetNivel(ElementoPvM.Agua))) * 100;
+            AddImageTiled(830, 200, (int)(pct), 10, 2054);
             AddHtml(833, 172, 86, 19, @"Agua", (bool)false, (bool)false);
-            AddImageTiled(830, 200, 96, 7, 40);
-            AddImageTiled(362, 248, 96, 7, 40);
+
+            AddImageTiled(362, 248, 110, 10, 2053);
+            pct = (pl.Elementos.GetExp(ElementoPvM.Terra) / CustosUPElementos.CustoUpExp(pl.Elementos.GetNivel(ElementoPvM.Terra))) * 100;
+            AddImageTiled(362, 248, (int)(pct), 10, 2054);
             AddHtml(365, 220, 71, 19, @"Terra", (bool)false, (bool)false);
-            AddImageTiled(518, 247, 96, 7, 40);
+
+            AddImageTiled(521, 219+25, 110, 10, 2053);
+            pct = (pl.Elementos.GetExp(ElementoPvM.Vento) / CustosUPElementos.CustoUpExp(pl.Elementos.GetNivel(ElementoPvM.Vento))) * 100;
+            AddImageTiled(521, 219+25, (int)(pct), 10, 2054);
             AddHtml(521, 219, 71, 19, @"Vento", (bool)false, (bool)false);
-            AddImageTiled(362, 248, 96, 7, 40);
-            AddImageTiled(674, 248, 96, 7, 40);
+            
+            pct = (pl.Elementos.GetExp(ElementoPvM.Luz) / CustosUPElementos.CustoUpExp(pl.Elementos.GetNivel(ElementoPvM.Luz))) * 100;
+            AddImageTiled(677, 220+25, 96, 7, 2053);
+            AddImageTiled(677, 220+25, (int)(pct), 10, 2054);
             AddHtml(677, 220, 71, 19, @"Luz", (bool)false, (bool)false);
-            AddImageTiled(830, 247, 96, 7, 40);
+
+            AddImageTiled(830, 247, 110, 10, 2053);
+            pct = (pl.Elementos.GetExp(ElementoPvM.Escuridao) / CustosUPElementos.CustoUpExp(pl.Elementos.GetNivel(ElementoPvM.Escuridao))) * 100;
+            AddImageTiled(830, 247, (int)(pct), 10, 2054);
             AddHtml(833, 219, 90, 19, @"Escuridao", (bool)false, (bool)false);
-            AddImageTiled(830, 247, 96, 7, 40);
+
+
+            //AddImageTiled(830, 247, 110, 10, 2053);
+            //pct = (pl.Elementos.GetExp(elemento) / CustosUPElementos.CustoUpExp(pl.Elementos.GetNivel(ElementoPvM.Fogo))) * 100;
+            //AddImageTiled(830, 247, (int)(pct), 10, 2054);
+
+            // AddImageTiled(830, 247, 96, 7, 40);
 
             AddButton(628, 214, 20742, 20742, (int)ElementoPvM.Luz, GumpButtonType.Reply, 0);
             AddButton(472, 165, 2288, 2288, (int)ElementoPvM.Raio, GumpButtonType.Reply, 0);
@@ -87,24 +113,29 @@ namespace Server.Gumps
                 }
                 AddHtml(355, 342, 249, 73, str, (bool)false, (bool)false);
                 AddHtml(404, 316, 124, 20, @"Prox Nivel:", (bool)false, (bool)false);
-                AddHtml(728, 315, 124, 20, @"Subir de Nivel", (bool)false, (bool)false);
+                AddHtml(784, 315, 124, 20, @"Subir de Nivel", (bool)false, (bool)false);
 
                 var custos = CustosUPElementos.GetCustos(elemento);
 
+                /*
                 AddBackground(673, 334, 111, 101, 3500);
                 AddHtml(721, 350, 83, 22, custos[0].amt.ToString(), (bool)false, (bool)false);
                 AddHtml(678, 406, 100, 22, custos[0].name, (bool)true, (bool)false);
                 //AddItem(703, 374, custos.Item);
                 NewAuctionGump.AddItemCentered(673, 334, 111, 101, custos[0].itemID, custos[0].hue, this);
-
+                */
+                
                 AddBackground(784, 335, 111, 101, 3500);
-                AddHtml(827, 350, 83, 22, custos[1].amt.ToString(), (bool)false, (bool)false);
-                AddHtml(793, 405, 100, 22, custos[1].name, (bool)true, (bool)false);
+                AddHtml(827, 350, 83, 22, custos[0].amt.ToString(), (bool)false, (bool)false);
+                AddHtml(793, 405, 100, 22, custos[0].name, (bool)true, (bool)false);
                 //AddItem(811, 367, 576);
-                NewAuctionGump.AddItemCentered(784, 335, 111, 101, custos[1].itemID, custos[0].hue, this);
+                NewAuctionGump.AddItemCentered(784, 335, 111, 101, custos[0].itemID, custos[0].hue, this);
 
                 AddHtml(534, 317, 324, 20, "Exp: "+pl.Elementos.GetExp(elemento)+" / "+CustosUPElementos.CustoUpExp(nivel), (bool)false, (bool)false);
-                AddButton(757, 435, 247, 248, (int)ElementoButtons.Upar, GumpButtonType.Reply, 0);
+                AddButton(794, 435, 247, 248, (int)ElementoButtons.Upar, GumpButtonType.Reply, 0);
+            } else
+            {
+                AddHtml(336, 283, 523, 20, @"Equipe sets de armadura do elemento e ganhe XP para upar.", (bool)false, (bool)false);
             }
         }
 

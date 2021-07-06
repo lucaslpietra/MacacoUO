@@ -8,6 +8,11 @@ namespace Server.Fronteira.Elementos
     {
         private static Dictionary<ElementoPvM, string[]> _efeitos = new Dictionary<ElementoPvM, string[]>();
 
+        public static void Effect(Mobile m, ElementoPvM e)
+        {
+            m.FixedParticles(0x3779, 8, 10, 5002, BaseArmor.HueElemento(e), 0, EffectLayer.Head, 1);
+        }
+
         public static string [] GetEfeitos(ElementoPvM elemento)
         {
             string[] efeitos;

@@ -168,7 +168,7 @@ namespace Server.Spells.Second
 
                     if (damage > 0)
                     {
-                        SpellHelper.Damage(this.m_Spell, defender, damage, 0, 0, 100, 0, 0);
+                        SpellHelper.Damage(this.m_Spell, defender, damage, 0, 0, 100, 0, 0, ElementoPvM.Escuridao);
                     }
 
                     if (m_Spell != null)

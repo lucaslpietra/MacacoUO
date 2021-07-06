@@ -601,21 +601,30 @@ namespace Server.Spells
                 scalar = 0;
             }
 
-            if (elemento != ElementoPvM.None && !target.Player)
+            if(!target.Player)
             {
-                var bonus = (m_Caster.GetBonusElemento(elemento) * 1.2);
                 if (target.Elemento != ElementoPvM.None && elemento.ForteContra(target.Elemento))
                 {
-                    bonus *= 1.5;
-                    Shard.Debug("Alvo fraco contra elemento", m_Caster);
+                    EfeitosElementos.Effect(target, elemento);
+                    scalar += 0.15;
+                    Shard.Debug("Alvo forte contra elemento", m_Caster);
                 }
                 else if (target.Elemento != ElementoPvM.None && target.Elemento.ForteContra(elemento))
                 {
-                    bonus /= 2;
-                    Shard.Debug("Alvo forte contra elemento", m_Caster);
+                    scalar -= 0.15;
+                    Shard.Debug("Alvo fraco contra elemento", m_Caster);
                 }
+            }
+
+            if (elemento != ElementoPvM.None && !target.Player)
+            {
+                var bonus = (m_Caster.GetBonusElemento(elemento) * 2);
+                if(bonus > 0)
+                    EfeitosElementos.Effect(target, elemento);
+                Shard.Debug("Bonus elemento PvM: " + bonus, m_Caster);
                 scalar += bonus;
             }
+            Shard.Debug("Scalar da magia final: " + scalar, m_Caster);
             return scalar;
         }
 

@@ -78,11 +78,11 @@ namespace Server.Spells.Eighth
                         mob.Freeze(TimeSpan.FromSeconds(1));
                         mob.OverheadMessage("* atordoado *");
                     });
-                  
+
                     Caster.DoHarmful(id);
                     id.PlaySound(0x20D);
                     Effects.SendMovingParticles(new Entity(Serial.Zero, new Point3D(id.X, id.Y, id.Z + 20), id.Map), id, 0x11B6, 5, 20, true, true, 0, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
-                    SpellHelper.Damage(this, id, damage, 100, 0, 0, 0, 0);
+                    SpellHelper.Damage(this, id, damage, 100, 0, 0, 0, 0, Items.ElementoPvM.Terra);
                     foi = true;
                 }
 

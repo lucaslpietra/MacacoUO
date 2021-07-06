@@ -115,7 +115,7 @@ namespace Server.Ziden.Kills
                                     var maxExp = CustosUPElementos.CustoUpExp(lvl);
                                     if (expElem > maxExp)
                                     {
-                                        expElem = maxExp;
+                                        expElem = (int)maxExp;
                                     }
                                     pl.Elementos.SetExp(pl.Elemento, expElem);
                                 }

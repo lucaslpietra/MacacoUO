@@ -23,7 +23,7 @@ namespace Server.Items
             return m_BleedTable.ContainsKey(m);
         }
 
-        public static void BeginBurn(Mobile m, Mobile from, int damage, bool splintering = false)
+        public static void BeginBurn(Mobile m, Mobile from, int damage, bool splintering = true)
         {
             BurnTimer timer = null;
 
@@ -40,9 +40,7 @@ namespace Server.Items
                 }
             }
 
-            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.FanDancerFanFire, 1075829, 1075830, TimeSpan.FromSeconds(10), m, String.Format("{0}\t{1}\t{2}", "1", "10", "2")));
-
-            timer = new BurnTimer(from, m, damage, CheckBloodDrink(from));
+            timer = new BurnTimer(from, m, damage, false);
             m_BleedTable[m] = timer;
             timer.Start();
 
@@ -52,8 +50,8 @@ namespace Server.Items
 
             m.NonlocalOverheadMessage(MessageType.Regular, 0x21, false, "* queimando *"); // You are bleeding profusely
  
-            m.PlaySound(0x133);
-            m.FixedParticles(0x377A, 244, 25, 9950, 31, 0, EffectLayer.Waist);
+            m.PlaySound(0x160);
+            m.FixedParticles(0x36B0, 244, 25, 9950, 31, 0, EffectLayer.Waist);
         }
 
         public static void DoBurn(Mobile m, Mobile from, int damage, bool blooddrinker)
@@ -63,18 +61,9 @@ namespace Server.Items
                 if (!m.Player)
                     damage *= 2;
 
-                m.PlaySound(0x133);
+                m.PlaySound(0x160);
                 AOS.Damage(m, from, damage, false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
-
-                if (blooddrinker && from.Hits < from.HitsMax)
-                {
-                    from.SendLocalizedMessage("A sanguesuga te cura"); //The blood drinker effect heals you.
-                    from.Heal(damage);
-                }
-
-                Blood blood = new Blood();
-                blood.ItemID = Utility.Random(0x122A, 5);
-                blood.MoveToWorld(m.Location, m.Map);
+                m.FixedEffect(0x36B0, 10, 10);
             }
             else
             {
@@ -96,7 +85,6 @@ namespace Server.Items
                 return;
 
             t.Stop();
-            BuffInfo.RemoveBuff(m, BuffIcon.Bleed);
 
             if (message)
                 m.SendLocalizedMessage("Voce nao esta mais queimando"); // The bleeding wounds have healed, you are no longer bleeding!

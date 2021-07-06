@@ -85,7 +85,7 @@ namespace Server.Spells.Sixth
                 if (damage > 0)
                 {
                     // Deal the damage
-                    SpellHelper.Damage(this, target, damage, 0, 0, 0, 0, 100);
+                    SpellHelper.Damage(this, target, damage, 0, 0, 0, 0, 100, Items.ElementoPvM.Raio);
                 }
             }
 

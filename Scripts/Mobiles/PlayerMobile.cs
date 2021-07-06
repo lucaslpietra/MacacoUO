@@ -4397,6 +4397,8 @@ namespace Server.Mobiles
 
             base.Resurrect();
 
+            Elemento = ElementoPvM.None;
+
             if (Alive && !wasAlive)
             {
                 if (!RP)

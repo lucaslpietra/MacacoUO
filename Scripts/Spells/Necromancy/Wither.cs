@@ -158,7 +158,7 @@ namespace Server.Spells.Necromancy
                         var mobile = (Mobile)id;
                         mobile.Freeze(TimeSpan.FromSeconds(2));
                         mobile.SendMessage("A aura gelida te causa calafrios e seu corpo congela");
-                        SpellHelper.Damage(this, id, damage, 0, 0, 100, 0, 0);
+                        SpellHelper.Damage(this, id, damage, 0, 0, 100, 0, 0, ElementoPvM.Gelo);
                     }
                 }
             }

@@ -78,7 +78,7 @@ namespace Server.Spells.Third
                     Caster.MovingParticles(m, 0x36D4, 7, 0, false, true, 9502, 4019, 0x160);
                     Caster.PlaySound(0x160);
 
-                    SpellHelper.Damage(this, target, damage, 0, 100, 0, 0, 0);
+                    SpellHelper.Damage(this, target, damage, 0, 100, 0, 0, 0, Items.ElementoPvM.Fogo);
                 }
             }
             FinishSequence();

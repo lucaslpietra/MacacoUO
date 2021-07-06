@@ -103,7 +103,7 @@ namespace Server.Spells.SkillMasteries
                     damage *= (100 + sdiBonus);
                     damage /= 100;
 
-                    SpellHelper.Damage(this, target, damage, 0, 0, 0, 0, 100);
+                    SpellHelper.Damage(this, target, damage, 0, 0, 0, 0, 100, Items.ElementoPvM.Luz);
 
                     if (target is Mobile && !CheckResisted((Mobile)target) && ((Mobile)target).NetState != null)
                     {

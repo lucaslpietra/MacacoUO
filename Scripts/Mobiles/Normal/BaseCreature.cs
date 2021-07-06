@@ -217,6 +217,7 @@ namespace Server.Mobiles
 
         private ElementoPvM _elemento;
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public override ElementoPvM Elemento { get {
                 if (_elemento == ElementoPvM.None)
                     _elemento = ElementoMonstro.DecideElementoMonstro(this);
@@ -2503,13 +2504,27 @@ namespace Server.Mobiles
         public virtual void AlterDamageScalarTo(Mobile target, ref double scalar)
         { }
 
-        public virtual void AlterSpellDamageFrom(Mobile from, ref int damage)
+        public virtual void AlterSpellDamageFrom(Mobile from, ref int damage, ElementoPvM elemento)
         {
             if (m_TempDamageAbsorb > 0 && VialofArmorEssence.UnderInfluence(this))
                 damage -= damage / m_TempDamageAbsorb;
+
+            /*
+            if (elemento.ForteContra(this.Elemento))
+            {
+                damage = (int)(damage * 1.2);
+                if (Shard.DebugEnabled) Shard.Debug("Recebido dano de elemento mais forte", this);
+            }
+               
+            if (elemento.FracoContra(this.Elemento))
+            {
+                damage = (int)(damage * 0.85);
+                if (Shard.DebugEnabled) Shard.Debug("Recebido dano de elemento mais fraco", this);
+            }
+            */
         }
 
-        public virtual void AlterSpellDamageTo(Mobile to, ref int damage)
+        public virtual void AlterSpellDamageTo(Mobile to, ref int damage, ElementoPvM elemento)
         {
             if (to is PlayerMobile)
             {
@@ -2542,12 +2557,43 @@ namespace Server.Mobiles
 
             if (m_TempDamageAbsorb > 0 && VialofArmorEssence.UnderInfluence(this))
                 damage -= damage / m_TempDamageAbsorb;
+
+            if(from.Elemento != ElementoPvM.None && from.Weapon is BaseWeapon && from.Elemento == ((BaseWeapon)from.Weapon).Elemento)
+            {
+                EfeitosElementos.Effect(this, from.Elemento);
+                if (from.Elemento.ForteContra(this.Elemento))
+                {
+                    Shard.Debug("Forte contra elemento", from);
+                    damage = (int)(damage * 1.15);
+                }
+                else if (from.Elemento.FracoContra(this.Elemento))
+                {
+                    Shard.Debug("Fraco contra elemento", from);
+                    damage = (int)(damage * 0.85);
+                }
+                    
+            }
+          
         }
 
         public virtual void AlterMeleeDamageTo(Mobile to, ref int damage)
         {
             if (m_TempDamageBonus > 0 && TastyTreat.UnderInfluence(this))
                 damage += damage / m_TempDamageBonus;
+
+            if(to.Player && to.Elemento != ElementoPvM.None)
+            {
+                if(this.Elemento.ForteContra(to.Elemento))
+                {
+                    if(!to.IsCooldown("efmsg"))
+                    {
+                        to.SetCooldown("efmsg");
+                        to.SendMessage(78, "Este monstro causa mais dano a voce pois o elemento dele eh forte contra o seu");
+                    }
+                    EfeitosElementos.Effect(to, this.Elemento);
+                    damage = (int)(damage * 1.2);
+                }
+            }
         }
         #endregion
 

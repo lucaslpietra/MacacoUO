@@ -20,7 +20,7 @@ namespace Server.Gumps
             AddBackground(299, 150, 620, 478, 3500);
             AddBackground(717, 346, 127, 101, 3500);
             AddBackground(712, 458, 138, 101, 3500);
-            AddItem(760, 388, 4968, 4968);
+            AddItem(760, 388, 4968, 2611);
             AddHtml(715, 419, 131, 22, @"Pedra Elemental Suprema", (bool)true, (bool)false);
             AddHtml(715, 529, 133, 22, @"Cristal Elemental", (bool)true, (bool)false);
             AddButton(750, 592, 247, 248, (int)Buttons.Button4, GumpButtonType.Reply, 0);
@@ -29,7 +29,7 @@ namespace Server.Gumps
             AddHtml(340, 168, 562, 18, @"Seu corpo ainda nao esta conectado com a energia deste mundo. ", (bool)false, (bool)false);
             AddHtml(340, 190, 562, 18, @"Voce eh apenas um fraco, ainda nao descobriu seu poder.", (bool)false, (bool)false);
             AddHtml(340, 213, 562, 24, @"Va a caverna de Shame e descubra...Mas esteja muito bem preparado.", (bool)false, (bool)false);
-            AddItem(756, 494, 16395, 4968);
+            AddItem(756, 494, 16395, 2611);
             AddHtml(772, 357, 19, 22, @"1", (bool)false, (bool)false);
             AddHtml(761, 468, 47, 22, @"100", (bool)false, (bool)false);
             AddImage(341, 249, 1550);
@@ -46,7 +46,7 @@ namespace Server.Gumps
         //0xA725
         public override void OnResponse(NetState sender, RelayInfo info)
         {
-            Mobile from = sender.Mobile;
+            var from = sender.Mobile as PlayerMobile;
 
             switch (info.ButtonID)
             {
@@ -58,14 +58,31 @@ namespace Server.Gumps
                             return;
                         }
                         if (!sender.Mobile.Backpack.HasItem<CristalElemental>(100, true))
+                        {
                             from.SendMessage("Voce precisa de 100 Pedras Elementais e 1 Pedra Elemental Suprema. Mate os bosses da dungeon de shame e una os elementos para construir a pedra.");
+                            return;
+                        }
+                          
                         if (!sender.Mobile.Backpack.HasItem<PedraElementalSuprema>(1, true))
+                        {
                             from.SendMessage("Voce precisa de 1 Pedra Elemental Suprema. Mate os bosses da dungeon de shame e una os elementos para construir a pedra.");
-
+                            return;
+                        }
                         from.Backpack.ConsumeTotal(new System.Type[] { typeof(CristalElemental), typeof(PedraElementalSuprema) }, new int[] { 100, 1 });
-                        ((PlayerMobile)from).Nivel += 1;
+                        ((PlayerMobile)from).Nivel = 2;
+
+                        Effects.SendLocationParticles(EffectItem.Create(from.Location, from.Map, EffectItem.DefaultDuration), 0, 0, 0, 0, 0, 5060, 0);
+                        Effects.PlaySound(from.Location, from.Map, 0x243);
+
+                        Effects.SendMovingParticles(new Entity(Server.Serial.Zero, new Point3D(from.X - 6, from.Y - 6, from.Z + 15), from.Map), from, 0x36D4, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+                        Effects.SendMovingParticles(new Entity(Server.Serial.Zero, new Point3D(from.X - 4, from.Y - 6, from.Z + 15), from.Map), from, 0x36D4, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+                        Effects.SendMovingParticles(new Entity(Server.Serial.Zero, new Point3D(from.X - 6, from.Y - 4, from.Z + 15), from.Map), from, 0x36D4, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+
+                        Effects.SendTargetParticles(from, 0x375A, 35, 90, 0x00, 0x00, 9502, (EffectLayer)255, 0x100);
+
                         from.SendMessage("Voce agora pode canalizar energia elemental em seu corpo.");
                         from.SendMessage("Equipe armaduras elementais para ativar o elemento em seu corpo.");
+                        from.SendGump(new ElementosGump(from));
                         break;
                     }
 

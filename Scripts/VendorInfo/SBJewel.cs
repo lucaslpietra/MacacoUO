@@ -49,15 +49,15 @@ namespace Server.Mobiles
 
                 Add(new GenericBuyInfo("1060740", typeof(ReceiverCrystal), 6, 20, 0x1ED0, 0));
 
-                Add(new GenericBuyInfo(typeof(StarSapphire), 225, 5, 0x0F0F, 0, true));
-                Add(new GenericBuyInfo(typeof(Emerald), 200, 5, 0xF10, 0, true));
-                Add(new GenericBuyInfo(typeof(Sapphire), 200, 5, 0xF19, 0, true));
-                Add(new GenericBuyInfo(typeof(Ruby), 175, 5, 0xF13, 0, true));
-                Add(new GenericBuyInfo(typeof(Citrine), 150, 5, 0xF15, 0, true));
-                Add(new GenericBuyInfo(typeof(Amethyst), 200, 5, 0xF16, 0, true));
-                Add(new GenericBuyInfo(typeof(Tourmaline), 175, 5, 0x0F18, 0, true));
-                Add(new GenericBuyInfo(typeof(Amber), 150, 5, 0xF25, 0, true));
-                Add(new GenericBuyInfo(typeof(Diamond), 300, 5, 0xF26, 0, true));
+               // Add(new GenericBuyInfo(typeof(StarSapphire), 225, 5, 0x0F0F, 0, true));
+               // Add(new GenericBuyInfo(typeof(Emerald), 200, 5, 0xF10, 0, true));
+               // Add(new GenericBuyInfo(typeof(Sapphire), 200, 5, 0xF19, 0, true));
+               // Add(new GenericBuyInfo(typeof(Ruby), 175, 5, 0xF13, 0, true));
+               // Add(new GenericBuyInfo(typeof(Citrine), 150, 5, 0xF15, 0, true));
+               // Add(new GenericBuyInfo(typeof(Amethyst), 200, 5, 0xF16, 0, true));
+               // Add(new GenericBuyInfo(typeof(Tourmaline), 175, 5, 0x0F18, 0, true));
+               // Add(new GenericBuyInfo(typeof(Amber), 150, 5, 0xF25, 0, true));
+               // Add(new GenericBuyInfo(typeof(Diamond), 300, 5, 0xF26, 0, true));
             }
         }
 

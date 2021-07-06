@@ -31,7 +31,12 @@ namespace Server.Fronteira.Elementos
             }
         }
 
-        public static int CustoUpExp(int nivel)
+        public static int QuantidadeItems(int nivel)
+        {
+            return nivel * 2;
+        }
+
+        public static double CustoUpExp(int nivel)
         {
             var V = (int)Math.Pow((nivel + 4) * 2, 3);
             if (V <= 0)

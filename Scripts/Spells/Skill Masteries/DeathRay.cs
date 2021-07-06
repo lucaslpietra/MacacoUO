@@ -132,7 +132,7 @@ namespace Server.Spells.SkillMasteries
                 damage *= (100 + sdiBonus);
                 damage /= 100;
 
-                SpellHelper.Damage(this, Target, (int)damage, 0, 0, 0, 0, 100);
+                SpellHelper.Damage(this, Target, (int)damage, 0, 0, 0, 0, 100, Items.ElementoPvM.Escuridao);
             }
 
             return true;

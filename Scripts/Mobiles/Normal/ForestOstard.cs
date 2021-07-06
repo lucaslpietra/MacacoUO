@@ -41,7 +41,7 @@ namespace Server.Mobiles
 
             this.Tamable = true;
             this.ControlSlots = 1;
-            this.MinTameSkill = 85;
+            this.MinTameSkill = 65;
         }
 
         public ForestOstard(Serial serial)

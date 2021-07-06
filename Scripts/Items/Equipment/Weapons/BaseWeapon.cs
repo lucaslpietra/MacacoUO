@@ -1743,10 +1743,13 @@ namespace Server.Items
             }
             else
             {
-                var semBonusStr = AnimalForm.GetContext(m) != null || this is BaseRanged;
+                var semBonusStr = AnimalForm.GetContext(m) != null || this is BaseRanged || !m.Player;
                 // FORMULA DE SPEED
-                int v = ((m.Dex + (m.Str / (semBonusStr ? m.Str : 5))) + 100) * (int)speed;
-                //int v = (m.Dex + 100) * (int)speed;
+                int v = 0;
+                if(Shard.POL_STYLE)
+                    v = ((m.Dex + (m.Str / (semBonusStr ? m.Str : 5))) + 100) * (int)speed;
+                else
+                    v = (m.Stam + 100) * (int)speed;
                 if (v <= 0)
                 {
                     v = 1;
@@ -2324,7 +2327,7 @@ namespace Server.Items
 
             if(defender.Player && !attacker.Player)
             {
-                virtualArmor += (virtualArmor/2) * (defender.GetBonusElemento(ElementoPvM.Terra) + defender.GetBonusElemento(ElementoPvM.Luz));
+                virtualArmor += (virtualArmor/2) * ((defender.GetBonusElemento(ElementoPvM.Terra) + defender.GetBonusElemento(ElementoPvM.Luz)));
             }
 
             Habilidade a = Habilidade.GetCurrentAbility(attacker);
@@ -6674,10 +6677,7 @@ namespace Server.Items
         {
             if (m_ItemPower != ElementoPvM.None)
             {
-                if (m_ItemPower <= ElementoPvM.Escuridao)
-                    list.Add(1151488 + ((int)m_ItemPower - 1));
-                else
-                    list.Add(1152281 + ((int)m_ItemPower - 9));
+                list.AddTwoValues("Elemento", Gump.Cor(m_ItemPower.ToString(), BaseArmor.CorElemento(m_ItemPower)));
             }
         }
 

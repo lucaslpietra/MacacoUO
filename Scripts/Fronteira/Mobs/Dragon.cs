@@ -65,7 +65,7 @@ namespace Server.Mobiles
             ControlSlots = 3;
             MinTameSkill = 100;
 
-            if (Utility.RandomDouble() < 0.2)
+            if (Utility.RandomDouble() < 0.1)
             {
                 AddItem(new PetBrandingIron());
             }
@@ -93,8 +93,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            if(Utility.RandomDouble() < 0.05)
-                PackItem(new EscamaMagica());
+            //if(Utility.RandomDouble() < 0.05)
+            //    PackItem(new EscamaMagica());
             AddLoot(LootPack.FilthyRich);
             AddLoot(LootPack.Gems, 20);
 
@@ -217,7 +217,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich);
-            if (Utility.RandomDouble() < 0.05)
+            if (Utility.RandomDouble() < 0.01)
                 PackItem(new EscamaMagica());
         }
 

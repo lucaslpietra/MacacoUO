@@ -70,7 +70,7 @@ namespace Server.Spells.Seventh
                 if (m != null)
                 {
                     if(m!=Caster)
-                        Caster.MovingParticles(m, 0x3709, 10, 30, false, true, 9502, 4019, 0x160);
+                        Caster.MovingParticles(m, 0x3709, 7, 10, false, true, 3043, 4019, 0x160, EffectLayer.CenterFeet);
                     else
                         m.FixedParticles(0x3709, 10, 30, 5052, EffectLayer.LeftFoot);
                     m.PlaySound(0x208);
@@ -78,7 +78,7 @@ namespace Server.Spells.Seventh
 
                 if (damage > 0)
                 {
-                    SpellHelper.Damage(this, m, damage, 0, 100, 0, 0, 0);
+                    SpellHelper.Damage(this, m, damage, 0, 100, 0, 0, 0, ElementoPvM.Fogo);
                 }
             }
             this.FinishSequence();

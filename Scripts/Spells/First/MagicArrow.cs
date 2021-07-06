@@ -96,7 +96,7 @@ namespace Server.Spells.First
                     Caster.MovingParticles(d, 0x36E4, 5, 0, false, false, 3006, 0, 0);
                     Caster.PlaySound(0x1E5);
 
-                    SpellHelper.Damage(this, target, damage, 0, 100, 0, 0, 0);
+                    SpellHelper.Damage(this, target, damage, 0, 100, 0, 0, 0, ElementoPvM.Luz);
                 }
             }
 

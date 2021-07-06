@@ -91,7 +91,7 @@ namespace Server.Spells.Fifth
                 target.FixedParticles(0x374A, 10, 15, 5038, EffectLayer.Head);
                 target.PlaySound(0x213);
 
-                SpellHelper.Damage(this, target, damage, 0, 0, 100, 0, 0);
+                SpellHelper.Damage(this, target, damage, 0, 0, 100, 0, 0, ElementoPvM.Escuridao);
             }
 
             FinishSequence();
@@ -115,7 +115,7 @@ namespace Server.Spells.Fifth
                 target.FixedParticles(0x374A, 10, 15, 5038, 1181, 2, EffectLayer.Head);
                 target.PlaySound(0x213);
 
-                SpellHelper.Damage(this, target, Utility.RandomMinMax(damage, damage + 4), 0, 0, 100, 0, 0);
+                SpellHelper.Damage(this, target, Utility.RandomMinMax(damage, damage + 4), 0, 0, 100, 0, 0, Items.ElementoPvM.Escuridao);
             }
         }
 

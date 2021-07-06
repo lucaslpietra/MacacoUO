@@ -116,7 +116,7 @@ namespace Server.Mobiles
             }
         }
 
-        public override void AlterSpellDamageFrom(Mobile from, ref int damage)
+        public override void AlterSpellDamageFrom(Mobile from, ref int damage, ElementoPvM e)
         {
             if (from is BaseCreature && ((BaseCreature)from).GetMaster() is PlayerMobile)
             {
@@ -250,7 +250,7 @@ namespace Server.Mobiles
             }
         }
 
-        public override void AlterSpellDamageFrom(Mobile from, ref int damage)
+        public override void AlterSpellDamageFrom(Mobile from, ref int damage, ElementoPvM e)
         {
             if (from is BaseCreature && ((BaseCreature)from).GetMaster() is PlayerMobile)
             {

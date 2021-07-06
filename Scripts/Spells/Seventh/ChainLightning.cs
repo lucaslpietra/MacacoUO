@@ -104,7 +104,7 @@ namespace Server.Spells.Seventh
                     Effects.SendBoltEffect(id, true, 0, false);
                     id.PlaySound(0x029);
                     Caster.DoHarmful(id);
-                    SpellHelper.Damage(this, id, damage, 0, 0, 0, 0, 100);
+                    SpellHelper.Damage(this, id, damage, 0, 0, 0, 0, 100, Items.ElementoPvM.Raio);
                 }
 
                 ColUtility.Free(targets);

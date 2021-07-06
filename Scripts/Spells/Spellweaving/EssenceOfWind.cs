@@ -91,7 +91,7 @@ namespace Server.Spells.Spellweaving
                 {
                     Caster.DoHarmful(m);
 
-                    SpellHelper.Damage(this, m, damage, 0, 0, 100, 0, 0);
+                    SpellHelper.Damage(this, m, damage, 0, 0, 100, 0, 0, Items.ElementoPvM.Vento);
 
                     if (!CheckResisted(m))	//No message on resist
                     {

@@ -9,10 +9,11 @@ namespace Server.Fronteira.Elementos
     {
         [Constructable]
         public EstatuaElemental()
-            : base(72789)
+            : base(0xA725)
         {
             Name = "Estatua Elemental";
             Weight = 200;
+            Movable = false;
         }
 
         public EstatuaElemental(Serial serial)
@@ -20,27 +21,33 @@ namespace Server.Fronteira.Elementos
         {
         }
 
-        public override void OnDoubleClick(Mobile from)
+        public static void Envia(Mobile from)
         {
-            base.OnDoubleClick(from);
             var pl = from as PlayerMobile;
             if (pl == null)
                 return;
 
             from.SendMessage("Voce sente uma energia muito forte emandando desta estatua...");
-            if(from.Skills.Total < 6000)
+            if (from.Skills.Total < 6000)
             {
-                from.SendMessage("Voce ainda tem muito a aprender para poder compreender esta estatua. [Skills "+ from.Skills.Total + "/6000]");
+                from.SendMessage("Voce ainda tem muito a aprender para poder compreender esta estatua. [Skills " + from.Skills.Total + "/6000]");
                 return;
             }
-           
-            if(pl.Nivel == 0)
+
+            if (pl.Nivel <= 1)
             {
                 pl.SendGump(new SemElementoGump());
-            } else
+            }
+            else
             {
                 pl.SendGump(new ElementosGump(pl));
             }
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            Envia(from);
         }
 
         public override void Serialize(GenericWriter writer)

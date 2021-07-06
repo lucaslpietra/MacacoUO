@@ -897,12 +897,12 @@ namespace Server.Mobiles
         public override MeatType MeatType { get { return MeatType.Ribs; } }
         public override int Meat { get { return 1; } }
 
-        public override void AlterSpellDamageFrom(Mobile from, ref int damage)
+        public override void AlterSpellDamageFrom(Mobile from, ref int damage, ElementoPvM e)
         {
             if (from is BaseCreature && (((BaseCreature)from).Summoned || ((BaseCreature)from).Controlled))
                 damage /= 2;
 
-            base.AlterSpellDamageFrom(from, ref damage);
+            base.AlterSpellDamageFrom(from, ref damage, e);
         }
 
         public override void AlterMeleeDamageFrom(Mobile from, ref int damage)
@@ -1538,7 +1538,7 @@ namespace Server.Mobiles
 
         private DateTime NextTeleport { get; set; }
 
-        public override void AlterSpellDamageFrom(Mobile from, ref int damage)
+        public override void AlterSpellDamageFrom(Mobile from, ref int damage, ElementoPvM e)
         {
             if (from is BaseCreature && (((BaseCreature)from).Summoned || ((BaseCreature)from).Controlled))
                 damage /= 2;
@@ -1546,7 +1546,7 @@ namespace Server.Mobiles
             if (NextTeleport < DateTime.UtcNow)
                 DoTeleport(from);
 
-            base.AlterSpellDamageFrom(from, ref damage);
+            base.AlterSpellDamageFrom(from, ref damage, e);
         }
 
         public override void AlterMeleeDamageFrom(Mobile from, ref int damage)
@@ -1678,7 +1678,7 @@ namespace Server.Mobiles
 
         private DateTime NextTeleport { get; set; }
 
-        public override void AlterSpellDamageFrom(Mobile from, ref int damage)
+        public override void AlterSpellDamageFrom(Mobile from, ref int damage, ElementoPvM e)
         {
             if (from is BaseCreature && (((BaseCreature)from).Summoned || ((BaseCreature)from).Controlled))
                 damage /= 2;
@@ -1686,7 +1686,7 @@ namespace Server.Mobiles
             if (NextTeleport < DateTime.UtcNow)
                 DoTeleport(from);
 
-            base.AlterSpellDamageFrom(from, ref damage);
+            base.AlterSpellDamageFrom(from, ref damage, e);
         }
 
         public override void AlterMeleeDamageFrom(Mobile from, ref int damage)

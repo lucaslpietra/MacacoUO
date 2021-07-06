@@ -76,7 +76,7 @@ namespace Server.Spells.Sixth
             private readonly Mobile m_Attacker;
 
             public InternalTimer(MagerySpell spell, Mobile attacker, IDamageable target)
-                : base(TimeSpan.FromSeconds(Utility.Random(3, 2)))
+                : base(TimeSpan.FromSeconds(Utility.Random(2, 1)))
             {
                 m_Spell = spell;
                 m_Attacker = attacker;
@@ -117,7 +117,7 @@ namespace Server.Spells.Sixth
                     if (defender != null)
                     {
                         //defender.FixedParticles(0x36BD, 20, 10, 5044, EffectLayer.Head);
-                        m_Attacker.MovingParticles(defender, 0x36BD, 10, 30, true, true, 9502, 4019, 0x207);
+                        m_Attacker.MovingParticles(defender, 0x36BD, 6, 10, true, true, 9502, 4019, 0x207);
                         defender.PlaySound(0x207);
                     }
                     else
@@ -128,7 +128,7 @@ namespace Server.Spells.Sixth
 
                     if (damage > 0)
                     {
-                        SpellHelper.Damage(m_Spell, m_Target, damage, 0, 100, 0, 0, 0);
+                        SpellHelper.Damage(m_Spell, m_Target, damage, 0, 100, 0, 0, 0, Items.ElementoPvM.Fogo);
                     }
 
                     if (m_Spell != null)

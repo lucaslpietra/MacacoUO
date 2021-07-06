@@ -143,7 +143,7 @@ namespace Server.Spells.Necromancy
                 }
 
                 Caster.DoHarmful(m);
-                SpellHelper.Damage(this, m, pvpDamage, 0, 0, 0, 100, 0);
+                SpellHelper.Damage(this, m, pvpDamage, 0, 0, 0, 100, 0, ElementoPvM.Escuridao);
 
                 /*
                 foreach (var id in AcquireIndirectTargets(m.Location, 2))

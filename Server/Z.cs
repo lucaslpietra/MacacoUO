@@ -58,6 +58,8 @@ namespace Server
             if (from != null)
             {
                 str += "[" + from.Name + "]";
+                //if (from.Player && from.AccessLevel > AccessLevel.Player)
+                //    from.SendMessage(str);
             }
             Console.WriteLine(str);
         }

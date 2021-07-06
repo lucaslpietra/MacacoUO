@@ -79,7 +79,7 @@ namespace Server.Spells.SkillMasteries
 
                             damage *= GetDamageScalar(mob, ElementoPvM.Fogo);
                             Caster.DoHarmful(mob);
-                            SpellHelper.Damage(this, mob, damage, 0, 100, 0, 0, 0);
+                            SpellHelper.Damage(this, mob, damage, 0, 100, 0, 0, 0, Items.ElementoPvM.Fogo);
 
                             Server.Timer.DelayCall(TimeSpan.FromMilliseconds(800), obj =>
                             {

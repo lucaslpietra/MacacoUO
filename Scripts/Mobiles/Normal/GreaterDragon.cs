@@ -150,7 +150,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 4);
-            AddLoot(LootPack.Gems, 8);
+            AddLoot(LootPack.Gems, 4);
         }
 
         public override void Serialize(GenericWriter writer)

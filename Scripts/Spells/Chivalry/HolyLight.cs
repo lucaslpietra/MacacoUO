@@ -87,7 +87,7 @@ namespace Server.Spells.Chivalry
                             damage = 24;
 
                         Caster.DoHarmful(m);
-                        SpellHelper.Damage(this, m, damage, 0, 0, 0, 0, 100);
+                        SpellHelper.Damage(this, m, damage, 0, 0, 0, 0, 100, Items.ElementoPvM.Luz);
                     }
                 }
 

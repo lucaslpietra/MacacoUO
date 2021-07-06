@@ -135,7 +135,7 @@ namespace Server.Spells.Seventh
                     }
 
                     Caster.DoHarmful(id);
-                    SpellHelper.Damage(this, target, damage, 0, 100, 0, 0, 0);
+                    SpellHelper.Damage(this, target, damage, 0, 100, 0, 0, 0, Items.ElementoPvM.Fogo);
 
                     Caster.MovingParticles(id, item != null ? 0xA1ED : 0x36D4, 7, 0, false, true, 9501, 1, 0, 0x100);
                 }

@@ -68,7 +68,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.AosFilthyRich, 4);
         }
 
-        public override void AlterSpellDamageFrom(Mobile from, ref int damage)
+        public override void AlterSpellDamageFrom(Mobile from, ref int damage, ElementoPvM e)
         {
             if (from != null)
                 from.Damage(damage / 2, from);

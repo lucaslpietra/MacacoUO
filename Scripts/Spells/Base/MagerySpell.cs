@@ -13,12 +13,16 @@ namespace Server.Spells
         {
             if (Info.Mantra != null && Info.Mantra.Length > 0 && (m_Caster.Player || (m_Caster is BaseCreature && ((BaseCreature)m_Caster).ShowSpellMantra)))
             {
+                m_Caster.OverheadMessage(Info.Mantra);
+                /*
                 var eable = m_Caster.Map.GetClientsInRange(m_Caster.Location);
                 foreach (NetState state in eable)
                 {
                     if (state.Mobile.CanSee(m_Caster))
                     {
-                        if(state.Mobile == m_Caster || state.Mobile.Skills.Magery.Value > 50)
+                        m_Caster.PrivateOverheadMessage(Info.Mantra, state.Mobile);
+
+                        if (state.Mobile == m_Caster || state.Mobile.Skills.Magery.Value > 50)
                         {
                             m_Caster.PrivateOverheadMessage(Info.Mantra, state.Mobile);
                         } else
@@ -27,6 +31,7 @@ namespace Server.Spells
                         }
                     }
                 }
+                */
             }
         }
 
@@ -72,14 +77,13 @@ namespace Server.Spells
                 if (talento >= 1)
                     return true;
             }
-            */
-
             var circleMax = CicloArmadura(from);
             if (circleMax < (int)this.Circle + 1)
             {
                 from.SendMessage("Esta armadura e muito pesada para esta magia");
                 return false;
             }
+             */
             return true;
         }
 

@@ -16,10 +16,9 @@ using Server.Spells.Ninjitsu;
 using Server.Spells.Seventh;
 using Server.Spells.Fourth;
 using Server.Targeting;
-using Server.Spells.SkillMasteries;
-using Server.Spells.Spellweaving;
 using Server.Services;
 using Server.Fronteira.Talentos;
+using Server.Fronteira.Elementos;
 
 namespace Server
 {
@@ -1398,13 +1397,6 @@ namespace Server.Spells
             return reflect;
         }
 
-        public static void Damage(Spell spell, Mobile target, double damage)
-        {
-            TimeSpan ts = GetDamageDelayForSpell(spell);
-
-            Damage(spell, ts, target, spell.Caster, damage);
-        }
-
         public static void Damage(TimeSpan delay, Mobile target, double damage)
         {
             Damage(delay, target, null, damage);
@@ -1422,10 +1414,10 @@ namespace Server.Spells
             if (delay == TimeSpan.Zero)
             {
                 if (from is BaseCreature)
-                    ((BaseCreature)from).AlterSpellDamageTo(target, ref iDamage);
+                    ((BaseCreature)from).AlterSpellDamageTo(target, ref iDamage, ElementoPvM.None);
 
                 if (target is BaseCreature)
-                    ((BaseCreature)target).AlterSpellDamageFrom(from, ref iDamage);
+                    ((BaseCreature)target).AlterSpellDamageFrom(from, ref iDamage, ElementoPvM.None);
 
                 if (target != null)
                 {
@@ -1452,48 +1444,48 @@ namespace Server.Spells
             }
         }
 
-        public static void Damage(Spell spell, IDamageable damageable, double damage, int phys, int fire, int cold, int pois, int nrgy)
+        public static void Damage(Spell spell, IDamageable damageable, double damage, int phys, int fire, int cold, int pois, int nrgy, ElementoPvM elemento = ElementoPvM.None)
         {
             TimeSpan ts = GetDamageDelayForSpell(spell);
 
-            Damage(spell, ts, damageable, spell.Caster, damage, phys, fire, cold, pois, nrgy, DFAlgorithm.Standard, 0, 1);
+            Damage(spell, ts, damageable, spell.Caster, damage, phys, fire, cold, pois, nrgy, DFAlgorithm.Standard, 0, 1, elemento);
         }
 
-        public static void Damage(Spell spell, IDamageable damageable, double damage, int phys, int fire, int cold, int pois, int nrgy, DFAlgorithm dfa)
+        public static void Damage(Spell spell, IDamageable damageable, double damage, int phys, int fire, int cold, int pois, int nrgy, DFAlgorithm dfa, ElementoPvM elemento = ElementoPvM.None)
         {
             TimeSpan ts = GetDamageDelayForSpell(spell);
 
-            Damage(spell, ts, damageable, spell.Caster, damage, phys, fire, cold, pois, nrgy, dfa);
+            Damage(spell, ts, damageable, spell.Caster, damage, phys, fire, cold, pois, nrgy, dfa, 0, 0, elemento);
         }
 
-        public static void Damage(Spell spell, IDamageable damageable, double damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct)
+        public static void Damage(Spell spell, IDamageable damageable, double damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, ElementoPvM elemento = ElementoPvM.None)
         {
             TimeSpan ts = GetDamageDelayForSpell(spell);
 
-            Damage(spell, ts, damageable, spell.Caster, damage, phys, fire, cold, pois, nrgy, DFAlgorithm.Standard, chaos, direct);
+            Damage(spell, ts, damageable, spell.Caster, damage, phys, fire, cold, pois, nrgy, DFAlgorithm.Standard, chaos, direct, elemento);
         }
 
-        public static void Damage(TimeSpan delay, IDamageable damageable, double damage, int phys, int fire, int cold, int pois, int nrgy)
+        public static void Damage(TimeSpan delay, IDamageable damageable, double damage, int phys, int fire, int cold, int pois, int nrgy, ElementoPvM elemento = ElementoPvM.None)
         {
-            Damage(delay, damageable, null, damage, phys, fire, cold, pois, nrgy);
+            Damage(delay, damageable, null, damage, phys, fire, cold, pois, nrgy, elemento);
         }
 
-        public static void Damage(TimeSpan delay, IDamageable damageable, double damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct)
+        public static void Damage(TimeSpan delay, IDamageable damageable, double damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, ElementoPvM elemento = ElementoPvM.None)
         {
-            Damage(null, delay, damageable, null, damage, phys, fire, cold, pois, nrgy, DFAlgorithm.Standard, chaos, direct);
+            Damage(null, delay, damageable, null, damage, phys, fire, cold, pois, nrgy, DFAlgorithm.Standard, chaos, direct, elemento);
         }
 
-        public static void Damage(TimeSpan delay, IDamageable damageable, Mobile from, double damage, int phys, int fire, int cold, int pois, int nrgy)
+        public static void Damage(TimeSpan delay, IDamageable damageable, Mobile from, double damage, int phys, int fire, int cold, int pois, int nrgy,ElementoPvM elemento = ElementoPvM.None)
         {
-            Damage(delay, damageable, from, damage, phys, fire, cold, pois, nrgy, DFAlgorithm.Standard);
+            Damage(delay, damageable, from, damage, phys, fire, cold, pois, nrgy, DFAlgorithm.Standard, elemento);
         }
 
-        public static void Damage(TimeSpan delay, IDamageable damageable, Mobile from, double damage, int phys, int fire, int cold, int pois, int nrgy, DFAlgorithm dfa)
+        public static void Damage(TimeSpan delay, IDamageable damageable, Mobile from, double damage, int phys, int fire, int cold, int pois, int nrgy, DFAlgorithm dfa, ElementoPvM elemento = ElementoPvM.None)
         {
-            Damage(null, delay, damageable, from, damage, phys, fire, cold, pois, nrgy, dfa);
+            Damage(null, delay, damageable, from, damage, phys, fire, cold, pois, nrgy, dfa, 0, 0, elemento);
         }
 
-        public static void Damage(Spell spell, TimeSpan delay, IDamageable damageable, Mobile from, double damage, int phys, int fire, int cold, int pois, int nrgy, DFAlgorithm dfa, int chaos = 0, int direct = 0)
+        public static void Damage(Spell spell, TimeSpan delay, IDamageable damageable, Mobile from, double damage, int phys, int fire, int cold, int pois, int nrgy, DFAlgorithm dfa, int chaos = 0, int direct = 0, ElementoPvM elemento = ElementoPvM.None)
         {
             Mobile target = damageable as Mobile;
             int iDamage = (int)damage;
@@ -1501,10 +1493,10 @@ namespace Server.Spells
             if (delay == TimeSpan.Zero)
             {
                 if (from is BaseCreature && target != null)
-                    ((BaseCreature)from).AlterSpellDamageTo(target, ref iDamage);
+                    ((BaseCreature)from).AlterSpellDamageTo(target, ref iDamage, elemento);
 
                 if (target is BaseCreature)
-                    ((BaseCreature)target).AlterSpellDamageFrom(from, ref iDamage);
+                    ((BaseCreature)target).AlterSpellDamageFrom(from, ref iDamage, elemento);
 
                 DamageType dtype = spell != null ? spell.SpellDamageType : DamageType.Spell;
 
@@ -1528,11 +1520,11 @@ namespace Server.Spells
                 if (from != target)
                     NegativeAttributes.OnCombatAction(target);
 
-                SpellDamage(from, target, damageGiven);
+                SpellDamage(from, target, damageGiven, elemento);
             }
             else
             {
-                new SpellDamageTimerAOS(spell, damageable, from, iDamage, phys, fire, cold, pois, nrgy, chaos, direct, delay, dfa).Start();
+                new SpellDamageTimerAOS(spell, damageable, from, iDamage, phys, fire, cold, pois, nrgy, chaos, direct, delay, dfa, elemento).Start();
             }
 
             if (target is BaseCreature && from != null && delay == TimeSpan.Zero)
@@ -1544,17 +1536,38 @@ namespace Server.Spells
             }
         }
 
-        public static void SpellDamage(Mobile from, Mobile target, int damageGiven)
+        public static int SpellDamage(Mobile from, Mobile target, int damageGiven, ElementoPvM elemento = ElementoPvM.None)
         {
+            
             if (from.Player && !target.Player)
             {
-                var burnDamage = damageGiven * from.GetBonusElemento(ElementoPvM.Fogo);
-                BurnAttack.BeginBurn(target, from, (int) burnDamage, false);
 
-                var spellSteal = (damageGiven/2) * from.GetBonusElemento(ElementoPvM.Escuridao);
+                /*
+                if(elemento != ElementoPvM.None)
+                {
+                    var fraco = elemento.FracoContra(target.Elemento);
+                    var forte = elemento.ForteContra(target.Elemento);
+                    if (fraco) damageGiven = (int)(damageGiven * 0.85);
+                    else if (forte) damageGiven = (int)(damageGiven * 1.15);
+                }
+                */
+
+                Shard.Debug("Acabou de causar dano magico com elemento " + elemento.ToString(), from);
+
+                if(elemento == ElementoPvM.Fogo)
+                {
+                    var burnDamage = (int)( (damageGiven/2) * from.GetBonusElemento(ElementoPvM.Fogo));
+                    if(burnDamage > 0)
+                        BurnAttack.BeginBurn(target, from, (int)burnDamage, false);
+                }
+               
+                var spellSteal = (int)((damageGiven/2) * from.GetBonusElemento(ElementoPvM.Escuridao));
                 if (spellSteal > 0)
-                    from.Heal((int)spellSteal);
+                    from.Heal(spellSteal);
             }
+            return damageGiven;
+            
+            return 0;
         }
 
         public static void Heal(int amount, Mobile target, Mobile from)
@@ -1620,10 +1633,10 @@ namespace Server.Spells
             protected override void OnTick()
             {
                 if (m_From is BaseCreature)
-                    ((BaseCreature)m_From).AlterSpellDamageTo(m_Target, ref m_Damage);
+                    ((BaseCreature)m_From).AlterSpellDamageTo(m_Target, ref m_Damage, ElementoPvM.None);
 
                 if (m_Target is BaseCreature)
-                    ((BaseCreature)m_Target).AlterSpellDamageFrom(m_From, ref m_Damage);
+                    ((BaseCreature)m_Target).AlterSpellDamageFrom(m_From, ref m_Damage, ElementoPvM.None);
 
                 if (m_Target != null)
                 {
@@ -1654,12 +1667,14 @@ namespace Server.Spells
             private int m_Direct;
             private DFAlgorithm m_DFA;
             private Spell m_Spell;
+            private ElementoPvM e;
 
             public Spell Spell { get { return m_Spell; } }
 
-            public SpellDamageTimerAOS(Spell s, IDamageable target, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, TimeSpan delay, DFAlgorithm dfa)
+            public SpellDamageTimerAOS(Spell s, IDamageable target, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, TimeSpan delay, DFAlgorithm dfa, ElementoPvM e = ElementoPvM.None)
                 : base(delay)
             {
+                this.e = e;
                 m_Target = target;
                 m_From = from;
                 m_Damage = damage;
@@ -1684,10 +1699,10 @@ namespace Server.Spells
                 Mobile target = m_Target as Mobile;
 
                 if (m_From is BaseCreature && target != null)
-                    ((BaseCreature)m_From).AlterSpellDamageTo(target, ref m_Damage);
+                    ((BaseCreature)m_From).AlterSpellDamageTo(target, ref m_Damage, e);
 
                 if (m_Target is BaseCreature && m_From != null)
-                    ((BaseCreature)m_Target).AlterSpellDamageFrom(m_From, ref m_Damage);
+                    ((BaseCreature)m_Target).AlterSpellDamageFrom(m_From, ref m_Damage, e);
 
                 DamageType dtype = m_Spell != null ? m_Spell.SpellDamageType : DamageType.Spell;
 
@@ -1722,7 +1737,7 @@ namespace Server.Spells
                 if (m_From != target)
                     NegativeAttributes.OnCombatAction(target);
 
-                SpellHelper.SpellDamage(m_From, target, damageGiven);
+                SpellHelper.SpellDamage(m_From, target, damageGiven, e);
             }
         }
     }

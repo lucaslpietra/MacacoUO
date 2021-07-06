@@ -130,7 +130,7 @@ namespace Server.Mobiles
                 damage = 0; // no melee damage when the field is up
         }
 
-        public override void AlterSpellDamageFrom(Mobile caster, ref int damage)
+        public override void AlterSpellDamageFrom(Mobile caster, ref int damage, ElementoPvM e)
         {
             if (!this.m_FieldActive)
                 damage = 0; // no spell damage when the field is down

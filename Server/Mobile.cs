@@ -10673,6 +10673,9 @@ namespace Server
             return FindItemOnLayer(Layer.TwoHanded) == null;
         }
 
+      
+
+
         private IWeapon m_Weapon;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -10897,6 +10900,24 @@ namespace Server
             Effects.SendMovingParticles(
                 this, to, itemID, speed, duration, fixedDirection, explodes, 0, 0, effect, explodeEffect, explodeSound, 0);
         }
+
+        public void MovingParticles(
+           IEntity to,
+           int itemID,
+           int speed,
+           int duration,
+           bool fixedDirection,
+           bool explodes,
+           int effect,
+           int explodeEffect,
+           int explodeSound,
+           EffectLayer layer
+           )
+        {
+            Effects.SendMovingParticles(
+                this, to, itemID, speed, duration, fixedDirection, explodes, 0, 0, effect, explodeEffect, explodeSound, layer, 0);
+        }
+
 
         public void FixedEffect(int itemID, int speed, int duration, int hue, int renderMode)
         {
