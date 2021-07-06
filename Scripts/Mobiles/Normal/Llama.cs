@@ -37,7 +37,7 @@ namespace Server.Mobiles
 
             this.Tamable = true;
             this.ControlSlots = 1;
-            this.MinTameSkill = 35.1;
+            this.MinTameSkill = 55;
         }
 
         public Llama(Serial serial)

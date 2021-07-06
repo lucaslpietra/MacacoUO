@@ -9,7 +9,7 @@ namespace Server.Fronteira.Elementos
     {
         public class Custo
         {
-            Type type;
+            public Type type;
             public int itemID;
             public string name;
             public short amt;
@@ -33,7 +33,7 @@ namespace Server.Fronteira.Elementos
 
         public static int QuantidadeItems(int nivel)
         {
-            return nivel * 2;
+            return (nivel + 1) * 2;
         }
 
         public static double CustoUpExp(int nivel)

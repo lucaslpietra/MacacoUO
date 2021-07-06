@@ -2427,6 +2427,8 @@ namespace Server.Mobiles
         {
             get
             {
+                if (!Shard.POL_STYLE && !Shard.RP)
+                    return 50 + (RawStr / 2);
                 var stats = (RawStr + RawDex + RawInt) / 225d;
                 var bonus = 0;
                 if (Talentos.Tem(Talento.Perseveranca))

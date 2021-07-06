@@ -47,7 +47,7 @@ namespace Server.Gumps
 			AddImageTiled(70, 55, 230, 2, 0x23C5);
 			*/
 
-            this.AddBackground(0, 0, 430, 360, 1579);
+            this.AddBackground(0, 0, 430, 360, 9200);
 
             Index = 0;
             Page = 1;
@@ -140,23 +140,9 @@ namespace Server.Gumps
                 {
                     AddButton(35, offset + (int)(height / 2) - 5, 0x837, 0x838, 200 + Index, GumpButtonType.Reply, 0);
                     if (item.TooltipStr != null)
-                        AddHtml(135, offset + (int)(height / 2) - 5, 300, 40, item.TooltipStr, false, false);
+                        AddHtml(135, offset + (int)(height / 2) + 10, 300, 40, item.TooltipStr, false, false);
                     else
                         AddHtmlLocalized(135, offset + (int)(height / 2) - 5, 300, 40, item.Tooltip, false, false);
-
-                    /*
-                    //AddItemProperty(item.s)
-                    if (item.TooltipStr != null)
-                    {
-                        Shard.Debug("Adicionando TT String " + item.TooltipStr);
-                        Add(new GumpTooltipStr(item.TooltipStr));
-                    }
-                    else if(item.Tooltip > 0)
-                    {
-                        AddTooltip(item.Tooltip);
-                    }
-                    */
-
                 }
 				
 				int y = offset - item.Y;

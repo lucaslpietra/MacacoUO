@@ -8861,7 +8861,7 @@ namespace Server
         ///     </c>
         /// </summary>
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual int StamMax { get { return ((RawDex * 3) + RawStr) / 4; } }
+        public virtual int StamMax { get { return RawDex; } }
 
         /// <summary>
         ///     Gets or sets the current stamina of the Mobile. This value ranges from 0 to <see cref="ManaMax" />, inclusive.
