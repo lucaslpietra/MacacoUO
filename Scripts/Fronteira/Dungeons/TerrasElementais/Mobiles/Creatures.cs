@@ -242,9 +242,9 @@ namespace Server.Mobiles
                 Hue = 638;
             } else
             {
-                BodyValue = 16;
-                Hue = 1178;
-                Name = "elemental guardião";
+                BodyValue = 0x1;
+                Hue = 638;
+                Name = "troll guardiao do muro";
             }
           
             FightMode = FightMode.Aggressor;

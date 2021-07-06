@@ -211,6 +211,13 @@
     <Compile Include="Fronteira\Duelos\Timers\DuelTimer.cs" />
     <Compile Include="Fronteira\Duelos\Timers\LogoutTimeoutTimer.cs" />
     <Compile Include="Fronteira\Duelos\Timers\TimeoutTimer.cs" />
+    <Compile Include="Fronteira\Elementos\CustosUP.cs" />
+    <Compile Include="Fronteira\Elementos\EfeitosElementos.cs" />
+    <Compile Include="Fronteira\Elementos\ElementoData.cs" />
+    <Compile Include="Fronteira\Elementos\ElementoMonstro.cs" />
+    <Compile Include="Fronteira\Elementos\EstatuaElemental.cs" />
+    <Compile Include="Fronteira\Elementos\GumpElementos.cs" />
+    <Compile Include="Fronteira\Elementos\SemElementoGump.cs" />
     <Compile Include="Fronteira\Exp\ExpGump.cs" />
     <Compile Include="Fronteira\Exp\ExpGumpRP.cs" />
     <Compile Include="Fronteira\FomeSede\FomeSedeDecay.cs" />
@@ -223,6 +230,7 @@
     <Compile Include="Fronteira\Habilidades\BaseSummoned.cs" />
     <Compile Include="Fronteira\Habilidades\BattleLust.cs" />
     <Compile Include="Fronteira\Habilidades\Bladeweave.cs" />
+    <Compile Include="Fronteira\Habilidades\BurnAttack.cs" />
     <Compile Include="Fronteira\Habilidades\BleedAttack.cs" />
     <Compile Include="Fronteira\Habilidades\Block.cs" />
     <Compile Include="Fronteira\Habilidades\ColdWind.cs" />
@@ -267,6 +275,15 @@
     <Compile Include="Fronteira\HumanBasezao.cs" />
     <Compile Include="Fronteira\Idade\IdadeTimer.cs" />
     <Compile Include="Fronteira\Idade\IdadeUtilidade.cs" />
+    <Compile Include="Fronteira\Imbuing\Core\DisenchantGump.cs" />
+    <Compile Include="Fronteira\Imbuing\Core\EssenciaMagica.cs" />
+    <Compile Include="Fronteira\Imbuing\Core\Imbuing.cs" />
+    <Compile Include="Fronteira\Imbuing\Core\ImbuingContext.cs" />
+    <Compile Include="Fronteira\Imbuing\Core\ImbuingDefinition.cs" />
+    <Compile Include="Fronteira\Imbuing\Gumps\ImbuingB.cs" />
+    <Compile Include="Fronteira\Imbuing\Gumps\ImbuingC.cs" />
+    <Compile Include="Fronteira\Imbuing\Gumps\ImbuingGump.cs" />
+    <Compile Include="Fronteira\Imbuing\ResourceDrops.cs" />
     <Compile Include="Fronteira\Items\AneisRP.cs" />
     <Compile Include="Fronteira\Items\AnelTeleporte.cs" />
     <Compile Include="Fronteira\Items\BeardStyle.cs" />
@@ -726,6 +743,7 @@
     <Compile Include="Items\Addons\Randoms\NewEAAddons\trumpetAddon.cs" />
     <Compile Include="Items\Addons\Randoms\NewEAAddons\wallmountbellAddon.cs" />
     <Compile Include="Items\Addons\Randoms\NewEAAddons\waterpaintingAddon.cs" />
+    <Compile Include="Items\Addons\Randoms\WhiteFalcon\WhiteFalcon.cs" />
     <Compile Include="Items\Consumables\BaseManaPotion.cs" />
     <Compile Include="Items\Consumables\GreaterManaPotion.cs" />
     <Compile Include="Items\Consumables\LesserManaPotion.cs" />
@@ -977,12 +995,12 @@
     <Compile Include="Fronteira\Dungeons\TerrasElementais\Items\CorrosiveAsh.cs" />
     <Compile Include="Fronteira\Dungeons\TerrasElementais\Items\CursedOilstone.cs" />
     <Compile Include="Fronteira\Dungeons\TerrasElementais\Items\QuartzGrit.cs" />
-    <Compile Include="Fronteira\Dungeons\TerrasElementais\Items\WhetstoneOfEnervation.cs" />
+    <Compile Include="Fronteira\Dungeons\TerrasElementais\Items\PedraElementalSuprema.cs" />
     <Compile Include="Fronteira\Dungeons\TerrasElementais\Mobiles\Bosses.cs" />
     <Compile Include="Fronteira\Dungeons\TerrasElementais\Mobiles\Creatures.cs" />
     <Compile Include="Fronteira\Dungeons\TerrasElementais\QuestElementais.cs" />
     <Compile Include="Fronteira\Dungeons\TerrasElementais\ShameAltar.cs" />
-    <Compile Include="Fronteira\Dungeons\TerrasElementais\ShameCrystal.cs" />
+    <Compile Include="Fronteira\Dungeons\TerrasElementais\CristalElemental.cs" />
     <Compile Include="Fronteira\Dungeons\TerrasElementais\ShameTeleporter.cs" />
     <Compile Include="Fronteira\Dungeons\TerrasElementais\ShameWall.cs" />
     <Compile Include="Fronteira\Dungeons\Prisao\EnchantedHotItem.cs" />
@@ -1191,7 +1209,7 @@
     <Compile Include="Fronteira\Encolhimento\ShrinkCommand.cs" />
     <Compile Include="Fronteira\Encolhimento\ShrinkConfig.cs" />
     <Compile Include="Fronteira\Encolhimento\ShrinkItem.cs" />
-    <Compile Include="Fronteira\ElementalBall.cs" />
+    <Compile Include="Fronteira\Elementos\ElementalBall.cs" />
     <Compile Include="Fronteira\JogosDeAzar\Slots\newminerbonusgump.cs" />
     <Compile Include="Fronteira\JogosDeAzar\Slots\turboslot.cs" />
     <Compile Include="Fronteira\JogosDeAzar\Slots\turboslotgump.cs" />
@@ -14702,7 +14720,6 @@
     <Content Include="Fronteira\Cooking\Documentacao\seedbox.jpg" />
     <Content Include="Fronteira\Cooking\Documentacao\Waxcrafting.txt" />
     <Content Include="Fronteira\Cooking\Documentacao\Wild Crops Readme.txt" />
-    <Content Include="Fronteira\Dungeons\TerrasElementais\Read Me.txt" />
     <Content Include="Fronteira\Leilao\AuctionConfig.xml" />
     <Content Include="Fronteira\Leilao\Readme.htm" />
     <Content Include="Fronteira\Encolhimento\ReadMe.htm" />

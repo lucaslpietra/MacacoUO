@@ -272,7 +272,7 @@ namespace Server.Items
         public static void Move(MovementEventArgs e)
         {
             var pl = e.Mobile as PlayerMobile;
-            if(pl != null)
+            if(pl != null && pl.RP)
             {
                 var ctx = BandageContext.GetContext(pl);
                 if(ctx != null)

@@ -8,7 +8,7 @@ namespace Server.Items
         public ExecutionersCap()
             : base(0xF83)
         {
-            Name = "Cogumelo do Executador";
+            Name = "Cogumelo do Encolhimento";
             this.Weight = 1.0;
             Stackable = true;
         }

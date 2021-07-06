@@ -166,6 +166,7 @@
     <Compile Include="ArtData.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="DataPathServer.cs" />
+    <Compile Include="ElementosPvM.cs" />
     <Compile Include="FileIndex.cs" />
     <Compile Include="GumpData.cs" />
     <Compile Include="Gumps\ECHandleInput.cs" />
