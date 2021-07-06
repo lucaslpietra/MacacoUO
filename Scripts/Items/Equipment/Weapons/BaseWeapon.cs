@@ -1349,7 +1349,6 @@ namespace Server.Items
                     {
                         m.NextCombatTime = Core.TickCount + (int)weapon.GetDelay(m).TotalMilliseconds;
                     }
-
                 }
 
                 if (UseSkillMod && m_SkillMod != null)

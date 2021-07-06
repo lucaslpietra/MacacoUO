@@ -80,24 +80,17 @@ namespace Server.Spells.Fourth
             else if (this.CheckBSequence(m))
             {
                 int toHeal = (int)(this.Caster.Skills[SkillName.Magery].Value * 0.2);
-                toHeal += Utility.Random(1, 10);
-
-                var inscript = this.Caster.Skills[SkillName.Inscribe].Value;
-                if (Caster is BaseCreature)
-                    inscript += 100;
-
-                var inscriptBonus = (int)(inscript * 0.15);
-                toHeal += inscriptBonus;
-
-                /*
-                if(this.Caster.GetRepeatedTypes(this.GetType(), TimeSpan.FromSeconds(20)) >= 2)
+                if (!Shard.POL_STYLE)
+                    toHeal *= 2;
+                else
                 {
-                    this.Caster.SendMessage("Por usar a magia repetidamente seu poder nao e tao eficaz");
-                    toHeal = (int)(toHeal * 0.85);
+                    var inscript = this.Caster.Skills[SkillName.Inscribe].Value;
+                    var inscriptBonus = (int)(inscript * 0.15);
+                    toHeal += inscriptBonus;
                 }
-                */
-
-                //m.Heal( toHeal, Caster );
+                toHeal += Utility.Random(1, 10);
+                if (Caster is BaseCreature)
+                    toHeal = (int)(toHeal * 1.2);
 
                 var scalar = GetPoisonScalar(m.Poison);
                 if(scalar < 1 && !m.IsCooldown("poisonmsg"))

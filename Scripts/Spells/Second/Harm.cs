@@ -54,21 +54,22 @@ namespace Server.Spells.Second
 
                 SpellHelper.CheckReflect((int)Circle, Caster, ref m);
 
-                InternalTimer t = new InternalTimer(this, Caster, m);
-                t.Start();
-                /*
+                // no pol harm tem delay igual explosion
+                if (Shard.POL_STYLE)
+                {
+                    InternalTimer t = new InternalTimer(this, Caster, m);
+                    t.Start();
+                    return;
+                }
+
                 SpellHelper.Turn(this.Caster, m);
                 Mobile source = this.Caster;
 
                 SpellHelper.CheckReflect((int)this.Circle, ref source, ref m);
 
                 double damage = 0;
-				
-                if (Core.AOS)
-                {
-                    damage = GetNewAosDamage(17, 1, 5, m);
-                }
-                else if (mob != null)
+
+                if (mob != null)
                 {
                     damage = Utility.Random(1, 15);
 
@@ -87,30 +88,21 @@ namespace Server.Spells.Second
                 else if (!this.Caster.InRange(m, 1))
                     damage *= 0.50; // 1/2 damage at 2 tile range
 
-                if (Core.AOS)
+                if (mob != null)
                 {
-                    if (mob != null)
-                    {
-                        mob.FixedParticles(0x374A, 10, 30, 5013, 1153, 2, EffectLayer.Waist);
-                        mob.PlaySound(0x0FC);
-                    }
-                    else
-                    {
-                        Effects.SendLocationParticles(m, 0x374A, 10, 30, 1153, 2, 5013, 0);
-                        Effects.PlaySound(m.Location, m.Map, 0x0FC);
-                    }
+                    mob.FixedParticles(0x374A, 10, 30, 5013, 1153, 2, EffectLayer.Waist);
+                    mob.PlaySound(0x0FC);
                 }
-                else if (mob != null)
+                else
                 {
-                    mob.FixedParticles(0x374A, 10, 15, 5013, EffectLayer.Waist);
-                    mob.PlaySound(0x1F1);
+                    Effects.SendLocationParticles(m, 0x374A, 10, 30, 1153, 2, 5013, 0);
+                    Effects.PlaySound(m.Location, m.Map, 0x0FC);
                 }
 
                 if (damage > 0)
                 {
                     SpellHelper.Damage(this, m, damage, 0, 0, 100, 0, 0);
                 }
-                */
             }
 
             this.FinishSequence();

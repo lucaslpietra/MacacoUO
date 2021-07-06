@@ -479,30 +479,9 @@ namespace Server.Spells
 
         public static int GetOffset(Mobile caster, Mobile target, StatType type, bool curse, bool blockSkill)
         {
-            if (Core.AOS)
-            {
-                if (!blockSkill)
-                {
-                    //caster.CheckSkill(SkillName.EvalInt, 0.0, 120.0);
-                    // This is handled in Spell.cs
-
-                    if (curse)
-                        target.CheckSkillMult(SkillName.MagicResist, 0.0, 120.0);
-                }
-
-                double percent = GetOffsetScalar(caster, target, curse);
-
-                switch (type)
-                {
-                    case StatType.Str:
-                        return (int)(target.RawStr * percent);
-                    case StatType.Dex:
-                        return (int)(target.RawDex * percent);
-                    case StatType.Int:
-                        return (int)(target.RawInt * percent);
-                }
-            }
-
+            if(!Shard.RP)
+                return 1 + (int)(caster.Skills[SkillName.Magery].Value * 0.1);
+  
             var bonus = (int)(caster.Skills[SkillName.Magery].Value * 0.05);
             if (caster.TemTalento(Talento.Feiticeiro))
                 bonus += 6;

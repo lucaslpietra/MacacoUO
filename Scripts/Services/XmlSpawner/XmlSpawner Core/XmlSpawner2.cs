@@ -6319,7 +6319,7 @@ public static void _TraceEnd(int index)
 							}
 
 
-                            if (SpawnMap == Map.Internal || SpawnMap == Map.Felucca)
+                            if (SpawnMap == Map.Internal)
                             {
                                 bad_spawner = true;
                             }

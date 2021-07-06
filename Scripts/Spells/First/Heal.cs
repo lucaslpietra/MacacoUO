@@ -61,23 +61,18 @@ namespace Server.Spells.First
 
                 int toHeal;
 
-                if (Core.AOS)
-                {
-                    toHeal = this.Caster.Skills.Magery.Fixed / 120;
-                    toHeal += Utility.RandomMinMax(1, 4);
 
-                    if (Core.SE && this.Caster != m)
-                        toHeal = (int)(toHeal * 1.5);
-                }
-                else
-                {
-                    toHeal = (int)(this.Caster.Skills[SkillName.Magery].Value * 0.04);
-                    toHeal += Utility.Random(1, 6);
+                toHeal = (int)(this.Caster.Skills[SkillName.Magery].Value * 0.05);
 
+                if (!Shard.POL_STYLE)
+                {
+                    toHeal *= 2;
+                } else
+                {
                     var inscriptBonus = (int)(this.Caster.Skills[SkillName.Inscribe].Value * 0.04);
                     toHeal += inscriptBonus;
                 }
-
+                toHeal += Utility.Random(1, 5);
                 var scalar = GreaterHealSpell.GetPoisonScalar(m.Poison);
                 if (scalar < 1 && !m.IsCooldown("poisonmsg"))
                 {

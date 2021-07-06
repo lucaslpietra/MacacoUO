@@ -73,13 +73,9 @@ namespace Server.Spells.First
 
                 double damage = 0;
 				
-                if (Core.AOS)
+                if (target is Mobile)
                 {
-                    damage = GetNewAosDamage(10, 1, 4, d);
-                }
-                else if (target is Mobile)
-                {
-                    damage = Utility.Random(3, 2);
+                    damage = Utility.Random(4, 4);
 
                     if (CheckResisted((Mobile)target))
                     {
