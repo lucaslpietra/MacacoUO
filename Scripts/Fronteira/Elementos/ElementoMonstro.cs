@@ -40,11 +40,15 @@ namespace Server.Fronteira.Elementos
 
         public static bool ForteContra(this ElementoPvM e, ElementoPvM alvo)
         {
+            if (e == ElementoPvM.None || alvo == ElementoPvM.None)
+                return false;
             return Fraquezas[alvo].Contains(e);
         }
 
         public static bool FracoContra(this ElementoPvM e, ElementoPvM alvo)
         {
+            if (e == ElementoPvM.None || alvo == ElementoPvM.None)
+                return false;
             return Vantagens[alvo].Contains(e);
         }
 
