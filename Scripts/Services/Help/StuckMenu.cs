@@ -54,14 +54,16 @@ namespace Server.Menus.Questions
             */
             new StuckMenuEntry("Rhodes", new Point3D[]
             {
-              CharacterCreation.WSHALL,
+              CharacterCreation.HAVEN,
 
-            }, Map.Felucca),
+            }, Map.Trammel),
+            /*
             new StuckMenuEntry("Cabo da Tormenta", new Point3D[]
             {
               new Point3D(994, 1915, 0),
 
             }, Map.Felucca)
+            */
         };
 
         private readonly Mobile m_Mobile;
