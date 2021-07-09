@@ -560,12 +560,13 @@ namespace Server.Spells
                 scalar = (1.0 + ((casterEI - targetRS) / 200.0));
             }
 
+            if (casterEI < 60)
+                casterEI = 60;
+
             if (pl != null && pl.RP)
             {
                 if (pl != null && pl.Talentos.Tem(Talento.Elementalismo))
                 {
-                    if (casterEI < 60)
-                        casterEI = 60;
                     if (pl != null)
                         scalar += 0.1;
                     if (target is BaseCreature)

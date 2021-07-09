@@ -1709,7 +1709,7 @@ namespace Server.Mobiles
             if (from.NetState != null && from.Region != null)
             {
                 if (from.Region.Music != Region.DEFAULT)
-                    from.NetState.Send(PlayMusic.GetInstance(from.Region.Music));
+                    from.PlayGameMusic(from.Region.Music);
                 else
                     from.DecideMusic(null, from.Region);
             }
@@ -2885,7 +2885,7 @@ namespace Server.Mobiles
             RecheckTownProtection();
 
             if (NetState != null && Region != null)
-                NetState.Send(PlayMusic.GetInstance(Region.Music));
+                PlayGameMusic(Region.Music);
         }
 
         public override void SetLocation(Point3D loc, bool isTeleport)
@@ -4525,7 +4525,7 @@ namespace Server.Mobiles
 
         public void DungeonMusic()
         {
-            this.Send(PlayMusic.GetInstance(Region.Music));
+            PlayGameMusic(Region.Music);
         }
 
         private Mobile m_InsuranceAward;
@@ -6245,10 +6245,6 @@ namespace Server.Mobiles
                 }
             }
 
-            if (m is WispGuia)
-            {
-                return this.AccessLevel > AccessLevel.VIP || ((WispGuia)m).Jogador.Serial == m.Serial || (this.Wisp != null && this.Wisp.Serial == m.Serial);
-            }
 
             if (m is CharacterStatue)
             {

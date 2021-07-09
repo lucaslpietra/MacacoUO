@@ -340,7 +340,7 @@ namespace Server
         private readonly Mobile m_Damager;
         private DateTime m_LastDamage;
 
-     
+
 
         public Mobile Damager { get { return m_Damager; } }
         public int DamageGiven { get; set; }
@@ -545,8 +545,9 @@ namespace Server
 
         public int Temperatura;
 
-        public virtual int SensacaoTermica {
-        get
+        public virtual int SensacaoTermica
+        {
+            get
             {
                 int protecao = this.FireResistance - this.ColdResistance;
                 int sensacao = this.Temperatura - protecao;
@@ -6038,7 +6039,7 @@ namespace Server
                 case 37:
                     {
                         m_DisplayGuildAbbr = reader.ReadBool();
-                        
+
                         goto case 36;
                     }
                 case 36:
@@ -6085,7 +6086,6 @@ namespace Server
                 case 32:
                     {
                         m_IgnoreMobiles = reader.ReadBool();
-                        m_IgnoreMobiles = false;
                         goto case 31;
                     }
                 case 31:
@@ -6433,9 +6433,9 @@ namespace Server
                         {
                             m_CombatTimer.Priority = TimerPriority.EveryTick;
                         }
-         
+
                         UpdateRegion();
-                  
+
                         UpdateResistances();
 
                         break;
@@ -6446,10 +6446,6 @@ namespace Server
             if (!m_Player)
             {
                 Utility.Intern(ref m_Name);
-            }
-            else
-            {
-                m_IgnoreMobiles = false;
             }
 
             Utility.Intern(ref m_Title);
@@ -8036,24 +8032,117 @@ namespace Server
             }
         }
 
+        public static MusicName GetMusicaParents(Region r)
+        {
+            if (r == null)
+                return MusicName.Invalid;
+
+            Shard.Debug("-- Vendo " + r.Name);
+            while (r.Parent != null && r.Parent.Name != null)
+            {
+                Shard.Debug("-- Parent " + r.Parent.Name + " Music " + r.Music);
+                if (r != null && r.Name != null && r.Music != MusicName.Invalid)
+                    return r.Music;
+                r = r.Parent;
+            }
+            return Region.DEFAULT;
+        }
+
+        public static MusicName GetMusicaCerteira(Region r)
+        {
+            if (r == null)
+                return MusicName.Invalid;
+
+
+            var imWild = r == null || r.Name == null || r.Music == Region.DEFAULT || r.Music == MusicName.Invalid;
+
+            if (Shard.DebugEnabled)
+                Shard.Debug("- Regiao nao tem musica? " + imWild);
+
+            if (imWild)
+            {
+                if (Shard.DebugEnabled)
+                    Shard.Debug("- Tentando pegar musica do parent " + r.Name);
+
+                var musicaParent = GetMusicaParents(r);
+
+                if (Shard.DebugEnabled)
+                    Shard.Debug("- Musica Parent " + musicaParent);
+
+                if (musicaParent != MusicName.Invalid)
+                {
+                    Shard.Debug("- Achei  musica parent valida " + musicaParent);
+                    return musicaParent;
+                }
+                Shard.Debug("- Esse stack de regiao eh wild mas nao tem musica");
+                return Region.FLORESTA;
+            }
+            Shard.Debug("- Nao eh wild");
+            if (r != null)
+            {
+                if (r.Music == Region.DEFAULT && !(r.Name.Contains("dungeon")))
+                    return Region.FLORESTA;
+                return r.Music;
+            }
+                
+            return MusicName.Invalid;
+        }
+
+        public static MusicName GetMusic(Mobile m, Region r)
+        {
+            if (Shard.DebugEnabled && r != null)
+                Shard.Debug("Pegando musica da regiao " + r.Name);
+
+            var musica = GetMusicaCerteira(r);
+
+            if (musica == MusicName.Invalid)
+            {
+                if (m.Location.X < 5100)
+                    return Region.FLORESTA;
+                else
+                    return Region.CAVERNA;
+            } else
+            {
+                return musica;
+            }
+        }
+        private MusicName _currentMusic;
+
+        public void PlayGameMusic(MusicName music)
+        {
+            if (_currentMusic == music)
+                return;
+            this.Send(PlayMusic.GetInstance(music));
+            _currentMusic = music;
+
+        }
 
         public void DecideMusic(Region oldRegion, Region newRegion)
         {
             var m = this;
             if (!m.Player)
                 return;
+            
+            var musicaNova = GetMusic(this, newRegion);
+            var musicaVelha = GetMusic(this, oldRegion);
 
-            var semRegiao = newRegion == null || newRegion.Name == null;
-            var semMusica = newRegion != null && newRegion.Music == Region.DEFAULT;
+            if(Shard.DebugEnabled)
+                Shard.Debug("Musica nova " + musicaNova + " velha " + musicaVelha);
 
-            // INDO PRA LUGAR SEM REGIAO
-            if (m.NetState != null && (semRegiao || semMusica))
+            if(musicaNova != MusicName.Invalid)
             {
-                if (m.Location.X < 5100)
-                    m.Send(PlayMusic.GetInstance(Region.FLORESTA));
-                else
-                    m.Send(PlayMusic.GetInstance(Region.CAVERNA));
+                if(musicaNova == Region.FLORESTA)
+                {
+                    if (Utility.RandomBool())
+                        PlayGameMusic(MusicName.ParoxysmusLair);
+                    else
+                        PlayGameMusic(musicaNova);
+                } else
+                {
+                    PlayGameMusic(musicaNova);
+                }
             }
+            
 
         }
 
@@ -9624,12 +9713,12 @@ namespace Server
                 if (m_Name != value) // I'm leaving out the && m_NameMod == null
                 {
                     string oldName = m_Name;
-                    if(value.StartsWith("a "))
+                    if (value.StartsWith("a "))
                     {
                         value = value.Substring(2);
                     }
                     m_Name = value;
-                   
+
                     OnAfterNameChange(oldName, m_Name);
                     Delta(MobileDelta.Name);
                     InvalidateProperties();
@@ -10673,7 +10762,7 @@ namespace Server
             return FindItemOnLayer(Layer.TwoHanded) == null;
         }
 
-      
+
 
 
         private IWeapon m_Weapon;
@@ -12973,7 +13062,7 @@ namespace Server
         {
             if (hue == 78)
             {
-
+                
             }
             if (OnSendMessage != null)
             {

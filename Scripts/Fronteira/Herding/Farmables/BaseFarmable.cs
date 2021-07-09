@@ -193,7 +193,7 @@ namespace Server.Items
         public override void AddNameProperties(ObjectPropertyList list)
         {
             base.AddNameProperties(list);
-            list.Add("Skill: " + GetMinSkill());
+            list.Add("Herding: " + GetMinSkill());
         }
 
         public void Colhe(Mobile from, Point3D loc, Map map)

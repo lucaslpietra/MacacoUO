@@ -126,6 +126,9 @@ namespace Server.Misc
         {
             var target = damageable as Mobile;
 
+            if (target is WispGuia)
+                return false;
+
             if (from == null || target == null || from.IsStaff() || target.IsStaff())
                 return true;
 
@@ -142,9 +145,11 @@ namespace Server.Misc
                 if (targPlayer != null && ProtecaoRP(targPlayer) && bc!=null && bc.GetMaster() != null && !bc.GetMaster().RP)
                     return false;
 
+                /*
                 if (!CheckAggressor(from.Aggressors, target) && !CheckAggressed(from.Aggressed, target) && target is PlayerMobile &&
                     ((PlayerMobile)target).CheckYoungProtection(from))
                     return false;
+                    */
             }
 
             // PVPs
@@ -176,11 +181,11 @@ namespace Server.Misc
                 target = ((BaseCreature)target).SummonMaster;
 
             if (!from.Player && !(bc != null && bc.GetMaster() != null && bc.GetMaster().IsPlayer()))
-            {
+            {                              /*
                 if (!CheckAggressor(from.Aggressors, target) && !CheckAggressed(from.Aggressed, target) && target is PlayerMobile &&
                     ((PlayerMobile)target).CheckYoungProtection(from))
                     return false;
-
+                    */
                 return true; // Uncontrolled NPCs are only restricted by the young system
             }
 

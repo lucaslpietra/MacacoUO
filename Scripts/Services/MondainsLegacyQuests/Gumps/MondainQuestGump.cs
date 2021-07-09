@@ -388,7 +388,8 @@ namespace Server.Engines.Quests
 
                             if (escort.Label == 0)
                             {
-                                AddHtmlObject(173, offset, 200, 16, escort.Region.Name, White, false, false);
+                                if(escort.Region != null)
+                                    AddHtmlObject(173, offset, 200, 16, escort.Region.Name, White, false, false);
                             }
                             else
                             {

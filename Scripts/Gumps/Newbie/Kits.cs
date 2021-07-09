@@ -288,8 +288,8 @@ namespace Server.Gumps.Newbie
                 tamer.equips.Add(new StuddedGloves());
                 tamer.equips.Add(new Boots());
                 tamer.equips.Add(new Spear());
-                bard.equips.Add(new Bandana(noobColor));
-                bard.equips.Add(new BodySash(noobColor));
+                tamer.equips.Add(new Bandana(noobColor));
+                tamer.equips.Add(new BodySash(noobColor));
                 Kits.Add(tamer);
 
             }

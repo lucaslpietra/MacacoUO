@@ -256,7 +256,9 @@ namespace Server
 			: this(name, map, parent, ConvertTo3D(area))
 		{ }
 
-        public static MusicName FLORESTA = MusicName.ParoxysmusLair;
+        public static MusicName FLORESTA { get {
+                return MusicName.Festival;
+        }}
         public static MusicName CAVERNA = MusicName.Medieval;
         public static MusicName DEFAULT = MusicName.Medieval;
 
@@ -1133,7 +1135,7 @@ namespace Server
 
 				if (oldRegion == null || oldRegion.Music != newRegion.Music)
 				{
-					m.Send(PlayMusic.GetInstance(newRegion.Music));
+                    m.PlayGameMusic(newRegion.Music);
 				}
 			}
 
@@ -1325,14 +1327,35 @@ namespace Server
 				m_GoLocation = new Point3D(x, y, m_Map.GetAverageZ(x, y));
 			}
 
-            MusicName music = DEFAULT;
+            MusicName music = MusicName.Invalid; //DEFAULT;
 
-			ReadEnum(xml["music"], "name", ref music, false);
+            ReadEnum(xml["music"], "name", ref music, false);
+
+            var musicaParent = GetMusicaParents(this);
+            if (musicaParent == MusicName.Invalid)
+                music = Region.DEFAULT;
 
 			Music = music;
 		}
 
-		protected static string GetAttribute(XmlElement xml, string attribute, bool mandatory)
+
+        public MusicName GetMusicaParents(Region r)
+        {
+            if (r == null)
+                return MusicName.Invalid;
+
+            Shard.Debug("Vendo " + r.Name);
+            while (r.Parent != null && r.Parent.Name != null)
+            {
+                Shard.Debug("Parent " + r.Parent.Name + " Music " + r.Music);
+                if (r != null && r.Name != null && r.Music != MusicName.Invalid && r.Music != MusicName.Invalid)
+                    return r.Music;
+                r = r.Parent;
+            }
+            return MusicName.Invalid;
+        }
+
+        protected static string GetAttribute(XmlElement xml, string attribute, bool mandatory)
 		{
 			if (xml == null)
 			{

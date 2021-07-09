@@ -8,7 +8,6 @@ namespace Server.Fronteira.Elementos
 {
     public static class ElementoMonstro
     {
-
         public static Dictionary<ElementoPvM, ElementoPvM[]> Fraquezas = new Dictionary<ElementoPvM, ElementoPvM[]>();
         public static Dictionary<ElementoPvM, List<ElementoPvM>> Vantagens = new Dictionary<ElementoPvM, List<ElementoPvM>>();
 

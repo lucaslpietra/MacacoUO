@@ -8043,7 +8043,7 @@ namespace Server.Mobiles
 #else
 									if(TryParse(musicstr[1], true, out music))
 #endif
-										p.Send(PlayMusic.GetInstance(music));
+										p.Mobile.PlayGameMusic(music);
 								}
 								else
 								{

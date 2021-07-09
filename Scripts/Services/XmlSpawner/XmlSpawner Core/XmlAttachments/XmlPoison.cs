@@ -13,15 +13,12 @@ namespace Server.Engines.XmlSpawner2
         }
 
         [Attachable]
-        public XmlPoison(int level, bool hitPoison=true)
+        public XmlPoison(int level, bool hitPoison = true)
         {
             this.p_level = level;
             this.HitaPoison = hitPoison;
         }
 
-        // when attached to a mobile, it should gain poison immunity and a poison
-
-        //attack, but no poisoning skill
         public Poison PoisonImmune
         {
             get
@@ -95,18 +92,9 @@ namespace Server.Engines.XmlSpawner2
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-           
-            switch(version)
-            {
-                case 0:
-                    // version 0
-                    this.p_level = reader.ReadInt();
-                    break;
-            }
-            if (version >= 1)
-                this.HitaPoison = reader.ReadBool();
+            this.p_level = reader.ReadInt();
+            this.HitaPoison = reader.ReadBool();
         }
     }
 }

@@ -8,6 +8,7 @@ using Server.Misc;
 using Server.Regions;
 using Server.Network;
 using Server.Targeting;
+using Server.Gumps.Newbie;
 
 namespace Server.Mobiles
 {
@@ -22,7 +23,7 @@ namespace Server.Mobiles
         public Drelgor()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "Drelgor the Impaler";
+            Name = "Drelgor o morto";
             Body = 147;
             BaseSoundID = 451;
 
@@ -54,6 +55,10 @@ namespace Server.Mobiles
 
             PackItem(new Scimitar());
             PackItem(new WoodenShield());
+
+            var chapeu = new Kasa();
+            chapeu.Name = "Kasa de Drelgor";
+            PackItem(chapeu);
 
             switch (Utility.Random(5))
             {

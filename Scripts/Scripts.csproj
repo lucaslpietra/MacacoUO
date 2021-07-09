@@ -192,6 +192,7 @@
     <Compile Include="Fronteira\Clima\ComandosClima.cs" />
     <Compile Include="Fronteira\Clima\GumpTemperatura.cs" />
     <Compile Include="Fronteira\Comandos\Limpeza.cs" />
+    <Compile Include="Fronteira\Comandos\NerfSpawners.cs" />
     <Compile Include="Fronteira\Comandos\Salvar.cs" />
     <Compile Include="Fronteira\Comandos\CoresRaras.cs" />
     <Compile Include="Fronteira\Comandos\Seer.cs" />
@@ -292,6 +293,7 @@
     <Compile Include="Fronteira\Items\Corda\CordaAmarrada.cs" />
     <Compile Include="Fronteira\Items\Corda\CordaMovimento.cs" />
     <Compile Include="Fronteira\Items\Corda\ItemArrastavel.cs" />
+    <Compile Include="Fronteira\Items\HearthStone.cs" />
     <Compile Include="Fronteira\Items\PergaminhoDoCarregamento.cs" />
     <Compile Include="Fronteira\Items\PermissaoConstruirBarco.cs" />
     <Compile Include="Fronteira\Items\Seiva.cs" />
@@ -351,6 +353,7 @@
     <Compile Include="Fronteira\Talismans\TalismanMagico.cs" />
     <Compile Include="Fronteira\Teleporter\ConfirmGump.cs" />
     <Compile Include="Fronteira\Teleporter\WorldOmniporter.cs" />
+    <Compile Include="Fronteira\Tutorial\WispGuia\Guia.cs" />
     <Compile Include="Fronteira\Tutorial\WispGump.cs" />
     <Compile Include="Fronteira\XML\XmlSiege\BaseSiegeProjectile.cs" />
     <Compile Include="Fronteira\XML\XmlSiege\BaseSiegeWeapon.cs" />

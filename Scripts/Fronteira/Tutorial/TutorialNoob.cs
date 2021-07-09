@@ -35,7 +35,7 @@ namespace Server.Ziden.Tutorial
 
             if (player.Wisp == null && player.Young && !player.RP)
             {
-                var guia = new WispGuia(player);
+                var guia = new NovoWispGuia(player);
                 player.Wisp = guia;
                 guia.SetControlMaster(player);
                 if(!guia.IsPetFriend(player))

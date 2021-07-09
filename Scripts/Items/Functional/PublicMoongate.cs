@@ -46,7 +46,7 @@ namespace Server.Items
 			//count += MoonGen(PMList.Ilshenar);
 			//count += MoonGen(PMList.Malas);
 			//count += MoonGen(PMList.Tokuno);
-			count += MoonGen(PMList.TerMur);
+			//count += MoonGen(PMList.TerMur);
 
 			World.Broadcast(0x35, true, "{0} moongates generated.", count);
 		}
@@ -296,16 +296,16 @@ namespace Server.Items
 			Map.Trammel,
 			new[]
 			{
-				new PMEntry(new Point3D(4467, 1283, 5), 1012003), // Moonglow
-				new PMEntry(new Point3D(1336, 1997, 5), 1012004), // Britain
-				new PMEntry(new Point3D(1499, 3771, 5), 1012005), // Jhelom
-				new PMEntry(new Point3D(771, 752, 5), 1012006), // Yew
-				new PMEntry(new Point3D(2701, 692, 5), 1012007), // Minoc
-				new PMEntry(new Point3D(1828, 2948, -20), 1012008), // Trinsic
-				new PMEntry(new Point3D(643, 2067, 5), 1012009), // Skara Brae
+				new PMEntry(new Point3D(4467, 1283, 5), 1012003, "Moonglow"), // Moonglow
+				new PMEntry(new Point3D(1336, 1997, 5), 1012004, "Britain"), // Britain
+				new PMEntry(new Point3D(1499, 3771, 5), 1012005, "Jhelom"), // Jhelom
+                new PMEntry(new Point3D(771, 752, 5), 1012006, "Yew"), // Yew
+				new PMEntry(new Point3D(2701, 692, 5), 1012007, "Minoc"), // Minoc
+				new PMEntry(new Point3D(1828, 2948, -20), 1012008, "Trinsic"), // Trinsic
+				new PMEntry(new Point3D(643, 2067, 5), 1012009, "Skara Brae"), // Skara Brae
 				/* Dynamic Z for Magincia to support both old and new maps. */
-				new PMEntry(new Point3D(3563, 2139, Map.Trammel.GetAverageZ(3563, 2139)), 1012010), // (New) Magincia
-				new PMEntry(new Point3D(3450, 2677, 25), 1078098) // New Haven
+				new PMEntry(new Point3D(3563, 2139, Map.Trammel.GetAverageZ(3563, 2139)), 1012010, "Magincia"), // (New) Magincia
+				new PMEntry(new Point3D(3500, 2582, 14), 1078098, "Haven") // New Haven
 			});
 
 		public static readonly PMList Felucca = new PMList(
@@ -375,7 +375,7 @@ namespace Server.Items
 
 		public static readonly PMList[] UORLists = {Trammel, Felucca};
 		public static readonly PMList[] UORListsYoung = {Trammel};
-		public static readonly PMList[] LBRLists = {TerMur};
+		public static readonly PMList[] LBRLists = { Trammel };
 		public static readonly PMList[] LBRListsYoung = {Trammel, Ilshenar};
 		public static readonly PMList[] AOSLists = {Trammel, Felucca, Ilshenar, Malas};
 		public static readonly PMList[] AOSListsYoung = {Trammel, Ilshenar, Malas};

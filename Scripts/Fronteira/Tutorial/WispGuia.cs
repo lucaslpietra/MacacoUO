@@ -12,7 +12,7 @@ using Server.Spells.First;
 namespace Server.Mobiles
 {
     [CorpseName("a wisp corpse")]
-    public class WispGuia : BaseCreature
+    public class WispGuia : BaseCreature, IConditionalVisibility
     {
         public static void Configure()
         {
@@ -91,7 +91,7 @@ namespace Server.Mobiles
 
             this.Fame = 4000;
             this.Karma = 0;
-
+            this.IgnoreMobiles = true;
             this.VirtualArmor = 40;
         }
 
@@ -107,9 +107,14 @@ namespace Server.Mobiles
             this.Jogador.PlaySound(466);
         }
 
-        Point3D Coxeiro = new Point3D(1300, 1399, 0);
-        Point3D Ferreiro = new Point3D(1334, 1343, 10);
-        Point3D Zeh = new Point3D(1405, 1337, 10);
+        Point3D Coxeiro = new Point3D(3526, 2577, 7);
+        Point3D Ferreiro = new Point3D(3469, 2540, 10);
+
+        Point3D Dg = new Point3D(3509, 2747, 0);
+        Point3D DgIn = new Point3D(5950, 342, -22);
+        Point3D Arena = new Point3D(3792, 2771, 6);
+
+        Point3D Zeh = new Point3D(3506, 2476, 28);
         Point3D Orcs = new Point3D(1450, 1284, 10);
         Point3D Mago = new Point3D(1235, 1362, 10);
         Point3D Banco = new Point3D(1346, 1375, 10);
@@ -120,37 +125,37 @@ namespace Server.Mobiles
         Point3D Alavanca = new Point3D(5457, 140, 20);
         Point3D Ank = new Point3D(5757, 234, 20);
 
-        public int PEGAR_CAVALO = 0;
-        public int FERREIRO = 1;
-        public int TEMPLATE = 2;
-        public int BANCO = 9;
-        public int PALADINO_1 = 11;
-        public int PALADINO_2 = 12;
-        public int QUEST = 3;
-        public int QUEST_MATOU = 4;
-        public int QUEST_FIM = 5;
+        public int PEGAR_CAVALO = 110;
+        public int FERREIRO = 111;
+        public int TEMPLATE = 112;
+        public int BANCO = 119;
+        public int PALADINO_1 = 1111;
+        public int PALADINO_2 = 1112;
+        public int QUEST = 113;
+        public int QUEST_MATOU = 114;
+        public int QUEST_FIM = 115;
 
-        public int ALAVANCA = 40;
-        public int SAIPROT = 41;
-        public int TESOURO = 42;
-        public int GUARDAR_BANCO = 43;
+        public int ALAVANCA = 1140;
+        public int SAIPROT = 1141;
+        public int TESOURO = 1142;
+        public int GUARDAR_BANCO = 1143;
 
-        public int PEGAR_MAGE = 6;
-        public int MATAR_ORC = 7;
-        public int FALANDO = 8;
-        public int PEGAR_QUEST_EXODO = 10;
+        public int PEGAR_MAGE = 116;
+        public int MATAR_ORC = 117;
+        public int FALANDO = 118;
+        public int PEGAR_QUEST_EXODO = 1110;
 
         // CAMINHO WORKER
-        public int MINE = 20;
-        public int GETORE = 21;
+        public int MINE = 1120;
+        public int GETORE = 1121;
 
-        public int SMELT = 22;
-        public int MACE = 23;
-        public int SELL = 24;
-        public int PLANT = 25;
-        public int TAILOR = 26;
+        public int SMELT = 1122;
+        public int MACE = 1123;
+        public int SELL = 1124;
+        public int PLANT = 1125;
+        public int TAILOR = 1126;
 
-        public int QUEST_TAMER = 30;
+        public int QUEST_TAMER = 1130;
 
         public int RandomFala = 0;
 
@@ -252,7 +257,7 @@ namespace Server.Mobiles
         {
             if (Jogador == null)
             {
-                if(ControlMaster != null && ControlMaster is PlayerMobile)
+                if (ControlMaster != null && ControlMaster is PlayerMobile)
                 {
                     Jogador = (PlayerMobile)ControlMaster;
                     Jogador.Wisp = this;
@@ -260,10 +265,11 @@ namespace Server.Mobiles
                         AddPetFriend(Jogador);
                     this.AIObject.EndPickTarget(Jogador, Jogador, OrderType.Follow);
                     this.AceitaOrdens = false;
-                }  else
+                }
+                else
                 {
                     return;
-                }    
+                }
             }
 
             if (Jogador.Profession == 0)
@@ -276,9 +282,9 @@ namespace Server.Mobiles
                 return;
 
             var dist = this.GetDistance(Jogador);
-            if(Shard.DebugEnabled)
+            if (Shard.DebugEnabled)
             {
-                Shard.Debug("Distancia do mestre " +Jogador.Name+": " + dist, this);
+                Shard.Debug("Distancia do mestre " + Jogador.Name + ": " + dist, this);
             }
             if (dist > 20)
             {
@@ -296,9 +302,10 @@ namespace Server.Mobiles
 
             VerificaLocal();
 
-            if(Jogador.Region is DungeonRegion || Jogador.Region is DungeonGuardedRegion)
+            if (Jogador.Region is DungeonRegion || Jogador.Region is DungeonGuardedRegion)
             {
-                if(!Jogador.HasAction(typeof(LightCycle))) {
+                if (!Jogador.HasAction(typeof(LightCycle)))
+                {
                     var spell = new NightSightSpell(this, null);
                     spell.InstantTarget = Jogador;
                     spell.Cast();
@@ -327,10 +334,11 @@ namespace Server.Mobiles
                 }
                 else if (Passo == TESOURO)
                 {
-                    if(Jogador.Region == null || Jogador.Region.Name == null || !Jogador.Region.Name.Contains("Endium"))
+                    if (Jogador.Region == null || Jogador.Region.Name == null || !Jogador.Region.Name.Contains("Endium"))
                     {
                         Fala("Ei, vamos explorar a dungeon do esgoto mais a fundo, abrindo aquela alavanca na sala do pentagrama !");
-                    } else
+                    }
+                    else
                     {
                         Fala("Existe um monstro por aqui, um monstro seboso devorador de pessoas...");
                     }
@@ -347,7 +355,7 @@ namespace Server.Mobiles
                         Passo = MINE;
                         Jogador.QuestArrow = new QuestArrow(Jogador, Mina);
                         Jogador.QuestArrow.Update();
-                    }     
+                    }
                     else
                     {
                         Passo = BANCO;
@@ -381,7 +389,8 @@ namespace Server.Mobiles
 
                 if (Passo == QUEST)
                 {
-                    if (QuestHelper.HasCompleted(Jogador, typeof(SapatoLindoQ))) {
+                    if (QuestHelper.HasCompleted(Jogador, typeof(SapatoLindoQ)))
+                    {
                         Passo = ALAVANCA;
                         return;
                     }
@@ -394,7 +403,8 @@ namespace Server.Mobiles
 
                 if (Passo == QUEST_MATOU)
                 {
-                    if(QuestHelper.HasCompleted(Jogador, typeof(SapatoLindoQ))) {
+                    if (QuestHelper.HasCompleted(Jogador, typeof(SapatoLindoQ)))
+                    {
                         Passo = ALAVANCA;
                         return;
                     }
@@ -415,7 +425,8 @@ namespace Server.Mobiles
 
                 if (Passo == QUEST_FIM)
                 {
-                    if (QuestHelper.HasCompleted(Jogador, typeof(SapatoLindoQ))) {
+                    if (QuestHelper.HasCompleted(Jogador, typeof(SapatoLindoQ)))
+                    {
                         Passo = ALAVANCA;
                         return;
                     }
@@ -454,7 +465,7 @@ namespace Server.Mobiles
                 }
                 else if (Passo == ALAVANCA)
                 {
-                    if(Jogador.Region == null || !(Jogador.Region is DungeonGuardedRegion))
+                    if (Jogador.Region == null || !(Jogador.Region is DungeonGuardedRegion))
                     {
                         Fala("O Zeh te deu uma dica de algo secreto na dungeon que voce estava, que tal ir verificar no esgoto novamente ?");
                         if (Jogador.QuestArrow != null)
@@ -462,7 +473,8 @@ namespace Server.Mobiles
                             Jogador.QuestArrow.Stop();
                             Jogador.QuestArrow = null;
                         }
-                    } else
+                    }
+                    else
                     {
                         Fala("Parece que o zeh falou algo sobre uma teia de aranha e um pentagrama...");
                         Jogador.QuestArrow = new QuestArrow(Jogador, Alavanca);
@@ -501,7 +513,8 @@ namespace Server.Mobiles
                         Jogador.QuestArrow = new QuestArrow(Jogador, Orcs);
                         Jogador.QuestArrow.Update();
                     }
-                } else if (Passo == TAILOR)
+                }
+                else if (Passo == TAILOR)
                 {
                     Fala("Use os algodoes perto da roda de tecer, depois os fios perto da maquina de tecer para fabricar tecido.");
                     Fala("Depois use um kit de costura para criar algo");
@@ -537,7 +550,7 @@ namespace Server.Mobiles
             }
         }
 
-        public void Planta ()
+        public void Planta()
         {
             if (Passo != PLANT)
                 return;
@@ -546,7 +559,7 @@ namespace Server.Mobiles
             Fala("So nao se esqueca de sua planta !");
             Jogador.AddToBackpack(new Cotton(30));
             Passo = TAILOR;
-          
+
         }
 
         public void Vende()
@@ -630,7 +643,7 @@ namespace Server.Mobiles
             }
         }
 
-        public void AbreBanco()
+        public virtual void AbreBanco()
         {
             if (Passo == BANCO)
             {
@@ -649,7 +662,7 @@ namespace Server.Mobiles
 
         public void MataMerda()
         {
-            if(Passo == TESOURO)
+            if (Passo == TESOURO)
             {
                 Fala("Muito bom !!!! Voce eh muito bom !!!!");
                 Fala("Veja o que pode encontrar nesse corpo e vamos a cidade para guardar no banco !!");
@@ -693,7 +706,7 @@ namespace Server.Mobiles
             }
         }
 
-        public void QuestNoob()
+        public virtual void QuestNoob()
         {
             if (Passo == QUEST)
             {
@@ -703,7 +716,7 @@ namespace Server.Mobiles
                     Jogador.QuestArrow.Stop();
                     Jogador.QuestArrow = null;
                 }
-                Passo = 4;
+                Passo = QUEST_MATOU;
             }
         }
 
@@ -732,7 +745,6 @@ namespace Server.Mobiles
             }
         }
 
-
         public void ResetaCds()
         {
             SetCooldown("pensa", TimeSpan.FromMilliseconds(1));
@@ -743,7 +755,7 @@ namespace Server.Mobiles
 
         public override void OnDoubleClick(Mobile from)
         {
-            if(from is PlayerMobile)
+            if (from is PlayerMobile)
                 from.SendGump(new GumpFada((PlayerMobile)from));
         }
 
@@ -774,6 +786,11 @@ namespace Server.Mobiles
             {
                 this.Delete();
             }
+        }
+
+        public bool CanBeSeenBy(PlayerMobile m)
+        {
+            return m.AccessLevel > AccessLevel.VIP || m.Wisp.Serial == this.Serial || this.Jogador == m;
         }
     }
 }

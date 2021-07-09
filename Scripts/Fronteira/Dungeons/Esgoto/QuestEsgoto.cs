@@ -21,7 +21,11 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return "Ah modeuzo mosso eu dixi cai meu sapato lindju no rio ! Acho qui foi pru bueru! <br> Ondi fica o bueru ce mi pregunta ? <b>Logo no buraco a nortali</b>, ! Si mi devorve os sapatos eu ti do um trem baum e ti conto um segredo !";
+                return @"Ah modeuzo mosso ! Oce tem um sigundim ? Umago robo meu sapato !
+                <br> Esse sapato vei do meu vo q vei do vo dei. O trem eh importante so ! <br><br>
+
+                <b> Onde o mago foi ?</b><br><br>
+                <b>Logo no buraco a nortali</b>, ! Si mi devorve os sapatos eu ti do um trem baum e ti conto um segredo !";
             }
         }
         public override object Refuse
@@ -44,7 +48,7 @@ namespace Server.Engines.Quests
             get
             {
                 return @"Ah bom de mais da conta ! Ceh muito bao ! <br> Vou te contar um segredo em troca ! <br><br>
-<b><u>No esgoto, na sala do pentagrama, tem um segredo atraz da teia de aranha</u></b>.
+<b><u>No buraco, na sala do pentagrama, tem um segredo atraz da teia de aranha</u></b>.
 <br><br>Ja contei uqui sabia, ce eh baum dimais da conta brigado pelo meu sapato.";
             }
         }
@@ -61,7 +65,7 @@ namespace Server.Engines.Quests
         {
             PointsSystem.Exp.AwardPoints(this.Owner, 300);
             this.Owner.PlaySound(this.CompleteSound);
-            this.Owner.SendMessage(78, "O segredo parece estar no esgoto na sala do pentagrama, perto da teia de aranha...");
+            this.Owner.SendMessage(78, "O segredo parece estar no buraco na sala do pentagrama, perto da teia de aranha...");
             if (this.Owner.Wisp != null)
             {
                 this.Owner.Wisp.EntregaSapato();
