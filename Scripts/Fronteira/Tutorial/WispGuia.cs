@@ -790,7 +790,7 @@ namespace Server.Mobiles
 
         public bool CanBeSeenBy(PlayerMobile m)
         {
-            return m.AccessLevel > AccessLevel.VIP || m.Wisp.Serial == this.Serial || this.Jogador == m;
+            return m != null && m.AccessLevel > AccessLevel.VIP || (m.Wisp != null && m.Wisp.Serial == this.Serial) || (Jogador != null && this.Jogador == m);
         }
     }
 }
