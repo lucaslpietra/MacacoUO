@@ -24,12 +24,20 @@ namespace Server.Fronteira.Tutorial.WispGuia
     public enum PassoTutorial
     {
         NADA,
+
+        // Flow Padrao De Combat
         PEGAR_CAVALO,
         IR_BANCO,
         IR_FERREIRO,
         PEGAR_QUEST,
         MATAR_MAGO,
-        VOLTAR_QUEST
+        VOLTAR_QUEST,
+        ALAVANCA,
+        BIXO_ESGOTO,
+        JILL,
+
+
+        FIM
     }
 
     public class Guia
@@ -95,7 +103,26 @@ namespace Server.Fronteira.Tutorial.WispGuia
                 FraseIniciar = "Vamos la matar o mago safado que roubou o sapato ! Entre na dungeon",
                 FraseProgresso = "Encontre o mago putrido na dungeon norte do Zeh",
                 FraseCompletar = "Voce e muito bom ! Pegue o sapato e entregue agora",
-                Proximo = PassoTutorial.MATAR_MAGO
+                Proximo = PassoTutorial.VOLTAR_QUEST
+            });  
+
+            Objetivos.Add(PassoTutorial.VOLTAR_QUEST, new ObjetivoGuia()
+            {
+                Local = new Point3D(3503, 2483, 26),
+                PrecisaEvento = true,
+                FraseIniciar = "Vamos sair desse buraco...",
+                FraseProgresso = "Arraste o saparo para o Zeh para entrega-lo",
+                FraseCompletar = "Excelente ! Voce eh demais !",
+                Proximo = PassoTutorial.ALAVANCA
+            });
+
+            Objetivos.Add(PassoTutorial.ALAVANCA, new ObjetivoGuia()
+            {
+                LocalDungeon = new Point3D(84, 1478, -28),
+                FraseIniciar = "Hmm ele falou algo sobre pentagrama. Vamos voltar a dungeon e procurar esse pentagrama ?",
+                FraseProgresso = "Alavanca... perto das teias de aranha na sala do pentagrama...hmm...",
+                FraseCompletar = "Hmmm parece ser aqui ! Que exitante !",
+                Proximo = PassoTutorial.BIXO_ESGOTO
             });
         }
     }
