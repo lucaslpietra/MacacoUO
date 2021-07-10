@@ -38,7 +38,7 @@ namespace Server.Ziden.Dungeons.Goblins.Quest
             {
                 from.SendMessage("A caixa explode em moedas de ouro. A explosao foi forte a ponto de algumas moedas cairem fora de sua mochila");
                 this.Consume();
-                from.AddToBackpack(new Gold(10000));
+                from.AddToBackpack(new Gold(3000));
                 Map map = from.Map;
 
                 double delay = 0;

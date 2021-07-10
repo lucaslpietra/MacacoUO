@@ -1,3 +1,4 @@
+using Server.Gumps.Newbie;
 using Server.Items;
 using Server.Mobiles;
 using System;
@@ -17,6 +18,7 @@ namespace Server.Fronteira.Tutorial.WispGuia
         public string FraseCompletar;
         public string FraseIniciar;
         public PassoTutorial Proximo;
+        public Func<PlayerMobile, PassoTutorial> GetProximo;
         public bool PrecisaEvento = false;
         public Action<PlayerMobile> Completar;
     }
@@ -36,6 +38,19 @@ namespace Server.Fronteira.Tutorial.WispGuia
         BIXO_ESGOTO,
         JILL,
 
+        // Tamer
+        QUEST_TAMER,
+
+        // Worker
+        TRABALHO,
+
+        MINE,
+        GETORE,
+        SMELT,
+        MACE,
+        SELL,
+        PLANT,
+        TAILOR,
 
         FIM
     }
@@ -46,12 +61,14 @@ namespace Server.Fronteira.Tutorial.WispGuia
 
         public Guia()
         {
-            Objetivos.Add(PassoTutorial.PEGAR_CAVALO, new ObjetivoGuia() {
+            Objetivos.Add(PassoTutorial.PEGAR_CAVALO, new ObjetivoGuia()
+            {
                 Local = new Point3D(3526, 2577, 7),
                 FraseIniciar = "Ei, o que acha de conseguir um cavalo ? Siga a seta no canto do mapa, eu arrumo um pra voce !",
                 FraseProgresso = "Siga a setinha no canto da sua tela para chegar no Coxeiro.",
                 FraseCompletar = "Tome aqui, um cavalo. Clique duas vezes para montar.",
-                Completar = (pl) => {
+                Completar = (pl) =>
+                {
                     var c = new Horse();
                     c.SetControlMaster(pl);
                     c.MoveToWorld(pl.Wisp.Location, pl.Wisp.Map);
@@ -66,7 +83,8 @@ namespace Server.Fronteira.Tutorial.WispGuia
                 FraseIniciar = "Vamos agora ao ferreiro ! Fale 'Comprar' a ele para se equipar.",
                 FraseProgresso = "Encontre o ferreiro e diga Comprar a ele para comprar items.",
                 FraseCompletar = "Se voce tiver skills de trabalho, pode falar 'trabalho' para trabalhar pro NPC ou 'recompensas'. ",
-                Completar = (pl) => {
+                Completar = (pl) =>
+                {
                     pl.Backpack.DropItem(new Gold(300));
                     pl.PlaySound(0x2E6);
                 },
@@ -80,10 +98,36 @@ namespace Server.Fronteira.Tutorial.WispGuia
                 FraseProgresso = "Va ao banco e fale 'Banco' para abrir seu banco.",
                 PrecisaEvento = true,
                 FraseCompletar = "Voce tambem pode fazer cheques falando 'cheque'. Coloquei um cheque em seu banco.",
-                Completar = (pl) => {
+                Completar = (pl) =>
+                {
                     pl.BankBox.DropItem(new BankCheck(300));
                 },
-                Proximo = PassoTutorial.PEGAR_QUEST
+                GetProximo = (pl) =>
+                {
+                    if (pl.Profession == StarterKits.TAMER)
+                        return PassoTutorial.QUEST_TAMER;
+                    if (pl.Profession == StarterKits.MERC)
+                        return PassoTutorial.TRABALHO;
+                    return PassoTutorial.PEGAR_QUEST;
+                }
+            });
+
+            Objetivos.Add(PassoTutorial.QUEST_TAMER, new ObjetivoGuia()
+            {
+                Local = new Point3D(3526, 2577, 7),
+                FraseIniciar = "Vamos voltar ao coxeiro agora. Fale com ele e inicie a quest para treinamento de animais.",
+                FraseProgresso = "Vamos voltar ao coxeiro agora. Fale com ele e inicie a quest para treinamento de animais.",
+                FraseCompletar = "Muito bem, clique duas vezes no coxeiro para fazer a quest de domar animais.",
+                Proximo = PassoTutorial.FIM
+            });
+
+            Objetivos.Add(PassoTutorial.TRABALHO, new ObjetivoGuia()
+            {
+                Local = new Point3D(3469, 2540, 10),
+                FraseIniciar = "Vamos ao ferreiro. Diga 'trabalho' a ele.",
+                FraseProgresso = "Diga 'trabalho' ao ferreiro para trabalhar.",
+                FraseCompletar = "Voce sobe suas skills de trabalho, trabalhando para NPC's.",
+                Proximo = PassoTutorial.FIM
             });
 
             Objetivos.Add(PassoTutorial.PEGAR_QUEST, new ObjetivoGuia()
@@ -104,7 +148,7 @@ namespace Server.Fronteira.Tutorial.WispGuia
                 FraseProgresso = "Encontre o mago putrido na dungeon norte do Zeh",
                 FraseCompletar = "Voce e muito bom ! Pegue o sapato e entregue agora",
                 Proximo = PassoTutorial.VOLTAR_QUEST
-            });  
+            });
 
             Objetivos.Add(PassoTutorial.VOLTAR_QUEST, new ObjetivoGuia()
             {
@@ -121,8 +165,26 @@ namespace Server.Fronteira.Tutorial.WispGuia
                 LocalDungeon = new Point3D(84, 1478, -28),
                 FraseIniciar = "Hmm ele falou algo sobre pentagrama. Vamos voltar a dungeon e procurar esse pentagrama ?",
                 FraseProgresso = "Alavanca... perto das teias de aranha na sala do pentagrama...hmm...",
-                FraseCompletar = "Hmmm parece ser aqui ! Que exitante !",
+                FraseCompletar = "Hmmm parece ter uma alavanca por aqui ! Que exitante !",
                 Proximo = PassoTutorial.BIXO_ESGOTO
+            });
+
+            Objetivos.Add(PassoTutorial.BIXO_ESGOTO, new ObjetivoGuia()
+            {
+                PrecisaEvento = true,
+                FraseIniciar = "Que curiosidade... Deve ter alguma alavanca nessa sala !",
+                FraseProgresso = "Vamos vamos, dentro da dungeon deve ter algum monstro poderoso...",
+                FraseCompletar = "Eca que nojo !",
+                Proximo = PassoTutorial.JILL
+            });
+
+            Objetivos.Add(PassoTutorial.JILL, new ObjetivoGuia()
+            {
+                PrecisaEvento = true,
+                FraseIniciar = "Hmm voce viu o livro que tinha dentro do monstro ? Vamos procurar essa Jill perto do Banco...",
+                FraseProgresso = "Vamos procurar a tal Jill perto do banco...",
+                FraseCompletar = "Otimo que a encontrou ! Voce eh bom demais !",
+                Proximo = PassoTutorial.FIM
             });
         }
     }

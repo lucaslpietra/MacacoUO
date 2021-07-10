@@ -120,7 +120,7 @@ namespace Server.Gumps.Newbie
                     Code = 1,
                     Desc = @"[Boa para iniciantes] Focado em combate corpo a corpo, usa espadas e machados. Usa bandagens ou magia para se curar."
                 };
-                guerreiro.Skills.Add(SkillName.Swords, 40);
+                guerreiro.Skills.Add(SkillName.Swords, 50);
                 guerreiro.Skills.Add(SkillName.Anatomy, 40);
                 guerreiro.Skills.Add(SkillName.Healing, 50);
                 guerreiro.Skills.Add(SkillName.MagicResist, 50);
@@ -153,7 +153,7 @@ namespace Server.Gumps.Newbie
                 blacksmith.Skills.Add(SkillName.Tinkering, 35);
                 blacksmith.Skills.Add(SkillName.Camping, 40);
                 blacksmith.Skills.Add(SkillName.Anatomy, 40);
-                blacksmith.Skills.Add(SkillName.Macing, 40);
+                blacksmith.Skills.Add(SkillName.Macing, 50);
                 blacksmith.Skills.Add(SkillName.Healing, 50);
                 blacksmith.Skills.Add(SkillName.Tactics, 30);
                 blacksmith.items.Add(new SledgeHammer());

@@ -112,7 +112,6 @@ selado, o local que o mapa que lhe dei indica, e fazer o ritual. Como fazer o ri
             }
         }
 
-
         [Constructable]
         public VelhoExodo()
             : base("Jill", "a velha")

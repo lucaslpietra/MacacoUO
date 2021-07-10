@@ -13,6 +13,7 @@ namespace Server.Fronteira.Comandos
         public static void Initialize()
         {
             CommandSystem.Register("nerfartodosspawners", AccessLevel.Administrator, new CommandEventHandler(CMD));
+            CommandSystem.Register("nerfaspawnershaven", AccessLevel.Administrator, new CommandEventHandler(CMD2));
         }
 
         public static void CMD(CommandEventArgs arg)
@@ -29,9 +30,34 @@ namespace Server.Fronteira.Comandos
                     {
                         var count = spawner.MaxCount;
                         spawner.MaxCount = (int)Math.Floor(count / 2d);
+                        spawner.Respawn();
                     }
                 }
             }
+            pl.SendMessage("Feito");
+        }
+
+        public static void CMD2(CommandEventArgs arg)
+        {
+            var pl = arg.Mobile as PlayerMobile;
+            pl.SendMessage("Nerfando todos spawners da natureza de haven");
+            foreach (var item in World.Items.Values)
+            {
+                if (item.Map == Map.Trammel && item is XmlSpawner)
+                {
+                    var spawner = (XmlSpawner)item;
+                    var region = spawner.GetRegion();
+                    if (region != null && region.Name.Contains("haven"))
+                    {
+                        var count = spawner.MaxCount;
+                        spawner.MaxCount = (int)Math.Floor(count / 3d);
+                        if (spawner.MaxCount == 0)
+                            spawner.MaxCount = 1;
+                        spawner.Respawn();
+                    }
+                }
+            }
+            pl.SendMessage("Feito");
         }
     }
 }

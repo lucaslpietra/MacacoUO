@@ -50,8 +50,8 @@ namespace Server.Mobiles
                     "carrega a dor",
                     "a dor que carrega",
                     "sem receio",
-                    "teu cu na reta",
-                    "meu pau sem freio"
+                    "teu brioco na reta",
+                    "um piru sem freio"
                 };
                 PackItem(livro);
             }
@@ -79,7 +79,7 @@ namespace Server.Mobiles
         {
             "Puxa meu dedo", "Voce conhece o mario ?",
             "Conhece o nao nem eu ?", "Eu tava cozinhando, e prendi meu dedo na panela...",
-            "Setembro Chove?"
+            "Setembro Chove?", "Eu jogo RPG. Voce tem dado em casa ?"
 
         };
 

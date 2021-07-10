@@ -47,6 +47,7 @@ namespace Server.Mobiles
             else
                 this.PackItem(new Log(10));
 
+           
             this.PackReg(3);
         }
 
@@ -85,7 +86,6 @@ namespace Server.Mobiles
                 {
                     var p = (PlayerMobile)r.m_Mobile;
 
-                  
 
                     switch (p.Profession)
                     {
@@ -151,6 +151,20 @@ namespace Server.Mobiles
                 }
             }
             return base.OnBeforeDeath();
+        }
+
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+            var livro = new RedBook(1, false);
+            livro.Title = "Livro Seboso";
+            livro.Author = "Jill a velha";
+            livro.Pages[0].Lines = new string[] {
+               "Ca estou, perto do banco de Haven",
+               "Aguardando meu velho Zeh com meu cajado",
+               "Hoje o dia choveu. Preciso do meu cajado para nao escorregar na lama."
+            };
+            c.AddItem(livro);
         }
 
         public override void Serialize(GenericWriter writer)

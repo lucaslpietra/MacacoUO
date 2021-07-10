@@ -266,9 +266,9 @@ namespace Server.Fronteira.Recursos
             {
                 switch (_quality)
                 {
-                    case ItemQuality.Exceptional: this.ItemID = 0x08E8; break;
-                    case ItemQuality.Normal: this.ItemID = 0x08E6; break;
-                    case ItemQuality.Low: this.ItemID = 0x08E3; break;
+                    case ItemQuality.Exceptional: this.ItemID = 0x9CAC; break;
+                    case ItemQuality.Normal: this.ItemID = 0x9CAB; break;
+                    case ItemQuality.Low: this.ItemID = 0x9CAA; break;
                 }
             }
             else

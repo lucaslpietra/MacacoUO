@@ -14,6 +14,7 @@ namespace Server.Mobiles
     [CorpseName("a wisp corpse")]
     public class WispGuia : BaseCreature, IConditionalVisibility
     {
+
         public static void Configure()
         {
             if (Shard.RP)
@@ -630,7 +631,7 @@ namespace Server.Mobiles
             }
         }
 
-        public void FalaJill()
+        public virtual void FalaJill()
         {
             if (Passo != PEGAR_QUEST_EXODO)
                 return;
@@ -660,7 +661,7 @@ namespace Server.Mobiles
             }
         }
 
-        public void MataMerda()
+        public virtual void MataMerda()
         {
             if (Passo == TESOURO)
             {
@@ -670,7 +671,7 @@ namespace Server.Mobiles
             }
         }
 
-        public void MataOrc()
+        public virtual void MataOrc()
         {
             if (Passo == MATAR_ORC)
             {
@@ -684,7 +685,7 @@ namespace Server.Mobiles
             }
         }
 
-        public void EntregaSapato()
+        public virtual void EntregaSapato()
         {
             if (Passo == QUEST_FIM)
             {
@@ -696,7 +697,7 @@ namespace Server.Mobiles
             }
         }
 
-        public void MataMago()
+        public virtual void MataMago()
         {
             if (Passo == QUEST_MATOU)
             {

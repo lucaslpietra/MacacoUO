@@ -24,7 +24,8 @@ namespace Server.Regions
         public override void OnEnter(Mobile m)
         {
             base.OnEnter(m);
-			
+
+            /*
             if (m is PlayerMobile)
             {
                 PlayerMobile player = (PlayerMobile)m;
@@ -56,12 +57,14 @@ namespace Server.Regions
                     }
                 }
             }
+            */
         }
 
         public override void OnExit(Mobile m)
         {
             base.OnExit(m);
-			
+
+            /*
             if (m is PlayerMobile)
             {
                 PlayerMobile player = (PlayerMobile)m;
@@ -92,6 +95,7 @@ namespace Server.Regions
                     }
                 }
             }
+            */
         }
     }
 }

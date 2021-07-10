@@ -101,33 +101,32 @@ namespace Scripts.Mythik.Systems.Achievements
             Achievements.Add(new DiscoveryAchievement(3, 1, 0x14EB, false, null, "Ratown", "Va a vila dos Ratos", 5, "SavageCamp"));
             Achievements.Add(new DiscoveryAchievement(4, 1, 0x14EB, false, null, "Tretonia", "Encontre Tretonia", 5, "Tretonia"));
             */
+           
+            Achievements.Add(new DiscoveryAchievement(1, 2, 0x14EB, false, null, "Britain!", "Descubra brit", 5, "Britain"));
+            Achievements.Add(new DiscoveryAchievement(2, 2, 0x14EB, false, null, "Minoc!", "Descubra Minoc", 5, "Minoc"));
+            Achievements.Add(new DiscoveryAchievement(3, 2, 0x14EB, false, null, "Ocllo!", "Descubra Ocllo", 5, "Ocllo"));
+            Achievements.Add(new DiscoveryAchievement(4, 2, 0x14EB, false, null, "Trinsic!", "Descubra Trinsic", 5, "Trinsic"));
+            Achievements.Add(new DiscoveryAchievement(5, 2, 0x14EB, false, null, "Vesper!", "Descubra Vesper", 5, "Vesper"));
+            Achievements.Add(new DiscoveryAchievement(6, 2, 0x14EB, false, null, "Yew!", "Descubra Yew", 5, "Yew"));
+            Achievements.Add(new DiscoveryAchievement(7, 2, 0x14EB, false, null, "Wind!", "Descubra Wind", 5, "Wind"));
+            Achievements.Add(new DiscoveryAchievement(8, 2, 0x14EB, false, null, "Serpent's Hold!", "Descubra Serpent's Hold", 5, "Serpent's Hold"));
+            Achievements.Add(new DiscoveryAchievement(9, 2, 0x14EB, false, null, "Skara Brae!", "Descubra Skara Brae", 5, "Skara Brae"));
+            Achievements.Add(new DiscoveryAchievement(10, 2, 0x14EB, false, null, "Nujel'm!", "Descubra Nujel'm", 5, "Nujel'm"));
+            Achievements.Add(new DiscoveryAchievement(11, 2, 0x14EB, false, null, "Moonglow!", "Descubra Moonglow", 5, "Moonglow"));
+            Achievements.Add(new DiscoveryAchievement(12, 2, 0x14EB, false, null, "Magincia!", "Descubra Magincia", 5, "Magincia"));
+            Achievements.Add(new DiscoveryAchievement(13, 2, 0x14EB, false, null, "Buccaneer's Den!", "Descubra Buccaneer's Den", 5, "Buccaneer's Den"));
 
-            /*
-            Achievements.Add(new DiscoveryAchievement(1, 2, 0x14EB, false, null, "Britain!", "Discover the City Britain", 5, "Britain"));
-            Achievements.Add(new DiscoveryAchievement(2, 2, 0x14EB, false, null, "Minoc!", "Discover the Minoc Township", 5, "Minoc"));
-            Achievements.Add(new DiscoveryAchievement(3, 2, 0x14EB, false, null, "Ocllo!", "Discover the Ocllo Township", 5, "Ocllo"));
-            Achievements.Add(new DiscoveryAchievement(4, 2, 0x14EB, false, null, "Trinsic!", "Discover the City of Trinsic", 5, "Trinsic"));
-            Achievements.Add(new DiscoveryAchievement(5, 2, 0x14EB, false, null, "Vesper!", "Discover the City of Vesper", 5, "Vesper"));
-            Achievements.Add(new DiscoveryAchievement(6, 2, 0x14EB, false, null, "Yew!", "Discover the Yew Township", 5, "Yew"));
-            Achievements.Add(new DiscoveryAchievement(7, 2, 0x14EB, false, null, "Wind!", "Discover the City of Wind", 5, "Wind"));
-            Achievements.Add(new DiscoveryAchievement(8, 2, 0x14EB, false, null, "Serpent's Hold!", "Discover the City of Serpent's Hold", 5, "Serpent's Hold"));
-            Achievements.Add(new DiscoveryAchievement(9, 2, 0x14EB, false, null, "Skara Brae!", "Discover the Island of Skara Brae", 5, "Skara Brae"));
-            Achievements.Add(new DiscoveryAchievement(10, 2, 0x14EB, false, null, "Nujel'm!", "Discover the Island of Nujel'm", 5, "Nujel'm"));
-            Achievements.Add(new DiscoveryAchievement(11, 2, 0x14EB, false, null, "Moonglow!", "Discover the City of Moonglow", 5, "Moonglow"));
-            Achievements.Add(new DiscoveryAchievement(12, 2, 0x14EB, false, null, "Magincia!", "Discover the City of Magincia", 5, "Magincia"));
-            Achievements.Add(new DiscoveryAchievement(13, 2, 0x14EB, false, null, "Buccaneer's Den!", "Discover the Secrets of Buccaneer's Den", 5, "Buccaneer's Den"));
+            Achievements.Add(new DiscoveryAchievement(25, 3, 0x14EB, false, null, "Covetous!", "Descubra of Covetous", 5, "Covetous"));
+            Achievements.Add(new DiscoveryAchievement(26, 3, 0x14EB, false, null, "Deceit!", "Descubra of Deceit", 5, "Deceit"));
+            Achievements.Add(new DiscoveryAchievement(27, 3, 0x14EB, false, null, "Despise!", "Descubra of Despise", 5, "Despise"));
+            Achievements.Add(new DiscoveryAchievement(28, 3, 0x14EB, false, null, "Destard!", "Descubra of Destard", 5, "Destard"));
+            Achievements.Add(new DiscoveryAchievement(29, 3, 0x14EB, false, null, "Hythloth!", "Descubra Hythloth", 5, "Hythloth"));
+            Achievements.Add(new DiscoveryAchievement(30, 3, 0x14EB, false, null, "Wrong!", "Descubra Wrong", 5, "Wrong"));
+            Achievements.Add(new DiscoveryAchievement(31, 3, 0x14EB, false, null, "Shame!", "Descubra Shame", 5, "Shame"));
 
-            Achievements.Add(new DiscoveryAchievement(25, 3, 0x14EB, false, null, "Covetous!", "Discover the dungeon of Covetous", 5, "Covetous"));
-            Achievements.Add(new DiscoveryAchievement(26, 3, 0x14EB, false, null, "Deceit!", "Discover the dungeon of Deceit", 5, "Deceit"));
-            Achievements.Add(new DiscoveryAchievement(27, 3, 0x14EB, false, null, "Despise!", "Discover the dungeon of Despise", 5, "Despise"));
-            Achievements.Add(new DiscoveryAchievement(28, 3, 0x14EB, false, null, "Destard!", "Discover the dungeon of Destard", 5, "Destard"));
-            Achievements.Add(new DiscoveryAchievement(29, 3, 0x14EB, false, null, "Hythloth!", "Discover the dungeon of Hythloth", 5, "Hythloth"));
-            Achievements.Add(new DiscoveryAchievement(30, 3, 0x14EB, false, null, "Wrong!", "Discover the dungeon of Wrong", 5, "Wrong"));
-            Achievements.Add(new DiscoveryAchievement(31, 3, 0x14EB, false, null, "Shame!", "Discover the dungeon of Shame", 5, "Shame"));
-
-            Achievements.Add(new DiscoveryAchievement(100, 4, 0x14EB, false, null, "Cotton!", "Discover A Cotton Field in Moonglow", 5, "A Cotton Field in Moonglow"));
-            Achievements.Add(new DiscoveryAchievement(101, 4, 0x14EB, false, null, "Carrots!", "Discover A Carrot Field in Skara Brae", 5, "A Carrot Field in Skara Brae"));
-            */
+            Achievements.Add(new DiscoveryAchievement(100, 4, 0x14EB, false, null, "Cotton!", "Descubra Plantacao de Algodao Moonglow", 5, "A Cotton Field in Moonglow"));
+            Achievements.Add(new DiscoveryAchievement(101, 4, 0x14EB, false, null, "Carrots!", "Descubra plantacao de Cenoura em Skara Brae", 5, "A Carrot Field in Skara Brae"));
+           
             //these two show examples of adding a reward or multiple rewards
 
             var achieve2 = new ItemCraftedAchievement(500, 1002, 0xF5C, false, null, 30, "Macas", "Crie 30 Macas de Ferro", 5, typeof(Mace), typeof(SacolaMinerios));

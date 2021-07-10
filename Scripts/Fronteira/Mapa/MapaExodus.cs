@@ -37,14 +37,14 @@ namespace Shrink.ShrinkSystem
                     from.SendMessage("Voce precisa sair deste local para conseguir ver o mapa direito");
                     return;
                 }
-                if (from.Map != Map.Felucca)
+                if (from.Map != Map.Trammel)
                 {
                     from.SendMessage("Voce nao esta no mapa correto");
                     return;
                 }
                 from.OverheadMessage("* Olhando um mapa *");
                 from.SendMessage("Voce esta seguindo o mapa");
-                from.QuestArrow = new QuestArrow(from, new Point3D(799, 1037, 0));
+                from.QuestArrow = new QuestArrow(from, new Point3D(3649, 2593, 0));
                 from.QuestArrow.Name = "mapa";
                 from.QuestArrow.Update();
             }

@@ -61,15 +61,24 @@ namespace Server.Mobiles
 
         public bool ValidaChegouNoLugar(ObjetivoGuia obj)
         {
-            if (!obj.PrecisaEvento && obj.Local != Point3D.Zero && Jogador.GetDistance(obj.Local) <= 6)
+            if (!obj.PrecisaEvento)
             {
-                return true;
+                if(obj.Local != Point3D.Zero && Jogador.GetDistance(obj.Local) <= 6)
+                    return true;
+                if (obj.LocalDungeon != Point3D.Zero && Jogador.GetDistance(obj.LocalDungeon) <= 6)
+                    return true;
             }
             return false;
         }
 
         private void Completa(ObjetivoGuia obj)
         {
+            if (Jogador.QuestArrow != null)
+            {
+                Jogador.QuestArrow.Stop();
+                Jogador.QuestArrow = null;
+            }
+
             if (obj.Completar != null)
             {
                 obj.Completar(Jogador);
@@ -77,27 +86,30 @@ namespace Server.Mobiles
                 {
                     Fala(obj.FraseCompletar);
                 }
-                if(Jogador.QuestArrow != null)
-                {
-                    Jogador.QuestArrow.Stop();
-                    Jogador.QuestArrow = null;
-                }
             }
-            if (obj.Proximo != PassoTutorial.NADA)
+            var proximo = obj.Proximo;
+            if(obj.GetProximo != null)
             {
-                this.DebugSay("Avancando objetivo para " + obj.Proximo);
+                proximo = obj.GetProximo(Jogador);
+            }
+            if (proximo != PassoTutorial.NADA && proximo != PassoTutorial.FIM)
+            {
+                this.DebugSay("Avancando objetivo para " + proximo);
                 SetCooldown("pensa", TimeSpan.FromSeconds(5));
                 this.Passo = (int)PassoTutorial.NADA;
                 Timer.DelayCall(TimeSpan.FromSeconds(3), () =>
                 {
-                    this.Passo = (int)obj.Proximo;
-                    var objProximo = Guia.Objetivos[obj.Proximo];
+                    this.Passo = (int)proximo;
+                    var objProximo = Guia.Objetivos[proximo];
                     if (objProximo.FraseIniciar != null)
                     {
                         Fala(objProximo.FraseIniciar);
                         SetCooldown("fala", TimeSpan.FromSeconds(20));
                     }
                 });
+            } else if(proximo == PassoTutorial.FIM)
+            {
+                this.Passo = (int)PassoTutorial.FIM;
             }
         }
 
@@ -105,6 +117,29 @@ namespace Server.Mobiles
         {
             this.DebugSay("Fazendo algo");
             var objetivoAtual = (PassoTutorial)this.Passo;
+
+            if (objetivoAtual == PassoTutorial.FIM)
+            {
+                if (!IsCooldown("fala"))
+                {
+                    SetCooldown("fala", TimeSpan.FromSeconds(20));
+                    switch (Utility.Random(10))
+                    {
+                        case 0: Fala("Upe sempre em dungeons, voce aprende as skills mais rapido matando monstros !"); break;
+                        case 1: Fala("Quando tiver 70 nas skills das armas, voce pode usar as habilidades de arma clicando no seu paperdoll (ALT + P) e depois no livro lilas no seu pe. !"); break;
+                        case 2: Fala("Sabia que as moedas de ouro , quando usando .grupo, sao mais faceis de conseguir ?"); break;
+                        case 3: Fala("Voce pode formar grupos usando o comando .grupo, o ouro de dungeons sera dividido entre o grupo !"); break;
+                        case 4: Fala("Se voce quiser trabalhar, voce pode fazer Ordens de Compra nos npcs se tiver skills de trabalho !"); break;
+                        case 5: Fala("Sabia que voce pode ter sua casa e sua fazenda ? Mas vai precisar juntar dinheiro..."); break;
+                        case 6: Fala("Ganhei dinheiro trabalhando ou matando monstros, voce que sabe..."); break;
+                        case 7: Fala("Voce pode minerar na mina dos orcs, mas vai precisar fazer com que eles nao te ataquem..."); break;
+                        case 8: Fala("Uma boa maneira de se juntar um dinheiro inicial e a skill BEGGING..."); break;
+                        case 9: Fala("Fale com a NPC JILL no centro da cidade para pegar uma quest epica!"); break;
+                    }
+                }
+                return;
+            }
+
             var obj = Guia.Objetivos[objetivoAtual];
 
             if (ValidaChegouNoLugar(obj))
@@ -201,9 +236,45 @@ namespace Server.Mobiles
                 Completa(Guia.Objetivos[PassoTutorial.PEGAR_QUEST]);
         }
 
+        public override void EntregaSapato()
+        {
+            if (Passo == (int)PassoTutorial.VOLTAR_QUEST)
+                Completa(Guia.Objetivos[PassoTutorial.VOLTAR_QUEST]);
+        }
+
+        public override void MataMerda()
+        {
+            if (Passo == (int)PassoTutorial.BIXO_ESGOTO)
+                Completa(Guia.Objetivos[PassoTutorial.BIXO_ESGOTO]);
+        }
+
+        public override void FalaJill()
+        {
+            if (Passo == (int)PassoTutorial.JILL)
+                Completa(Guia.Objetivos[PassoTutorial.JILL]);
+        }
+
+        public override void MataMago()
+        {
+            if (Passo == (int)PassoTutorial.MATAR_MAGO)
+                Completa(Guia.Objetivos[PassoTutorial.MATAR_MAGO]);
+        }
+
+
+
         public NovoWispGuia(Serial serial)
             : base(serial)
         {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
         }
     }
 }
