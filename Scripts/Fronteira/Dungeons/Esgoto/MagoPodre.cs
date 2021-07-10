@@ -42,7 +42,7 @@ namespace Server.Mobiles
 
             AddItem(new BlackStaff());
             var hue = Utility.RandomNeutralHue();
-            VirtualArmor = 25;
+            VirtualArmor = 0;
             PackReg(3);
             AddItem(new Robe(hue)); // TODO: Proper hue
             AddItem(new SapatoLindo());
