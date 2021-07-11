@@ -47,7 +47,7 @@ namespace Server.Fronteira.Comandos
                 {
                     var spawner = (XmlSpawner)item;
                     var region = spawner.GetRegion();
-                    if (region != null && region.Name.Contains("haven"))
+                    if (region != null && region.Name != null && region.Name.ToLower().Contains("haven"))
                     {
                         var count = spawner.MaxCount;
                         spawner.MaxCount = (int)Math.Floor(count / 3d);

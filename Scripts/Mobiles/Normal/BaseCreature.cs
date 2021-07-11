@@ -2558,7 +2558,7 @@ namespace Server.Mobiles
             if (m_TempDamageAbsorb > 0 && VialofArmorEssence.UnderInfluence(this))
                 damage -= damage / m_TempDamageAbsorb;
 
-            if(from.Elemento != ElementoPvM.None && from.Weapon is BaseWeapon && from.Elemento == ((BaseWeapon)from.Weapon).Elemento)
+            if(from != null && from.Elemento != ElementoPvM.None && from.Weapon is BaseWeapon && from.Elemento == ((BaseWeapon)from.Weapon).Elemento)
             {
                 EfeitosElementos.Effect(this, from.Elemento);
                 if (from.Elemento.ForteContra(this.Elemento))
