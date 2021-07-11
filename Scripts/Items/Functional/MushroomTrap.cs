@@ -1,4 +1,5 @@
 using System;
+using Server.Mobiles;
 using Server.Regions;
 
 namespace Server.Items
@@ -46,7 +47,7 @@ namespace Server.Items
         }
         public override void OnTrigger(Mobile from)
         {
-            if (!from.Alive || this.ItemID != 0x1125 || from.IsStaff())
+            if (!from.Alive || this.ItemID != 0x1125 || from.IsStaff() || from is BaseCreature)
                 return;
 
             this.ItemID = 0x1126;
@@ -55,6 +56,12 @@ namespace Server.Items
             Spells.SpellHelper.Damage(TimeSpan.FromSeconds(0.5), from, from, Utility.Dice(2, 4, 0));
 
             Timer.DelayCall(TimeSpan.FromSeconds(2.0), new TimerCallback(OnMushroomReset));
+
+            if(!from.IsCooldown("msgcogu"))
+            {
+                from.SetCooldown("msgcogu", TimeSpan.FromSeconds(60));
+                from.PrivateOverheadMessage("* pisou em um cogumelo venenoso *");
+            }
         }
 
         public virtual void OnMushroomReset()

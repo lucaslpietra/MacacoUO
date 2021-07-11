@@ -53,6 +53,7 @@ namespace Server.Items
                     m.SendMessage("Voce entrou no tunel");
                 else
                     m.SendMessage(Mensagem);
+                m.PrivateOverheadMessage("* desceu *");
             }
         }
 

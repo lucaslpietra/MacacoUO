@@ -39,10 +39,10 @@ namespace Server.Mobiles
             SetDex(10, 20);
             SetInt(300, 350);
 
-            SetHits(5000);
+            SetHits(1000);
             SetStam(20, 30);
 
-            SetDamage(10, 20);
+            SetDamage(5, 15);
 
             SetDamageType(ResistanceType.Physical, 75);
             SetDamageType(ResistanceType.Fire, 25);
@@ -54,7 +54,7 @@ namespace Server.Mobiles
             SetResistance(ResistanceType.Poison, 45, 60);
             SetResistance(ResistanceType.Energy, 45, 60);
 
-            SetSkill(SkillName.EvalInt, 25);
+            SetSkill(SkillName.EvalInt, 0);
             SetSkill(SkillName.MagicResist, 0);
             SetSkill(SkillName.Tactics, 90.1, 105.0);
             SetSkill(SkillName.Wrestling, 75, 75);
@@ -78,7 +78,7 @@ namespace Server.Mobiles
             AddItem(new ExodusChest());
 
             SetWeaponAbility(Habilidade.BleedAttack);
-            AddItem(new Gold(5000));
+            AddItem(new Gold(2000));
         }
 
         /*
@@ -149,7 +149,7 @@ namespace Server.Mobiles
                             pl.SendMessage("Voce eh uma boa alma.");
                             pl.SendMessage("Por ter ajudado um iniciante nesta missao voce recebeu essencias magicas e pedras preciosas");
                             var ess = new EssenciaMagica();
-                            ess.Amount = 125 + Utility.Random(75);
+                            ess.Amount = 50 + Utility.Random(75);
                             pl.PlaceInBackpack(ess);
                             pl.PlaceInBackpack(new SacolaJoias());
                             pl.PlaceInBackpack(new SacolaJoias());
