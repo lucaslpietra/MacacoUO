@@ -12,8 +12,8 @@ namespace Server.Mobiles
         public MagoPodre()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = NameList.RandomName("evil mage");
-            Title = "o mago putrido";
+            Name = NameList.RandomName("evil mage") + " o Mago Putrido";
+
             Body = 0x191;
 
             SetStr(81, 105);

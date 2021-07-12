@@ -115,6 +115,19 @@ namespace Server.Mobiles
 
         public void FazAlgo()
         {
+            if(Jogador.Combatant != null && this.Combatant == null)
+            {
+                var bixo = Jogador.Combatant as BaseCreature;
+                if(bixo != null)
+                {
+                    if(Utility.RandomDouble() < 0.2)
+                    {
+                        Fala("Toma isso, " + bixo.Name);
+                    }
+                    this.Combatant = bixo;
+                }
+            }
+
             this.DebugSay("Fazendo algo");
             var objetivoAtual = (PassoTutorial)this.Passo;
 

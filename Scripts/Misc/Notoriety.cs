@@ -155,7 +155,12 @@ namespace Server.Misc
             // PVPs
             if (from.Player && targPlayer != null)
             {
-                var targ = targPlayer as PlayerMobile;
+                var targ = targPlayer;
+                if(targ.Young)
+                {
+                    return false;
+                }
+
                 if (targ.RP != from.RP && ProtecaoRP(targ))
                 {
                     from.SendMessage("Voce nao pode atacar um jogador com o modo de jogo RP difetente do seu.");

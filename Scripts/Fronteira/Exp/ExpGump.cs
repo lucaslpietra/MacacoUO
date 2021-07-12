@@ -299,7 +299,7 @@ namespace Server.Gumps
             }
 
             var old = from.Skills[skill].Value;
-            SkillCheck.Gain(from, from.Skills[skill], 1);
+            SkillCheck.Gain(from, from.Skills[skill], 5);
             var nw = from.Skills[skill].Value;
 
             if(nw > old)
@@ -312,8 +312,6 @@ namespace Server.Gumps
                 from.SendMessage("A skill chegou no limite ou voce chegou no seu cap e precisa setar alguma skill para baixar na janela de skills.");
             }
             from.SendGump(new SkillExpGump(from));
-
-
         }
     }
 }
