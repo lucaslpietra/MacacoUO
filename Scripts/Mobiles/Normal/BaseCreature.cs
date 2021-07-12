@@ -7045,19 +7045,26 @@ namespace Server.Mobiles
                     }
                 }
 
-                var goldMult = GoldHour.GOLD_MULT;
+                var goldMult = GoldHour.GOLD_MULT + 1;
+                Shard.Debug("Loc: " + this.Location + " REG " + this.Region);
+
+                if (!(c.GetRegion() is DungeonRegion))
+                {
+                    goldMult -= 0.5;
+                }
                 if (IsParagon)
                     goldMult += 1;
 
                 var bonus = false;
-                if (GoldHour.GOLD_MULT > 0)
+                if (goldMult > 0)
                 {
                     foreach (var item in c.Items)
                     {
                         if (item is Gold)
                         {
-                            bonus = true;
-                            item.Amount = (int)(item.Amount * GoldHour.GOLD_MULT);
+                            if(goldMult > 1)
+                                bonus = true;
+                            item.Amount = (int)(item.Amount * goldMult);
                         }
                     }
                 }

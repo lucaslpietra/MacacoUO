@@ -536,7 +536,7 @@ namespace Server
             new LootPack(
                 new[]
                 {
-                    new LootPackEntry(true, Gold, 100.00, "8d10+25"), new LootPackEntry(false, Instruments, 0.10, 1),
+                    new LootPackEntry(true, Gold, 100.00, "5d10+25"), new LootPackEntry(false, Instruments, 0.10, 1),
                     new LootPackEntry(false, OldMagicItems, 1.00, 1, 1, 0, 60),
                     new LootPackEntry(false, OldMagicItems, 0.20, 1, 1, 10, 70)
                 });
@@ -545,7 +545,7 @@ namespace Server
             new LootPack(
                 new[]
                 {
-                    new LootPackEntry(true, Gold, 100.00, "15d10+50"), new LootPackEntry(false, Instruments, 0.40, 1),
+                    new LootPackEntry(true, Gold, 100.00, "10d10+50"), new LootPackEntry(false, Instruments, 0.40, 1),
                     new LootPackEntry(false, OldMagicItems, 5.00, 1, 1, 20, 80),
                     new LootPackEntry(false, OldMagicItems, 2.00, 1, 1, 30, 90),
                     new LootPackEntry(false, OldMagicItems, 0.50, 1, 1, 40, 100)
@@ -564,48 +564,48 @@ namespace Server
             new LootPack(
                 new[]
                 {
-                    new LootPackEntry(true, Gold, 100.00, "15d10+250"), new LootPackEntry(false, Instruments, 1.00, 1),
+                    new LootPackEntry(true, Gold, 100.00, "10d10+250"), new LootPackEntry(false, Instruments, 1.00, 1),
                     new LootPackEntry(false, OldMagicItems, 20.00, 1, 1, 60, 100),
                     new LootPackEntry(false, OldMagicItems, 10.00, 1, 1, 65, 100),
                     new LootPackEntry(false, OldMagicItems, 1.00, 1, 1, 70, 100),
-                    new LootPackEntry(false, TintaPreta, 0.1, 1,1,60,100),
-                    new LootPackEntry(false, TintaBranca, 0.1, 1,1,60,100),
-                    new LootPackEntry(false, TintaBranca, 0.1, 1,1,60,100),
+                    new LootPackEntry(false, TintaPreta, 0.01, 1,1,60,100),
+                    new LootPackEntry(false, TintaBranca, 0.01, 1,1,60,100),
+                    new LootPackEntry(false, TintaBranca, 0.01, 1,1,60,100),
                 });
 
         public static readonly LootPack OldFilthyRich =
             new LootPack(
                 new[]
                 {
-                    new LootPackEntry(true, Gold, 100.00, "5d125+400"), new LootPackEntry(false, Instruments, 2.00, 1),
+                    new LootPackEntry(true, Gold, 100.00, "2d100+400"), new LootPackEntry(false, Instruments, 2.00, 1),
                     new LootPackEntry(false, OldMagicItems, 33.00, 1, 1, 50, 100),
                     new LootPackEntry(false, OldMagicItems, 33.00, 1, 1, 60, 100),
                     new LootPackEntry(false, OldMagicItems, 20.00, 1, 1, 70, 100),
                     new LootPackEntry(false, OldMagicItems, 5.00, 1, 1, 80, 100),
-                    new LootPackEntry(false, TintaPreta, 0.5, 1,1,60,100),
-                    new LootPackEntry(false, TintaBranca, 0.5, 1,1,60,100),
+                    new LootPackEntry(false, TintaPreta, 0.1, 1,1,60,100),
+                    new LootPackEntry(false, TintaBranca, 0.1, 1,1,60,100),
                 });
 
         public static readonly LootPack OldUltraRich =
             new LootPack(
                 new[]
                 {
-                    new LootPackEntry(true, Gold, 100.00, "12d100+500"), new LootPackEntry(false, Instruments, 2.00, 1),
+                    new LootPackEntry(true, Gold, 100.00, "5d100+500"), new LootPackEntry(false, Instruments, 2.00, 1),
                     new LootPackEntry(false, OldMagicItems, 100.00, 1, 1, 40, 100),
                     new LootPackEntry(false, OldMagicItems, 100.00, 1, 1, 40, 100),
                     new LootPackEntry(false, OldMagicItems, 100.00, 1, 1, 50, 100),
                     new LootPackEntry(false, OldMagicItems, 100.00, 1, 1, 50, 100),
                     new LootPackEntry(false, OldMagicItems, 100.00, 1, 1, 60, 100),
                     new LootPackEntry(false, OldMagicItems, 100.00, 1, 1, 60, 100),
-                    new LootPackEntry(false, TintaPreta, 1, 1,1,60,100),
-                    new LootPackEntry(false, TintaBranca, 1, 1,1,60,100),
+                    new LootPackEntry(false, TintaPreta, 0.5, 1,1,60,100),
+                    new LootPackEntry(false, TintaBranca, 0.5, 1,1,60,100),
                 });
 
         public static readonly LootPack OldSuperBoss =
             new LootPack(
                 new[]
                 {
-                    new LootPackEntry(true, Gold, 100.00, "25d100+600"), new LootPackEntry(false, Instruments, 2.00, 1),
+                    new LootPackEntry(true, Gold, 100.00, "5d100+500"), new LootPackEntry(false, Instruments, 2.00, 1),
                     new LootPackEntry(false, OldMagicItems, 100.00, 1, 1, 40, 100),
                     new LootPackEntry(false, OldMagicItems, 100.00, 1, 1, 40, 100),
                     new LootPackEntry(false, OldMagicItems, 100.00, 1, 1, 40, 100),
