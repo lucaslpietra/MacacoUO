@@ -8,11 +8,7 @@ namespace Server.Items
         [Constructable]
         public EscutcheonDeAriadne()
         {
-            LootType = LootType.Blessed;
-            Hue = 0x8A5;
-            ArmorAttributes.DurabilityBonus = 49;
-            Attributes.ReflectPhysical = 5;
-            Attributes.DefendChance = 5;
+            Resource = CraftResource.Cobre;
         }
 
         public EscutcheonDeAriadne(Serial serial)
@@ -48,6 +44,15 @@ namespace Server.Items
                 return 14;
             }
         }
+
+        public override int OldStrReq
+        {
+            get
+            {
+                return 50;
+            }
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

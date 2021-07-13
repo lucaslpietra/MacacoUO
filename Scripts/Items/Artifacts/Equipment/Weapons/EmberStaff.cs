@@ -8,12 +8,7 @@ namespace Server.Items
         [Constructable]
         public EmberStaff()
         {
-            LootType = LootType.Blessed;
-            WeaponAttributes.HitFireball = 15;
-            WeaponAttributes.MageWeapon = 20;
-            Attributes.SpellChanneling = 1;
-            Attributes.CastSpeed = -1;
-            WeaponAttributes.LowerStatReq = 50;
+            Resource = CraftResource.Carvalho;
         }
 
         public EmberStaff(Serial serial)

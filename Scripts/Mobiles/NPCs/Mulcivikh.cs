@@ -75,7 +75,7 @@ namespace Server.Engines.Quests
             // 1078037 Your Necromancy potential is greatly enhanced while questing in this area.
             // 1078038 You are not in the quest area for Apprentice Necromancer. Your Necromancy potential is not enhanced here.
 		
-            this.AddReward(new BaseReward(typeof(CompleteNecromancerSpellbook), 1078052));
+            this.AddReward(new BaseReward(typeof(NecromancerSpellbook), "Livro de Necromancia"));
         }
 		
         public override bool CanOffer()

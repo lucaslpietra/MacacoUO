@@ -88,7 +88,7 @@ namespace Server.Engines.Quests
             // 1077493 Your Inscription potential is greatly enhanced while questing in this area.
             // 1077587 You are not in the quest area for Apprentice Scribe. Your Inscription potential is not enhanced here.
 		  
-            this.AddReward(new BaseReward(typeof(HallowedSpellbook), 1077620));
+            this.AddReward(new BaseReward(typeof(EnergyBoltScroll), 1077620));
         }
 		
         public override bool CanOffer()

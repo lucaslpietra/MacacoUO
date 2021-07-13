@@ -8,10 +8,10 @@ namespace Server.Items
         [Constructable]
         public RecarosRiposte()
         {
-            LootType = LootType.Blessed;
-            Attributes.AttackChance = 5;
-            Attributes.WeaponSpeed = 10;
-            Attributes.WeaponDamage = 25;
+           // LootType = LootType.Blessed;
+           // Attributes.AttackChance = 5;
+           // Attributes.WeaponSpeed = 10;
+           // Attributes.WeaponDamage = 25;
         }
 
         public RecarosRiposte(Serial serial)

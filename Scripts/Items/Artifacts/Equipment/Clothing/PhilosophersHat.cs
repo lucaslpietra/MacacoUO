@@ -8,9 +8,7 @@ namespace Server.Items
         [Constructable]
         public PhilosophersHat()
         {
-            LootType = LootType.Blessed;
-            Attributes.RegenMana = 1;
-            Attributes.LowerRegCost = 7;
+
         }
 
         public PhilosophersHat(Serial serial)

@@ -8,12 +8,7 @@ namespace Server.Items
         [Constructable]
         public BraceletOfResilience()
         {
-            LootType = LootType.Blessed;
-            Attributes.DefendChance = 5;
-            Resistances.Fire = 5;
-            Resistances.Cold = 5;
-            Resistances.Poison = 5;
-            Resistances.Energy = 5;
+
         }
 
         public BraceletOfResilience(Serial serial)

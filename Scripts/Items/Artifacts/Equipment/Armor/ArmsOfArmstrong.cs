@@ -8,9 +8,7 @@ namespace Server.Items
         [Constructable]
         public ArmsOfArmstrong()
         {
-            LootType = LootType.Blessed;
-            Attributes.BonusStr = 3;
-            Attributes.RegenHits = 1;
+            Resource = CraftResource.CouroSpinned;
         }
 
         public ArmsOfArmstrong(Serial serial)

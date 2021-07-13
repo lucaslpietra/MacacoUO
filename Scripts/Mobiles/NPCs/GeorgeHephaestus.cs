@@ -76,10 +76,10 @@ namespace Server.Engines.Quests
         { 
             this.AddObjective(new ApprenticeObjective(SkillName.Blacksmith, 50, "Gorge's Shop", 1077733, 1077734));		 
 			
-            // 1077733 By using George’s forge and anvil, he is able to give you advice as you create blacksmithing items. This helps you hone your Blacksmithing skill a bit faster than normal.
-            // 1077734 You’re not using George’s forge and anvil any longer, and he cannot give you advice. Your Blacksmithing learning potential is no longer enhanced. 
+            // 1077733 By using Georgeâ€™s forge and anvil, he is able to give you advice as you create blacksmithing items. This helps you hone your Blacksmithing skill a bit faster than normal.
+            // 1077734 Youâ€™re not using Georgeâ€™s forge and anvil any longer, and he cannot give you advice. Your Blacksmithing learning potential is no longer enhanced. 
 		  
-            this.AddReward(new BaseReward(typeof(HammerOfHephaestus), 1077740));
+            this.AddReward(new BaseReward("Otimo Martelo de Ferreiro"));
         }
 		
         public override bool CanOffer()
@@ -100,6 +100,10 @@ namespace Server.Engines.Quests
         { 
             this.Owner.SendLocalizedMessage(1077738, null, 0x23); // You have achieved the rank of Apprentice Blacksmith. Return to George Hephaestus in New Haven to see what kind of reward he has waiting for you.
             this.Owner.PlaySound(this.CompleteSound);
+            var martelo = new SledgeHammer();
+            martelo.Resource = CraftResource.Cobre;
+            martelo.Quality = ItemQuality.Exceptional;
+            this.Owner.AddToBackpack(martelo);
         }
 		
         public override void Serialize(GenericWriter writer)

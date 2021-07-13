@@ -9,7 +9,8 @@ namespace Server.Items
         public AmeliasToolbox()
             : base(500)
         {
-            LootType = LootType.Blessed;
+            Resource = CraftResource.Cobre;
+            Quality = ItemQuality.Exceptional;
             Hue = 1895; // TODO check
         }
 

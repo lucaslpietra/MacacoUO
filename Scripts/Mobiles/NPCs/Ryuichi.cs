@@ -77,7 +77,7 @@ namespace Server.Engines.Quests
             // 1078156 You feel a greater sense of awareness here. Your ability to hone your Ninjitsu skill is enhanced in this area.
             // 1078157 You feel your sense of awareness is normal here. Your Ninjitsu learning potential is no longer enhanced.
 			
-            this.AddReward(new BaseReward(typeof(SilverSerpentBlade), 1078163));
+            this.AddReward(new BaseReward("Nada"));
         }
 
         public override bool CanOffer()
