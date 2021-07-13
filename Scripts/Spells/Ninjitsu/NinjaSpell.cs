@@ -66,6 +66,9 @@ namespace Server.Spells.Ninjitsu
 
         public override bool ValidateCast(Mobile from)
         {
+            from.SendMessage("Ninjutsu temporariamente desabilitado :(");
+            return false;
+
             if (from.IsPlayer() && from.RP)
             {
                 var anel = from.FindItemOnLayer(Layer.Ring);

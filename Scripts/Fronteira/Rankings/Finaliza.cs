@@ -12,11 +12,6 @@ namespace Server.Ziden.Rankingss
 {
     public class Finaliza
     {
-        /*
-         *   AddItem(132, 171, 4648, 0x8A5);
-                AddItem(132, 228, 4646);
-                AddItem(132, 277, 4644, 2415);
-                */
 
         public static void Initialize()
         {

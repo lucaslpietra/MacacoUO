@@ -12,12 +12,23 @@ using System;
 
 namespace Server.Ziden.Kills
 {
+
+    public class PontoTaming : PointsSystem
+    {
+        public override TextDefinition Name { get { return "Ponto Taming"; } }
+        public override PointsType Loyalty { get { return PointsType.Taming; } }
+        public override bool AutoAdd { get { return true; } }
+        public override double MaxPoints { get { return double.MaxValue; } }
+        public override bool ShowOnLoyaltyGump { get { return false; } }
+        public static bool Enabled = true;
+    }
+
     public class Exp : PointsSystem
     {
         public override TextDefinition Name { get { return "Exp"; } }
         public override PointsType Loyalty { get { return PointsType.Exp; } }
         public override bool AutoAdd { get { return true; } }
-        public override double MaxPoints { get { return 4000; } }
+        public override double MaxPoints { get { return 1000; } }
         public override bool ShowOnLoyaltyGump { get { return true; } }
         public static bool Enabled = true;
     }

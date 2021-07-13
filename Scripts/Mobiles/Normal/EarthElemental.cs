@@ -48,61 +48,7 @@ namespace Server.Mobiles
             this.PackItem(ore);
         }
 
-        /*
-        public override void OnBeforeDamage(Mobile from, ref int totalDamage, DamageType type)
-        {
-
-            if (from == null)
-                return;
-
-            if (!this.Alive)
-                return;
-
-            if (type != DamageType.Melee)
-                return;
-
-            bool bonus = false;
-            base.OnBeforeDamage(from, ref totalDamage, type);
-            var arma = from.FindItemOnLayer(Layer.OneHanded);
-            if (arma != null && arma is BaseBashing)
-            {
-                totalDamage += 10;
-                bonus = true;
-            }
-
-            arma = from.FindItemOnLayer(Layer.TwoHanded);
-            if (arma != null && arma is BaseBashing)
-            {
-                bonus = true;
-                totalDamage += 5;
-            }
-
-            if (!bonus)
-            {
-                totalDamage = (int)(totalDamage * 0.8);
-                if (!from.IsCooldown("dicabas2"))
-                {
-                    from.SetCooldown("dicabas2", TimeSpan.FromMinutes(10));
-                    from.SendMessage(78, "Alguns monstros, como monstros de pedras recebem dano extra de armas Macefight");
-
-                }
-            }
-            else if (bonus)
-            {
-                if (Utility.RandomDouble() > 0.25)
-                {
-                    var ore = new IronOre();
-                    ore.MoveToWorld(this.Location);
-                }
-                if (!from.IsCooldown("dicabas"))
-                {
-                    from.SetCooldown("dicabas", TimeSpan.FromMinutes(10));
-                    from.SendMessage("Sua arma foi muito efetiva contra " + this.Name);
-                }
-            }
-        }
-        */
-
+  
         public EarthElemental(Serial serial)
             : base(serial)
         {

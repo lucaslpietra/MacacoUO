@@ -11,6 +11,7 @@ namespace Server.Mobiles
             : base("o mago")
         {
             this.SetSkill(SkillName.EvalInt, 65.0, 88.0);
+            this.SetSkill(SkillName.Imbuing, 60.0, 83.0);
             this.SetSkill(SkillName.Inscribe, 60.0, 83.0);
             this.SetSkill(SkillName.Magery, 64.0, 100.0);
             this.SetSkill(SkillName.Meditation, 60.0, 83.0);

@@ -65,7 +65,7 @@ namespace Server.Mobiles
 
                 //Add(new GenericBuyInfo("Chapeu Magico", typeof(MagicWizardsHat), 20000, 10, 0x1718, Utility.RandomDyedHue()));
 
-                Add(new GenericBuyInfo(typeof(RecallRune), 15, 10, 0x1F14, 0));
+                Add(new GenericBuyInfo(typeof(RecallRune), 1000, 10, 0x1F14, 0));
 
 
                 Type[] types = Loot.RegularScrollTypes;

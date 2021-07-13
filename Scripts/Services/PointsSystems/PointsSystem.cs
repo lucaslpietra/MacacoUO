@@ -62,6 +62,7 @@ namespace Server.Engines.Points
         Trabalho,
 
         Exp,
+        Taming,
     }
 
     public abstract class PointsSystem
@@ -419,6 +420,7 @@ namespace Server.Engines.Points
         public static PontosRP PontosRP { get; set; }
         public static PontosPvm PontosPvm { get; set; }
         public static Exp Exp { get; set; }
+        public static PontoTaming PontosTaming { get; set; }
         public static PontosPvmEternos PontosPvmEterno { get; set; }
         public static PontosTrabalho PontosTrabalho { get; set; }
 
@@ -452,6 +454,7 @@ namespace Server.Engines.Points
             PontosPvmEterno = new PontosPvmEternos();
             PontosTrabalho = new PontosTrabalho();
             Exp = new Exp();
+            PontosTaming = new PontoTaming();
         }
 
         public static void HandleKill(BaseCreature victim, Mobile damager, int index)

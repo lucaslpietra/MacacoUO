@@ -227,8 +227,8 @@ namespace Server.Spells.Chivalry
                     m_Owner.Effect(deed.PlotLocation, deed.PlotFacet, true);
                 } else if(o is IPoint3D)
                 {
-                    TeleportSpell.Teleporta(from, (IPoint3D)o);
-                    from.Mana -= 9;
+                    //TeleportSpell.Teleporta(from, (IPoint3D)o);
+                    //from.Mana -= 9;
                 }
 
                 #region High Seas

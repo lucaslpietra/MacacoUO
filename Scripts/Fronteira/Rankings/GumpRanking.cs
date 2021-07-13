@@ -1,6 +1,3 @@
-
-//////////////////////////////////////////////////////////////////////
-
 using System;
 using Server;
 using Server.Gumps;
@@ -96,22 +93,27 @@ namespace Server.Gumps
             AddHtml(132, 107, 146, 24, @"Fama", (bool)true, (bool)false);
             AddButton(247, 108, 4005, 4005, (int)Buttons.Fama, GumpButtonType.Reply, 0);
 
-
             AddBackground(208, 65, 284, 30, 9200);
             AddHtml(266, 77, 166, 24, "Ranking de "+ctx.Title, (bool)false, (bool)false);
             AddImage(72, 334, 10440);
             AddImage(575, 320, 10441);
-            AddHtml(146, 692, 430, 56, @"Os 3 primeiros jogadores irao ganhar trofeis e recompensas UNICAS !", (bool)true, (bool)false);
-            AddHtml(285, 108, 146, 24, @"--", (bool)true, (bool)false);
+            AddHtml(146, 692, 430, 56, @"Os primeiros jogadores irao ganhar trofeis e recompensas<br>Termina em: <b>Nao Definido</b>", (bool)true, (bool)false);
+
+
+            AddHtml(285, 108, 146, 24, @"Taming", (bool)true, (bool)false);
+            AddButton(405, 108, 4005, 4005, (int)Buttons.Taming, GumpButtonType.Reply, 0);
 
             AddHtml(446, 108, 146, 24, @"Trabalho", (bool)true, (bool)false);
             AddButton(560, 108, 4005, 4005, (int)Buttons.Trabalho, GumpButtonType.Reply, 0);
 
+            AddHtml(285, 138, 146, 24, @"Elementos", (bool)true, (bool)false);
+            AddButton(405, 138, 4005, 4005, (int)Buttons.Elementos, GumpButtonType.Reply, 0);
+
             AddButton(247, 140, 4005, 4005, (int)Buttons.PvM, GumpButtonType.Reply, 0);
-            AddHtml(285, 138, 146, 24, @"--", (bool)true, (bool)false);
+           
             AddHtml(445, 138, 146, 24, @"--", (bool)true, (bool)false);
             AddButton(566, 767, 4005, 4005, (int)Buttons.Prox, GumpButtonType.Reply, 0);
-            AddButton(524, 767, 4005, 4005, (int)Buttons.Ant, GumpButtonType.Reply, 0);
+            AddButton(524, 767, 4014, 4014, (int)Buttons.Ant, GumpButtonType.Reply, 0);
         }
 
         public enum Buttons
@@ -120,6 +122,8 @@ namespace Server.Gumps
             PvM,
             Trabalho,
             Fama,
+            Taming,
+            Elementos,
             Prox,
             Ant
         }
@@ -138,6 +142,7 @@ namespace Server.Gumps
 
             switch (info.ButtonID)
             {
+
                 case (int)Buttons.PvM:
                     {
                         ctx.Page = 0;
@@ -146,6 +151,7 @@ namespace Server.Gumps
                         sender.Mobile.SendGump(new Rankings(sender.Mobile, ctx));
                         break;
                     }
+
                 case (int)Buttons.Fama:
                     {
                         ctx.Page = 0;
@@ -162,6 +168,28 @@ namespace Server.Gumps
                         ctx.Rank = PointsSystem.PontosTrabalho.GetOrCalculateRank();
                         sender.Mobile.SendGump(new Rankings(sender.Mobile, ctx));
                         break;
+                    }
+
+                case (int)Buttons.Taming:
+                    {
+                        ctx.Page = 0;
+                        ctx.Title = "Taming";
+                        ctx.Rank = PointsSystem.PontosTaming.GetOrCalculateRank();
+                        sender.Mobile.SendGump(new Rankings(sender.Mobile, ctx));
+                        break;
+                    }
+
+                case (int)Buttons.Elementos:
+                    {
+                        sender.Mobile.SendGump(new GumpEscolherElemento());
+                        break;
+                        /*
+                        ctx.Page = 0;
+                        ctx.Title = "Trabalho";
+                        ctx.Rank = PointsSystem.PontosTrabalho.GetOrCalculateRank();
+                        sender.Mobile.SendGump(new Rankings(sender.Mobile, ctx));
+                        break;
+                        */
                     }
 
                 case (int)Buttons.Prox:

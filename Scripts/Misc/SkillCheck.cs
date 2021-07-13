@@ -43,7 +43,7 @@ namespace Server.Misc
 
         static SkillCheck()
         {
-            _AntiMacroCode = true;//Config.Get("PlayerCaps.EnableAntiMacro", false);
+            _AntiMacroCode = false;//Config.Get("PlayerCaps.EnableAntiMacro", false);
 
             _StatGainDelay = Config.Get("PlayerCaps.PlayerStatTimeDelay", TimeSpan.FromMinutes(15.0));
             _PetStatGainDelay = Config.Get("PlayerCaps.PetStatTimeDelay", TimeSpan.FromMinutes(5.0));

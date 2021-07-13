@@ -133,10 +133,10 @@ namespace Server.Mobiles
     {
         public object Arrastando;
         public bool Mamonita = false;
-        public int RankingFama = 0;
         public int NivelBanco = 0;
         public WispGuia Wisp = null;
         public int Anuncios = 0;
+        public int RankingFama = 0;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public byte Nivel { get; set; }

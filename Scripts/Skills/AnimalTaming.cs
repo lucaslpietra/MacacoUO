@@ -1,7 +1,7 @@
 #region References
 using System;
 using System.Collections;
-
+using Server.Engines.Points;
 using Server.Engines.XmlSpawner2;
 using Server.Factions;
 using Server.Mobiles;
@@ -459,12 +459,16 @@ namespace Server.SkillHandlers
                             }
                             else
                             {
+                                var pontos = m_Creature.MinTameSkill / 10;
+                                PointsSystem.PontosTaming.AwardPoints(m_Tamer, pontos, false, false);
                                 m_Creature.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 502799, m_Tamer.NetState);
                                 // It seems to accept you as master.
                             }
 
                             m_Creature.SetControlMaster(m_Tamer);
                             m_Creature.IsBonded = false;
+
+                       
 
                             m_Creature.OnAfterTame(m_Tamer);
 

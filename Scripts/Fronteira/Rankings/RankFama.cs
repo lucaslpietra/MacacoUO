@@ -14,8 +14,8 @@ namespace Server.Ziden
     {
         public static void Initialize()
         {
-            CommandSystem.Register("calcularank", AccessLevel.Administrator, new CommandEventHandler(CMD));
-            CommandSystem.Register("rank", AccessLevel.Administrator, new CommandEventHandler(CMDRank));
+            CommandSystem.Register("calcularankfama", AccessLevel.Administrator, new CommandEventHandler(CMD));
+            CommandSystem.Register("rankfama", AccessLevel.Administrator, new CommandEventHandler(CMDRank));
             Rank = PlayerMobile.Instances.OrderByDescending(e => e.Fame).Select((e, index) => {
                 e.RankingFama = index;
                 return new PointsEntry(e, e.Fame); }
