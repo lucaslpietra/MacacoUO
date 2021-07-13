@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class Emerald : Item, IGem
+    public class Emerald : BasePedraPreciosa, IGem
     {
         [Constructable]
         public Emerald()
@@ -21,12 +21,6 @@ namespace Server.Items
         public Emerald(Serial serial)
             : base(serial)
         {
-        }
-
-        public override void AddNameProperties(ObjectPropertyList list)
-        {
-            base.AddNameProperties(list);
-            list.Add("Insumo de Jewelcrafting");
         }
 
         public override double DefaultWeight

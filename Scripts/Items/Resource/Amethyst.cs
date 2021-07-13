@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class Amethyst : Item, IGem
+    public class Amethyst : BasePedraPreciosa, IGem
     {
         [Constructable]
         public Amethyst()
@@ -21,12 +21,6 @@ namespace Server.Items
         public Amethyst(Serial serial)
             : base(serial)
         {
-        }
-
-        public override void AddNameProperties(ObjectPropertyList list)
-        {
-            base.AddNameProperties(list);
-            list.Add("Insumo de Jewelcrafting");
         }
 
         public override double DefaultWeight

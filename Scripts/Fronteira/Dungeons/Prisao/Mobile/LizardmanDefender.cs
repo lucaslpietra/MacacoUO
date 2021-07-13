@@ -22,7 +22,7 @@ namespace Server.Mobiles
 
             SetHits(300, 400);
 
-            SetDamage(10, 15);
+            SetDamage(15, 20);
 
             SetDamageType(ResistanceType.Physical, 100);
 
@@ -36,8 +36,8 @@ namespace Server.Mobiles
             SetSkill(SkillName.Tactics, 95.1, 120.0);
             SetSkill(SkillName.Wrestling, 95.1, 120.0);
 
-            Fame = 11000;
-            Karma = -11000;
+            Fame = 10000;
+            Karma = -10000;
 
             VirtualArmor = 90;
         }

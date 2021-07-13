@@ -238,11 +238,11 @@ namespace Server.Mobiles
             if(wall == null)
             {
                 Name = "troll da caverna";
-                BodyValue = 0x1;
+                BodyValue = 54;
                 Hue = 638;
             } else
             {
-                BodyValue = 0x1;
+                BodyValue = 54;
                 Hue = 638;
                 Name = "troll guardiao do muro";
             }

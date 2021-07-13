@@ -9,9 +9,9 @@ namespace Server.Items
         public RingOfTheSavant()
         {
             LootType = LootType.Blessed;
-            Attributes.BonusInt = 3;
-            Attributes.CastRecovery = 1;
-            Attributes.CastSpeed = 1;
+          //  Attributes.BonusInt = 1;
+            //Attributes.CastRecovery = 1;
+            //Attributes.CastSpeed = 1;
         }
 
         public RingOfTheSavant(Serial serial)

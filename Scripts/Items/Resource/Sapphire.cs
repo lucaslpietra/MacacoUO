@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class Sapphire : Item, IGem
+    public class Sapphire : BasePedraPreciosa, IGem
     {
         [Constructable]
         public Sapphire()
@@ -21,12 +21,6 @@ namespace Server.Items
         public Sapphire(Serial serial)
             : base(serial)
         {
-        }
-
-        public override void AddNameProperties(ObjectPropertyList list)
-        {
-            base.AddNameProperties(list);
-            list.Add("Insumo de Jewelcrafting");
         }
 
         public override double DefaultWeight

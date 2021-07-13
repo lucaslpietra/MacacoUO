@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class Tourmaline : Item, IGem
+    public class Tourmaline : BasePedraPreciosa, IGem
     {
         [Constructable]
         public Tourmaline()
@@ -21,12 +21,6 @@ namespace Server.Items
         public Tourmaline(Serial serial)
             : base(serial)
         {
-        }
-
-        public override void AddNameProperties(ObjectPropertyList list)
-        {
-            base.AddNameProperties(list);
-            list.Add("Insumo de Jewelcrafting");
         }
 
         public override double DefaultWeight

@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class Citrine : Item, IGem
+    public class Citrine : BasePedraPreciosa, IGem
     {
         [Constructable]
         public Citrine()
@@ -23,11 +23,6 @@ namespace Server.Items
         {
         }
 
-        public override void AddNameProperties(ObjectPropertyList list)
-        {
-            base.AddNameProperties(list);
-            list.Add("Insumo de Jewelcrafting");
-        }
 
         public override double DefaultWeight
         {
