@@ -244,8 +244,8 @@ namespace Server.Engines.Shadowguard
             SetSkill(SkillName.DetectHidden, 40.0, 45.0);
             SetSkill(SkillName.Parry, 55.0, 60.0);
 
-            SetWeaponAbility(Habilidade.Dismount);
-            SetWeaponAbility(Habilidade.ForceOfNature);
+            SetWeaponAbility(WeaponAbility.Dismount);
+            SetWeaponAbility(WeaponAbility.ForceOfNature);
         }
 
         public override void OnGaveMeleeAttack(Mobile defender)
@@ -417,8 +417,8 @@ namespace Server.Engines.Shadowguard
             SetSkill(SkillName.DetectHidden, 50.6);
             SetSkill(SkillName.Parry, 65.0, 75.0);
 
-            SetWeaponAbility(Habilidade.DoubleStrike);
-            SetWeaponAbility(Habilidade.TalonStrike);
+            SetWeaponAbility(WeaponAbility.DoubleStrike);
+            SetWeaponAbility(WeaponAbility.TalonStrike);
         }
 
         public override void OnDeath(Container c)

@@ -52,8 +52,8 @@ namespace Server.Mobiles
 
             m_DispelDifficulty = 91 + (int)((baseskill * 83) / 5.2);
 
-            SetWeaponAbility(Habilidade.ArmorIgnore);
-            SetWeaponAbility(Habilidade.CrushingBlow);
+            SetWeaponAbility(WeaponAbility.ArmorIgnore);
+            SetWeaponAbility(WeaponAbility.CrushingBlow);
         }
 
         public override double GetFightModeRanking(Mobile m, FightMode acqType, bool bPlayerOnly)

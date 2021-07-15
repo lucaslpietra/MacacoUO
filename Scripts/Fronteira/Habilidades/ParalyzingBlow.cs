@@ -8,7 +8,7 @@ namespace Server.Items
     /// <summary>
     /// A successful Paralyzing Blow will leave the target stunned, unable to move, attack, or cast spells, for a few seconds.
     /// </summary>
-    public class ParalyzingBlow : Habilidade
+    public class ParalyzingBlow : WeaponAbility
     {
         public static readonly TimeSpan NPCFreezeDuration = TimeSpan.FromSeconds(6.0);
         public static readonly TimeSpan FreezeDelayDuration = TimeSpan.FromSeconds(8.0);

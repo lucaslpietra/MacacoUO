@@ -39,18 +39,18 @@ namespace Server.Items
                 return new Arrow();
             }
         }
-        public override Habilidade PrimaryAbility
+        public override WeaponAbility PrimaryAbility
         {
             get
             {
-                return Habilidade.ArmorIgnore;
+                return WeaponAbility.ArmorIgnore;
             }
         }
-        public override Habilidade SecondaryAbility
+        public override WeaponAbility SecondaryAbility
         {
             get
             {
-                return Habilidade.MovingShot;
+                return WeaponAbility.MovingShot;
             }
         }
         public override int AosStrengthReq

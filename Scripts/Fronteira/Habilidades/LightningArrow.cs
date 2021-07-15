@@ -6,7 +6,7 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class LightningArrow : Habilidade
+    public class LightningArrow : WeaponAbility
     {
         public LightningArrow()
         {

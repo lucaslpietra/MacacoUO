@@ -86,9 +86,9 @@ namespace Server.Mobiles
 
             if (version == 0)
             {
-                SetWeaponAbility(Habilidade.ArmorIgnore);
-                SetWeaponAbility(Habilidade.BleedAttack);
-                SetWeaponAbility(Habilidade.ParalyzingBlow);
+                SetWeaponAbility(WeaponAbility.ArmorIgnore);
+                SetWeaponAbility(WeaponAbility.BleedAttack);
+                SetWeaponAbility(WeaponAbility.ParalyzingBlow);
             }
         }
     }

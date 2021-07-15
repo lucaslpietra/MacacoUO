@@ -55,7 +55,7 @@ namespace Server.Mobiles
 			MinTameSkill = 107.1;
 			ControlSlots = 3;
 
-            SetWeaponAbility(Habilidade.BleedAttack);
+            SetWeaponAbility(WeaponAbility.BleedAttack);
 		}
 
 		public override int Meat
@@ -208,7 +208,7 @@ namespace Server.Mobiles
 				m_IsFriend = reader.ReadBool();
 
             if(version == 1)
-                SetWeaponAbility(Habilidade.BleedAttack);
+                SetWeaponAbility(WeaponAbility.BleedAttack);
 
 			if (m_IsFriend)
 				Delete();

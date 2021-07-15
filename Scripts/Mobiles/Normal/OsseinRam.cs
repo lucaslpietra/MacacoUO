@@ -44,7 +44,7 @@ namespace Server.Mobiles
             MinTameSkill = 72.0;
 
             SetMagicalAbility(MagicalAbility.BattleDefense);
-            SetWeaponAbility(Habilidade.MortalStrike);
+            SetWeaponAbility(WeaponAbility.MortalStrike);
             SetSpecialAbility(SpecialAbility.LifeLeech);
         }
 

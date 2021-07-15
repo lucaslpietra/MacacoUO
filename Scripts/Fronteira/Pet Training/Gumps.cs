@@ -1089,14 +1089,14 @@ namespace Server.Mobiles
                     }
                 }
             }
-            else if (o is Habilidade[])
+            else if (o is WeaponAbility[])
             {
                 if (!AbilityProfile.CanChooseWeaponAbility())
                 {
                     return false;
                 }
 
-                foreach (var ability in (Habilidade[])o)
+                foreach (var ability in (WeaponAbility[])o)
                 {
                     if (!AbilityProfile.HasAbility(ability))
                     {
@@ -1218,7 +1218,7 @@ namespace Server.Mobiles
                     tp = PetTrainingHelper.GetTrainingPoint(sabil);
                     break;
                 case 6: // spec moves
-                    Habilidade wabil = Definition.WeaponAbilities[id - 100];
+                    WeaponAbility wabil = Definition.WeaponAbilities[id - 100];
                     tp = PetTrainingHelper.GetTrainingPoint(wabil);
                     break;
                 case 7: // area effects

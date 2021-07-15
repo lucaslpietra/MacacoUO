@@ -46,8 +46,8 @@ namespace Server.Mobiles
                 PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
 
-            SetWeaponAbility(Habilidade.BleedAttack);
-            SetWeaponAbility(Habilidade.ParalyzingBlow);
+            SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
 
         public override bool GivesMLMinorArtifact

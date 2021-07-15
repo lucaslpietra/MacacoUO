@@ -45,9 +45,9 @@ namespace Server.Mobiles
             Fame = 21000;
             Karma = -21000;
 
-            SetWeaponAbility(Habilidade.ArmorPierce);
-            SetWeaponAbility(Habilidade.CrushingBlow);
-            SetWeaponAbility(Habilidade.Disarm);
+            SetWeaponAbility(WeaponAbility.ArmorPierce);
+            SetWeaponAbility(WeaponAbility.CrushingBlow);
+            SetWeaponAbility(WeaponAbility.Disarm);
         }
 
         public override void GenerateLoot()

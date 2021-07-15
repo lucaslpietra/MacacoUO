@@ -27,7 +27,9 @@ using Server.Services.Virtues;
 using Server.SkillHandlers;
 using Server.Spells;
 using Server.Spells.Bushido;
+using Server.Spells.Fifth;
 using Server.Spells.Necromancy;
+using Server.Spells.Seventh;
 using Server.Spells.Sixth;
 using Server.Spells.SkillMasteries;
 using Server.Spells.Spellweaving;
@@ -609,7 +611,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public double BardingDifficulty { get { return BaseInstrument.GetBaseDifficulty(this); } }
 
-        public virtual Habilidade TryGetWeaponAbility()
+        public virtual WeaponAbility TryGetWeaponAbility()
         {
             if (_Profile != null && _Profile.WeaponAbilities != null && _Profile.WeaponAbilities.Length > 0)
             {
@@ -675,7 +677,7 @@ namespace Server.Mobiles
             PetTrainingHelper.GetAbilityProfile(this, true).AddAbility(ability, false);
         }
 
-        public void SetWeaponAbility(Habilidade ability)
+        public void SetWeaponAbility(WeaponAbility ability)
         {
             PetTrainingHelper.GetAbilityProfile(this, true).AddAbility(ability, false);
         }
@@ -695,7 +697,7 @@ namespace Server.Mobiles
             PetTrainingHelper.GetAbilityProfile(this, true).RemoveAbility(ability);
         }
 
-        public void RemoveWeaponAbility(Habilidade ability)
+        public void RemoveWeaponAbility(WeaponAbility ability)
         {
             PetTrainingHelper.GetAbilityProfile(this, true).RemoveAbility(ability);
         }
@@ -875,7 +877,7 @@ namespace Server.Mobiles
 
         public virtual double WeaponAbilityChance { get { return 0.4; } }
 
-        public virtual Habilidade GetWeaponAbility()
+        public virtual WeaponAbility GetWeaponAbility()
         {
             XmlWeaponAbility a = (XmlWeaponAbility)XmlAttach.FindAttachment(this, typeof(XmlWeaponAbility));
             if (a != null)
@@ -6549,10 +6551,60 @@ namespace Server.Mobiles
 
         public virtual bool IgnoreYoungProtection { get { return false; } }
 
+        private static int EB = -1;
+        private static int FS = -1;
+        private static int PARA = -1;
+        private static int EXPLO = -1;
+
+        public void DropScrollsGarantidos()
+        {
+            if (this.Skills.Magery.Value == 0)
+                return;
+
+            if(EB == -1)
+                EB = SpellRegistry.GetRegistryNumber(typeof(EnergyBoltSpell));
+            if(FS == -1)
+                FS = SpellRegistry.GetRegistryNumber(typeof(FlameStrikeSpell));
+            if(PARA == -1)
+                PARA = SpellRegistry.GetRegistryNumber(typeof(ParalyzeSpell));
+            if(EXPLO == -1)
+                EXPLO = SpellRegistry.GetRegistryNumber(typeof(ExplosionSpell));
+
+            List<DamageStore> rights = GetLootingRights();
+            foreach (var r in rights)
+            {
+                if (r.m_HasRight && r.m_Mobile != null && r.m_Mobile.Skills.Magery.Value > 50)
+                {
+                    var book = Spellbook.FindRegular(r.m_Mobile);
+                    if(book != null)
+                    {
+                        if(!book.HasSpell(EB) && !r.m_Mobile.Backpack.HasItem<EnergyBoltScroll>())
+                        {
+                            PackItem(new EnergyBoltScroll());
+                            return;
+                        }
+                        else if (r.m_Mobile.Skills.Magery.Value > 75 && !book.HasSpell(FS) && !r.m_Mobile.Backpack.HasItem<FlamestrikeScroll>())
+                        {
+                            PackItem(new FlamestrikeScroll());
+                        }
+                        else if (r.m_Mobile.Skills.Magery.Value > 65 && !book.HasSpell(EXPLO) && !r.m_Mobile.Backpack.HasItem<ExplosionScroll>())
+                        {
+                            PackItem(new ExplosionScroll());
+                        }
+                        else if (r.m_Mobile.Skills.Magery.Value > 55 && !book.HasSpell(PARA) && !r.m_Mobile.Backpack.HasItem<ParalyzeScroll>())
+                        {
+                            PackItem(new ParalyzeScroll());
+                        }
+                    }
+                }
+            }
+        }
+
         public override bool OnBeforeDeath()
         {
             int treasureLevel = TreasureMapLevel;
             List<DamageStore> rights = GetLootingRights();
+            DropScrollsGarantidos();
             if (this.Region != null && this.Region is DungeonRegion)
             {
                 foreach (var r in rights)
@@ -6593,7 +6645,7 @@ namespace Server.Mobiles
                     }
                     else if (TreasureMapChance >= Utility.RandomDouble())
                     {
-                        Map map = Map.Felucca;
+                        Map map = Map.Trammel;
                         PackItem(new TreasureMap(treasureLevel, map));
                     }
                 }

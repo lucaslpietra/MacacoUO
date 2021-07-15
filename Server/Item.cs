@@ -542,7 +542,7 @@ namespace Server
         /// <summary>
         ///     Unstealable. Unlootable, unless owned by a murderer.
         /// </summary>
-        // Blessed = 1,
+        Newbied = 1,
 
         /// <summary>
         ///     Unstealable. Unlootable, always.
@@ -552,7 +552,8 @@ namespace Server
         /// <summary>
         ///     Stealable. Lootable, always.
         /// </summary>
-        Cursed = 3
+        Cursed = 3,
+
     }
 
     public class BounceInfo
@@ -5084,7 +5085,7 @@ namespace Server
         public virtual string DefaultName { get { return null; } }
 
         [CommandProperty(AccessLevel.Decorator)]
-        public string Name
+        public virtual string Name
         {
             get
             {

@@ -43,8 +43,8 @@ namespace Server.Gumps
                 var talentos = caller.Talentos.Habilidades();
                 if(index >= talentos.Count)
                 {
-                    var habilidade = Habilidade.Talentos[talentos[index]];
-                    Habilidade.SetCurrentAbility(caller, habilidade);
+                    var habilidade = WeaponAbility.Talentos[talentos[index]];
+                    WeaponAbility.SetCurrentAbility(caller, habilidade);
                     if(caller.HasGump(typeof(GumpHabilidades)))
                     {
                         caller.CloseGump(typeof(GumpHabilidades));
@@ -108,10 +108,10 @@ namespace Server.Gumps
             var x = 0;
             foreach (var talentoHabilidade in habilidades)
             {
-                var habilidade = Habilidade.Talentos[talentoHabilidade];
+                var habilidade = WeaponAbility.Talentos[talentoHabilidade];
                 var def = DefTalentos.GetDef(talentoHabilidade);
                 AddButton(202 + x, 196, def.Icone, def.Icone, botao, GumpButtonType.Reply, 0);
-                if (Habilidade.GetCurrentAbility(player) == habilidade)
+                if (WeaponAbility.GetCurrentAbility(player) == habilidade)
                 {
                     AddImage(214 + x, 182, 9906);
                 }
@@ -135,8 +135,8 @@ namespace Server.Gumps
             if (info.ButtonID != 0)
             {
                 var ativado = Talentos[info.ButtonID - 1];
-                var habilidade = Habilidade.Talentos[ativado];
-                Habilidade.SetCurrentAbility(from, habilidade);
+                var habilidade = WeaponAbility.Talentos[ativado];
+                WeaponAbility.SetCurrentAbility(from, habilidade);
                 from.CloseGump(typeof(GumpHabilidades));
                 from.SendGump(new GumpHabilidades(from as PlayerMobile, Talentos));
             }

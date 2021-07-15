@@ -47,7 +47,7 @@ namespace Server.Mobiles
             ControlSlots = 3;
             MinTameSkill = 102.0;
 
-            SetWeaponAbility(Habilidade.Block);
+            SetWeaponAbility(WeaponAbility.Block);
             SetSpecialAbility(SpecialAbility.GraspingClaw);
         }
 
@@ -78,7 +78,7 @@ namespace Server.Mobiles
             if (version == 0)
             {
                 SetSpecialAbility(SpecialAbility.GraspingClaw);
-                SetWeaponAbility(Habilidade.Block);
+                SetWeaponAbility(WeaponAbility.Block);
             }
         }
     }

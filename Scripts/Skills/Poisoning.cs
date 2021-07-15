@@ -67,7 +67,7 @@ namespace Server.SkillHandlers
 
                         if (Core.AOS)
                         {
-                            startTimer = (weapon.PrimaryAbility == Habilidade.InfectiousStrike || weapon.SecondaryAbility == Habilidade.InfectiousStrike);
+                            startTimer = (weapon.PrimaryAbility == WeaponAbility.InfectiousStrike || weapon.SecondaryAbility == WeaponAbility.InfectiousStrike);
                         }
                         else
                         {

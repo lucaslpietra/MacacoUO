@@ -61,7 +61,7 @@ namespace Server.Items
         {
             base.OnHit(attacker, defender, damageBonus);
 
-            if (Habilidade.GetCurrentAbility(attacker) is InfectiousStrike)
+            if (WeaponAbility.GetCurrentAbility(attacker) is InfectiousStrike)
                 return;
 
             if (!Core.AOS && defender is Mobile && this.Poison != null && this.PoisonCharges > 0)

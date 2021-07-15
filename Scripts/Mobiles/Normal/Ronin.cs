@@ -82,7 +82,7 @@ namespace Server.Mobiles
 
 			Utility.AssignRandomHair( this );
 
-            SetWeaponAbility(Habilidade.RidingSwipe);
+            SetWeaponAbility(WeaponAbility.RidingSwipe);
 		}
 		
 		public override void OnDeath( Container c )

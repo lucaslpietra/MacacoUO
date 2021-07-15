@@ -174,7 +174,7 @@ namespace Server.Mobiles
                 if (tp.TrainPoint is SpecialAbility && o is SpecialAbility && (SpecialAbility)tp.TrainPoint == (SpecialAbility)o)
                     return tp;
 
-                if (tp.TrainPoint is Habilidade && o is Habilidade && (Habilidade)tp.TrainPoint == (Habilidade)o)
+                if (tp.TrainPoint is WeaponAbility && o is WeaponAbility && (WeaponAbility)tp.TrainPoint == (WeaponAbility)o)
                     return tp;
 
                 if (tp.TrainPoint is AreaEffect && o is AreaEffect && (AreaEffect)tp.TrainPoint == (AreaEffect)o)
@@ -293,112 +293,112 @@ namespace Server.Mobiles
         #endregion
 
         #region Weapon Ability Defs
-        public static Habilidade[] WeaponAbilities =
+        public static WeaponAbility[] WeaponAbilities =
         {
-            Habilidade.NerveStrike,
-            Habilidade.WhirlwindAttack,
-            Habilidade.LightningArrow,
-            Habilidade.InfusedThrow,
-            Habilidade.MysticArc,
-            Habilidade.TalonStrike,
-            Habilidade.PsychicAttack,
-            Habilidade.ArmorIgnore,
-            Habilidade.ArmorPierce,
-            Habilidade.Bladeweave,
-            Habilidade.BleedAttack,
-            Habilidade.Block,
-            Habilidade.ConcussionBlow,
-            Habilidade.CrushingBlow,
-            Habilidade.Disarm,
-            Habilidade.Dismount,
-            Habilidade.DoubleStrike,
-            Habilidade.DualWield,
-            Habilidade.Feint,
-            Habilidade.ForceOfNature,
-            Habilidade.FrenziedWhirlwind,
-            Habilidade.MortalStrike,
-            Habilidade.ParalyzingBlow,
-            Habilidade.ColdWind,
+            WeaponAbility.NerveStrike,
+            WeaponAbility.WhirlwindAttack,
+            WeaponAbility.LightningArrow,
+            WeaponAbility.InfusedThrow,
+            WeaponAbility.MysticArc,
+            WeaponAbility.TalonStrike,
+            WeaponAbility.PsychicAttack,
+            WeaponAbility.ArmorIgnore,
+            WeaponAbility.ArmorPierce,
+            WeaponAbility.Bladeweave,
+            WeaponAbility.BleedAttack,
+            WeaponAbility.Block,
+            WeaponAbility.ConcussionBlow,
+            WeaponAbility.CrushingBlow,
+            WeaponAbility.Disarm,
+            WeaponAbility.Dismount,
+            WeaponAbility.DoubleStrike,
+            WeaponAbility.DualWield,
+            WeaponAbility.Feint,
+            WeaponAbility.ForceOfNature,
+            WeaponAbility.FrenziedWhirlwind,
+            WeaponAbility.MortalStrike,
+            WeaponAbility.ParalyzingBlow,
+            WeaponAbility.ColdWind,
         };
 
-        public static Habilidade[] WepAbilityNone = { };
+        public static WeaponAbility[] WepAbilityNone = { };
 
-        public static Habilidade[] WepAbility1 =
+        public static WeaponAbility[] WepAbility1 =
         {
-            Habilidade.ArmorIgnore, Habilidade.ArmorPierce, Habilidade.Bladeweave, Habilidade.BleedAttack, Habilidade.ConcussionBlow,
-            Habilidade.CrushingBlow, Habilidade.Dismount, Habilidade.Feint, Habilidade.ForceOfNature, Habilidade.FrenziedWhirlwind,
-            Habilidade.MortalStrike, Habilidade.NerveStrike, Habilidade.ParalyzingBlow, Habilidade.PsychicAttack, Habilidade.TalonStrike
+            WeaponAbility.ArmorIgnore, WeaponAbility.ArmorPierce, WeaponAbility.Bladeweave, WeaponAbility.BleedAttack, WeaponAbility.ConcussionBlow,
+            WeaponAbility.CrushingBlow, WeaponAbility.Dismount, WeaponAbility.Feint, WeaponAbility.ForceOfNature, WeaponAbility.FrenziedWhirlwind,
+            WeaponAbility.MortalStrike, WeaponAbility.NerveStrike, WeaponAbility.ParalyzingBlow, WeaponAbility.PsychicAttack, WeaponAbility.TalonStrike
         };
 
-        public static Habilidade[] WepAbility2 =
+        public static WeaponAbility[] WepAbility2 =
         {
-            Habilidade.ArmorIgnore, Habilidade.ArmorPierce, Habilidade.Bladeweave, Habilidade.BleedAttack, Habilidade.ColdWind, Habilidade.ConcussionBlow,
-            Habilidade.CrushingBlow, Habilidade.Dismount, Habilidade.Feint, Habilidade.ForceOfNature, Habilidade.FrenziedWhirlwind,
-            Habilidade.MortalStrike, Habilidade.NerveStrike, Habilidade.ParalyzingBlow, Habilidade.PsychicAttack, Habilidade.TalonStrike
+            WeaponAbility.ArmorIgnore, WeaponAbility.ArmorPierce, WeaponAbility.Bladeweave, WeaponAbility.BleedAttack, WeaponAbility.ColdWind, WeaponAbility.ConcussionBlow,
+            WeaponAbility.CrushingBlow, WeaponAbility.Dismount, WeaponAbility.Feint, WeaponAbility.ForceOfNature, WeaponAbility.FrenziedWhirlwind,
+            WeaponAbility.MortalStrike, WeaponAbility.NerveStrike, WeaponAbility.ParalyzingBlow, WeaponAbility.PsychicAttack, WeaponAbility.TalonStrike
         };
 
-        public static Habilidade[] WepAbility3 =
+        public static WeaponAbility[] WepAbility3 =
         {
-            Habilidade.ArmorIgnore, Habilidade.ArmorPierce, Habilidade.Bladeweave, Habilidade.ConcussionBlow, Habilidade.CrushingBlow, 
-            Habilidade.Dismount, Habilidade.Feint, Habilidade.ForceOfNature, Habilidade.FrenziedWhirlwind, Habilidade.MortalStrike,
-            Habilidade.NerveStrike, Habilidade.ParalyzingBlow, Habilidade.PsychicAttack, Habilidade.TalonStrike
+            WeaponAbility.ArmorIgnore, WeaponAbility.ArmorPierce, WeaponAbility.Bladeweave, WeaponAbility.ConcussionBlow, WeaponAbility.CrushingBlow, 
+            WeaponAbility.Dismount, WeaponAbility.Feint, WeaponAbility.ForceOfNature, WeaponAbility.FrenziedWhirlwind, WeaponAbility.MortalStrike,
+            WeaponAbility.NerveStrike, WeaponAbility.ParalyzingBlow, WeaponAbility.PsychicAttack, WeaponAbility.TalonStrike
         };
 
-        public static Habilidade[] WepAbility4 =
+        public static WeaponAbility[] WepAbility4 =
         {
-            Habilidade.ArmorIgnore, Habilidade.ArmorPierce, Habilidade.Bladeweave, Habilidade.BleedAttack, Habilidade.ConcussionBlow, 
-            Habilidade.CrushingBlow, Habilidade.Dismount, Habilidade.Feint, Habilidade.ForceOfNature, Habilidade.MortalStrike,
-            Habilidade.NerveStrike, Habilidade.ParalyzingBlow, Habilidade.PsychicAttack, Habilidade.TalonStrike
+            WeaponAbility.ArmorIgnore, WeaponAbility.ArmorPierce, WeaponAbility.Bladeweave, WeaponAbility.BleedAttack, WeaponAbility.ConcussionBlow, 
+            WeaponAbility.CrushingBlow, WeaponAbility.Dismount, WeaponAbility.Feint, WeaponAbility.ForceOfNature, WeaponAbility.MortalStrike,
+            WeaponAbility.NerveStrike, WeaponAbility.ParalyzingBlow, WeaponAbility.PsychicAttack, WeaponAbility.TalonStrike
         };
 
-        public static Habilidade[] WepAbility5 =
+        public static WeaponAbility[] WepAbility5 =
         {
-            Habilidade.ArmorIgnore, Habilidade.ArmorPierce, Habilidade.Bladeweave, Habilidade.ColdWind, Habilidade.ConcussionBlow, 
-            Habilidade.CrushingBlow, Habilidade.Dismount, Habilidade.Feint, Habilidade.ForceOfNature, Habilidade.FrenziedWhirlwind,
-            Habilidade.MortalStrike, Habilidade.NerveStrike, Habilidade.ParalyzingBlow, Habilidade.PsychicAttack, Habilidade.TalonStrike
+            WeaponAbility.ArmorIgnore, WeaponAbility.ArmorPierce, WeaponAbility.Bladeweave, WeaponAbility.ColdWind, WeaponAbility.ConcussionBlow, 
+            WeaponAbility.CrushingBlow, WeaponAbility.Dismount, WeaponAbility.Feint, WeaponAbility.ForceOfNature, WeaponAbility.FrenziedWhirlwind,
+            WeaponAbility.MortalStrike, WeaponAbility.NerveStrike, WeaponAbility.ParalyzingBlow, WeaponAbility.PsychicAttack, WeaponAbility.TalonStrike
         };
 
-        public static Habilidade[] WepAbility6 =
+        public static WeaponAbility[] WepAbility6 =
         {
-            Habilidade.ArmorIgnore, Habilidade.ArmorPierce, Habilidade.Bladeweave, Habilidade.BleedAttack, Habilidade.ColdWind, 
-            Habilidade.ConcussionBlow, Habilidade.CrushingBlow, Habilidade.Disarm, Habilidade.Feint, Habilidade.ForceOfNature, Habilidade.FrenziedWhirlwind,
-            Habilidade.MortalStrike, Habilidade.NerveStrike, Habilidade.ParalyzingBlow, Habilidade.PsychicAttack, Habilidade.TalonStrike
+            WeaponAbility.ArmorIgnore, WeaponAbility.ArmorPierce, WeaponAbility.Bladeweave, WeaponAbility.BleedAttack, WeaponAbility.ColdWind, 
+            WeaponAbility.ConcussionBlow, WeaponAbility.CrushingBlow, WeaponAbility.Disarm, WeaponAbility.Feint, WeaponAbility.ForceOfNature, WeaponAbility.FrenziedWhirlwind,
+            WeaponAbility.MortalStrike, WeaponAbility.NerveStrike, WeaponAbility.ParalyzingBlow, WeaponAbility.PsychicAttack, WeaponAbility.TalonStrike
         };
 
-        public static Habilidade[] WepAbility7 =
+        public static WeaponAbility[] WepAbility7 =
         {
-            Habilidade.ArmorIgnore, Habilidade.ArmorPierce, Habilidade.Bladeweave, Habilidade.BleedAttack, Habilidade.ColdWind,
-            Habilidade.ConcussionBlow, Habilidade.CrushingBlow, Habilidade.Feint, Habilidade.ForceOfNature, Habilidade.FrenziedWhirlwind,
-            Habilidade.MortalStrike, Habilidade.NerveStrike, Habilidade.ParalyzingBlow, Habilidade.PsychicAttack, Habilidade.TalonStrike
+            WeaponAbility.ArmorIgnore, WeaponAbility.ArmorPierce, WeaponAbility.Bladeweave, WeaponAbility.BleedAttack, WeaponAbility.ColdWind,
+            WeaponAbility.ConcussionBlow, WeaponAbility.CrushingBlow, WeaponAbility.Feint, WeaponAbility.ForceOfNature, WeaponAbility.FrenziedWhirlwind,
+            WeaponAbility.MortalStrike, WeaponAbility.NerveStrike, WeaponAbility.ParalyzingBlow, WeaponAbility.PsychicAttack, WeaponAbility.TalonStrike
         };
 
-        public static Habilidade[] WepAbility8 =
+        public static WeaponAbility[] WepAbility8 =
         {
-            Habilidade.ArmorIgnore, Habilidade.ArmorPierce, Habilidade.Bladeweave, Habilidade.BleedAttack, Habilidade.ColdWind,
-            Habilidade.ConcussionBlow, Habilidade.CrushingBlow, Habilidade.Feint, Habilidade.ForceOfNature, Habilidade.FrenziedWhirlwind,
-            Habilidade.MortalStrike, Habilidade.NerveStrike, Habilidade.ParalyzingBlow, Habilidade.PsychicAttack, Habilidade.TalonStrike
+            WeaponAbility.ArmorIgnore, WeaponAbility.ArmorPierce, WeaponAbility.Bladeweave, WeaponAbility.BleedAttack, WeaponAbility.ColdWind,
+            WeaponAbility.ConcussionBlow, WeaponAbility.CrushingBlow, WeaponAbility.Feint, WeaponAbility.ForceOfNature, WeaponAbility.FrenziedWhirlwind,
+            WeaponAbility.MortalStrike, WeaponAbility.NerveStrike, WeaponAbility.ParalyzingBlow, WeaponAbility.PsychicAttack, WeaponAbility.TalonStrike
         };
 
-        public static Habilidade[] WepAbility9 =
+        public static WeaponAbility[] WepAbility9 =
         {
-            Habilidade.ArmorIgnore, Habilidade.ArmorPierce, Habilidade.Bladeweave, Habilidade.BleedAttack, Habilidade.Block,
-            Habilidade.ConcussionBlow, Habilidade.CrushingBlow, Habilidade.Dismount, Habilidade.Feint, Habilidade.ForceOfNature, 
-            Habilidade.FrenziedWhirlwind, Habilidade.MortalStrike, Habilidade.NerveStrike, Habilidade.ParalyzingBlow, Habilidade.PsychicAttack, 
-            Habilidade.TalonStrike
+            WeaponAbility.ArmorIgnore, WeaponAbility.ArmorPierce, WeaponAbility.Bladeweave, WeaponAbility.BleedAttack, WeaponAbility.Block,
+            WeaponAbility.ConcussionBlow, WeaponAbility.CrushingBlow, WeaponAbility.Dismount, WeaponAbility.Feint, WeaponAbility.ForceOfNature, 
+            WeaponAbility.FrenziedWhirlwind, WeaponAbility.MortalStrike, WeaponAbility.NerveStrike, WeaponAbility.ParalyzingBlow, WeaponAbility.PsychicAttack, 
+            WeaponAbility.TalonStrike
         };
 
-        public static Habilidade[] WepAbility10 =
+        public static WeaponAbility[] WepAbility10 =
         {
-            Habilidade.ArmorIgnore, Habilidade.ArmorPierce, Habilidade.Bladeweave, Habilidade.BleedAttack, Habilidade.ColdWind,
-            Habilidade.ConcussionBlow, Habilidade.CrushingBlow, Habilidade.Dismount, Habilidade.Feint, Habilidade.ForceOfNature, 
-            Habilidade.FrenziedWhirlwind, Habilidade.MortalStrike, Habilidade.NerveStrike, Habilidade.PsychicAttack, Habilidade.TalonStrike
+            WeaponAbility.ArmorIgnore, WeaponAbility.ArmorPierce, WeaponAbility.Bladeweave, WeaponAbility.BleedAttack, WeaponAbility.ColdWind,
+            WeaponAbility.ConcussionBlow, WeaponAbility.CrushingBlow, WeaponAbility.Dismount, WeaponAbility.Feint, WeaponAbility.ForceOfNature, 
+            WeaponAbility.FrenziedWhirlwind, WeaponAbility.MortalStrike, WeaponAbility.NerveStrike, WeaponAbility.PsychicAttack, WeaponAbility.TalonStrike
         };
 
-        public static Habilidade[] WepAbility11 =
+        public static WeaponAbility[] WepAbility11 =
         {
-            Habilidade.ArmorIgnore, Habilidade.Bladeweave, Habilidade.BleedAttack, Habilidade.ColdWind, Habilidade.ConcussionBlow,
-            Habilidade.CrushingBlow, Habilidade.Dismount, Habilidade.Feint, Habilidade.ForceOfNature, Habilidade.FrenziedWhirlwind,
-            Habilidade.MortalStrike, Habilidade.NerveStrike, Habilidade.ParalyzingBlow, Habilidade.PsychicAttack, Habilidade.TalonStrike
+            WeaponAbility.ArmorIgnore, WeaponAbility.Bladeweave, WeaponAbility.BleedAttack, WeaponAbility.ColdWind, WeaponAbility.ConcussionBlow,
+            WeaponAbility.CrushingBlow, WeaponAbility.Dismount, WeaponAbility.Feint, WeaponAbility.ForceOfNature, WeaponAbility.FrenziedWhirlwind,
+            WeaponAbility.MortalStrike, WeaponAbility.NerveStrike, WeaponAbility.ParalyzingBlow, WeaponAbility.PsychicAttack, WeaponAbility.TalonStrike
         };
         #endregion
 
@@ -857,28 +857,28 @@ namespace Server.Mobiles
             TextDefinition[][] loc = _MagicalAbilityLocalizations;
 
             _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Piercing, 1.0, 1, 1, loc[0][0], loc[0][1],
-                new TrainingPointRequirement(Habilidade.ArmorIgnore, 100, 1028838),
-                new TrainingPointRequirement(Habilidade.ParalyzingBlow, 100, 1028848),
-                new TrainingPointRequirement(Habilidade.BleedAttack, 100, 1028839)));
+                new TrainingPointRequirement(WeaponAbility.ArmorIgnore, 100, 1028838),
+                new TrainingPointRequirement(WeaponAbility.ParalyzingBlow, 100, 1028848),
+                new TrainingPointRequirement(WeaponAbility.BleedAttack, 100, 1028839)));
 
             _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Bashing, 1.0, 1, 1, loc[1][0], loc[1][1],
-                new TrainingPointRequirement(Habilidade.MortalStrike, 100, 1028846),
-                new TrainingPointRequirement(Habilidade.ConcussionBlow, 100, 1028840),
-                new TrainingPointRequirement(Habilidade.Disarm, 100, 1028842)));
+                new TrainingPointRequirement(WeaponAbility.MortalStrike, 100, 1028846),
+                new TrainingPointRequirement(WeaponAbility.ConcussionBlow, 100, 1028840),
+                new TrainingPointRequirement(WeaponAbility.Disarm, 100, 1028842)));
 
             _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Slashing, 1.0, 1, 1, loc[2][0], loc[2][1],
                 new TrainingPointRequirement(SkillName.Bushido, 500, 1044112),
-                new TrainingPointRequirement(Habilidade.ArmorIgnore, 100, 1028838),
-                new TrainingPointRequirement(Habilidade.Disarm, 100, 1028842),
-                new TrainingPointRequirement(Habilidade.NerveStrike, 100, 1028855)));
+                new TrainingPointRequirement(WeaponAbility.ArmorIgnore, 100, 1028838),
+                new TrainingPointRequirement(WeaponAbility.Disarm, 100, 1028842),
+                new TrainingPointRequirement(WeaponAbility.NerveStrike, 100, 1028855)));
 
             _TrainingPoints.Add(new TrainingPoint(MagicalAbility.BattleDefense, 1.0, 1, 1, loc[3][0], loc[3][1],
-                new TrainingPointRequirement(Habilidade.Disarm, 100, 1028842),
-                new TrainingPointRequirement(Habilidade.ParalyzingBlow, 100, 1028848)));
+                new TrainingPointRequirement(WeaponAbility.Disarm, 100, 1028842),
+                new TrainingPointRequirement(WeaponAbility.ParalyzingBlow, 100, 1028848)));
 
             _TrainingPoints.Add(new TrainingPoint(MagicalAbility.WrestlingMastery, 1.0, 1, 1, loc[4][0], loc[4][1],
-                new TrainingPointRequirement(Habilidade.Disarm, 100, 1028842),
-                new TrainingPointRequirement(Habilidade.ParalyzingBlow, 100, 1028848)));
+                new TrainingPointRequirement(WeaponAbility.Disarm, 100, 1028842),
+                new TrainingPointRequirement(WeaponAbility.ParalyzingBlow, 100, 1028848)));
 
             _TrainingPoints.Add(new TrainingPoint(MagicalAbility.Poisoning, 1.0, 1, 1, loc[5][0], loc[5][1],
                 new TrainingPointRequirement(SkillName.Poisoning, 100, 1044090)));
@@ -941,17 +941,17 @@ namespace Server.Mobiles
             {
                 TrainingPointRequirement requirement = null;
 
-                if(ability == Habilidade.NerveStrike)
+                if(ability == WeaponAbility.NerveStrike)
                     requirement = new TrainingPointRequirement(SkillName.Bushido, 500, 1044112);
-                else if (ability == Habilidade.TalonStrike)
+                else if (ability == WeaponAbility.TalonStrike)
                     requirement = new TrainingPointRequirement(SkillName.Ninjitsu, 500, 1044113);
-                else if (ability == Habilidade.Feint)
+                else if (ability == WeaponAbility.Feint)
                     requirement = new TrainingPointRequirement(SkillName.Bushido, 500, 1044112);
-                else if (ability == Habilidade.FrenziedWhirlwind)
+                else if (ability == WeaponAbility.FrenziedWhirlwind)
                     requirement = new TrainingPointRequirement(SkillName.Ninjitsu, 500, 1044113);
-                else if (ability == Habilidade.Bladeweave)
+                else if (ability == WeaponAbility.Bladeweave)
                     requirement = new TrainingPointRequirement(SkillName.Bushido, 500, 1044112);
-                else if (ability == Habilidade.Block)
+                else if (ability == WeaponAbility.Block)
                     requirement = new TrainingPointRequirement(SkillName.Bushido, 500, 1044112);
 
                 _TrainingPoints.Add(new TrainingPoint(ability, 1.0, 100, 100, loc[index][0], loc[index][1], requirement));
@@ -1265,9 +1265,9 @@ namespace Server.Mobiles
                     return true;
                 }
             }
-            else if (trainingPoint.TrainPoint is Habilidade)
+            else if (trainingPoint.TrainPoint is WeaponAbility)
             {
-                Habilidade ability = trainingPoint.TrainPoint as Habilidade;
+                WeaponAbility ability = trainingPoint.TrainPoint as WeaponAbility;
 
                 if (ValidateTrainingPoint(bc, ability) && profile.AddAbility(ability))
                 {
@@ -1342,7 +1342,7 @@ namespace Server.Mobiles
             return profile != null && ability == AreaEffect.PoisonBreath && profile.HasAbility(MagicalAbility.Poisoning);
         }
 
-        public static bool ValidateTrainingPoint(BaseCreature bc, Habilidade ability)
+        public static bool ValidateTrainingPoint(BaseCreature bc, WeaponAbility ability)
         {
             var def = GetTrainingDefinition(bc);
 
@@ -1544,8 +1544,8 @@ namespace Server.Mobiles
             if (o is AreaEffect)
                 return GetLocalization((AreaEffect)o);
 
-            if(o is Habilidade)
-                return GetLocalization((Habilidade)o);
+            if(o is WeaponAbility)
+                return GetLocalization((WeaponAbility)o);
 
             if (o is SkillName)
                 return GetLocalization((SkillName)o);
@@ -1603,7 +1603,7 @@ namespace Server.Mobiles
             return _SpecialAbilityLocalizations[index];
         }
 
-        public static TextDefinition[] GetLocalization(Habilidade effect)
+        public static TextDefinition[] GetLocalization(WeaponAbility effect)
         {
             int index = Array.IndexOf(WeaponAbilities, effect);
 
@@ -1658,7 +1658,7 @@ namespace Server.Mobiles
                 return 1157482;
             }
 
-            if (o is Habilidade)
+            if (o is WeaponAbility)
             {
                 return 1157479;
             }

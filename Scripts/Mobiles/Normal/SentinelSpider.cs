@@ -41,7 +41,7 @@ namespace Server.Mobiles
 
 			VirtualArmor = 28;
 
-            SetWeaponAbility(Habilidade.ArmorIgnore);
+            SetWeaponAbility(WeaponAbility.ArmorIgnore);
 		}
 
 		public override void GenerateLoot()

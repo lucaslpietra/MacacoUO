@@ -38,7 +38,7 @@ namespace Server.Mobiles
                 this.Add(new GenericBuyInfo(typeof(Gears), 2, 20, 0x1053, 0));
                 this.Add(new GenericBuyInfo(typeof(Hinge), 2, 20, 0x1055, 0));
 
-                this.Add(new GenericBuyInfo(typeof(Sextant), 13, 20, 0x1057, 0));
+                //this.Add(new GenericBuyInfo(typeof(Sextant), 13, 20, 0x1057, 0));
                 this.Add(new GenericBuyInfo(typeof(SextantParts), 5, 20, 0x1059, 0));
                 this.Add(new GenericBuyInfo(typeof(Axle), 2, 20, 0x105B, 0));
                 this.Add(new GenericBuyInfo(typeof(Springs), 3, 20, 0x105D, 0));

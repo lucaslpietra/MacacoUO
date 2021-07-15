@@ -60,7 +60,7 @@ namespace Server.Mobiles
             ControlSlots = 2;
             MinTameSkill = 95.1;
 
-            SetWeaponAbility(Habilidade.BleedAttack);
+            SetWeaponAbility(WeaponAbility.BleedAttack);
             SetSpecialAbility(SpecialAbility.GraspingClaw);
         }
 
@@ -142,7 +142,7 @@ namespace Server.Mobiles
 
             if (version == 1)
             {
-                SetWeaponAbility(Habilidade.BleedAttack);
+                SetWeaponAbility(WeaponAbility.BleedAttack);
             }
         }
     }

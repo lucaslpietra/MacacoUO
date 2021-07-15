@@ -21,18 +21,18 @@ namespace Server.Items
             Name = "Katana";
         }
 
-        public override Habilidade PrimaryAbility
+        public override WeaponAbility PrimaryAbility
         {
             get
             {
-                return Habilidade.DoubleStrike;
+                return WeaponAbility.DoubleStrike;
             }
         }
-        public override Habilidade SecondaryAbility
+        public override WeaponAbility SecondaryAbility
         {
             get
             {
-                return Habilidade.ArmorIgnore;
+                return WeaponAbility.ArmorIgnore;
             }
         }
         public override int AosStrengthReq

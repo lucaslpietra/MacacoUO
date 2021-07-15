@@ -25,18 +25,18 @@ namespace Server.Items
                 return 1113498;
             }
         }// Farmer Nash's Pitchfork
-        public override Habilidade PrimaryAbility
+        public override WeaponAbility PrimaryAbility
         {
             get
             {
-                return Habilidade.BleedAttack;
+                return WeaponAbility.BleedAttack;
             }
         }
-        public override Habilidade SecondaryAbility
+        public override WeaponAbility SecondaryAbility
         {
             get
             {
-                return Habilidade.Dismount;
+                return WeaponAbility.Dismount;
             }
         }
         public override int AosStrengthReq

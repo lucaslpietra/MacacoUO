@@ -45,7 +45,7 @@ namespace Server.Engines.Blackthorn
         public override double WeaponAbilityChance { get { return AI == AIType.AI_Melee || AI == AIType.AI_Paladin ? 0.4 : 0.1; } }
         public override bool CanStealth { get { return _Specialty == SkillName.Ninjitsu; } }
 
-        public override Habilidade GetWeaponAbility()
+        public override WeaponAbility GetWeaponAbility()
         {
             BaseWeapon wep = Weapon as BaseWeapon;
 

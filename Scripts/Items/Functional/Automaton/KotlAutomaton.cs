@@ -75,8 +75,8 @@ namespace Server.Items
             VirtualArmor = 100;
 
             ControlSlots = 4;
-            SetWeaponAbility(Habilidade.ParalyzingBlow);
-            SetWeaponAbility(Habilidade.Disarm);
+            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
+            SetWeaponAbility(WeaponAbility.Disarm);
         }       
 
         public override void GenerateLoot()
@@ -210,8 +210,8 @@ namespace Server.Items
 
             if (version == 0)
             {
-                SetWeaponAbility(Habilidade.ParalyzingBlow);
-                SetWeaponAbility(Habilidade.Disarm);
+                SetWeaponAbility(WeaponAbility.ParalyzingBlow);
+                SetWeaponAbility(WeaponAbility.Disarm);
             }
         }
     }

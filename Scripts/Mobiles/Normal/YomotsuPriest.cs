@@ -72,7 +72,7 @@ namespace Server.Mobiles
             if (Utility.RandomDouble() < .25)
                 PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
 
-            SetWeaponAbility(Habilidade.DoubleStrike);
+            SetWeaponAbility(WeaponAbility.DoubleStrike);
         }
 
         public YomotsuPriest(Serial serial)

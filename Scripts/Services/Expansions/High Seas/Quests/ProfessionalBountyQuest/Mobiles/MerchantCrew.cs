@@ -10,7 +10,7 @@ namespace Server.Mobiles
     public class MerchantCrew : BaseCreature
     {
         public override bool InitialInnocent { get { return true; } }
-        public override Habilidade GetWeaponAbility()
+        public override WeaponAbility GetWeaponAbility()
         {
             Item weapon = FindItemOnLayer(Layer.TwoHanded);
 

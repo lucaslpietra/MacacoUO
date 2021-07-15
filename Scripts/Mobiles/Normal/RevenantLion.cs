@@ -45,7 +45,7 @@ namespace Server.Mobiles
 
             PackBodyPartOrBones();
 
-            SetWeaponAbility(Habilidade.BleedAttack);
+            SetWeaponAbility(WeaponAbility.BleedAttack);
         }
 
         public RevenantLion(Serial serial)

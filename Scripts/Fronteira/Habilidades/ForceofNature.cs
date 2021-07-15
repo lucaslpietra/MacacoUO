@@ -6,7 +6,7 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class ForceOfNature : Habilidade
+    public class ForceOfNature : WeaponAbility
     {
         public ForceOfNature()
         {

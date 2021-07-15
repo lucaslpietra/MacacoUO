@@ -8,7 +8,7 @@ namespace Server.Items
     /// <summary>
     /// Does damage and paralyses your opponent for a short time.
     /// </summary>
-    public class NerveStrike : Habilidade
+    public class NerveStrike : WeaponAbility
     {
         public NerveStrike()
         {

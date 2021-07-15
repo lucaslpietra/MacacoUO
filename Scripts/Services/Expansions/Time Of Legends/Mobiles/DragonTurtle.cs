@@ -48,7 +48,7 @@ namespace Server.Mobiles
 			Fame = 11000;
 			Karma = -11000;
 
-            SetWeaponAbility(Habilidade.Dismount);
+            SetWeaponAbility(WeaponAbility.Dismount);
 		}
 
 		public override void GenerateLoot()

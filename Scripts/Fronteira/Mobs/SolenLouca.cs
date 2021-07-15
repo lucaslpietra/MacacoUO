@@ -40,7 +40,7 @@ namespace Server.Mobiles
 
             this.VirtualArmor = 28;
 
-            SetWeaponAbility(Habilidade.MortalStrike);
+            SetWeaponAbility(WeaponAbility.MortalStrike);
 
             this.PackGold(Utility.Random(100, 180));
 

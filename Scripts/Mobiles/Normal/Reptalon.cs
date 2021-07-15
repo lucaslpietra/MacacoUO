@@ -39,7 +39,7 @@ namespace Server.Mobiles
             ControlSlots = 4;
             MinTameSkill = 101.1;
 
-            SetWeaponAbility(Habilidade.ParalyzingBlow);
+            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
 
         public Reptalon(Serial serial)
@@ -123,7 +123,7 @@ namespace Server.Mobiles
 
             if (version == 0)
             {
-                SetWeaponAbility(Habilidade.ParalyzingBlow);
+                SetWeaponAbility(WeaponAbility.ParalyzingBlow);
             }
         }
     }

@@ -43,9 +43,9 @@ namespace Server.Mobiles
 
             VirtualArmor = 49;
 
-            SetWeaponAbility(Habilidade.BleedAttack);
-            SetWeaponAbility(Habilidade.MortalStrike);
-            SetWeaponAbility(Habilidade.ArmorIgnore);
+            SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetWeaponAbility(WeaponAbility.MortalStrike);
+            SetWeaponAbility(WeaponAbility.ArmorIgnore);
         }
 
         public Impaler(Serial serial)

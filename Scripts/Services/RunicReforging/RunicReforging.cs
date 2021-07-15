@@ -418,7 +418,7 @@ namespace Server.Items
                 {
                     if (col.Attribute is AosWeaponAttribute && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.BloodDrinker)
                     {
-                        if (!(item is BaseWeapon) || (((BaseWeapon)item).PrimaryAbility != Habilidade.BleedAttack && ((BaseWeapon)item).SecondaryAbility != Habilidade.BleedAttack))
+                        if (!(item is BaseWeapon) || (((BaseWeapon)item).PrimaryAbility != WeaponAbility.BleedAttack && ((BaseWeapon)item).SecondaryAbility != WeaponAbility.BleedAttack))
                             list.Remove(col);
                     }
                     else if (col.Attribute is AosWeaponAttribute && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.SplinteringWeapon)

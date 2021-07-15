@@ -76,8 +76,8 @@ namespace Server.Mobiles
             if (0.5 > Utility.RandomDouble())
                 PackItem(new Yeast());
 
-            SetWeaponAbility(Habilidade.WhirlwindAttack);
-            SetWeaponAbility(Habilidade.CrushingBlow);
+            SetWeaponAbility(WeaponAbility.WhirlwindAttack);
+            SetWeaponAbility(WeaponAbility.CrushingBlow);
         }
 
         public OrcChopper(Serial serial)

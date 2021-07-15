@@ -46,7 +46,7 @@ namespace Server.Mobiles
             ControlSlots = 3;
             MinTameSkill = 102.0;
 
-            SetWeaponAbility(Habilidade.ConcussionBlow);
+            SetWeaponAbility(WeaponAbility.ConcussionBlow);
             SetSpecialAbility(SpecialAbility.TailSwipe);
             SetSpecialAbility(SpecialAbility.LifeLeech);
         }

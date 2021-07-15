@@ -42,7 +42,7 @@ namespace Server.Mobiles
 
             VirtualArmor = 8;
 
-            SetWeaponAbility(Habilidade.BleedAttack);
+            SetWeaponAbility(WeaponAbility.BleedAttack);
         }
 
         public KhaldunBlood(Serial serial)

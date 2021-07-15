@@ -19,7 +19,7 @@ namespace Server.Mobiles
         public SpecialAbility[] SpecialAbilities { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Habilidade[] WeaponAbilities { get; private set; }
+        public WeaponAbility[] WeaponAbilities { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool TokunoTame { get; set; }
@@ -130,17 +130,17 @@ namespace Server.Mobiles
             return true;
         }
 
-        public bool AddAbility(Habilidade ability, bool advancement = true)
+        public bool AddAbility(WeaponAbility ability, bool advancement = true)
         {
             if (WeaponAbilities == null)
             {
-                WeaponAbilities = new Habilidade[] { ability };
+                WeaponAbilities = new WeaponAbility[] { ability };
             }
             else if(!WeaponAbilities.Any(a => a == ability))
             {
                 var temp = WeaponAbilities;
 
-                WeaponAbilities = new Habilidade[temp.Length + 1];
+                WeaponAbilities = new WeaponAbility[temp.Length + 1];
 
                 for (int i = 0; i < temp.Length; i++)
                     WeaponAbilities[i] = temp[i];
@@ -177,7 +177,7 @@ namespace Server.Mobiles
             ColUtility.Free(list);
         }
 
-        public void RemoveAbility(Habilidade ability)
+        public void RemoveAbility(WeaponAbility ability)
         {
             if (WeaponAbilities == null || !WeaponAbilities.Any(a => a == ability))
                 return;
@@ -227,7 +227,7 @@ namespace Server.Mobiles
             if (o is AreaEffect && (AreaEffects == null || AreaEffects.Length == 0))
                 return true;
 
-            if (o is Habilidade && (WeaponAbilities == null || WeaponAbilities.Length < 2))
+            if (o is WeaponAbility && (WeaponAbilities == null || WeaponAbilities.Length < 2))
                 return true;
 
             return false;
@@ -262,9 +262,9 @@ namespace Server.Mobiles
                         if (skill < toAdd)
                             Creature.Skills[(SkillName)req.Requirement].Base = toAdd;
                     }
-                    else if (req.Requirement is Habilidade)
+                    else if (req.Requirement is WeaponAbility)
                     {
-                        AddAbility((Habilidade)req.Requirement);
+                        AddAbility((WeaponAbility)req.Requirement);
                     }
                 }
             }
@@ -309,9 +309,9 @@ namespace Server.Mobiles
                 return AreaEffects.Any(a => a == (AreaEffect)o);
             }
 
-            if (o is Habilidade && WeaponAbilities != null)
+            if (o is WeaponAbility && WeaponAbilities != null)
             {
-                return WeaponAbilities.Any(a => a == (Habilidade)o);
+                return WeaponAbilities.Any(a => a == (WeaponAbility)o);
             }
 
             return false;
@@ -438,17 +438,17 @@ namespace Server.Mobiles
                 case MagicalAbility.Bushido:
                     if (Creature.Controlled && Creature.AI != AIType.AI_Samurai) 
                         Creature.AI = AIType.AI_Samurai;
-                    if (!HasAbility(Habilidade.WhirlwindAttack))
+                    if (!HasAbility(WeaponAbility.WhirlwindAttack))
                     {
-                        AddAbility(Habilidade.WhirlwindAttack, false);
+                        AddAbility(WeaponAbility.WhirlwindAttack, false);
                     }
                     break;
                 case MagicalAbility.Ninjitsu:
                     if (Creature.Controlled && Creature.AI != AIType.AI_Ninja) 
                         Creature.AI = AIType.AI_Ninja;
-                    if (!HasAbility(Habilidade.FrenziedWhirlwind))
+                    if (!HasAbility(WeaponAbility.FrenziedWhirlwind))
                     {
-                        AddAbility(Habilidade.FrenziedWhirlwind, false);
+                        AddAbility(WeaponAbility.FrenziedWhirlwind, false);
                     }
                     break;
                 case MagicalAbility.Discordance:
@@ -487,17 +487,17 @@ namespace Server.Mobiles
         {
             if ((oldAbility & MagicalAbility.Bushido) != 0)
             {
-                if (HasAbility(Habilidade.WhirlwindAttack))
+                if (HasAbility(WeaponAbility.WhirlwindAttack))
                 {
-                    RemoveAbility(Habilidade.WhirlwindAttack);
+                    RemoveAbility(WeaponAbility.WhirlwindAttack);
                 }
             }
 
             if ((oldAbility & MagicalAbility.Ninjitsu) != 0)
             {
-                if (HasAbility(Habilidade.FrenziedWhirlwind))
+                if (HasAbility(WeaponAbility.FrenziedWhirlwind))
                 {
-                    RemoveAbility(Habilidade.FrenziedWhirlwind);
+                    RemoveAbility(WeaponAbility.FrenziedWhirlwind);
                 }
             }
         }
@@ -525,9 +525,9 @@ namespace Server.Mobiles
                 return SpecialAbilities != null && !Advancements.Any(s => s is SpecialAbility && (SpecialAbility)s == (SpecialAbility)o);
             }
 
-            if (o is Habilidade)
+            if (o is WeaponAbility)
             {
-                return WeaponAbilities != null && !Advancements.Any(s => s is Habilidade && (Habilidade)s == (Habilidade)o);
+                return WeaponAbilities != null && !Advancements.Any(s => s is WeaponAbility && (WeaponAbility)s == (WeaponAbility)o);
             }
 
             return false;
@@ -664,11 +664,11 @@ namespace Server.Mobiles
             }
 
             count = reader.ReadInt();
-            WeaponAbilities = new Habilidade[count];
+            WeaponAbilities = new WeaponAbility[count];
 
             for (int i = 0; i < count; i++)
             {
-                WeaponAbilities[i] = Habilidade.Abilities[reader.ReadInt()];
+                WeaponAbilities[i] = WeaponAbility.Abilities[reader.ReadInt()];
             }
 
             count = reader.ReadInt();
@@ -682,7 +682,7 @@ namespace Server.Mobiles
                     case 1: Advancements.Add((MagicalAbility)reader.ReadInt()); break;
                     case 2: Advancements.Add(SpecialAbility.Abilities[reader.ReadInt()]); break;
                     case 3: Advancements.Add(AreaEffect.Effects[reader.ReadInt()]); break;
-                    case 4: Advancements.Add(Habilidade.Abilities[reader.ReadInt()]); break;
+                    case 4: Advancements.Add(WeaponAbility.Abilities[reader.ReadInt()]); break;
                     case 5: Advancements.Add((SkillName)reader.ReadInt()); break;
                 }
             }
@@ -727,7 +727,7 @@ namespace Server.Mobiles
             {
                 foreach (var abil in WeaponAbilities)
                 {
-                    writer.Write(Array.IndexOf(Habilidade.Abilities, abil));
+                    writer.Write(Array.IndexOf(WeaponAbility.Abilities, abil));
                 }
             }
 
@@ -752,10 +752,10 @@ namespace Server.Mobiles
                         writer.Write(3);
                         writer.Write(Array.IndexOf(AreaEffect.Effects, (AreaEffect)o));
                     }
-                    else if (o is Habilidade)
+                    else if (o is WeaponAbility)
                     {
                         writer.Write(4);
-                        writer.Write(Array.IndexOf(Habilidade.Abilities, (Habilidade)o));
+                        writer.Write(Array.IndexOf(WeaponAbility.Abilities, (WeaponAbility)o));
                     }
                     else if (o is SkillName)
                     {

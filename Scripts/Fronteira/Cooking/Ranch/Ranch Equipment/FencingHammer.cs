@@ -13,8 +13,8 @@ namespace Server.Items
 	[FlipableAttribute( 0xFB5, 0xFB4 )]
 	public class FencingHammer : BaseBashing
 	{
-		public override Habilidade PrimaryAbility { get { return Habilidade.Dismount; } }
-		public override Habilidade SecondaryAbility { get { return Habilidade.Disarm; } }
+		public override WeaponAbility PrimaryAbility { get { return WeaponAbility.Dismount; } }
+		public override WeaponAbility SecondaryAbility { get { return WeaponAbility.Disarm; } }
 
 		public override int AosStrengthReq{ get{ return 5; } }
 		public override int AosMinDamage{ get{ return 9; } }

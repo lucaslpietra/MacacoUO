@@ -91,7 +91,7 @@ namespace Server.Mobiles
                 PackItem(DefCookingExp.GetReceitaOleoRandom());
             }
 
-            SetWeaponAbility(Habilidade.BleedAttack);
+            SetWeaponAbility(WeaponAbility.BleedAttack);
         }
 
         public GreenGoblin(Serial serial)
@@ -230,7 +230,7 @@ namespace Server.Mobiles
             {
                 PackItem(DefCookingExp.GetReceitaOleoRandom());
             }
-            SetWeaponAbility(Habilidade.BleedAttack);
+            SetWeaponAbility(WeaponAbility.BleedAttack);
         }
 
         public override void GenerateLoot(bool spawning)

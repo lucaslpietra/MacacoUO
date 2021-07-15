@@ -48,9 +48,9 @@ namespace Server.Mobiles
 
             VirtualArmor = 54;
 
-            SetWeaponAbility(Habilidade.MortalStrike);
-            SetWeaponAbility(Habilidade.WhirlwindAttack);
-            SetWeaponAbility(Habilidade.Block);
+            SetWeaponAbility(WeaponAbility.MortalStrike);
+            SetWeaponAbility(WeaponAbility.WhirlwindAttack);
+            SetWeaponAbility(WeaponAbility.Block);
             //Arcane Pyromancy
         }
 

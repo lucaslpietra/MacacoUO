@@ -15,7 +15,7 @@ namespace Server.Items
     /// <summary>
     /// A quick attack to all enemies in range of your weapon that causes damage over time. Requires Bushido or Ninjitsu skill.
     /// </summary>
-    public class FrenziedWhirlwind : Habilidade
+    public class FrenziedWhirlwind : WeaponAbility
     {
         public FrenziedWhirlwind()
         {

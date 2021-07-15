@@ -969,7 +969,7 @@ namespace Server.Engines.Shadowguard
             var hiryu = new LesserHiryu();
             hiryu.Rider = this;
 
-            SetWeaponAbility(Habilidade.Dismount);
+            SetWeaponAbility(WeaponAbility.Dismount);
 		}
 
         private DateTime _NextWeaponSwitch;

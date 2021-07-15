@@ -7,7 +7,7 @@ namespace Server.Mobiles
     [CorpseName("a travesty's corpse")]
     public class Travesty : BasePeerless
     {
-        public override Habilidade GetWeaponAbility()
+        public override WeaponAbility GetWeaponAbility()
         {
             if (Weapon == null)
                 return null;

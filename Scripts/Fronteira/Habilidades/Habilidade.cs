@@ -11,7 +11,7 @@ using Server.Gumps;
 
 namespace Server.Items
 {
-    public abstract class Habilidade
+    public abstract class WeaponAbility
     {
         public virtual int BaseMana
         {
@@ -389,11 +389,11 @@ namespace Server.Items
             return CheckSkills(from) && CheckMana(from, false);
         }
 
-        public static Dictionary<Talento, Habilidade> Talentos = new Dictionary<Talento, Habilidade>();
+        public static Dictionary<Talento, WeaponAbility> Talentos = new Dictionary<Talento, WeaponAbility>();
 
 
 
-        private static readonly Habilidade[] m_Abilities = new Habilidade[34]
+        private static readonly WeaponAbility[] m_Abilities = new WeaponAbility[34]
         {
             null,
             new ArmorIgnore(),
@@ -431,7 +431,7 @@ namespace Server.Items
             new ColdWind()
         };
 
-        static Habilidade()
+        static WeaponAbility()
         {
             if (Talentos.Count == 0)
             {
@@ -445,7 +445,7 @@ namespace Server.Items
             }
         }
 
-        public static Habilidade[] Abilities
+        public static WeaponAbility[] Abilities
         {
             get
             {
@@ -463,50 +463,50 @@ namespace Server.Items
             }
         }
 
-        public static readonly Habilidade ArmorIgnore = m_Abilities[1];
-        public static readonly Habilidade BleedAttack = m_Abilities[2];
-        public static readonly Habilidade ConcussionBlow = m_Abilities[3];
-        public static readonly Habilidade CrushingBlow = m_Abilities[4];
-        public static readonly Habilidade Disarm = m_Abilities[5];
-        public static readonly Habilidade Dismount = m_Abilities[6];
-        public static readonly Habilidade DoubleStrike = m_Abilities[7];
-        public static readonly Habilidade InfectiousStrike = m_Abilities[8];
-        public static readonly Habilidade MortalStrike = m_Abilities[9];
-        public static readonly Habilidade MovingShot = m_Abilities[10];
-        public static readonly Habilidade ParalyzingBlow = m_Abilities[11];
-        public static readonly Habilidade ShadowStrike = m_Abilities[12];
-        public static readonly Habilidade WhirlwindAttack = m_Abilities[13];
+        public static readonly WeaponAbility ArmorIgnore = m_Abilities[1];
+        public static readonly WeaponAbility BleedAttack = m_Abilities[2];
+        public static readonly WeaponAbility ConcussionBlow = m_Abilities[3];
+        public static readonly WeaponAbility CrushingBlow = m_Abilities[4];
+        public static readonly WeaponAbility Disarm = m_Abilities[5];
+        public static readonly WeaponAbility Dismount = m_Abilities[6];
+        public static readonly WeaponAbility DoubleStrike = m_Abilities[7];
+        public static readonly WeaponAbility InfectiousStrike = m_Abilities[8];
+        public static readonly WeaponAbility MortalStrike = m_Abilities[9];
+        public static readonly WeaponAbility MovingShot = m_Abilities[10];
+        public static readonly WeaponAbility ParalyzingBlow = m_Abilities[11];
+        public static readonly WeaponAbility ShadowStrike = m_Abilities[12];
+        public static readonly WeaponAbility WhirlwindAttack = m_Abilities[13];
 
-        public static readonly Habilidade RidingSwipe = m_Abilities[14];
-        public static readonly Habilidade FrenziedWhirlwind = m_Abilities[15];
-        public static readonly Habilidade Block = m_Abilities[16];
-        public static readonly Habilidade DefenseMastery = m_Abilities[17];
-        public static readonly Habilidade NerveStrike = m_Abilities[18];
-        public static readonly Habilidade TalonStrike = m_Abilities[19];
-        public static readonly Habilidade Feint = m_Abilities[20];
-        public static readonly Habilidade DualWield = m_Abilities[21];
-        public static readonly Habilidade DoubleShot = m_Abilities[22];
-        public static readonly Habilidade ArmorPierce = m_Abilities[23];
+        public static readonly WeaponAbility RidingSwipe = m_Abilities[14];
+        public static readonly WeaponAbility FrenziedWhirlwind = m_Abilities[15];
+        public static readonly WeaponAbility Block = m_Abilities[16];
+        public static readonly WeaponAbility DefenseMastery = m_Abilities[17];
+        public static readonly WeaponAbility NerveStrike = m_Abilities[18];
+        public static readonly WeaponAbility TalonStrike = m_Abilities[19];
+        public static readonly WeaponAbility Feint = m_Abilities[20];
+        public static readonly WeaponAbility DualWield = m_Abilities[21];
+        public static readonly WeaponAbility DoubleShot = m_Abilities[22];
+        public static readonly WeaponAbility ArmorPierce = m_Abilities[23];
 
-        public static readonly Habilidade Bladeweave = m_Abilities[24];
-        public static readonly Habilidade ForceArrow = m_Abilities[25];
-        public static readonly Habilidade LightningArrow = m_Abilities[26];
-        public static readonly Habilidade PsychicAttack = m_Abilities[27];
-        public static readonly Habilidade SerpentArrow = m_Abilities[28];
-        public static readonly Habilidade ForceOfNature = m_Abilities[29];
+        public static readonly WeaponAbility Bladeweave = m_Abilities[24];
+        public static readonly WeaponAbility ForceArrow = m_Abilities[25];
+        public static readonly WeaponAbility LightningArrow = m_Abilities[26];
+        public static readonly WeaponAbility PsychicAttack = m_Abilities[27];
+        public static readonly WeaponAbility SerpentArrow = m_Abilities[28];
+        public static readonly WeaponAbility ForceOfNature = m_Abilities[29];
 
-        public static readonly Habilidade InfusedThrow = m_Abilities[30];
-        public static readonly Habilidade MysticArc = m_Abilities[31];
+        public static readonly WeaponAbility InfusedThrow = m_Abilities[30];
+        public static readonly WeaponAbility MysticArc = m_Abilities[31];
 
-        public static readonly Habilidade Disrobe = m_Abilities[32];
-        public static readonly Habilidade ColdWind = m_Abilities[33];
+        public static readonly WeaponAbility Disrobe = m_Abilities[32];
+        public static readonly WeaponAbility ColdWind = m_Abilities[33];
 
         public virtual int GetIcon()
         {
             return 23001;
         }
 
-        public static bool IsWeaponAbility(Mobile m, Habilidade a)
+        public static bool IsWeaponAbility(Mobile m, WeaponAbility a)
         {
             if (m.RP)
                 return true;
@@ -530,7 +530,7 @@ namespace Server.Items
             }
         }
 
-        public static Habilidade GetCurrentAbility(Mobile m)
+        public static WeaponAbility GetCurrentAbility(Mobile m)
         {
             /*
             if (!Core.AOS)
@@ -540,7 +540,7 @@ namespace Server.Items
             }
             */
 
-            Habilidade a = (Habilidade)m_Table[m];
+            WeaponAbility a = (WeaponAbility)m_Table[m];
 
             if (!IsWeaponAbility(m, a))
             {
@@ -557,7 +557,7 @@ namespace Server.Items
             return a;
         }
 
-        public static bool SetCurrentAbility(Mobile m, Habilidade a)
+        public static bool SetCurrentAbility(Mobile m, WeaponAbility a)
         {
             if (Shard.DebugEnabled)
                 Shard.Debug("Ativando habilidade " + a.GetType().Name);
@@ -615,7 +615,7 @@ namespace Server.Items
             EventSink.SetAbility += new SetAbilityEventHandler(EventSink_SetAbility);
         }
 
-        public Habilidade()
+        public WeaponAbility()
         {
         }
 

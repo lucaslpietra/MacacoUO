@@ -78,7 +78,7 @@ namespace Server.Mobiles
             pot.Amount = 50;
             PackItem(pot);
             SetSpecialAbility(SpecialAbility.ManaDrain);
-            SetWeaponAbility(Habilidade.ParalyzingBlow);
+            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
 
             PackItem(new PowerCrystal());
             if(Utility.RandomBool())

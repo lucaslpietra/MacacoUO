@@ -44,8 +44,8 @@ namespace Server.Engines.SorcerersDungeon
             Fame = 12000;
             Karma = -12000;
 
-            SetWeaponAbility(Habilidade.ConcussionBlow);
-            SetWeaponAbility(Habilidade.CrushingBlow);
+            SetWeaponAbility(WeaponAbility.ConcussionBlow);
+            SetWeaponAbility(WeaponAbility.CrushingBlow);
         }
 
         public AbominableSnowman(Serial serial)

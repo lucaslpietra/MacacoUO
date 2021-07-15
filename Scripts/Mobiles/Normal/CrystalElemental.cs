@@ -43,7 +43,7 @@ namespace Server.Mobiles
 
             VirtualArmor = 54;
 
-            SetWeaponAbility(Habilidade.ParalyzingBlow);
+            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
 
         public CrystalElemental(Serial serial)

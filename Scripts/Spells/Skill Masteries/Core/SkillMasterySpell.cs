@@ -97,7 +97,7 @@ namespace Server.Spells.SkillMasteries
             else
             {
                 if (CancelsWeaponAbility)
-                    Habilidade.ClearCurrentAbility(Caster);
+                    WeaponAbility.ClearCurrentAbility(Caster);
 
                 if (CancelsSpecialMove)
                     SpecialMove.ClearCurrentMove(Caster);

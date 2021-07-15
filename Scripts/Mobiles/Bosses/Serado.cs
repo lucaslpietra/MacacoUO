@@ -47,7 +47,7 @@ namespace Server.Mobiles
 
             PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
 
-            SetWeaponAbility(Habilidade.DoubleStrike);
+            SetWeaponAbility(WeaponAbility.DoubleStrike);
             SetAreaEffect(AreaEffect.PoisonBreath);
 
             if (Utility.RandomDouble() < 0.33)

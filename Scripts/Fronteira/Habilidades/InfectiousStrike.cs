@@ -5,7 +5,7 @@ using Server.Mobiles;
 namespace Server.Items
 {
 
-    public class InfectiousStrike : Habilidade
+    public class InfectiousStrike : WeaponAbility
     {
         public InfectiousStrike()
         {
@@ -18,7 +18,15 @@ namespace Server.Items
                 return 20;
             }
         }
-        
+
+        public override double DamageScalar
+        {
+            get
+            {
+                return 0.85;
+            }
+        }
+
         public override bool RequiresSecondarySkill(Mobile from)
         {
             return true;
@@ -45,14 +53,14 @@ namespace Server.Items
 
             Poison weaponPoison = weapon.Poison;
 
+            if (!this.CheckMana(attacker, true))
+                return;
+
             if (weaponPoison == null || weapon.PoisonCharges <= 0)
             {
                 attacker.SendLocalizedMessage("Sua arma precisa estar envenenada"); // Your weapon must have a dose of poison to perform an infectious strike!
                 return;
             }
-
-            if (!this.CheckMana(attacker, true))
-                return;
 
             // Skill Masteries
             int noChargeChance = Server.Spells.SkillMasteries.MasteryInfo.NonPoisonConsumeChance(attacker);

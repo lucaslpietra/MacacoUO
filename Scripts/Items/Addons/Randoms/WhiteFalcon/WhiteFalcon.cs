@@ -102,13 +102,13 @@ namespace Server.Mobiles
 
         #region Mobiles Can Be Assigned Weapon Abilities
 
-        public override Habilidade GetWeaponAbility()
+        public override WeaponAbility GetWeaponAbility()
         {
             if (Utility.RandomBool())
             {
-                return Habilidade.ParalyzingBlow;
+                return WeaponAbility.ParalyzingBlow;
             }
-            return Habilidade.BleedAttack;
+            return WeaponAbility.BleedAttack;
         }
 
         #endregion

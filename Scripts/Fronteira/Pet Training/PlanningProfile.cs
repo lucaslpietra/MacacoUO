@@ -41,7 +41,7 @@ namespace Server.Mobiles
                     {
                         foreach (var req in trainingPoint.Requirements.Where(r => r != null))
                         {
-                            if ((req.Requirement is Habilidade && en.TrainPoint is Habilidade) ||
+                            if ((req.Requirement is WeaponAbility && en.TrainPoint is WeaponAbility) ||
                                (req.Requirement is SpecialAbility && en.TrainPoint is SpecialAbility) ||
                                 (req.Requirement is AreaEffect && en.TrainPoint is AreaEffect))
                             {
@@ -83,7 +83,7 @@ namespace Server.Mobiles
                     case 1: Entries.Add(new PlanningEntry((MagicalAbility)reader.ReadInt(), reader.ReadInt(), reader.ReadInt())); break;
                     case 2: Entries.Add(new PlanningEntry(SpecialAbility.Abilities[reader.ReadInt()], reader.ReadInt(), reader.ReadInt())); break;
                     case 3: Entries.Add(new PlanningEntry(AreaEffect.Effects[reader.ReadInt()], reader.ReadInt(), reader.ReadInt())); break;
-                    case 4: Entries.Add(new PlanningEntry(Habilidade.Abilities[reader.ReadInt()], reader.ReadInt(), reader.ReadInt())); break;
+                    case 4: Entries.Add(new PlanningEntry(WeaponAbility.Abilities[reader.ReadInt()], reader.ReadInt(), reader.ReadInt())); break;
                     case 5: Entries.Add(new PlanningEntry((PetStat)reader.ReadInt(), reader.ReadInt(), reader.ReadInt())); break;
                     case 6: Entries.Add(new PlanningEntry((ResistanceType)reader.ReadInt(), reader.ReadInt(), reader.ReadInt())); break;
                     case 7: Entries.Add(new PlanningEntry((SkillName)reader.ReadInt(), reader.ReadInt(), reader.ReadInt())); break;
@@ -123,10 +123,10 @@ namespace Server.Mobiles
                     writer.Write(entry.Value);
                     writer.Write(entry.Cost);
                 }
-                else if (o is Habilidade)
+                else if (o is WeaponAbility)
                 {
                     writer.Write(4);
-                    writer.Write(Array.IndexOf(Habilidade.Abilities, (Habilidade)o));
+                    writer.Write(Array.IndexOf(WeaponAbility.Abilities, (WeaponAbility)o));
                     writer.Write(entry.Value);
                     writer.Write(entry.Cost);
                 }

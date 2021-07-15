@@ -48,7 +48,7 @@ namespace Server.Mobiles
             if (Core.ML && Utility.RandomDouble() < .33)
                 PackItem(Engines.Plants.Seed.RandomPeculiarSeed(4));
 
-            SetWeaponAbility(Habilidade.Dismount);
+            SetWeaponAbility(WeaponAbility.Dismount);
             SetSpecialAbility(SpecialAbility.GraspingClaw);
         }
 
@@ -99,9 +99,9 @@ namespace Server.Mobiles
                 return true;
             }
         }
-        public override Habilidade GetWeaponAbility()
+        public override WeaponAbility GetWeaponAbility()
         {
-            return Habilidade.Dismount;
+            return WeaponAbility.Dismount;
         }
 
         public override int GetAngerSound()
@@ -192,7 +192,7 @@ namespace Server.Mobiles
 
             if (version < 3)
             {
-                SetWeaponAbility(Habilidade.Dismount);
+                SetWeaponAbility(WeaponAbility.Dismount);
                 SetSpecialAbility(SpecialAbility.GraspingClaw);
             }
         }

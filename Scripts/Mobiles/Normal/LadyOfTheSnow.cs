@@ -48,7 +48,7 @@ namespace Server.Mobiles
             if (0.25 > Utility.RandomDouble())
                 PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
 
-            SetWeaponAbility(Habilidade.ColdWind);
+            SetWeaponAbility(WeaponAbility.ColdWind);
         }
 
         public LadyOfTheSnow(Serial serial)

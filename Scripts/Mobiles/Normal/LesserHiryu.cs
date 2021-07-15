@@ -45,7 +45,7 @@ namespace Server.Mobiles
             if (Utility.RandomDouble() < .33)
                 PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
 
-            SetWeaponAbility(Habilidade.Dismount);
+            SetWeaponAbility(WeaponAbility.Dismount);
             SetSpecialAbility(SpecialAbility.GraspingClaw);
         }
 
@@ -207,7 +207,7 @@ namespace Server.Mobiles
 
             if (version < 3)
             {
-                SetWeaponAbility(Habilidade.Dismount);
+                SetWeaponAbility(WeaponAbility.Dismount);
             }
 
             if (version < 3 && Controlled && RawStr >= 301 && ControlSlots == ControlSlotsMin)

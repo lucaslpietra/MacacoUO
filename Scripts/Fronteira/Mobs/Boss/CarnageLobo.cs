@@ -48,7 +48,7 @@ namespace Server.Mobiles
             ControlSlots = 4;
             MinTameSkill = 102.0;
 
-            SetWeaponAbility(Habilidade.BleedAttack);
+            SetWeaponAbility(WeaponAbility.BleedAttack);
 
             Timer.DelayCall(TimeSpan.FromSeconds(20), () =>
             {

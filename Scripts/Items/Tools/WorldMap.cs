@@ -1,21 +1,20 @@
 using System;
 using Server;
-using Server.Scripts.Custom.RelporMap;
-using Server.Ziden;
 
 namespace Server.Items
 {
-    public class WorldMap : ZMapItem
+    public class WorldMap : MapItem
     {
         [Constructable]
-        public WorldMap() : base(-1)
+        public WorldMap()
         {
-            SetDisplay(0, 0);
+            SetDisplay(0, 0, 5119, 4095, 400, 400);
         }
 
         public override void CraftInit(Mobile from)
         {
             // Unlike the others, world map is not based on crafted location
+            Facet = from.Map;
 
             double skillValue = from.Skills[SkillName.Cartography].Value;
             int x20 = (int)(skillValue * 20);
@@ -26,14 +25,22 @@ namespace Server.Items
             else if (size > 400)
                 size = 400;
 
-            SetDisplay(1344, 1600);
+            if (Facet == Map.Trammel || Facet == Map.Felucca)
+            {
+                if (Server.Spells.SpellHelper.IsAnyT2A(Facet, from.Location))
+                {
+                    Bounds = new Rectangle2D(5120, 2304, 1024, 1792);
+                    Width = size;
+                    Height = size;
+                }
+                else
+                    SetDisplay(1344 - x20, 1600 - x20, 1472 + x20, 1728 + x20, size, size);
+            }
+            else
+                SetDisplayByFacet();
         }
 
-        public override void SetDisplay(int x, int y)
-        {
-            mMapCutout = RelPorMapList.WorldMapCutout;
-        }
-        public override string DefaultName { get { return "Mapa Mundi"; } } // world map
+        public override int LabelNumber { get { return 1015233; } } // world map
 
         public WorldMap(Serial serial) : base(serial)
         {

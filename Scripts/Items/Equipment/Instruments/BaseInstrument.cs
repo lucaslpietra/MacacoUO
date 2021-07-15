@@ -263,6 +263,23 @@ namespace Server.Items
             return q;
         }
 
+        public int GetSkillBonus()
+        {
+            if (Resource == CraftResource.Carvalho)
+                return 5;
+            else if (Resource == CraftResource.Pinho)
+                return 10;
+            else if (Resource == CraftResource.Mogno)
+                return 25;
+            else if (Resource == CraftResource.Eucalipto)
+                return 15;
+            else if (Resource == CraftResource.Carmesim)
+                return 30;
+            else if (Resource == CraftResource.Gelo)
+                return 20;
+            return 0;
+        }
+
         public void ConsumeUse(Mobile from)
         {
             // TODO: Confirm what must happen here?

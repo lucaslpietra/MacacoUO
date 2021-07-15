@@ -560,10 +560,12 @@ namespace Server.Items
 
         public override void AddResistanceProperties(ObjectPropertyList list)
         {
+            /*
             if (ColdResistance != 0)
             {
                 list.AddTwoValues("DEBUG: RESIST FRIO", "+" + ColdResistance.ToString());
             }
+            */
             /*
             if(ColdResistance != 0)
             {

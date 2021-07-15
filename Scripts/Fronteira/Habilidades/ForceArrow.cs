@@ -8,7 +8,7 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class ForceArrow : Habilidade
+    public class ForceArrow : WeaponAbility
     {
         public ForceArrow()
         {

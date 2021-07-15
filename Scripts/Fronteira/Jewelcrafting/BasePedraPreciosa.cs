@@ -31,18 +31,10 @@ namespace Server.Items
             return ElementoPvM.None;
         }
 
-        [Constructable]
-        public BasePedraPreciosa()
-            : this(1)
-        {
-        }
-
-        [Constructable]
-        public BasePedraPreciosa(int amount)
-            : base(0xF13)
+        public BasePedraPreciosa(int itemID)
+            : base(itemID)
         {
             this.Stackable = true;
-            this.Amount = amount;
         }
 
         public BasePedraPreciosa(Serial serial)

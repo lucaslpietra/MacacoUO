@@ -7,7 +7,7 @@ namespace Server.Items
 {
     // The thrown projectile will arc to a second target after hitting the primary target. Chaos energy will burst from the projectile at each target. 
     // This will only hit targets that are in combat with the user.
-    public class MysticArc : Habilidade
+    public class MysticArc : WeaponAbility
     {
         private readonly int m_Damage = 15;
         private Mobile m_Target;
@@ -73,7 +73,7 @@ namespace Server.Items
                 if (weapon == null)
                     return;
 
-                if (Habilidade.GetCurrentAbility(this.m_Mobile) is MysticArc)
+                if (WeaponAbility.GetCurrentAbility(this.m_Mobile) is MysticArc)
                     ClearCurrentAbility(this.m_Mobile);
 
                 if (weapon.CheckHit(this.m_Mobile, this.m_Target))

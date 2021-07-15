@@ -11,7 +11,7 @@ namespace Server.Items
     /// This attack allows you to disarm your foe.
     /// Now in Age of Shadows, a successful Disarm leaves the victim unable to re-arm another weapon for several seconds.
     /// </summary>
-    public class Disarm : Habilidade
+    public class Disarm : WeaponAbility
     {
         public static readonly TimeSpan BlockEquipDuration = TimeSpan.FromSeconds(5.0);
         public Disarm()

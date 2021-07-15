@@ -48,7 +48,7 @@ namespace Server.Mobiles
 
             VirtualArmor = 55;
 
-            SetWeaponAbility(Habilidade.ConcussionBlow);
+            SetWeaponAbility(WeaponAbility.ConcussionBlow);
         }
 
         public FireDaemonRenowned(Serial serial)

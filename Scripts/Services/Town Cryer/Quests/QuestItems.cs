@@ -294,7 +294,7 @@ namespace Server.Engines.Quests
             }
         }
 
-        public override bool HasRequiredSkill(Mobile from)
+        protected override bool HasRequiredSkill(Mobile from)
         {
             return true;
         }

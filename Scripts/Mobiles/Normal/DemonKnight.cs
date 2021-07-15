@@ -102,8 +102,8 @@ namespace Server.Mobiles
 
             m_NextArea = DateTime.UtcNow;
 
-            SetWeaponAbility(Habilidade.CrushingBlow);
-            SetWeaponAbility(Habilidade.WhirlwindAttack);
+            SetWeaponAbility(WeaponAbility.CrushingBlow);
+            SetWeaponAbility(WeaponAbility.WhirlwindAttack);
         }
 
         public DemonKnight(Serial serial)

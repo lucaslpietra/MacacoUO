@@ -7,7 +7,7 @@ namespace Server.Items
     /// <summary>
     /// This attack allows you to disrobe your foe.
     /// </summary>
-    public class Disrobe : Habilidade
+    public class Disrobe : WeaponAbility
     {
         public static readonly TimeSpan BlockEquipDuration = TimeSpan.FromSeconds(5.0);
         public Disrobe()

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Server.Gumps;
 using Server.Mobiles;
+using Server.Multis;
 using Server.Network;
 using Server.Services;
 
@@ -140,8 +141,8 @@ namespace Server.Items
                 from.Animate(AnimationType.Spell, 1);
             }
 
-            GoGump.DisplayToCampfire(from);
-
+            // GoGump.DisplayToCampfire(from);
+            from.SendGump(new GumpCamping(from as PlayerMobile));
             from.SendMessage("Para liberar locais, faca um acampamento na cidade ou na porta da masmorra, ou em lugares especificos.");
         }
 
@@ -219,7 +220,8 @@ namespace Server.Items
 
                     if (entry.Player.Skills[SkillName.Camping].Value > 50)
                     {
-                        GoGump.DiscoverLocation(entry.Player);
+                        //GoGump.DiscoverLocation(entry.Player);
+                        Acampamento.Acampa(entry.Player);
                     }
                 }
             }

@@ -49,7 +49,7 @@ namespace Server.Mobiles
             ControlSlots = 5;
             MinTameSkill = 105.0;
 
-            SetWeaponAbility(Habilidade.BleedAttack);
+            SetWeaponAbility(WeaponAbility.BleedAttack);
         }
 
         public override void GenerateLoot()
@@ -110,7 +110,7 @@ namespace Server.Mobiles
 
             if (version == 0)
             {
-                SetWeaponAbility(Habilidade.BleedAttack);
+                SetWeaponAbility(WeaponAbility.BleedAttack);
             }
         }
     }

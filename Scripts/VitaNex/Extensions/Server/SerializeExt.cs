@@ -1674,18 +1674,18 @@ namespace Server
 		#endregion Crypto
 
 		#region Misc
-		public static void Write(this GenericWriter writer, Habilidade a)
+		public static void Write(this GenericWriter writer, WeaponAbility a)
 		{
-			writer.Write(Habilidade.Abilities.IndexOf(a));
+			writer.Write(WeaponAbility.Abilities.IndexOf(a));
 		}
 
-		public static Habilidade ReadAbility(this GenericReader reader)
+		public static WeaponAbility ReadAbility(this GenericReader reader)
 		{
 			var i = reader.ReadInt();
 
-			if (Habilidade.Abilities.InBounds(i))
+			if (WeaponAbility.Abilities.InBounds(i))
 			{
-				return Habilidade.Abilities[i];
+				return WeaponAbility.Abilities[i];
 			}
 
 			return null;

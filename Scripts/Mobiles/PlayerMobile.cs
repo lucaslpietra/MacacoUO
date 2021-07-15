@@ -283,7 +283,10 @@ namespace Server.Mobiles
             }
         }
 
-        public string CampfireLocations = "";
+        private string _camps = "";
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public string CampfireLocations { get { return _camps; } set { _camps = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public string GetCampFires { get { return CampfireLocations; } }
@@ -5509,6 +5512,8 @@ namespace Server.Mobiles
                     goto case 38;
                 case 38:
                     CampfireLocations = reader.ReadString();
+                    if (CampfireLocations == null)
+                        CampfireLocations = "";
                     goto case 37;
                 case 37:
                     m_ExtendedFlags = (ExtendedPlayerFlag)reader.ReadInt();

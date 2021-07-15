@@ -60,7 +60,7 @@ namespace Server.Mobiles
             Utility.AssignRandomHair(this);
 
             SetSpecialAbility(SpecialAbility.SearingWounds);
-            SetWeaponAbility(Habilidade.BleedAttack);
+            SetWeaponAbility(WeaponAbility.BleedAttack);
             SetMagicalAbility(MagicalAbility.Slashing);
         }
 

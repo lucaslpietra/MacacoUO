@@ -57,7 +57,7 @@ namespace Server.Mobiles
             this.PackItem(new Log(10));
             this.PackItem(new MandrakeRoot(5));
 
-            SetWeaponAbility(Habilidade.MortalStrike);
+            SetWeaponAbility(WeaponAbility.MortalStrike);
         }
 
         public Reaper(Serial serial)
@@ -224,7 +224,7 @@ namespace Server.Mobiles
             this.PackItem(new Log(10));
             this.PackItem(new MandrakeRoot(5));
 
-            SetWeaponAbility(Habilidade.MortalStrike);
+            SetWeaponAbility(WeaponAbility.MortalStrike);
         }
 
         public ArvoreDeSeiva(Serial serial)

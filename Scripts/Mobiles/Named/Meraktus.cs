@@ -110,7 +110,7 @@ namespace Server.Mobiles
 
             Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerCallback(SpawnTormented));
 
-            SetWeaponAbility(Habilidade.Dismount);
+            SetWeaponAbility(WeaponAbility.Dismount);
         }
 
         public virtual void PackResources(int amount)

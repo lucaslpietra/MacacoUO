@@ -299,7 +299,7 @@ namespace Server.Spells
 
             if (move != null)
             {
-                Habilidade.ClearCurrentAbility(m);
+                WeaponAbility.ClearCurrentAbility(m);
 
                 m_Table[m] = move;
 

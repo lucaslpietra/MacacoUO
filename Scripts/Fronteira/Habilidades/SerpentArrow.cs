@@ -4,7 +4,7 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class SerpentArrow : Habilidade
+    public class SerpentArrow : WeaponAbility
     {
         public SerpentArrow()
         {

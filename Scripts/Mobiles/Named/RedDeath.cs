@@ -47,7 +47,7 @@ namespace Server.Mobiles
                 PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
 
-            SetWeaponAbility(Habilidade.WhirlwindAttack);
+            SetWeaponAbility(WeaponAbility.WhirlwindAttack);
         }
 
         public RedDeath(Serial serial)

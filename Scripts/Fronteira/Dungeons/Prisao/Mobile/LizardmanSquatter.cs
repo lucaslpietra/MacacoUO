@@ -39,8 +39,8 @@ namespace Server.Mobiles
             Karma = -10000;
 
             VirtualArmor = 0;
-            SetWeaponAbility(Habilidade.BleedAttack);
-            SetWeaponAbility(Habilidade.DoubleStrike);
+            SetWeaponAbility(WeaponAbility.BleedAttack);
+            SetWeaponAbility(WeaponAbility.DoubleStrike);
         }
 
         public LizardmanSquatter(Serial serial)

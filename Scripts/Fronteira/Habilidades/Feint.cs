@@ -9,7 +9,7 @@ namespace Server.Items
     /// <summary>
     /// Gain a defensive advantage over your primary opponent for a short time.
     /// </summary>
-    public class Feint : Habilidade
+    public class Feint : WeaponAbility
 	{
         private static Dictionary<Mobile, FeintTimer> m_Registry = new Dictionary<Mobile, FeintTimer>();
         public static Dictionary<Mobile, FeintTimer> Registry { get { return m_Registry; } }

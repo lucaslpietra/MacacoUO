@@ -1,17 +1,27 @@
 using System;
-using Server;
-using Server.Scripts.Custom.RelporMap;
 
 namespace Server.Items
 {
-    public class CityMap : ZMapItem
+    public class CityMap : MapItem
     {
         [Constructable]
-        public CityMap() : base(-1)
+        public CityMap()
         {
-            SetDisplay(0, 0);
+            this.SetDisplay(0, 0, 5119, 4095, 400, 400);
         }
 
+        public CityMap(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override int LabelNumber
+        {
+            get
+            {
+                return 1015231;
+            }
+        }// city map
         public override void CraftInit(Mobile from)
         {
             double skillValue = from.Skills[SkillName.Cartography].Value;
@@ -27,36 +37,7 @@ namespace Server.Items
             else if (size > 400)
                 size = 400;
 
-            SetDisplay(from.X, from.Y);
-        }
-
-        public override void SetDisplay(int x, int y)
-        {
-            int i = 0;
-            foreach (MapCutout cutout in RelPorMapList.CityMapCutouts)
-            {
-                if (cutout.Rect.Contains(new Point2D(x, y)))
-                {
-                    break;
-                }
-                i++;
-            }
-            if (i < RelPorMapList.CityMapCutouts.Length)
-            {
-                mMapCutout = RelPorMapList.CityMapCutouts[i];
-                Bounds = mMapCutout.Rect;
-            }
-            else
-            {
-                mMapCutout = RelPorMapList.CityMapCutouts[8]; //galven
-                Bounds = mMapCutout.Rect;
-            }
-        }
-
-        public override int LabelNumber { get { return 1015231; } } // city map
-
-        public CityMap(Serial serial) : base(serial)
-        {
+            this.SetDisplay(from.X - dist, from.Y - dist, from.X + dist, from.Y + dist, size, size);
         }
 
         public override void Serialize(GenericWriter writer)

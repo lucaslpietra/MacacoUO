@@ -9,7 +9,7 @@ namespace Server.Items
     /// <summary>
     /// Attack with increased damage with additional damage over time.
     /// </summary>
-    public class TalonStrike : Habilidade
+    public class TalonStrike : WeaponAbility
     {
         private static readonly Hashtable m_Registry = new Hashtable();
         public TalonStrike()

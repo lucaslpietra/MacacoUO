@@ -110,7 +110,7 @@ namespace Server.Mobiles
         public override bool AcquireOnApproach { get { return true; } }
         public override int AcquireOnApproachRange { get { return 8; } }
 
-        public override Habilidade GetWeaponAbility()
+        public override WeaponAbility GetWeaponAbility()
         {
             if (Weapon is BaseWeapon)
             {
@@ -119,7 +119,7 @@ namespace Server.Mobiles
                 return ((BaseWeapon)Weapon).SecondaryAbility;
             }
 
-            return Habilidade.WhirlwindAttack;
+            return WeaponAbility.WhirlwindAttack;
         }
 
         public override void GenerateLoot()

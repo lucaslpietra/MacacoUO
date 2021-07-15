@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class Amber : Item, ICommodity
+    public class Amber : BasePedraPreciosa, ICommodity
     {
         [Constructable]
         public Amber()

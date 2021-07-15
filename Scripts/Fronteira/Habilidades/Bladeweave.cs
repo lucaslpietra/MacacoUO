@@ -8,14 +8,14 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class Bladeweave : Habilidade
+    public class Bladeweave : WeaponAbility
     {
         private class BladeWeaveRedirect
         {
-            public Habilidade NewAbility;
+            public WeaponAbility NewAbility;
             public int ClilocEntry;
 
-            public BladeWeaveRedirect(Habilidade ability, int cliloc)
+            public BladeWeaveRedirect(WeaponAbility ability, int cliloc)
             {
                 NewAbility = ability;
                 ClilocEntry = cliloc;
@@ -24,7 +24,7 @@ namespace Server.Items
 
         private static Dictionary<Mobile, BladeWeaveRedirect> m_NewAttack = new Dictionary<Mobile, BladeWeaveRedirect>();
 
-        public static bool BladeWeaving(Mobile attacker, out Habilidade a)
+        public static bool BladeWeaving(Mobile attacker, out WeaponAbility a)
         {
             BladeWeaveRedirect bwr;
             bool success = m_NewAttack.TryGetValue(attacker, out bwr);
@@ -57,8 +57,8 @@ namespace Server.Items
             }
             else
             {
-                bool canfeint = attacker.Skills[Habilidade.Feint.GetSecondarySkill(attacker)].Value >= Habilidade.Feint.GetRequiredSecondarySkill(attacker);
-                bool canblock = attacker.Skills[Habilidade.Block.GetSecondarySkill(attacker)].Value >= Habilidade.Block.GetRequiredSecondarySkill(attacker);
+                bool canfeint = attacker.Skills[WeaponAbility.Feint.GetSecondarySkill(attacker)].Value >= WeaponAbility.Feint.GetRequiredSecondarySkill(attacker);
+                bool canblock = attacker.Skills[WeaponAbility.Block.GetSecondarySkill(attacker)].Value >= WeaponAbility.Block.GetRequiredSecondarySkill(attacker);
 
                 if (canfeint && canblock)
                 {
@@ -77,31 +77,31 @@ namespace Server.Items
             switch (ran)
             {
                 case 0:
-                    m_NewAttack[attacker] = new BladeWeaveRedirect(Habilidade.ArmorIgnore, 1028838);
+                    m_NewAttack[attacker] = new BladeWeaveRedirect(WeaponAbility.ArmorIgnore, 1028838);
                     break;
                 case 1:
-                    m_NewAttack[attacker] = new BladeWeaveRedirect(Habilidade.BleedAttack, 1028839);
+                    m_NewAttack[attacker] = new BladeWeaveRedirect(WeaponAbility.BleedAttack, 1028839);
                     break;
                 case 2:
-                    m_NewAttack[attacker] = new BladeWeaveRedirect(Habilidade.ConcussionBlow, 1028840);
+                    m_NewAttack[attacker] = new BladeWeaveRedirect(WeaponAbility.ConcussionBlow, 1028840);
                     break;
                 case 3:
-                    m_NewAttack[attacker] = new BladeWeaveRedirect(Habilidade.CrushingBlow, 1028841);
+                    m_NewAttack[attacker] = new BladeWeaveRedirect(WeaponAbility.CrushingBlow, 1028841);
                     break;
                 case 4:
-                    m_NewAttack[attacker] = new BladeWeaveRedirect(Habilidade.DoubleStrike, 1028844);
+                    m_NewAttack[attacker] = new BladeWeaveRedirect(WeaponAbility.DoubleStrike, 1028844);
                     break;
                 case 5:
-                    m_NewAttack[attacker] = new BladeWeaveRedirect(Habilidade.MortalStrike, 1028846);
+                    m_NewAttack[attacker] = new BladeWeaveRedirect(WeaponAbility.MortalStrike, 1028846);
                     break;
                 case 6:
-                    m_NewAttack[attacker] = new BladeWeaveRedirect(Habilidade.ParalyzingBlow, 1028848);
+                    m_NewAttack[attacker] = new BladeWeaveRedirect(WeaponAbility.ParalyzingBlow, 1028848);
                     break;
                 case 7:
-                    m_NewAttack[attacker] = new BladeWeaveRedirect(Habilidade.Block, 1028853);
+                    m_NewAttack[attacker] = new BladeWeaveRedirect(WeaponAbility.Block, 1028853);
                     break;
                 case 8:
-                    m_NewAttack[attacker] = new BladeWeaveRedirect(Habilidade.Feint, 1028857);
+                    m_NewAttack[attacker] = new BladeWeaveRedirect(WeaponAbility.Feint, 1028857);
                     break;
                 default:
                     // should never happen

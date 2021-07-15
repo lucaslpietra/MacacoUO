@@ -118,7 +118,7 @@ namespace Server.Mobiles
             AddItem(arma);
 
             PackItem(Decos.RandomDeco());
-            SetWeaponAbility(Habilidade.BleedAttack);
+            SetWeaponAbility(WeaponAbility.BleedAttack);
 
             Fame = 8500;
             Karma = -8500;

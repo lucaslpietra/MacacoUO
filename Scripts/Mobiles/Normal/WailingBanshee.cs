@@ -40,7 +40,7 @@ namespace Server.Mobiles
             Karma = -1500;
 
             VirtualArmor = 19;
-            SetWeaponAbility(Habilidade.MortalStrike);
+            SetWeaponAbility(WeaponAbility.MortalStrike);
         }
 
         public WailingBanshee(Serial serial)

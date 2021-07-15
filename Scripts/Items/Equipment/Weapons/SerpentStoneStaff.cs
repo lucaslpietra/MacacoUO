@@ -18,18 +18,18 @@ namespace Server.Items
         {
         }
 
-        public override Habilidade PrimaryAbility
+        public override WeaponAbility PrimaryAbility
         {
             get
             {
-                return Habilidade.CrushingBlow;
+                return WeaponAbility.CrushingBlow;
             }
         }
-        public override Habilidade SecondaryAbility
+        public override WeaponAbility SecondaryAbility
         {
             get
             {
-                return Habilidade.Dismount;
+                return WeaponAbility.Dismount;
             }
         }
         public override int AosStrengthReq

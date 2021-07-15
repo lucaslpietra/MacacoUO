@@ -311,7 +311,7 @@ namespace Server.Mobiles
 
                 if (Utility.RandomBool())
                 {
-                    Habilidade bleed = Habilidade.BleedAttack;
+                    WeaponAbility bleed = WeaponAbility.BleedAttack;
                     bleed.OnHit(this, m, 0);
                 }
             }

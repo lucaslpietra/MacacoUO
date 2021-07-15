@@ -26,7 +26,7 @@ namespace Server.Items
         private AosSkillBonuses m_AosSkillBonuses;
         private CraftResource m_Resource;
         private bool m_PlayerConstructed;
-        
+
         private int m_UsesRemaining;
         private bool m_ShowUsesRemaining;
 
@@ -129,7 +129,7 @@ namespace Server.Items
         public CraftResource Resource
         {
             get { return m_Resource; }
-            set { m_Resource = value; Hue = CraftResources.GetHue(m_Resource); InvalidateProperties(); }
+            set { m_Resource = value; Hue = CraftResources.GetHue(m_Resource); SetSkillBonus(); InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -157,21 +157,21 @@ namespace Server.Items
         public ItemQuality Quality
         {
             get { return m_Quality; }
-            set 
-            { 
+            set
+            {
                 UnscaleUses();
                 m_Quality = value;
                 ScaleUses();
             }
         }
-        
+
         [CommandProperty(AccessLevel.GameMaster)]
         public int UsesRemaining
         {
             get { return m_UsesRemaining; }
             set { m_UsesRemaining = value; InvalidateProperties(); }
         }
-        
+
         [CommandProperty(AccessLevel.GameMaster)]
         public bool ShowUsesRemaining
         {
@@ -199,8 +199,31 @@ namespace Server.Items
 
             m_AosAttributes = new AosAttributes(this);
             m_AosSkillBonuses = new AosSkillBonuses(this);
-            
+            m_AosSkillBonuses.Skill_1_Name = SkillName.Fishing;
             UsesRemaining = 150;
+        }
+
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            list.Add("Vara de Pesca" + (Resource != CraftResource.None ? " de "+Resource.ToString() : ""));
+        }
+
+        public void SetSkillBonus()
+        {
+            if (Resource == CraftResource.Carvalho)
+                m_AosSkillBonuses.Skill_1_Value = 5;
+            else if (Resource == CraftResource.Pinho)
+                m_AosSkillBonuses.Skill_1_Value = 5;
+            else  if (Resource == CraftResource.Mogno)
+                m_AosSkillBonuses.Skill_1_Value = 10;
+            else if(Resource == CraftResource.Eucalipto)
+                m_AosSkillBonuses.Skill_1_Value = 15;
+            else if(Resource == CraftResource.Carmesim)
+                m_AosSkillBonuses.Skill_1_Value = 15;
+            else  if (Resource == CraftResource.Gelo)
+                m_AosSkillBonuses.Skill_1_Value = 20;
+            else
+                m_AosSkillBonuses.Skill_1_Value = 0;
         }
 
         public void ScaleUses()
@@ -216,9 +239,12 @@ namespace Server.Items
 
         public int GetUsesScalar()
         {
+            var q = 100;
             if (m_Quality == ItemQuality.Exceptional)
-                return 200;
+                q += 100;
 
+            if (Resource != CraftResource.None)
+                q += ((int)this.Resource - 301) * 30;
             return 100;
         }
 
@@ -281,12 +307,6 @@ namespace Server.Items
 
         public override bool CanEquip(Mobile from)
         {
-            if (from.Str < GetStrRequirement())
-            {
-                from.SendLocalizedMessage(500213); // You are not strong enough to equip that.
-                return false;
-            }
-
             return base.CanEquip(from);
         }
 
@@ -321,8 +341,7 @@ namespace Server.Items
             {
                 Mobile from = (Mobile)parent;
 
-                if (Core.AOS)
-                    m_AosSkillBonuses.AddTo(from);
+                m_AosSkillBonuses.AddTo(from);
 
                 from.CheckStatTimers();
             }
@@ -340,8 +359,7 @@ namespace Server.Items
                 m.RemoveStatMod(modName + "Dex");
                 m.RemoveStatMod(modName + "Int");
 
-                if (Core.AOS)
-                    m_AosSkillBonuses.Remove();
+                m_AosSkillBonuses.Remove();
 
                 m.CheckStatTimers();
             }
@@ -350,102 +368,6 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-
-            if (m_AosAttributes.Brittle != 0)
-                list.Add(1116209); // Brittle
-
-            if (m_Crafter != null)
-                list.Add(1050043, m_Crafter.Name); // crafted by ~1_NAME~
-
-            if (m_Quality == ItemQuality.Exceptional)
-                list.Add(1060636); // exceptional
-
-            if (m_AosSkillBonuses != null)
-                m_AosSkillBonuses.GetProperties(list);
-
-            if(Siege.SiegeShard && m_ShowUsesRemaining)
-            {
-                list.Add(1060584, ((IUsesRemaining)this).UsesRemaining.ToString()); // uses remaining: ~1_val~
-            }
-            
-            base.AddResistanceProperties(list);
-
-            int prop = 0;
-
-            if ((prop = (m_AosAttributes.WeaponDamage)) != 0)
-                list.Add(1060401, prop.ToString()); // damage increase ~1_val~%
-
-            if ((prop = m_AosAttributes.DefendChance) != 0)
-                list.Add(1060408, prop.ToString()); // defense chance increase ~1_val~%
-
-            if ((prop = m_AosAttributes.EnhancePotions) != 0)
-                list.Add(1060411, prop.ToString()); // enhance potions ~1_val~%
-
-            if ((prop = m_AosAttributes.CastRecovery) != 0)
-                list.Add(1060412, prop.ToString()); // faster cast recovery ~1_val~
-
-            if ((prop = m_AosAttributes.CastSpeed) != 0)
-                list.Add(1060413, prop.ToString()); // faster casting ~1_val~
-
-            if ((prop = (m_AosAttributes.AttackChance)) != 0)
-                list.Add(1060415, prop.ToString()); // hit chance increase ~1_val~%
-
-            if ((prop = m_AosAttributes.BonusDex) != 0)
-                list.Add(1060409, prop.ToString()); // dexterity bonus ~1_val~
-
-            if ((prop = m_AosAttributes.BonusHits) != 0)
-                list.Add(1060431, prop.ToString()); // hit point increase ~1_val~
-
-            if ((prop = m_AosAttributes.BonusInt) != 0)
-                list.Add(1060432, prop.ToString()); // intelligence bonus ~1_val~
-
-            if ((prop = m_AosAttributes.LowerManaCost) != 0)
-                list.Add(1060433, prop.ToString()); // lower mana cost ~1_val~%
-
-            if ((prop = m_AosAttributes.LowerRegCost) != 0)
-                list.Add(1060434, prop.ToString()); // lower reagent cost ~1_val~%
-
-            if ((prop = m_LowerStatReq) != 0)
-                list.Add(1060435, m_LowerStatReq.ToString()); // lower requirements ~1_val~%
-
-            if ((prop = m_AosAttributes.SpellChanneling) != 0)
-                list.Add(1060482); // spell channeling	
-
-            if (!CraftResources.IsStandard(m_Resource))
-                list.Add(CraftResources.GetName(m_Resource));
-
-            if ((prop = (GetLuckBonus() + m_AosAttributes.Luck)) != 0)
-                list.Add(1060436, prop.ToString()); // luck ~1_val~
-
-            if ((prop = m_AosAttributes.BonusMana) != 0)
-                list.Add(1060439, prop.ToString()); // mana increase ~1_val~
-
-            if ((prop = m_AosAttributes.RegenMana) != 0)
-                list.Add(1060440, prop.ToString()); // mana regeneration ~1_val~
-
-            if ((prop = m_AosAttributes.NightSight) != 0)
-                list.Add(1060441); // night sight
-
-            if ((prop = m_AosAttributes.ReflectPhysical) != 0)
-                list.Add(1060442, prop.ToString()); // reflect physical damage ~1_val~%
-
-            if ((prop = m_AosAttributes.RegenStam) != 0)
-                list.Add(1060443, prop.ToString()); // stamina regeneration ~1_val~
-
-            if ((prop = m_AosAttributes.RegenHits) != 0)
-                list.Add(1060444, prop.ToString()); // hit point regeneration ~1_val~
-
-            if ((prop = m_AosAttributes.SpellDamage) != 0)
-                list.Add(1060483, prop.ToString()); // spell damage increase ~1_val~%
-
-            if ((prop = m_AosAttributes.BonusStam) != 0)
-                list.Add(1060484, prop.ToString()); // stamina increase ~1_val~
-
-            if ((prop = m_AosAttributes.BonusStr) != 0)
-                list.Add(1060485, prop.ToString()); // strength bonus ~1_val~
-
-            //if ( (prop = m_AosAttributes.WeaponSpeed) != 0 )
-            //	list.Add( 1060486, prop.ToString() ); // swing speed increase ~1_val~%
 
             int hookCliloc = BaseFishingHook.GetHookType(m_HookType);
 
@@ -466,7 +388,10 @@ namespace Server.Items
                 list.Add(1116466, m_BaitUses.ToString()); // amount: ~1_val~
             }
 
-            list.Add(1061170, GetStrRequirement().ToString()); // strength requirement ~1_val~
+            if(m_AosSkillBonuses.Skill_1_Value > 0)
+            {
+                list.Add("Bonus Fishing: " + m_AosSkillBonuses.Skill_1_Value);
+            }
         }
 
         public FishingPole(Serial serial)

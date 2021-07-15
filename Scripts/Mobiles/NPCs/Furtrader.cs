@@ -8,7 +8,7 @@ namespace Server.Mobiles
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         [Constructable]
         public Furtrader()
-            : base("the furtrader")
+            : base("o peleiro")
         {
             this.SetSkill(SkillName.Camping, 55.0, 78.0);
             //SetSkill( SkillName.Alchemy, 60.0, 83.0 );

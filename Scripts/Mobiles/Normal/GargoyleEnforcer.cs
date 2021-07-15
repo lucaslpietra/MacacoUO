@@ -45,7 +45,7 @@ namespace Server.Mobiles
             if (0.2 > Utility.RandomDouble())
                 PackItem(new GargoylesPickaxe());
 
-            SetWeaponAbility(Habilidade.WhirlwindAttack);
+            SetWeaponAbility(WeaponAbility.WhirlwindAttack);
         }
 
         public GargoyleEnforcer(Serial serial)

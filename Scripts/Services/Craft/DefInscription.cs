@@ -190,7 +190,7 @@ namespace Server.Engines.Craft
             int index = AddCraft(type, cliloc, 1044381 + m_Index++, minSkill, maxSkill, m_RegTypes[(int)regs[0]], 1044353 + (int)regs[0], 1, 1044361 + (int)regs[0]);
 
             for (int i = 1; i < regs.Length; ++i)
-                AddRes(index, m_RegTypes[(int)regs[i]], 1044353 + (int)regs[i], 1, 1044361 + (int)regs[i]);
+                AddRes(index, m_RegTypes[(int)regs[i]], 1044353 + (int)regs[i], 10, 1044361 + (int)regs[i]);
 
             AddRes(index, typeof(BlankScroll), 1044377, 1, 1044378);
 
@@ -302,6 +302,7 @@ namespace Server.Engines.Craft
             m_Circle = 4;
             m_Mana = 14;
 
+            /*
             AddSpell(typeof(BladeSpiritsScroll), Reg.BlackPearl, Reg.Nightshade, Reg.MandrakeRoot);
             AddSpell(typeof(DispelFieldScroll), Reg.BlackPearl, Reg.Garlic, Reg.SpidersSilk, Reg.SulfurousAsh);
             AddSpell(typeof(IncognitoScroll), Reg.Bloodmoss, Reg.Garlic, Reg.Nightshade);
@@ -346,8 +347,9 @@ namespace Server.Engines.Craft
             AddSpell(typeof(SummonEarthElementalScroll), Reg.Bloodmoss, Reg.MandrakeRoot, Reg.SpidersSilk);
             AddSpell(typeof(SummonFireElementalScroll), Reg.Bloodmoss, Reg.MandrakeRoot, Reg.SpidersSilk, Reg.SulfurousAsh);
             AddSpell(typeof(SummonWaterElementalScroll), Reg.Bloodmoss, Reg.MandrakeRoot, Reg.SpidersSilk);
+            */
 
-            if(Core.AOS)
+            if (Core.AOS)
             {
                 AddNecroSpell(0, 23, 39.6, typeof(AnimateDeadScroll), Reg.GraveDust, Reg.DaemonBlood);
                 AddNecroSpell(1, 13, 19.6, typeof(BloodOathScroll), Reg.DaemonBlood);
@@ -370,20 +372,19 @@ namespace Server.Engines.Craft
 
             int index;
 
-            if (Core.ML)
-            {
-                index = AddCraft(typeof(EnchantedSwitch), 1044294, 1072893, 45.0, 95.0, typeof(BlankScroll), 1044377, 1, 1044378);
-                AddRes(index, typeof(SpidersSilk), 1044360, 1, 1044253);
-                AddRes(index, typeof(BlackPearl), 1044353, 1, 1044253);
-                AddRes(index, typeof(SwitchItem), 1073464, 1, 1044253);
-                ForceNonExceptional(index);
 
-                index = AddCraft(typeof(RunedPrism), 1044294, 1073465, 45.0, 95.0, typeof(BlankScroll), 1044377, 1, 1044378);
-                AddRes(index, typeof(SpidersSilk), 1044360, 1, 1044253);
-                AddRes(index, typeof(BlackPearl), 1044353, 1, 1044253);
-                AddRes(index, typeof(HollowPrism), 1072895, 1, 1044253);
-                ForceNonExceptional(index);
-            }
+            index = AddCraft(typeof(EnchantedSwitch), 1044294, 1072893, 45.0, 95.0, typeof(BlankScroll), 1044377, 1, 1044378);
+            AddRes(index, typeof(SpidersSilk), 1044360, 1, 1044253);
+            AddRes(index, typeof(BlackPearl), 1044353, 1, 1044253);
+            AddRes(index, typeof(SwitchItem), 1073464, 1, 1044253);
+            ForceNonExceptional(index);
+
+            index = AddCraft(typeof(RunedPrism), 1044294, 1073465, 45.0, 95.0, typeof(BlankScroll), 1044377, 1, 1044378);
+            AddRes(index, typeof(SpidersSilk), 1044360, 1, 1044253);
+            AddRes(index, typeof(BlackPearl), 1044353, 1, 1044253);
+            AddRes(index, typeof(HollowPrism), 1072895, 1, 1044253);
+            ForceNonExceptional(index);
+
 
             // Runebook
             index = AddCraft(typeof(Runebook), 1044294, 1041267, 45.0, 95.0, typeof(BlankScroll), 1044377, 8, 1044378);

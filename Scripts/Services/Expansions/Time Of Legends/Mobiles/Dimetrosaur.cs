@@ -49,8 +49,8 @@ namespace Server.Mobiles
             MinTameSkill = 102.0;
 
             SetAreaEffect(AreaEffect.PoisonBreath);
-            SetWeaponAbility(Habilidade.MortalStrike);
-            SetWeaponAbility(Habilidade.Dismount);
+            SetWeaponAbility(WeaponAbility.MortalStrike);
+            SetWeaponAbility(WeaponAbility.Dismount);
         }
 
         public override int GetIdleSound()
@@ -135,8 +135,8 @@ namespace Server.Mobiles
                 }
 
                 SetAreaEffect(AreaEffect.PoisonBreath);
-                SetWeaponAbility(Habilidade.MortalStrike);
-                SetWeaponAbility(Habilidade.Dismount);
+                SetWeaponAbility(WeaponAbility.MortalStrike);
+                SetWeaponAbility(WeaponAbility.Dismount);
             }
 
             if (version < 2)

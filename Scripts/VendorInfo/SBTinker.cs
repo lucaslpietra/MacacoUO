@@ -41,8 +41,8 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(Gears), 2, 20, 0x1053, 0, true));
                 Add(new GenericBuyInfo(typeof(Hinge), 2, 20, 0x1055, 0, true));
 
-                Add(new GenericBuyInfo(typeof(Sextant), 13, 20, 0x1057, 0));
-                Add(new GenericBuyInfo(typeof(SextantParts), 5, 20, 0x1059, 0, true));
+                //Add(new GenericBuyInfo(typeof(Sextant), 13, 20, 0x1057, 0));
+                //Add(new GenericBuyInfo(typeof(SextantParts), 5, 20, 0x1059, 0, true));
                 Add(new GenericBuyInfo(typeof(Axle), 2, 20, 0x105B, 0, true));
                 Add(new GenericBuyInfo(typeof(Springs), 3, 20, 0x105D, 0, true));
 
@@ -125,8 +125,8 @@ namespace Server.Mobiles
                 Add(typeof(AxleGears), 1);
                 Add(typeof(Gears), 1);
                 Add(typeof(Hinge), 1);
-                Add(typeof(Sextant), 6);
-                Add(typeof(SextantParts), 2);
+                //Add(typeof(Sextant), 6);
+               // Add(typeof(SextantParts), 2);
                 Add(typeof(Axle), 1);
                 Add(typeof(Springs), 1);
 

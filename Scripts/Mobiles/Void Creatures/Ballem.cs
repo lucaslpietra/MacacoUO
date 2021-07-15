@@ -50,7 +50,7 @@ namespace Server.Mobiles
 
             PackItem(new DaemonBone(15));
 
-            SetWeaponAbility(Habilidade.CrushingBlow);
+            SetWeaponAbility(WeaponAbility.CrushingBlow);
         }
 
         public override void OnDeath(Container c)

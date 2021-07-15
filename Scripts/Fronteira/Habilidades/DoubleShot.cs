@@ -7,7 +7,7 @@ namespace Server.Items
     /// <summary>
     /// Send two arrows flying at your opponent if you're mounted. Requires Bushido or Ninjitsu skill.
     /// </summary>
-    public class DoubleShot : Habilidade
+    public class DoubleShot : WeaponAbility
     {
         public DoubleShot()
         {

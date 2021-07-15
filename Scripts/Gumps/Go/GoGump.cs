@@ -153,7 +153,7 @@ namespace Server.Gumps
 
         public static void DiscoverLocation(PlayerMobile from)
         {
-            var discobertas = from.CampfireLocations.Split(';').ToList();
+            var discobertas = from.CampfireLocations.Split(';').ToList(); 
             var childs = GetAllChildsCamping();
 
             double menorDist = 999999999999999999;
@@ -172,7 +172,6 @@ namespace Server.Gumps
                         prox = loc;
                     }
                 }
-
             }
             if (prox != null)
             {

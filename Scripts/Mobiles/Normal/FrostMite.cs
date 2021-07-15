@@ -41,7 +41,7 @@ namespace Server.Mobiles
             ControlSlots = 3;
             MinTameSkill = 102.0;
 
-            SetWeaponAbility(Habilidade.ColdWind);
+            SetWeaponAbility(WeaponAbility.ColdWind);
         }
 
         public override int GetAngerSound()

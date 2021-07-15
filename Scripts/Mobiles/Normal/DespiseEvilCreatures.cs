@@ -149,7 +149,7 @@ namespace Server.Engines.Despise
             Karma = GetKarmaEvil;
             Power = powerLevel;
 
-            SetWeaponAbility(Habilidade.ArmorIgnore);
+            SetWeaponAbility(WeaponAbility.ArmorIgnore);
         }
 
         protected override BaseAI ForcedAI { get { return new DespiseMeleeAI(this); } }
@@ -178,7 +178,7 @@ namespace Server.Engines.Despise
 
             if (v == 0)
             {
-                SetWeaponAbility(Habilidade.ArmorIgnore);
+                SetWeaponAbility(WeaponAbility.ArmorIgnore);
             }
         }
     }
@@ -251,7 +251,7 @@ namespace Server.Engines.Despise
             Karma = GetKarmaEvil;
             Power = powerLevel;
 
-            SetWeaponAbility(Habilidade.CrushingBlow);
+            SetWeaponAbility(WeaponAbility.CrushingBlow);
         }
 
         protected override BaseAI ForcedAI { get { return new DespiseMeleeAI(this); } }
@@ -283,7 +283,7 @@ namespace Server.Engines.Despise
 
             if (v == 0)
             {
-                SetWeaponAbility(Habilidade.CrushingBlow);
+                SetWeaponAbility(WeaponAbility.CrushingBlow);
             }
         }
     }
@@ -307,7 +307,7 @@ namespace Server.Engines.Despise
             Karma = GetKarmaEvil;
             Power = powerLevel;
 
-            SetWeaponAbility(Habilidade.ConcussionBlow);
+            SetWeaponAbility(WeaponAbility.ConcussionBlow);
         }
 
         protected override BaseAI ForcedAI { get { return new DespiseMeleeAI(this); } }
@@ -337,7 +337,7 @@ namespace Server.Engines.Despise
 
             if (v == 0)
             {
-                SetWeaponAbility(Habilidade.ConcussionBlow);
+                SetWeaponAbility(WeaponAbility.ConcussionBlow);
             }
         }
     }
@@ -362,7 +362,7 @@ namespace Server.Engines.Despise
             Karma = GetKarmaEvil;
             Power = powerLevel;
 
-            SetWeaponAbility(Habilidade.DoubleStrike);
+            SetWeaponAbility(WeaponAbility.DoubleStrike);
         }
 
         protected override BaseAI ForcedAI { get { return new DespiseMeleeAI(this); } }
@@ -408,7 +408,7 @@ namespace Server.Engines.Despise
 
             if (v == 0)
             {
-                SetWeaponAbility(Habilidade.DoubleStrike);
+                SetWeaponAbility(WeaponAbility.DoubleStrike);
             }
         }
     }

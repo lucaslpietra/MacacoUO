@@ -47,8 +47,8 @@ namespace Server.Engines.SorcerersDungeon
             Fame = 12000;
             Karma = -12000;
 
-            SetWeaponAbility(Habilidade.ArmorIgnore);
-            SetWeaponAbility(Habilidade.BleedAttack);
+            SetWeaponAbility(WeaponAbility.ArmorIgnore);
+            SetWeaponAbility(WeaponAbility.BleedAttack);
         }
 
         public JackInTheBox(Serial serial)

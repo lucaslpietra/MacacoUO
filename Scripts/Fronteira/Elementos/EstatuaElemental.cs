@@ -28,11 +28,13 @@ namespace Server.Fronteira.Elementos
                 return;
 
             from.SendMessage("Voce sente uma energia muito forte emandando desta estatua...");
-            if (from.Skills.Total < 6000)
+            /*
+            if (from.Skills.Total < 4000)
             {
-                from.SendMessage("Voce ainda tem muito a aprender para poder compreender esta estatua. [Skills " + from.Skills.Total + "/6000]");
+                from.SendMessage("Voce ainda tem a aprender para poder compreender esta estatua. [Skills " + from.Skills.Total/10 + "/400]");
                 return;
             }
+            */
 
             if (pl.Nivel <= 1)
             {

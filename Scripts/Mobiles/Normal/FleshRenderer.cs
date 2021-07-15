@@ -42,8 +42,8 @@ namespace Server.Mobiles
 
             VirtualArmor = 24;
 
-            SetWeaponAbility(Habilidade.Dismount);
-            SetWeaponAbility(Habilidade.ParalyzingBlow);
+            SetWeaponAbility(WeaponAbility.Dismount);
+            SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
 
         public FleshRenderer(Serial serial)

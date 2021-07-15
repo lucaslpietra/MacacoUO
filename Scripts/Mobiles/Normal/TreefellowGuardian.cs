@@ -42,7 +42,7 @@ namespace Server.Mobiles
             if (0.05 > Utility.RandomDouble())
                 PackItem(new TreefellowWood());
 
-            SetWeaponAbility(Habilidade.Dismount);
+            SetWeaponAbility(WeaponAbility.Dismount);
         }
 
         public TreefellowGuardian(Serial serial)

@@ -11,7 +11,7 @@ namespace Server.Mobiles
         public Class Class { get; private set; }
         public MagicalAbility MagicalAbilities { get; private set; }
         public SpecialAbility[] SpecialAbilities { get; private set; }
-        public Habilidade[] WeaponAbilities { get; private set; }
+        public WeaponAbility[] WeaponAbilities { get; private set; }
         public AreaEffect[] AreaEffects { get; private set; }
 
         public int ControlSlotsMin { get; private set; }
@@ -22,7 +22,7 @@ namespace Server.Mobiles
             Class classificaion,
             MagicalAbility magicalAbility,
             SpecialAbility[] specialAbility,
-            Habilidade[] weaponAbility, 
+            WeaponAbility[] weaponAbility, 
             AreaEffect[] areaEffect,
             int controlmin,
             int controlmax)
