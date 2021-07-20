@@ -27,6 +27,7 @@ namespace Server.Items
         public override void LockPick(Mobile from)
         {
             base.LockPick(from);
+            var xp = 50 + (GetLevel() * 200);
             if(from.RP)
             {
                 foreach (var i in this.Items)

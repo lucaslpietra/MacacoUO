@@ -122,9 +122,11 @@
     <Compile Include="Commands\Custom\Remover.cs" />
     <Compile Include="Commands\Custom\Secure.cs" />
     <Compile Include="Commands\Custom\Trancar.cs" />
+    <Compile Include="Fronteira\PaidBankChest.cs" />
+    <Compile Include="Fronteira\Camping\Acampamento.cs" />
+    <Compile Include="Fronteira\Camping\GumpCamping.cs" />
+    <Compile Include="Fronteira\Camping\PlacaAcampemto.cs" />
     <Compile Include="Fronteira\Animations\CustomAnimations.cs" />
-    <Compile Include="Fronteira\Aspects\Aspect.cs" />
-    <Compile Include="Fronteira\Aspects\AspectType.cs" />
     <Compile Include="Fronteira\Chat\Channels\Alliance.cs" />
     <Compile Include="Fronteira\Chat\Channels\Channel.cs" />
     <Compile Include="Fronteira\Chat\Channels\Guild.cs" />
@@ -192,6 +194,7 @@
     <Compile Include="Fronteira\Clima\Clima.cs" />
     <Compile Include="Fronteira\Clima\ComandosClima.cs" />
     <Compile Include="Fronteira\Clima\GumpTemperatura.cs" />
+    <Compile Include="Fronteira\Comandos\GenRecursos.cs" />
     <Compile Include="Fronteira\Comandos\Limpeza.cs" />
     <Compile Include="Fronteira\Comandos\NerfSpawners.cs" />
     <Compile Include="Fronteira\Comandos\Salvar.cs" />
@@ -300,7 +303,34 @@
     <Compile Include="Fronteira\Items\Seiva.cs" />
     <Compile Include="Fronteira\Items\HairStyle.cs" />
     <Compile Include="Fronteira\Items\Piano.cs" />
+    <Compile Include="Fronteira\Jewelcrafting\BasePedraPreciosa.cs" />
+    <Compile Include="Fronteira\Skills\Informacoes.cs" />
+    <Compile Include="Fronteira\Storages\MasterStorage.cs" />
+    <Compile Include="Fronteira\Storages\MasterStorageContextMenus.cs" />
+    <Compile Include="Fronteira\Storages\MasterStorageGoldLedgerDeed.cs" />
+    <Compile Include="Fronteira\Storages\MasterStorageGumps.cs" />
+    <Compile Include="Fronteira\Storages\MasterStorageKeepItemsDeed.cs" />
+    <Compile Include="Fronteira\Storages\MasterStorageTargets.cs" />
+    <Compile Include="Fronteira\Storages\MasterStorageTokenLedgerDeed.cs" />
+    <Compile Include="Fronteira\Storages\MasterStorageUtils.cs" />
+    <Compile Include="Fronteira\Storages\Storage\AlchemistStorage.cs" />
+    <Compile Include="Fronteira\Storages\Storage\BardStorage.cs" />
+    <Compile Include="Fronteira\Storages\Storage\BaseStorage.cs" />
+    <Compile Include="Fronteira\Storages\Storage\CookStorage.cs" />
+    <Compile Include="Fronteira\Storages\Storage\ItemStorage.cs" />
+    <Compile Include="Fronteira\Storages\Storage\JewelerStorage.cs" />
+    <Compile Include="Fronteira\Storages\Storage\MageStorage.cs" />
+    <Compile Include="Fronteira\Storages\Storage\MinerStorage.cs" />
+    <Compile Include="Fronteira\Storages\Storage\MLResourceStorage.cs" />
+    <Compile Include="Fronteira\Storages\Storage\RunicStorage.cs" />
+    <Compile Include="Fronteira\Storages\Storage\ScriberStorage.cs" />
+    <Compile Include="Fronteira\Storages\Storage\StorageDeed.cs" />
+    <Compile Include="Fronteira\Storages\Storage\TailorStorage.cs" />
+    <Compile Include="Fronteira\Storages\Storage\ToolStorage.cs" />
+    <Compile Include="Fronteira\Storages\Storage\WoodworkerStorage.cs" />
     <Compile Include="Fronteira\Mobs\Arvores.cs" />
+    <Compile Include="Fronteira\Mobs\Basilisco.cs" />
+    <Compile Include="Fronteira\Mobs\FlyingDragon.cs" />
     <Compile Include="Fronteira\Mobs\MobAlquimista.cs" />
     <Compile Include="Fronteira\Mobs\SolenFantasma.cs" />
     <Compile Include="Fronteira\Mobs\SolenFogo.cs" />
@@ -328,6 +358,8 @@
     <Compile Include="Fronteira\QualidadeDefeitos\Qualidades\Qualidade.cs" />
     <Compile Include="Fronteira\QualidadeDefeitos\Qualidades\Qualidades.cs" />
     <Compile Include="Fronteira\QualidadeDefeitos\Qualidades\QualidadesXmlAttachment.cs" />
+    <Compile Include="Fronteira\Rankings\GumpEscolherElemento.cs" />
+    <Compile Include="Fronteira\Rankings\RankElementos.cs" />
     <Compile Include="Fronteira\Recursos\ColetaTimer.cs" />
     <Compile Include="Fronteira\Recursos\Recurso.cs" />
     <Compile Include="Fronteira\RotaDaSeda\CmdVenda.cs" />
@@ -1034,8 +1066,8 @@
     <Compile Include="Fronteira\Dungeons\Prisao\Mobile\WrongPrisoner.cs" />
     <Compile Include="Fronteira\Dungeons\Prisao\Quests\EscortToWrongEntrance.cs" />
     <Compile Include="Fronteira\Dungeons\Prisao\Region.cs" />
-    <Compile Include="Fronteira\Fama\GumpFama.cs" />
-    <Compile Include="Fronteira\Fama\Quadro.cs" />
+    <Compile Include="Fronteira\Rankings\GumpFama.cs" />
+    <Compile Include="Fronteira\Rankings\Quadro.cs" />
     <Compile Include="Fronteira\FeatureList.cs" />
     <Compile Include="Fronteira\Grupos\GumpConvite.cs" />
     <Compile Include="Fronteira\GuerraTotal\Comandos.cs" />
@@ -1136,9 +1168,6 @@
     <Compile Include="Fronteira\Lojas\QuadroVendors.cs" />
     <Compile Include="Fronteira\Mapa\GumpMapa.cs" />
     <Compile Include="Fronteira\Mapa\MapaExodus.cs" />
-    <Compile Include="Fronteira\Mapa\MapCutout.cs" />
-    <Compile Include="Fronteira\Mapa\MapList.cs" />
-    <Compile Include="Fronteira\Mapa\ZidenMapItem.cs" />
     <Compile Include="Fronteira\Mobs\BearFormDruid.cs" />
     <Compile Include="Fronteira\Mobs\Boss\BandoleiroNinja.cs" />
     <Compile Include="Fronteira\Mobs\Boss\Carnage.cs" />
@@ -1196,7 +1225,7 @@
     <Compile Include="Fronteira\Quests\QuestNecronoo.cs" />
     <Compile Include="Fronteira\Quests\QuestLichSupremo.cs" />
     <Compile Include="Fronteira\Quests\MatarOrcs.cs" />
-    <Compile Include="Fronteira\Fama\RankFama.cs" />
+    <Compile Include="Fronteira\Rankings\RankFama.cs" />
     <Compile Include="Fronteira\Rankings\Finaliza.cs" />
     <Compile Include="Fronteira\Rankings\GumpRanking.cs" />
     <Compile Include="Fronteira\Rankings\PontosTrabalho.cs" />
@@ -7905,10 +7934,10 @@
     <Compile Include="Items\Tools\Bedroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Functional\Campfire.cs">
+    <Compile Include="Fronteira\Camping\Campfire.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\Kindling.cs">
+    <Compile Include="Fronteira\Camping\Kindling.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Resource\Board.cs">
@@ -14764,6 +14793,7 @@
     <Folder Include="Fronteira\Cooking\Foods\Protein Foods\Seafood\Canned Fish\" />
     <Folder Include="Fronteira\Eleicoes\" />
     <Folder Include="Fronteira\Leilao\Modified\" />
+    <Folder Include="Fronteira\Weeklies\" />
     <Folder Include="Items\Functional\Herding\" />
     <Folder Include="VitaNex\Items\Tools\" />
   </ItemGroup>

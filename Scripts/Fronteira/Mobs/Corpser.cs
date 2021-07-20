@@ -96,6 +96,9 @@ namespace Server.Mobiles
                 if (defender == null || defender.Map == null || !defender.Alive)
                     return;
 
+                if (defender.IsCooldown("omnom"))
+                    return;
+
                 SpellHelper.Turn(this, defender);
                 var locPlayerGo = GetPoint(defender, this.Direction);
                 if (defender.Map.CanFit(locPlayerGo, locPlayerGo.Z))
@@ -110,6 +113,7 @@ namespace Server.Mobiles
                             defender.MovingParticles(this, 0x0D3B, 15, 0, false, false, 9502, 4019, 0x160);
                             defender.SendMessage("A planta carnivora te puxa");
                             defender.MoveToWorld(locPlayerGo, defender.Map);
+                            defender.SetCooldown("onnom", TimeSpan.FromSeconds(2));
                             if (!this.IsCooldown("omnom"))
                             {
                                 this.SetCooldown("omnom", TimeSpan.FromSeconds(10));
