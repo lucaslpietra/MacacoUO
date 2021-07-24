@@ -4,6 +4,7 @@ using System.Collections;
 using Server.Engines.Points;
 using Server.Engines.XmlSpawner2;
 using Server.Factions;
+using Server.Misc;
 using Server.Mobiles;
 using Server.Network;
 using Server.Spells;
@@ -428,6 +429,7 @@ namespace Server.SkillHandlers
                             mult += 0.5;
                         }
 
+                        var tame = m_Tamer.Skills.AnimalTaming.Value;
                         if (CheckMastery(m_Tamer, m_Creature) || alreadyOwned ||
                             m_Tamer.CheckTargetSkillMinMax(SkillName.AnimalTaming, m_Creature, minSkill - 35.0, minSkill + 35.0, mult))
                         {
@@ -459,6 +461,12 @@ namespace Server.SkillHandlers
                             }
                             else
                             {
+                                var tameDps = m_Tamer.Skills.AnimalTaming.Value;
+                                if(tameDps > tame)
+                                {
+                                    var diff = tameDps - tame;
+                                    SkillCheck.Gain(m_Tamer, m_Tamer.Skills[SkillName.AnimalLore], (int)(diff * 15));
+                                }
                                 var pontos = m_Creature.MinTameSkill / 10;
                                 PointsSystem.PontosTaming.AwardPoints(m_Tamer, pontos, false, false);
                                 m_Creature.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 502799, m_Tamer.NetState);
