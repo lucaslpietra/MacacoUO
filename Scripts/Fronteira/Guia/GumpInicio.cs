@@ -54,7 +54,7 @@ namespace Server.Gumps
             AddHtml(483, 573, 152, 23, @"<CENTER>NPCS</CENTER>", (bool)true, (bool)false);
             AddHtml(704, 572, 152, 23, @"<CENTER>AVENTURAS</CENTER>", (bool)true, (bool)false);
             AddButton(763, 600, 2151, 2151, (int)Buttons.Aventuras, GumpButtonType.Reply, 0);
-            AddHtml(481, 343, 152, 23, @"<CENTER>LOCAIS</CENTER>", (bool)true, (bool)false);
+            AddHtml(481, 343, 152, 23, @"<CENTER>DUNGEONS</CENTER>", (bool)true, (bool)false);
             AddButton(527, 373, 2151, 2151, (int)Buttons.Locais, GumpButtonType.Reply, 0);
 
             AddHtml(700, 343, 152, 23, @"<CENTER>PARAR BUSCA</CENTER>", (bool)true, (bool)false);
@@ -92,7 +92,7 @@ namespace Server.Gumps
                     }
                 case (int)Buttons.Locais:
                     {
-                        from.SendMessage("Em Breve...");
+                        from.SendGump(new DungeonsGump(from));
                         break;
                     }
                 case (int)Buttons.Parar:

@@ -271,11 +271,11 @@ namespace Server.Items
                     //AddLabel(235, y, 0x480, ""+recipe.RecipeID);
                     if (quest.Title is String)
                     {
-                        AddHtml(316, y, 100, 20, (String)quest.Title, 0xFFFFFF, false, false); // ~1_val~
+                        AddHtml(235, y, 200, 20, (String)quest.Title, 0xFFFFFF, false, false); // ~1_val~
                     }
                     else
                     {
-                        AddHtmlLocalized(316, y, 100, 20, (int)quest.Title, 0xFFFFFF, false, false); // ~1_val~
+                        AddHtmlLocalized(235, y, 100, 20, (int)quest.Title, 0xFFFFFF, false, false); // ~1_val~
                     }
 
 
@@ -316,6 +316,10 @@ namespace Server.Items
                 from.QuestArrow.Update();
                 from.CloseAllGumps();
                 from.SendMessage("Voce esta indo ao seu destino "+npc.Location.ToString()+" no mapa "+npc.Map.Name);
+                if(npc.Region != null && npc.Region.Name != null)
+                {
+                    from.SendMessage("Este NPC fica na regiao de " + npc.Region.Name);
+                }
             }
 
             switch (index)

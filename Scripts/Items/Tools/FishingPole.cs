@@ -200,6 +200,7 @@ namespace Server.Items
             m_AosAttributes = new AosAttributes(this);
             m_AosSkillBonuses = new AosSkillBonuses(this);
             m_AosSkillBonuses.Skill_1_Name = SkillName.Fishing;
+            m_AosSkillBonuses.Skill_1_Value = 0;
             UsesRemaining = 150;
         }
 
@@ -210,6 +211,8 @@ namespace Server.Items
 
         public void SetSkillBonus()
         {
+            if (m_AosSkillBonuses == null)
+                return;
             if (Resource == CraftResource.Carvalho)
                 m_AosSkillBonuses.Skill_1_Value = 5;
             else if (Resource == CraftResource.Pinho)
@@ -487,7 +490,7 @@ namespace Server.Items
                     break;
             }
 
-            if (Core.AOS && Parent is Mobile)
+            if (Parent is Mobile)
                 m_AosSkillBonuses.AddTo((Mobile)Parent);
 
             int strBonus = m_AosAttributes.BonusStr;
