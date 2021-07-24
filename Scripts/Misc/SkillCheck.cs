@@ -390,6 +390,9 @@ namespace Server.Misc
 
         public static void Gain(Mobile from, Skill skill, int amt = 1)
         {
+            if (Shard.DebugEnabled)
+                Shard.Debug("Ganhando pontos " + amt + " em " + skill.Name, from);
+
             if (from.Region.IsPartOf<Jail>())
                 return;
 
@@ -493,7 +496,7 @@ namespace Server.Misc
                 // Old gain mechanic
                 if (!Core.ML)
                 {
-                    var scalar = 1.0;
+                    var scalar = 1.2;
 
                     if (from.StrLock == StatLockType.Up && (info.StrGain / 33.3) * scalar > Utility.RandomDouble())
                         GainStat(from, Stat.Str);

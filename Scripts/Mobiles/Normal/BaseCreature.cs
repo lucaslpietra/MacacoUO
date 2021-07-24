@@ -6419,7 +6419,8 @@ namespace Server.Mobiles
                 list.Add(EngravedText); // <BASEFONT COLOR=#668cff>Branded: ~1_VAL~<BASEFONT COLOR=#FFFFFF>
             }
 
-            list.Add(Gump.Cor(Elemento.ToString(), BaseArmor.CorElemento(Elemento)));
+            if(!(this is BaseVendor))
+                list.Add(Gump.Cor(Elemento.ToString(), BaseArmor.CorElemento(Elemento)));
 
             if(this.Tribe != TribeType.None)
                 list.Add(this.Tribe.ToString());

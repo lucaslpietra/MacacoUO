@@ -113,7 +113,7 @@ namespace Server
             m_Exp = x;
             if(exp > 0 && SendPacket)
             {
-                m_Owner.Owner.OnExpGain(this.SkillName);
+                m_Owner.Owner.OnExpGain(this.SkillName, exp);
                // m_Owner.OnSkillChange(this);
             }
             return exp > 0 && x == 0;
@@ -1118,11 +1118,11 @@ namespace Server
                 m_Highest = skill;
             }
 
-            if (m_Owner.RP)
-            {
-                m_Owner.SendMessage(390, "Sua habilidade em " + skill.Name + " agora esta em " + skill.Value);
-                return;
-            }
+            //if (m_Owner.RP)
+           // {
+            //    m_Owner.SendMessage(390, "Sua habilidade em " + skill.Name + " agora esta em " + skill.Value);
+            //    return;
+           // }
             m_Owner.OnSkillInvalidated(skill);
 
             NetState ns = m_Owner.NetState;

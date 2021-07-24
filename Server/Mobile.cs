@@ -4086,7 +4086,7 @@ namespace Server
         public virtual void OnSkillChange(SkillName skill, double oldBase)
         { }
 
-        public virtual void OnExpGain(SkillName skill)
+        public virtual void OnExpGain(SkillName skill, ushort exp)
         { }
 
 

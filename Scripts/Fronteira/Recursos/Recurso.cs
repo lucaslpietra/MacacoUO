@@ -120,7 +120,7 @@ namespace Server.Fronteira.Recursos
             base.OnDelete();
         }
 
-        public void Coleta(Mobile from)
+        public bool Coleta(Mobile from)
         {
             var diff = Dificuldade.GetDificuldade(_resource);
             var skill = GetSkill();
@@ -130,13 +130,13 @@ namespace Server.Fronteira.Recursos
                 if (from.Skills[skill].Value < diff.Required)
                 {
                     from.SendMessage("Voce nao tem ideia de como pode coletar isto");
-                    return;
+                    return false;
                 }
                 if (!from.CheckSkillMult(skill, diff.Min, diff.Max, 0))
                 {
                     from.SendMessage("Voce nao conseguiu extrair o recurso");
                     new ColetaTimer(this, from).Start();
-                    return;
+                    return false;
                 }
             }
             ushort exp = 1;
@@ -183,7 +183,7 @@ namespace Server.Fronteira.Recursos
             if (i == null)
             {
                 from.SendMessage(38, "Erro, favor reportar a staff...");
-                return;
+                return false;
             }
             if(from.Player && from.RP)
             {
@@ -233,6 +233,7 @@ namespace Server.Fronteira.Recursos
             {
                 new ColetaTimer(this, from).Start();
             }
+            return true;
         }
 
         public bool Metal()

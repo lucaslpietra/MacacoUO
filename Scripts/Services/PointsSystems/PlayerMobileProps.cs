@@ -154,6 +154,19 @@ namespace Server.Mobiles
             }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double Exp
+        {
+            get
+            {
+                return (int)PointsSystem.Exp.GetPoints(Player);
+            }
+            set
+            {
+                PointsSystem.Exp.SetPoints(Player, value);
+            }
+        }
+
 
     }
 

@@ -2009,6 +2009,9 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
+            list.Add("Items: " + TotalItems + "/" + MaxItems);
+            list.Add("Peso: " + TotalWeight + "/" + MaxWeight);
+            /*
             if (true) //CheckContentDisplay( from ) )
             {
                 if (true)
@@ -2031,6 +2034,7 @@ namespace Server.Items
                     list.Add(1050044, "{0}\t{1}", TotalItems, TotalWeight); // ~1_COUNT~ items, ~2_WEIGHT~ stones
                 }
             }
+            */
         }
 
         public override void OnDoubleClick(Mobile from)

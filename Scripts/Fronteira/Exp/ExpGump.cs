@@ -70,13 +70,13 @@ namespace Server.Gumps
                 return;
             }
 
-            if (e.ArgString != null)
+            if (e.ArgString != null && e.ArgString != "")
             {
                 foreach (var skill in SkillInfo.Table)
                 {
                     if (skill.Name.ToLower() == e.ArgString.ToLower())
                     {
-                        e.Mobile.SendGump(new SkillExperienceGump(e.Mobile as PlayerMobile, (SkillName)skill.SkillID));
+                        e.Mobile.SendGump(new SkillExperienceGump(e.Mobile as PlayerMobile, (SkillName)skill.SkillID, 0));
                         return;
                     }
                 }

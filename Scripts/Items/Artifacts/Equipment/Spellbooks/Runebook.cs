@@ -148,7 +148,7 @@ namespace Server.Items
             : base(Core.AOS ? id : 0xEFA)
         {
             Weight = (Core.SE ? 1.0 : 3.0);
-            LootType = LootType.Blessed;
+            //LootType = LootType.Blessed;
             Hue = 0x461;
 
             Layer = (Core.AOS ? Layer.Invalid : Layer.OneHanded);
