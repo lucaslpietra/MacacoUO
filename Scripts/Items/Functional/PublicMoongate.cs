@@ -727,7 +727,7 @@ namespace Server.Items
                     AddHtml(225, 35 + (i * 25), 150, 20, "Cidade Real", false, false);
                 } else
                 {
-                    AddHtmlLocalized(225, 35 + (i * 25), 150, 20, entries[i].Number, false, false);
+                    AddHtml(225, 35 + (i * 25), 150, 20, entries[i].Desc, false, false);
                 }
 				
 			}

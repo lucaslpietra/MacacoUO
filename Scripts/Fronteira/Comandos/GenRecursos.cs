@@ -15,7 +15,7 @@ namespace Server.Commands
         public static void CMD(CommandEventArgs arg)
         {
             var pl = arg.Mobile as PlayerMobile;
-            pl.SendMessage("Nerfando todos spawners da natureza de haven");
+            pl.SendMessage("Gerando spawners de recursos em Trammel");
             var Spawners = new List<XmlSpawner>();
             foreach (var item in World.Items.Values)
             {
@@ -25,7 +25,8 @@ namespace Server.Commands
                     var region = spawner.GetRegion();
                     if (region == null || region.Name == null)
                     {
-                        Spawners.Add(spawner);
+                        if(region == null || region.Parent == null || region.Parent.Name == null)
+                            Spawners.Add(spawner);
                     }
                 }
             }

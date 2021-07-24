@@ -8688,8 +8688,31 @@ namespace Server.Mobiles
             TeleportPets(master, loc, map, false);
         }
 
+        private static void TeleportPetsPlayer(PlayerMobile master, Point3D loc, Map map)
+        {
+            foreach(var pet in master.AllFollowers)
+            {
+                if(pet.Map == master.Map)
+                {
+                    if(pet.GetDistance(master) > 20)
+                    {
+                        master.SendMessage(pet.Name + " estava muito distante");
+                    } else
+                    {
+                        pet.MoveToWorld(loc, map);
+                    }
+                }
+            }
+        }
+
         public static void TeleportPets(Mobile master, Point3D loc, Map map, bool onlyBonded)
         {
+            if (master.Player)
+            {
+                TeleportPetsPlayer(master as PlayerMobile, loc, map);
+                return;
+            }
+
             var move = new List<Mobile>();
 
             IPooledEnumerable eable = master.GetMobilesInRange(5);
