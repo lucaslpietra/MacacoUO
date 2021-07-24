@@ -59,7 +59,7 @@ namespace Server.Gumps
         [Description("Makes a call to your custom gump.")]
         public static void SkillsGump_OnCommand(CommandEventArgs e)
         {
-            if(Shard.RP)
+            if (Shard.RP)
             {
                 if (e.Mobile.HasGump(typeof(ExpGumpRP)))
                 {
@@ -69,11 +69,25 @@ namespace Server.Gumps
                 e.Mobile.SendGump(new ExpGumpRP(e.Mobile as PlayerMobile));
                 return;
             }
+
+            if (e.ArgString != null)
+            {
+                foreach (var skill in SkillInfo.Table)
+                {
+                    if (skill.Name.ToLower() == e.ArgString.ToLower())
+                    {
+                        e.Mobile.SendGump(new SkillExperienceGump(e.Mobile as PlayerMobile, (SkillName)skill.SkillID));
+                        return;
+                    }
+                }
+                e.Mobile.SendMessage("Nao encontrei a skill");
+                return;
+            }
             if (e.Mobile.HasGump(typeof(SkillExpGump)))
             {
                 e.Mobile.SendMessage("Gump de xp ja aberto");
                 return;
-            }  
+            }
             e.Mobile.SendGump(new SkillExpGump(e.Mobile));
         }
 
@@ -127,7 +141,7 @@ namespace Server.Gumps
             AddHtml(345, 356, 158, 21, string.Format(@"{0} Spirit Speak", caller.Skills.SpiritSpeak.Value), (bool)false, (bool)false);
             AddHtml(345, 378, 158, 21, string.Format(@"{0} Necromancy", caller.Skills.Necromancy.Value), (bool)false, (bool)false);
             AddHtml(345, 398, 158, 21, string.Format(@"{0} Inscription", caller.Skills.Inscribe.Value), (bool)false, (bool)false);
-          
+
             AddHtml(345, 418, 158, 21, string.Format(@"{0} Wrestling", caller.Skills.Wrestling.Value), (bool)false, (bool)false);
             AddHtml(794, 268, 158, 21, string.Format(@"{0} Archery", caller.Skills.Archery.Value), (bool)false, (bool)false);
             AddHtml(794, 289, 158, 21, string.Format(@"{0} Tracking", caller.Skills.Tracking.Value), (bool)false, (bool)false);
@@ -144,7 +158,7 @@ namespace Server.Gumps
             AddHtml(1025, 309, 158, 21, string.Format(@"{0} Provocation", caller.Skills.Provocation.Value), (bool)false, (bool)false);
             AddHtml(1025, 330, 158, 21, string.Format(@"{0} Discordance", caller.Skills.Discordance.Value), (bool)false, (bool)false);
 
-            AddHtml(345+158, 290, 158, 21, GetCustoUp(caller, SkillName.MagicResist), (bool)false, (bool)false);
+            AddHtml(345 + 158, 290, 158, 21, GetCustoUp(caller, SkillName.MagicResist), (bool)false, (bool)false);
             AddHtml(345 + 158, 269, 158, 21, GetCustoUp(caller, SkillName.Magery), (bool)false, (bool)false);
             AddHtml(345 + 158, 312, 158, 21, GetCustoUp(caller, SkillName.EvalInt), (bool)false, (bool)false);
             AddHtml(345 + 158, 334, 158, 21, GetCustoUp(caller, SkillName.Meditation), (bool)false, (bool)false);
@@ -177,8 +191,8 @@ namespace Server.Gumps
             AddHtml(1025 + 158, 330, 158, 21, GetCustoUp(caller, SkillName.Discordance), (bool)false, (bool)false);
 
             AddButton(486, 271, 55, 248, (int)Buttons.Magery, GumpButtonType.Reply, 0);
-            AddImage(351 , 252, 50);
-            AddImage(578 , 250, 50);
+            AddImage(351, 252, 50);
+            AddImage(578, 250, 50);
             AddImage(800, 250, 50);
             AddImage(679, 169, 92);
             AddImage(731, 169, 93);
@@ -215,14 +229,14 @@ namespace Server.Gumps
             AddImage(320, 456, 10460);
             AddImage(1229, 460, 10460);
 
-        
+
             AddHtml(573, 439, 158, 21, string.Format("{0} Chivalry", caller.Skills.Chivalry.Value), (bool)false, (bool)false);
             AddButton(1168, 268, 55, 248, (int)Buttons.Musicianship, GumpButtonType.Reply, 0);
             AddButton(1168, 288, 55, 248, (int)Buttons.Peacemaking, GumpButtonType.Reply, 0);
             AddButton(1168, 309, 55, 248, (int)Buttons.Provocation, GumpButtonType.Reply, 0);
             AddButton(1168, 332, 55, 248, (int)Buttons.Discordance, GumpButtonType.Reply, 0);
             AddItem(1081, 226, 3763);
-           
+
             AddButton(714, 441, 55, 248, (int)Buttons.Chivalry, GumpButtonType.Reply, 0);
         }
 
@@ -262,7 +276,7 @@ namespace Server.Gumps
             Discordance,
             Chivalry,
         }
- 
+
         public SkillName GetSkill(int button)
         {
             var name = Enum.GetName(typeof(Buttons), button);
@@ -274,10 +288,10 @@ namespace Server.Gumps
         {
             Mobile from = sender.Mobile;
 
-            if(Shard.DebugEnabled)
+            if (Shard.DebugEnabled)
                 Shard.Debug("Button ID " + info.ButtonID);
 
-            if(info.ButtonID == (int)Buttons.Help)
+            if (info.ButtonID == (int)Buttons.Help)
             {
                 Shard.Debug("Clicou no help");
                 return;
@@ -292,7 +306,7 @@ namespace Server.Gumps
             var exp = GetPontos(from, skill);
             var expAtual = PointsSystem.Exp.GetPoints(from);
 
-            if(exp > expAtual)
+            if (exp > expAtual)
             {
                 from.SendMessage(string.Format("Voce precisa de {0} EXP para subir a skill {1}", exp, skill.ToString()));
                 return;
@@ -309,12 +323,13 @@ namespace Server.Gumps
             SkillCheck.Gain(from, from.Skills[skill], gain);
             var nw = from.Skills[skill].Value;
 
-            if(nw > old)
+            if (nw > old)
             {
                 from.FixedParticles(0x375A, 9, 20, 5016, EffectLayer.Waist);
                 from.PlaySound(0x1FD);
                 PointsSystem.Exp.DeductPoints(from, exp, false);
-            } else
+            }
+            else
             {
                 from.SendMessage("A skill chegou no limite ou voce chegou no seu cap e precisa setar alguma skill para baixar na janela de skills.");
             }

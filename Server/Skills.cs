@@ -111,9 +111,10 @@ namespace Server
                 x = 0;
             }
             m_Exp = x;
-            if(exp > 0)
+            if(exp > 0 && SendPacket)
             {
-                m_Owner.OnSkillChange(this);
+                m_Owner.Owner.OnExpGain(this.SkillName);
+               // m_Owner.OnSkillChange(this);
             }
             return exp > 0 && x == 0;
         }

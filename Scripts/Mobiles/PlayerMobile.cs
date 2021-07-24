@@ -6988,6 +6988,11 @@ namespace Server.Mobiles
             EpiphanyHelper.OnKarmaChange(this);
         }
 
+        public override void OnExpGain(SkillName skill)
+        {
+            this.SendGump(new SkillExperienceGump(this, skill));
+        }
+
         public override void OnSkillChange(SkillName skill, double oldBase)
         {
             if (Young)

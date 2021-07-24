@@ -4086,6 +4086,10 @@ namespace Server
         public virtual void OnSkillChange(SkillName skill, double oldBase)
         { }
 
+        public virtual void OnExpGain(SkillName skill)
+        { }
+
+
         /// <summary>
         ///     Overridable. Invoked after the mobile is deleted. When overriden, be sure to call the base method.
         /// </summary>
