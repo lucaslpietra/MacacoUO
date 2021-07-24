@@ -13,7 +13,10 @@ namespace Server.Mobiles
     {
         private static readonly string[] m_TownNames = new string[]
         {
-           "Rhodes"
+            "Cove", "Britain", "Jhelom",
+            "Minoc", "Ocllo", "Trinsic",
+            "Vesper", "Yew", "Skara Brae", //Original List, will need to add it back for Pre-ML shards
+            "Nujel'm", "Moonglow", "Magincia"
         };
 
         private static readonly Hashtable m_EscortTable = new Hashtable();

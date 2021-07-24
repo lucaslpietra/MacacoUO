@@ -5,21 +5,21 @@ using Server.Mobiles;
 
 namespace Server.Engines.Quests
 {
-
-    public class EscortToRhodesQuest : BaseQuest
-    { 
-        public EscortToRhodesQuest()
+    public class EscortToYewQuest : BaseQuest
+    {
+        public EscortToYewQuest()
             : base()
-        { 
-            this.AddObjective(new EscortObjective("Rhodes"));		  
-            this.AddReward(new BaseReward(typeof(Gold), Utility.Random(800, 1300), 1062577)); 
+        {
+            this.AddObjective(new EscortObjective("Yew"));
+            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
+
         /* An escort to Yew */
         public override object Title
         {
             get
             {
-                return "Leve a Rhodes";
+                return 1072275;
             }
         }
         /* I seek a worthy escort.  I can offer some small pay to any able bodied adventurer who can assist me.  
@@ -28,7 +28,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return "Procuro um seguro guarda costas. Preciso chegar em meu destino";
+                return 1072287;
             }
         }
         /* I wish you would reconsider my offer.  I'll be waiting right here for someone brave enough to assist me. */
@@ -36,7 +36,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return "Por favor, reconsidere";
+                return 1072288;
             }
         }
         /* We have not yet arrived in Yew.  Let's keep going. */
@@ -44,31 +44,31 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return "Ainda nao chegamos la, simbora...";
+                return 1072289;
             }
         }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class EscortToVesperQuest : BaseQuest
-    { 
+    {
         public EscortToVesperQuest()
             : base()
-        { 
-            this.AddObjective(new EscortObjective("Vesper"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            this.AddObjective(new EscortObjective("Vesper"));
+            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to Vesper */
@@ -107,25 +107,25 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class EscortToTrinsicQuest : BaseQuest
-    { 
+    {
         public EscortToTrinsicQuest()
             : base()
-        { 
-            this.AddObjective(new EscortObjective("Trinsic"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            this.AddObjective(new EscortObjective("Trinsic"));
+            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to Trinsic */
@@ -164,25 +164,25 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class EscortToSkaraQuest : BaseQuest
-    { 
+    {
         public EscortToSkaraQuest()
             : base()
-        { 
-            this.AddObjective(new EscortObjective("Skara Brae"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            this.AddObjective(new EscortObjective("Skara Brae"));
+            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to Skara */
@@ -221,25 +221,25 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class EscortToSerpentsHoldQuest : BaseQuest
-    { 
+    {
         public EscortToSerpentsHoldQuest()
             : base()
-        { 
-            this.AddObjective(new EscortObjective("Serpent's Hold"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            this.AddObjective(new EscortObjective("Serpent's Hold"));
+            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to Serpent's Hold */
@@ -278,25 +278,25 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class EscortToNujelmQuest : BaseQuest
-    { 
+    {
         public EscortToNujelmQuest()
             : base()
-        { 
-            this.AddObjective(new EscortObjective("Nujel'm"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            this.AddObjective(new EscortObjective("Nujel'm"));
+            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to Nujel'm */
@@ -335,25 +335,25 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class EscortToMoonglowQuest : BaseQuest
-    { 
+    {
         public EscortToMoonglowQuest()
             : base()
-        { 
-            this.AddObjective(new EscortObjective("Moonglow"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            this.AddObjective(new EscortObjective("Moonglow"));
+            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to Moonglow */
@@ -392,25 +392,25 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class EscortToMinocQuest : BaseQuest
-    { 
+    {
         public EscortToMinocQuest()
             : base()
-        { 
-            this.AddObjective(new EscortObjective("Minoc"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            this.AddObjective(new EscortObjective("Minoc"));
+            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to Minoc */
@@ -449,25 +449,25 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class EscortToMaginciaQuest : BaseQuest
-    { 
+    {
         public EscortToMaginciaQuest()
             : base()
-        { 
-            this.AddObjective(new EscortObjective("Magincia"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            this.AddObjective(new EscortObjective("Magincia"));
+            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to Magincia */
@@ -506,25 +506,25 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class EscortToJhelomQuest : BaseQuest
-    { 
+    {
         public EscortToJhelomQuest()
             : base()
-        { 
-            this.AddObjective(new EscortObjective("Jhelom"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            this.AddObjective(new EscortObjective("Jhelom"));
+            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to Jhelom */
@@ -563,25 +563,25 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class EscortToCoveQuest : BaseQuest
-    { 
+    {
         public EscortToCoveQuest()
             : base()
-        { 
-            this.AddObjective(new EscortObjective("Cove"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            this.AddObjective(new EscortObjective("Cove"));
+            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to Cove */
@@ -620,25 +620,25 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
 
     public class EscortToBritainQuest : BaseQuest
-    { 
+    {
         public EscortToBritainQuest()
             : base()
-        { 
-            this.AddObjective(new EscortObjective("Britain"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+        {
+            this.AddObjective(new EscortObjective("Britain"));
+            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /* An escort to Britain */
@@ -677,14 +677,14 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadEncodedInt();
         }
     }
@@ -693,11 +693,33 @@ namespace Server.Engines.Quests
     {
         private static readonly Type[] m_Quests = new Type[]
         {
-            typeof(EscortToRhodesQuest),
+            typeof(EscortToYewQuest),
+            typeof(EscortToVesperQuest),
+            typeof(EscortToTrinsicQuest),
+            typeof(EscortToSkaraQuest),
+            typeof(EscortToSerpentsHoldQuest),
+            typeof(EscortToNujelmQuest),
+            typeof(EscortToMoonglowQuest),
+            typeof(EscortToMinocQuest),
+            typeof(EscortToMaginciaQuest),
+            typeof(EscortToJhelomQuest),
+            typeof(EscortToCoveQuest),
+            typeof(EscortToBritainQuest)
         };
         private static readonly string[] m_Destinations = new string[]
         {
-            "Rhodes"
+            "Yew",
+            "Vesper",
+            "Trinsic",
+            "Skara Brae",
+            "Serpent's Hold",
+            "Nujel'm",
+            "Moonglow",
+            "Minoc",
+            "Magincia",
+            "Jhelom",
+            "Cove",
+            "Britain"
         };
         private int m_Quest;
         public TownEscortable()
@@ -709,10 +731,6 @@ namespace Server.Engines.Quests
         public TownEscortable(Serial serial)
             : base(serial)
         {
-            if(this.Map != Map.TerMur)
-            {
-                this.Delete();
-            }
         }
 
         public override Type[] Quests
@@ -724,7 +742,7 @@ namespace Server.Engines.Quests
         }
         public override void Advertise()
         {
-            this.Say("Preciso ir a Rhodes, poderia me ajudar ?");
+            this.Say(Utility.RandomMinMax(1072301, 1072303));
         }
 
         public override Region GetDestination()
@@ -746,7 +764,7 @@ namespace Server.Engines.Quests
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-			
+
             this.m_Quest = reader.ReadInt();
         }
     }
@@ -756,7 +774,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public EscortableMerchant()
         {
-            this.Title = "o mercador";
+            this.Title = "the merchant";
             this.SetSkill(SkillName.ItemID, 55.0, 78.0);
             this.SetSkill(SkillName.ArmsLore, 55, 78);
         }
@@ -823,7 +841,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public EscortableMage()
         {
-            this.Title = "o mago";
+            this.Title = "the mage";
 
             this.SetSkill(SkillName.EvalInt, 80.0, 100.0);
             this.SetSkill(SkillName.Inscribe, 80.0, 100.0);
@@ -887,7 +905,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public EscortableMessenger()
         {
-            this.Title = "o mensageiro";
+            this.Title = "the messenger";
         }
 
         public EscortableMessenger(Serial serial)
@@ -918,7 +936,7 @@ namespace Server.Engines.Quests
             else
                 this.AddItem(new Shoes(lowHue));
 
-            switch ( Utility.Random(4) )
+            switch (Utility.Random(4))
             {
                 case 0:
                     this.AddItem(new ShortHair(Utility.RandomHairHue()));
@@ -957,7 +975,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public EscortableSeekerOfAdventure()
         {
-            this.Title = "o aventureiro";
+            this.Title = "the seeker of adventure";
         }
 
         public EscortableSeekerOfAdventure(Serial serial)
@@ -1018,7 +1036,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public EscortableNoble()
         {
-            this.Title = "o nobre";
+            this.Title = "the noble";
 
             this.SetSkill(SkillName.Parry, 80.0, 100.0);
             this.SetSkill(SkillName.Swords, 80.0, 100.0);
@@ -1092,9 +1110,9 @@ namespace Server.Engines.Quests
         public EscortableBrideGroom()
         {
             if (this.Female)
-                this.Title = "a noiva";
+                this.Title = "the bride";
             else
-                this.Title = "o noivo";	
+                this.Title = "the groom";
         }
 
         public EscortableBrideGroom(Serial serial)
@@ -1111,7 +1129,7 @@ namespace Server.Engines.Quests
         }
         public override void InitOutfit()
         {
-            if (this.Female)				
+            if (this.Female)
                 this.AddItem(new FancyDress());
             else
                 this.AddItem(new FancyShirt());
@@ -1155,7 +1173,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public EscortablePeasant()
         {
-            this.Title = "o trabalhador";
+            this.Title = "the peasant";
         }
 
         public EscortablePeasant(Serial serial)
@@ -1214,7 +1232,7 @@ namespace Server.Engines.Quests
         public EscortableHealer()
             : base()
         {
-            this.Title = "o curandeiro";
+            this.Title = "the wandering healer";
 
             this.AI = AIType.AI_Mage;
             this.ActiveSpeed = 0.2;
