@@ -15,7 +15,31 @@ using Server.Network;
 
 namespace Server.Commands
 {
-	public class Docs
+    public class DocCommandEntry
+    {
+        private readonly AccessLevel m_AccessLevel;
+        private readonly string m_Name;
+        private readonly string[] m_CmdAliases;
+        private readonly string m_Usage;
+        private readonly string m_Description;
+
+        public AccessLevel AccessLevel { get { return m_AccessLevel; } }
+        public string Name { get { return m_Name; } }
+        public string[] Aliases { get { return m_CmdAliases; } }
+        public string Usage { get { return m_Usage; } }
+        public string Description { get { return m_Description; } }
+
+        public DocCommandEntry(AccessLevel accessLevel, string name, string[] aliases, string usage, string description)
+        {
+            m_AccessLevel = accessLevel;
+            m_Name = name;
+            m_CmdAliases = aliases;
+            m_Usage = usage;
+            m_Description = description;
+        }
+    }
+
+    public class Docs
 	{
 		public static void Initialize()
 		{
@@ -1872,29 +1896,7 @@ namespace Server.Commands
 		#endregion
 
 		#region Commands
-		public class DocCommandEntry
-		{
-			private readonly AccessLevel m_AccessLevel;
-			private readonly string m_Name;
-			private readonly string[] m_CmdAliases;
-			private readonly string m_Usage;
-			private readonly string m_Description;
-
-			public AccessLevel AccessLevel { get { return m_AccessLevel; } }
-			public string Name { get { return m_Name; } }
-			public string[] Aliases { get { return m_CmdAliases; } }
-			public string Usage { get { return m_Usage; } }
-			public string Description { get { return m_Description; } }
-
-			public DocCommandEntry(AccessLevel accessLevel, string name, string[] aliases, string usage, string description)
-			{
-				m_AccessLevel = accessLevel;
-				m_Name = name;
-				m_CmdAliases = aliases;
-				m_Usage = usage;
-				m_Description = description;
-			}
-		}
+	
 
 		public class CommandEntrySorter : IComparer<DocCommandEntry>
 		{

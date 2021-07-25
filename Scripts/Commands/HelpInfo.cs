@@ -5,23 +5,23 @@ using System.Text;
 using Server.Commands.Generic;
 using Server.Gumps;
 using Server.Network;
-using CommandInfo = Server.Commands.Docs.DocCommandEntry;
-using CommandInfoSorter = Server.Commands.Docs.CommandEntrySorter;
+
+using DocCommandEntrySorter = Server.Commands.Docs.CommandEntrySorter;
 
 namespace Server.Commands
 {
     public class HelpInfo
     {
-        private static readonly Dictionary<string, CommandInfo> m_HelpInfos = new Dictionary<string, CommandInfo>();
-        private static List<CommandInfo> m_SortedHelpInfo = new List<CommandInfo>();//No need for SortedList cause it's only sorted once at creation...
-        public static Dictionary<string, CommandInfo> HelpInfos
+        private static readonly Dictionary<string, DocCommandEntry> m_HelpInfos = new Dictionary<string, DocCommandEntry>();
+        private static List<DocCommandEntry> m_SortedHelpInfo = new List<DocCommandEntry>();//No need for SortedList cause it's only sorted once at creation...
+        public static Dictionary<string, DocCommandEntry> HelpInfos
         {
             get
             {
                 return m_HelpInfos;
             }
         }
-        public static List<CommandInfo> SortedHelpInfo
+        public static List<DocCommandEntry> SortedHelpInfo
         {
             get
             {
@@ -39,7 +39,7 @@ namespace Server.Commands
         public static void FillTable()
         {
             List<CommandEntry> commands = new List<CommandEntry>(CommandSystem.Entries.Values);
-            List<CommandInfo> list = new List<CommandInfo>();
+            List<DocCommandEntry> list = new List<DocCommandEntry>();
 
             commands.Sort();
             commands.Reverse();
@@ -75,10 +75,10 @@ namespace Server.Commands
                 string descString = desc.Description.Replace("<", "(").Replace(">", ")");
 
                 if (aliases == null)
-                    list.Add(new CommandInfo(e.AccessLevel, e.Command, null, usage.Usage, descString));
+                    list.Add(new DocCommandEntry(e.AccessLevel, e.Command, null, usage.Usage, descString));
                 else
                 {
-                    list.Add(new CommandInfo(e.AccessLevel, e.Command, aliases.Aliases, usage.Usage, descString));
+                    list.Add(new DocCommandEntry(e.AccessLevel, e.Command, aliases.Aliases, usage.Usage, descString));
 
                     for (int j = 0; j < aliases.Aliases.Length; j++)
                     {
@@ -88,7 +88,7 @@ namespace Server.Commands
 
                         newAliases[j] = e.Command;
 
-                        list.Add(new CommandInfo(e.AccessLevel, aliases.Aliases[j], newAliases, usage.Usage, descString));
+                        list.Add(new DocCommandEntry(e.AccessLevel, aliases.Aliases[j], newAliases, usage.Usage, descString));
                     }
                 }
             }
@@ -146,7 +146,7 @@ namespace Server.Commands
                     desc = sb.ToString();
                 }
 
-                list.Add(new CommandInfo(command.AccessLevel, cmd, aliases, usage, desc));
+                list.Add(new DocCommandEntry(command.AccessLevel, cmd, aliases, usage, desc));
 
                 for (int j = 0; j < aliases.Length; j++)
                 {
@@ -156,7 +156,7 @@ namespace Server.Commands
 
                     newAliases[j] = cmd;
 
-                    list.Add(new CommandInfo(command.AccessLevel, aliases[j], newAliases, usage, desc));
+                    list.Add(new DocCommandEntry(command.AccessLevel, aliases[j], newAliases, usage, desc));
                 }
             }
 
@@ -181,7 +181,7 @@ namespace Server.Commands
 
                 desc = desc.Replace("<", ")").Replace(">", ")");
 
-                list.Add(new CommandInfo(command.AccessLevel, cmd, aliases, usage, desc));
+                list.Add(new DocCommandEntry(command.AccessLevel, cmd, aliases, usage, desc));
 
                 for (int j = 0; j < aliases.Length; j++)
                 {
@@ -191,15 +191,15 @@ namespace Server.Commands
 
                     newAliases[j] = cmd;
 
-                    list.Add(new CommandInfo(command.AccessLevel, aliases[j], newAliases, usage, desc));
+                    list.Add(new DocCommandEntry(command.AccessLevel, aliases[j], newAliases, usage, desc));
                 }
             }
 
-            list.Sort(new CommandInfoSorter());
+            list.Sort(new DocCommandEntrySorter());
 
             m_SortedHelpInfo = list;
 
-            foreach (CommandInfo c in m_SortedHelpInfo)
+            foreach (DocCommandEntry c in m_SortedHelpInfo)
             {
                 if (!m_HelpInfos.ContainsKey(c.Name.ToLower()))
                     m_HelpInfos.Add(c.Name.ToLower(), c);
@@ -213,14 +213,14 @@ namespace Server.Commands
             if (e.Length > 0)
             {
                 string arg = e.GetString(0).ToLower();
-                CommandInfo c;
+                DocCommandEntry c;
 
                 if (m_HelpInfos.TryGetValue(arg, out c))
                 {
                     Mobile m = e.Mobile;
 
                     if (m.AccessLevel >= c.AccessLevel)
-                        m.SendGump(new CommandInfoGump(c));
+                        m.SendGump(new DocCommandEntryGump(c));
                     else
                         m.SendMessage("You don't have access to that command.");
 
@@ -237,17 +237,17 @@ namespace Server.Commands
         {
             private const int EntriesPerPage = 15;
             readonly int m_Page;
-            readonly List<CommandInfo> m_List;
-            public CommandListGump(int page, Mobile from, List<CommandInfo> list)
+            readonly List<DocCommandEntry> m_List;
+            public CommandListGump(int page, Mobile from, List<DocCommandEntry> list)
                 : base(30, 30)
             {
                 this.m_Page = page;
 
                 if (list == null)
                 {
-                    this.m_List = new List<CommandInfo>();
+                    this.m_List = new List<DocCommandEntry>();
 
-                    foreach (CommandInfo c in m_SortedHelpInfo)
+                    foreach (DocCommandEntry c in m_SortedHelpInfo)
                     {
                         if (from.AccessLevel >= c.AccessLevel)
                             this.m_List.Add(c);
@@ -263,7 +263,7 @@ namespace Server.Commands
                 else
                     this.AddEntryHeader(20);
 
-                this.AddEntryHtml(160, this.Center(String.Format("Page {0} of {1}", this.m_Page + 1, (this.m_List.Count + EntriesPerPage - 1) / EntriesPerPage)));
+                this.AddEntryHtml(160, this.Center(String.Format("Pagina {0} de {1}", this.m_Page + 1, (this.m_List.Count + EntriesPerPage - 1) / EntriesPerPage)));
 
                 if ((this.m_Page + 1) * EntriesPerPage < this.m_List.Count)
                     this.AddEntryButton(20, ArrowRightID1, ArrowRightID2, 2, ArrowRightWidth, ArrowRightHeight);
@@ -274,7 +274,7 @@ namespace Server.Commands
 
                 for (int i = this.m_Page * EntriesPerPage, line = 0; line < EntriesPerPage && i < this.m_List.Count; ++i, ++line)
                 {
-                    CommandInfo c = this.m_List[i];
+                    DocCommandEntry c = this.m_List[i];
                     if (from.AccessLevel >= c.AccessLevel)
                     {
                         if ((int)c.AccessLevel != last)
@@ -306,7 +306,7 @@ namespace Server.Commands
                 {
                     case 0:
                         {
-                            m.CloseGump(typeof(CommandInfoGump));
+                            m.CloseGump(typeof(DocCommandEntryGump));
                             break;
                         }
                     case 1:
@@ -329,11 +329,11 @@ namespace Server.Commands
 
                             if (v >= 0 && v < this.m_List.Count)
                             {
-                                CommandInfo c = this.m_List[v];
+                                DocCommandEntry c = this.m_List[v];
 
                                 if (m.AccessLevel >= c.AccessLevel)
                                 {
-                                    m.SendGump(new CommandInfoGump(c));
+                                    m.SendGump(new DocCommandEntryGump(c));
                                     m.SendGump(new CommandListGump(this.m_Page, m, this.m_List));
                                 }
                                 else
@@ -348,34 +348,34 @@ namespace Server.Commands
             }
         }
 
-        public class CommandInfoGump : Gump
+        public class DocCommandEntryGump : Gump
         {
-            private CommandInfo m_Info;
+            private DocCommandEntry m_Info;
 
-            public CommandInfoGump(CommandInfo info)
+            public DocCommandEntryGump(DocCommandEntry info)
                 : this(info, 320, 210)
             {
             }
 
-            public CommandInfoGump(CommandInfo info, int width, int height)
+            public DocCommandEntryGump(DocCommandEntry info, int width, int height)
                 : base(300, 50)
             {
                 m_Info = info;
                 this.AddPage(0);
 
-                this.AddBackground(0, 0, width, height, 5054);
+                this.AddBackground(0, 0, width, height, 9200);
 
-                this.AddHtml(10, 10, width - 20, 20, this.Color(this.Center(info.Name), 0xFF0000), false, false);
+                this.AddHtml(10, 10, width - 20, 20, this.Center(info.Name), false, false);
 
-                this.AddHtml(10, height - 30, 50, 20, this.Color("Params:", 0x00FF00), false, false);
+                this.AddHtml(10, height - 30, 50, 20, "Params:", false, false);
                 this.AddAlphaRegion(65, height - 34, 170, 28);
                 this.AddTextEntry(70, height - 30, 160, 20, 789, 0, "");
-                this.AddHtml(250, height - 30, 30, 20, this.Color("Go", 0x00FF00), false, false);
+                this.AddHtml(250, height - 30, 30, 20, "Usar", false, false);
                 this.AddButton(280, height - 30, 0xFA6, 0xFA7, 99, GumpButtonType.Reply, 0);
 
                 StringBuilder sb = new StringBuilder();
 
-                sb.Append("Usage: ");
+                sb.Append("Uso: ");
                 sb.Append(info.Usage.Replace("<", "(").Replace(">", ")"));
                 sb.Append("<BR>");
 
@@ -383,7 +383,7 @@ namespace Server.Commands
 
                 if (aliases != null && aliases.Length != 0)
                 {
-                    sb.Append(String.Format("Alias{0}: ", aliases.Length == 1 ? "" : "es"));
+                    sb.Append(String.Format("Atalhos{0}: ", aliases.Length == 1 ? "" : "es"));
 
                     for (int i = 0; i < aliases.Length; ++i)
                     {
@@ -396,7 +396,7 @@ namespace Server.Commands
                     sb.Append("<BR>");
                 }
 
-                sb.Append("AccessLevel: ");
+                sb.Append("Permissao: ");
                 sb.Append(info.AccessLevel.ToString());
                 sb.Append("<BR>");
                 sb.Append("<BR>");

@@ -24,7 +24,8 @@ namespace Server.Commands
             CommandSystem.Register("pontos", AccessLevel.Player, OnAction);
         }
 
-        [Usage("Action")]
+        [Usage("pontos")]
+        [Description("Visualiza diversos pontos que podem ser obtidos in-game.")]
         private static void OnAction(CommandEventArgs e)
         {
             var m_From = e.Mobile as PlayerMobile;
