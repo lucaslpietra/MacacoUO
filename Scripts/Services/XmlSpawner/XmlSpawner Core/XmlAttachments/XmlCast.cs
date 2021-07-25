@@ -14,7 +14,7 @@ namespace Server.Engines.XmlSpawner2
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Chance { get; set; }
-
+         
         public XmlCast(ASerial serial) : base(serial)
         {
         }
