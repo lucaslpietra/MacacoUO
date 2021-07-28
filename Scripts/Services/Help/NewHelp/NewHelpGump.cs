@@ -2,6 +2,7 @@ using System;
 using Server;
 using Server.Engines.Help;
 using Server.Gumps;
+using Server.Items;
 using Server.Menus.Questions;
 using Server.Misc;
 using Server.Mobiles;
@@ -20,7 +21,7 @@ namespace Server.Gumps
             this.Dragable = true;
             this.Resizable = false;
             this.AddPage(0);
-            var sizeY = 336;
+            var sizeY = 336 + 80;
 
             if (m.IsYoung())
             {
@@ -31,6 +32,7 @@ namespace Server.Gumps
 
             this.AddLabel(320, 110, 1153, @"Menu de Ajuda");
             this.AddHtml(172, 130, 1153, 23, @"www.ultimafronteirashard.com.br/wiki", (bool)false, (bool)false);
+
             this.AddHtml(172, 162, 172, 23, @"Enviar Pombo Correio", (bool)true, (bool)false);
             this.AddHtml(172, 186, 410, 44, @"Envie um pombo correio a staff que sera respondido assim que possivel.", (bool)false, (bool)false);
             this.AddButton(144, 159, 2472, 2472, (int)Buttons.Page, GumpButtonType.Reply, 0);
@@ -43,11 +45,15 @@ namespace Server.Gumps
             this.AddHtml(173, 366, 408, 54, @"Mostra locais que voce possa ter interesse em visitar", (bool)false, (bool)false);
             this.AddButton(140, 340, 2472, 2472, (int)Buttons.Locations, GumpButtonType.Reply, 0);
 
+            this.AddHtml(172, 341+80, 172, 23, @"Comandos", (bool)true, (bool)false);
+            this.AddHtml(173, 366+80, 408, 54, @"Mostra os comandos que voce pode usar", (bool)false, (bool)false);
+            this.AddButton(140, 340+80, 2472, 2472, (int)Buttons.Locations, GumpButtonType.Reply, 0);
+
             if (m.IsYoung())
             {
-                this.AddHtml(172, 341 + 90, 172, 23, @"Renunciar Status Novato", (bool)true, (bool)false);
-                this.AddHtml(173, 366 + 90, 408, 54, @"Renuncia de ser um novato", (bool)false, (bool)false);
-                this.AddButton(140, 340 + 90, 2472, 2472, (int)Buttons.Renuncia, GumpButtonType.Reply, 0);
+                this.AddHtml(172, 341 + 180, 172, 23, @"Renunciar Status Novato", (bool)true, (bool)false);
+                this.AddHtml(173, 366 + 180, 408, 54, @"Renuncia de ser um novato", (bool)false, (bool)false);
+                this.AddButton(140, 340 + 180, 2472, 2472, (int)Buttons.Renuncia, GumpButtonType.Reply, 0);
             }
             this.AddImage(141, 162, 7814);
             this.AddImage(139, 248, 7814);
@@ -100,6 +106,9 @@ namespace Server.Gumps
                     break;
                 case (int)Buttons.Page:
                     player.SendGump(new PagePromptGump(player, PageType.Other));
+                    return;
+                case (int)Buttons.Comandos:
+                    player.SendGump(new ListaGump(player));
                     return;
                 case (int)Buttons.Lock:
                     BaseHouse house = BaseHouse.FindHouseAt(from);
@@ -170,6 +179,7 @@ namespace Server.Gumps
             Page = 1,
             Lock = 2,
             Locations = 3,
+            Comandos = 5,
             Renuncia = 4,
         }
 

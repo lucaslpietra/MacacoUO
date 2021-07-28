@@ -3,18 +3,22 @@ using System;
 namespace Server.Mobiles
 {
     [CorpseName("a llama corpse")]
-    public class Llama : BaseCreature
+    public class Llama : BaseMount
     {
         [Constructable]
         public Llama()
-            : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : this("lhama")
         {
-            this.Name = "lhama";
-            this.Body = 0xDC;
+        }
+
+        [Constructable]
+        public Llama(string name)
+            : base(name, 0xDC, 0x3EA6, AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+        {
             this.BaseSoundID = 0x3F3;
 
             this.SetStr(21, 49);
-            this.SetDex(36, 55);
+            this.SetDex(56, 75);
             this.SetInt(16, 30);
 
             this.SetHits(15, 27);
@@ -24,7 +28,11 @@ namespace Server.Mobiles
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 15, 20);
+            this.SetResistance(ResistanceType.Physical, 10, 15);
+            this.SetResistance(ResistanceType.Fire, 5, 10);
+            this.SetResistance(ResistanceType.Cold, 5, 10);
+            this.SetResistance(ResistanceType.Poison, 5, 10);
+            this.SetResistance(ResistanceType.Energy, 5, 10);
 
             this.SetSkill(SkillName.MagicResist, 15.1, 20.0);
             this.SetSkill(SkillName.Tactics, 19.2, 29.0);
@@ -33,11 +41,9 @@ namespace Server.Mobiles
             this.Fame = 300;
             this.Karma = 0;
 
-            this.VirtualArmor = 16;
-
             this.Tamable = true;
             this.ControlSlots = 1;
-            this.MinTameSkill = 55;
+            this.MinTameSkill = 65;
         }
 
         public Llama(Serial serial)
@@ -70,7 +76,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)

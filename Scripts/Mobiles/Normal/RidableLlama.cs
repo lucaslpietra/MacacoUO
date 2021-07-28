@@ -7,7 +7,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public RidableLlama()
-            : this("lhama montavel")
+            : this("lhama")
         {
         }
 
