@@ -28,7 +28,7 @@ namespace Server.Commands
             }
 
             e.Mobile.Target = new DupeTarget(false, Math.Max(1, amount));
-            e.Mobile.SendMessage("What do you wish to dupe?");
+            e.Mobile.SendMessage("Qual item deseja duplicar?");
         }
 
         [Usage("DupeInBag <count>")]
@@ -43,7 +43,7 @@ namespace Server.Commands
             }
 
             e.Mobile.Target = new DupeTarget(true, Math.Max(1, amount));
-            e.Mobile.SendMessage("What do you wish to dupe?");
+            e.Mobile.SendMessage("Qual item deseja duplicar?");
         }
 
         private class DupeTarget : Target
@@ -64,7 +64,7 @@ namespace Server.Commands
 
                 if (!(targ is Item))
                 {
-                    m.SendMessage("You can only dupe items.");
+                    m.SendMessage("Você só pode duplicar itens.");
                     return;
                 }
 
@@ -112,7 +112,7 @@ namespace Server.Commands
 
                 try
                 {
-                    m.SendMessage("Duping {0}...", _Amount);
+                    m.SendMessage("Duplicando {0}...", _Amount);
 
                     var noCtor = false;
 
@@ -171,7 +171,7 @@ namespace Server.Commands
 
                     if (!noCtor)
                     {
-                        m.SendMessage("Done");
+                        m.SendMessage("Terminado !");
                         done = true;
                     }
                 }
@@ -185,7 +185,7 @@ namespace Server.Commands
 
                 if (!done)
                 {
-                    m.SendMessage("Unable to dupe.  Item must have a 0 parameter constructor.");
+                    m.SendMessage("Incapaz de duplicar o item!");
                 }
                 else
                 {
@@ -355,3 +355,4 @@ namespace Server.Commands
         }
     }
 }
+
