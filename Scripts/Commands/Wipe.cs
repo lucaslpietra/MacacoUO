@@ -68,28 +68,28 @@ namespace Server.Commands
         }
 
         [Usage("Wipe")]
-        [Description("Wipes all items and npcs in a targeted bounding box.")]
+        [Description("Limpa todos os itens e npcs em uma caixa delimitadora direcionada.")]
         private static void WipeAll_OnCommand(CommandEventArgs e)
         {
             BeginWipe(e.Mobile, WipeType.Items | WipeType.Mobiles);
         }
 
         [Usage("WipeItems")]
-        [Description("Wipes all items in a targeted bounding box.")]
+        [Description("Limpa todos os itens em uma caixa delimitadora direcionada.")]
         private static void WipeItems_OnCommand(CommandEventArgs e)
         {
             BeginWipe(e.Mobile, WipeType.Items);
         }
 
         [Usage("WipeNPCs")]
-        [Description("Wipes all npcs in a targeted bounding box.")]
+        [Description("Limpa todos os npcs em uma caixa delimitadora direcionada.")]
         private static void WipeNPCs_OnCommand(CommandEventArgs e)
         {
             BeginWipe(e.Mobile, WipeType.Mobiles);
         }
 
         [Usage("WipeMultis")]
-        [Description("Wipes all multis in a targeted bounding box.")]
+        [Description("Limpa todos os multis em uma caixa delimitadora direcionada.")]
         private static void WipeMultis_OnCommand(CommandEventArgs e)
         {
             BeginWipe(e.Mobile, WipeType.Multis);
