@@ -14,7 +14,7 @@ namespace Server.Commands
         }
 
         [Usage("SignGenDelete")]
-        [Description("Deletes world/shop signs on all facets.")]
+        [Description("Exclui sinais de mundo / loja em todas as facetas.")]
         public static void SignGenDelete_OnCommand(CommandEventArgs c)
         {
 			WeakEntityCollection.Delete("sign");
@@ -29,7 +29,7 @@ namespace Server.Commands
             if (File.Exists(cfg))
             {
                 List<SignEntry> list = new List<SignEntry>();
-                from.SendMessage("Deleting signs, please wait.");
+                from.SendMessage("Excluindo sinais, por favor aguarde.");
 
                 using (StreamReader ip = new StreamReader(cfg))
                 {
@@ -86,11 +86,11 @@ namespace Server.Commands
                         Delete_Static(e.m_ItemID, e.m_Location, maps[j], e.m_Text);
                 }
 
-                from.SendMessage("Sign deleting complete.");
+                from.SendMessage("Exclusão de assinatura concluída.");
             }
             else
             {
-                from.SendMessage("{0} not found!", cfg);
+                from.SendMessage("{0} não encontrado!", cfg);
             }
         }
 
