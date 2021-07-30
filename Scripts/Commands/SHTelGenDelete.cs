@@ -15,10 +15,10 @@ namespace Server.Commands
         }
 
         [Usage("SHTelGenDelete")]
-        [Description("Deletes solen hives teleporters.")]
+        [Description("Exclui teletransportadores de colmeias solen.")]
         public static void SHTelGenDelete_OnCommand(CommandEventArgs e)
         {
-            World.Broadcast(0x35, true, "Solen hives teleporters are being deleted, please wait.");
+            World.Broadcast(0x35, true, "Teletransportadores de colmeias Solen estão sendo excluídos, por favor, aguarde.");
 
             DateTime startTime = DateTime.UtcNow;
 
@@ -26,7 +26,7 @@ namespace Server.Commands
 
             DateTime endTime = DateTime.UtcNow;
 
-            World.Broadcast(0x35, true, "{0} solen hives teleporters have been deleted. The entire process took {1:F1} seconds.", count, (endTime - startTime).TotalSeconds);
+            World.Broadcast(0x35, true, "{0} os teletransportadores de colmeias solen foram excluídos. The entire process took {1:F1} seconds.", count, (endTime - startTime).TotalSeconds);
         }
 
         public class SHTeleporterCreator
