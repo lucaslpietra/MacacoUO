@@ -1,4 +1,4 @@
-﻿using Server.Items;
+using Server.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ namespace Server.Commands
         }
 
         [Usage("Mark [name]")]
-        [Description("Creates a marked rune at your location.")]
+        [Description("Cria uma runa marcada em sua localização.")]
         private static void Mark_OnCommand(CommandEventArgs e)
         {
             if (e.Arguments.Length <= 0)
