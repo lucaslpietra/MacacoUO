@@ -10,12 +10,12 @@ namespace Server.Commands
         }
 
         [Usage("TimeStamp")]
-        [Description("Check's Your Servers Current Date And Time")]
+        [Description("Verifique a data e hora atuais dos seus servidores")]
         public static void CheckTime_OnCommand(CommandEventArgs e)
         {
             Mobile m = e.Mobile;
             DateTime now = DateTime.UtcNow;
-            m.SendMessage("The Current Date And Time Is " + now + "(EST)");         
+            m.SendMessage("A data e hora atuais são " + now + "(EST)");
         }
     }
 }
