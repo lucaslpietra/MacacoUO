@@ -21,7 +21,7 @@ namespace Server.Commands
 
         [Usage("RunUOSpawnerExporter")]
         [Aliases("RSE")]
-        [Description("Convert RunUO Spawners to PremiumSpawners.")]
+        [Description("Converter RunUO Spawners em PremiumSpawners.")]
         public static void RunUOSpawnerExporter_OnCommand(CommandEventArgs e)
         {
             Map map = e.Mobile.Map;
@@ -35,7 +35,7 @@ namespace Server.Commands
             {
                 if (map == null || map == Map.Internal)
                 {
-                    e.Mobile.SendMessage("You may not run that command here.");
+                    e.Mobile.SendMessage("Você não pode executar esse comando aqui.");
                     return;
                 }
 
