@@ -19,21 +19,21 @@ namespace Server.Commands
 		}
 
 		[Usage("SignRemove")]
-		[Description("Removes the targeted sign from the world and from the signs configuration file.")]
+		[Description("Remove o sinal de destino do mundo e do arquivo de configuração de sinais.")]
 		public static void SignRemove_OnCommand(CommandEventArgs c)
 		{
 			c.Mobile.Target = new SignRemoveTarget();
 		}
 
 		[Usage("SignSave")]
-		[Description("Saves the targeted sign to the signs configuration file.")]
+		[Description("Salva o sinal de destino no arquivo de configuração de sinais.")]
 		public static void SignSave_OnCommand(CommandEventArgs c)
 		{
 			c.Mobile.Target = new SignSaveTarget();
 		}
 
         [Usage("SignGen")]
-        [Description("Generates world/shop signs on all facets.")]
+        [Description("Gera sinais de mundo / loja em todas as facetas.")]
         public static void SignGen_OnCommand(CommandEventArgs c)
         {
             Parse(c.Mobile);
@@ -41,7 +41,7 @@ namespace Server.Commands
 
         public static void Parse(Mobile from)
         {
-            from.SendMessage("Generating signs, please wait.");
+            from.SendMessage("Gerando sinais, por favor aguarde.");
 			List<SignEntry> list = SignEntry.LoadConfig("Data/signs.cfg");
 
             Map[] brit = new Map[] { Map.Felucca, Map.Trammel };
@@ -82,7 +82,7 @@ namespace Server.Commands
                     Add_Static(e.m_ItemID, e.m_Location, maps[j], e.m_Text);
             }
 
-            from.SendMessage("Sign generating complete.");
+            from.SendMessage("Geração de sinal completa.");
         }
 
         public static void Add_Static(int itemID, Point3D location, Map map, string name)
@@ -233,7 +233,7 @@ namespace Server.Commands
 				}
 				else
 				{
-					from.SendMessage("An entry for that sign was not found.");
+					from.SendMessage("Uma entrada para esse sinal não foi encontrada.");
 				}
 			}
 
@@ -306,7 +306,7 @@ namespace Server.Commands
 					if(sign.m_Map == TargetMap &&
 						sign.m_Location.CompareTo(m_Sign.Location) == 0)
 					{
-						m_From.SendMessage("A sign is already configured for this location.");
+						m_From.SendMessage("Um sinal já está configurado para este local.");
 						return;
 					}
 				}
