@@ -17,7 +17,7 @@ namespace Server.Commands
         }
 
         [Usage("Skills")]
-        [Description("Opens a menu where you can view or edit skills of a targeted mobile.")]
+        [Description("Abre um menu onde você pode visualizar ou editar as habilidades de um celular específico.")]
         private static void Skills_OnCommand(CommandEventArgs e)
         {
             e.Mobile.Target = new SkillsTarget();
