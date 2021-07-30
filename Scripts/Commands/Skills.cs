@@ -13,12 +13,12 @@ namespace Server.Commands
         }
 
         [Usage("SetSkill <name> <value>")]
-        [Description("Sets a skill value by name of a targeted mobile.")]
+        [Description("Define um valor de habilidade por nome de um celular alvo.")]
         public static void SetSkill_OnCommand(CommandEventArgs arg)
         {
             if (arg.Length != 2)
             {
-                arg.Mobile.SendMessage("SetSkill <skill name> <value>");
+                arg.Mobile.SendMessage("SetSkill <nome da habilidade> <valor>");
             }
             else
             {
@@ -36,7 +36,7 @@ namespace Server.Commands
         }
 
         [Usage("SetAllSkills <name> <value>")]
-        [Description("Sets all skill values of a targeted mobile.")]
+        [Description("Define todos os valores de habilidade de um alvo.")]
         public static void SetAllSkills_OnCommand(CommandEventArgs arg)
         {
             if (arg.Length != 1)
@@ -50,7 +50,7 @@ namespace Server.Commands
         }
 
         [Usage("GetSkill <name>")]
-        [Description("Gets a skill value by name of a targeted mobile.")]
+        [Description("Obtém um valor de habilidade pelo nome de um celular de destino.")]
         public static void GetSkill_OnCommand(CommandEventArgs arg)
         {
             if (arg.Length != 1)
@@ -67,7 +67,7 @@ namespace Server.Commands
                 }
                 else
                 {
-                    arg.Mobile.SendMessage("You have specified an invalid skill to get.");
+                    arg.Mobile.SendMessage("Você especificou uma habilidade inválida para obter.");
                 }
             }
         }
@@ -95,7 +95,7 @@ namespace Server.Commands
                 }
                 else
                 {
-                    from.SendMessage("That does not have skills!");
+                    from.SendMessage("Que não tem habilidades!");
                 }
             }
         }
