@@ -29,6 +29,10 @@ namespace Server.Fronteira.Pvm
 
         public static void Serialize(PlayerMobile p, GenericWriter writer)
         {
+            if(p.DungeonsCompletas == null)
+            {
+                p.DungeonsCompletas = new List<CustomDungeons>();
+            }
             writer.Write((byte)p.DungeonsCompletas.Count);
             foreach (var dg in p.DungeonsCompletas)
                 writer.Write((byte)dg);

@@ -15,7 +15,7 @@ using Server.Regions;
 
 namespace Server.Items
 {
-    public class ListaGump : Gump
+    public class ListaComandosGump : Gump
     {
         private List<DocCommandEntry> m_List;
 
@@ -201,9 +201,9 @@ namespace Server.Items
         [Description("Visualiza um gump mostrando todos possiveis comandos.")]
         public static void _OnCommand(CommandEventArgs e)
         {
-            if (e.Mobile.HasGump(typeof(ListaGump)))
-                e.Mobile.CloseGump(typeof(ListaGump));
-            e.Mobile.SendGump(new ListaGump(e.Mobile));
+            if (e.Mobile.HasGump(typeof(ListaComandosGump)))
+                e.Mobile.CloseGump(typeof(ListaComandosGump));
+            e.Mobile.SendGump(new ListaComandosGump(e.Mobile));
         }
 
         public void Build()
@@ -294,7 +294,7 @@ namespace Server.Items
             return count;
         }
 
-        public ListaGump(Mobile from)
+        public ListaComandosGump(Mobile from)
             : this(from, 0, null)
         {
         }
@@ -302,7 +302,7 @@ namespace Server.Items
         protected string filtro;
         private PlayerMobile player;
 
-        public ListaGump(Mobile from, int page, List<DocCommandEntry> list, string filtro = null)
+        public ListaComandosGump(Mobile from, int page, List<DocCommandEntry> list, string filtro = null)
             : base(12, 24)
         {
 
@@ -455,20 +455,20 @@ namespace Server.Items
             {
                 case 1:
                     {
-                        from.SendGump(new ListaGump(from, m_Page, m_List, novoFiltro));
+                        from.SendGump(new ListaComandosGump(from, m_Page, m_List, novoFiltro));
                         break;
                     }
                 case 2:
                     {
                         if (m_Page > 0)
-                            from.SendGump(new ListaGump(from, m_Page - 1, m_List, novoFiltro));
+                            from.SendGump(new ListaComandosGump(from, m_Page - 1, m_List, novoFiltro));
 
                         return;
                     }
                 case 3:
                     {
                         if (GetIndexForPage(m_Page + 1) < m_List.Count)
-                            from.SendGump(new ListaGump(from, m_Page + 1, m_List, novoFiltro));
+                            from.SendGump(new ListaComandosGump(from, m_Page + 1, m_List, novoFiltro));
 
                         break;
                     }

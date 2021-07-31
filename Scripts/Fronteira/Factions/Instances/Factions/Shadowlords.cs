@@ -18,16 +18,11 @@ namespace Server.Factions
                     2211, // broadcast : green
                     0x79, 0x3EB0, // war horse
                     "Shadowlords", "shadow", "SL",
-                    new TextDefinition(1011537, "SHADOWLORDS"),
-                    new TextDefinition(1060772, "Shadowlords faction"),
-                    new TextDefinition(1011424, "<center>SHADES OF DARKNESS</center>"),
-                    new TextDefinition(1011451,
-                                               "The Shadow Lords are a faction that has sprung up within the ranks of " +
-                                               "Minax. Comprised mostly of undead and those who would seek to be " +
-                                               "necromancers, they pose a threat to both the sides of good and evil. " +
-                                               "Their plans have disrupted the hold Minax has over Felucca, and their " +
-                                               "ultimate goal is to destroy all life."),
-                    new TextDefinition(1011456, "This city is controlled by the Shadow Lords."),
+                    new TextDefinition(1011537, "Senhores das Sombras"),
+                    new TextDefinition(1060772, "Faction Senhores das Sombras"),
+                    new TextDefinition(1011424, "<center>Senhores da Sombra</center>"),
+                    new TextDefinition(1011451),
+                    new TextDefinition(1011456, "Esta cidade e controlada pelos senhores das sombras."),
                     new TextDefinition(1042255, "This sigil has been corrupted by the Shadowlords"),
                     new TextDefinition(1041046, "The faction signup stone for the Shadowlords"),
                     new TextDefinition(1041384, "The Faction Stone of the Shadowlords"),

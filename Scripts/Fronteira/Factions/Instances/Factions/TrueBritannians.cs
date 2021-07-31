@@ -18,15 +18,10 @@ namespace Server.Factions
                     2125, // broadcast : gold
                     0x76, 0x3EB2, // war horse
                     "True Britannians", "true", "TB",
-                    new TextDefinition(1011536, "LORD BRITISH"),
-                    new TextDefinition(1060771, "True Britannians faction"),
-                    new TextDefinition(1011423, "<center>TRUE BRITANNIANS</center>"),
-                    new TextDefinition(1011450,
-                                               "True Britannians are loyal to the throne of Lord British. They refuse " +
-                                               "to give up their homelands to the vile Minax, and detest the Shadowlords " +
-                                               "for their evil ways. In addition, the Council of Mages threatens the " +
-                                               "existence of their ruler, and as such they have armed themselves, and " +
-                                               "prepare for war with all."),
+                    new TextDefinition(1011536, "Bretoes Reais"),
+                    new TextDefinition(1060771, "Bretoes Reais"),
+                    new TextDefinition(1011423, "<center>Bretoes Reais</center>"),
+                    new TextDefinition(1011450),
                     new TextDefinition(1011454, "This city is controlled by Lord British."),
                     new TextDefinition(1042254, "This sigil has been corrupted by the True Britannians"),
                     new TextDefinition(1041045, "The faction signup stone for the True Britannians"),

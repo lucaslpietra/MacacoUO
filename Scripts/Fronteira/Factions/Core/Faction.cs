@@ -62,33 +62,10 @@ namespace Server.Factions
             }
         }
 
-        public static void OnLogin(LoginEventArgs e)
-        {
-            Mobile m = e.Mobile;
-
-            if (FactionsDisabledNotice != null && FactionsDisabledNotice.Contains(m))
-            {
-                Timer.DelayCall(TimeSpan.FromSeconds(2), () =>
-                    {
-                        m.SendGump(new Server.Gumps.BasicInfoGump(1155489));
-                        /*Notice: The faction system has been replaced with the Vice vs Virtue system.  We invite you to check out 
-                         * this new and exciting PvP experience!  As a result some items including Greater Stamina Potions, Supernova
-                         * Potions, Shrine Gems, Faction Stronghold Runes, and Cloaks of Command have been removed from your 
-                         * inventory.  Some of these items are available from participating in Vice vs Virtue.  You can join Vice 
-                         * vs Virtue by clicking on "Join Vice vs Virtue" from the front page of the guild menu.*/
-
-                        FactionsDisabledNotice.Remove(m);
-                    });
-            }
-        }
-
         public static void Configure()
         {
-            NewCoMLocation = Config.Get("Factions.NewCoMLocation", true);
-            Enabled = false;// !Server.Engines.VvV.ViceVsVirtueSystem.Enabled;
-
-            EventSink.Login += OnLogin;
-
+            NewCoMLocation = false;//Config.Get("Factions.NewCoMLocation", true);
+            Enabled = !Server.Engines.VvV.ViceVsVirtueSystem.Enabled;
             /*  Disabling Factions:
              *  PlayerStates are not loaded, ie faction players lose their faction status 
              *  Factions/Towns are still serialized, so if factions were ever re-enabled, the town, tithe rate, etc would be the same
@@ -97,10 +74,12 @@ namespace Server.Factions
         }
     }
 
-    [CustomEnum(new string[] { "Minax", "Council of Mages", "True Britannians", "Shadowlords" })]
+    [CustomEnum(new string[] { "Minax", "Concelho dos Magos", "Bretoes Reais", "Senhores das Sombras" })]
     public abstract class Faction : IComparable
     {
         public int ZeroRankOffset;
+
+        public string Name { get { return this.m_Definition.Name.String; } }
 
         private FactionDefinition m_Definition;
         private FactionState m_State;
@@ -257,7 +236,7 @@ namespace Server.Factions
             if (from.IsPlayer())
                 this.m_State.RegisterBroadcast();
 
-            this.Broadcast(this.Definition.HueBroadcast, "{0} [Commander] {1} : {2}", from.Name, this.Definition.FriendlyName, text);
+            this.Broadcast(this.Definition.HueBroadcast, "{0} [Comandante] {1} : {2}", from.Name, this.Definition.FriendlyName, text);
         }
 
         private class BroadcastPrompt : Prompt
@@ -1381,7 +1360,7 @@ namespace Server.Factions
             CheckLeaveTimer(mob);
         }
 
-        public static readonly Map Facet = Map.Felucca;
+        public static readonly Map Facet = Map.Trammel;
 
         public static void WriteReference(GenericWriter writer, Faction fact)
         {

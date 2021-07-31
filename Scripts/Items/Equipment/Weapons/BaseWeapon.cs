@@ -4311,28 +4311,6 @@ namespace Server.Items
             * : +10% bonus at Grandmaster or higher
             */
 
-            if (Type == WeaponType.Bashing)
-            {
-                // Nerfzinho no cajado
-                if (this is BaseStaff)
-                {
-                    modifiers += -0.08;
-                    if(attacker.Skills[SkillName.Tactics].Value < 100)
-                        modifiers += -0.08;
-                }
-                double mine = attacker.Skills[SkillName.Mining].Value;
-                mine = (mine / 5.0) / 100.0;
-                if (mine > 0.2)
-                    mine = 0.2;
-
-                modifiers += mine;
-
-                if (mine >= 100.0)
-                {
-                    modifiers += 0.1;
-                }
-            }
-
             if (Type == WeaponType.Axe)
             {
                 double lumberValue = attacker.Skills[SkillName.Lumberjacking].Value;
@@ -4360,12 +4338,40 @@ namespace Server.Items
                 modifiers += (VirtualDamageBonus / 100.0);
             }
 
+            if (Type == WeaponType.Bashing)
+            {
+                // Nerfzinho no cajado
+                if (this is BaseStaff)
+                {
+                    if (Shard.DebugEnabled)
+                        Shard.Debug("Nerfando cajado " + modifiers);
+                    modifiers -= 0.2;
+                }
+                else
+                {
+                    double mine = attacker.Skills[SkillName.Mining].Value;
+                    mine = (mine / 5.0) / 100.0;
+                    if (mine > 0.2)
+                        mine = 0.2;
+
+                    modifiers += mine;
+                    if (mine >= 100.0)
+                    {
+                        modifiers += 0.1;
+                    }
+                }
+
+            }
+
+            if (Shard.DebugEnabled)
+                Shard.Debug("Modifiers de dano "+modifiers*100+"%", attacker);
+
             // Apply bonuses
             damage += (damage * modifiers);
 
             if (m_Quality == ItemQuality.Low)
             {
-                damage *= 0.75;
+                damage *= 0.9;
             }
 
             return ScaleDamageByDurability((int)damage);
@@ -4394,14 +4400,10 @@ namespace Server.Items
                 Shard.Debug("Scaled Weapon Damage: " + damage, attacker);
             }
             // pre-AOS, halve damage if the defender is a player or the attacker is not a player
-            if (defender is PlayerMobile || (!(attacker is PlayerMobile) && !(attacker is BaseHire)))
+            if (damage > 5 && defender is PlayerMobile || (!(attacker is PlayerMobile)))
             {
-                Shard.Debug("Half Damage on players");
-                damage = (int)(damage / 2.0);
-            }
-            if (attacker is BaseHire && defender is PlayerMobile)
-            {
-                Shard.Debug("Half Damage de mercs vs players");
+                if (Shard.DebugEnabled)
+                    Shard.Debug("Half Damage on players", attacker);
                 damage = (int)(damage / 2.0);
             }
 

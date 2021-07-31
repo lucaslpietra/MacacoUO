@@ -126,7 +126,7 @@ namespace Server.Gumps.Newbie
                 guerreiro.Skills.Add(SkillName.MagicResist, 50);
                 guerreiro.Skills.Add(SkillName.Parry, 35);
                 guerreiro.Skills.Add(SkillName.Magery, 50);
-                guerreiro.equips.Add(new Longsword());
+                guerreiro.equips.Add(new VikingSword());
                 guerreiro.equips.Add(new MetalShield());
                 guerreiro.items.Add(new Bandage(100));
                 guerreiro.equips.Add(new ChainChest());

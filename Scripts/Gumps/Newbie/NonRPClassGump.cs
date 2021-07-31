@@ -83,6 +83,9 @@ namespace Server.Gumps
                         y += 30;
                     }
                 }
+            } else
+            {
+                AddHtml(103, 258, 445, 233, @"<br>Escolha seu kit de skills iniciais. <br><br>Voce podera ter quaisquer skills que quiser, isto e apenas um inicio.", (bool)true, (bool)false);
             }
         }
 
@@ -181,6 +184,10 @@ namespace Server.Gumps
                             {
                                 dupe.Hue = hue;
                             }
+                            if (dupe is IQuality)
+                            {
+                                ((IQuality)dupe).Quality = ItemQuality.Low;
+                            }
                             PackItem(from, dupe);
                         }
 
@@ -190,6 +197,10 @@ namespace Server.Gumps
                             if (dupe.Hue == 78)
                             {
                                 dupe.Hue = hue;
+                            }
+                            if(dupe is IQuality)
+                            {
+                                ((IQuality)dupe).Quality = ItemQuality.Low;
                             }
                             EquipItem(from, dupe);
                         }

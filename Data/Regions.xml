@@ -1427,7 +1427,7 @@
       <rect x="3314" y="2345" width="500" height="750" />
       <go x="3627" y="2606" z="0" />
       <smartNoHousing active="true" />
-      <region type="ApprenticeRegion" name="Enhanced Tracking Skill">
+      <region type="ApprenticeRegion" name="Haven Tracking">
         <rect x="3314" y="2345" width="500" height="750" />
         <region name="the New Haven Bard">
           <rect x="3410" y="2598" width="11" height="9" />
@@ -1449,6 +1449,7 @@
           <rect x="3755" y="2763" width="17" height="13" />
         </region>
         <region type="TownRegion" name="New Haven">
+          <logoutDelay active="false" />
           <rune name="New Haven City" />
           <rect x="3423" y="2480" width="111" height="143" />
           <go x="3503" y="2574" z="14" />

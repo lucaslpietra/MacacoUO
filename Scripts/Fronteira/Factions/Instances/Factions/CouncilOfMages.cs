@@ -17,16 +17,11 @@ namespace Server.Factions
                     1325, // join stone : blue
                     1325, // broadcast : blue
                     0x77, 0x3EB1, // war horse
-                    "Council of Mages", "council", "CoM",
-                    new TextDefinition(1011535, "COUNCIL OF MAGES"),
-                    new TextDefinition(1060770, "Council of Mages faction"),
-                    new TextDefinition(1011422, "<center>COUNCIL OF MAGES</center>"),
-                    new TextDefinition(1011449,
-                                               "The council of Mages have their roots in the city of Moonglow, where " +
-                                               "they once convened. They began as a small movement, dedicated to " +
-                                               "calling forth the Stranger, who saved the lands once before.  A " +
-                                               "series of war and murders and misbegotten trials by those loyal to " +
-                                               "Lord British has caused the group to take up the banner of war."),
+                    "Concelho dos Magos", "Concelho", "CdM",
+                    new TextDefinition(1011535, "Concelho dos Magos"),
+                    new TextDefinition(1060770, "Concelho dos Magos"),
+                    new TextDefinition(1011422, "<center>Concelho dos Magos</center>"),
+                    new TextDefinition(1011449),
                     new TextDefinition(1011455, "This city is controlled by the Council of Mages."),
                     new TextDefinition(1042253, "This sigil has been corrupted by the Council of Mages"),
                     new TextDefinition(1041044, "The faction signup stone for the Council of Mages"),

@@ -548,10 +548,6 @@ namespace Server.Spells
             if (scalar < 0)
                 scalar = 0;
 
-
-            if (pl != null && casterEI < 60)
-                casterEI = 60;
-
             //m_Caster.CheckSkill( DamageSkill, 0.0, 120.0 );
 
             if (casterEI > targetRS)

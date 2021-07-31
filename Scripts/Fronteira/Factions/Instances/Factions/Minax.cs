@@ -19,15 +19,9 @@ namespace Server.Factions
                     0x78, 0x3EAF, // war horse
                     "Minax", "minax", "Min",
                     new TextDefinition(1011534, "MINAX"),
-                    new TextDefinition(1060769, "Minax faction"),
-                    new TextDefinition(1011421, "<center>FOLLOWERS OF MINAX</center>"),
-                    new TextDefinition(1011448,
-                                               "The followers of Minax have taken control in the old lands, " +
-                                               "and intend to hold it for as long as they can. Allying themselves " +
-                                               "with orcs, headless, gazers, trolls, and other beasts, they seek " +
-                                               "revenge against Lord British, for slights both real and imagined, " +
-                                               "though some of the followers wish only to wreak havoc on the " +
-                                               "unsuspecting populace."),
+                    new TextDefinition(1060769, "Minax"),
+                    new TextDefinition(1011421, "<center>Minax</center>"),
+                    new TextDefinition(1011448),
                     new TextDefinition(1011453, "This city is controlled by Minax."),
                     new TextDefinition(1042252, "This sigil has been corrupted by the Followers of Minax"),
                     new TextDefinition(1041043, "The faction signup stone for the Followers of Minax"),
@@ -39,22 +33,22 @@ namespace Server.Factions
                     new StrongholdDefinition(
                         new Rectangle2D[]
                         {
-                            new Rectangle2D(1097, 2570, 70, 50)
+                            new Rectangle2D(1127, 2946, 70, 50)
                         },
-                        new Point3D(1172, 2593, 0),
-                        new Point3D(1117, 2587, 18),
+                        new Point3D(1154, 2959, 0),
+                        new Point3D(1144, 2963, 0),
                         new Point3D[]
                         {
-                            new Point3D(1113, 2601, 18),
-                            new Point3D(1113, 2598, 18),
-                            new Point3D(1113, 2595, 18),
-                            new Point3D(1113, 2592, 18),
-                            new Point3D(1116, 2601, 18),
-                            new Point3D(1116, 2598, 18),
-                            new Point3D(1116, 2595, 18),
-                            new Point3D(1116, 2592, 18)
+                            new Point3D(1142, 2972, 0),
+                            new Point3D(1142+2, 2972, 0),
+                            new Point3D(1142+4, 2972, 0),
+                            new Point3D(1142+6, 2972, 0),
+                            new Point3D(1142+8, 2972, 0),
+                            new Point3D(1142+10, 2972, 0),
+                            new Point3D(1142+12, 2972, 0),
+                            new Point3D(1142+14, 2972, 0)
                         },
-                        new Point3D(1118, 2587, 18)),
+                        new Point3D(1131, 2957, 0)),
                     new RankDefinition[]
                     {
                         new RankDefinition(10, 991, 8, new TextDefinition(1060784, "Avenger of Mondain")),

@@ -47,7 +47,11 @@ namespace Server.Gumps
 
             this.AddHtml(172, 341+80, 172, 23, @"Comandos", (bool)true, (bool)false);
             this.AddHtml(173, 366+80, 408, 54, @"Mostra os comandos que voce pode usar", (bool)false, (bool)false);
-            this.AddButton(140, 340+80, 2472, 2472, (int)Buttons.Locations, GumpButtonType.Reply, 0);
+            this.AddButton(140, 340+80, 2472, 2472, (int)Buttons.Comandos, GumpButtonType.Reply, 0);
+
+            this.AddHtml(172, 341 + 80, 172, 23, @"Comandos", (bool)true, (bool)false);
+            this.AddHtml(173, 366 + 80, 408, 54, @"Mostra os comandos que voce pode usar", (bool)false, (bool)false);
+            this.AddButton(140, 340 + 80, 2472, 2472, (int)Buttons.Comandos, GumpButtonType.Reply, 0);
 
             if (m.IsYoung())
             {
@@ -82,7 +86,6 @@ namespace Server.Gumps
                 pombo.Delete();
                 from.SendMessage("Seu pombo correio esta voando para entregar a mensagem");
             });
-
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
@@ -108,7 +111,7 @@ namespace Server.Gumps
                     player.SendGump(new PagePromptGump(player, PageType.Other));
                     return;
                 case (int)Buttons.Comandos:
-                    player.SendGump(new ListaGump(player));
+                    player.SendGump(new ListaComandosGump(player));
                     return;
                 case (int)Buttons.Lock:
                     BaseHouse house = BaseHouse.FindHouseAt(from);
@@ -145,9 +148,7 @@ namespace Server.Gumps
                         if (from.CanUseStuckMenu() && from.Region.CanUseStuckMenu(from) && !CheckCombat(from) && !from.Frozen && !from.Criminal)
                         {
                             StuckMenu menu = new StuckMenu(from, from, true);
-
                             menu.BeginClose();
-
                             from.SendGump(menu);
                         }
                         else
@@ -156,7 +157,6 @@ namespace Server.Gumps
                         }
 
                     }
-
                     return;
             }
         }
@@ -176,11 +176,13 @@ namespace Server.Gumps
 
         public enum Buttons
         {
+            Nada = 0,
             Page = 1,
             Lock = 2,
             Locations = 3,
             Comandos = 5,
             Renuncia = 4,
+            Factions = 6,
         }
 
     }

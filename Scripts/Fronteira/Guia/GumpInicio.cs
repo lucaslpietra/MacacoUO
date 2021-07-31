@@ -54,8 +54,11 @@ namespace Server.Gumps
             AddHtml(483, 573, 152, 23, @"<CENTER>NPCS</CENTER>", (bool)true, (bool)false);
             AddHtml(704, 572, 152, 23, @"<CENTER>AVENTURAS</CENTER>", (bool)true, (bool)false);
             AddButton(763, 600, 2151, 2151, (int)Buttons.Aventuras, GumpButtonType.Reply, 0);
-            AddHtml(481, 343, 152, 23, @"<CENTER>DUNGEONS</CENTER>", (bool)true, (bool)false);
-            AddButton(527, 373, 2151, 2151, (int)Buttons.Locais, GumpButtonType.Reply, 0);
+            AddHtml(483, 343, 152, 23, @"<CENTER>DUNGEONS</CENTER>", (bool)true, (bool)false);
+            AddButton(541, 373, 2151, 2151, (int)Buttons.Dungeons, GumpButtonType.Reply, 0);
+
+            AddHtml(483, 343+100, 152, 23, @"<CENTER>FACTIONS</CENTER>", (bool)true, (bool)false);
+            AddButton(541, 373+100, 2151, 2151, (int)Buttons.Factions, GumpButtonType.Reply, 0);
 
             AddHtml(700, 343, 152, 23, @"<CENTER>PARAR BUSCA</CENTER>", (bool)true, (bool)false);
             AddButton(763, 369, 2151, 2151, (int)Buttons.Parar, GumpButtonType.Reply, 0);
@@ -67,8 +70,9 @@ namespace Server.Gumps
         {
             NPCS = 1,
             Aventuras = 2,
-            Locais = 3,
-            Parar = 4
+            Dungeons = 3,
+            Factions = 4,
+            Parar = 5
         }
 
 
@@ -90,7 +94,14 @@ namespace Server.Gumps
                         from.SendGump(new MissoesGump(from));
                         break;
                     }
-                case (int)Buttons.Locais:
+                case (int)Buttons.Factions:
+                    {
+                        from.CloseAllGumps();
+                        from.SendGump(new ListaFactionsGump(from));
+                        from.SendMessage(78, "Factions sao grupos PvP que qualquer player pode entrar. Voce podera ser atacado em cidades por outras factions. Factions podem roubar as pedras de sigilo de cidades para domina-la. Factions elegem um comandante a cada duas semanas, e este pode nomear um Sherife para colocar guardas e um Ministro para cuidar da taxacao das cidades.");
+                        break;
+                    }
+                case (int)Buttons.Dungeons:
                     {
                         from.SendGump(new DungeonsGump(from));
                         break;
