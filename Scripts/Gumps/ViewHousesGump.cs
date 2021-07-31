@@ -73,8 +73,8 @@ namespace Server.Gumps
                 string houseName, owner, location;
                 Map map = sel.Map;
 
-                houseName = (sel.Sign == null) ? "An Unnamed House" : sel.Sign.GetName();
-                owner = (sel.Owner == null) ? "nobody" : sel.Owner.Name;
+                houseName = (sel.Sign == null) ? "Casa sem nome" : sel.Sign.GetName();
+                owner = (sel.Owner == null) ? "Ninguem" : sel.Owner.Name;
 
                 int xLong = 0, yLat = 0, xMins = 0, yMins = 0;
                 bool xEast = false, ySouth = false;
@@ -86,7 +86,7 @@ namespace Server.Gumps
                 else
                     location = "unknown";
 
-                AddHtml(10, 15, 220, 20, Color(Center("House Properties"), White), false, false);
+                AddHtml(10, 15, 220, 20, Color(Center("Propriedades"), White), false, false);
 
                 AddHtml(15, 40, 210, 20, Color("Facet:", White), false, false);
                 AddHtml(15, 40, 210, 20, Color(Right(map == null ? "(null)" : map.Name), White), false, false);

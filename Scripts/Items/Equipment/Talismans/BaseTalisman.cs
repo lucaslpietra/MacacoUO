@@ -784,7 +784,7 @@ namespace Server.Items
                 if (BlessedFor != null)
                     list.Add(1072304, !String.IsNullOrEmpty(BlessedFor.Name) ? BlessedFor.Name : "Unnamed Warrior"); // Owned by ~1_name~
                 else
-                    list.Add(1072304, "Nobody"); // Owned by ~1_name~
+                    list.Add(1072304, "Ninguem"); // Owned by ~1_name~
             }
 
             if (Parent is Mobile && m_MaxChargeTime > 0)

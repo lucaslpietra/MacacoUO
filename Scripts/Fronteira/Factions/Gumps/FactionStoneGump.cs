@@ -35,29 +35,29 @@ namespace Server.Factions
 
             AddHtmlText(20, 30, 510, 20, faction.Definition.Header, false, false);
 
-            AddHtmlLocalized(20, 60, 100, 20, 1011429, false, false); // Led By : 
-            AddHtml(125, 60, 200, 20, faction.Commander != null ? faction.Commander.Name : "Nobody", false, false);
+            AddHtmlLocalized(20, 60, 150, 20, 1011429, false, false); // Led By : 
+            AddHtml(125, 60, 200, 20, faction.Commander != null ? faction.Commander.Name : "Ninguem", false, false);
 
-            AddHtmlLocalized(20, 80, 100, 20, 1011457, false, false); // Tithe rate : 
+            AddHtmlLocalized(20, 80, 200, 20, 1011457, false, false); // Tithe rate : 
             if (faction.Tithe >= 0 && faction.Tithe <= 100 && (faction.Tithe % 10) == 0)
                 AddHtmlLocalized(125, 80, 350, 20, 1011480 + (faction.Tithe / 10), false, false);
             else
                 AddHtml(125, 80, 350, 20, faction.Tithe + "%", false, false);
 
-            AddHtmlLocalized(20, 100, 100, 20, 1011458, false, false); // Traps placed : 
+            AddHtmlLocalized(20, 100, 150, 20, 1011458, false, false); // Traps placed : 
             AddHtml(125, 100, 50, 20, faction.Traps.Count.ToString(), false, false);
 
-            AddHtmlLocalized(55, 225, 200, 20, 1011428, false, false); // VOTE FOR LEADERSHIP
+            AddHtmlLocalized(55, 225, 250, 20, 1011428, false, false); // VOTE FOR LEADERSHIP
 
             if (m_Faction.Election != null)
             {
                 AddButton(20, 225, 4005, 4007, ToButtonID(0, 0), GumpButtonType.Reply, 0);
             }
 
-            AddHtmlLocalized(55, 150, 100, 20, 1011430, false, false); // CITY STATUS
+            AddHtmlLocalized(55, 150, 200, 20, 1011430, false, false); // CITY STATUS
             AddButton(20, 150, 4005, 4007, 0, GumpButtonType.Page, 2);
 
-            AddHtmlLocalized(55, 175, 100, 20, 1011444, false, false); // STATISTICS
+            AddHtmlLocalized(55, 175, 200, 20, 1011444, false, false); // STATISTICS
             AddButton(20, 175, 4005, 4007, 0, GumpButtonType.Page, 4);
 
             bool isMerchantQualified = MerchantTitles.HasMerchantQualifications(from);
@@ -66,37 +66,37 @@ namespace Server.Factions
 
             if (pl != null && pl.MerchantTitle != MerchantTitle.None)
             {
-                AddHtmlLocalized(55, 200, 250, 20, 1011460, false, false); // UNDECLARE FACTION MERCHANT
+                AddHtmlLocalized(55, 200, 350, 20, 1011460, false, false); // UNDECLARE FACTION MERCHANT
                 AddButton(20, 200, 4005, 4007, ToButtonID(1, 0), GumpButtonType.Reply, 0);
             }
             else if (isMerchantQualified)
             {
-                AddHtmlLocalized(55, 200, 250, 20, 1011459, false, false); // DECLARE FACTION MERCHANT
+                AddHtmlLocalized(55, 200, 350, 20, 1011459, false, false); // DECLARE FACTION MERCHANT
                 AddButton(20, 200, 4005, 4007, 0, GumpButtonType.Page, 5);
             }
             else
             {
-                AddHtmlLocalized(55, 200, 250, 20, 1011467, false, false); // MERCHANT OPTIONS
+                AddHtmlLocalized(55, 200, 350, 20, 1011467, false, false); // MERCHANT OPTIONS
                 AddImage(20, 200, 4020);
             }
 
-            AddHtmlLocalized(55, 250, 300, 20, 1011461, false, false); // COMMANDER OPTIONS
+            AddHtmlLocalized(55, 250, 400, 20, 1011461, false, false); // COMMANDER OPTIONS
             if (faction.IsCommander(from))
                 AddButton(20, 250, 4005, 4007, 0, GumpButtonType.Page, 6);
             else
                 AddImage(20, 250, 4020);
 
-            AddHtmlLocalized(55, 275, 300, 20, 1011426, false, false); // LEAVE THIS FACTION
+            AddHtmlLocalized(55, 275, 400, 20, 1011426, false, false); // LEAVE THIS FACTION
             AddButton(20, 275, 4005, 4007, ToButtonID(0, 1), GumpButtonType.Reply, 0);
 
-            AddHtmlLocalized(55, 300, 200, 20, 1011441, false, false); // EXIT
+            AddHtmlLocalized(55, 300, 300, 20, 1011441, false, false); // EXIT
             AddButton(20, 300, 4005, 4007, 0, GumpButtonType.Reply, 0);
             #endregion
 
             #region City Status
             AddPage(2);
 
-            AddHtmlLocalized(20, 30, 250, 20, 1011430, false, false); // CITY STATUS
+            AddHtmlLocalized(20, 30, 350, 20, 1011430, false, false); // CITY STATUS
 
             List<Town> towns = Town.Towns;
 
@@ -121,10 +121,10 @@ namespace Server.Factions
             }
 
             AddImage(20, 300, 2361);
-            AddHtmlLocalized(45, 295, 300, 20, 1011491, false, false); // sigil may be recaptured
+            AddHtmlLocalized(45, 295, 400, 20, 1011491, false, false); // sigil may be recaptured
 
             AddImage(20, 320, 2360);
-            AddHtmlLocalized(45, 315, 300, 20, 1011492, false, false); // sigil may not be recaptured
+            AddHtmlLocalized(45, 315, 400, 20, 1011492, false, false); // sigil may not be recaptured
 
             AddHtmlLocalized(55, 350, 100, 20, 1011447, false, false); // BACK
             AddButton(20, 350, 4005, 4007, 0, GumpButtonType.Page, 1);
@@ -133,7 +133,7 @@ namespace Server.Factions
             #region Statistics
             AddPage(4);
 
-            AddHtmlLocalized(20, 30, 150, 20, 1011444, false, false); // STATISTICS
+            AddHtmlLocalized(20, 30, 250, 20, 1011444, false, false); // STATISTICS
 
             AddHtmlLocalized(20, 100, 100, 20, 1011445, false, false); // Name : 
             AddHtml(120, 100, 150, 20, from.Name, false, false);
@@ -153,9 +153,9 @@ namespace Server.Factions
             {
                 AddPage(5);
 
-                AddHtmlLocalized(20, 30, 250, 20, 1011467, false, false); // MERCHANT OPTIONS
+                AddHtmlLocalized(20, 30, 350, 20, 1011467, false, false); // MERCHANT OPTIONS
 
-                AddHtmlLocalized(20, 80, 300, 20, 1011473, false, false); // Select the title you wish to display
+                AddHtmlLocalized(20, 80, 450, 20, 1011473, false, false); // Select the title you wish to display
 
                 MerchantTitleInfo[] infos = MerchantTitles.Info;
 

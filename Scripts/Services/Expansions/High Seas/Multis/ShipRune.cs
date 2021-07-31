@@ -1,4 +1,4 @@
-﻿using Server;
+using Server;
 using System;
 using Server.Multis;
 
@@ -43,7 +43,7 @@ namespace Server.Items
 
             if (m_Galleon != null)
             {
-                list.Add(1149571, m_Galleon.Owner != null ? m_Galleon.Owner.Name : "Nobody"); //Owner: ~1_NAME~
+                list.Add(1149571, m_Galleon.Owner != null ? m_Galleon.Owner.Name : "Ninguem"); //Owner: ~1_NAME~
 
                 if (m_Galleon.ShipName != null)
                     list.Add(1149572, m_Galleon.ShipName); //Name: the ~1_NAME~

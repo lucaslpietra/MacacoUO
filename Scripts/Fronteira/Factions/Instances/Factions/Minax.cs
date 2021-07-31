@@ -18,14 +18,19 @@ namespace Server.Factions
                     1645, // broadcast : dark red
                     0x78, 0x3EAF, // war horse
                     "Minax", "minax", "Min",
-                    new TextDefinition(1011534, "MINAX"),
+                    new TextDefinition(1011534, "Minax"),
                     new TextDefinition(1060769, "Minax"),
                     new TextDefinition(1011421, "<center>Minax</center>"),
-                    new TextDefinition(1011448),
+                    new TextDefinition(1011448, "Os seguidores de Minax assumiram o controle nas terras antigas, " +
+                                               "e pretendem mantê-lo pelo tempo que puderem. Aliando-se" +
+                                               "com orcs e principalmente selvagens, eles procuram" +
+                                               "vingança contra Lord British, por ofensas reais e imaginárias," +
+                                               "embora alguns dos seguidores desejem apenas causar estragos no" +
+                                               "população inocente."),
                     new TextDefinition(1011453, "This city is controlled by Minax."),
-                    new TextDefinition(1042252, "This sigil has been corrupted by the Followers of Minax"),
-                    new TextDefinition(1041043, "The faction signup stone for the Followers of Minax"),
-                    new TextDefinition(1041381, "The Faction Stone of Minax"),
+                    new TextDefinition(1042252, "Este sigilo foi corrompido por Minax"),
+                    new TextDefinition(1041043, "Pedra de Se Unir a Faction Minax"),
+                    new TextDefinition(1041381, "Pedra da Faction Minax"),
                     new TextDefinition(1011463, ": Minax"),
                     new TextDefinition(1005190, "Followers of Minax will now be ignored."),
                     new TextDefinition(1005191, "Followers of Minax will now be told to go away."),
@@ -51,16 +56,17 @@ namespace Server.Factions
                         new Point3D(1131, 2957, 0)),
                     new RankDefinition[]
                     {
-                        new RankDefinition(10, 991, 8, new TextDefinition(1060784, "Avenger of Mondain")),
-                        new RankDefinition(9, 950, 7, new TextDefinition(1060783, "Dread Knight")),
-                        new RankDefinition(8, 900, 6, new TextDefinition(1060782, "Warlord")),
-                        new RankDefinition(7, 800, 6, new TextDefinition(1060782, "Warlord")),
-                        new RankDefinition(6, 700, 5, new TextDefinition(1060781, "Executioner")),
-                        new RankDefinition(5, 600, 5, new TextDefinition(1060781, "Executioner")),
-                        new RankDefinition(4, 500, 5, new TextDefinition(1060781, "Executioner")),
-                        new RankDefinition(3, 400, 4, new TextDefinition(1060780, "Defiler")),
-                        new RankDefinition(2, 200, 4, new TextDefinition(1060780, "Defiler")),
-                        new RankDefinition(1, 0, 4, new TextDefinition(1060780, "Defiler"))
+                        //Recruta,Soldado,Cabo,Sargento,Tenente,Coronel,Capitao,Major,General,Marechal
+                        new RankDefinition(10, 991, 8, new TextDefinition(1060784, "Marechal")),
+                        new RankDefinition(9, 950, 7, new TextDefinition(1060783, "General")),
+                        new RankDefinition(8, 900, 6, new TextDefinition(1060782, "Major")),
+                        new RankDefinition(7, 800, 6, new TextDefinition(1060782, "Capitao")),
+                        new RankDefinition(6, 700, 5, new TextDefinition(1060781, "Coronel")),
+                        new RankDefinition(5, 600, 5, new TextDefinition(1060781, "Tenente")),
+                        new RankDefinition(4, 500, 5, new TextDefinition(1060781, "Sargento")),
+                        new RankDefinition(3, 400, 4, new TextDefinition(1060780, "Cabo")),
+                        new RankDefinition(2, 200, 4, new TextDefinition(1060780, "Soldado")),
+                        new RankDefinition(1, 0, 4, new TextDefinition(1060780, "Recruta"))
                     },
                     new GuardDefinition[]
                     {

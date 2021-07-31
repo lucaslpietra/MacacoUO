@@ -21,7 +21,11 @@ namespace Server.Factions
                     new TextDefinition(1011537, "Senhores das Sombras"),
                     new TextDefinition(1060772, "Faction Senhores das Sombras"),
                     new TextDefinition(1011424, "<center>Senhores da Sombra</center>"),
-                    new TextDefinition(1011451),
+                    new TextDefinition(1011451,  "Os Senhores das Sombras são uma facção que surgiu nas fileiras de" +
+                                               "Minax. Composto principalmente por mortos-vivos e aqueles que procuram ser" +
+                                               "necromantes, eles representam uma ameaça para ambos os lados do bem e do mal." +
+                                               "Seus planos interromperam o controle que Minax tem sobre Felucca, e seu" +
+                                               "o objetivo final é destruir toda a vida."),
                     new TextDefinition(1011456, "Esta cidade e controlada pelos senhores das sombras."),
                     new TextDefinition(1042255, "This sigil has been corrupted by the Shadowlords"),
                     new TextDefinition(1041046, "The faction signup stone for the Shadowlords"),
@@ -52,16 +56,16 @@ namespace Server.Factions
                         new Point3D(948, 713, 0)),
                     new RankDefinition[]
                     {
-                        new RankDefinition(10, 991, 8, new TextDefinition(1060799, "Purveyor of Darkness")),
-                        new RankDefinition(9, 950, 7, new TextDefinition(1060798, "Agent of Evil")),
-                        new RankDefinition(8, 900, 6, new TextDefinition(1060797, "Bringer of Sorrow")),
-                        new RankDefinition(7, 800, 6, new TextDefinition(1060797, "Bringer of Sorrow")),
-                        new RankDefinition(6, 700, 5, new TextDefinition(1060796, "Keeper of Lies")),
-                        new RankDefinition(5, 600, 5, new TextDefinition(1060796, "Keeper of Lies")),
-                        new RankDefinition(4, 500, 5, new TextDefinition(1060796, "Keeper of Lies")),
-                        new RankDefinition(3, 400, 4, new TextDefinition(1060795, "Servant")),
-                        new RankDefinition(2, 200, 4, new TextDefinition(1060795, "Servant")),
-                        new RankDefinition(1, 0, 4, new TextDefinition(1060795, "Servant"))
+                          new RankDefinition(10, 991, 8, new TextDefinition(1060784, "Marechal")),
+                        new RankDefinition(9, 950, 7, new TextDefinition(1060783, "General")),
+                        new RankDefinition(8, 900, 6, new TextDefinition(1060782, "Major")),
+                        new RankDefinition(7, 800, 6, new TextDefinition(1060782, "Capitao")),
+                        new RankDefinition(6, 700, 5, new TextDefinition(1060781, "Coronel")),
+                        new RankDefinition(5, 600, 5, new TextDefinition(1060781, "Tenente")),
+                        new RankDefinition(4, 500, 5, new TextDefinition(1060781, "Sargento")),
+                        new RankDefinition(3, 400, 4, new TextDefinition(1060780, "Cabo")),
+                        new RankDefinition(2, 200, 4, new TextDefinition(1060780, "Soldado")),
+                        new RankDefinition(1, 0, 4, new TextDefinition(1060780, "Recruta"))
                     },
                     new GuardDefinition[]
                     {

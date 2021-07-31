@@ -2243,7 +2243,7 @@ namespace Server.Multis
                 Mobile houseOwner = (m_House == null ? null : m_House.Owner);
 
                 if (houseOwner == null)
-                    owner = "nobody";
+                    owner = "Ninguem";
                 else
                     owner = houseOwner.Name;
 

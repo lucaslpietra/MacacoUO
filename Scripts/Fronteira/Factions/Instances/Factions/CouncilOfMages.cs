@@ -21,12 +21,16 @@ namespace Server.Factions
                     new TextDefinition(1011535, "Concelho dos Magos"),
                     new TextDefinition(1060770, "Concelho dos Magos"),
                     new TextDefinition(1011422, "<center>Concelho dos Magos</center>"),
-                    new TextDefinition(1011449),
-                    new TextDefinition(1011455, "This city is controlled by the Council of Mages."),
-                    new TextDefinition(1042253, "This sigil has been corrupted by the Council of Mages"),
-                    new TextDefinition(1041044, "The faction signup stone for the Council of Mages"),
-                    new TextDefinition(1041382, "The Faction Stone of the Council of Mages"),
-                    new TextDefinition(1011464, ": Council of Mages"),
+                    new TextDefinition(1011449, "O conselho dos Magos tem suas raízes na cidade de Moonglow, onde" +
+                                               "eles se reuniram uma vez. Eles começaram como um pequeno movimento, dedicado a" +
+                                               "convocando o Estrangeiro, que antes salvou as terras uma vez. A" +
+                                               "série de guerras e assassinatos e julgamentos ilegítimos por aqueles que são leais a" +
+                                               "Lord British fez com que o grupo assumisse a bandeira da guerra."),
+                    new TextDefinition(1011455, "Esta cidade eh controlada pelo Concelho dos Magos."),
+                    new TextDefinition(1042253, "Sigilo corrompido pelo Concelho dos Magos"),
+                    new TextDefinition(1041044, "Alistamento Concelho dos Magos"),
+                    new TextDefinition(1041382, "Pedra do Concelho dos Magos"),
+                    new TextDefinition(1011464, ": Concelho dos Magos"),
                     new TextDefinition(1005187, "Members of the Council of Mages will now be ignored."),
                     new TextDefinition(1005188, "Members of the Council of Mages will now be warned to leave."),
                     new TextDefinition(1005189, "Members of the Council of Mages will now be beaten with a stick."),
@@ -77,16 +81,16 @@ namespace Server.Factions
                         new Point3D(3796, 2259, 20)),
                     new RankDefinition[]
                     {
-                        new RankDefinition(10, 991, 8, new TextDefinition(1060789, "Inquisitor of the Council")),
-                        new RankDefinition(9, 950, 7, new TextDefinition(1060788, "Archon of Principle")),
-                        new RankDefinition(8, 900, 6, new TextDefinition(1060787, "Luminary")),
-                        new RankDefinition(7, 800, 6, new TextDefinition(1060787, "Luminary")),
-                        new RankDefinition(6, 700, 5, new TextDefinition(1060786, "Diviner")),
-                        new RankDefinition(5, 600, 5, new TextDefinition(1060786, "Diviner")),
-                        new RankDefinition(4, 500, 5, new TextDefinition(1060786, "Diviner")),
-                        new RankDefinition(3, 400, 4, new TextDefinition(1060785, "Mystic")),
-                        new RankDefinition(2, 200, 4, new TextDefinition(1060785, "Mystic")),
-                        new RankDefinition(1, 0, 4, new TextDefinition(1060785, "Mystic"))
+                        new RankDefinition(10, 991, 8, new TextDefinition(1060784, "Marechal")),
+                        new RankDefinition(9, 950, 7, new TextDefinition(1060783, "General")),
+                        new RankDefinition(8, 900, 6, new TextDefinition(1060782, "Major")),
+                        new RankDefinition(7, 800, 6, new TextDefinition(1060782, "Capitao")),
+                        new RankDefinition(6, 700, 5, new TextDefinition(1060781, "Coronel")),
+                        new RankDefinition(5, 600, 5, new TextDefinition(1060781, "Tenente")),
+                        new RankDefinition(4, 500, 5, new TextDefinition(1060781, "Sargento")),
+                        new RankDefinition(3, 400, 4, new TextDefinition(1060780, "Cabo")),
+                        new RankDefinition(2, 200, 4, new TextDefinition(1060780, "Soldado")),
+                        new RankDefinition(1, 0, 4, new TextDefinition(1060780, "Recruta"))
                     },
                     new GuardDefinition[]
                     {

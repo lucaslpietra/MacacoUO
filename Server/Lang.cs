@@ -1502,6 +1502,8 @@ namespace Server
             switch (msg)
             {
                 // GUMP TEXTS
+                case 1011447:
+                    return "Voltar";
                 case 1044457:
                     return "Materiais";
                 case 1011375:

@@ -24,7 +24,7 @@ namespace Server.Factions
             this.AddHtmlText(20, 130, 510, 100, faction.Definition.About, true, true);
 
             this.AddHtmlLocalized(20, 60, 100, 20, 1011429, false, false); // Led By : 
-            this.AddHtml(125, 60, 200, 20, faction.Commander != null ? faction.Commander.Name : "Nobody", false, false);
+            this.AddHtml(125, 60, 200, 20, faction.Commander != null ? faction.Commander.Name : "Ninguem", false, false);
 
             this.AddHtmlLocalized(20, 80, 100, 20, 1011457, false, false); // Tithe rate : 
             if (faction.Tithe >= 0 && faction.Tithe <= 100 && (faction.Tithe % 10) == 0)

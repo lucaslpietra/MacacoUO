@@ -17,16 +17,20 @@ namespace Server.Factions
                     2214, // join stone : gold
                     2125, // broadcast : gold
                     0x76, 0x3EB2, // war horse
-                    "True Britannians", "true", "TB",
+                    "Britoes Reais", "Britoes", "BR",
                     new TextDefinition(1011536, "Bretoes Reais"),
                     new TextDefinition(1060771, "Bretoes Reais"),
                     new TextDefinition(1011423, "<center>Bretoes Reais</center>"),
-                    new TextDefinition(1011450),
-                    new TextDefinition(1011454, "This city is controlled by Lord British."),
-                    new TextDefinition(1042254, "This sigil has been corrupted by the True Britannians"),
-                    new TextDefinition(1041045, "The faction signup stone for the True Britannians"),
-                    new TextDefinition(1041383, "The Faction Stone of the True Britannians"),
-                    new TextDefinition(1011465, ": True Britannians"),
+                    new TextDefinition(1011450, "Os Bretoes Reais são leais ao trono do Lorde Britânico. Eles se recusam" +
+                                               "entregar suas terras natais ao vil Minax e os Senhoreses das Sombras" +
+                                               ". Além disso, o Conselho de Magos ameaça a" +
+                                               "existência de seu governante, e como tal eles se armaram, e" +
+                                               "preparam-se para a guerra com todos."),
+                    new TextDefinition(1011454, "Esta cidade eh controlada pelos Britoes Reais."),
+                    new TextDefinition(1042254, "Este sigilo esta corrompido pelos Britoes Reais"),
+                    new TextDefinition(1041045, "Alistamento Britoes Reais"),
+                    new TextDefinition(1041383, "Pedra dos Britoes Reais"),
+                    new TextDefinition(1011465, ": Britoes Reais"),
                     new TextDefinition(1005181, "Followers of Lord British will now be ignored."),
                     new TextDefinition(1005182, "Followers of Lord British will now be warned of their impending doom."),
                     new TextDefinition(1005183, "Followers of Lord British will now be attacked on sight."),
@@ -57,16 +61,16 @@ namespace Server.Factions
                         new Point3D(1331, 1621, 50)),
                     new RankDefinition[]
                     {
-                        new RankDefinition(10, 991, 8, new TextDefinition(1060794, "Knight of the Codex")),
-                        new RankDefinition(9, 950, 7, new TextDefinition(1060793, "Knight of Virtue")),
-                        new RankDefinition(8, 900, 6, new TextDefinition(1060792, "Crusader")),
-                        new RankDefinition(7, 800, 6, new TextDefinition(1060792, "Crusader")),
-                        new RankDefinition(6, 700, 5, new TextDefinition(1060791, "Sentinel")),
-                        new RankDefinition(5, 600, 5, new TextDefinition(1060791, "Sentinel")),
-                        new RankDefinition(4, 500, 5, new TextDefinition(1060791, "Sentinel")),
-                        new RankDefinition(3, 400, 4, new TextDefinition(1060790, "Defender")),
-                        new RankDefinition(2, 200, 4, new TextDefinition(1060790, "Defender")),
-                        new RankDefinition(1, 0, 4, new TextDefinition(1060790, "Defender"))
+                        new RankDefinition(10, 991, 8, new TextDefinition(1060784, "Marechal")),
+                        new RankDefinition(9, 950, 7, new TextDefinition(1060783, "General")),
+                        new RankDefinition(8, 900, 6, new TextDefinition(1060782, "Major")),
+                        new RankDefinition(7, 800, 6, new TextDefinition(1060782, "Capitao")),
+                        new RankDefinition(6, 700, 5, new TextDefinition(1060781, "Coronel")),
+                        new RankDefinition(5, 600, 5, new TextDefinition(1060781, "Tenente")),
+                        new RankDefinition(4, 500, 5, new TextDefinition(1060781, "Sargento")),
+                        new RankDefinition(3, 400, 4, new TextDefinition(1060780, "Cabo")),
+                        new RankDefinition(2, 200, 4, new TextDefinition(1060780, "Soldado")),
+                        new RankDefinition(1, 0, 4, new TextDefinition(1060780, "Recruta"))
                     },
                     new GuardDefinition[]
                     {
