@@ -1,3 +1,4 @@
+using Server.Fronteira.Pvm;
 using Server.Mobiles;
 using Server.Network;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ namespace Server.Gumps
 {
     public class DungeonOption
     {
-        public string Name;
+        public CustomDungeons Name;
         public Point3D Location;
         public Map Map;
     }
@@ -37,7 +38,7 @@ namespace Server.Gumps
             {
                 this.AddHtml(172, 130 + y, 1153, 23, @"", (bool)false, (bool)false);
                 i += 1;
-                this.AddHtml(172, 162 + y, 300, 23, $"(Lvl {i})" + dg.Name, (bool)true, (bool)false);
+                this.AddHtml(172, 162 + y, 300, 23, "(Lvl "+i+")" + dg.Name, (bool)true, (bool)false);
                 this.AddButton(144, 159 + y, 2472, 2472, i, GumpButtonType.Reply, 0);
                 y += 30;
             }
