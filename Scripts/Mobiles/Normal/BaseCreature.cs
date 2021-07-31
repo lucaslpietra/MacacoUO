@@ -6603,6 +6603,21 @@ namespace Server.Mobiles
 
         public override bool OnBeforeDeath()
         {
+
+            // Qnd um bixo morrer, se eh de player e foi morto por monstros, os monstros viram no dono do bixo q morreu
+            var master = this.GetMaster();
+            if(master is PlayerMobile)
+            {
+                foreach(var ag in this.Aggressors)
+                {
+                    if(ag.Attacker is BaseCreature)
+                    {
+                        ((BaseCreature)ag.Attacker).Combatant = master;
+                        ag.Attacker.OverheadMessage("!");
+                    }
+                }
+            }
+ 
             int treasureLevel = TreasureMapLevel;
             List<DamageStore> rights = GetLootingRights();
             DropScrollsGarantidos();
@@ -6614,7 +6629,7 @@ namespace Server.Mobiles
                     {
                         if (!r.m_Mobile.IsCooldown("matoumob"))
                         {
-                            r.m_Mobile.PrivateOverheadMessage(MessageType.Regular, 78, true, "Voce aprende habilidades muito mais rapidamente ao combater monstros em dungeons", r.m_Mobile.NetState);
+                            r.m_Mobile.PrivateOverheadMessage(MessageType.Regular, 78, true, "Voce aprende habilidades mais rapidamente ao combater monstros em dungeons", r.m_Mobile.NetState);
                         }
                         r.m_Mobile.SetCooldown("matoumob", TimeSpan.FromMinutes(5));
                     }

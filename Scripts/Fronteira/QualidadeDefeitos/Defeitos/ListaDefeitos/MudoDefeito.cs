@@ -7,7 +7,7 @@ namespace Server.Fronteira.QualidadeDefeitos.ListaDefeitos
     {
         public static void Initialize()
         {
-            EventSink.Speech += new SpeechEventHandler(OnSpeech);
+            //EventSink.Speech += new SpeechEventHandler(OnSpeech);
         }
 
         private static void OnSpeech(SpeechEventArgs e)

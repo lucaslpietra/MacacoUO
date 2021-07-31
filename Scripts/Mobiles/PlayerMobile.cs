@@ -53,6 +53,7 @@ using Server.Commands;
 using Server.Fronteira.RP;
 using Server.Fronteira.Talentos;
 using Server.Fronteira.Elementos;
+using Server.Fronteira.Pvm;
 #endregion
 
 namespace Server.Mobiles
@@ -137,6 +138,8 @@ namespace Server.Mobiles
         public WispGuia Wisp = null;
         public int Anuncios = 0;
         public int RankingFama = 0;
+
+        public List<CustomDungeons> DungeonsCompletas { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public byte Nivel { get; set; }
@@ -5123,6 +5126,7 @@ namespace Server.Mobiles
 
             m_AutoStabled = new List<Mobile>();
 
+            DungeonsCompletas = new List<CustomDungeons>();
             #region Mondain's Legacy
             m_Quests = new List<BaseQuest>();
             m_Chains = new Dictionary<QuestChain, BaseChain>();
@@ -5469,6 +5473,9 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 52:
+                    DungeonsCompletas = DungeonsCompletasSerializer.Deserialize(reader);
+                    goto case 51;
                 case 51:
                     Elementos.Deserialize(reader);
                     goto case 50;
@@ -5973,7 +5980,8 @@ namespace Server.Mobiles
             CheckKillDecay();
             CheckAtrophies(this);
             base.Serialize(writer);
-            writer.Write(51); // version
+            writer.Write(52); // version
+            DungeonsCompletasSerializer.Serialize(this, writer);
             Elementos.Serialize(writer);
             writer.Write(PontosTalento);
             writer.Write(Nivel);

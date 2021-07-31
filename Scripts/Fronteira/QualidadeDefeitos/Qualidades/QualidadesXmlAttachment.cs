@@ -11,7 +11,7 @@ namespace Server.Fronteira.QualidadeDefeitos
         public Mobile From
         {
             get { return _From; }
-            set { _From = value;}
+            set { _From = value;} 
         }
 
         [CommandProperty(AccessLevel.GameMaster)]

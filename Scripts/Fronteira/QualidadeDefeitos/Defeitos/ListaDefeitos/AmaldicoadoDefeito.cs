@@ -1,4 +1,4 @@
-﻿using Server.Engines.XmlSpawner2;
+using Server.Engines.XmlSpawner2;
 using Server.Mobiles;
 
 namespace Server.Fronteira.QualidadeDefeitos.ListaDefeitos
@@ -8,7 +8,7 @@ namespace Server.Fronteira.QualidadeDefeitos.ListaDefeitos
         public static void Initialize()
         {
             //TODO Verificar uma forma melhor de fazer essa checagem quando o gump de criacao for finalizado
-            EventSink.Movement += new MovementEventHandler(OnMovement);
+            //EventSink.Movement += new MovementEventHandler(OnMovement);
         }
 
         private static void OnMovement(MovementEventArgs e)
