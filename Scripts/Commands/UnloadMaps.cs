@@ -23,42 +23,42 @@ namespace Server.Commands
         }
 
         [Usage("[Unloadtrammel")]
-        [Description("Unload Trammel maps with a menu.")] 
+        [Description("Descarregue mapas Trammel com um menu.")]
         private static void UnloadTrammel_OnCommand(CommandEventArgs e)
         {
             e.Mobile.SendGump(new UnloadTrammelGump(e));
         }
 
         [Usage("[Unloadfelucca")]
-        [Description("Unload Felucca maps with a menu.")] 
+        [Description("Descarregue mapas de Felucca com um menu.")]
         private static void UnloadFelucca_OnCommand(CommandEventArgs e)
         {
             e.Mobile.SendGump(new UnloadFeluccaGump(e));
         }
 
         [Usage("[Unloadmalas")]
-        [Description("Unload Malas maps with a menu.")] 
+        [Description("Descarregue mapas do Malas com um menu.")]
         private static void UnloadMalas_OnCommand(CommandEventArgs e)
         {
             e.Mobile.SendGump(new UnloadMalasGump(e));
         }
 
         [Usage("[Unloadilshenar")]
-        [Description("Unload Ilshenar maps with a menu.")] 
+        [Description("Descarregue mapas Ilshenar com um menu.")]
         private static void UnloadIlshenar_OnCommand(CommandEventArgs e)
         {
             e.Mobile.SendGump(new UnloadIlshenarGump(e));
         }
 
         [Usage("[Unloadtokuno")]
-        [Description("Unload Tokuno maps with a menu.")] 
+        [Description("Descarregue mapas Tokuno com um menu.")]
         private static void UnloadTokuno_OnCommand(CommandEventArgs e)
         {
             e.Mobile.SendGump(new UnloadTokunoGump(e));
         }
 
         [Usage("[Unloadtermur")]
-        [Description("Unload Termur maps with a menu.")]
+        [Description("Descarregue mapas Termur com um menu.")]
         private static void UnloadTermur_OnCommand(CommandEventArgs e)
         {
             e.Mobile.SendGump(new UnloadTermurGump(e));

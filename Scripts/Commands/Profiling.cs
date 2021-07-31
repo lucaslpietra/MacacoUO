@@ -19,7 +19,7 @@ namespace Server.Commands
         }
 
         [Usage("WriteProfiles")]
-        [Description("Generates a log files containing performance diagnostic information.")]
+        [Description("Gera arquivos de log contendo informações de diagnóstico de desempenho.")]
         public static void WriteProfiles_OnCommand(CommandEventArgs e)
         {
             try

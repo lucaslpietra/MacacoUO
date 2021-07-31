@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Server.Commands
 {
@@ -10,7 +10,7 @@ namespace Server.Commands
 		}
 
 		[Usage( "Time" )]
-		[Description( "Returns the server's local time." )]
+		[Description( "Retorna a hora local do servidor." )]
 		private static void Time_OnCommand( CommandEventArgs e )
 		{
 			e.Mobile.SendMessage( DateTime.UtcNow.ToString() );
