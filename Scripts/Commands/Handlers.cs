@@ -80,7 +80,7 @@ namespace Server.Commands
         }
 
         [Usage("Where")]
-        [Description("Tells the commanding player his coordinates, region, and facet.")]
+        [Description("Diz ao jogador que comanda suas coordenadas, região e faceta.")]
         public static void Where_OnCommand(CommandEventArgs e)
         {
             Mobile from = e.Mobile;
@@ -111,11 +111,11 @@ namespace Server.Commands
         }
 
         [Usage("DropHolding")]
-        [Description("Drops the item, if any, that a targeted player is holding. The item is placed into their backpack, or if that's full, at their feet.")]
+        [Description("Descarta o item, se houver, que o jogador alvo está segurando. O item é colocado em sua mochila ou, se estiver cheia, a seus pés.")]
         public static void DropHolding_OnCommand(CommandEventArgs e)
         {
             e.Mobile.BeginTarget(-1, false, TargetFlags.None, new TargetCallback(DropHolding_OnTarget));
-            e.Mobile.SendMessage("Target the player to drop what they are holding.");
+            e.Mobile.SendMessage("Mire no jogador para largar o que está segurando");
         }
 
         public static void DropHolding_OnTarget(Mobile from, object obj)
@@ -127,7 +127,7 @@ namespace Server.Commands
 
                 if (held == null)
                 {
-                    from.SendMessage("They are not holding anything.");
+                    from.SendMessage("Eles não estão segurando nada.");
                 }
                 else
                 {
@@ -138,18 +138,18 @@ namespace Server.Commands
                         if (pe == null || pe.Handler != from)
                         {
                             if (pe == null)
-                                from.SendMessage("You may only use this command on someone who has paged you.");
+                                from.SendMessage("Você só pode usar este comando em alguém que o chamou.");
                             else
-                                from.SendMessage("You may only use this command if you are handling their help page.");
+                                from.SendMessage("Você só pode usar este comando se estiver lidando com sua página de ajuda.");
 
                             return;
                         }
                     }
 
                     if (targ.AddToBackpack(held))
-                        from.SendMessage("The item they were holding has been placed into their backpack.");
+                        from.SendMessage("O item que eles seguravam foi colocado em sua mochila.");
                     else
-                        from.SendMessage("The item they were holding has been placed at their feet.");
+                        from.SendMessage("O item que seguravam foi colocado a seus pés.");
 
                     held.ClearBounce();
 
@@ -159,7 +159,7 @@ namespace Server.Commands
             else
             {
                 from.BeginTarget(-1, false, TargetFlags.None, new TargetCallback(DropHolding_OnTarget));
-                from.SendMessage("That is not a player. Try again.");
+                from.SendMessage("Isso não é um jogador. Tente novamente.");
             }
         }
 
@@ -178,23 +178,23 @@ namespace Server.Commands
 
                 NetState.Resume();
 
-                from.SendMessage("You have deleted {0} object{1}.", list.Count, list.Count == 1 ? "" : "s");
+                from.SendMessage("Você excluiu {0} objeto{1}.", list.Count, list.Count == 1 ? "" : "s");
             }
             else
             {
-                from.SendMessage("You have chosen not to delete those objects.");
+                from.SendMessage("Você optou por não excluir esses objetos.");
             }
         }
 
         [Usage("ClearFacet")]
-        [Description("Deletes all items and mobiles in your facet. Players and their inventory will not be deleted.")]
+        [Description("Exclui todos os itens e celulares em sua faceta. Jogadores e seus inventários não serão excluídos.")]
         public static void ClearFacet_OnCommand(CommandEventArgs e)
         {
             Map map = e.Mobile.Map;
 
             if (map == null || map == Map.Internal)
             {
-                e.Mobile.SendMessage("You may not run that command here.");
+                e.Mobile.SendMessage("Você não pode executar esse comando aqui.");
                 return;
             }
 
@@ -214,22 +214,22 @@ namespace Server.Commands
 
                 e.Mobile.SendGump(
                     new WarningGump(1060635, 30720,
-                        String.Format("You are about to delete {0} object{1} from this facet.  Do you really wish to continue?",
+                        String.Format("Você está prestes a deletar {0} object{1} desta faceta.  Você realmente deseja continuar?",
                             list.Count, list.Count == 1 ? "" : "s"),
                         0xFFC000, 360, 260, new WarningGumpCallback(DeleteList_Callback), list));
             }
             else
             {
-                e.Mobile.SendMessage("There were no objects found to delete.");
+                e.Mobile.SendMessage("Não foram encontrados objetos para excluir.");
             }
         }
 
         [Usage("GetFollowers")]
-        [Description("Teleports all pets of a targeted player to your location.")]
+        [Description("Teleporta todos os animais de estimação de um jogador selecionado para sua localização.")]
         public static void GetFollowers_OnCommand(CommandEventArgs e)
         {
             e.Mobile.BeginTarget(-1, false, TargetFlags.None, new TargetCallback(GetFollowers_OnTarget));
-            e.Mobile.SendMessage("Target a player to get their pets.");
+            e.Mobile.SendMessage("Escolha um jogador para pegar seus animais de estimação.");
         }
 
         public static void GetFollowers_OnTarget(Mobile from, object obj)
@@ -241,9 +241,9 @@ namespace Server.Commands
 
                 if (pets.Count > 0)
                 {
-                    CommandLogging.WriteLine(from, "{0} {1} getting all followers of {2}", from.AccessLevel, CommandLogging.Format(from), CommandLogging.Format(master));
+                    CommandLogging.WriteLine(from, "{0} {1} obtendo todos os seguidores de {2}", from.AccessLevel, CommandLogging.Format(from), CommandLogging.Format(master));
 
-                    from.SendMessage("That player has {0} pet{1}.", pets.Count, pets.Count != 1 ? "s" : "");
+                    from.SendMessage("Esse jogador tem {0} pet{1}.", pets.Count, pets.Count != 1 ? "s" : "");
 
                     for (int i = 0; i < pets.Count; ++i)
                     {
@@ -257,7 +257,7 @@ namespace Server.Commands
                 }
                 else
                 {
-                    from.SendMessage("There were no pets found for that player.");
+                    from.SendMessage("Nenhum animal de estimação foi encontrado para aquele jogador.");
                 }
             }
             else if (obj is Mobile && ((Mobile)obj).Player)
@@ -280,7 +280,7 @@ namespace Server.Commands
                 {
                     CommandLogging.WriteLine(from, "{0} {1} getting all followers of {2}", from.AccessLevel, CommandLogging.Format(from), CommandLogging.Format(master));
 
-                    from.SendMessage("That player has {0} pet{1}.", pets.Count, pets.Count != 1 ? "s" : "");
+                    from.SendMessage("Esse jogador tem {0} pet{1}.", pets.Count, pets.Count != 1 ? "s" : "");
 
                     for (int i = 0; i < pets.Count; ++i)
                     {
@@ -294,13 +294,13 @@ namespace Server.Commands
                 }
                 else
                 {
-                    from.SendMessage("There were no pets found for that player.");
+                    from.SendMessage("Nenhum animal de estimação foi encontrado para aquele jogador.");
                 }
             }
             else
             {
                 from.BeginTarget(-1, false, TargetFlags.None, new TargetCallback(GetFollowers_OnTarget));
-                from.SendMessage("That is not a player. Try again.");
+                from.SendMessage("Isso não é um jogador. Tente novamente.");
             }
         }
 
@@ -345,14 +345,14 @@ namespace Server.Commands
         }
 
         [Usage("ViewEquip")]
-        [Description("Lists equipment of a targeted mobile. From the list you can move, delete, or open props.")]
+        [Description("Lista o equipamento de um celular-alvo. Da lista, você pode mover, excluir ou abrir adereços.")]
         public static void ViewEquip_OnCommand(CommandEventArgs e)
         {
             e.Mobile.Target = new ViewEqTarget();
         }
 
         [Usage("Sound <index> [toAll=true]")]
-        [Description("Plays a sound to players within 12 tiles of you. The (toAll) argument specifies to everyone, or just those who can see you.")]
+        [Description("Toca um som para jogadores a até 12 peças de você. O argumento (toAll) especifica para todos ou apenas para aqueles que podem ver você.")]
         public static void Sound_OnCommand(CommandEventArgs e)
         {
             if (e.Length == 1)
@@ -360,11 +360,11 @@ namespace Server.Commands
             else if (e.Length == 2)
                 PlaySound(e.Mobile, e.GetInt32(0), e.GetBoolean(1));
             else
-                e.Mobile.SendMessage("Format: Sound <index> [toAll]");
+                e.Mobile.SendMessage("Formato: Som <index> [toAll]");
         }
 
         [Usage("Echo <text>")]
-        [Description("Relays (text) as a system message.")]
+        [Description("Retransmite (texto) como uma mensagem do sistema.")]
         public static void Echo_OnCommand(CommandEventArgs e)
         {
             string toEcho = e.ArgString.Trim();
@@ -376,14 +376,14 @@ namespace Server.Commands
         }
 
         [Usage("Bank")]
-        [Description("Opens the bank box of a given target.")]
+        [Description("Abre a caixa do banco de um determinado alvo.")]
         public static void Bank_OnCommand(CommandEventArgs e)
         {
             e.Mobile.Target = new BankTarget();
         }
 
         [Usage("Help")]
-        [Description("Lists all available commands.")]
+        [Description("Lista todos os comandos disponíveis.")]
         public static void Help_OnCommand(CommandEventArgs e)
         {
             Mobile m = e.Mobile;
@@ -424,7 +424,7 @@ namespace Server.Commands
 
         [Usage("SMsg <text>")]
         [Aliases("S", "SM")]
-        [Description("Broadcasts a message to all online staff.")]
+        [Description("Transmite uma mensagem para toda a equipe online.")]
         public static void StaffMessage_OnCommand(CommandEventArgs e)
         {
             BroadcastMessage(AccessLevel.Counselor, e.Mobile.SpeechHue, String.Format("[{0}] {1}", e.Mobile.Name, e.ArgString));
@@ -432,7 +432,7 @@ namespace Server.Commands
 
         [Usage("BCast <text>")]
         [Aliases("B", "BC")]
-        [Description("Broadcasts a message to everyone online.")]
+        [Description("Transmite uma mensagem para todos online.")]
         public static void BroadcastMessage_OnCommand(CommandEventArgs e)
         {
             BroadcastMessage(AccessLevel.Player, 0x482, String.Format("Staff message from {0}:", e.Mobile.Name));
@@ -446,18 +446,18 @@ namespace Server.Commands
 
         [Usage("AutoPageNotify")]
         [Aliases("APN")]
-        [Description("Toggles your auto-page-notify status.")]
+        [Description("Alterna seu status de notificação de página automática.")]
         public static void APN_OnCommand(CommandEventArgs e)
         {
             Mobile m = e.Mobile;
 
             m.AutoPageNotify = !m.AutoPageNotify;
 
-            m.SendMessage("Your auto-page-notify has been turned {0}.", m.AutoPageNotify ? "on" : "off");
+            m.SendMessage("Sua notificação de página automática foi desativada {0}.", m.AutoPageNotify ? "on" : "off");
         }
 
         [Usage("Animate <action> <frameCount> <repeatCount> <forward> <repeat> <delay>")]
-        [Description("Makes your character do a specified animation.")]
+        [Description("Faz seu personagem fazer uma animação específica.")]
         public static void Animate_OnCommand(CommandEventArgs e)
         {
             if (e.Length == 6)
@@ -471,7 +471,7 @@ namespace Server.Commands
         }
 
         [Usage("Cast <name>")]
-        [Description("Casts a spell by name.")]
+        [Description("Lança um feitiço pelo nome.")]
         public static void Cast_OnCommand(CommandEventArgs e)
         {
             if (e.Length == 1)
@@ -484,39 +484,39 @@ namespace Server.Commands
                 if (spell != null)
                     spell.Cast();
                 else
-                    e.Mobile.SendMessage("That spell was not found.");
+                    e.Mobile.SendMessage("Esse feitiço não foi encontrado.");
             }
             else
             {
-                e.Mobile.SendMessage("Format: Cast <name>");
+                e.Mobile.SendMessage("Formato: Elenco <nome>");
             }
         }
 
         [Usage("Stuck")]
-        [Description("Opens a menu of towns, used for teleporting stuck mobiles.")]
+        [Description("Abre um menu de cidades, usado para teletransportar celulares presos.")]
         public static void Stuck_OnCommand(CommandEventArgs e)
         {
             e.Mobile.Target = new StuckMenuTarget();
         }
 
         [Usage("Light <level>")]
-        [Description("Set your local lightlevel.")]
+        [Description("Defina o seu nível de luz local.")]
         public static void Light_OnCommand(CommandEventArgs e)
         {
             e.Mobile.LightLevel = e.GetInt32(0);
         }
 
         [Usage("Stats")]
-        [Description("View some stats about the server.")]
+        [Description("Veja algumas estatísticas sobre o servidor.")]
         public static void Stats_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.SendMessage("Open Connections: {0}", Network.NetState.Instances.Count);
+            e.Mobile.SendMessage("Conexões abertas: {0}", Network.NetState.Instances.Count);
             e.Mobile.SendMessage("Mobiles: {0}", World.Mobiles.Count);
             e.Mobile.SendMessage("Items: {0}", World.Items.Count);
         }
 
         [Usage("SpeedBoost [true|false]")]
-        [Description("Enables a speed boost for the invoker.  Disable with paramaters.")]
+        [Description("Ativa um aumento de velocidade para o invocador. Desative com parâmetros.")]
         private static void SpeedBoost_OnCommand(CommandEventArgs e)
         {
             Mobile from = e.Mobile;
@@ -526,17 +526,17 @@ namespace Server.Commands
                 if (e.Length == 1 && !e.GetBoolean(0))
                 {
                     from.Send(SpeedControl.Disable);
-                    from.SendMessage("Speed boost has been disabled.");
+                    from.SendMessage("O aumento de velocidade foi desativado.");
                 }
                 else
                 {
                     from.Send(SpeedControl.MountSpeed);
-                    from.SendMessage("Speed boost has been enabled.");
+                    from.SendMessage("O aumento de velocidade foi ativado.");
                 }
             }
             else
             {
-                from.SendMessage("Format: SpeedBoost [true|false]");
+                from.SendMessage("Formato: SpeedBoost [true | false]");
             }
         }
 
@@ -563,21 +563,21 @@ namespace Server.Commands
         }
 
         [Usage("Client")]
-        [Description("Opens the client gump menu for a given player.")]
+        [Description("Abre o menu do cliente gump para um determinado jogador.")]
         private static void Client_OnCommand(CommandEventArgs e)
         {
             e.Mobile.Target = new ClientTarget();
         }
 
         [Usage("Move")]
-        [Description("Repositions a targeted item or mobile.")]
+        [Description("Reposiciona um item de destino ou dispositivo móvel.")]
         private static void Move_OnCommand(CommandEventArgs e)
         {
             e.Mobile.Target = new PickMoveTarget();
         }
 
         [Usage("Save")]
-        [Description("Saves the world.")]
+        [Description("Salva o mundo.")]
         private static void Save_OnCommand(CommandEventArgs e)
         {
             Misc.AutoSave.Save();
@@ -585,7 +585,7 @@ namespace Server.Commands
 
         [Usage("BackgroundSave")]
         [Aliases("BGSave", "SaveBG")]
-        [Description("Saves the world, writing to the disk in the background")]
+        [Description("Salva o mundo, gravando no disco em segundo plano")]
         private static void BackgroundSave_OnCommand(CommandEventArgs e)
         {
             Misc.AutoSave.Save(true);
@@ -645,17 +645,17 @@ namespace Server.Commands
 
                         if (owner != null && (owner.Map != null && owner.Map != Map.Internal) && !BaseCommand.IsAccessible(from, owner) /* !from.CanSee( owner )*/)
                         {
-                            from.SendMessage("You can not go to what you can not see.");
+                            from.SendMessage("Você não pode ir para o que você não pode ver.");
                             return;
                         }
                         else if (owner != null && (owner.Map == null || owner.Map == Map.Internal) && owner.Hidden && owner.AccessLevel >= from.AccessLevel)
                         {
-                            from.SendMessage("You can not go to what you can not see.");
+                            from.SendMessage("Você não pode ir para o que você não pode ver.");
                             return;
                         }
                         else if (!FixMap(ref map, ref loc, item))
                         {
-                            from.SendMessage("That is an internal item and you cannot go to it.");
+                            from.SendMessage("Esse é um item interno e você não pode acessá-lo.");
                             return;
                         }
 
@@ -674,17 +674,17 @@ namespace Server.Commands
 
                         if (owner != null && (owner.Map != null && owner.Map != Map.Internal) && !BaseCommand.IsAccessible(from, owner) /* !from.CanSee( owner )*/)
                         {
-                            from.SendMessage("You can not go to what you can not see.");
+                            from.SendMessage("Você não pode ir para o que você não pode ver.");
                             return;
                         }
                         else if (owner != null && (owner.Map == null || owner.Map == Map.Internal) && owner.Hidden && owner.AccessLevel >= from.AccessLevel)
                         {
-                            from.SendMessage("You can not go to what you can not see.");
+                            from.SendMessage("Você não pode ir para o que você não pode ver.");
                             return;
                         }
                         else if (!FixMap(ref map, ref loc, m))
                         {
-                            from.SendMessage("That is an internal mobile and you cannot go to it.");
+                            from.SendMessage("Esse é um celular interno e você não pode acessá-lo.");
                             return;
                         }
 
@@ -742,9 +742,9 @@ namespace Server.Commands
                         }
 
                         if (ser != 0)
-                            from.SendMessage("No object with that serial was found.");
+                            from.SendMessage("Nenhum objeto com esse serial foi encontrado.");
                         else
-                            from.SendMessage("No region with that name was found.");
+                            from.SendMessage("Nenhuma região com esse nome foi encontrada.");
 
                         return;
                     }
@@ -753,7 +753,7 @@ namespace Server.Commands
                 {
                 }
 
-                from.SendMessage("Region name not found");
+                from.SendMessage("Nome da região não encontrado");
             }
             else if (e.Length == 2 || e.Length == 3)
             {
@@ -775,7 +775,7 @@ namespace Server.Commands
                     }
                     catch
                     {
-                        from.SendMessage("Region name not found.");
+                        from.SendMessage("Nome da região não encontrado.");
                     }
                 }
             }
@@ -790,7 +790,7 @@ namespace Server.Commands
                     if (p != Point3D.Zero)
                         from.Location = p;
                     else
-                        from.SendMessage("Sextant reverse lookup failed.");
+                        from.SendMessage("A pesquisa reversa de Sextant falhou.");
                 }
             }
             else
@@ -810,7 +810,7 @@ namespace Server.Commands
             {
                 if (!BaseCommand.IsAccessible(from, targeted))
                 {
-                    from.SendMessage("That is not accessible.");
+                    from.SendMessage("Isso não é acessível.");
                     return;
                 }
 
@@ -917,7 +917,7 @@ namespace Server.Commands
                     }
                     else
                     {
-                        from.SendMessage("They have no bank box.");
+                        from.SendMessage("Eles não têm caixa bancária.");
                     }
                 }
             }
@@ -1002,7 +1002,7 @@ namespace Server.Commands
                 if (targeted is Mobile)
                 {
                     if (((Mobile)targeted).AccessLevel >= from.AccessLevel && targeted != from)
-                        from.SendMessage("You can't do that to someone with higher Accesslevel than you!");
+                        from.SendMessage("Você não pode fazer isso com alguém com nível de acesso superior ao seu!");
                     else
                         from.SendGump(new StuckMenu(from, (Mobile)targeted, false));
                 }

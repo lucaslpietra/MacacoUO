@@ -19,7 +19,7 @@ namespace Server.Commands
         {
             if (e.Arguments.Length <= 0)
             {
-                e.Mobile.SendMessage("Usage: mark [RuneName]");
+                e.Mobile.SendMessage("Uso: marca [RuneName]");
                 return;
             }
 
@@ -30,7 +30,7 @@ namespace Server.Commands
             rune.Name = rune.Description = runeName;
 
             e.Mobile.AddToBackpack(rune);
-            e.Mobile.SendMessage(string.Format("Rune {0} added to your backpack.", runeName));
+            e.Mobile.SendMessage(string.Format("Runa {0} adicionado à sua mochila.", runeName));
         }
     }
 }
