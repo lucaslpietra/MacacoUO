@@ -8,7 +8,7 @@ namespace Server.Mobiles
         [Constructable]
         public Peasant()
         {
-            this.Title = "the peasant";
+            this.Title = "o trabalhador";
         }
 
         public Peasant(Serial serial)

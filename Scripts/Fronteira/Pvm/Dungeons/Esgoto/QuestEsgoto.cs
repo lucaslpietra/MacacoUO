@@ -128,7 +128,7 @@ Um <basefont color=#FF5A5A>feiticeiro</basefont> roubou a lanterna, e a usou par
 
         public override void Advertise()
         {
-            this.Say("Ah mo deuso, dichi meu sapato cai no rio ! Aaahhhhh");  // Know yourself, and you will become a true warrior.
+            this.Say("Ei voce, venha aqui um segundo, vou lhe contar uma historia.");  // Know yourself, and you will become a true warrior.
         }
 
         public override void InitBody()
