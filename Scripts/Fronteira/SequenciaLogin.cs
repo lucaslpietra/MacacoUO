@@ -54,7 +54,7 @@ namespace Server.Fronteira
                     else
                     {
                         //pm.SendGump(new NonRPClassGump());
-                        pm.SendGump(new GumpLore(pm));
+                        pm.SendGump(new GumpLoreThirdAge());
                     }
                 }
                 else

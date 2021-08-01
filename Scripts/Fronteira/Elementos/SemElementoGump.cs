@@ -20,8 +20,8 @@ namespace Server.Gumps
             AddBackground(299, 150, 620, 478, 3500);
             AddBackground(717, 346, 127, 101, 3500);
             AddBackground(712, 458, 138, 101, 3500);
-            AddItem(760, 388, 4968, 2611);
-            AddHtml(715, 419, 131, 22, @"Pedra Elemental Suprema", (bool)true, (bool)false);
+            AddItem(760, 388, 3823, 0);
+            AddHtml(715, 419, 131, 22, @"Ouro", (bool)true, (bool)false);
             AddHtml(715, 529, 133, 22, @"Cristal Elemental", (bool)true, (bool)false);
             AddButton(750, 592, 247, 248, (int)Buttons.Button4, GumpButtonType.Reply, 0);
             AddImage(238, 118, 10440);
@@ -30,7 +30,7 @@ namespace Server.Gumps
             AddHtml(340, 190, 562, 18, @"Voce eh apenas um fraco, ainda nao descobriu seu poder.", (bool)false, (bool)false);
             AddHtml(340, 213, 562, 24, @"Va a caverna de Shame e descubra...Mas esteja muito bem preparado.", (bool)false, (bool)false);
             AddItem(756, 494, 16395, 2611);
-            AddHtml(772, 357, 19, 22, @"1", (bool)false, (bool)false);
+            AddHtml(772, 357, 19, 22, @"100K", (bool)false, (bool)false);
             AddHtml(761, 468, 47, 22, @"100", (bool)false, (bool)false);
             AddImage(341, 249, 1550);
             AddHtml(705, 571, 153, 19, @"Destravar Potencial", (bool)false, (bool)false);
@@ -59,16 +59,16 @@ namespace Server.Gumps
                         }
                         if (!sender.Mobile.Backpack.HasItem<CristalElemental>(100, true))
                         {
-                            from.SendMessage("Voce precisa de 100 Pedras Elementais e 1 Pedra Elemental Suprema. Mate os bosses da dungeon de shame e una os elementos para construir a pedra.");
+                            from.SendMessage("Voce precisa de 100 Pedras Elementais e 100000 Moedas de Ouro. Mate os monstros da dungeon de shame e una os elementos para construir a pedra.");
                             return;
                         }
                           
-                        if (!sender.Mobile.Backpack.HasItem<PedraElementalSuprema>(1, true))
+                        if (!sender.Mobile.Backpack.HasItem<Gold>(100000, true))
                         {
-                            from.SendMessage("Voce precisa de 1 Pedra Elemental Suprema. Mate os bosses da dungeon de shame e una os elementos para construir a pedra.");
+                            from.SendMessage("Voce precisa de 100000 Moedas de Ouro. Mate os bosses da dungeon de shame e una os elementos para construir a pedra.");
                             return;
                         }
-                        from.Backpack.ConsumeTotal(new System.Type[] { typeof(CristalElemental), typeof(PedraElementalSuprema) }, new int[] { 100, 1 });
+                        from.Backpack.ConsumeTotal(new System.Type[] { typeof(CristalElemental), typeof(Gold) }, new int[] { 100, 100000 });
                         ((PlayerMobile)from).Nivel = 2;
 
                         Effects.SendLocationParticles(EffectItem.Create(from.Location, from.Map, EffectItem.DefaultDuration), 0, 0, 0, 0, 0, 5060, 0);
