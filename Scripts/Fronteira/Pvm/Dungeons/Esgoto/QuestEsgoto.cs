@@ -14,32 +14,33 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return "Meus Sapatinhos Lindos";
+                return "Uma Lanterna de Luz";
             }
         }
         public override object Description
         {
             get
             {
-                return @"Ah modeuzo mosso ! Oce tem um sigundim ? Umago robo meu sapato !
-                <br> Esse sapato vei do meu vo q vei do vo dei. O trem eh importante so ! <br><br>
+                return @"New Haven foi criada pela forca de dois magos, para proteger o povo de forcas do mal.  <br>
 
-                <b> Onde o mago foi ?</b><br><br>
-                <b>Logo no buraco a nortali</b>, ! Si mi devorve os sapatos eu ti do um trem baum e ti conto um segredo !";
+Resultado da criacao da cidade, uma <basefont color=#00FF00>lanterna magica</basefont> foi criada para guardar toda a luz dos feiticeiros. <br>
+
+Um <basefont color=#FF5A5A>feiticeiro</basefont> roubou a lanterna, e a usou para atacar New Haven, criando um vulcao no sul da ilha.<br><br>
+<basefont color=#00FF00>Ao norte de onde estamos tem uma catacumba</basefont> la voce poderia encontrar o discipulo do mago que roubou a lanterna. ";
             }
         }
         public override object Refuse
         {
             get
             {
-                return "Oxi mosso";
+                return "Entendo. Retorne quando estiver pronto.";
             }
         }
         public override object Uncomplete
         {
             get
             {
-                return "Uai quede meu sapato ?!";
+                return "Encontrou algo na catacumba acima ?";
             }
         }
 
@@ -47,23 +48,23 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return @"Ah bom de mais da conta ! Ceh muito bao ! <br> Vou te contar um segredo em troca ! <br><br>
+                return @"O QUE ? Voce achou a lanterna ??? <br>Vou te contar um segredo em troca dela! <br><br>
 <b><u>No buraco, na sala do pentagrama, tem um segredo atraz da teia de aranha</u></b>.
-<br><br>Ja contei uqui sabia, ce eh baum dimais da conta brigado pelo meu sapato.";
+<br><br>Espere, esta lanterna eh apenas uma lanterna comum !!! Que pombas foi isso ? Quer me fazer perder tempo ! Tome sua laterna comum e a coloque onde achar conveniente. Tenha um bom dia.";
             }
         }
 
         public SapatoLindoQ()
             : base()
         {
-            //this.AddObjective(new ObtainObjective(typeof(LuckyDagger), "lucky dagger", 1));
-            this.AddObjective(new ObtainObjective(typeof(SapatoLindo), "Sapato do Zeh", 1));
+            this.AddObjective(new ObtainObjective(typeof(LanternaMagica), "Lanterna Magica", 1));
             this.AddReward(new BaseReward(typeof(Gold), 800, "800 Moedas e 1 Segredo"));
         }
 
         public override void OnCompleted()
         {
             PointsSystem.Exp.AwardPoints(this.Owner, 300);
+            this.Owner.AddToBackpack(new LanternaMagica());
             this.Owner.PlaySound(this.CompleteSound);
             this.Owner.SendMessage(78, "O segredo parece estar no buraco na sala do pentagrama, perto da teia de aranha...");
             if (this.Owner.Wisp != null)

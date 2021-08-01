@@ -2,19 +2,19 @@ using Server.Items;
 
 namespace Server.Ziden.Dungeons.Esgoto
 {
-    public class SapatoLindo : BaseShoes
+    public class LanternaMagica : Item
     {
         [Constructable]
-        public SapatoLindo()
-            : base(0x170F, 78)
+        public LanternaMagica()
+            : base(2597)
         {
             this.Weight = 2.0;
-            this.Name = "Sapato do Zeh";
-            this.Hue = 78;
+            this.Name = "Lanterna Amarela";
+            this.Hue = 55;
             this.PartyLoot = true;
         }
 
-        public SapatoLindo(Serial serial)
+        public LanternaMagica(Serial serial)
             : base(serial)
         {
         }

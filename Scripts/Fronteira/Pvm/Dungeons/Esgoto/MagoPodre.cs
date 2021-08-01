@@ -12,7 +12,7 @@ namespace Server.Mobiles
         public MagoPodre()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = NameList.RandomName("evil mage") + " o Mago Putrido";
+            Name = "Mago Putrido";
 
             Body = 0x191;
 
@@ -20,7 +20,7 @@ namespace Server.Mobiles
             SetDex(91, 115);
             SetInt(96, 120);
 
-            SetHits(100, 100);
+            SetHits(80, 80);
 
             SetDamage(2, 8);
 
@@ -45,7 +45,7 @@ namespace Server.Mobiles
             VirtualArmor = 0;
             PackReg(3);
             AddItem(new Robe(hue)); // TODO: Proper hue
-            AddItem(new SapatoLindo());
+            AddItem(new LanternaMagica());
         }
 
         public override bool IsSmart { get { return false; } }
@@ -112,10 +112,8 @@ namespace Server.Mobiles
                         if(p.Young)
                         {
                             p.PlaceInBackpack(new ParalyzeScroll());
-                            p.SendMessage("Voce encontrou um pergaminho desgastado");
                         }
                     }
-                    
                 }
             }
             return base.OnBeforeDeath();

@@ -42,12 +42,21 @@ namespace Server.Mobiles
 
             this.VirtualArmor = 28;
 
-            if (0.25 > Utility.RandomDouble())
-                this.PackItem(new Board(10));
-            else
-                this.PackItem(new Log(10));
+            var c = new SmallCrate();
+            c.Resource = CraftResource.Pinho;
+            var livro = new RedBook(1, false);
+            livro.Title = "Livro Seboso";
+            livro.Author = "Jill a velha";
+            livro.Pages[0].Lines = new string[] {
+               "Ca estou, perto do banco de Haven",
+               "Aguardando meu velho Zeh com meu cajado",
+               "Hoje o dia choveu. Preciso do meu cajado para nao escorregar na lama."
+            };
+            c.DropItem(livro);
+            this.PackItem(c);
 
-           
+
+
             this.PackReg(3);
         }
 
@@ -85,8 +94,6 @@ namespace Server.Mobiles
                 if (r.m_HasRight && r.m_Mobile != null && r.m_Mobile is PlayerMobile)
                 {
                     var p = (PlayerMobile)r.m_Mobile;
-
-
                     switch (p.Profession)
                     {
                         case 4://StarterKits.ARCHER:
@@ -113,7 +120,7 @@ namespace Server.Mobiles
                             marreta.Quality = ItemQuality.Exceptional;
                             marreta.Attributes.BonusDex = -1;
                             //marreta.Hue = 1444;
-                            marreta.Name = "Marretona pegajosa";
+                            marreta.Name = "Marretona pegajosa excepcional";
                             marreta.Owner = p;
                             AddItem(marreta);
                             break;
@@ -122,7 +129,7 @@ namespace Server.Mobiles
                             cajado.Quality = ItemQuality.Exceptional;
                             cajado.Attributes.BonusDex = -1;
                             //cajado.Hue = 1444;
-                            cajado.Name = "Cajado pegajoso";
+                            cajado.Name = "Cajado pegajoso excepcional";
                             cajado.Owner = p;
                             AddItem(cajado);
                             AddItem(new BagOfReagents());
@@ -136,7 +143,7 @@ namespace Server.Mobiles
                             espada.Quality = ItemQuality.Exceptional;
                             espada.Attributes.BonusDex = -1;
                             //espada.Hue = 1444;
-                            espada.Name = "Espada pegajosa";
+                            espada.Name = "Espada pegajosa excepcional";
                             espada.Owner = p;
                             AddItem(espada);
                             AddItem(new BagOfReagents());
@@ -156,15 +163,7 @@ namespace Server.Mobiles
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
-            var livro = new RedBook(1, false);
-            livro.Title = "Livro Seboso";
-            livro.Author = "Jill a velha";
-            livro.Pages[0].Lines = new string[] {
-               "Ca estou, perto do banco de Haven",
-               "Aguardando meu velho Zeh com meu cajado",
-               "Hoje o dia choveu. Preciso do meu cajado para nao escorregar na lama."
-            };
-            c.AddItem(livro);
+           
         }
 
         public override void Serialize(GenericWriter writer)

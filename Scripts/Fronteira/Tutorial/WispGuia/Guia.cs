@@ -135,7 +135,7 @@ namespace Server.Fronteira.Tutorial.WispGuia
                 Local = new Point3D(3503, 2483, 26),
                 PrecisaEvento = true,
                 FraseIniciar = "Chega de papo, vamos agora para uma aventura !!",
-                FraseProgresso = "Va a norte de Haven e encontre o Zeh Sapatinho.",
+                FraseProgresso = "Va a norte de Haven e encontre o Zeh Roela.",
                 FraseCompletar = "Otimo, agora vamos a dungeon",
                 Proximo = PassoTutorial.MATAR_MAGO
             });
@@ -144,9 +144,9 @@ namespace Server.Fronteira.Tutorial.WispGuia
             {
                 LocalDungeon = new Point3D(59, 1480, -28),
                 PrecisaEvento = true,
-                FraseIniciar = "Vamos la matar o mago safado que roubou o sapato ! Entre na dungeon",
+                FraseIniciar = "Vamos la explorar ! Entre na dungeon !",
                 FraseProgresso = "Encontre o mago putrido na dungeon norte do Zeh",
-                FraseCompletar = "Voce e muito bom ! Pegue o sapato e entregue agora",
+                FraseCompletar = "Voce e muito bom ! Pegue a lanterna e entregue agora",
                 Proximo = PassoTutorial.VOLTAR_QUEST
             });
 
@@ -155,7 +155,7 @@ namespace Server.Fronteira.Tutorial.WispGuia
                 Local = new Point3D(3503, 2483, 26),
                 PrecisaEvento = true,
                 FraseIniciar = "Vamos sair desse buraco...",
-                FraseProgresso = "Arraste o saparo para o Zeh para entrega-lo",
+                FraseProgresso = "Arraste a lanterna para o Zeh para entrega-la",
                 FraseCompletar = "Excelente ! Voce eh demais !",
                 Proximo = PassoTutorial.ALAVANCA
             });

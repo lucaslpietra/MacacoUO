@@ -11,6 +11,11 @@ namespace Server.Engines.Quests
             return true;
         }
 
+        public string Cor(string t, string cor)
+        {
+            return "<basefont color=#00FF00>"+t+"</basefont>";
+        }
+
         public virtual bool AllObjectives
         {
             get
