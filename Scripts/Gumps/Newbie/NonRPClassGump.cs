@@ -207,7 +207,7 @@ namespace Server.Gumps
                         var player = (PlayerMobile)from;
                         player.Profession = k.Code;
                         player.SendMessage("Kit Inicial Escolhido - Bem Vindo !");
-                        NewPlayerGuildAutoJoin.SendStarterGuild(player);
+                        //NewPlayerGuildAutoJoin.SendStarterGuild(player);
                     }
                     else
                     {

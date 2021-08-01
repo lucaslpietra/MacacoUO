@@ -198,15 +198,14 @@ namespace Server.Mobiles
                         AddPetFriend(Jogador);
                     this.AIObject.EndPickTarget(Jogador, Jogador, OrderType.Follow);
                     this.AceitaOrdens = false;
+                    this.Hue = 0;
                 }
                 else
                 {
+                    this.Hue = 38;
                     return;
                 }
             }
-
-            if (Jogador.Profession == 0)
-                return;
 
             if (IsCooldown("pensa"))
                 return;

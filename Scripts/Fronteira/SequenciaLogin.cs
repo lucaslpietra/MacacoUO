@@ -1,3 +1,4 @@
+using Server.Fronteira.Tutorial.WispGuia;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Scripts.New.Adam.NewGuild;
@@ -39,7 +40,11 @@ namespace Server.Fronteira
             }
             else
             {
-                if (pm.Profession == 0)
+                if(pm.Wisp != null && pm.Profession==0 && pm.Wisp.Passo > (int)PassoTutorial.PEGAR_KIT)
+                {
+                    pm.SendGump(new NonRPClassGump());
+                }
+                else if (pm.Profession == 0 && pm.Wisp == null)
                 {
                     if (pm.ContaRP)
                     {
@@ -48,12 +53,13 @@ namespace Server.Fronteira
                     }
                     else
                     {
-                        pm.SendGump(new NonRPClassGump());
+                        //pm.SendGump(new NonRPClassGump());
+                        pm.SendGump(new GumpLore(pm));
                     }
                 }
                 else
                 {
-                    NewPlayerGuildAutoJoin.SendStarterGuild(pm);
+                    //NewPlayerGuildAutoJoin.SendStarterGuild(pm);
                 }
             }
         }

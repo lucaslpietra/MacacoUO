@@ -1,3 +1,4 @@
+using Server.Gumps;
 using Server.Gumps.Newbie;
 using Server.Items;
 using Server.Mobiles;
@@ -31,6 +32,7 @@ namespace Server.Fronteira.Tutorial.WispGuia
         PEGAR_CAVALO,
         IR_BANCO,
         IR_FERREIRO,
+        PEGAR_KIT,
         PEGAR_QUEST,
         MATAR_MAGO,
         VOLTAR_QUEST,
@@ -52,7 +54,10 @@ namespace Server.Fronteira.Tutorial.WispGuia
         PLANT,
         TAILOR,
 
-        FIM
+        FIM,
+
+        // NOVOS
+
     }
 
     public class Guia
@@ -104,6 +109,23 @@ namespace Server.Fronteira.Tutorial.WispGuia
                 },
                 GetProximo = (pl) =>
                 {
+                    return PassoTutorial.PEGAR_KIT;
+                }
+            });
+
+            Objetivos.Add(PassoTutorial.PEGAR_KIT, new ObjetivoGuia()
+            {
+                Local = new Point3D(3420, 2520, 21),
+                FraseIniciar = "Vamos agora ao salao do conhecimento. La voce podera escolher seus conhecimentos iniciais.",
+                FraseProgresso = "Va ao salao do conhecimento obter seus conhecimentos iniciais.",
+                FraseCompletar = "Perfeito. Agora escolha bem seus conhecimentos iniciais.",
+                Completar = (pl) =>
+                {
+                    if(pl.Profession == 0)
+                        pl.SendGump(new NonRPClassGump());
+                },
+                GetProximo = (pl) =>
+                {
                     if (pl.Profession == StarterKits.TAMER)
                         return PassoTutorial.QUEST_TAMER;
                     if (pl.Profession == StarterKits.MERC)
@@ -111,6 +133,7 @@ namespace Server.Fronteira.Tutorial.WispGuia
                     return PassoTutorial.PEGAR_QUEST;
                 }
             });
+            //
 
             Objetivos.Add(PassoTutorial.QUEST_TAMER, new ObjetivoGuia()
             {
