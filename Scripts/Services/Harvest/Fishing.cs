@@ -462,7 +462,7 @@ namespace Server.Engines.Harvest
                         if (preLoot != null)
                         {
                             if (preLoot is IShipwreckedItem)
-                                ((IShipwreckedItem)preLoot).IsShipwreckedItem = true;
+                                ((IShipwreckedItem)preLoot).Naufragio = true;
 
                             return preLoot;
                         }
@@ -546,7 +546,7 @@ namespace Server.Engines.Harvest
                         chest.TrapPower = 0;
                         chest.TrapLevel = 0;
 
-                        chest.IsShipwreckedItem = true;
+                        chest.Naufragio = true;
 
                         sos.Delete();
 

@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public interface IShipwreckedItem
     {
-        bool IsShipwreckedItem { get; set; }
+        bool Naufragio { get; set; }
     }
 
     public class ShipwreckedItem : Item, IDyable, IShipwreckedItem
@@ -93,7 +93,7 @@ namespace Server.Items
 
         #region IShipwreckedItem Members
 
-        public bool IsShipwreckedItem
+        public bool Naufragio
         {
             get
             {

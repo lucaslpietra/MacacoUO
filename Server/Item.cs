@@ -18,6 +18,11 @@ using Server.Targeting;
 
 namespace Server
 {
+
+    public interface TransmogItem {
+        short GetTransmogItemId();
+    }
+
     /// <summary>
     ///     Enumeration of item layer values.
     /// </summary>
@@ -2764,7 +2769,7 @@ namespace Server
                 }
             }
 
-            writer.Write(19); // version
+            writer.Write(20); // version
 
             // 19
             writer.Write(RP);

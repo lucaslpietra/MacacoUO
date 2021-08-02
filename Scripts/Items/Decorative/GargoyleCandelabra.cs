@@ -77,7 +77,7 @@ namespace Server.Items
         private bool m_IsShipwreckedItem;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsShipwreckedItem
+        public bool Naufragio
         {
             get
             {

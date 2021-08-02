@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Server.Engines.Craft;
+using Server.Gumps;
 using Server.Network;
 
 namespace Server.Items
@@ -432,12 +433,12 @@ namespace Server.Items
     }
     #endregion
 
-    public abstract class BaseHat : BaseClothing, IShipwreckedItem
+    public abstract class BaseHat : BaseClothing, IShipwreckedItem, TransmogItem
     {
         private bool m_IsShipwreckedItem;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsShipwreckedItem
+        public bool Naufragio
         {
             get
             {
@@ -462,6 +463,15 @@ namespace Server.Items
         public BaseHat(Serial serial)
             : base(serial)
         {
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            //if(Naufragio)
+           // {
+            //    from.SendMessage(78, "Voce pode transmoglificar chapeus com este item usando uma pedra da transmoglificacao");
+           // }
+            base.OnDoubleClick(from);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -509,6 +519,11 @@ namespace Server.Items
 
             if (m_IsShipwreckedItem)
                 list.Add(1041645); // recovered from a shipwreck
+
+            if(TransmogItemID != 0)
+            {
+                list.Add(Gump.Cor("[ Transmoglificado ]", "purple"));
+            }
         }
 
         public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
@@ -521,6 +536,16 @@ namespace Server.Items
             }
 
             return base.OnCraft(quality, makersMark, from, craftSystem, typeRes, tool, craftItem, resHue);
+        }
+
+        [CommandProperty(AccessLevel.Administrator)]
+        public short TransmogItemID { get; set; }
+
+        public short GetTransmogItemId()
+        {
+            if (TransmogItemID != 0)
+                return TransmogItemID;
+            return (short)ItemID;
         }
     }
 
