@@ -45,8 +45,26 @@ namespace Server.Mobiles
             VirtualArmor = 0;
             PackReg(3);
             AddItem(new Robe(hue)); // TODO: Proper hue
-            AddItem(new LanternaMagica());
         }
+
+        public override void GenerateLoot(bool spawning)
+        {
+            if (!spawning)
+            {
+                var r = new LanternaMagica();
+                r.PartyLoot = false;
+
+                var cont = Backpack;
+                if (!cont.TryDropItem(this, r, false))
+                {
+                    cont.DropItem(r);
+                }
+                //Backpack.AddItem(r);
+                r.PartyLoot = true;
+            }
+            base.GenerateLoot(spawning);
+        }
+
 
         public override bool IsSmart { get { return false; } }
 

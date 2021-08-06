@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Utilidades;
 
 namespace TestesConsole
 {
@@ -206,7 +207,10 @@ namespace TestesConsole
             //ParseFixItems();
             //ParseLinhas();
             //ParseClilocData();
-            ParseItemData();
+
+
+            //ParseItemData();
+            TesteDB.Run();
         }
 
 

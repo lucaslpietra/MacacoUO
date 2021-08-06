@@ -288,6 +288,7 @@ namespace Server.Misc
 
             if (acct == null)
             {
+                /*
                 if (AutoAccountCreation && un.Trim().Length > 0) // To prevent someone from making an account of just '' or a bunch of meaningless spaces
                 {
                     e.State.Account = acct = CreateAccount(e.State, un, pw);
@@ -308,6 +309,7 @@ namespace Server.Misc
                     Utility.PopColor();
                     e.RejectReason = ALRReason.Invalid;
                 }
+                */
             }
             else if (!acct.HasAccess(e.State))
             {

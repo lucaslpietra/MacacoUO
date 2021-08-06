@@ -123,8 +123,13 @@
     <Compile Include="Commands\Custom\Secure.cs" />
     <Compile Include="Commands\Custom\Trancar.cs" />
     <Compile Include="Fronteira\Comandos\ListaComandos.cs" />
+    <Compile Include="Fronteira\Database\Comando.cs" />
+    <Compile Include="Fronteira\Database\ComandosDB.cs" />
+    <Compile Include="Fronteira\Database\DBConfig.cs" />
+    <Compile Include="Fronteira\Database\WordpressHashes.cs" />
     <Compile Include="Fronteira\Exp\SkillExpGump.cs" />
     <Compile Include="Fronteira\Guia\DungeonsGump.cs" />
+    <Compile Include="Fronteira\LoginWeb\RequestQueue.cs" />
     <Compile Include="Fronteira\PaidBankChest.cs" />
     <Compile Include="Fronteira\Camping\Acampamento.cs" />
     <Compile Include="Fronteira\Camping\GumpCamping.cs" />

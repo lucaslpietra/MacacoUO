@@ -30,7 +30,7 @@ namespace Server.Gumps
             AddHtml(340, 190, 562, 18, @"Voce eh apenas um fraco, ainda nao descobriu seu poder.", (bool)false, (bool)false);
             AddHtml(340, 213, 562, 24, @"Va a caverna de Shame e descubra...Mas esteja muito bem preparado.", (bool)false, (bool)false);
             AddItem(756, 494, 16395, 2611);
-            AddHtml(772, 357, 19, 22, @"100K", (bool)false, (bool)false);
+            AddHtml(772, 357, 50, 22, @"100K", (bool)false, (bool)false);
             AddHtml(761, 468, 47, 22, @"100", (bool)false, (bool)false);
             AddImage(341, 249, 1550);
             AddHtml(705, 571, 153, 19, @"Destravar Potencial", (bool)false, (bool)false);

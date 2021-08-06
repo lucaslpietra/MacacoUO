@@ -189,7 +189,7 @@ namespace Server.Accounting
 			Accounts.Add(this);
 		}
 
-		public Account(XmlElement node)
+        public Account(XmlElement node)
 		{
 			Username = Utility.GetText(node["username"], "empty");
 
