@@ -2769,7 +2769,7 @@ namespace Server
                 }
             }
 
-            writer.Write(20); // version
+            writer.Write(19); // version
 
             // 19
             writer.Write(RP);
@@ -3286,6 +3286,9 @@ namespace Server
 
         public virtual void Deserialize(GenericReader reader)
         {
+
+            Shard.Debug("Deserializando " + this.GetType().Name);
+
             int version = reader.ReadInt();
             SetLastMoved();
 

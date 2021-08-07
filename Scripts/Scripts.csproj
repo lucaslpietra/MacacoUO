@@ -314,6 +314,7 @@
     <Compile Include="Fronteira\Jewelcrafting\BasePedraPreciosa.cs" />
     <Compile Include="Fronteira\Pvm\CustomDungeons.cs" />
     <Compile Include="Fronteira\Pvm\DungeonSelect.cs" />
+    <Compile Include="Fronteira\Pvm\Dungeons\Esgoto\LanternaAmarela.cs" />
     <Compile Include="Fronteira\Pvm\GateDG.cs" />
     <Compile Include="Fronteira\Skills\Informacoes.cs" />
     <Compile Include="Fronteira\Storages\MasterStorage.cs" />
