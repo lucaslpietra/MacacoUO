@@ -3294,6 +3294,7 @@ namespace Server
 
             switch (version)
             {
+                case 20:
                 case 19:
                     RP = reader.ReadBool();
                     goto case 18;
