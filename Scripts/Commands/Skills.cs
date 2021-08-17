@@ -140,7 +140,7 @@ namespace Server.Commands
                 }
                 else
                 {
-                    from.SendMessage("That does not have skills!");
+                    from.SendMessage("Que não tem habilidades!");
                 }
             }
         }
