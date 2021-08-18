@@ -94,6 +94,37 @@ namespace VitaNex.Modules.WebStats
             }
         }
 
+        public static void HandleUpdateSenha(WebAPIContext context)
+        {
+            Console.WriteLine("Atualizando senha");
+            try
+            {
+                context.Response.Status = HttpStatusCode.OK;
+                var login = context.Request.Queries["login"];
+                var senha = context.Request.Queries["senha"];
+                var segredo = context.Request.Queries["segredo"];
+                if(segredo != Shard.SEGREDO_WEB_API)
+                {
+                    Console.WriteLine("Segredo errado");
+                    return;
+                }
+                Account acct = Accounts.GetAccount(login) as Account;
+                if(acct != null)
+                {
+                    acct.SetPassword(senha);
+                    Console.WriteLine("Senha atualizada");
+                    return;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("WEB API CAGADO: " + e.Message);
+                Console.WriteLine(e.StackTrace);
+                context.Response.Data = "Erro: " + e.Message;
+                context.Response.Status = HttpStatusCode.Conflict;
+            }
+        }
+
 
         private static void HandleWebRequest(WebAPIContext context)
         {

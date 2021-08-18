@@ -1299,6 +1299,8 @@ namespace Server.Engines.Craft
         private CraftSystem m_System;
         private bool m_CaddelliteCraft;
 
+        public CraftSystem System { get { return m_System; } }
+
         #region Plant Pigments
         private PlantHue m_PlantHue = PlantHue.None;
         private PlantPigmentHue m_PlantPigmentHue = PlantPigmentHue.None;

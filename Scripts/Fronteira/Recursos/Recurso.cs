@@ -1,3 +1,4 @@
+using Server.Engines.Points;
 using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
@@ -67,9 +68,9 @@ namespace Server.Fronteira.Recursos
             var rnd = Utility.Random(100);
             if (rnd < 5)
                 return CraftResource.Gelo;
-            else if (rnd < 10)
+            else if (rnd < 2)
                 return CraftResource.Carmesim;
-            else if (rnd < 20)
+            else if (rnd < 25)
                 return CraftResource.Mogno;
             else if (rnd < 50)
                 return CraftResource.Pinho;
@@ -80,15 +81,15 @@ namespace Server.Fronteira.Recursos
         public static CraftResource MinerioRandom()
         {
             var rnd = Utility.Random(100);
-            if (rnd < 5)
+            if (rnd < 1)
                 return CraftResource.Adamantium;
-            else if (rnd < 10)
+            else if (rnd < 3)
                 return CraftResource.Vibranium;
-            else if (rnd < 20)
+            else if (rnd < 8)
                 return CraftResource.Quartzo;
-            else if (rnd < 30)
+            else if (rnd < 20)
                 return CraftResource.Berilo;
-            else if (rnd < 50)
+            else if (rnd < 30)
                 return CraftResource.Lazurita;
             else if (rnd < 70)
                 return CraftResource.Dourado;
@@ -204,6 +205,11 @@ namespace Server.Fronteira.Recursos
                 i.MoveToWorld(from.Location, from.Map);
 
             from.SendMessage("Voce coletou o recurso");
+
+            if(skill == SkillName.Mining)
+                PointsSystem.PontosMinerador.AwardPoints(from, diff.Max, false, false);
+            else if(skill == SkillName.Lumberjacking)
+                PointsSystem.PontosLenhador.AwardPoints(from, diff.Max, false, false);
 
             var tool = from.Weapon as BaseWeapon;
             if (tool is IUsesRemaining && (tool is BaseAxe || tool is Pickaxe || tool is SturdyPickaxe || tool is GargoylesPickaxe || Siege.SiegeShard))

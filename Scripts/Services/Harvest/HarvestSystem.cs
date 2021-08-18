@@ -9,6 +9,7 @@ using System.Linq;
 using Server.Gumps;
 using Server.Regions;
 using Server.Fronteira.Recursos;
+using Server.Engines.Points;
 
 namespace Server.Engines.Harvest
 {
@@ -325,6 +326,12 @@ namespace Server.Engines.Harvest
 
                         if (Give(from, item, def.PlaceAtFeetIfFull))
                         {
+                            if (def.Skill == SkillName.Fishing)
+                                PointsSystem.PontosPescador.AwardPoints(from, resource.MaxSkill/10, false, false);
+                            else if (def.Skill == SkillName.Lumberjacking)
+                                PointsSystem.PontosLenhador.AwardPoints(from, resource.MaxSkill/10, false, false);
+                            else if (def.Skill == SkillName.Mining)
+                                PointsSystem.PontosMinerador.AwardPoints(from, resource.MaxSkill/10, false, false);
                             SendSuccessTo(from, item, resource);
                         }
                         else

@@ -42,7 +42,7 @@ namespace Server.Gumps
             e.Mobile.SendGump(new Rankings(e.Mobile, null));
         }
 
-        public RankCtx Ctx;
+        public RankCtx Ctx; 
 
         public Rankings(Mobile m, RankCtx ctx) : base(0, 0)
         {
@@ -163,10 +163,7 @@ namespace Server.Gumps
 
                 case (int)Buttons.Trabalho:
                     {
-                        ctx.Page = 0;
-                        ctx.Title = "Trabalho";
-                        ctx.Rank = PointsSystem.PontosTrabalho.GetOrCalculateRank();
-                        sender.Mobile.SendGump(new Rankings(sender.Mobile, ctx));
+                        sender.Mobile.SendGump(new GumpRankTrampo());
                         break;
                     }
 

@@ -63,6 +63,15 @@ namespace Server.Engines.Points
 
         Exp,
         Taming,
+
+        Ferreiro,
+        Alfaiate,
+        Carpinteiro,
+        Pescador,
+        Minerador,
+        Lenhador,
+        Alquimista,
+        Cozinha
     }
 
     public abstract class PointsSystem
@@ -423,6 +432,14 @@ namespace Server.Engines.Points
         public static PontoTaming PontosTaming { get; set; }
         public static PontosPvmEternos PontosPvmEterno { get; set; }
         public static PontosTrabalho PontosTrabalho { get; set; }
+        public static PontosFerreiro PontosFerreiro { get; set; }
+        public static PontosAlfaiate PontosAlfaiate { get; set; }
+        public static PontosCarpinteiro PontosCarpinteiro { get; set; }
+        public static PontosPescador PontosPescador { get; set; }
+        public static PontosMinerador PontosMinerador { get; set; }
+        public static PontosAlquimista PontosAlquimista { get; set; }
+        public static PontosCozinha PontosCozinha { get; set; }
+        public static PontosLenhador PontosLenhador { get; set; }
 
         public static void Configure()
         {
@@ -455,6 +472,15 @@ namespace Server.Engines.Points
             PontosTrabalho = new PontosTrabalho();
             Exp = new Exp();
             PontosTaming = new PontoTaming();
+
+            PontosFerreiro = new PontosFerreiro();
+            PontosAlfaiate = new PontosAlfaiate();
+            PontosTrabalho = new PontosTrabalho();
+            PontosCarpinteiro = new PontosCarpinteiro();
+            PontosMinerador = new PontosMinerador();
+            PontosAlquimista = new PontosAlquimista();
+            PontosCozinha = new PontosCozinha();
+            PontosLenhador = new PontosLenhador();
         }
 
         public static void HandleKill(BaseCreature victim, Mobile damager, int index)

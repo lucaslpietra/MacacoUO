@@ -3287,7 +3287,7 @@ namespace Server
         public virtual void Deserialize(GenericReader reader)
         {
 
-            Shard.Debug("Deserializando " + this.GetType().Name);
+            //Shard.Debug("Deserializando " + this.GetType().Name);
 
             int version = reader.ReadInt();
             SetLastMoved();

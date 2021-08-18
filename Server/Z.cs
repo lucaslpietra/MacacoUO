@@ -12,6 +12,8 @@ namespace Server
         public static bool RP { get { return Config.Get("General.RP", false); } }
         public static bool TITULOS_RP = false;
 
+        public static string SEGREDO_WEB_API = "segredowebapi";
+
         public static bool MAPA_CUSTOM = true;
         public static bool TROCA_ARMA_RAPIDA = true;
 
