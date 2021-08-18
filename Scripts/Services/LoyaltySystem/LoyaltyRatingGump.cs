@@ -12,13 +12,8 @@ namespace Server.Engines.Points
         public LoyaltyRatingGump(PlayerMobile pm)
             : base(120, 120)
         {
-            AddImage(0, 0, 8000);
-            AddImage(20, 37, 8001);
-            AddImage(20, 107, 8002);
-            AddImage(20, 177, 8001);
-            AddImage(20, 247, 8002);
-            AddImage(20, 317, 8001);
-            AddImage(20, 387, 8003);
+            AddBackground(0, 0, 400, 800, 3500);
+
 
             AddHtml(0, 8, 345, 20, "<center>Pontos</center>", false, false); // <center>Loyalty Ratings</center>
 
@@ -33,23 +28,14 @@ namespace Server.Engines.Points
 
                 TextDefinition title = sys.GetTitle(pm);
 
-                /*
-                if (title != null)
-                {
-                    if (title.Number > 0)
-                        AddHtmlLocalized(68, y + 20, 100, 20, title.Number, false, false);
-                    else if (title.String != null)
-                        AddHtml(68, y + 20, 100, 20, title.String, false, false);
-                }
-                */
-
                 AddHtmlLocalized(175, y, 100, 20, 1095171, ((int)sys.GetPoints(pm)).ToString(), 0, false, false); // (~1_AMT~ points)
 
                 y += 25;
             }
 
-            AddHtmlLocalized(50, 285, 150, 20, 1115129, pm.Fame.ToString(), 0, false, false); // Fame: ~1_AMT~
-            AddHtmlLocalized(50, 305, 150, 20, 1115130, pm.Karma.ToString(), 0, false, false); // Karma: ~1_AMT~}
+            AddHtmlLocalized(175, y, 150, 20, 1115129, pm.Fame.ToString(), 0, false, false); // Fame: ~1_AMT~
+            y += 25;
+            AddHtmlLocalized(175, y, 150, 20, 1115130, pm.Karma.ToString(), 0, false, false); // Karma: ~1_AMT~}
 
             if (CityLoyaltySystem.Enabled && CityLoyaltySystem.Cities != null)
             {
