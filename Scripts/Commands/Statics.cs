@@ -14,23 +14,23 @@ namespace Server
         private static byte[] m_Buffer;
         private static StaticTile[] m_TileBuffer = new StaticTile[128];
         private const string BaseFreezeWarning = "{0}  " +
-                                                 "Those items <u>will be removed from the world</u> and placed into the server data files.  " +
-                                                 "Other players <u>will not see the changes</u> unless you distribute your data files to them.<br><br>" +
-                                                 "This operation may not complete unless the server and client are using different data files.  " +
-                                                 "If you receive a message stating 'output data files could not be opened,' then you are probably sharing data files.  " +
-                                                 "Create a new directory for the world data files (statics*.mul and staidx*.mul) and add that to Scritps/Misc/DataPath.cs.<br><br>" +
-                                                 "The change will be in effect immediately on the server, however, you must restart your client and update it's data files for the changes to become visible.  " +
-                                                 "It is strongly recommended that you make backup of the data files mentioned above.  " +
-                                                 "Do you wish to proceed?";
+                                                 "Esses itens <u> serão removidos do mundo </u> e colocados nos arquivos de dados do servidor.  " +
+                                                 "Outros jogadores <u> não verão as mudanças </u> a menos que você distribua seus arquivos de dados para eles.<br><br>" +
+                                                 "Esta operação não pode ser concluída a menos que o servidor e o cliente estejam usando arquivos de dados diferentes.  " +
+                                                 "Se você receber uma mensagem dizendo 'os arquivos de dados de saída não puderam ser abertos', provavelmente você está compartilhando arquivos de dados.  " +
+                                                 "Crie um novo diretório para os arquivos de dados mundiais (statics * .mul e staidx * .mul) e adicione-o a Scritps / Misc / DataPath.cs.<br><br>" +
+                                                 "A alteração entrará em vigor imediatamente no servidor, no entanto, você deve reiniciar seu cliente e atualizar seus arquivos de dados para que as alterações se tornem visíveis.  " +
+                                                 "É altamente recomendável que você faça backup dos arquivos de dados mencionados acima.  " +
+                                                 "Você deseja continuar?";
         private const string BaseUnfreezeWarning = "{0}  " +
-                                                   "Those items <u>will be removed from the static files</u> and exchanged with unmovable dynamic items.  " +
-                                                   "Other players <u>will not see the changes</u> unless you distribute your data files to them.<br><br>" +
-                                                   "This operation may not complete unless the server and client are using different data files.  " +
-                                                   "If you receive a message stating 'output data files could not be opened,' then you are probably sharing data files.  " +
-                                                   "Create a new directory for the world data files (statics*.mul and staidx*.mul) and add that to Scritps/Misc/DataPath.cs.<br><br>" +
-                                                   "The change will be in effect immediately on the server, however, you must restart your client and update it's data files for the changes to become visible.  " +
-                                                   "It is strongly recommended that you make backup of the data files mentioned above.  " +
-                                                   "Do you wish to proceed?";
+                                                   "Esses itens <u> serão removidos dos arquivos estáticos </u> e trocados por itens dinâmicos não movíveis.  " +
+                                                   "Outros jogadores <u> não verão as mudanças </u> a menos que você distribua seus arquivos de dados para eles.<br><br>" +
+                                                   "Esta operação não pode ser concluída a menos que o servidor e o cliente estejam usando arquivos de dados diferentes.  " +
+                                                   "Se você receber uma mensagem informando 'não foi possível abrir os arquivos de dados de saída', provavelmente você está compartilhando arquivos de dados.  " +
+                                                   "Crie um novo diretório para os arquivos de dados mundiais (statics * .mul e staidx * .mul) e adicione-o a Scritps / Misc / DataPath.cs.<br><br>" +
+                                                   "A alteração entrará em vigor imediatamente no servidor, no entanto, você deve reiniciar seu cliente e atualizar seus arquivos de dados para que as alterações se tornem visíveis.  " +
+                                                   "É altamente recomendável que você faça backup dos arquivos de dados mencionados acima. " +
+                                                   "Do você deseja prosseguir?";
         public static void Initialize()
         {
             CommandSystem.Register("Freeze", AccessLevel.Administrator, new CommandEventHandler(Freeze_OnCommand));
@@ -43,27 +43,27 @@ namespace Server
         }
 
         [Usage("Freeze")]
-        [Description("Makes a targeted area of dynamic items static.")]
+        [Description("Torna estática uma área de destino de itens dinâmicos.")]
         public static void Freeze_OnCommand(CommandEventArgs e)
         {
             BoundingBoxPicker.Begin(e.Mobile, new BoundingBoxCallback(FreezeBox_Callback), null);
         }
 
         [Usage("FreezeMap")]
-        [Description("Makes every dynamic item in your map static.")]
+        [Description("Torna todos os itens dinâmicos em seu mapa estáticos.")]
         public static void FreezeMap_OnCommand(CommandEventArgs e)
         {
             Map map = e.Mobile.Map;
 
             if (map != null && map != Map.Internal)
-                SendWarning(e.Mobile, "You are about to freeze <u>all items in {0}</u>.", BaseFreezeWarning, map, NullP3D, NullP3D, new WarningGumpCallback(FreezeWarning_Callback));
+                SendWarning(e.Mobile, "Você está prestes a congelar <u> todos os itens em {0}</u>.", BaseFreezeWarning, map, NullP3D, NullP3D, new WarningGumpCallback(FreezeWarning_Callback));
         }
 
         [Usage("FreezeWorld")]
-        [Description("Makes every dynamic item on all maps static.")]
+        [Description("Torna todos os itens dinâmicos em todos os mapas estáticos.")]
         public static void FreezeWorld_OnCommand(CommandEventArgs e)
         {
-            SendWarning(e.Mobile, "You are about to freeze <u>every item on every map</u>.", BaseFreezeWarning, null, NullP3D, NullP3D, new WarningGumpCallback(FreezeWarning_Callback));
+            SendWarning(e.Mobile, "Você está prestes a congelar <u> todos os itens em todos os mapas</u>.", BaseFreezeWarning, null, NullP3D, NullP3D, new WarningGumpCallback(FreezeWarning_Callback));
         }
 
         public static void SendWarning(Mobile m, string header, string baseWarning, Map map, Point3D start, Point3D end, WarningGumpCallback callback)
@@ -78,9 +78,9 @@ namespace Server
             if (start3d == NullP3D && end3d == NullP3D)
             {
                 if (targetMap == null)
-                    CommandLogging.WriteLine(from, "{0} {1} invoking freeze for every item in every map", from.AccessLevel, CommandLogging.Format(from));
+                    CommandLogging.WriteLine(from, "{0} {1} invocando congelamento para cada item em cada mapa", from.AccessLevel, CommandLogging.Format(from));
                 else
-                    CommandLogging.WriteLine(from, "{0} {1} invoking freeze for every item in {0}", from.AccessLevel, CommandLogging.Format(from), targetMap);
+                    CommandLogging.WriteLine(from, "{0} {1} invocando congelamento para cada item em{0}", from.AccessLevel, CommandLogging.Format(from), targetMap);
 
                 foreach (Item item in World.Items.Values)
                 {
@@ -117,7 +117,7 @@ namespace Server
             {
                 Point2D start = targetMap.Bound(new Point2D(start3d)), end = targetMap.Bound(new Point2D(end3d));
 
-                CommandLogging.WriteLine(from, "{0} {1} invoking freeze from {2} to {3} in {4}", from.AccessLevel, CommandLogging.Format(from), start, end, targetMap);
+                CommandLogging.WriteLine(from, "{0} {1} invocando congelamento de {2} to {3} in {4}", from.AccessLevel, CommandLogging.Format(from), start, end, targetMap);
 
                 IPooledEnumerable eable = targetMap.GetItemsInBounds(new Rectangle2D(start.X, start.Y, end.X - start.X + 1, end.Y - start.Y + 1));
 
@@ -151,7 +151,7 @@ namespace Server
 
             if (mapTable.Count == 0)
             {
-                from.SendGump(new NoticeGump(1060637, 30720, "No freezable items were found.  Only the following item types are frozen:<br> - Static<br> - BaseFloor<br> - BaseWall", 0xFFC000, 320, 240, null, null));
+                from.SendGump(new NoticeGump(1060637, 30720, "Nenhum item congelável foi encontrado. Apenas os seguintes tipos de itens são congelados:<br> - Static<br> - BaseFloor<br> - BaseWall", 0xFFC000, 320, 240, null, null));
                 return;
             }
 
@@ -264,33 +264,33 @@ namespace Server
             }
 
             if (totalFrozen == 0 && badDataFile)
-                from.SendGump(new NoticeGump(1060637, 30720, "Output data files could not be opened and the freeze operation has been aborted.<br><br>This probably means your server and client are using the same data files.  Instructions on how to resolve this can be found in the first warning window.", 0xFFC000, 320, 240, null, null));
+                from.SendGump(new NoticeGump(1060637, 30720, "Os arquivos de dados de saída não puderam ser abertos e a operação de congelamento foi abortada. <br> <br> Isso provavelmente significa que seu servidor e cliente estão usando os mesmos arquivos de dados. As instruções sobre como resolver isso podem ser encontradas na primeira janela de aviso.", 0xFFC000, 320, 240, null, null));
             else
-                from.SendGump(new NoticeGump(1060637, 30720, String.Format("Freeze operation completed successfully.<br><br>{0} item{1} frozen.<br><br>You must restart your client and update it's data files to see the changes.", totalFrozen, totalFrozen != 1 ? "s were" : " was"), 0xFFC000, 320, 240, null, null));
+                from.SendGump(new NoticeGump(1060637, 30720, String.Format("Operação de congelamento concluída com sucesso. <br> <br> {0} item {1} congelado. <br> <br> Você deve reiniciar seu cliente e atualizar seus arquivos de dados para ver as alterações.", totalFrozen, totalFrozen != 1 ? "s were" : " was"), 0xFFC000, 320, 240, null, null));
         }
 
         [Usage("Unfreeze")]
-        [Description("Makes a targeted area of static items dynamic.")]
+        [Description("Torna uma área de destino de itens estáticos dinâmica.")]
         public static void Unfreeze_OnCommand(CommandEventArgs e)
         {
             BoundingBoxPicker.Begin(e.Mobile, new BoundingBoxCallback(UnfreezeBox_Callback), null);
         }
 
         [Usage("UnfreezeMap")]
-        [Description("Makes every static item in your map dynamic.")]
+        [Description("Torna cada item estático em seu mapa dinâmico.")]
         public static void UnfreezeMap_OnCommand(CommandEventArgs e)
         {
             Map map = e.Mobile.Map;
 
             if (map != null && map != Map.Internal)
-                SendWarning(e.Mobile, "You are about to unfreeze <u>all items in {0}</u>.", BaseUnfreezeWarning, map, NullP3D, NullP3D, new WarningGumpCallback(UnfreezeWarning_Callback));
+                SendWarning(e.Mobile, "Você está prestes a descongelar <u> todos os itens em {0}</u>.", BaseUnfreezeWarning, map, NullP3D, NullP3D, new WarningGumpCallback(UnfreezeWarning_Callback));
         }
 
         [Usage("UnfreezeWorld")]
-        [Description("Makes every static item on all maps dynamic.")]
+        [Description("Torna todos os itens estáticos em todos os mapas dinâmicos.")]
         public static void UnfreezeWorld_OnCommand(CommandEventArgs e)
         {
-            SendWarning(e.Mobile, "You are about to unfreeze <u>every item on every map</u>.", BaseUnfreezeWarning, null, NullP3D, NullP3D, new WarningGumpCallback(UnfreezeWarning_Callback));
+            SendWarning(e.Mobile, "Você está prestes a descongelar <u> todos os itens em todos os mapas</u>.", BaseUnfreezeWarning, null, NullP3D, NullP3D, new WarningGumpCallback(UnfreezeWarning_Callback));
         }
 
         public static void DoUnfreeze(Map map, ref bool badDataFile, ref int totalUnfrozen)
@@ -305,7 +305,7 @@ namespace Server
 
             if (map == null)
             {
-                CommandLogging.WriteLine(from, "{0} {1} invoking unfreeze for every item in every map", from.AccessLevel, CommandLogging.Format(from));
+                CommandLogging.WriteLine(from, "{0} {1} invocando o descongelamento para cada item em cada mapa", from.AccessLevel, CommandLogging.Format(from));
 
                 DoUnfreeze(Map.Felucca, ref badDataFile, ref totalUnfrozen);
                 DoUnfreeze(Map.Trammel, ref badDataFile, ref totalUnfrozen);
@@ -315,26 +315,26 @@ namespace Server
             }
             else if (start == NullP3D && end == NullP3D)
             {
-                CommandLogging.WriteLine(from, "{0} {1} invoking unfreeze for every item in {2}", from.AccessLevel, CommandLogging.Format(from), map);
+                CommandLogging.WriteLine(from, "{0} {1} invocando o descongelamento para cada item em{2}", from.AccessLevel, CommandLogging.Format(from), map);
 
                 DoUnfreeze(map, ref badDataFile, ref totalUnfrozen);
             }
             else
             {
-                CommandLogging.WriteLine(from, "{0} {1} invoking unfreeze from {2} to {3} in {4}", from.AccessLevel, CommandLogging.Format(from), new Point2D(start), new Point2D(end), map);
+                CommandLogging.WriteLine(from, "{0} {1} invocando o descongelamento de {2} to {3} in {4}", from.AccessLevel, CommandLogging.Format(from), new Point2D(start), new Point2D(end), map);
 
                 DoUnfreeze(map, new Point2D(start), new Point2D(end), ref badDataFile, ref totalUnfrozen);
             }
 
             if (totalUnfrozen == 0 && badDataFile)
-                from.SendGump(new NoticeGump(1060637, 30720, "Output data files could not be opened and the unfreeze operation has been aborted.<br><br>This probably means your server and client are using the same data files.  Instructions on how to resolve this can be found in the first warning window.", 0xFFC000, 320, 240, null, null));
+                from.SendGump(new NoticeGump(1060637, 30720, "Os arquivos de dados de saída não puderam ser abertos e a operação de descongelamento foi abortada. <br> <br> Isso provavelmente significa que seu servidor e cliente estão usando os mesmos arquivos de dados. As instruções sobre como resolver isso podem ser encontradas na primeira janela de aviso.", 0xFFC000, 320, 240, null, null));
             else
-                from.SendGump(new NoticeGump(1060637, 30720, String.Format("Unfreeze operation completed successfully.<br><br>{0} item{1} unfrozen.<br><br>You must restart your client and update it's data files to see the changes.", totalUnfrozen, totalUnfrozen != 1 ? "s were" : " was"), 0xFFC000, 320, 240, null, null));
+                from.SendGump(new NoticeGump(1060637, 30720, String.Format("Operação de descongelamento concluída com sucesso. <br> <br> {0} item {1} descongelado. <br> <br> Você deve reiniciar seu cliente e atualizar seus arquivos de dados para ver as alterações.", totalUnfrozen, totalUnfrozen != 1 ? "s were" : " was"), 0xFFC000, 320, 240, null, null));
         }
 
         private static void FreezeBox_Callback(Mobile from, Map map, Point3D start, Point3D end, object state)
         {
-            SendWarning(from, "You are about to freeze a section of items.", BaseFreezeWarning, map, start, end, new WarningGumpCallback(FreezeWarning_Callback));
+            SendWarning(from, "Você está prestes a congelar uma seção de itens.", BaseFreezeWarning, map, start, end, new WarningGumpCallback(FreezeWarning_Callback));
         }
 
         private static void FreezeWarning_Callback(Mobile from, bool okay, object state)
@@ -349,7 +349,7 @@ namespace Server
 
         private static void UnfreezeBox_Callback(Mobile from, Map map, Point3D start, Point3D end, object state)
         {
-            SendWarning(from, "You are about to unfreeze a section of items.", BaseUnfreezeWarning, map, start, end, new WarningGumpCallback(UnfreezeWarning_Callback));
+            SendWarning(from, "Você está prestes a descongelar uma seção de itens.", BaseUnfreezeWarning, map, start, end, new WarningGumpCallback(UnfreezeWarning_Callback));
         }
 
         private static void UnfreezeWarning_Callback(Mobile from, bool okay, object state)
