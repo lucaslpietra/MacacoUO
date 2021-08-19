@@ -14,7 +14,6 @@ namespace Server.Engines.Points
         {
             AddBackground(0, 0, 400, 800, 3500);
 
-
             AddHtml(0, 8, 345, 20, "<center>Pontos</center>", false, false); // <center>Loyalty Ratings</center>
 
             int y = 40;
