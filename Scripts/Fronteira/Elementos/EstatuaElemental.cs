@@ -1,6 +1,7 @@
 using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
+using System.Linq;
 
 namespace Server.Fronteira.Elementos
 {
@@ -35,13 +36,20 @@ namespace Server.Fronteira.Elementos
                 return;
             }
             */
-
             if (pl.Nivel <= 1)
             {
                 pl.SendGump(new SemElementoGump());
             }
             else
             {
+                if(!pl.IsCooldown("ele"))
+                {
+                    pl.SetCooldown("ele");
+                    if (!pl.Elementos.GetNiveis().Any(n => n > 0)) {
+                        pl.SendMessage(78, "Equipe armaduras de algum elemento e mate monstros para ganhar exp neste elemento.");
+                        pl.SendMessage(78, "Use pedras preciosas com a skill Imbuing em armaduras para adicionar elementos.");
+                    }
+                }
                 pl.SendGump(new ElementosGump(pl));
             }
         }

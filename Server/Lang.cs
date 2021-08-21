@@ -1823,7 +1823,7 @@ namespace Server
                 case 502088: return "Um item foi colocado em sua mochila";
                 case 1153599: return "Voce ja usou isto em outro ritual";
                 case 1153607: return @"Contido neste Tomo está o ritual pelo qual o Êxodo pode mais uma vez ser chamado à vida em sua forma física, convocada das profundezas do Vazio. Somente quando o Rito de Invocação foi reintegrado ao tomo e somente quando o Manto do Rito cobre o lançador, a Adaga Sacrificial pode ser usada para selar seu destino. Esfaqueie a adaga neste livro e declare sua busca pela bravura, ao defender a vida deste mal, ou sacrifique seu sangue neste altar para declarar sua busca por ganância e riqueza ... só você pode julgar a si mesmo ...";
-                case 1153596: return "Voce precisa estar em um grupo para fazer o ritual";
+                case 1153596: return "Voce precisa estar em um grupo para fazer o ritual. Para ver o menus de grupos, clique no pergaminho no pe direito do seu paperdoll.";
                 case 1153675: return "O altar deve ser construido na mao da compaixao, na caverna do exilio.";
                 case 500269: return "Voce nao pode construir isso ali";
                 case 1153591: return "Voce nao esta preparado para o ritual";

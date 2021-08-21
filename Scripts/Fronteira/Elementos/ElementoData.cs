@@ -1,5 +1,6 @@
 using Server.Items;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Fronteira.Elementos
 {
@@ -107,6 +108,11 @@ namespace Server.Fronteira.Elementos
             if (elemento == ElementoPvM.None)
                 return 0;
             return _niveis[elemento];
+        }
+
+        public List<ushort> GetNiveis()
+        {
+            return _niveis.Values.ToList();
         }
 
         public void SetExp(ElementoPvM elemento, int nivel)

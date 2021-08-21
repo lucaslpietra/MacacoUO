@@ -432,7 +432,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Identified
         {
-            get { return true; }
+            get { return m_Identified; }
             set
             {
                 m_Identified = value;
@@ -4058,50 +4058,54 @@ namespace Server.Items
 
             Shard.Debug("Weapon Min/Max: " + min + "/" + max);
 
-            var armsLoreBonus = attacker.Skills[SkillName.ArmsLore].Value / 20;
+            var armsLoreBonus = attacker.Skills[SkillName.ArmsLore].Value / 10;
 
             min += (int)Math.Round(armsLoreBonus);
             if (min > max)
                 min = max;
             int damage = Utility.RandomMinMax(min, max);
 
+            var bonusOre = 0;
             switch (Resource)
             {
                 case CraftResource.Carvalho:
                 case CraftResource.Cobre:
-                    damage += 2;
+                    bonusOre += 1;
                     break;
                 case CraftResource.Pinho:
                 case CraftResource.Bronze:
-                    damage += 3;
+                    bonusOre += 2;
                     break;
                 case CraftResource.Mogno:
                 case CraftResource.Dourado:
-                    damage += 4;
+                    bonusOre += 3;
                     break;
                 case CraftResource.Niobio:
                 case CraftResource.Quartzo:
                 case CraftResource.Vibranium:
-                    damage += 5;
+                    bonusOre += 4;
                     break;
                 case CraftResource.Eucalipto:
                 case CraftResource.Lazurita:
-                    damage += 6;
+                    bonusOre += 5;
                     break;
                 case CraftResource.Berilo:
                 case CraftResource.Carmesim:
-                    damage += 7;
+                    bonusOre += 7;
                     break;
                 case CraftResource.Gelo:
                 case CraftResource.Adamantium:
-                    damage += 9;
+                    bonusOre += 9;
                     break;
             }
 
             if (m_DamageLevel != WeaponDamageLevel.Regular)
             {
-                // damage += (2 * (int)m_DamageLevel) - 1;
-                damage += (int)m_DamageLevel;
+                damage += (2 * (int)m_DamageLevel) - 1;
+                damage += bonusOre / 4;
+            } else
+            {
+                damage += bonusOre;
             }
 
             return damage;
@@ -4217,19 +4221,19 @@ namespace Server.Items
                 switch (m_DamageLevel)
                 {
                     case WeaponDamageLevel.Ruin:
-                        bonus += 3;
+                        bonus += 5;
                         break;
                     case WeaponDamageLevel.Might:
-                        bonus += 8;
+                        bonus += 10;
                         break;
                     case WeaponDamageLevel.Force:
-                        bonus += 11;
+                        bonus += 15;
                         break;
                     case WeaponDamageLevel.Power:
-                        bonus += 13;
+                        bonus += 20;
                         break;
                     case WeaponDamageLevel.Vanq:
-                        bonus += 16;
+                        bonus += 25;
                         break;
                 }
             }

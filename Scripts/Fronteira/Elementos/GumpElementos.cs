@@ -112,15 +112,15 @@ namespace Server.Gumps
 
                 var custos = CustosUPElementos.GetCustos(elemento);
 
-                /*
+                var qtdItems = CustosUPElementos.QuantidadeItems(nivel);
                 AddBackground(673, 334, 111, 101, 3500);
-                AddHtml(721, 350, 83, 22, custos[0].amt.ToString(), (bool)false, (bool)false);
+                AddHtml(711, 350, 183, 22, (qtdItems * 10).ToString()+"K", (bool)false, (bool)false);
                 AddHtml(678, 406, 100, 22, custos[0].name, (bool)true, (bool)false);
                 //AddItem(703, 374, custos.Item);
-                NewAuctionGump.AddItemCentered(673, 334, 111, 101, custos[0].itemID, custos[0].hue, this);
-                */
+                NewAuctionGump.AddItemCentered(673, 334, 111, 101, 3823, 0, this);
+                
 
-                var qtdItems = CustosUPElementos.QuantidadeItems(nivel);
+              
                 AddBackground(784, 335, 111, 101, 3500);
                 AddHtml(827, 350, 83, 22, qtdItems.ToString(), (bool)false, (bool)false);
                 AddHtml(793, 405, 100, 22, custos[0].name, (bool)true, (bool)false);
@@ -205,6 +205,12 @@ namespace Server.Gumps
                         if (!sender.Mobile.Backpack.HasItem(itemPrecisa.type, qtdPrecisa, true))
                         {
                             from.SendMessage("Voce precisa de "+ qtdPrecisa+"x "+ itemPrecisa.name+" para isto");
+                            return;
+                        }
+
+                        if(!Banker.Withdraw(sender.Mobile, qtdPrecisa * 10000))
+                        {
+                            from.SendMessage("Voce precisa de " + qtdPrecisa * 10000 + " moedas de ouro para isto");
                             return;
                         }
                         from.Backpack.ConsumeTotal(new System.Type[] { itemPrecisa.type }, new int[] { qtdPrecisa });

@@ -87,6 +87,11 @@ namespace Server.SkillHandlers
                 if (targeted is BaseWeapon)
                 {
                     var w = targeted as BaseWeapon;
+                    if(!w.Identified)
+                    {
+                        from.SendMessage("Voce precisa identificar isto primeiro.");
+                        return;
+                    }
                     cristais += (int)w.DamageLevel * (int)w.DamageLevel;
                     cristais += (int)w.DurabilityLevel * (int)w.DurabilityLevel;
                     cristais += (int)w.AccuracyLevel * (int)w.AccuracyLevel;
@@ -95,6 +100,11 @@ namespace Server.SkillHandlers
                 else if (targeted is BaseArmor)
                 {
                     var w = targeted as BaseArmor;
+                    if (!w.Identified)
+                    {
+                        from.SendMessage("Voce precisa identificar isto primeiro.");
+                        return;
+                    }
                     cristais += (int)w.Durability * (int)w.Durability;
                     cristais += (int)w.ProtectionLevel * (int)w.ProtectionLevel;
                     Recebe(from, cristais, w.Identified, w);
