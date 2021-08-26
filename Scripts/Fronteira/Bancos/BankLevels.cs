@@ -41,10 +41,10 @@ namespace Server.Misc.Custom
             // NOOBS
             _Nivels.Add(new BankLevel(500, 20, 0));
             _Nivels.Add(new BankLevel(750, 40, 100));
-            _Nivels.Add(new BankLevel(1000, 60, 200));
-            _Nivels.Add(new BankLevel(1500, 80, 500));
-            _Nivels.Add(new BankLevel(2000, 100, 1000));
-            _Nivels.Add(new BankLevel(5000, 120, 5000));
+            _Nivels.Add(new BankLevel(1000, 60, 500));
+            _Nivels.Add(new BankLevel(1500, 80, 1000));
+            _Nivels.Add(new BankLevel(2000, 100, 5000));
+            _Nivels.Add(new BankLevel(5000, 120, 10000));
 
             // CAROS FODAS
             _Nivels.Add(new BankLevel(15000, 200, 10000));

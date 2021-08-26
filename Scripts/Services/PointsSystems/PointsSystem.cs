@@ -71,7 +71,8 @@ namespace Server.Engines.Points
         Minerador,
         Lenhador,
         Alquimista,
-        Cozinha
+        Cozinha,
+        Ouro
     }
 
     public abstract class PointsSystem
@@ -440,6 +441,7 @@ namespace Server.Engines.Points
         public static PontosAlquimista PontosAlquimista { get; set; }
         public static PontosCozinha PontosCozinha { get; set; }
         public static PontosLenhador PontosLenhador { get; set; }
+        public static PontosOuro PontosOuro { get; set; }
 
         public static void Configure()
         {
@@ -481,6 +483,7 @@ namespace Server.Engines.Points
             PontosAlquimista = new PontosAlquimista();
             PontosCozinha = new PontosCozinha();
             PontosLenhador = new PontosLenhador();
+            PontosOuro = new PontosOuro();
         }
 
         public static void HandleKill(BaseCreature victim, Mobile damager, int index)

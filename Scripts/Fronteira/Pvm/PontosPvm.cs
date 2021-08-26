@@ -1,3 +1,4 @@
+using Felladrin.Automations;
 using Server.Commands;
 using Server.Engines.Points;
 using Server.Engines.VvV;
@@ -73,6 +74,9 @@ namespace Server.Ziden.Kills
         public static void CreatureDeath(CreatureDeathEventArgs e)
         {
             BaseCreature bc = e.Creature as BaseCreature;
+
+            var gold = e.Corpse.TotalGold;
+ 
             var pontos = bc.PontosPvm;
 
             if (pontos <= 0)
@@ -110,6 +114,9 @@ namespace Server.Ziden.Kills
                     var pl = m.m_Mobile as PlayerMobile;
                     if (pl != null)
                     {
+                        var ptPerto = DivideGold.DivideQuanto(pl);
+                        var divisor = ptPerto == null ? 1 : ptPerto.Count;
+                        PointsSystem.PontosOuro.AwardPoints(pl, gold / divisor);
                         if (Shard.EXP)
                         {
                             if(!pl.RP)

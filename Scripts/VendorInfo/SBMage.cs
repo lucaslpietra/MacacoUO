@@ -28,11 +28,11 @@ namespace Server.Mobiles
             }
         }
 
-        public static int PRECO_REAGS = 5;
+        public static int PRECO_REAGS = 3;
 
         public static void BuyReagents(List<GenericBuyInfo> info)
         {
-            info.Add(new GenericBuyInfo(typeof(BlackPearl), PRECO_REAGS + 1, 999, 0xF7A, 0));
+            info.Add(new GenericBuyInfo(typeof(BlackPearl), PRECO_REAGS, 999, 0xF7A, 0));
             info.Add(new GenericBuyInfo(typeof(Bloodmoss), PRECO_REAGS, 999, 0xF7B, 0));
             info.Add(new GenericBuyInfo(typeof(Garlic), PRECO_REAGS, 999, 0xF84, 0));
             info.Add(new GenericBuyInfo(typeof(Ginseng), PRECO_REAGS, 999, 0xF85, 0));

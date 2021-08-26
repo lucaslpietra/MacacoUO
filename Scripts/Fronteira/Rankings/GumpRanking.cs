@@ -111,7 +111,10 @@ namespace Server.Gumps
 
             AddButton(247, 140, 4005, 4005, (int)Buttons.PvM, GumpButtonType.Reply, 0);
            
-            AddHtml(445, 138, 146, 24, @"--", (bool)true, (bool)false);
+            AddHtml(445, 138, 146, 24, @"Gold", (bool)true, (bool)false);
+            AddButton(560, 138, 4005, 4005, (int)Buttons.Gold, GumpButtonType.Reply, 0);
+
+
             AddButton(566, 767, 4005, 4005, (int)Buttons.Prox, GumpButtonType.Reply, 0);
             AddButton(524, 767, 4014, 4014, (int)Buttons.Ant, GumpButtonType.Reply, 0);
         }
@@ -124,8 +127,9 @@ namespace Server.Gumps
             Fama,
             Taming,
             Elementos,
+            Gold,
             Prox,
-            Ant
+            Ant,
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
@@ -172,6 +176,15 @@ namespace Server.Gumps
                         ctx.Page = 0;
                         ctx.Title = "Taming";
                         ctx.Rank = PointsSystem.PontosTaming.GetOrCalculateRank();
+                        sender.Mobile.SendGump(new Rankings(sender.Mobile, ctx));
+                        break;
+                    }
+
+                case (int)Buttons.Gold:
+                    {
+                        ctx.Page = 0;
+                        ctx.Title = "Gold";
+                        ctx.Rank = PointsSystem.PontosOuro.GetOrCalculateRank();
                         sender.Mobile.SendGump(new Rankings(sender.Mobile, ctx));
                         break;
                     }

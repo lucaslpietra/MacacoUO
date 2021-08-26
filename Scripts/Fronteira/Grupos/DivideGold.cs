@@ -11,6 +11,29 @@ namespace Felladrin.Automations
 {
     public static class DivideGold
     {
+
+        public static List<PartyMemberInfo> DivideQuanto(Mobile from)
+        {
+            var party = Party.Get(from);
+            if (party == null)
+                return null;
+
+            var mesmaRegiao = new List<PartyMemberInfo>();
+            foreach (var info in party.Members)
+            {
+                if (!(info.Mobile is PlayerMobile))
+                    continue;
+
+                var partyMember = info.Mobile as PlayerMobile;
+                if (partyMember == null)
+                    continue;
+
+                if (partyMember.Region == from.Region && partyMember.GetDistance(from) < 30)
+                    mesmaRegiao.Add(info);
+            }
+            return mesmaRegiao;
+        }
+
         public static bool Divide(Mobile from, Item item)
         {
             if (item == null)
@@ -26,19 +49,7 @@ namespace Felladrin.Automations
             if (party == null)
                 return false;
 
-            var mesmaRegiao = new List<PartyMemberInfo>();
-            foreach (var info in party.Members)
-            {
-                if (!(info.Mobile is PlayerMobile))
-                    continue;
-
-                var partyMember = info.Mobile as PlayerMobile;
-                if (partyMember == null)
-                    continue;
-
-                if (partyMember.Region == from.Region && partyMember.GetDistance(from) < 30)
-                    mesmaRegiao.Add(info);
-            }
+            var mesmaRegiao = DivideQuanto(from);
 
             int share = item.Amount / mesmaRegiao.Count;
 
