@@ -308,7 +308,7 @@ namespace Server.Misc
                     Utility.PopColor();
                     e.RejectReason = ALRReason.Invalid;
                 }
-                */
+                
             }
             else if (!acct.HasAccess(e.State))
             {
