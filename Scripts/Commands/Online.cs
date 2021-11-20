@@ -20,6 +20,8 @@ namespace Server.Bounds
         [Description("Online")]
         public static void Online_OnCommand(CommandEventArgs e)
         {
+            e.Mobile.SendMessage("Densidade demografica nao mensuravel");
+            /*
             List<Mobile> list = new List<Mobile>();
             List<NetState> states = NetState.Instances;
 
@@ -35,6 +37,7 @@ namespace Server.Bounds
             {
                 e.Mobile.SendMessage("Não temos nenhum jogador online no momento.");
             }
+            */
         }
     }
 }

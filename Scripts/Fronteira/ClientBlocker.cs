@@ -42,7 +42,7 @@ namespace Server.Ziden
             }
             */
           
-            e.Mobile.SendMessage("Bem vindo ao Ultima Fronteira. Temos " + Online.GetOnlinePlayers() + " jogadores online");
+            e.Mobile.SendMessage("Bem vindo.");
 
             if (e.Mobile.AccessLevel >= AccessLevel.VIP)
                 return;
