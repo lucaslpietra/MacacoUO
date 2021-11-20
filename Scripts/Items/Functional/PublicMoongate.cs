@@ -733,7 +733,6 @@ namespace Server.Items
                     } else
                     {
                         m_Mobile.Backpack.ConsumeTotal(new System.Type[] { typeof(Gold) }, new int[] { list.Cost });
-                        return;
                     }
                 }
             }
