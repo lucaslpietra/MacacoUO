@@ -344,7 +344,7 @@ namespace Server.Items
                     new PMEntry(new Point3D(1176, 2637, 5), "Destard"),
                     new PMEntry(new Point3D(4721, 3817, 5), "Hyloth"),
                     new PMEntry(new Point3D(514, 1561, 5), "Shame"),
-                    new PMEntry(new Point3D(514, 1561, 5), "Wrong"),
+                    new PMEntry(new Point3D(2043, 227, 14), "Wrong"),
           }, cost: 200);
 
         public static readonly PMList Ilshenar = new PMList(
