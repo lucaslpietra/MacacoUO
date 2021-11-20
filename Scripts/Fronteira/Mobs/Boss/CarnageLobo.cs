@@ -50,6 +50,7 @@ namespace Server.Mobiles
 
             SetWeaponAbility(WeaponAbility.BleedAttack);
 
+            /*
             Timer.DelayCall(TimeSpan.FromSeconds(20), () =>
             {
                 if (!this.Alive || this.Deleted)
@@ -70,6 +71,7 @@ namespace Server.Mobiles
                     }
                 }
             });
+            */
 
             Timer.DelayCall(TimeSpan.FromHours(2), () =>
             {
