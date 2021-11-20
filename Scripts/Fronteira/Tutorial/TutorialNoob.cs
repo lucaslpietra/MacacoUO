@@ -11,7 +11,7 @@ namespace Server.Ziden.Tutorial
             if (Shard.RP)
                 return;
 
-            EventSink.Login += OnLogin;
+            // EventSink.Login += OnLogin;
         }
 
         public static void OnLogin(LoginEventArgs e)
