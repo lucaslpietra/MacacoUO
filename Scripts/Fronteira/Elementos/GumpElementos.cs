@@ -207,13 +207,15 @@ namespace Server.Gumps
                             from.SendMessage("Voce precisa de "+ qtdPrecisa+"x "+ itemPrecisa.name+" para isto");
                             return;
                         }
-
-                        if(!Banker.Withdraw(sender.Mobile, qtdPrecisa * 10000))
+                        else if(!Banker.Withdraw(sender.Mobile, qtdPrecisa * 10000))
                         {
                             from.SendMessage("Voce precisa de " + qtdPrecisa * 10000 + " moedas de ouro para isto");
                             return;
+                        } else
+                        {
+                            from.Backpack.ConsumeTotal(new System.Type[] { itemPrecisa.type }, new int[] { qtdPrecisa });
                         }
-                        from.Backpack.ConsumeTotal(new System.Type[] { itemPrecisa.type }, new int[] { qtdPrecisa });
+                       
 
                         Effects.SendLocationParticles(EffectItem.Create(from.Location, from.Map, EffectItem.DefaultDuration), 0, 0, 0, 0, 0, 5060, 0);
                         Effects.PlaySound(from.Location, from.Map, 0x243);

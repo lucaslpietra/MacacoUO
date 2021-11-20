@@ -726,8 +726,15 @@ namespace Server.Items
             {
                 if(!Banker.Withdraw(m_Mobile, list.Cost))
                 {
-                    m_Mobile.SendMessage("Voce nao tem dinheiro suficiente");
-                    return;
+                    if (!m_Mobile.Backpack.HasItem(typeof(Gold), list.Cost, true))
+                    {
+                        m_Mobile.SendMessage("Voce nao tem dinheiro suficiente");
+                        return;
+                    } else
+                    {
+                        m_Mobile.Backpack.ConsumeTotal(new System.Type[] { typeof(Gold) }, new int[] { list.Cost });
+                        return;
+                    }
                 }
             }
 
