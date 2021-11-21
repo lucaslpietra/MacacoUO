@@ -147,6 +147,17 @@ namespace Server
 			return CompileCSScripts(debug, true, out assembly);
 		}
 
+        #region Lokai Versioning V1.1		// additional GetScript overload to get list of scripts in specific path
+        public static string[] GetScripts(string filter, string path)
+        {
+            List<string> list = new List<string>();
+
+            GetScripts(list, Path.Combine(Core.BaseDirectory, path), filter);
+
+            return list.ToArray();
+        }
+        #endregion
+
         public static string DLL = "Scripts.CS.dll";
 
         public static void BindKernel(out Assembly assembly)
@@ -158,7 +169,159 @@ namespace Server
             }
         }
 
-		public static bool CompileCSScripts(bool debug, bool cache, out Assembly assembly)
+        public static bool CompileFronteira(bool debug, bool cache, out Assembly assembly)
+        {
+            cache = true;
+            Utility.PushColor(ConsoleColor.Yellow);
+            Utility.PopColor();
+            var files = GetScripts("*.cs", "ScriptsFronteira");
+
+            if (files.Length == 0)
+            {
+                Utility.PushColor(ConsoleColor.Red);
+                Console.WriteLine("no files found.");
+                Utility.PopColor();
+                assembly = null;
+                return true;
+            }
+
+            if (File.Exists(DLL))
+            {
+                BindKernel(out assembly);
+                Console.WriteLine("Server pre-compilado");
+                return true;
+            }
+            Utility.PushColor(ConsoleColor.Green);
+            Console.WriteLine("Carregando fronteira");
+
+            if (File.Exists("Scripts/Output/ScriptsFronteira.CS.dll"))
+            {
+                if (cache && File.Exists("Scripts/Output/ScriptsFronteira.CS.hash"))
+                {
+                    Console.WriteLine("Lendo hashes dos binarios");
+                    try
+                    {
+                        var hashCode = GetHashCode("Scripts/Output/ScriptsFronteira.CS.dll", files, debug);
+
+                        using (var fs = new FileStream("Scripts/Output/ScriptsFronteira.CS.hash", FileMode.Open, FileAccess.Read, FileShare.Read))
+                        {
+                            using (var bin = new BinaryReader(fs))
+                            {
+                                var bytes = bin.ReadBytes(hashCode.Length);
+
+                                if (bytes.Length == hashCode.Length)
+                                {
+                                    var valid = true;
+
+                                    for (var i = 0; i < bytes.Length; ++i)
+                                    {
+                                        if (bytes[i] != hashCode[i])
+                                        {
+                                            Console.WriteLine("Binarios diferentes, recompilando a porra toda");
+                                            valid = false;
+                                            break;
+                                        }
+                                    }
+
+                                    if (valid)
+                                    {
+                                        assembly = Assembly.LoadFrom("Scripts/Output/ScriptsFronteira.CS.dll");
+
+                                        if (!m_AdditionalReferences.Contains(assembly.Location))
+                                        {
+                                            m_AdditionalReferences.Add(assembly.Location);
+                                        }
+
+                                        Utility.PushColor(ConsoleColor.Green);
+                                        Console.WriteLine("Scripts nao mudaram");
+                                        Utility.PopColor();
+
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch
+                    { }
+                }
+            }
+
+            DeleteFiles("ScriptsFronteira.CS*.dll");
+
+            using (var provider = new CSharpCodeProvider())
+            {
+                var path = GetUnusedPath("ScriptsFronteira.CS");
+
+                var parms = new CompilerParameters(GetReferenceAssemblies(), path, debug);
+
+                var options = GetCompilerOptions(debug);
+
+                if (options != null)
+                {
+                    parms.CompilerOptions = options;
+                }
+
+                if (Core.HaltOnWarning)
+                {
+                    parms.WarningLevel = 4;
+                }
+
+                if (Core.Unix)
+                {
+                    parms.CompilerOptions = String.Format("{0} /nowarn:169,219,414 /recurse:ScriptsFronteira/*.cs", parms.CompilerOptions);
+                    files = new string[0];
+                }
+
+                var results = provider.CompileAssemblyFromFile(parms, files);
+
+                m_AdditionalReferences.Add(path);
+
+                Display(results);
+
+                if (results.Errors.Count > 0 && !Core.Unix)
+                {
+                    assembly = null;
+                    return false;
+                }
+
+                if (results.Errors.Count > 0 && Core.Unix)
+                {
+                    foreach (CompilerError err in results.Errors)
+                    {
+                        if (!err.IsWarning)
+                        {
+                            assembly = null;
+                            return false;
+                        }
+                    }
+                }
+
+                if (cache && Path.GetFileName(path) == "ScriptsFronteira.CS.dll")
+                {
+                    try
+                    {
+                        var hashCode = GetHashCode(path, files, debug);
+
+                        using (
+                            var fs = new FileStream("Scripts/Output/ScriptsFronteira.CS.hash", FileMode.Create, FileAccess.Write, FileShare.None))
+                        {
+                            using (var bin = new BinaryWriter(fs))
+                            {
+                                bin.Write(hashCode, 0, hashCode.Length);
+                            }
+                        }
+                    }
+                    catch
+                    { }
+                }
+
+                assembly = results.CompiledAssembly;
+                return true;
+            }
+        }
+
+        public static bool CompileCSScripts(bool debug, bool cache, out Assembly assembly)
 		{
             cache = true;
 			Utility.PushColor(ConsoleColor.Yellow);
@@ -469,8 +632,10 @@ namespace Server
 		{
 			EnsureDirectory("Scripts/");
 			EnsureDirectory("Scripts/Output/");
+            EnsureDirectory("ScriptsFronteira/");
+            EnsureDirectory("ScriptsFronteira/Output/");
 
-			if (m_AdditionalReferences.Count > 0)
+            if (m_AdditionalReferences.Count > 0)
 			{
 				m_AdditionalReferences.Clear();
 			}
@@ -479,7 +644,7 @@ namespace Server
 
 			Assembly assembly;
 
-            Console.WriteLine("Starting Domains");
+            Console.WriteLine("Compilando scripts");
 
 			if (CompileCSScripts(debug, cache, out assembly))
 			{
@@ -493,7 +658,21 @@ namespace Server
 				return false;
 			}
 
-			if (assemblies.Count == 0)
+            Console.WriteLine("Compilando fronteira");
+
+            if (CompileFronteira(debug, cache, out assembly))
+            {
+                if (assembly != null)
+                {
+                    assemblies.Add(assembly);
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+            if (assemblies.Count == 0)
 			{
 				return false;
 			}

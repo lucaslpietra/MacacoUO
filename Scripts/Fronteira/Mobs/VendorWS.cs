@@ -5,15 +5,15 @@ using Server.Mobiles;
 
 namespace Server.Ziden.RotaDaSeda
 {
-    public class Comerciante : BaseVendor
+    public class VendorWS : BaseVendor
     {
-        List<SBInfo> wtf = new List<SBInfo>();
+       private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
 
-        protected override List<SBInfo> SBInfos { get { return wtf; } }
+        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
 
         [Constructable]
-        public Comerciante()
-            : base("O Muambeiro")
+        public VendorWS()
+            : base("O Muambeiro de Warshard")
         {
             this.SetSkill(SkillName.Anatomy, 120.0, 120.0);
             this.SetSkill(SkillName.Parry, 120.0, 120.0);
@@ -25,11 +25,10 @@ namespace Server.Ziden.RotaDaSeda
 
         public override void OnDoubleClick(Mobile from)
         {
-
             base.OnDoubleClick(from);
         }
 
-        public Comerciante(Serial serial)
+        public VendorWS(Serial serial)
             : base(serial)
         {
         }
@@ -120,7 +119,7 @@ namespace Server.Ziden.RotaDaSeda
 
         public override void InitSBInfo()
         {
-           
+            this.m_SBInfos.Add(new SbWs());
         }
     }
 }
