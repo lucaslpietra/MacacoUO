@@ -115,12 +115,10 @@ namespace Server.Gumps
                 var qtdItems = CustosUPElementos.QuantidadeItems(nivel);
                 AddBackground(673, 334, 111, 101, 3500);
                 AddHtml(711, 350, 183, 22, (qtdItems * 10).ToString()+"K", (bool)false, (bool)false);
-                AddHtml(678, 406, 100, 22, custos[0].name, (bool)true, (bool)false);
+                AddHtml(678, 406, 100, 22, "Ouro", (bool)true, (bool)false);
                 //AddItem(703, 374, custos.Item);
                 NewAuctionGump.AddItemCentered(673, 334, 111, 101, 3823, 0, this);
-                
 
-              
                 AddBackground(784, 335, 111, 101, 3500);
                 AddHtml(827, 350, 83, 22, qtdItems.ToString(), (bool)false, (bool)false);
                 AddHtml(793, 405, 100, 22, custos[0].name, (bool)true, (bool)false);

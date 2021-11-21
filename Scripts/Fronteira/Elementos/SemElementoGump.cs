@@ -59,13 +59,13 @@ namespace Server.Gumps
                         }
                         if (!sender.Mobile.Backpack.HasItem<CristalElemental>(100, true))
                         {
-                            from.SendMessage("Voce precisa de 100 Pedras Elementais e 100000 Moedas de Ouro. Mate os monstros da dungeon de shame e una os elementos para construir a pedra.");
+                            from.SendMessage("Voce precisa de 100 Pedras Elementais na mochila e 100000 Moedas de Ouro no banco. Encontre as pedras em Shame.");
                             return;
                         }
                           
-                        if (!sender.Mobile.Backpack.HasItem<Gold>(100000, true))
+                        if (!Banker.Withdraw(from, 100000))
                         {
-                            from.SendMessage("Voce precisa de 100000 Moedas de Ouro. Mate os bosses da dungeon de shame e una os elementos para construir a pedra.");
+                            from.SendMessage("Voce precisa de 100000 Moedas de Ouro no banco.");
                             return;
                         }
                         from.Backpack.ConsumeTotal(new System.Type[] { typeof(CristalElemental), typeof(Gold) }, new int[] { 100, 100000 });
@@ -82,6 +82,7 @@ namespace Server.Gumps
 
                         from.SendMessage("Voce agora pode canalizar energia elemental em seu corpo.");
                         from.SendMessage("Equipe armaduras elementais para ativar o elemento em seu corpo.");
+                        from.SendMessage("Fabrique armaduras elementais usando pedras preciosas.");
                         from.SendGump(new ElementosGump(from));
                         break;
                     }

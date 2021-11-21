@@ -22,7 +22,7 @@ namespace Server.Items
             Elementos.Add(typeof(StarSapphire), ElementoPvM.Luz);
             Elementos.Add(typeof(Sapphire), ElementoPvM.Escuridao);
         }
-        
+
         public ElementoPvM GetElemento()
         {
             if(Elementos.ContainsKey(this.GetType())) {
