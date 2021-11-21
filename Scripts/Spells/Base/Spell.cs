@@ -30,7 +30,8 @@ namespace Server.Spells
 {
     public abstract class Spell : ISpell
     {
-        public static int RANGE = 17;
+        public static int RANGE = Shard.POL_STYLE ? 17 : 10;
+
         public Mobile m_Caster;
         private readonly Item m_Scroll;
         private readonly SpellInfo m_Info;
