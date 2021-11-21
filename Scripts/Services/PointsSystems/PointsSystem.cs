@@ -477,13 +477,13 @@ namespace Server.Engines.Points
 
             PontosFerreiro = new PontosFerreiro();
             PontosAlfaiate = new PontosAlfaiate();
-            PontosTrabalho = new PontosTrabalho();
             PontosCarpinteiro = new PontosCarpinteiro();
             PontosMinerador = new PontosMinerador();
             PontosAlquimista = new PontosAlquimista();
             PontosCozinha = new PontosCozinha();
             PontosLenhador = new PontosLenhador();
             PontosOuro = new PontosOuro();
+            PontosPescador = new PontosPescador();
         }
 
         public static void HandleKill(BaseCreature victim, Mobile damager, int index)

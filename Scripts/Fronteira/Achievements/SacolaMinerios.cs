@@ -30,6 +30,33 @@ namespace Server.Ziden.Achievements
         }
     }
 
+    public class ScolaJoias : Bag
+    {
+        [Constructable]
+        public ScolaJoias()
+        {
+            foreach(var type in BasePedraPreciosa.Elementos.Keys)
+            {
+                var joia = (BasePedraPreciosa)Activator.CreateInstance(type);
+                joia.Amount = 20;
+                this.AddItem(joia);
+            }
+            Name = "Sacola";
+        }
+
+        public ScolaJoias(Serial s) : base(s) { }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+        }
+    }
+
     public class SacolaHalloween : Bag
     {
 
