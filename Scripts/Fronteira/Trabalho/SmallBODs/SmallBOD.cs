@@ -307,6 +307,10 @@ namespace Server.Engines.BulkOrders
 			{
 				EventSink.InvokeBODUsed(new BODUsedEventArgs(from, this));
 				from.SendGump(new SmallBODGump(from, this));
+                if(this.Complete)
+                {
+                    from.SendMessage(78, "Esta ordem esta completa. Arresta ela para o NPC que pediu a ordem para completa-la !");
+                }
 			}
             else
 			{

@@ -68,6 +68,5 @@ namespace Server.Gumps
                 from.SendMessage("Voce chegou em " + dg.Name);
             }
         }
-
     }
 }

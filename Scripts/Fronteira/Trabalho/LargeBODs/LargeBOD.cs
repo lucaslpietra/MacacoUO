@@ -215,7 +215,11 @@ namespace Server.Engines.BulkOrders
 			{
 				EventSink.InvokeBODUsed(new BODUsedEventArgs(from, this));
 				from.SendGump(new LargeBODGump(from, this));
-			}
+                if (this.Complete)
+                {
+                    from.SendMessage(78, "Esta ordem esta completa. Arresta ela para o NPC que pediu a ordem para completa-la !");
+                }
+            }
 			else
 			{
 				from.SendMessage("Voce precisa colocar isso na sua mochila"); // You must have the deed in your backpack to use it.

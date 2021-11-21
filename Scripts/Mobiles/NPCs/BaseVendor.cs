@@ -1501,6 +1501,7 @@ namespace Server.Mobiles
 
             var info = GetSellInfo();
 
+            /*
             foreach (IShopSellInfo ssi in info)
             {
                 if (ssi.IsSellable(dropped))
@@ -1511,6 +1512,7 @@ namespace Server.Mobiles
                     return true;
                 }
             }
+            */
 
             this.SayTo(from, "Nao tenho interesse nisto", 0x3B2); // I am not interested in this.
 
