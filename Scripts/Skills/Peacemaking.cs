@@ -312,9 +312,9 @@ namespace Server.SkillHandlers
 
                                         from.DoHarmful(targ);
 
-                                        if (Utility.Random(10) == 1)
+                                        if (Utility.Random(3) == 1)
                                         {
-                                            targ.SendMessage("A musica nao fez efeito");
+                                            targ.SendMessage("Voce resistiu ao efeito da musica");
                                             from.SendMessage("O alvo resistiu a musica");
                                             targ.PlaySound(0x1E6);
                                             targ.FixedEffect(0x42CF, 10, 5);
@@ -340,13 +340,14 @@ namespace Server.SkillHandlers
                                             case CraftResource.Pinho:
                                             case CraftResource.Carvalho:
                                                 danoBase = 2;
-                                                rng = 0;
+                                                rng = 1;
                                                 break;
                                         }
-                                        if (m_Instrument.Quality == ItemQuality.Exceptional)
+                                        if (m_Instrument.Quality != ItemQuality.Exceptional)
                                         {
-                                            rng += 1;
-                                        }
+                                            if (rng > 0)
+                                                rng -= 1;
+                                        } 
 
                                         var ratio = (from.Skills.Peacemaking.Value + from.Skills.Musicianship.Value) / 200;
                                         var par = Utility.Random(danoBase, rng) * ratio;
