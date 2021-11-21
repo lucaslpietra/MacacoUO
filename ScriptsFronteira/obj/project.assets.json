@@ -28,23 +28,11 @@
       },
       "Scripts/1.0.0": {
         "type": "project",
-        "dependencies": {
-          "Server": "1.0.0"
-        },
         "compile": {
           "bin/placeholder/Scripts.dll": {}
         },
         "runtime": {
           "bin/placeholder/Scripts.dll": {}
-        }
-      },
-      "Server/1.0.0": {
-        "type": "project",
-        "compile": {
-          "bin/placeholder/Server.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Server.dll": {}
         }
       }
     }
@@ -197,11 +185,6 @@
       "type": "project",
       "path": "../Scripts/Scripts.csproj",
       "msbuildProject": "../Scripts/Scripts.csproj"
-    },
-    "Server/1.0.0": {
-      "type": "project",
-      "path": "../Server/Server.csproj",
-      "msbuildProject": "../Server/Server.csproj"
     }
   },
   "projectFileDependencyGroups": {

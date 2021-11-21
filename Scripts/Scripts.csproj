@@ -214,6 +214,7 @@
     <Compile Include="Fronteira\Factions\Mobiles\Vendors\FactionOreVendor.cs" />
     <Compile Include="Fronteira\Factions\Mobiles\Vendors\FactionReagentVendor.cs" />
     <Compile Include="Fronteira\Guia\DungeonsGump.cs" />
+    <Compile Include="Fronteira\Mobs\VendorWS.cs" />
     <Compile Include="Fronteira\PaidBankChest.cs" />
     <Compile Include="Fronteira\Camping\Acampamento.cs" />
     <Compile Include="Fronteira\Camping\GumpCamping.cs" />
@@ -480,8 +481,6 @@
     <Compile Include="Fronteira\Talentos\TalentosGump.cs" />
     <Compile Include="Fronteira\Talentos\ValeTalento.cs" />
     <Compile Include="Fronteira\Talismans\TalismanMagico.cs" />
-    <Compile Include="Fronteira\Teleporter\ConfirmGump.cs" />
-    <Compile Include="Fronteira\Teleporter\WorldOmniporter.cs" />
     <Compile Include="Fronteira\Tutorial\WispGuia\Guia.cs" />
     <Compile Include="Fronteira\Tutorial\WispGuia\NovoWispGuia.cs" />
     <Compile Include="Fronteira\Tutorial\WispGump.cs" />
@@ -999,6 +998,7 @@
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\XmlAttachments\XmlCast.cs" />
     <Compile Include="Skills\Imbuing\Core\DisenchantGump.cs" />
     <Compile Include="Skills\Imbuing\Core\EssenciaMagica.cs" />
+    <Compile Include="VendorInfo\SBWs.cs" />
     <Compile Include="VendorInfo\SBMuambeiro.cs" />
     <Compile Include="Fronteira\Achievements\Achievement.cs" />
     <Compile Include="Fronteira\Achievements\AchievementEntry.cs" />

@@ -636,11 +636,12 @@ namespace Server.Spells
 
             var noto = Notoriety.Compute(from, to);
             var notoDiff = noto != Notoriety.Innocent;
-            Shard.Debug("Can Harm Noto =" + noto);
+            if(Shard.DebugEnabled)
+                Shard.Debug("Can Harm Noto =" + noto, from);
             return (from.IsStaff() || (ignoreNoto || notoDiff) || from.Murderer);
         }
 
-        public static IEnumerable<IDamageable> AcquireIndirectTargets(Mobile caster, IPoint3D p, Map map, int range, bool allies=false)
+        public static IEnumerable<IDamageable> AcquireIndirectTargets(Mobile caster, IPoint3D p, Map map, int range, bool allies=false, bool self=false)
         {
             if (map == null)
             {
@@ -651,18 +652,21 @@ namespace Server.Spells
 
             foreach (var id in eable.OfType<IDamageable>())
             {
-                if (id == caster)
+                if (!self && id == caster)
                 {
+                    Shard.Debug("Nao pode ser harmful com si mesmo", caster);
                     continue;
                 }
 
                 if (!id.Alive || !caster.InLOS(id)|| (!allies && !caster.CanBeHarmful(id, false)))
                 {
+                    Shard.Debug("Nao pode ser harmful com allies", caster);
                     continue;
                 }
 
                 if (id is Mobile && !SpellHelper.ValidIndirectTarget(caster, (Mobile)id))
                 {
+                    Shard.Debug("Alvo invalido", caster);
                     continue;
                 }
 

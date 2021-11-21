@@ -111,9 +111,9 @@ namespace Server.Items
             {
                 from.SendMessage("Aguarde para jogar no tempo correto !"); // You should throw it now!
                 Using.Add(from, this);
-                var tempo = 3;
+                var tempo = 4;
                 if (Utility.RandomBool())
-                    tempo = 2;
+                    tempo = 3;
                 m_Timer = Timer.DelayCall(
                         TimeSpan.FromSeconds(1),
                         TimeSpan.FromSeconds(1),
@@ -154,6 +154,21 @@ namespace Server.Items
                 return;
             }
 
+            bool damageThrower = false;
+
+            if (from != null)
+            {
+                if (from.Target is ThrowTarget && ((ThrowTarget)from.Target).Potion == this)
+                {
+                    Target.Cancel(from);
+                }
+
+                if (IsChildOf(from.Backpack) || Parent == from)
+                {
+                    damageThrower = true;
+                }
+            }
+
             Consume();
 
             for (int i = 0; m_Users != null && i < m_Users.Count; ++i)
@@ -182,7 +197,18 @@ namespace Server.Items
             int min = Scale(from, MinDamage);
             int max = Scale(from, MaxDamage);
 
-            var list = SpellHelper.AcquireIndirectTargets(from, loc, map, ExplosionRange).OfType<Mobile>().ToList();
+            var list = SpellHelper.AcquireIndirectTargets(from, loc, map, ExplosionRange, true, true).OfType<Mobile>().ToList();
+
+            if (from != null && damageThrower && !list.Contains(from))
+            {
+                list.Add(from);
+            }
+
+            if (Shard.DebugEnabled)
+            {
+                Shard.Debug("Alvos da pot de explo: " + string.Join(",", list.Select(m => m.Name).ToList()));
+            }
+               
 
             foreach (var m in list)
             {
