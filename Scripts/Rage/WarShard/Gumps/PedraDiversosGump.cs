@@ -81,7 +81,8 @@ namespace Server.Gumps
                                 {
                                     sender.Mobile.AddToBackpack(new GreaterHealPotion());
 									sender.Mobile.AddToBackpack(new ManaPotion());
-                                    sender.Mobile.AddToBackpack(new GreaterManaPotion());
+                                    if(Shard.POL_STYLE)
+                                        sender.Mobile.AddToBackpack(new GreaterManaPotion());
                                     sender.Mobile.AddToBackpack(new TotalRefreshPotion());
                                     sender.Mobile.AddToBackpack(new GreaterAgilityPotion());
                                     sender.Mobile.AddToBackpack(new InvisibilityPotion());
