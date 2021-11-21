@@ -55,6 +55,9 @@ namespace Server.Items
 
         public override void Drink(Mobile from)
         {
+            if(!Shard.POL_STYLE)
+                return;
+
             DoMana(from);
             PlayDrinkEffect(from);
 

@@ -220,15 +220,18 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(Nightshade), 1044358, 3, 1044366);
             AddRecipe(index, (int)TinkerRecipes.InvisibilityPotion);
 
-            index = AddCraft(typeof(LesserManaPotion), 1116348, new TextDefinition("Poção de Mana Menor"), 30, 50, typeof(DaemonBlood), 1044529, 1, "Voce precisa de sangue de demonio");
-            AddRes(index, typeof(Bottle), 1044529, 1, 500315);
+            if(Shard.POL_STYLE)
+            {
+                index = AddCraft(typeof(LesserManaPotion), 1116348, new TextDefinition("Poção de Mana Menor"), 30, 50, typeof(DaemonBlood), 1044529, 1, "Voce precisa de sangue de demonio");
+                AddRes(index, typeof(Bottle), 1044529, 1, 500315);
 
-            index = AddCraft(typeof(ManaPotion), 1116348, new TextDefinition("Poção de Mana"), 55, 80, typeof(DaemonBlood), 1044529, 3, "Voce precisa de sangue de demonio");
-            AddRes(index, typeof(Bottle), 1044529, 1, 500315);
+                index = AddCraft(typeof(ManaPotion), 1116348, new TextDefinition("Poção de Mana"), 55, 80, typeof(DaemonBlood), 1044529, 3, "Voce precisa de sangue de demonio");
+                AddRes(index, typeof(Bottle), 1044529, 1, 500315);
 
-            index = AddCraft(typeof(GreaterManaPotion), 1116348, new TextDefinition("Poção de Mana Maior"), 55, 80, typeof(DaemonBlood), 1044529, 10, "Voce precisa de sangue de demonio");
-            AddRes(index, typeof(Bottle), 1044529, 1, 500315);
-            AddRecipe(index, (int)AlchemyRecipes.ManaMaior);
+                index = AddCraft(typeof(GreaterManaPotion), 1116348, new TextDefinition("Poção de Mana Maior"), 55, 80, typeof(DaemonBlood), 1044529, 10, "Voce precisa de sangue de demonio");
+                AddRes(index, typeof(Bottle), 1044529, 1, 500315);
+                AddRecipe(index, (int)AlchemyRecipes.ManaMaior);
+            }
 
             index = AddCraft(typeof(IntelligencePotion), 1116349, new TextDefinition("Poção de Inteligência"), 25, 75, typeof(DaemonBlood), 1044529, 2, "Voce precisa de sangue de demonio");
             AddRes(index, typeof(Bottle), 1044529, 1, 500315);

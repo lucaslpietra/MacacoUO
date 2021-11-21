@@ -72,7 +72,7 @@ namespace Server.Mobiles
             {
                 case 0: pot = new HealPotion(); break;
                 case 1: pot = new RefreshPotion(); break;
-                case 2: pot = new ManaPotion(); break;
+                case 2: pot = new HealPotion(); break;
                 case 3: pot = new CurePotion(); break;
             }
             pot.Amount = 50;
