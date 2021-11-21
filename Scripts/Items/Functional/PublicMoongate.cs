@@ -394,10 +394,10 @@ namespace Server.Items
                 new PMEntry(new Point3D(850, 3525, -38), 1113603), // Royal City
 			});
 
-        public static readonly PMList[] UORLists = { Trammel, Felucca };
-        public static readonly PMList[] UORListsYoung = { Trammel };
+        public static readonly PMList[] UORLists = { Trammel, Dungeons };
+        public static readonly PMList[] UORListsYoung = { Trammel, Dungeons };
         public static readonly PMList[] LBRLists = { Trammel, Dungeons };
-        public static readonly PMList[] LBRListsYoung = { Trammel, Ilshenar };
+        public static readonly PMList[] LBRListsYoung = { Trammel, Dungeons };
         public static readonly PMList[] AOSLists = { Trammel, Felucca, Ilshenar, Malas };
         public static readonly PMList[] AOSListsYoung = { Trammel, Ilshenar, Malas };
         public static readonly PMList[] SELists = { Trammel, Felucca, Ilshenar, Malas, Tokuno };
