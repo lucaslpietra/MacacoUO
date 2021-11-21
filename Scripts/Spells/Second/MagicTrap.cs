@@ -47,6 +47,8 @@ namespace Server.Spells.Second
                 item.TrapType = TrapType.MagicTrap;
                 item.TrapPower = Core.AOS ? Utility.RandomMinMax(10, 50) : 1;
                 item.TrapLevel = 0;
+                if(item is Pouch)
+                    item.Hue = 38;
 
                 Point3D loc = item.GetWorldLocation();
 

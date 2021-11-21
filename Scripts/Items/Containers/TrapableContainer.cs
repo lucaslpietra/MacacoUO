@@ -83,7 +83,10 @@ namespace Server.Items
                 }
 
                 this.PrivateMessage("* disparou armadilha *", from); // You set off a trap!
-
+                if(this.Hue == 38 && this is Pouch)
+                {
+                    this.Hue = 0;
+                }
                 switch ( this.m_TrapType )
                 {
                     case TrapType.ExplosionTrap:

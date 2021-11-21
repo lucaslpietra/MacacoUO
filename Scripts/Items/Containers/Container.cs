@@ -536,6 +536,39 @@ namespace Server.Items
         }
     }
 
+    public class TrappedPouch : TrapableContainer
+    {
+        [Constructable]
+        public TrappedPouch()
+            : base(0xE79)
+        {
+            this.TrapLevel = 0;
+            this.TrapPower = 1;
+            this.Hue = 38;
+            this.Name = "Bauzinho Explosivo";
+            this.TrapType = TrapType.MagicTrap;
+            Weight = 1.0;
+        }
+
+        public TrappedPouch(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
     public class Pouch : TrapableContainer
     {
         [Constructable]
