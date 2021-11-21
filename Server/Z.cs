@@ -10,6 +10,7 @@ namespace Server
 
         public static bool WARSHARD { get { return Config.Get("General.Warshard", false); } }
         public static bool RP { get { return Config.Get("General.RP", false); } }
+        public static bool GUIA { get { return Config.Get("General.Guia", false); } }
         public static bool TITULOS_RP = false;
 
         public static string SEGREDO_WEB_API = "segredowebapi";

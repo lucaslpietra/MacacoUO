@@ -2758,6 +2758,7 @@ namespace Server.Mobiles
                 return;
             }
 
+            /*
             if (this.Paralyzed)
             {
                 if (item is Container)
@@ -2770,6 +2771,7 @@ namespace Server.Mobiles
                     return;
                 }
             }
+            */
 
             // AUTO EQUIP SPHERE
             if ((item is BaseClothing || item is BaseWeapon || item is BaseArmor && !(item is Dagger)) && item.IsChildOf(Backpack))
