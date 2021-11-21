@@ -62,6 +62,8 @@ namespace Server.Gumps
             if (info.ButtonID > 0)
             {
                 var dg = dgs[info.ButtonID - 1];
+
+                BaseCreature.TeleportPets(from, dg.Location, dg.Map);
                 from.MoveToWorld(dg.Location, dg.Map);
                 from.SendMessage("Voce chegou em " + dg.Name);
             }
