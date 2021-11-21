@@ -1,5 +1,4 @@
 using Server.Gumps;
-using Server.Items;
 using Server.Targeting;
 using System;
 using System.Collections.Generic;
@@ -55,7 +54,7 @@ namespace Server.Items
         {
             base.OnDoubleClick(from);
             from.Target = new IT(this);
-            from.SendMessage("Escolha o equipamento que deseja colocar a pedra preciosa");
+            from.SendMessage("Escolha o equipamento que deseja imbuir a pedra preciosa usando a skill Imbuing");
         }
 
         public class IT : Target
@@ -112,7 +111,7 @@ namespace Server.Items
                 });
                 if (!from.CheckSkillMult(SkillName.Imbuing, 50, 120))
                 {
-                    from.SendMessage("Voce falhou em colocar a pedra preciosa no equipamento");
+                    from.SendMessage("Voce falhou ao imbuir a pedra preciosa no equipamento");
                     return;
                 }
                 if (arma != null)

@@ -83,6 +83,7 @@ namespace Server.Gumps
                         from.SendMessage("Voce agora pode canalizar energia elemental em seu corpo.");
                         from.SendMessage("Equipe armaduras elementais para ativar o elemento em seu corpo.");
                         from.SendMessage("Fabrique armaduras elementais usando pedras preciosas.");
+                        from.PlaceInBackpack(new Amber());
                         from.SendGump(new ElementosGump(from));
                         break;
                     }
