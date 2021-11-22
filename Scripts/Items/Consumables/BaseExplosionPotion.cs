@@ -326,7 +326,7 @@ namespace Server.Items
             private readonly BaseExplosionPotion m_Potion;
 
             public ThrowTarget(BaseExplosionPotion potion)
-                : base(12, true, TargetFlags.None)
+                : base(8, true, TargetFlags.None)
             {
                 m_Potion = potion;
             }

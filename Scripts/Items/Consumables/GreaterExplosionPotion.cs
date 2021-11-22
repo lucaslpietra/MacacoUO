@@ -34,6 +34,7 @@ namespace Server.Items
                 return 20;
             }
         }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -8,13 +8,13 @@ namespace Server.Items
         public HealPotion()
             : base(PotionEffect.Vida)
         {
-            FiverRatio = true;
+            FiverRatio = Shard.POL_STYLE;
         }
 
         public HealPotion(Serial serial)
             : base(serial)
         {
-            FiverRatio = true;
+            FiverRatio = Shard.POL_STYLE;
         }
 
         public override int MinHeal

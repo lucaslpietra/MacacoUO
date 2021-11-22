@@ -56,11 +56,11 @@ namespace Server.Spells.Seventh
                 }
                 else if (m is Mobile)
                 {
-                    damage = Utility.Random(35, 13);
+                    damage = Utility.Random(27, 22);
 
                     if (this.CheckResisted((Mobile)m))
                     {
-                        damage *= 0.65;
+                        damage *= 0.6;
                         ((Mobile)m).SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                     }
 

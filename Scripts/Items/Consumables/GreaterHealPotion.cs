@@ -13,13 +13,13 @@ namespace Server.Items
         public GreaterHealPotion()
             : base(PotionEffect.VidaForte)
         {
-            FiverRatio = true;
+            FiverRatio = Shard.POL_STYLE;
         }
 
         public GreaterHealPotion(Serial serial)
             : base(serial)
         {
-            FiverRatio = true;
+            FiverRatio = Shard.POL_STYLE;
         }
 
 
@@ -28,7 +28,7 @@ namespace Server.Items
         {
             get
             {
-                return 10;
+                return Shard.POL_STYLE ? 10 : 9;
             }
         }
 
@@ -36,7 +36,7 @@ namespace Server.Items
         {
             get
             {
-                return 70;
+                return Shard.POL_STYLE ? 70 : 30;
             }
         }
 

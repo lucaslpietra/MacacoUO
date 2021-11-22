@@ -201,16 +201,16 @@ namespace Server.Items
                         return;
                     }
 
-                    if (!reusingExploPot && !from.BeginAction(typeof(BasePotion)))
+                    var tipoCooldown = Shard.POL_STYLE ? typeof(BasePotion) : this.GetType();
+
+                    if (!reusingExploPot && !from.BeginAction(tipoCooldown))
                     {
                         from.SendMessage("Aguarde para beber outra pocao"); // You must wait to perform another action.
                         return;
                     }
 
                     // DELAY GLOBAL DAS POTIONS, 10 segundos
-                    Timer.DelayCall(TimeSpan.FromSeconds(10), () => from.EndAction(typeof(BasePotion)));
-
-                    Shard.Debug("Explo ? " + (this is BaseExplosionPotion), from);
+                    Timer.DelayCall(TimeSpan.FromSeconds(10), () => from.EndAction(tipoCooldown));
 
                     if (this is BaseExplosionPotion && this.Amount > 1)
                     {

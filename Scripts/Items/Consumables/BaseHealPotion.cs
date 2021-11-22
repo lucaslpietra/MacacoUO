@@ -57,19 +57,33 @@ namespace Server.Items
             }
         }
 
+        private static void ReleaseHealLock(object state)
+        {
+            ((Mobile)state).EndAction(typeof(BaseHealPotion));
+        }
+
         public override void Drink(Mobile from)
         {
-            if (MortalStrike.IsWounded(from))
+            if (from.Poisoned || MortalStrike.IsWounded(from))
             {
                 from.LocalOverheadMessage(MessageType.Regular, 0x22, true, "Voce nao pode beber isto estando neste estado"); // You can not heal yourself in your current state.
             }
             else
             {
-                DoHeal(from);
-                PlayDrinkEffect(from);
+                if (Shard.POL_STYLE || from.BeginAction(typeof(BaseHealPotion)))
+                {
+                    DoHeal(from);
+                    PlayDrinkEffect(from);
+                    if (!(from.Region is PvPRegion))
+                        Consume();
 
-                if(!(from.Region is PvPRegion))
-                    Consume();
+                    if(!Shard.POL_STYLE)
+                        Timer.DelayCall(TimeSpan.FromSeconds(this.Delay), new TimerStateCallback(ReleaseHealLock), from);
+                }
+                else
+                {
+                    from.SendMessage("Voce precisa aguardar para usar isto novamente"); // You must wait 10 seconds before using another healing potion.
+                }
             }
         }
     }
