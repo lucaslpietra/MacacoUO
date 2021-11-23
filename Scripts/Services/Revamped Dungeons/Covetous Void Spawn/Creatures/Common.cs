@@ -8,7 +8,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public DazzledHarpy()
 		{
-			Name = "a dazzled harpy";
+			Name = "harpia enfurecida";
             FightMode = FightMode.Aggressor;
 
             SetHits(120, 140);
@@ -49,7 +49,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public VampireMongbat()
 		{
-			Name = "a vampire mongbat";
+			Name = "vampirinho";
             FightMode = FightMode.Aggressor;
             Hue = 1461;
 
@@ -97,7 +97,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public HeadlessMiner()
 		{
-			Name = "headless miner";
+			Name = "minerador sem cabeca";
             FightMode = FightMode.Aggressor;
 
             SetStr(60, 100);
@@ -142,7 +142,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public StrangeGazer()
 		{
-			Name = "a strange gazer";
+			Name = "magolho sinistro";
 
             SetStr(100, 130);
             SetDex(90, 120);

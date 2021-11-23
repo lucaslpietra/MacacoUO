@@ -140,7 +140,7 @@ namespace Server.Gumps
                 {
                     AddButton(35, offset + (int)(height / 2) - 5, 0x837, 0x838, 200 + Index, GumpButtonType.Reply, 0);
                     if (item.TooltipStr != null)
-                        AddHtml(135, offset + (int)(height / 2) + 10, 300, 40, item.TooltipStr, false, false);
+                        AddHtml(135, offset + (int)(height / 2) - 5, 300, 40, item.TooltipStr, false, false);
                     else
                         AddHtmlLocalized(135, offset + (int)(height / 2) - 5, 300, 40, item.Tooltip, false, false);
                 }
