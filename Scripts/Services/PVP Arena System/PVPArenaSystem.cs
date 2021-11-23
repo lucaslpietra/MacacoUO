@@ -36,8 +36,8 @@ namespace Server.Engines.ArenaSystem
 
             if (Enabled)
             {
-                CommandSystem.Register("ResetArenaStats", AccessLevel.Administrator, ResetStats_OnTarget);
-                CommandSystem.Register("ArenaSetup", AccessLevel.Administrator, ArenaSetup);
+                CommandSystem.Register("PvPResetArenaStats", AccessLevel.Administrator, ResetStats_OnTarget);
+                CommandSystem.Register("PvPArenaSetup", AccessLevel.Administrator, ArenaSetup);
             }
         }
 

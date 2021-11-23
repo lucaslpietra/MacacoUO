@@ -51,27 +51,27 @@ namespace Server.TournamentSystem
             AddHtml(45, 32, 100, 20, Color("#FFFFFF", "My Teams"), false, false);
             AddButton(10, 32, 4005, 4006, 1, GumpButtonType.Reply, 0);
 
-            AddLabel(47, 70, LabelHue, "Team");
-            AddLabel(202, 70, LabelHue, "Fighters");
+            AddLabel(47, 70, LabelHue, "Time");
+            AddLabel(202, 70, LabelHue, "Lutadores");
             AddLabel(282, 70, m_SortByOption == SortByOption.ArenaWins ? SelectHue : LabelHue, "Arena");
-            AddLabel(382, 70, m_SortByOption == SortByOption.TournamentWins ? SelectHue : LabelHue, "Tournament");
-            AddLabel(482, 70, m_SortByOption == SortByOption.TournamentChampionships ? SelectHue : LabelHue, "Championships");
-            AddLabel(577, 70, m_SortByOption == SortByOption.Points ? SelectHue : LabelHue, "Points");
-            AddLabel(682, 70, m_SortByOption == SortByOption.DamageRatio ? SelectHue : LabelHue, "Damage Ratio");
+            AddLabel(382, 70, m_SortByOption == SortByOption.TournamentWins ? SelectHue : LabelHue, "Torneio");
+            AddLabel(482, 70, m_SortByOption == SortByOption.TournamentChampionships ? SelectHue : LabelHue, "Campeonato");
+            AddLabel(577, 70, m_SortByOption == SortByOption.Points ? SelectHue : LabelHue, "Pontos");
+            AddLabel(682, 70, m_SortByOption == SortByOption.DamageRatio ? SelectHue : LabelHue, "Ratio de Dano");
 
             switch (m_SortByTeamType)
             {
                 case ArenaTeamType.None:
-                    AddLabel(54, 515, 0, "Viewing All");
+                    AddLabel(54, 515, 0, "Ver Todos");
                     break;
                 case ArenaTeamType.Single:
-                    AddLabel(54, 515, 0, "Viewing Singles");
+                    AddLabel(54, 515, 0, "Ver Singles");
                     break;
                 case ArenaTeamType.Twosome:
-                    AddLabel(54, 515, 0, "Viewing Twosomes");
+                    AddLabel(54, 515, 0, "Ver Twosomes");
                     break;
                 default:
-                    AddLabel(54, 515, 0, "Viewing Foursomes");
+                    AddLabel(54, 515, 0, "Ver Foursomes");
                     break;
             }
 
@@ -82,27 +82,27 @@ namespace Server.TournamentSystem
             switch (m_SortByOption)
             {
                 default:
-                    AddLabel(207, 515, 0, "No Filter");
+                    AddLabel(207, 515, 0, "Sem Filtro");
                     useList = new List<ArenaTeam>(ArenaTeam.Teams);
                     break;
                 case SortByOption.ArenaWins:
-                    AddLabel(207, 515, 0, "Viewing by Arena Wins");
+                    AddLabel(207, 515, 0, "Ver por vitorias");
                     useList = ArenaTeam.Teams.OrderByDescending(t => t.Wins).ToList();
                     break;
                 case SortByOption.TournamentWins:
-                    AddLabel(207, 515, 0, "Viewing by Tournament Wins");
+                    AddLabel(207, 515, 0, "Ver por torneios");
                     useList = ArenaTeam.Teams.OrderByDescending(t => t.TournamentWins).ToList();
                     break;
                 case SortByOption.TournamentChampionships:
-                    AddLabel(207, 515, 0, "Viewing by Tournament Championships");
+                    AddLabel(207, 515, 0, "Ver por campeonatos");
                     useList = ArenaTeam.Teams.OrderByDescending(t => t.TournamentChampionships).ToList();
                     break;
                 case SortByOption.Points:
-                    AddLabel(207, 515, 0, "Viewing by Points");
+                    AddLabel(207, 515, 0, "Ver por pontos");
                     useList = ArenaTeam.Teams.OrderByDescending(t => t.Points).ToList();
                     break;
                 case SortByOption.DamageRatio:
-                    AddLabel(207, 515, 0, "Vieweing by Damage Ratio");
+                    AddLabel(207, 515, 0, "Ver por ratio de dano");
                     useList = ArenaTeam.Teams.OrderByDescending(t => t.DamageGiven - t.DamageTaken).ToList();
                     break;
             }

@@ -34,11 +34,11 @@ namespace Server.Engines.ArenaSystem
             AddHtml(0, 12, 300, 20, ColorAndCenter("#FFFFFF", "Arena Setup"), false, false);
             AddHtml(12, 47, 274, 40, Color("#FFFFFF", "Below are the available PVP Arena's."), false, false);
 
-            for(int i = 0; i < ArenaDefinition.Definitions.Length; i++)
+            for (int i = 0; i < ArenaDefinition.Definitions.Length; i++)
             {
                 var def = ArenaDefinition.Definitions[i];
                 bool exists = PVPArenaSystem.Arenas != null && PVPArenaSystem.Arenas.Any(arena => arena.Definition == def);
-              
+
                 AddHtml(45, 105 + (i * 25), 200, 20, Color("#FFFFFF", String.Format("{0} [{1}]", def.Name, exists ? "Enabled" : PVPArenaSystem.Instance != null && PVPArenaSystem.Instance.IsBlocked(def) ? "Blocked" : "Disabled")), false, false);
                 AddButton(10, 105 + (i * 25), !exists ? 4023 : 4017, !exists ? 4024 : 4018, i + 500, GumpButtonType.Reply, 0);
             }
@@ -75,12 +75,17 @@ namespace Server.Engines.ArenaSystem
                             }
                             else
                             {
-                                var arena = PVPArenaSystem.Arenas.FirstOrDefault(a => a.Definition == d);
+
+                                PVPArena arena = null;
+
+                                if(PVPArenaSystem.Arenas != null)
+                                    arena = PVPArenaSystem.Arenas.FirstOrDefault(a => a.Definition == d);
 
                                 if (arena != null)
                                 {
                                     PVPArenaSystem.Instance.AddBlockedArena(arena);
                                 }
+
                             }
                         }
 
@@ -592,7 +597,7 @@ namespace Server.Engines.ArenaSystem
 
             if (Duel.BattleMode == BattleMode.Survival)
             {
-                for(int i = 0; i < Participants.Count; i++)
+                for (int i = 0; i < Participants.Count; i++)
                 {
                     int x = 10;
 
@@ -653,7 +658,7 @@ namespace Server.Engines.ArenaSystem
 
         public override void OnResponse(RelayInfo info)
         {
-            if(info.ButtonID > 0 && !Arena.PendingDuels.ContainsKey(Duel))
+            if (info.ButtonID > 0 && !Arena.PendingDuels.ContainsKey(Duel))
             {
                 PVPArenaSystem.SendMessage(User, 1115957); // This session has expired. Please create a new session and try again.
                 return;
@@ -772,7 +777,7 @@ namespace Server.Engines.ArenaSystem
             foreach (var kvp in duel.GetParticipants())
             {
                 var pm = kvp.Key;
-                
+
                 if (pm.HasGump(typeof(PendingDuelGump)))
                 {
                     pm.CloseGump(typeof(PendingDuelGump));
@@ -1011,7 +1016,7 @@ namespace Server.Engines.ArenaSystem
 
             List<PlayerMobile> partList = Duel.ParticipantList();
 
-            for(int i = 0; i < partList.Count; i++)
+            for (int i = 0; i < partList.Count; i++)
             {
                 int hue = LabelHue;
 
@@ -1068,7 +1073,7 @@ namespace Server.Engines.ArenaSystem
 
         public override void OnResponse(RelayInfo info)
         {
-            switch(info.ButtonID)
+            switch (info.ButtonID)
             {
                 case 0:
                     if (!FromPlayer)
@@ -1144,7 +1149,7 @@ namespace Server.Engines.ArenaSystem
 
                 y += 20;
 
-                if(i != 0 && i % perPage == 0)
+                if (i != 0 && i % perPage == 0)
                 {
                     y = 80;
 
@@ -1246,9 +1251,9 @@ namespace Server.Engines.ArenaSystem
             object title = titleIndex >= 0 && titleIndex < WhosStats.RewardTitles.Count ? WhosStats.RewardTitles[titleIndex] : null;
             string rewardTitle = "None";
 
-            if(title is int)
+            if (title is int)
                 rewardTitle = String.Format("#{0}", (int)title);
-            else if(title is string)
+            else if (title is string)
                 rewardTitle = (string)title;
 
             AddHtmlLocalized(0, 12, 580, 20, CenterLoc, "#1115976", 0xFFFF, false, false); // <CENTER>Arena Menu - Stats</CENTER>
@@ -1328,7 +1333,7 @@ namespace Server.Engines.ArenaSystem
                     BaseGump.SendGump(new PendingDuelGump(User, duel, Arena));
                 }
             }
-            else if(info.ButtonID == 1)
+            else if (info.ButtonID == 1)
             {
                 PlayerStatsEntry entry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(User);
 
