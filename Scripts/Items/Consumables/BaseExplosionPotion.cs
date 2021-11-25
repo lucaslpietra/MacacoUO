@@ -77,13 +77,11 @@ namespace Server.Items
 
         public override void Drink(Mobile from)
         {
-            /*
             if (from.Spell != null && from.Spell.IsCasting)
             {
                 from.SendMessage("Voce nao pode usar uma pocao de explosao enquanto conjura magias"); // You can not use a purple potion while paralyzed.
                 return;
             }
-            */
 
             ThrowTarget targ = from.Target as ThrowTarget;
             Stackable = false; // Scavenged explosion potions won't stack with those ones in backpack, and still will explode.
