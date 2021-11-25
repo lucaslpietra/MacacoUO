@@ -158,7 +158,7 @@ namespace Server.Fronteira.Tutorial.WispGuia
                 Local = new Point3D(3503, 2483, 26),
                 PrecisaEvento = true,
                 FraseIniciar = "Chega de papo, vamos agora para uma aventura !!",
-                FraseProgresso = "Va a norte de Haven e encontre o Zeh Roela.",
+                FraseProgresso = "Va a norte de Haven e encontre o Zeh Roela e de dois cliques nele !",
                 FraseCompletar = "Otimo, agora vamos a dungeon",
                 Proximo = PassoTutorial.MATAR_MAGO
             });

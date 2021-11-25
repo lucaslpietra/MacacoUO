@@ -14,7 +14,6 @@ namespace Server.Mobiles
     [CorpseName("a wisp corpse")]
     public class WispGuia : BaseCreature, IConditionalVisibility
     {
-
         public static void Configure()
         {
             if (Shard.RP)
