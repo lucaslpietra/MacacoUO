@@ -70,7 +70,6 @@ namespace Server.Gumps
                         loc = m.LastDungeonEntrance;
                     }
 
-
                     if (loc.X != 0 && loc.Y != 0)
                     {
                         Effects.SendLocationEffect(m.Location, m.Map, 0x3728, 10, 10);

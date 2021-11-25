@@ -7000,8 +7000,11 @@ namespace Server.Mobiles
 
         public override void OnExpGain(SkillName skill, ushort exp)
         {
-            this.CloseGump(typeof(SkillExperienceGump));
-            this.SendGump(new SkillExperienceGump(this, skill, exp));
+            if(this.Skills[skill].Value < this.Skills[skill].Cap && this.SkillsTotal < this.SkillsCap)
+            {
+                this.CloseGump(typeof(SkillExperienceGump));
+                this.SendGump(new SkillExperienceGump(this, skill, exp));
+            }
         }
 
         public override void OnSkillChange(SkillName skill, double oldBase)

@@ -53,7 +53,7 @@ namespace Server.Services.UltimaStore
         {
             if(!Cods.ContainsKey(cod))
             {
-                from.SendMessage("Codigo invalido. Para obter um codigo visite www.ultimafronteirashard.com.br e doe para o servidor.");
+                from.SendMessage("Codigo invalido. Para obter um codigo visite www.dragonicage.com e doe para o servidor.");
                 from.SendMessage("Doando voce recebera um codigo que pode ser convertido em moedas magicas !");
                 return;
             }

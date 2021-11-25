@@ -31,7 +31,7 @@ namespace Server.Gumps
             this.AddBackground(114, 104, 499, sizeY, 9200);
 
             this.AddLabel(320, 110, 1153, @"Menu de Ajuda");
-            this.AddHtml(172, 130, 1153, 23, @"www.ultimafronteirashard.com.br/wiki", (bool)false, (bool)false);
+            this.AddHtml(172, 130, 1153, 23, @"www.dragonicage.com/wiki", (bool)false, (bool)false);
 
             this.AddHtml(172, 162, 172, 23, @"Enviar Pombo Correio", (bool)true, (bool)false);
             this.AddHtml(172, 186, 410, 44, @"Envie um pombo correio a staff que sera respondido assim que possivel.", (bool)false, (bool)false);
