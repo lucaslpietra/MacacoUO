@@ -8,7 +8,7 @@ namespace Server.Gumps
 {
     public class DeadGump : Gump
     {
-        public DeadGump()
+        public DeadGump(PlayerMobile player)
             : base(0, 0)
         {
             this.Closable = false;
@@ -21,7 +21,7 @@ namespace Server.Gumps
             this.AddHtml(264, 154, 249, 60, @"Seu corpo ficará caído no local em que você morreu até que você retorne a ele.", (bool)false, (bool)false);
             this.AddButton(159, 219, 9721, 9721, (int)Buttons.Teleportar, GumpButtonType.Reply, 0);
             if (!Shard.WARSHARD)
-                this.AddHtml(196, 223, 248, 25, @"Teleportar a um curandeiro", (bool)true, (bool)false);
+                this.AddHtml(196, 223, 248, 25, @"Teleportar a entrada da dungeon", (bool)true, (bool)false);
             else
                 this.AddHtml(196, 223, 248, 25, @"Teleportar para o Hall", (bool)true, (bool)false);
             this.AddHtml(195, 296, 248, 25, @"Continuar como alma", (bool)true, (bool)false);
@@ -61,32 +61,15 @@ namespace Server.Gumps
                         return;
                     }
 
-                    BaseHealer curandeiro = null;
                     var loc = Point3D.Zero;
-                    double maxD = 500;
-                    foreach (var h in BaseHealer.healers)
-                    {
-                        if (h.Map != m.Map)
-                            continue;
 
-                        var d = h.Location.GetDistance(m.Location);
-                        if (d < maxD)
-                        {
-                            maxD = d;
-                            curandeiro = h;
-                            loc = curandeiro.Location;
-                        }
+                    Shard.Debug("Checking last teleport");
+                    if (m.LastDungeonEntrance != Point3D.Zero && m.Region != null && (m.Region is DungeonRegion || m.Region is DungeonGuardedRegion))
+                    {
+                        Shard.Debug("Achei last teleport");
+                        loc = m.LastDungeonEntrance;
                     }
 
-                    if (curandeiro == null)
-                    {
-                        Shard.Debug("Checking last teleport");
-                        if (m.LastDungeonEntrance != Point3D.Zero && m.Region != null && (m.Region is DungeonRegion || m.Region is DungeonGuardedRegion))
-                        {
-                            Shard.Debug("Achei last teleport"); 
-                            loc = m.LastDungeonEntrance;
-                        }
-                    }
 
                     if (loc.X != 0 && loc.Y != 0)
                     {
@@ -99,11 +82,12 @@ namespace Server.Gumps
                         m.SendGump(new ResurrectGump(m, ResurrectMessage.Healer));
 
                         return;
-                    } else
+                    }
+                    else
                     {
                         m.SendMessage("Nao foi encontrado um local para levar sua alma...");
                     }
-                    
+
                     break;
             }
         }

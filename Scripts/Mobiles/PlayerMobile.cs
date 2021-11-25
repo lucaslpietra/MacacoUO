@@ -4975,7 +4975,7 @@ namespace Server.Mobiles
                 ((BaseVoidCreature)LastKiller).Mutate(VoidEvolution.Killing);
 
             if (this.Region is DungeonRegion)
-                SendGump(new DeadGump());
+                SendGump(new DeadGump(this));
         }
 
         private List<Mobile> m_PermaFlags;
