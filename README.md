@@ -1,6 +1,6 @@
 MacacoUO
 
-Emulador de Ultima Online Brasileiro forkado do ServUO
+Emulador de Ultima Online Brasileiro forkado do RunUO
 
 # Requisitos
 
