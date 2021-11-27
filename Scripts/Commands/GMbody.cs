@@ -119,8 +119,8 @@ namespace Server.Commands
                             PackItem(new Spellbook((ulong)18446744073709551615));
                             PackItem(new NecromancerSpellbook((ulong)0xffff));
                             PackItem(new BookOfChivalry());
-                            PackItem(new BookOfBushido());
-                            PackItem(new SpellweavingBook((ulong)0xffff));
+                            //PackItem(new BookOfBushido());
+                            PackItem(new Spellbook((ulong)0xffff));
 
                             from.RawStr = 100;
                             from.RawDex = 100;

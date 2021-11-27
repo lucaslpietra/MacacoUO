@@ -121,7 +121,7 @@ namespace Server.Items
             switch ( this.Tier )
             { 
                 case 1:					
-                    c = new BookOfChivalry();
+                    c = new Spellbook();
                     c.MoveToWorld(new Point3D(2924, 979, -18), this.Map);
                     c.Movable = false;
                     list.Add(c);

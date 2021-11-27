@@ -45,7 +45,7 @@ namespace Server.Gumps
             AddHtml(252, 469, 432, 24, @"- Nao pode usar 'Estou Preso'", (bool)false, (bool)false);
             AddHtml(414, 278, 77, 25, @"Contrato", (bool)false, (bool)false);
             AddButton(241, 572, 1154, 1154, (int)Buttons.RP, GumpButtonType.Reply, 0);
-            AddHtml(242, 525, 440, 24, @"Ver Regras em www.ultimafronteirashard.com.br/wiki", (bool)true, (bool)false);
+            AddHtml(242, 525, 440, 24, @"Ver Regras em www.dragonicage.com/wiki", (bool)true, (bool)false);
             AddHtml(273, 570, 182, 24, @"Personagem RP", (bool)false, (bool)false);
             AddButton(499, 572, 1151, 1151, (int)Buttons.NORMAL, GumpButtonType.Reply, 0);
             AddHtml(530, 571, 182, 24, @"Personagem NORMAL", (bool)false, (bool)false);

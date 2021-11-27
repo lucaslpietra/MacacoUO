@@ -353,7 +353,7 @@ namespace Server.Engines.Quests
 				
             this.AddReward(new BaseReward(typeof(ArcaneCircleScroll), 1071026)); // Arcane Circle			
             this.AddReward(new BaseReward(typeof(GiftOfRenewalScroll), 1071027)); // Gift of Renewal
-            this.AddReward(new BaseReward(typeof(SpellweavingBook), 1031600)); // Spellweaving Spellbook
+            this.AddReward(new BaseReward(typeof(Spellbook), 1031600)); // Spellweaving Spellbook
         }
 
         public override QuestChain ChainID

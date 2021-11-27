@@ -163,7 +163,7 @@ namespace Server.Mobiles
 
             if (obj.Local != Point3D.Zero)
             {
-                if (!(Jogador.Region is DungeonRegion && Jogador.Region is DungeonGuardedRegion))
+                if (!(Jogador.Region is DungeonRegion || Jogador.Region is DungeonGuardedRegion))
                 {
                     Jogador.QuestArrow = new QuestArrow(Jogador, obj.Local);
                     Jogador.QuestArrow.Update();

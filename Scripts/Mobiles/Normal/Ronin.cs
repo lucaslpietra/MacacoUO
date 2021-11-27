@@ -88,7 +88,7 @@ namespace Server.Mobiles
 		public override void OnDeath( Container c )
  		{
 			base.OnDeath( c );
-	 		c.DropItem( new BookOfBushido() );
+	 		//c.DropItem( new BookOfBushido() );
  		}
 
 		public override void GenerateLoot()
