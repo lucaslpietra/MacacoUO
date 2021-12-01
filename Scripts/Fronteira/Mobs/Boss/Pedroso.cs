@@ -143,7 +143,7 @@ namespace Server.Mobiles
                     Terremoto(pl);
                 }
 
-                if (Hue == 38 && !IsCooldown("nervoso"))
+                if (Hue == 38 && !IsCooldown("nervoso") && pl.GetDistanceToSqrt(this) <= 10)
                 {
                     SetCooldown("nervoso", TimeSpan.FromSeconds(10));
                     this.MovingParticles(pl, 6008, 5, 0, false, false, 9502, 4019, 0x160);
