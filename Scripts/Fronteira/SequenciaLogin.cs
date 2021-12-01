@@ -40,27 +40,7 @@ namespace Server.Fronteira
             }
             else
             {
-                if(pm.Wisp != null && pm.Profession==0 && pm.Wisp.Passo > (int)PassoTutorial.PEGAR_KIT)
-                {
-                    pm.SendGump(new NonRPClassGump());
-                }
-                else if (pm.Profession == 0 && pm.Wisp == null)
-                {
-                    if (pm.ContaRP)
-                    {
-                        pm.SendMessage("Escolha seu kit de skills iniciais");
-                        pm.SendGump(new GumpCharRP(pm));
-                    }
-                    else
-                    {
-                        //pm.SendGump(new NonRPClassGump());
-                        pm.SendGump(new GumpLoreThirdAge());
-                    }
-                }
-                else
-                {
-                    //NewPlayerGuildAutoJoin.SendStarterGuild(pm);
-                }
+              
             }
         }
     }
