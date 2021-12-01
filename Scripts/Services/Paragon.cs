@@ -12,7 +12,7 @@ namespace Server.Mobiles
         public static int Hue = 0x501;// Paragon hue
 
         // Buffs
-        public static double HitsBuff = 3;
+        public static double HitsBuff = 10;
         public static double StrBuff = 1.05;
         public static double IntBuff = 1.20;
         public static double DexBuff = 1.20;
@@ -20,7 +20,7 @@ namespace Server.Mobiles
         public static double SpeedBuff = 1.20;
         public static double FameBuff = 1.40;
         public static double KarmaBuff = 1.40;
-        public static int DamageBuff = 3;
+        public static int DamageBuff = 10;
 
         public static bool ValidParagon(BaseCreature bc)
         {
