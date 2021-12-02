@@ -302,7 +302,7 @@ namespace Server.Engines.Craft
             m_Circle = 6;
             m_Mana = 40;
 
-            AddSpell(typeof(GateTravelScroll), Reg.BlackPearl, Reg.MandrakeRoot, Reg.SulfurousAsh);
+            //AddSpell(typeof(GateTravelScroll), Reg.BlackPearl, Reg.MandrakeRoot, Reg.SulfurousAsh);
 
             /*
             AddSpell(typeof(BladeSpiritsScroll), Reg.BlackPearl, Reg.Nightshade, Reg.MandrakeRoot);
@@ -374,6 +374,7 @@ namespace Server.Engines.Craft
 
             int index;
 
+            index = AddCraft(typeof(GateTravelScroll), 1111694, "Pergaminho de Portal", 80, 100, typeof(RecallScroll), "Pergaminho de Recall", 10);
 
             index = AddCraft(typeof(EnchantedSwitch), 1044294, 1072893, 45.0, 95.0, typeof(BlankScroll), 1044377, 1, 1044378);
             AddRes(index, typeof(SpidersSilk), 1044360, 1, 1044253);

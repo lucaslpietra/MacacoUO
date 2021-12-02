@@ -123,6 +123,7 @@
     <Compile Include="Commands\Custom\Secure.cs" />
     <Compile Include="Commands\Custom\Trancar.cs" />
     <Compile Include="Fronteira\Comandos\ListaComandos.cs" />
+    <Compile Include="Fronteira\Exp\PctExpGump.cs" />
     <Compile Include="Fronteira\Exp\SkillExpGump.cs" />
     <Compile Include="Fronteira\Factions\Core\Election.cs" />
     <Compile Include="Fronteira\Factions\Core\Faction.cs" />

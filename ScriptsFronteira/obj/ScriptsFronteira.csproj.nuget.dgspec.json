@@ -72,29 +72,10 @@
       "restore": {
         "projectUniqueName": "C:\\Users\\gabri\\Desktop\\ServUO\\GIT\\UF2\\UltimaFronteira\\Scripts\\Scripts.csproj",
         "projectName": "Scripts",
-        "projectPath": "C:\\Users\\gabri\\Desktop\\ServUO\\GIT\\UF2\\UltimaFronteira\\Scripts\\Scripts.csproj",
-        "frameworks": {
-          "net451": {
-            "projectReferences": {
-              "C:\\Users\\gabri\\Desktop\\ServUO\\GIT\\UF2\\UltimaFronteira\\Server\\Server.csproj": {
-                "projectPath": "C:\\Users\\gabri\\Desktop\\ServUO\\GIT\\UF2\\UltimaFronteira\\Server\\Server.csproj"
-              }
-            }
-          }
-        }
+        "projectPath": "C:\\Users\\gabri\\Desktop\\ServUO\\GIT\\UF2\\UltimaFronteira\\Scripts\\Scripts.csproj"
       },
       "frameworks": {
         "net451": {}
-      }
-    },
-    "C:\\Users\\gabri\\Desktop\\ServUO\\GIT\\UF2\\UltimaFronteira\\Server\\Server.csproj": {
-      "restore": {
-        "projectUniqueName": "C:\\Users\\gabri\\Desktop\\ServUO\\GIT\\UF2\\UltimaFronteira\\Server\\Server.csproj",
-        "projectName": "Server",
-        "projectPath": "C:\\Users\\gabri\\Desktop\\ServUO\\GIT\\UF2\\UltimaFronteira\\Server\\Server.csproj"
-      },
-      "frameworks": {
-        "net48": {}
       }
     }
   }

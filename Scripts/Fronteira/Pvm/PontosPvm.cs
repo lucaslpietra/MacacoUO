@@ -132,7 +132,6 @@ namespace Server.Ziden.Kills
                                         pl.SetCooldown("msgdg", TimeSpan.FromHours(1));
                                         pl.SendMessage(78, "Monstros dentro de dungeons dao mais experiencia do que locais como este.");
                                     }
-                                 
                                 }
 
                                 if(pl.Elemento != ElementoPvM.None)

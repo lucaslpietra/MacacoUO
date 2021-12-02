@@ -17,7 +17,7 @@ namespace Server.Gumps
             AddBackground(10, 40, 220, 54, 9200);
           
 
-            AddHtml(20, 45, 200, 25, text + " " + pct + "%", true, false);
+            AddHtml(20, 45, 200, 25, text + " " + pct, true, false);
             AddImageTiled(20, 72, 110, 12, 2053);
             AddImageTiled(20, 72, (int)pct, 12, 2054);
         }
