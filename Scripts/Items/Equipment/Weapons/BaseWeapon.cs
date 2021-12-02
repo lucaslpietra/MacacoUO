@@ -1945,16 +1945,13 @@ namespace Server.Items
             {
                 double chance = (parry - bushidoNonRacial) / (attacker.Player ? 400 : 350.0);
 
-                if (parry > 50 && attacker is BaseCreature)
+                if (parry > 70 && attacker is BaseCreature)
                 {
-                    if (defender.Player)
-                        chance += parry / 400;
-                    else
-                        chance += parry / 600;
+                    chance += parry / 600;
                 }
 
                 if (attacker is PlayerMobile && ((PlayerMobile)attacker).Talentos.Tem(Talento.Finta))
-                    chance -= 20;
+                    chance -= 0.2;
 
                 if (attacker != null)
                 {
@@ -2059,6 +2056,12 @@ namespace Server.Items
 
             var blocked = CheckParry(defender, attacker);
 
+            BaseShield attackerShield = attacker.FindItemOnLayer(Layer.TwoHanded) as BaseShield;
+            if(attackerShield != null && defender is BaseCreature)
+            {
+                damage = (int)(damage * 0.7);
+            }
+
             if (blocked)
             {
                 BaseShield shield = defender.FindItemOnLayer(Layer.TwoHanded) as BaseShield;
@@ -2074,7 +2077,8 @@ namespace Server.Items
                 if (!attacker.Player)
                     bloqueado += (int)(damage * 0.1);
 
-                Shard.Debug("Bloqueado dano: " + bloqueado, defender);
+                if(Shard.DebugEnabled)
+                    Shard.Debug("Bloqueado dano: " + bloqueado, defender);
                 damage -= bloqueado;
 
                 defender.Animate(AnimationType.Parry, 0);
@@ -2142,6 +2146,7 @@ namespace Server.Items
                 //Skill Masteries
 
             }
+             if(Shard.DebugEnabled)
             Shard.Debug("Dano depois do parry: " + damage, defender);
             return new Tuple<int, bool>(damage, blocked);
         }
