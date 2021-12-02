@@ -146,6 +146,9 @@ namespace Server.Ziden.Kills
                                         expElem = (int)maxExp;
                                     }
                                     pl.Elementos.SetExp(pl.Elemento, expElem);
+                                    var pct = (expElem / maxExp) * 100;
+                                    pl.CloseGump(typeof(PctExpGump));
+                                    pl.SendGump(new PctExpGump(pl, (int)pct, pl.Elemento.ToString()+" "+expElem+"/"+maxExp));
                                 }
 
                                 //pl.SendMessage(78, "Bonus de XP: Semana FULL EXP");
