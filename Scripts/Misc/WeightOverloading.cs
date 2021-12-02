@@ -19,9 +19,42 @@ namespace Server.Misc
 
         public static void FatigueOnDamage(Mobile m, int damage, DFAlgorithm df)
         {
-            var stam = (damage / 5) * (m.Dex / 100);
-            m.Stam -= stam;
-            return;
+            double fatigue = 0.0;
+            var hits = Math.Max(1, m.Hits);
+
+            switch (m.DFA)
+            {
+                case DFAlgorithm.Standard:
+                    {
+                        fatigue = (damage * (m.HitsMax / hits) * ((double)m.Stam / m.StamMax)) - 5;
+                    }
+                    break;
+                case DFAlgorithm.PainSpike:
+                    {
+                        fatigue = (damage * ((m.HitsMax / hits) + ((50.0 + m.Stam) / m.StamMax) - 1.0)) - 5;
+                    }
+                    break;
+            }
+
+            var reduction = BaseArmor.GetInherentStaminaLossReduction(m) + 1;
+
+            if (reduction > 1)
+            {
+                fatigue = fatigue / reduction;
+            }
+
+            if (fatigue > 0)
+            {
+                // On EA, if follows this special rule to reduce the chances of your stamina being dropped to 0
+                if (m.Stam - fatigue <= 10)
+                {
+                    m.Stam -= (int)(fatigue * ((double)m.Hits / (double)m.HitsMax));
+                }
+                else
+                {
+                    m.Stam -= (int)fatigue;
+                }
+            }
         }
 
         public static void EventSink_Movement(MovementEventArgs e)

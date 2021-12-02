@@ -22,7 +22,7 @@ namespace Server
 
         public static bool DebugEnabled { get { return Config.Get("General.Debug", false); } }
 
-        public static bool POL_STYLE { get { return Config.Get("General.POL", true); } }
+        public static bool POL_STYLE { get { return Config.Get("General.POL", false); } }
 
         public static bool CAST_CLASSICO { get { return Config.Get("General.CAST_CLASSICO", false); } }
 
