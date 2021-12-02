@@ -1642,10 +1642,14 @@ namespace Server.Items
                             from.Elemento = this.Elemento;
                             from.FixedEffect(0x375A, 10, 15);
                             from.PlaySound(0x1E7);
+                        } else if(from.Elemento != this.Elemento)
+                        {
+                            from.SendMessage("Pecas do elemento " + this.Elemento.ToString() + " " + count + "/4");
                         }
                     } else
                     {
                         from.SendMessage("Voce sente energia ao equipar esta armadura, porem nao entende como usa-la.");
+                        from.SendMessage("Procure a estatua elemental no centro de New Haven para aprender a usar elementos");
                     }
                 
                 }
