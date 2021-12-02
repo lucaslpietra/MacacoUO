@@ -1568,7 +1568,8 @@ namespace Server.Items
                 {
                     bonus += 25;
                 }
-            } else
+            }
+            else
             {
                 var bonusElemental = defender.GetBonusElemento(ElementoPvM.Fogo) + defender.GetBonusElemento(ElementoPvM.Vento) + defender.GetBonusElemento(ElementoPvM.Raio) + +defender.GetBonusElemento(ElementoPvM.Gelo);
                 bonusElemental /= 2;
@@ -1664,7 +1665,7 @@ namespace Server.Items
             return attacker.CheckSkill(atkSkill.SkillName, chance);
         }
 
-        public virtual TimeSpan GetDelay(Mobile m, Mobile defender=null)
+        public virtual TimeSpan GetDelay(Mobile m, Mobile defender = null)
         {
             double speed = Speed;
             if (speed == 0)
@@ -1674,96 +1675,42 @@ namespace Server.Items
 
             double delayInSeconds;
 
-            if (Core.SE)
-            {
-                /*
-                * This is likely true for Core.AOS as well... both guides report the same
-                * formula, and both are wrong.
-                * The old formula left in for AOS for legacy & because we aren't quite 100%
-                * Sure that AOS has THIS formula
-                */
-                int bonus = AosAttributes.GetValue(m, AosAttribute.WeaponSpeed);
-
-                if (bonus > 60)
-                {
-                    bonus = 60;
-                }
-
-                double ticks;
-
-                if (Core.ML)
-                {
-                    int stamTicks = m.Stam / 30;
-
-                    ticks = speed * 4;
-                    ticks = Math.Floor((ticks - stamTicks) * (100.0 / (100 + bonus)));
-                }
-                else
-                {
-                    speed = Math.Floor(speed * (bonus + 100.0) / 100.0);
-
-                    if (speed <= 0)
-                    {
-                        speed = 1;
-                    }
-
-                    ticks = Math.Floor((80000.0 / ((m.Stam + 100) * speed)) - 2);
-                }
-
-                // Swing speed currently capped at one swing every 1.25 seconds (5 ticks).
-                if (ticks < 5)
-                {
-                    ticks = 5;
-                }
-
-                delayInSeconds = ticks * 0.25;
-            }
-            else if (Core.AOS)
-            {
-                int v = (m.Stam + 100) * (int)speed;
-
-                int bonus = AosAttributes.GetValue(m, AosAttribute.WeaponSpeed);
-
-                v += AOS.Scale(v, bonus);
-
-                if (v <= 0)
-                {
-                    v = 1;
-                }
-
-                delayInSeconds = Math.Floor(40000.0 / v) * 0.5;
-
-                // Maximum swing rate capped at one swing per second
-                // OSI dev said that it has and is supposed to be 1.25
-                if (delayInSeconds < 1.25)
-                {
-                    delayInSeconds = 1.25;
-                }
-            }
+            var semBonusStr = AnimalForm.GetContext(m) != null || this is BaseRanged || !m.Player;
+            // FORMULA DE SPEED
+            int v = 0;
+            if (Shard.POL_STYLE)
+                v = ((m.Dex + (m.Str / (semBonusStr ? m.Str : 5))) + 100) * (int)speed;
             else
             {
-                var semBonusStr = AnimalForm.GetContext(m) != null || this is BaseRanged || !m.Player;
-                // FORMULA DE SPEED
-                int v = 0;
-                if(Shard.POL_STYLE)
-                    v = ((m.Dex + (m.Str / (semBonusStr ? m.Str : 5))) + 100) * (int)speed;
+                if (!m.Player)
+                    v = (m.Dex + 105) * (int)speed;
                 else
-                    v = (m.Stam + 100) * (int)speed;
-                if (v <= 0)
                 {
-                    v = 1;
+                    var stat = (int)(m.Dex * (m.Stam / m.StamMax));
+                    v = (stat + 100) * (int)speed;
                 }
-                if (semBonusStr)
-                    v = (int)(v * 0.85);
+            }
 
-                if(m.Player && defender != null && !defender.Player)
-                {
-                    var bonus = m.GetBonusElemento(ElementoPvM.Vento) / 2;
-                    if (bonus > 0.9) bonus = 0.9;
-                    v += (int)(bonus * v);
-                }
 
-                delayInSeconds = 15000.0 / v;
+            if (v <= 0)
+            {
+                v = 1;
+            }
+            if (semBonusStr)
+                v = (int)(v * 0.85);
+
+            if (m.Player && defender != null && !defender.Player)
+            {
+                var bonus = m.GetBonusElemento(ElementoPvM.Vento) / 2;
+                if (bonus > 0.9) bonus = 0.9;
+                v += (int)(bonus * v);
+            }
+
+            delayInSeconds = 15000.0 / v;
+            if (Shard.DebugEnabled)
+            {
+                Shard.Debug("Velocidade de ataque: " + delayInSeconds + " segundos", m);
+                Shard.Debug("V: " + v, m);
             }
 
             var delay = TimeSpan.FromSeconds(delayInSeconds);
@@ -2057,7 +2004,7 @@ namespace Server.Items
             var blocked = CheckParry(defender, attacker);
 
             BaseShield attackerShield = attacker.FindItemOnLayer(Layer.TwoHanded) as BaseShield;
-            if(attackerShield != null && defender is BaseCreature)
+            if (attackerShield != null && defender is BaseCreature)
             {
                 damage = (int)(damage * 0.7);
             }
@@ -2077,7 +2024,7 @@ namespace Server.Items
                 if (!attacker.Player)
                     bloqueado += (int)(damage * 0.1);
 
-                if(Shard.DebugEnabled)
+                if (Shard.DebugEnabled)
                     Shard.Debug("Bloqueado dano: " + bloqueado, defender);
                 damage -= bloqueado;
 
@@ -2146,8 +2093,8 @@ namespace Server.Items
                 //Skill Masteries
 
             }
-             if(Shard.DebugEnabled)
-            Shard.Debug("Dano depois do parry: " + damage, defender);
+            if (Shard.DebugEnabled)
+                Shard.Debug("Dano depois do parry: " + damage, defender);
             return new Tuple<int, bool>(damage, blocked);
         }
 
@@ -2329,9 +2276,9 @@ namespace Server.Items
 
             var virtualArmor = defender.ArmorRating;
 
-            if(defender.Player && !attacker.Player)
+            if (defender.Player && !attacker.Player)
             {
-                virtualArmor += (virtualArmor/2) * ((defender.GetBonusElemento(ElementoPvM.Terra) + defender.GetBonusElemento(ElementoPvM.Luz)));
+                virtualArmor += (virtualArmor / 2) * ((defender.GetBonusElemento(ElementoPvM.Terra) + defender.GetBonusElemento(ElementoPvM.Luz)));
             }
 
             WeaponAbility a = WeaponAbility.GetCurrentAbility(attacker);
@@ -2438,7 +2385,7 @@ namespace Server.Items
                 var redux = Utility.Random(from, (to - from) + 1);
                 damage -= redux;
 
-                if(attacker.Player && !defender.Player)
+                if (attacker.Player && !defender.Player)
                 {
                     var bonus = attacker.GetBonusElemento(ElementoPvM.Terra) + attacker.GetBonusElemento(ElementoPvM.Raio);
                     damage += damage * bonus;
@@ -2983,10 +2930,10 @@ namespace Server.Items
 
             damage = AOS.Scale(damage, 100 + percentageBonus);
 
-            if(attacker.Player && !defender.Player)
+            if (attacker.Player && !defender.Player)
             {
                 var bonusCura = attacker.GetBonusElemento(ElementoPvM.Luz);
-                var cura = (damage/2) * bonusCura;
+                var cura = (damage / 2) * bonusCura;
                 if (cura > 0)
                     attacker.Heal((int)cura);
             }
@@ -4108,7 +4055,8 @@ namespace Server.Items
             {
                 damage += (2 * (int)m_DamageLevel) - 1;
                 damage += bonusOre / 4;
-            } else
+            }
+            else
             {
                 damage += bonusOre;
             }
@@ -4373,7 +4321,7 @@ namespace Server.Items
             }
 
             if (Shard.DebugEnabled)
-                Shard.Debug("Modifiers de dano "+modifiers*100+"%", attacker);
+                Shard.Debug("Modifiers de dano " + modifiers * 100 + "%", attacker);
 
             // Apply bonuses
             damage += (damage * modifiers);
