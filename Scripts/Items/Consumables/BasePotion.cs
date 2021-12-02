@@ -162,13 +162,6 @@ namespace Server.Items
                 }
             }
 
-            var ctx = BandageContext.GetContext(from);
-            if (ctx != null)
-            {
-                from.SendMessage("Voce parou de se curar com as bandagens para usar uma pocao");
-                ctx.StopHeal();
-            }
-
             if (!IsChildOf(from.Backpack))
             {
                 from.SendMessage("Isto precisa estar em sua mochila");
