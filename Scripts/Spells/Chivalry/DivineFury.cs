@@ -73,7 +73,6 @@ namespace Server.Spells.Chivalry
                 Caster.FixedParticles(0x376A, 1, 31, 9961, 1160, 0, EffectLayer.Waist);
                 Caster.FixedParticles(0x37C4, 1, 31, 9502, 43, 2, EffectLayer.Waist);
 
-                Caster.Stam = Caster.StamMax;
                 Timer t;
 
                 if (m_Table.ContainsKey(Caster))
