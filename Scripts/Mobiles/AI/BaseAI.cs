@@ -1108,8 +1108,10 @@ namespace Server.Mobiles
             }
             else if (CheckMove())
             {
+                m_Mobile.DebugSay("Checking move");
                 if (!m_Mobile.CheckIdle())
                 {
+                    m_Mobile.DebugSay("Random Walking");
                     WalkRandomInHome(2, 2, 1);
                 }
             }
@@ -2631,6 +2633,7 @@ namespace Server.Mobiles
             {
                 if (m_Mobile.Spawner is SpawnEntry)
                 {
+                    m_Mobile.DebugSay("Andando por volta do meu spawner");
                     Region region = ((SpawnEntry)m_Mobile.Spawner).Region;
 
                     if (m_Mobile.Region.AcceptsSpawnsFrom(region))

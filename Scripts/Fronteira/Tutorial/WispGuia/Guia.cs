@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 namespace Server.Fronteira.Tutorial.WispGuia
 {
 
+    // revamp aqui na parte final
+
     public class ObjetivoGuia
     {
         public Point3D LocalDungeon;
