@@ -274,12 +274,14 @@ namespace Server.Engines.UOStore
                     {
                         AddTooltip(entry.Tooltip);
                     }
+                    /*
                     else if(entry.TooltipStr != null)
                     {
-                        Shard.Debug("Renger TT String " + entry.TooltipStr);
+                        //Shard.Debug("Renger TT String " + entry.TooltipStr);
                         //AddTooltip(entry.TooltipStr);
-                        Add(new GumpTooltipStr(entry.TooltipStr));
+                        //Add(new GumpTooltipStr(entry.TooltipStr));
                     }
+                    */
                     else
                     {
                         var item = UltimaStore.UltimaStoreContainer.FindDisplayItem(entry.ItemType);
