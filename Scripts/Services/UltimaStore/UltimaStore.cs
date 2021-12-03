@@ -485,8 +485,11 @@ namespace Server.Engines.UOStore
 
         public static void OpenStore(PlayerMobile user)
         {
-            user.SendMessage("Loja desabilitada. Quem quiser doar para o shard, acesse nosso site !");
-            return;
+            if(user.AccessLevel < AccessLevel.GameMaster)
+            {
+                user.SendMessage("Loja desabilitada. Quem quiser doar para o shard, acesse nosso site !");
+                return;
+            }
 
             if (user == null || user.NetState == null)
             {
