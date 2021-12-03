@@ -153,7 +153,7 @@ namespace Server.Mobiles
                     if (p.Wisp != null)
                     {
                         p.Wisp.MataMerda();
-                        AddItem(new Gold(200 + Utility.Random(200)));
+                        AddItem(new Gold(100 + Utility.Random(100)));
                     }
                 }
             }

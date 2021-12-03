@@ -62,12 +62,12 @@ namespace Server.Misc
 
             if (!Shard.WARSHARD)
             {
-                pack.AddItem(new RedBook("seu diario", m.Name, 20, true));
-                pack.AddItem(new Gold(500)); // Starting gold can be customized here
-                pack.AddItem(new Candle());
+                pack.DropItem(new RedBook("a vida de "+ m.Name, m.Name, 20, true));
+                pack.DropItem(new Gold(500)); // Starting gold can be customized here
+                pack.DropItem(new Candle());
                 var book = new Spellbook((ulong)0x382A8C38);
                 book.LootType = LootType.Blessed;
-                pack.AddItem(book);
+                pack.DropItem(book);
 
             } else
             {

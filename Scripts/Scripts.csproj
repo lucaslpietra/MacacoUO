@@ -123,6 +123,7 @@
     <Compile Include="Commands\Custom\Secure.cs" />
     <Compile Include="Commands\Custom\Trancar.cs" />
     <Compile Include="Fronteira\Comandos\ListaComandos.cs" />
+    <Compile Include="Fronteira\Comandos\FixVendors.cs" />
     <Compile Include="Fronteira\Exp\PctExpGump.cs" />
     <Compile Include="Fronteira\Exp\SkillExpGump.cs" />
     <Compile Include="Fronteira\Factions\Core\Election.cs" />
@@ -401,6 +402,10 @@
     <Compile Include="Fronteira\Pvm\CustomDungeons.cs" />
     <Compile Include="Fronteira\Pvm\DungeonSelect.cs" />
     <Compile Include="Fronteira\Pvm\Dungeons\Esgoto\LanternaAmarela.cs" />
+    <Compile Include="Fronteira\Pvm\Dungeons\Noob\FadaMa.cs" />
+    <Compile Include="Fronteira\Pvm\Dungeons\Noob\MapaMagico.cs" />
+    <Compile Include="Fronteira\Pvm\Dungeons\Noob\OgroSuspeito.cs" />
+    <Compile Include="Fronteira\Pvm\Dungeons\Noob\QuestNoob.cs" />
     <Compile Include="Fronteira\Pvm\GateDG.cs" />
     <Compile Include="Fronteira\Rankings\RanksTrampo.cs" />
     <Compile Include="Fronteira\Skills\Informacoes.cs" />
