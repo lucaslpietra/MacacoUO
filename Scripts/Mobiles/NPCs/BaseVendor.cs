@@ -2637,8 +2637,6 @@ namespace Server.Mobiles
                 IsParagon = false;
             }
 
-            CanMove = false;
-
             if (version == 1)
             {
                 BribeMultiplier = Utility.Random(10);
