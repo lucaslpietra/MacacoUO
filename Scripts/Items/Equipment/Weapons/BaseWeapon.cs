@@ -2930,7 +2930,7 @@ namespace Server.Items
 
             damage = AOS.Scale(damage, 100 + percentageBonus);
 
-            if (attacker.Player && !defender.Player)
+            if (attacker.Player && !defender.Player && !attacker.Poisoned && !BleedAttack.IsBleeding(attacker))
             {
                 var bonusCura = attacker.GetBonusElemento(ElementoPvM.Luz);
                 var cura = (damage / 2) * bonusCura;
