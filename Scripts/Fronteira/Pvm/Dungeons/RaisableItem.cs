@@ -106,6 +106,7 @@ namespace Server.Items
 
             this.m_RaiseTimer = new RaiseTimer(this);
             this.m_RaiseTimer.Start();
+            this.PublicOverheadMessage("* abrindo *");
         }
 
         public override void Serialize(GenericWriter writer)
