@@ -44,6 +44,7 @@ namespace Server.Mobiles
 
             this.PackItem(new BlackPearl(5));
             this.PackReg(3);
+            this.SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
 
         public IceElemental(Serial serial)
@@ -59,10 +60,18 @@ namespace Server.Mobiles
             }
         }
 
+        public override bool BardImmune
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public override bool HasAura { get { return true; } }
         public override int AuraRange { get { return 2; } }
         public override int AuraFireDamage { get { return 0; } }
-        public override int AuraColdDamage { get { return 100; } }
+        public override int AuraColdDamage { get { return 2; } }
 
         public override void AuraEffect(Mobile m)
         {
@@ -72,7 +81,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Average, 2);
-            this.AddLoot(LootPack.Gems, 2);
+            if(Utility.RandomDouble() < 0.3)
+                this.AddLoot(LootPack.Gems, 1);
         }
 
         public override void Serialize(GenericWriter writer)

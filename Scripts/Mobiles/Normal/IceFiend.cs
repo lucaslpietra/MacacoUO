@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public IceFiend()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an ice fiend";
+            this.Name = "demonio gelido";
             this.Body = 43;
             this.BaseSoundID = 357;
 
@@ -70,7 +70,7 @@ namespace Server.Mobiles
         public override int AuraBaseDamage { get { return 15; } }
         public override int AuraRange { get { return 2; } }
         public override int AuraFireDamage { get { return 0; } }
-        public override int AuraColdDamage { get { return 100; } }
+        public override int AuraColdDamage { get { return 10; } }
 
         public override void AuraEffect(Mobile m)
         {

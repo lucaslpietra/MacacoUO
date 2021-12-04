@@ -1,3 +1,4 @@
+using Server.Items;
 using System;
 
 namespace Server.Mobiles
@@ -9,7 +10,7 @@ namespace Server.Mobiles
         public FrostOoze()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a frost ooze";
+            this.Name = "gosma gelida";
             this.Body = 94;
             this.BaseSoundID = 456;
 
@@ -36,7 +37,10 @@ namespace Server.Mobiles
             this.Karma = -450;
 
             this.VirtualArmor = 38;
+            this.PackItem(new Diamond());
+            this.SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
+
 
         public FrostOoze(Serial serial)
             : base(serial)
@@ -45,7 +49,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Gems, Utility.RandomMinMax(1, 2));
+            
         }
 
         public override void Serialize(GenericWriter writer)

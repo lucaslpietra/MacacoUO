@@ -21,7 +21,7 @@ namespace Server.Spells.Chivalry
         {
             get
             {
-                return TimeSpan.FromSeconds(2);
+                return TimeSpan.FromSeconds(2.5);
             }
         }
         public override double RequiredSkill

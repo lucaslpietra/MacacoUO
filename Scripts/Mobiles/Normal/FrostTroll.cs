@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public FrostTroll()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a frost troll";
+            this.Name = "troll gelido";
             this.Body = 55;
             this.BaseSoundID = 461;
 
@@ -40,6 +40,8 @@ namespace Server.Mobiles
             this.VirtualArmor = 50;
 
             this.PackItem(new DoubleAxe()); // TODO: Weapon??
+            this.SetSpecialAbility(SpecialAbility.ConductiveBlast);
+            this.SetWeaponAbility(WeaponAbility.BleedAttack);
         }
 
         public FrostTroll(Serial serial)

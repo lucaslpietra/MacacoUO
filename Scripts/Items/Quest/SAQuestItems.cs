@@ -667,7 +667,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            from.SendMessage("Joalheiros podem usar isto para fabricar talismans");
+            from.SendMessage("Tinkering talvez possa usar isto com ferramentas de joalheiro para fabricar talismans");
         }
 
         public override void Serialize(GenericWriter writer)

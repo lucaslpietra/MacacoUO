@@ -37,11 +37,27 @@ namespace Server.Mobiles
             SetSkill(SkillName.Tactics, 75.1, 80.0);
             SetSkill(SkillName.Wrestling, 60.1, 80.0);
 
+            SetSkill(SkillName.Hiding, 105.0, 110.0);
+            SetSkill(SkillName.Stealth, 105.0, 110.0);
+
             Fame = 3500;
             Karma = -3500;
 
             VirtualArmor = 32;
 
+        }
+
+        public override bool CanStealth { get { return true; } }
+
+        public override void OnThink()
+        {
+            base.OnThink();
+            if (!this.Hidden && this.Combatant == null)
+            {
+                this.AllowedStealthSteps = 999;
+                this.Hidden = true;
+                this.IsStealthing = true;
+            }
         }
 
         public IceSerpent(Serial serial)
@@ -84,7 +100,7 @@ namespace Server.Mobiles
 
             PackBodyPartOrBones();
 
-            if (0.025 > Utility.RandomDouble())
+            if (0.015 > Utility.RandomDouble())
                 PackItem(new GlacialStaff());
         }
 

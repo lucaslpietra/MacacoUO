@@ -220,15 +220,23 @@ namespace Server.Mobiles
         private ElementoPvM _elemento;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public override ElementoPvM Elemento { get {
+        public override ElementoPvM Elemento
+        {
+            get
+            {
                 if (_elemento == ElementoPvM.None)
                     _elemento = ElementoMonstro.DecideElementoMonstro(this);
                 return _elemento;
-            } set { _elemento = value; } }
+            }
+            set { _elemento = value; }
+        }
 
         public const int MaxLoyalty = 100;
 
-        public virtual bool IsSmart { get {
+        public virtual bool IsSmart
+        {
+            get
+            {
                 return IsParagon || this.Body.IsHuman || this.Body == 24 || this.Body.IsGargoyle || this.Body.IsGhost;
             }
         }
@@ -2560,7 +2568,7 @@ namespace Server.Mobiles
             if (m_TempDamageAbsorb > 0 && VialofArmorEssence.UnderInfluence(this))
                 damage -= damage / m_TempDamageAbsorb;
 
-            if(from != null && from.Elemento != ElementoPvM.None && from.Weapon is BaseWeapon && from.Elemento == ((BaseWeapon)from.Weapon).Elemento)
+            if (from != null && from.Elemento != ElementoPvM.None && from.Weapon is BaseWeapon && from.Elemento == ((BaseWeapon)from.Weapon).Elemento)
             {
                 EfeitosElementos.Effect(this, from.Elemento);
                 if (from.Elemento.ForteContra(this.Elemento))
@@ -2573,9 +2581,9 @@ namespace Server.Mobiles
                     Shard.Debug("Fraco contra elemento", from);
                     damage = (int)(damage * 0.85);
                 }
-                    
+
             }
-          
+
         }
 
         public virtual void AlterMeleeDamageTo(Mobile to, ref int damage)
@@ -2583,11 +2591,11 @@ namespace Server.Mobiles
             if (m_TempDamageBonus > 0 && TastyTreat.UnderInfluence(this))
                 damage += damage / m_TempDamageBonus;
 
-            if(to.Player && to.Elemento != ElementoPvM.None)
+            if (to.Player && to.Elemento != ElementoPvM.None)
             {
-                if(this.Elemento.ForteContra(to.Elemento))
+                if (this.Elemento.ForteContra(to.Elemento))
                 {
-                    if(!to.IsCooldown("efmsg"))
+                    if (!to.IsCooldown("efmsg"))
                     {
                         to.SetCooldown("efmsg");
                         to.SendMessage(78, "Este monstro causa mais dano a voce pois o elemento dele eh forte contra o seu");
@@ -2930,9 +2938,9 @@ namespace Server.Mobiles
             }
             Timer.DelayCall(TimeSpan.FromMilliseconds(100), () =>
             {
-                if(!Deleted && Alive)
+                if (!Deleted && Alive)
                     Tamavel.RegistraBixo(this);
-            });  
+            });
         }
 
         public BaseCreature(Serial serial)
@@ -3719,7 +3727,7 @@ namespace Server.Mobiles
                  dropped is LeftLeg || dropped is Torso || dropped is RightArm || dropped is RightLeg || dropped is IronIngot ||
                  dropped is DullCopperIngot || dropped is ShadowIronIngot || dropped is CopperIngot || dropped is BronzeIngot ||
                  dropped is GoldIngot || dropped is AgapiteIngot || dropped is VeriteIngot || dropped is ValoriteIngot))*/
-                                                                                          // Why do we need all this crap, when its checked in CheckFootPreference?
+            // Why do we need all this crap, when its checked in CheckFootPreference?
             {
                 Item f = dropped;
 
@@ -6419,10 +6427,10 @@ namespace Server.Mobiles
                 list.Add(EngravedText); // <BASEFONT COLOR=#668cff>Branded: ~1_VAL~<BASEFONT COLOR=#FFFFFF>
             }
 
-            if(!(this is BaseVendor))
+            if (!(this is BaseVendor))
                 list.Add(Gump.Cor(Elemento.ToString(), BaseArmor.CorElemento(Elemento)));
 
-            if(this.Tribe != TribeType.None)
+            if (this.Tribe != TribeType.None)
                 list.Add(this.Tribe.ToString());
 
             if (BardPacified)
@@ -6562,13 +6570,13 @@ namespace Server.Mobiles
             if (this.Skills.Magery.Value == 0)
                 return;
 
-            if(EB == -1)
+            if (EB == -1)
                 EB = SpellRegistry.GetRegistryNumber(typeof(EnergyBoltSpell));
-            if(FS == -1)
+            if (FS == -1)
                 FS = SpellRegistry.GetRegistryNumber(typeof(FlameStrikeSpell));
-            if(PARA == -1)
+            if (PARA == -1)
                 PARA = SpellRegistry.GetRegistryNumber(typeof(ParalyzeSpell));
-            if(EXPLO == -1)
+            if (EXPLO == -1)
                 EXPLO = SpellRegistry.GetRegistryNumber(typeof(ExplosionSpell));
 
             List<DamageStore> rights = GetLootingRights();
@@ -6577,9 +6585,9 @@ namespace Server.Mobiles
                 if (r.m_HasRight && r.m_Mobile != null && r.m_Mobile.Skills.Magery.Value > 50)
                 {
                     var book = Spellbook.FindRegular(r.m_Mobile);
-                    if(book != null)
+                    if (book != null)
                     {
-                        if(!book.HasSpell(EB) && !r.m_Mobile.Backpack.HasItem<EnergyBoltScroll>())
+                        if (!book.HasSpell(EB) && !r.m_Mobile.Backpack.HasItem<EnergyBoltScroll>())
                         {
                             PackItem(new EnergyBoltScroll());
                             return;
@@ -6606,18 +6614,18 @@ namespace Server.Mobiles
 
             // Qnd um bixo morrer, se eh de player e foi morto por monstros, os monstros viram no dono do bixo q morreu
             var master = this.GetMaster();
-            if(master is PlayerMobile)
+            if (master is PlayerMobile)
             {
-                foreach(var ag in this.Aggressors)
+                foreach (var ag in this.Aggressors)
                 {
-                    if(ag.Attacker is BaseCreature)
+                    if (ag.Attacker is BaseCreature)
                     {
                         ((BaseCreature)ag.Attacker).Combatant = master;
                         ag.Attacker.OverheadMessage("!");
                     }
                 }
             }
- 
+
             int treasureLevel = TreasureMapLevel;
             List<DamageStore> rights = GetLootingRights();
             DropScrollsGarantidos();
@@ -7104,9 +7112,9 @@ namespace Server.Mobiles
                 }
                 */
 
-                foreach(var i in c.Items)
+                foreach (var i in c.Items)
                 {
-                    if(i is Key)
+                    if (i is Key)
                     {
                         i.LootType = LootType.Blessed;
                         i.DuraSegundos = 60 * 60 * 12; // 12 horas
@@ -7130,7 +7138,7 @@ namespace Server.Mobiles
                     {
                         if (item is Gold)
                         {
-                            if(goldMult > 1)
+                            if (goldMult > 1)
                                 bonus = true;
                             item.Amount = (int)(item.Amount * goldMult);
                         }
@@ -8390,6 +8398,7 @@ namespace Server.Mobiles
         }
         #endregion
 
+
         public virtual void OnThink()
         {
             long tc = Core.TickCount;
@@ -8706,14 +8715,15 @@ namespace Server.Mobiles
 
         private static void TeleportPetsPlayer(PlayerMobile master, Point3D loc, Map map)
         {
-            foreach(var pet in master.AllFollowers)
+            foreach (var pet in master.AllFollowers)
             {
-                if(pet.Map == master.Map)
+                if (pet.Map == master.Map)
                 {
-                    if(pet.GetDistance(master) > 20)
+                    if (pet.GetDistance(master) > 20)
                     {
                         master.SendMessage(pet.Name + " estava muito distante");
-                    } else
+                    }
+                    else
                     {
                         pet.MoveToWorld(loc, map);
                     }

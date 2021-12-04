@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public IceSnake()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an ice snake";
+            this.Name = "cobra de gelo";
             this.Body = 52;
             this.Hue = 0x480;
             this.BaseSoundID = 0xDB;

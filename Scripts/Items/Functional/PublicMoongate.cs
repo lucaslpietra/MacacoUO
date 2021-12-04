@@ -287,7 +287,7 @@ namespace Server.Items
             Desc = desc;
         }
 
-        public PMEntry(Point3D loc,  TextDefinition desc)
+        public PMEntry(Point3D loc, TextDefinition desc)
         {
             Location = loc;
             Desc = desc;
@@ -297,8 +297,8 @@ namespace Server.Items
     public class PMList
     {
         public static readonly PMList Trammel = new PMList(
-            "Felucca",
-            "Felucca",
+            "Cidades",
+            "Cidades",
             Map.Trammel,
             new[]
             {
@@ -338,14 +338,26 @@ namespace Server.Items
           Map.Trammel,
           new[]
           {
-                    new PMEntry(new Point3D(2494, 927, 0), "Covetous"),
-                    new PMEntry(new Point3D(4111, 439, 5), "Deceit"),
-                    new PMEntry(new Point3D(1298, 1081, 5), "Despise"),
-                    new PMEntry(new Point3D(1176, 2637, 5), "Destard"),
-                    new PMEntry(new Point3D(4721, 3817, 5), "Hyloth"),
-                    new PMEntry(new Point3D(514, 1561, 5), "Shame"),
-                    new PMEntry(new Point3D(2043, 227, 14), "Wrong"),
-                    new PMEntry(new Point3D(1021, 1431, 0), "Caverna Orc"),
+                new PMEntry(new Point3D(2494, 927, 0), "Covetous"),
+                new PMEntry(new Point3D(4111, 439, 5), "Deceit"),
+                new PMEntry(new Point3D(1298, 1081, 5), "Despise"),
+                new PMEntry(new Point3D(1176, 2637, 5), "Destard"),
+                new PMEntry(new Point3D(4721, 3817, 5), "Hyloth"),
+                new PMEntry(new Point3D(514, 1561, 5), "Shame"),
+                new PMEntry(new Point3D(2043, 227, 14), "Wrong"),
+                new PMEntry(new Point3D(1021, 1431, 0), "Caverna Orc"),
+                new PMEntry(new Point3D(1999, 81, 4), "Caverna de Gelo"),
+
+          }, cost: 500);
+
+
+        public static readonly PMList Lugares = new PMList(
+          "Lugares",
+          "Lugares",
+          Map.Trammel,
+          new[]
+          {
+                new PMEntry(new Point3D(2768, 3517, 0), "Serpent Hold"),
           }, cost: 500);
 
         public static readonly PMList Ilshenar = new PMList(
@@ -395,10 +407,10 @@ namespace Server.Items
                 new PMEntry(new Point3D(850, 3525, -38), 1113603), // Royal City
 			});
 
-        public static readonly PMList[] UORLists = { Trammel, Dungeons };
-        public static readonly PMList[] UORListsYoung = { Trammel, Dungeons };
-        public static readonly PMList[] LBRLists = { Trammel, Dungeons };
-        public static readonly PMList[] LBRListsYoung = { Trammel, Dungeons };
+        public static readonly PMList[] UORLists = { Trammel, Dungeons, Lugares };
+        public static readonly PMList[] UORListsYoung = { Trammel, Dungeons, Lugares };
+        public static readonly PMList[] LBRLists = { Trammel, Dungeons, Lugares };
+        public static readonly PMList[] LBRListsYoung = { Trammel, Dungeons, Lugares };
         public static readonly PMList[] AOSLists = { Trammel, Felucca, Ilshenar, Malas };
         public static readonly PMList[] AOSListsYoung = { Trammel, Ilshenar, Malas };
         public static readonly PMList[] SELists = { Trammel, Felucca, Ilshenar, Malas, Tokuno };
@@ -489,13 +501,13 @@ namespace Server.Items
             return null;
         }
 
-        private readonly int m_Number;
-        private readonly int m_SelNumber;
+        private readonly TextDefinition m_Number;
+        private readonly TextDefinition m_SelNumber;
         private readonly Map m_Map;
         private readonly PMEntry[] m_Entries;
         private readonly int _cost;
 
-        public PMList(TextDefinition number, TextDefinition selNumber, Map map, PMEntry[] entries, int cost=0)
+        public PMList(TextDefinition number, TextDefinition selNumber, Map map, PMEntry[] entries, int cost = 0)
         {
             m_Number = number;
             m_SelNumber = selNumber;
@@ -508,7 +520,7 @@ namespace Server.Items
         public TextDefinition SelNumber { get { return m_SelNumber; } }
         public Map Map { get { return m_Map; } }
         public PMEntry[] Entries { get { return m_Entries; } }
-        public int Cost {  get { return _cost; } }
+        public int Cost { get { return _cost; } }
     }
 
     public class MoongateGump : Gump
@@ -633,13 +645,16 @@ namespace Server.Items
 
                 AddButton(10, 35 + (i * 25), 2117, 2118, 0, GumpButtonType.Page, Array.IndexOf(m_Lists, checkLists[i]) + 1);
 
-                if(i==0)
+                /*
+                if (i == 0)
                     AddHtml(30, 35 + (i * 25), 150, 20, "Felucca", false, false);
                 else
                     AddHtml(30, 35 + (i * 25), 150, 20, "Dungeons", false, false);
+                */
+                AddHtml(30, 35 + (i * 25), 150, 20, checkLists[i].Number, false, false);
             }
 
-         
+
 
             for (var i = 0; i < m_Lists.Length; ++i)
             {
@@ -723,15 +738,16 @@ namespace Server.Items
                 return;
             }
 
-            if(list.Cost > 0)
+            if (list.Cost > 0)
             {
-                if(!Banker.Withdraw(m_Mobile, list.Cost))
+                if (!Banker.Withdraw(m_Mobile, list.Cost))
                 {
                     if (!m_Mobile.Backpack.HasItem(typeof(Gold), list.Cost, true))
                     {
                         m_Mobile.SendMessage("Voce nao tem dinheiro suficiente");
                         return;
-                    } else
+                    }
+                    else
                     {
                         m_Mobile.Backpack.ConsumeTotal(new System.Type[] { typeof(Gold) }, new int[] { list.Cost });
                     }
@@ -784,7 +800,7 @@ namespace Server.Items
                 AddHtml(30, 35 + (4 * 25), 150, 20, "Custo: " + list.Cost + " moedas", false, false);
                 AddItem(30, 35 + (5 * 25), 3823);
             }
-            
+
         }
     }
 }
