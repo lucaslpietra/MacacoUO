@@ -3232,24 +3232,14 @@ namespace Server.Mobiles
 
         public int GetInsuranceCost(Item item)
         {
-            var imbueWeight = Imbuing.GetTotalWeight(item);
             int cost = 1000; // this handles old items, set items, etc
 
             if (item is BaseTalisman)
                 return 2000;
 
             if (item is BaseHat)
-                return 200;
-
-            if (item.GetType().IsAssignableFrom(typeof(Factions.FactionItem)))
-                cost = 800;
-            else if (imbueWeight > 0)
-                cost = Math.Min(800, Math.Max(10, imbueWeight));
-            else if (Mobiles.GenericBuyInfo.BuyPrices.ContainsKey(item.GetType()))
-                cost = Math.Min(800, Math.Max(10, Mobiles.GenericBuyInfo.BuyPrices[item.GetType()]));
-
-            var negAttrs = RunicReforging.GetNegativeAttributes(item);
-
+                return 500;
+ 
             return cost;
         }
 

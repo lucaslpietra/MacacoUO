@@ -45,22 +45,23 @@ namespace Server.Mobiles
 
         public override void VendorBuy(Mobile from)
         {
-            OnDoubleClick(from);
-        }
-
-        public override void OnDoubleClick(Mobile from)
-        {
             var pl = from as PlayerMobile;
-            if(pl != null)
+            if (pl != null)
             {
                 pl.OpenItemInsuranceMenu();
-                if(!pl.IsCooldown("dicaseguro"))
+                if (!pl.IsCooldown("dicaseguro"))
                 {
                     pl.SetCooldown("dicaseguro", TimeSpan.FromSeconds(60));
                     pl.SendMessage(78, "Voce pode dar insure em roupas, joias e talismans. Voce paga um preco para nao perder estes items quando morrer.");
                     pl.SendMessage(78, "Voce pode usar o comando .insure");
                 }
             }
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            VendorBuy(from);
         }
 
         public override void InitOutfit()

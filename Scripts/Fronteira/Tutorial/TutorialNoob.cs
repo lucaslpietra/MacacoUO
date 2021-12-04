@@ -14,9 +14,6 @@ namespace Server.Ziden.Tutorial
             if (Shard.RP)
                 return;
 
-            if (!Shard.GUIA)
-                return;
-
             EventSink.Login += OnLogin;
         }
 
