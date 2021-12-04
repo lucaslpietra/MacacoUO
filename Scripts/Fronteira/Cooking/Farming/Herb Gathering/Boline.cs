@@ -25,19 +25,19 @@ namespace Server.Items
 		[Constructable]
 		public Boline() : this( 0x26BB, 50 )
 		{
-            this.Name = "foicinha";
+            this.Name = "foice";
 		}
 
 		[Constructable]
 		public Boline(int usesremaining) : this(0x26BB, usesremaining )
 		{
-            this.Name = "foicinha";
+            this.Name = "foice";
 		}
 
 		[Constructable]
 		public Boline(int itemid, int usesremaining) : base( itemid, usesremaining )
 		{
-            this.Name = "foicinha";
+            this.Name = "foice";
 		}
 
 		public Boline( Serial serial ) : base( serial ) { }

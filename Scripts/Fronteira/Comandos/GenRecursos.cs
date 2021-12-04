@@ -33,6 +33,10 @@ namespace Server.Commands
 
             foreach(var spawner in Spawners)
             {
+                if (spawner.Name == "Spawner de Plantas")
+                {
+                    continue;
+                }
                 var novoSpawner = new XmlSpawner();
                 var loc = spawner.Location;
                 loc.Z += 5;

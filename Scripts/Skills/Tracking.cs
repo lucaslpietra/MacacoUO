@@ -208,7 +208,7 @@ namespace Server.SkillHandlers
             {
                 // Ghosts can no longer be tracked 
                 if (m != from && m.Alive && check(m))
-                    if(!m.Hidden || from.Skills.Tracking.Value >= 80)
+                    if(!m.Hidden || from.Skills.DetectHidden.Value > 80 || from.Skills.Tracking.Value >= 80)
                         list.Add(m);
             }
             eable.Free();

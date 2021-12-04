@@ -64,7 +64,6 @@ namespace Server.Items
 		{
 			m_UsesRemaining = usesremaining;
 			ShowUsesRemaining = true;
-			Hue = 778;
 		}
 
 		public override void OnDoubleClick( Mobile from )
