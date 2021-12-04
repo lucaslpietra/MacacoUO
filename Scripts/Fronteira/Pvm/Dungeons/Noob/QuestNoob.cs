@@ -75,6 +75,10 @@ namespace Server.Engines.Quests
         {
             Points.PointsSystem.Exp.AwardPoints(this.Owner, 600);
             this.Owner.PlaySound(this.CompleteSound);
+            if (this.Owner.Wisp != null)
+            {
+                this.Owner.Wisp.Fala("Que tal ir explorar o portal azul perto do centro da cidade agora ?");
+            }
         }
 
         public override void Serialize(GenericWriter writer)

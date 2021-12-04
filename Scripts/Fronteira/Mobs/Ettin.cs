@@ -42,7 +42,7 @@ namespace Server.Mobiles
             {
                 PackItem(Decos.RandomDeco());
             }
-            this.VirtualArmor = 90;
+            this.VirtualArmor = 60;
         }
 
         public void JogaPedra(Mobile target, bool cd)

@@ -31,7 +31,7 @@ namespace Server.Items
 
         public static void Initialize()
         {
-            CommandSystem.Register("vercomandos", AccessLevel.Player, new CommandEventHandler(_OnCommand));
+            CommandSystem.Register("comandos", AccessLevel.Player, new CommandEventHandler(_OnCommand));
         }
 
         public static void FillTable()
@@ -325,7 +325,7 @@ namespace Server.Items
 
             if (list == null)
             {
-                list = Docs;
+                list = Docs.Where(doc => doc.AccessLevel <= from.AccessLevel).ToList();
             }
 
             m_List = list;
