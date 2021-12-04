@@ -122,6 +122,7 @@ namespace Server.Items
                 {
                     armadura.Elemento = pedra.GetElemento();
                 }
+                //armadura.Hue = BaseArmor.HueElemento(armadura.Elemento);
                 from.OverheadMessage("* encantou *");
                 from.SendMessage("Voce colocou a pedra no item");
                 from.PlaySound(0x202);

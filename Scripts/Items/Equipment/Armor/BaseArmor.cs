@@ -3185,14 +3185,14 @@ namespace Server.Items
         {
             switch (elemento)
             {
-                case ElementoPvM.Agua: return 1261;
+                case ElementoPvM.Agua: return 1264;
                 case ElementoPvM.Escuridao: return 2022;
                 case ElementoPvM.Fogo: return 1258;
                 case ElementoPvM.Gelo: return 1266;
                 case ElementoPvM.Vento: return 1281;
                 case ElementoPvM.Raio: return 1275;
                 case ElementoPvM.Luz: return 1153;
-                case ElementoPvM.Terra: return 1177;
+                case ElementoPvM.Terra: return 632;
                 default: return 0;
             }
         }

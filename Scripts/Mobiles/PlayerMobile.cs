@@ -6963,7 +6963,7 @@ namespace Server.Mobiles
                 list.Add(Gump.Cor("<CENTER>[ Amarrad" + GetLetraSexo() + " ]</CENTER>", "red"));
 
             if (Elemento != ElementoPvM.None)
-                list.Add(Gump.Cor(Elemento.ToString()+" Lv "+Elementos.GetNivel(Elemento), BaseArmor.CorElemento(Elemento)));
+                list.Add(Gump.Cor(Elemento.ToString()+" level "+Elementos.GetNivel(Elemento), BaseArmor.CorElemento(Elemento)));
 
             if (Shard.TITULOS_RP && RP && !Shard.RP)
             {
