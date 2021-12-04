@@ -35,7 +35,7 @@ namespace Server.Fronteira.Items.Corda
                 }
 
                 var corda = CordaAmarrada.Arrastando[pl];
-               
+
                 corda.MoveToWorld(new Point3D(pl.Location.X, pl.Location.Y, pl.Location.Z + 7), pl.Map);
                 if (!pl.IsCooldown("arrastarmsg"))
                 {
@@ -43,12 +43,19 @@ namespace Server.Fronteira.Items.Corda
                     pl.OverheadMessage("* arrastou *");
                 }
 
+          
+
                 var i = pl.Arrastando as Item;
                 if(i != null)
                 {
                     i.MoveToWorld(pl.Location, pl.Map);
                 } else
                 {
+                    if (!Rope.Preso(pl.Arrastando as PlayerMobile)) {
+                        CordaAmarrada.Arrastando.Remove(pl);
+                        pl.Arrastando = null;
+                        return;
+                    }
                     ((PlayerMobile)pl.Arrastando).MoveToWorld(pl.Location, pl.Map);
                 }
                

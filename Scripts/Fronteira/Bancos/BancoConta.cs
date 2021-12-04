@@ -8,5 +8,11 @@ namespace Server.Fronteira.Bancos
 {
     public class BancoConta
     {
+
+
+        public void getBancoConta(PlayerM)
+        {
+
+        }
     }
 }
