@@ -3124,13 +3124,6 @@ namespace Server.Mobiles
 
         private bool CanInsure(Item item)
         {
-            #region Mondain's Legacy
-            if (item is BaseQuiver && item.LootType == LootType.Regular)
-            {
-                return true;
-            }
-            #endregion
-
             if (((item is Container) && !(item is BaseQuiver)) || item is BagOfSending || item is KeyRing || item is MountItem)
             {
                 return false;
@@ -3165,7 +3158,10 @@ namespace Server.Mobiles
             if (item.LootType == LootType.Blessed)
                 return false;
 
-            return true;
+            if (item is BaseJewel || item is BaseClothing || item is BaseTalisman)
+                return true;
+
+            return false;
         }
 
         private void ToggleItemInsurance_Callback(Mobile from, object obj)
@@ -3237,7 +3233,13 @@ namespace Server.Mobiles
         public int GetInsuranceCost(Item item)
         {
             var imbueWeight = Imbuing.GetTotalWeight(item);
-            int cost = 600; // this handles old items, set items, etc
+            int cost = 1000; // this handles old items, set items, etc
+
+            if (item is BaseTalisman)
+                return 2000;
+
+            if (item is BaseHat)
+                return 200;
 
             if (item.GetType().IsAssignableFrom(typeof(Factions.FactionItem)))
                 cost = 800;
@@ -3245,16 +3247,8 @@ namespace Server.Mobiles
                 cost = Math.Min(800, Math.Max(10, imbueWeight));
             else if (Mobiles.GenericBuyInfo.BuyPrices.ContainsKey(item.GetType()))
                 cost = Math.Min(800, Math.Max(10, Mobiles.GenericBuyInfo.BuyPrices[item.GetType()]));
-            else if (item.LootType == LootType.Blessed)
-                cost = 10;
 
             var negAttrs = RunicReforging.GetNegativeAttributes(item);
-
-            if (negAttrs != null && negAttrs.Prized > 0)
-                cost *= 2;
-
-            if (Region != null)
-                cost = (int)(cost * Region.InsuranceMultiplier);
 
             return cost;
         }
@@ -3377,7 +3371,7 @@ namespace Server.Mobiles
             }
         }
 
-        private void OpenItemInsuranceMenu()
+        public void OpenItemInsuranceMenu()
         {
             if (!CheckAlive())
                 return;
@@ -3444,30 +3438,30 @@ namespace Server.Mobiles
 
                 AddPage(0);
 
-                AddBackground(0, 0, 520, 510, 0x13BE);
-                AddImageTiled(10, 10, 500, 30, 0xA40);
-                AddImageTiled(10, 50, 500, 355, 0xA40);
-                AddImageTiled(10, 415, 500, 80, 0xA40);
+                AddBackground(0, 0, 520, 510, 9200);
+                AddBackground(10, 10, 500, 30, 3000);
+                AddBackground(10, 50, 500, 355, 3000);
+                AddBackground(10, 415, 500, 80, 3000);
                 AddAlphaRegion(10, 10, 500, 485);
 
                 AddButton(15, 470, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(50, 472, 80, 20, 1011012, 0x7FFF, false, false); // CANCEL
+                AddHtmlLocalized(50, 472, 80, 20, 1011012, 0, false, false); // CANCEL
 
                 if (from.AutoRenewInsurance)
                     AddButton(360, 10, 9723, 9724, 1, GumpButtonType.Reply, 0);
                 else
                     AddButton(360, 10, 9720, 9722, 1, GumpButtonType.Reply, 0);
 
-                AddHtmlLocalized(395, 14, 105, 20, 1114122, 0x7FFF, false, false); // AUTO REINSURE
+                AddHtmlLocalized(395, 14, 105, 20, 1114122, 0, false, false); // AUTO REINSURE
 
                 AddButton(395, 470, 0xFA5, 0xFA6, 2, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(430, 472, 50, 20, 1006044, 0x7FFF, false, false); // OK
+                AddHtmlLocalized(430, 472, 50, 20, 1006044, 0, false, false); // OK
 
-                AddHtmlLocalized(10, 14, 150, 20, 1114121, 0x7FFF, false, false); // <CENTER>ITEM INSURANCE MENU</CENTER>
+                AddHtml(10, 14, 150, 20, "<CENTER>Menu de Insurance</CENTER>", 0, false, false); // <CENTER>ITEM INSURANCE MENU</CENTER>
 
-                AddHtmlLocalized(45, 54, 70, 20, 1062214, 0x7FFF, false, false); // Item
-                AddHtmlLocalized(250, 54, 70, 20, 1061038, 0x7FFF, false, false); // Cost
-                AddHtmlLocalized(400, 54, 70, 20, 1114311, 0x7FFF, false, false); // Insured
+                AddHtmlLocalized(45, 54, 70, 20, 1062214, 0, false, false); // Item
+                AddHtmlLocalized(250, 54, 70, 20, 1061038, 0, false, false); // Cost
+                AddHtmlLocalized(400, 54, 70, 20, 1114311, 0, false, false); // Insured
 
                 int balance = Banker.GetBalance(from);
                 int cost = 0;
@@ -3478,14 +3472,14 @@ namespace Server.Mobiles
                         cost += m_From.GetInsuranceCost(items[i]);
                 }
 
-                AddHtmlLocalized(15, 420, 300, 20, 1114310, 0x7FFF, false, false); // GOLD AVAILABLE:
+                AddHtmlLocalized(15, 420, 300, 20, 1114310, 0, false, false); // GOLD AVAILABLE:
                 AddLabel(215, 420, 0x481, balance.ToString());
-                AddHtmlLocalized(15, 435, 300, 20, 1114123, 0x7FFF, false, false); // TOTAL COST OF INSURANCE:
+                AddHtmlLocalized(15, 435, 300, 20, 1114123, 0, false, false); // TOTAL COST OF INSURANCE:
                 AddLabel(215, 435, 0x481, cost.ToString());
 
                 if (cost != 0)
                 {
-                    AddHtmlLocalized(15, 450, 300, 20, 1114125, 0x7FFF, false, false); // NUMBER OF DEATHS PAYABLE:
+                    AddHtml(15, 450, 300, 20, "Mortes que voce pode pagar", 0, false, false); // NUMBER OF DEATHS PAYABLE:
                     AddLabel(215, 450, 0x481, (balance / cost).ToString());
                 }
 
