@@ -32,6 +32,7 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
+                Add(new GenericBuyInfo(typeof(Spyglass), 50, 999, 0x14F5, 0));
                 Add(new GenericBuyInfo(typeof(RefreshPotion), 50, 999, 0xF0B, 0));
                 Add(new GenericBuyInfo(typeof(GreaterAgilityPotion), 50, 999, 0xF08, 0));
                 Add(new GenericBuyInfo(typeof(GreaterHealPotion), 50, 999, 0xF0C, 0));
@@ -39,7 +40,7 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(GreaterPoisonPotion), 50, 999, 0xF0A, 0));
                 Add(new GenericBuyInfo(typeof(GreaterCurePotion), 50, 999, 0xF07, 0));
                 Add(new GenericBuyInfo(typeof(GreaterExplosionPotion), 50, 999, 0xF0D, 0));
-                Add(new GenericBuyInfo(typeof(Spyglass), 50, 999, 0x0EFB, 0));
+               
             }
         }
 
