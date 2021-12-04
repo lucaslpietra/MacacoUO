@@ -48,19 +48,19 @@ namespace Server.Commands
                 if (novoSpawner.MaxCount < 1)
                     novoSpawner.MaxCount = 1;
                 novoSpawner.DespawnTime = TimeSpan.FromHours(4);
-                novoSpawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject("FarmableCabbage", novoSpawner.MaxCount));
-                novoSpawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject("FarmableCarrot", novoSpawner.MaxCount));
+                novoSpawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject("FarmableCabbage", novoSpawner.MaxCount/10));
+                novoSpawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject("FarmableCarrot", novoSpawner.MaxCount / 10));
                 novoSpawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject("FarmableCotton", novoSpawner.MaxCount));
                 novoSpawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject("FarmableFlax", novoSpawner.MaxCount));
-                novoSpawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject("FarmableLettuce", novoSpawner.MaxCount));
+                novoSpawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject("FarmableLettuce", novoSpawner.MaxCount / 10));
                 novoSpawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject("FarmableGarlic", novoSpawner.MaxCount));
                 novoSpawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject("FarmableGinseng", novoSpawner.MaxCount));
                 novoSpawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject("FarmableMandrakeroot", novoSpawner.MaxCount));
                 novoSpawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject("FarmableNightShade", novoSpawner.MaxCount));
-                novoSpawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject("FarmableOnion", novoSpawner.MaxCount));
-                novoSpawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject("FarmablePumpkin", novoSpawner.MaxCount));
-                novoSpawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject("FarmableTurnip", novoSpawner.MaxCount));
-                novoSpawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject("FarmableWheat", novoSpawner.MaxCount));
+                novoSpawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject("FarmableOnion", novoSpawner.MaxCount / 10));
+                novoSpawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject("FarmablePumpkin", novoSpawner.MaxCount / 10));
+                novoSpawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject("FarmableTurnip", novoSpawner.MaxCount / 10));
+                novoSpawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject("FarmableWheat", novoSpawner.MaxCount / 10));
                 novoSpawner.Respawn();
             }
         }
