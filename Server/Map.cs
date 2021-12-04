@@ -1670,7 +1670,7 @@ namespace Server
             return InternalGetSector(x, y);
         }
 
-        private Sector InternalGetSector(int x, int y)
+        public Sector InternalGetSector(int x, int y)
         {
             if (x >= 0 && x < m_SectorsWidth && y >= 0 && y < m_SectorsHeight)
             {

@@ -4,12 +4,15 @@ using Server.Misc;
 using Server.Mobiles;
 using Server.Services.Harvest;
 using System;
+using System.Collections.Generic;
 
 namespace Server.Fronteira.Recursos
 {
     // Nodulos de recurso pelo mapa
     public class Recurso : Item
     {
+        private static Dictionary<Sector, List<Recurso>> _recursos = new Dictionary<Sector, List<Recurso>>();
+
         private Item _folha = null;
         private CraftResource _resource;
         private ItemQuality _quality;
@@ -17,6 +20,25 @@ namespace Server.Fronteira.Recursos
         private int coleta = 0;
 
         public Mobile Coletando = null;
+
+        public static List<Recurso> RecursosNoSector(Map m, Sector sec)
+        {
+            if (!_recursos.ContainsKey(sec))
+            {
+                _recursos[sec] = new List<Recurso>();
+                if (Shard.DebugEnabled)
+                    Shard.Debug("Criando lista de recurso no setor " + sec.X + " " + sec.Y);
+            }
+            return _recursos[sec];
+        }
+
+        public static void Registra(Recurso r)
+        {
+            var s = r.Map.GetSector(r);
+            RecursosNoSector(r.Map, s).Add(r);
+            if (Shard.DebugEnabled)
+                Shard.Debug("Recurso registrado no setor " + s.X + " " + s.Y+" "+r.Map.Name);
+        }
 
         [Constructable]
         public Recurso()
@@ -30,8 +52,11 @@ namespace Server.Fronteira.Recursos
             Constroi(type);
         }
 
-        public Recurso(Serial s) : base(s) {
-            
+        public Item Folha { get { return _folha; } }
+
+        public Recurso(Serial s) : base(s)
+        {
+
         }
 
 
@@ -43,9 +68,15 @@ namespace Server.Fronteira.Recursos
             else
                 Resource = MadeiraRandom();
             Movable = false;
+
+            Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+            {
+                Registra(this);
+            });
+
             Timer.DelayCall(TimeSpan.FromHours(4), () =>
             {
-                if(!this.Deleted && this.Coletando == null)
+                if (!this.Deleted && this.Coletando == null)
                 {
                     this.Delete();
                 }
@@ -117,7 +148,8 @@ namespace Server.Fronteira.Recursos
                 _folha.Delete();
                 _folha = null;
             }
-              
+
+            RecursosNoSector(this.Map, Map.GetSector(this)).Remove(this);
             base.OnDelete();
         }
 
@@ -143,7 +175,7 @@ namespace Server.Fronteira.Recursos
             ushort exp = 1;
 
             coleta++;
-            if (coleta==3)
+            if (coleta == 3)
             {
                 exp += 99;
                 var dif = Math.Abs(from.Skills[skill].Value - diff.Required);
@@ -159,7 +191,7 @@ namespace Server.Fronteira.Recursos
                         exp += 1000;
                     else if (from.Skills[skill].Value < 110)
                         exp += 800;
-                    else 
+                    else
                         exp += 500;
                 }
             }
@@ -186,15 +218,15 @@ namespace Server.Fronteira.Recursos
                 from.SendMessage(38, "Erro, favor reportar a staff...");
                 return false;
             }
-            if(from.Player && from.RP)
+            if (from.Player && from.RP)
             {
-                if(((PlayerMobile)from).Talentos.Tem(Talentos.Talento.Naturalista))
+                if (((PlayerMobile)from).Talentos.Tem(Talentos.Talento.Naturalista))
                 {
                     i.Amount += 3;
                 }
             }
 
-            if(from.Player)
+            if (from.Player)
             {
                 var bonus = (int)(i.Amount * from.GetBonusElemento(ElementoPvM.Gelo));
                 if (bonus > 0)
@@ -206,9 +238,9 @@ namespace Server.Fronteira.Recursos
 
             from.SendMessage("Voce coletou o recurso");
 
-            if(skill == SkillName.Mining)
+            if (skill == SkillName.Mining)
                 PointsSystem.PontosMinerador.AwardPoints(from, diff.Max, false, false);
-            else if(skill == SkillName.Lumberjacking)
+            else if (skill == SkillName.Lumberjacking)
                 PointsSystem.PontosLenhador.AwardPoints(from, diff.Max, false, false);
 
             var tool = from.Weapon as BaseWeapon;
@@ -228,14 +260,15 @@ namespace Server.Fronteira.Recursos
                 }
             }
 
-            if (coleta==3)
+            if (coleta == 3)
             {
                 Delete();
                 if (_folha != null)
                 {
                     _folha.Delete();
                 }
-            } else
+            }
+            else
             {
                 new ColetaTimer(this, from).Start();
             }
@@ -261,7 +294,8 @@ namespace Server.Fronteira.Recursos
             {
                 _folha.Delete();
                 _folha = null;
-            } else
+            }
+            else
             {
                 if (this.timer != null)
                 {
@@ -411,6 +445,12 @@ namespace Server.Fronteira.Recursos
             _resource = (CraftResource)reader.ReadInt();
             _quality = (ItemQuality)reader.ReadInt();
             _folha = reader.ReadItem();
+
+            Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+            {
+                Registra(this);
+            });
+
             Timer.DelayCall(TimeSpan.FromHours(4), () =>
             {
                 if (!this.Deleted && this.Coletando == null)

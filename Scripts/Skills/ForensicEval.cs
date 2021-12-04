@@ -7,6 +7,9 @@ using Server.Mobiles;
 using Server.Targeting;
 using System.Collections.Generic;
 using Server.Ziden.Traducao;
+using Server.Gumps;
+using Server.Fronteira.Recursos;
+using Server.Network;
 
 namespace Server.SkillHandlers
 {
@@ -89,10 +92,119 @@ namespace Server.SkillHandlers
         {
             m.Target = new ForensicTarget();
             m.RevealingAction();
-
-            m.SendMessage("O que voce gostaria de investigar ?"); // Show me the crime.
+            if(m.QuestArrow != null)
+            {
+                m.QuestArrow.Stop();
+                m.QuestArrow = null;
+            }
+            m.SendMessage("O que voce gostaria de investigar ? Selecione voce mesmo para tentar localizar recursos proximos"); // Show me the crime.
 
             return TimeSpan.FromSeconds(1.0);
+        }
+
+        public class RecursoGump : Gump
+        {
+            private readonly Mobile m_From;
+            private readonly int m_Range;
+            private readonly List<Recurso> m_List;
+            public RecursoGump(Mobile from, List<Recurso> list)
+                : base(20, 30)
+            {
+                this.m_From = from;
+                this.m_List = list;
+
+
+
+                this.AddPage(0);
+
+                this.AddBackground(0, 0, 440, 155, 5054);
+
+                this.AddBackground(10, 10, 420, 75, 2620);
+                this.AddBackground(10, 85, 420, 45, 3000);
+
+                if (Shard.DebugEnabled)
+                    Shard.Debug("Vendo lista de recursos proximos " + list.Count);
+
+                if (list.Count > 4)
+                {
+                    this.AddBackground(0, 155, 440, 155, 5054);
+
+                    this.AddBackground(10, 165, 420, 75, 2620);
+                    this.AddBackground(10, 240, 420, 45, 3000);
+
+                    if (list.Count > 8)
+                    {
+                        this.AddBackground(0, 310, 440, 155, 5054);
+
+                        this.AddBackground(10, 320, 420, 75, 2620);
+                        this.AddBackground(10, 395, 420, 45, 3000);
+                    }
+                }
+
+                for (int i = 0; i < list.Count && i < 12; ++i)
+                {
+                    Recurso m = list[i];
+
+                    this.AddItem(20 + ((i % 4) * 100), 20 + ((i / 4) * 155), m.Folha != null ? 3671 : m.ItemID, CraftResources.GetHue(m.Resource));
+                    this.AddButton(20 + ((i % 4) * 100), 130 + ((i / 4) * 155), 4005, 4007, i + 1, GumpButtonType.Reply, 0);
+
+                    if (m.Name != null)
+                        this.AddHtml(20 + ((i % 4) * 100), 90 + ((i / 4) * 155), 90, 40, m.Resource.ToString(), false, false);
+                }
+            }
+
+            public override void OnResponse(NetState state, RelayInfo info)
+            {
+                int index = info.ButtonID - 1;
+
+                if (index >= 0 && index < this.m_List.Count && index < 12)
+                {
+                    Recurso m = this.m_List[index];
+
+                    this.m_From.OverheadMessage("* analisando *");
+
+                    m_From.QuestArrow = new QuestArrow(m_From, m);
+                    m_From.QuestArrow.Update();
+                }
+            }
+        }
+
+        public static void SpyClasseia(Mobile from)
+        {
+            if (from.QuestArrow != null)
+            {
+                from.QuestArrow.Stop();
+                from.QuestArrow = null;
+            }
+
+            List<Recurso> recursos = new List<Recurso>();
+            var sector = from.Map.GetSector(from);
+
+            for (int x = -2; x <= 2; x++)
+            {
+                for (int y = -2; y <= 2; y++)
+                {
+                    var s = from.Map.InternalGetSector(sector.X + x, sector.Y + y);
+                    if (Shard.DebugEnabled)
+                        Shard.Debug("Vendo setor " + (s.X) + " " + (sector.Y + y));
+                    recursos.AddRange(Recurso.RecursosNoSector(from.Map, s));
+                }
+            }
+            from.SendGump(new GumpOpcoes("Procurando ?", (opt) =>
+            {
+                if (opt == 0)
+                {
+                    from.SendGump(new RecursoGump(from, recursos.Where(r => CraftResources.GetType(r.Resource) == CraftResourceType.Wood).ToList()));
+                }
+                else if (opt == 1)
+                {
+                    from.SendGump(new RecursoGump(from, recursos.Where(r => CraftResources.GetType(r.Resource) == CraftResourceType.Metal).ToList()));
+                }
+                else
+                {
+                    from.SendGump(new RecursoGump(from, recursos));
+                }
+            }, 0x14F5, 0, "Madeiras", "Minerios", "Tudo"));
         }
 
         public class ForensicTarget : Target
@@ -156,6 +268,16 @@ namespace Server.SkillHandlers
                 }
                 else if (target is Mobile)
                 {
+                    if(target==from)
+                    {
+                        if(!from.HasItem<Spyglass>())
+                        {
+                            from.SendMessage("Voce precisa de uma luneta para encontrar recursos pelos mapa. Inventores (Tinkers) podem produzir ou vende-las.");
+                            return;
+                        }
+                        ForensicEvaluation.SpyClasseia(from);
+                        return;
+                    }
                     if (skill < 36.0)
                     {
                         from.SendLocalizedMessage(501003);//You notice nothing unusual.
@@ -185,7 +307,13 @@ namespace Server.SkillHandlers
                     else if (from.CheckTargetSkillMinMax(SkillName.Forensics, target, 41.0, 100.0))
                     {
                         ILockpickable p = (ILockpickable)target;
-
+                        if (target is TrapableContainer)
+                        {
+                            var trap = (TrapableContainer)target;
+                            from.SendMessage("Armadilha: "+ trap.TrapType.ToString());
+                            from.SendMessage("Nivel Armadilha: " + trap.TrapLevel.ToString());
+                            from.SendMessage("Poder Armadilha: " + trap.TrapPower.ToString());
+                        }
                         if (p.Picker != null)
                         {
                             from.SendLocalizedMessage(1042749, p.Picker.Name);//This lock was opened by ~1_PICKER_NAME~
@@ -193,6 +321,7 @@ namespace Server.SkillHandlers
                         else
                         {
                             from.SendLocalizedMessage(501003);//You notice nothing unusual.
+                            from.SendMessage("Skill lockpick: " + p.RequiredSkill);
                         }
                     }
                     else
@@ -202,6 +331,8 @@ namespace Server.SkillHandlers
                 }
                 else if (target is Item)
                 {
+
+
                     Item item = (Item)target;
 
                     if (item is IForensicTarget)
@@ -236,7 +367,7 @@ namespace Server.SkillHandlers
                         }
                     }
                 }
-                else
+                else // chao
                 {
                     if (from.CheckTargetSkillMinMax(SkillName.Forensics, target, 0, 100))
                     {

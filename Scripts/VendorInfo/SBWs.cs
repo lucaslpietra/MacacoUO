@@ -39,7 +39,7 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(GreaterPoisonPotion), 50, 999, 0xF0A, 0));
                 Add(new GenericBuyInfo(typeof(GreaterCurePotion), 50, 999, 0xF07, 0));
                 Add(new GenericBuyInfo(typeof(GreaterExplosionPotion), 50, 999, 0xF0D, 0));
-                Add(new GenericBuyInfo(typeof(GreaterManaPotion), 50, 999, 0x0EFB, 0));
+                Add(new GenericBuyInfo(typeof(Spyglass), 50, 999, 0x0EFB, 0));
             }
         }
 

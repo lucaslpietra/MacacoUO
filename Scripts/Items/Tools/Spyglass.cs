@@ -4,6 +4,7 @@ using Server.Engines.Quests.Hag;
 using Server.Mobiles;
 using Server.Network;
 using Server.Engines.Craft;
+using Server.SkillHandlers;
 
 namespace Server.Items
 {
@@ -29,6 +30,7 @@ namespace Server.Items
         public Spyglass()
             : base(0x14F5)
         {
+            Name = "Luneta";
             Weight = 3.0;
         }
 
@@ -39,10 +41,18 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
+            if(from.Skills.Forensics.Value < 80)
+            {
+                from.SendMessage("Voce precisa de ao menos 80 na skill forensics para usar isto para encontrar recursos e tesouros");
+                return;
+            }
+
             from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1008155); // You peer into the heavens, seeking the moons...
 
-            from.Send(new MessageLocalizedAffix(from.NetState, from.Serial, from.Body, MessageType.Regular, 0x3B2, 3, 1008146 + (int)Clock.GetMoonPhase(Map.Trammel, from.X, from.Y), "", AffixType.Prepend, "Trammel : ", ""));
-            from.Send(new MessageLocalizedAffix(from.NetState, from.Serial, from.Body, MessageType.Regular, 0x3B2, 3, 1008146 + (int)Clock.GetMoonPhase(Map.Felucca, from.X, from.Y), "", AffixType.Prepend, "Felucca : ", ""));
+            from.Send(new MessageLocalizedAffix(from.NetState, from.Serial, from.Body, MessageType.Regular, 0x3B2, 3, 1008146 + (int)Clock.GetMoonPhase(Map.Trammel, from.X, from.Y), "", AffixType.Prepend, "", ""));
+            //from.Send(new MessageLocalizedAffix(from.NetState, from.Serial, from.Body, MessageType.Regular, 0x3B2, 3, 1008146 + (int)Clock.GetMoonPhase(Map.Felucca, from.X, from.Y), "", AffixType.Prepend, "Felucca : ", ""));
+
+            ForensicEvaluation.SpyClasseia(from);
 
             PlayerMobile player = from as PlayerMobile;
 

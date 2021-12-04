@@ -34,18 +34,20 @@ namespace Server.Mobiles
             public InternalBuyInfo(BaseVendor owner) 
             {
                 Add(new GenericBuyInfo(typeof(FerramentasJoalheiro), 50, 20, 0x0FB7, 0));
+                /*
                 Add(new GenericBuyInfo(typeof(Clock), 22, 20, 0x104B, 0));
                 Add(new GenericBuyInfo(typeof(Nails), 3, 20, 0x102E, 0));
                 Add(new GenericBuyInfo(typeof(ClockParts), 3, 20, 0x104F, 0, true));
                 Add(new GenericBuyInfo(typeof(AxleGears), 3, 20, 0x1051, 0, true));
                 Add(new GenericBuyInfo(typeof(Gears), 2, 20, 0x1053, 0, true));
                 Add(new GenericBuyInfo(typeof(Hinge), 2, 20, 0x1055, 0, true));
+                */
 
                 //Add(new GenericBuyInfo(typeof(Sextant), 13, 20, 0x1057, 0));
                 //Add(new GenericBuyInfo(typeof(SextantParts), 5, 20, 0x1059, 0, true));
-                Add(new GenericBuyInfo(typeof(Axle), 2, 20, 0x105B, 0, true));
-                Add(new GenericBuyInfo(typeof(Springs), 3, 20, 0x105D, 0, true));
-
+                /*
+               
+                */
                 Add(new GenericBuyInfo("1024111", typeof(Key), 8, 20, 0x100F, 0));
                 Add(new GenericBuyInfo("1024112", typeof(Key), 8, 20, 0x1010, 0));
                 Add(new GenericBuyInfo("1024115", typeof(Key), 8, 20, 0x1013, 0));
@@ -71,9 +73,6 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(DovetailSaw), 12, 20, 0x1028, 0));
                 Add(new GenericBuyInfo(typeof(Saw), 15, 20, 0x1034, 0));
                 Add(new GenericBuyInfo(typeof(SledgeHammer), 23, 20, 0x13E3, 0));
-                //Add(new GenericBuyInfo(typeof(Hammer), 17, 20, 0x102A, 0));
-                // Add(new GenericBuyInfo(typeof(SmithHammer), 23, 20, 0x13E3, 0));
-                // TODO: Sledgehammer
 
                 Add(new GenericBuyInfo(typeof(Shovel), 12, 20, 0xF39, 0));
 
@@ -87,7 +86,7 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(Tambourine), 21, 20, 0x0E9E, 0));
                 Add(new GenericBuyInfo(typeof(LapHarp), 21, 20, 0x0EB2, 0));
                 Add(new GenericBuyInfo(typeof(Lute), 21, 20, 0x0EB3, 0));
-
+                Add(new GenericBuyInfo(typeof(BasketWeavingBook), 30000, 20, 0xFBE, 0));
 
                 if (owner != null && owner.Race == Race.Gargoyle)
                 {
