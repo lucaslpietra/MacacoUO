@@ -275,6 +275,11 @@ namespace Server.SkillHandlers
                             from.SendMessage("Voce precisa de uma luneta para encontrar recursos pelos mapa. Inventores (Tinkers) podem produzir ou vende-las.");
                             return;
                         }
+                        if(from.Skills.Forensics.Value < 80)
+                        {
+                            from.SendMessage("Voce precisa de pelo menos 80 forensics para isto");
+                            return;
+                        }
                         ForensicEvaluation.SpyClasseia(from);
                         return;
                     }
