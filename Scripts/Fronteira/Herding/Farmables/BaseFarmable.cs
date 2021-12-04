@@ -26,12 +26,12 @@ namespace Server.Items
 
         public virtual int GetMinSkill()
         {
-            return 0;
+            return 50;
         }
 
         public virtual int GetMaxSkill()
         {
-            return 90;
+            return 80;
         }
 
         public virtual BasePlantable GetSeed()
