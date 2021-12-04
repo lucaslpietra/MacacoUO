@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Gargoyle()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a gargoyle";
+            this.Name = "gargula";
             this.Body = 4;
             this.BaseSoundID = 372;
 
@@ -40,7 +40,7 @@ namespace Server.Mobiles
 
             this.VirtualArmor = 32;
 
-            if (0.025 > Utility.RandomDouble())
+            if (0.005 > Utility.RandomDouble())
                 this.PackItem(new GargoylesPickaxe());
 
 			switch (Utility.Random(6))
@@ -80,7 +80,7 @@ namespace Server.Mobiles
         {
             this.AddLoot(LootPack.Average);
             this.AddLoot(LootPack.MedScrolls);
-            this.AddLoot(LootPack.Gems, Utility.RandomMinMax(1, 4));
+            this.AddLoot(LootPack.Gems, 1);
         }
 
         public override void Serialize(GenericWriter writer)

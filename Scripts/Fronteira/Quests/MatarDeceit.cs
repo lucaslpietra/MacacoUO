@@ -3,27 +3,27 @@ using Server.Engines.Points;
 using Server.Items;
 using Server.Mobiles;
 using Server.Ziden.Dungeons.Goblins.Quest;
+using Server.Ziden.Items;
 
 namespace Server.Engines.Quests
 {
-    // CONFIGURACAO DA QUEST
-    public class MatarOrcs : BaseQuest
+    public class MatarDeceit : BaseQuest
     {
-        // AQUI VC BOTA SE EH QUETS REPETIVEL OU NAO (tipo as de matar X ganhar Y XP podem ser td repetivel)
-        public override bool DoneOnce { get { return false; } }
+     
+        public override bool DoneOnce { get { return true; } }
 
         public override object Title
         {
             get
             {
-                return "Orcs Malditos";
+                return "Oblitere Mortos Vivos";
             }
         }
         public override object Description
         {
             get
             {
-                return "Ola viajante. Voce ja viu a <b>nordeste daqui</b> varios <b>orcs</b> estao causando problemas ?. Esses Orcs roubam minhas colheitas... Poderia me ajudar ? Posso lhe dar sementes e uma boa recompensa !";
+                return "Mortos vivos estao por toda parte por essas terras. Por favor viajante, oblitere os mortos vivos !";
             }
         }
         public override object Refuse
@@ -37,32 +37,32 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return "Vejo que retornou, mas ainda acho que tem mais orcs a serem mortos !";
+                return "Vejo que retornou, mas ainda acho que tem mais monstros a serem mortos !";
             }
         }
         public override object Complete
         {
             get
             {
-                return "Ah muito obrigado aventureiro, agora poderei plantar com mais sossego";
+                return "Ah muito obrigado aventureiro, agora poderei sossegar";
             }
         }
 
-        public MatarOrcs()
+        public MatarDeceit()
             : base()
         {
-            // AQUI BOTA O OBJETIVO DA QUEST
-            this.AddObjective(new SlayObjective(typeof(Orc), "Orcs", 50));
+            this.AddObjective(new SlayObjective(typeof(Ghoul), "Zumbi Assombrado", 20));
+            this.AddObjective(new SlayObjective(typeof(Shade), "Sombra", 20));
+            this.AddObjective(new SlayObjective(typeof(Skeleton), "Esqueleto", 50));
 
-            // RECOMPENSAS DA QUEST
-            this.AddReward(new BaseReward(typeof(OrcishKinMask), 1, "Mascara"));
-            this.AddReward(new BaseReward(typeof(Gold), 500, "500 Moedas"));
-            this.AddReward(new BaseReward(typeof(CottonSeeds), 10, "10 Sementes de Algodao"));
+            this.AddReward(new BaseReward(typeof(Amber), 3, "3 Ambares"));
+            this.AddReward(new BaseReward(typeof(CaixaDeGold), 1, "1 Caixa"));
+            this.AddReward(new BaseReward(typeof(CombatSkillBook), 2, "2 Livros de Combate"));
+            this.AddReward(new BaseReward(typeof(LivroAntigo), 1, "1 Livro Antigo"));
         }
 
         public override void OnCompleted()
         {
-            // AQUI VC BOTA QUANTO DE EXP VAI DAR A QUEST
             PointsSystem.Exp.AwardPoints(this.Owner, 300);
             this.Owner.PlaySound(this.CompleteSound);
         }
@@ -79,25 +79,23 @@ namespace Server.Engines.Quests
             int version = reader.ReadInt();
         }
     }
-
-    //// AQUI EH A CLASSE DO NPC Q VAI DAR A QUETS ///   
-    public class FazendeiroDoido : MondainQuester
+ 
+    public class QuesterDeceit : MondainQuester
     {
-        /// AQUI REGISTRA QUAL QUEST ELE VAI DAR 
         public override Type[] Quests
         {
             get
             {
                 return new Type[] {
-                    typeof(MatarOrcs)
+                    typeof(MatarDeceit)
         };
             }
         }
 
 
         [Constructable]
-        public FazendeiroDoido()
-            : base("Helton", "O Fazendeiro Hermitao")
+        public QuesterDeceit()
+            : base("Helton", "")
         {
             this.SetSkill(SkillName.Anatomy, 120.0, 120.0);
             this.SetSkill(SkillName.Parry, 120.0, 120.0);
@@ -107,14 +105,14 @@ namespace Server.Engines.Quests
             this.SetSkill(SkillName.Focus, 120.0, 120.0);
         }
 
-        public FazendeiroDoido(Serial serial)
+        public QuesterDeceit(Serial serial)
             : base(serial)
         {
         }
 
         public override void Advertise()
         {
-            this.Say("Por favor, me ajudem ! Orcs estao acabando com minha fazenda !");  // Know yourself, and you will become a true warrior.
+            this.Say("Por favor, me ajudem !");  // Know yourself, and you will become a true warrior.
         }
 
         public override void InitBody()

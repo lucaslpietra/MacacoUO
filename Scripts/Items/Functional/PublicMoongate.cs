@@ -333,31 +333,29 @@ namespace Server.Items
 			}, cost: 50);
 
         public static readonly PMList Dungeons = new PMList(
-          "Dungeons",
-          "Dungeons",
+          "Iniciante",
+          "Iniciante",
           Map.Trammel,
           new[]
           {
-                new PMEntry(new Point3D(2494, 927, 0), "Covetous"),
-                new PMEntry(new Point3D(4111, 439, 5), "Deceit"),
-                new PMEntry(new Point3D(1298, 1081, 5), "Despise"),
-                new PMEntry(new Point3D(1176, 2637, 5), "Destard"),
-                new PMEntry(new Point3D(4721, 3817, 5), "Hyloth"),
-                new PMEntry(new Point3D(514, 1561, 5), "Shame"),
-                new PMEntry(new Point3D(2043, 227, 14), "Wrong"),
-                new PMEntry(new Point3D(1021, 1431, 0), "Caverna Orc"),
-                new PMEntry(new Point3D(1999, 81, 4), "Caverna de Gelo"),
-
-          }, cost: 500);
-
+                new PMEntry(new Point3D(4111, 439, 5), "1. Deceit"),
+                new PMEntry(new Point3D(1021, 1431, 0), "2. Caverna Orc"),
+                new PMEntry(new Point3D(514, 1561, 5), "3. Shame"),
+          }, cost: 100);
 
         public static readonly PMList Lugares = new PMList(
-          "Lugares",
-          "Lugares",
+          "Avancado",
+          "Avancado",
           Map.Trammel,
           new[]
           {
-                new PMEntry(new Point3D(2768, 3517, 0), "Serpent Hold"),
+              new PMEntry(new Point3D(4721, 3817, 5), "1. Hyloth"),
+              new PMEntry(new Point3D(2768, 3517, 0), "2. Caverna de Fogo"),
+              new PMEntry(new Point3D(1999, 81, 4), "3. Caverna de Gelo"),
+              new PMEntry(new Point3D(1298, 1081, 5), "4. Despise"),
+              new PMEntry(new Point3D(2043, 227, 14), "5. Wrong"),
+              new PMEntry(new Point3D(1176, 2637, 5), "6. Destard"),
+             //    new PMEntry(new Point3D(2494, 927, 0), "1. Covetous"),
           }, cost: 500);
 
         public static readonly PMList Ilshenar = new PMList(

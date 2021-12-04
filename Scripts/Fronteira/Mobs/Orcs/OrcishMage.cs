@@ -49,7 +49,7 @@ namespace Server.Mobiles
                 case 0: PackItem(new CorpseSkinScroll()); break;
 			}
 
-            if (0.03 > Utility.RandomDouble())
+            if (0.001 > Utility.RandomDouble())
                 this.PackItem(new OrcishKinMask());
 
             if (0.5 > Utility.RandomDouble())

@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Efreet()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an efreet";
+            this.Name = "efreet";
             this.Body = 131;
             this.BaseSoundID = 768;
 

@@ -27,7 +27,6 @@ namespace Server.Gumps
                     player.CloseGump(typeof(TemplatesGump));
                     return;
                 }
-              
             }
 
             this.Closable = true;

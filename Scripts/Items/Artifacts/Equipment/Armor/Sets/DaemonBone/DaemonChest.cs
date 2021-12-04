@@ -84,20 +84,15 @@ namespace Server.Items
                 return 40;
             }
         }
-        public override int OldDexBonus
-        {
-            get
-            {
-                return -6;
-            }
-        }
+
         public override int ArmorBase
         {
             get
             {
-                return 46;
+                return 30;
             }
         }
+
         public override ArmorMaterialType MaterialType
         {
             get
@@ -105,6 +100,7 @@ namespace Server.Items
                 return ArmorMaterialType.Bone;
             }
         }
+
         public override CraftResource DefaultResource
         {
             get
@@ -112,13 +108,16 @@ namespace Server.Items
                 return CraftResource.RegularLeather;
             }
         }
+
         public override int LabelNumber
         {
             get
             {
                 return 1041372;
             }
-        }// daemon bone armor
+        }
+
+        // daemon bone armor
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

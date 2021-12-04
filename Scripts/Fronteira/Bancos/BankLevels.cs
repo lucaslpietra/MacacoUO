@@ -55,7 +55,6 @@ namespace Server.Misc.Custom
 
         public static void OpenBank(Mobile m)
         {
-
             var p = m as PlayerMobile;
             if (p == null)
                 return;

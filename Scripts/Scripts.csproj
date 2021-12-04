@@ -122,6 +122,7 @@
     <Compile Include="Commands\Custom\Remover.cs" />
     <Compile Include="Commands\Custom\Secure.cs" />
     <Compile Include="Commands\Custom\Trancar.cs" />
+    <Compile Include="Fronteira\Bancos\BancoConta.cs" />
     <Compile Include="Fronteira\Comandos\ListaComandos.cs" />
     <Compile Include="Fronteira\Comandos\FixVendors.cs" />
     <Compile Include="Fronteira\Exp\PctExpGump.cs" />
@@ -407,6 +408,7 @@
     <Compile Include="Fronteira\Pvm\Dungeons\Noob\OgroSuspeito.cs" />
     <Compile Include="Fronteira\Pvm\Dungeons\Noob\QuestNoob.cs" />
     <Compile Include="Fronteira\Pvm\GateDG.cs" />
+    <Compile Include="Fronteira\Quests\MatarDeceit.cs" />
     <Compile Include="Fronteira\Rankings\RanksTrampo.cs" />
     <Compile Include="Fronteira\Skills\Informacoes.cs" />
     <Compile Include="Fronteira\Storages\MasterStorage.cs" />
