@@ -3232,15 +3232,13 @@ namespace Server.Mobiles
 
         public int GetInsuranceCost(Item item)
         {
-            int cost = 1000; // this handles old items, set items, etc
-
             if (item is BaseTalisman)
                 return 2000;
 
             if (item is BaseHat)
                 return 500;
  
-            return cost;
+            return 1000;
         }
 
         private void AutoRenewInventoryInsurance()
@@ -4672,11 +4670,11 @@ namespace Server.Mobiles
 
                 if (m_InsuranceAward != null)
                 {
-                    if (Banker.Deposit(m_InsuranceAward, insuredAmount / 2))
+                    if (Banker.Deposit(m_InsuranceAward, insuredAmount / 4))
                     {
                         if (m_InsuranceAward is PlayerMobile)
                         {
-                            ((PlayerMobile)m_InsuranceAward).m_InsuranceBonus += insuredAmount / 2;
+                            ((PlayerMobile)m_InsuranceAward).m_InsuranceBonus += insuredAmount / 4;
                         }
                     }
                 }

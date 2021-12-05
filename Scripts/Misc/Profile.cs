@@ -1,4 +1,5 @@
 using System;
+using Felladrin.Engines;
 using Server.Accounting;
 using Server.Engines.Points;
 using Server.Gumps;
@@ -54,6 +55,7 @@ namespace Server.Misc
             if (e.Beheld == e.Beholder && e.Beheld.Player)
             {
                 e.Beholder.SendGump(new FichaRP(e.Beheld as PlayerMobile));
+                e.Beholder.SendGump(new GlobalChat.ChatHistoryGump());
             }
             else
             {

@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-
+using Felladrin.Engines;
 using Server.Network;
 
 namespace Server.Engines.Chat
@@ -55,9 +55,21 @@ namespace Server.Engines.Chat
 
                 var handler = ChatActionHandlers.GetHandler(actionId);
 
+                if(Shard.DebugEnabled)
+                {
+                    Shard.Debug("lang: " + lang, from);
+                    Shard.Debug("actionID: " + actionId, from);
+                    Shard.Debug("param: " + param, from);
+                }
+
                 if (handler != null)
                 {
                     var channel = user.CurrentChannel;
+                    if(actionId == 97 && (channel ==null || channel.Name == "General"))
+                    {
+                        GlobalChat.MsgChatGlobal(from, param);
+                        return;
+                    }
 
                     if (handler.RequireConference && channel == null)
                     {
