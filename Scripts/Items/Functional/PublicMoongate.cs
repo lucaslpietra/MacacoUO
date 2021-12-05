@@ -341,6 +341,7 @@ namespace Server.Items
                 new PMEntry(new Point3D(4111, 439, 5), "1. Deceit"),
                 new PMEntry(new Point3D(1021, 1431, 0), "2. Caverna Orc"),
                 new PMEntry(new Point3D(514, 1561, 5), "3. Shame"),
+                //new PMEntry(new Point3D(5237, 3866, 45), "4. Delucia"),
           }, cost: 100);
 
         public static readonly PMList Lugares = new PMList(

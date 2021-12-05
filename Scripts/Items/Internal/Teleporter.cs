@@ -19,6 +19,7 @@ namespace Server.Items
         private bool m_DestEffect;
         private int m_SoundID;
         private TimeSpan m_Delay;
+        private bool locked;
 
         [Constructable]
         public Teleporter()
@@ -80,6 +81,16 @@ namespace Server.Items
             {
                 m_SoundID = value;
                 InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool Locked
+        {
+            get { return locked; }
+            set
+            {
+                locked = value;
             }
         }
 
@@ -357,6 +368,11 @@ namespace Server.Items
 
         public override bool OnMoveOver(Mobile m)
         {
+            if(locked && !m.IsStaff())
+            {
+                m.SendMessage("Este local ainda nao foi liberado. Aguarde :)");
+                return true;
+            }
             StartTeleport(m);
             
             return true;
@@ -366,8 +382,8 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(4); // version
-
+            writer.Write(5); // version
+            writer.Write(locked);
             writer.Write(m_CriminalCheck);
             writer.Write(m_CombatCheck);
 
@@ -391,6 +407,11 @@ namespace Server.Items
 
             switch (version)
             {
+                case 5:
+                    {
+                        locked = reader.ReadBool();
+                        goto case 4;
+                    }
                 case 4:
                     {
                         m_CriminalCheck = reader.ReadBool();
