@@ -14,6 +14,13 @@ namespace Server.Items
         public WraithFormScroll(int amount)
             : base(115, 0x226F, amount)
         {
+            if (!Shard.NECRO)
+            {
+                Timer.DelayCall(TimeSpan.FromMilliseconds(10), () =>
+                {
+                    this.Delete();
+                });
+            }
         }
 
         public WraithFormScroll(Serial serial)

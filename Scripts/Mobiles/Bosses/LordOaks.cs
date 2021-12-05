@@ -155,7 +155,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.UltraRich, 5);
+            AddLoot(LootPack.Rich, 1);
         }
 
         public void SpawnPixies(Mobile target)

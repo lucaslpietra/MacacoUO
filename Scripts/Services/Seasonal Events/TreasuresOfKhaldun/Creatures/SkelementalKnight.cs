@@ -24,7 +24,7 @@ namespace Server.Mobiles
         public SkelementalKnight(SkeletalType type)
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "Skelemental Knight";
+            Name = "Cavaleiro das Trevas";
             Body = 0x93;
             BaseSoundID = 451;
 

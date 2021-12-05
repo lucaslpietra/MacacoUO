@@ -14,6 +14,13 @@ namespace Server.Items
         public VengefulSpiritScroll(int amount)
             : base(113, 0x226D, amount)
         {
+            if (!Shard.NECRO)
+            {
+                Timer.DelayCall(TimeSpan.FromMilliseconds(10), () =>
+                {
+                    this.Delete();
+                });
+            }
         }
 
         public VengefulSpiritScroll(Serial serial)

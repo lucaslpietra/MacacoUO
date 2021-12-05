@@ -76,27 +76,24 @@ namespace Server.Ziden.Kills
             BaseCreature bc = e.Creature as BaseCreature;
 
             var gold = e.Corpse.TotalGold;
- 
+            var dg = true;
             var pontos = bc.PontosPvm;
-
+            if (!(bc.Region is DungeonRegion))
+            {
+                dg = false;
+                pontos /= 2;
+            }
+   
             if (pontos <= 0)
                 return;
 
             if (bc.IsChampionSpawn && !(bc is BaseChampion))
-                pontos = pontos / 4;
+                pontos = 1;
 
             var c = e.Corpse;
             var killer = e.Killer;
 
             var exp = pontos;
-            var dg = false;
-            if(!(bc.Region is DungeonRegion))
-            {
-                dg = true;
-            } else
-            {
-                exp = (int)(exp * 1.5);
-            }
 
             if (exp == 0)
                 return;
@@ -164,8 +161,8 @@ namespace Server.Ziden.Kills
                                 pl.GanhaExpRP(pontos);
                             }
                         }
-                        PointsSystem.PontosPvmEterno.AwardPoints(pl, pontos / 2, false, false);
-                        var pts = PointsSystem.PontosPvm.AwardPoints(pl, pontos / 2, false, false);
+                        PointsSystem.PontosPvmEterno.AwardPoints(pl, pontos / 3, false, false);
+                        var pts = PointsSystem.PontosPvm.AwardPoints(pl, pontos / 3, false, false);
                         if (pl.RP)
                         {
                             continue;

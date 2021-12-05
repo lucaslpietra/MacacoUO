@@ -110,7 +110,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 3);
+            this.AddLoot(LootPack.Rich, 1);
             this.AddLoot(LootPack.Meager);
         }
 

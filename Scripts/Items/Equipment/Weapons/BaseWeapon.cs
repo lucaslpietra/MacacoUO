@@ -1571,7 +1571,7 @@ namespace Server.Items
             }
             else
             {
-                var bonusElemental = defender.GetBonusElemento(ElementoPvM.Fogo) + defender.GetBonusElemento(ElementoPvM.Vento) + defender.GetBonusElemento(ElementoPvM.Raio) + +defender.GetBonusElemento(ElementoPvM.Gelo);
+                var bonusElemental = defender.GetBonusElemento(ElementoPvM.Fogo) + defender.GetBonusElemento(ElementoPvM.Vento) + defender.GetBonusElemento(ElementoPvM.Raio) + defender.GetBonusElemento(ElementoPvM.Gelo);
                 bonusElemental /= 2;
                 bonus -= (int)(bonusElemental * 100);
                 if (bonus < -80)
@@ -1586,11 +1586,11 @@ namespace Server.Items
 
             if (defender is BaseCreature && attacker is PlayerMobile)
             {
-                chance += 0.15; // +15% em PvM
+                chance += 0.1; // +10% em PvM
             }
             if (attacker is BaseCreature && defender is PlayerMobile)
             {
-                chance += 0.15; // +15% em PvM
+                chance += 0.1; // +10% em PvM
             }
 
             if (defender.Weapon is BaseRanged)
@@ -1602,7 +1602,7 @@ namespace Server.Items
             {
                 if (defender.Skills.Wrestling.Value >= 100)
                 {
-                    chance -= 0.07;
+                    chance -= 0.1;
                 }
                 else if (defender.Skills.Wrestling.Value >= 80)
                 {

@@ -86,6 +86,9 @@ namespace Server.Mobiles
 
         public static Item NecroScroll(int rnd, bool newbs)
         {
+            if (!Shard.NECRO)
+                return null;
+
             var r = Utility.Random(rnd);
             if(newbs && rnd > 9)
             {

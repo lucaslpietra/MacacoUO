@@ -235,8 +235,7 @@ namespace Server.Fronteira.Recursos
                     i.Amount += bonus;
             }
 
-            if (!from.PlaceInBackpack(i))
-                i.MoveToWorld(from.Location, from.Map);
+            Give(from, i, true);
 
             from.SendMessage("Voce coletou o recurso");
 
@@ -274,6 +273,44 @@ namespace Server.Fronteira.Recursos
             {
                 new ColetaTimer(this, from).Start();
             }
+            return true;
+        }
+
+        public virtual bool Give(Mobile m, Item item, bool placeAtFeet)
+        {
+            if (m.PlaceInBackpack(item))
+                return true;
+
+            if (!placeAtFeet)
+                return false;
+
+            Shard.Debug("Dropando item por causa de peso ", m);
+
+            Map map = m.Map;
+
+            if (map == null || map == Map.Internal)
+                return false;
+
+            List<Item> atFeet = new List<Item>();
+
+            IPooledEnumerable eable = m.GetItemsInRange(0);
+
+            foreach (Item obj in eable)
+                atFeet.Add(obj);
+
+            eable.Free();
+
+            for (int i = 0; i < atFeet.Count; ++i)
+            {
+                Item check = atFeet[i];
+
+                if (check.StackWith(m, item, false))
+                    return true;
+            }
+
+            ColUtility.Free(atFeet);
+
+            item.MoveToWorld(m.Location, map);
             return true;
         }
 

@@ -230,17 +230,14 @@ namespace Server.Engines.Harvest
                     bool guards = from.Region != null && from.Region is GuardedRegion;
                     bool wilds = from.Region == null || !(from.Region is DungeonRegion);
 
-                    if (guards)
+                    if (MineriosFodas.Contains(type))
                     {
-                        if (MineriosFodas.Contains(type))
-                        {
-                            type = typeof(IronOre);
-                            Shard.Debug("Virou iron");
-                        }
-                        else if (MadeirasFodas.Contains(type))
-                        {
-                            type = typeof(Log);
-                        }
+                        type = typeof(IronOre);
+                        Shard.Debug("Virou iron");
+                    }
+                    else if (MadeirasFodas.Contains(type))
+                    {
+                        type = typeof(Log);
                     }
 
                     Item item = Construct(type, from, tool);
@@ -327,11 +324,11 @@ namespace Server.Engines.Harvest
                         if (Give(from, item, def.PlaceAtFeetIfFull))
                         {
                             if (def.Skill == SkillName.Fishing)
-                                PointsSystem.PontosPescador.AwardPoints(from, resource.MaxSkill/10, false, false);
+                                PointsSystem.PontosPescador.AwardPoints(from, resource.MaxSkill / 10, false, false);
                             else if (def.Skill == SkillName.Lumberjacking)
-                                PointsSystem.PontosLenhador.AwardPoints(from, resource.MaxSkill/10, false, false);
+                                PointsSystem.PontosLenhador.AwardPoints(from, resource.MaxSkill / 10, false, false);
                             else if (def.Skill == SkillName.Mining)
-                                PointsSystem.PontosMinerador.AwardPoints(from, resource.MaxSkill/10, false, false);
+                                PointsSystem.PontosMinerador.AwardPoints(from, resource.MaxSkill / 10, false, false);
                             SendSuccessTo(from, item, resource);
                         }
                         else

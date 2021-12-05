@@ -8,6 +8,13 @@ namespace Server.Items
         public CurseWeaponScroll()
             : this(1)
         {
+            if (!Shard.NECRO)
+            {
+                Timer.DelayCall(TimeSpan.FromMilliseconds(10), () =>
+                {
+                    this.Delete();
+                });
+            }
         }
 
         [Constructable]

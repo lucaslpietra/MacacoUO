@@ -1173,6 +1173,9 @@ namespace Server
 
         public static Item RandomNecroScroll(int minCircle, int maxCircle)
         {
+            if (!Shard.NECRO)
+                return RandomScroll(minCircle, maxCircle);
+
             --minCircle;
             --maxCircle;
 

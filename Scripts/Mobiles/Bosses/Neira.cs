@@ -163,8 +163,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.UltraRich, 3);
-            AddLoot(LootPack.Meager);
+            AddLoot(LootPack.Rich, 1);
         }
 
         public override bool OnBeforeDeath()

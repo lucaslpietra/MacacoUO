@@ -123,6 +123,8 @@
     <Compile Include="Commands\Custom\Secure.cs" />
     <Compile Include="Commands\Custom\Trancar.cs" />
     <Compile Include="Fronteira\Bancos\BancoConta.cs" />
+    <Compile Include="Fronteira\Comandos\GenPlantas.cs" />
+    <Compile Include="Fronteira\Comandos\GenCamps.cs" />
     <Compile Include="Fronteira\Comandos\ListaComandos.cs" />
     <Compile Include="Fronteira\Comandos\FixVendors.cs" />
     <Compile Include="Fronteira\Exp\PctExpGump.cs" />
@@ -221,7 +223,6 @@
     <Compile Include="Fronteira\PaidBankChest.cs" />
     <Compile Include="Fronteira\Camping\Acampamento.cs" />
     <Compile Include="Fronteira\Camping\GumpCamping.cs" />
-    <Compile Include="Fronteira\Camping\PlacaAcampemto.cs" />
     <Compile Include="Fronteira\Animations\CustomAnimations.cs" />
     <Compile Include="Fronteira\Chat\Channels\Alliance.cs" />
     <Compile Include="Fronteira\Chat\Channels\Channel.cs" />
@@ -514,12 +515,13 @@
     <Compile Include="Gumps\CharacterCreationRP\ClassSelection.cs" />
     <Compile Include="Gumps\CharacterCreationRP\CharDetailsA.cs" />
     <Compile Include="Gumps\CharacterCreationRP\RaceSelection.cs" />
+    <Compile Include="Gumps\InsuranceGump.cs" />
     <Compile Include="Gumps\Newbie\NonRPClassGump.cs" />
     <Compile Include="Items\Addons\Randoms\abby addons\AbbygifttobaleAddon.cs" />
     <Compile Include="Items\Addons\Randoms\abby addons\birdhouseAddon.cs" />
     <Compile Include="Items\Addons\Randoms\abby addons\blanksoutharchAddon.cs" />
     <Compile Include="Items\Addons\Randoms\abby addons\BonfireAddon.cs" />
-    <Compile Include="Items\Addons\Randoms\abby addons\CampSiteAddon.cs" />
+    <Compile Include="Fronteira\Camping\CampSiteAddon.cs" />
     <Compile Include="Items\Addons\Randoms\abby addons\CaveHomeAddon.cs" />
     <Compile Include="Items\Addons\Randoms\abby addons\ConversationPitAddon.cs" />
     <Compile Include="Items\Addons\Randoms\abby addons\DogHouseAddon.cs" />
@@ -894,6 +896,7 @@
     <Compile Include="Mobiles\AI\RunnerAI.cs" />
     <Compile Include="Mobiles\Normal\Lobster.cs" />
     <Compile Include="Mobiles\Normal\Boura.cs" />
+    <Compile Include="Mobiles\NPCs\Insurer.cs" />
     <Compile Include="Mobiles\NPCs\Muambeiro.cs" />
     <Compile Include="Mobiles\NPCs\ComissionPlayerVendor.cs" />
     <Compile Include="Mobiles\NPCs\Taverneiro.cs" />
@@ -1000,6 +1003,8 @@
     <Compile Include="Regions\RPGuardedRegion.cs" />
     <Compile Include="Regions\Hall.cs" />
     <Compile Include="Regions\ColdRegion.cs" />
+    <Compile Include="Services\Chat\ChatGump.cs" />
+    <Compile Include="Services\Chat\CustomChat.cs" />
     <Compile Include="Services\Harvest\Dificuldade.cs" />
     <Compile Include="Services\UltimaStore\Doou.cs" />
     <Compile Include="Services\UltimaStore\Codigos.cs" />
@@ -4486,7 +4491,6 @@
     <Compile Include="Fronteira\Mobs\RatmanArcher.cs" />
     <Compile Include="Fronteira\Mobs\RatmanMage.cs" />
     <Compile Include="Mobiles\Normal\Ravager.cs" />
-    <Compile Include="Mobiles\Normal\Reaper.cs" />
     <Compile Include="Mobiles\Normal\RedSolenInfiltratorQueen.cs" />
     <Compile Include="Mobiles\Normal\RedSolenInfiltratorWarrior.cs" />
     <Compile Include="Mobiles\Normal\RedSolenQueen.cs" />

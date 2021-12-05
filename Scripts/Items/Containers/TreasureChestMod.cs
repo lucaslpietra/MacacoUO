@@ -2,6 +2,7 @@
 // By Nerun
 
 using Server.Engines.Craft;
+using Server.Engines.Points;
 
 namespace Server.Items
 {
@@ -158,6 +159,14 @@ namespace Server.Items
         {
         }
 
+        public override void LockPick(Mobile from)
+        {
+            int exp = 20;
+            base.LockPick(from);
+            from.SendMessage("Ganhou " + exp + " exp");
+            PointsSystem.Exp.AwardPoints(from, exp);
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -252,6 +261,14 @@ namespace Server.Items
 
         public TreasureLevel1h(Serial serial) : base(serial)
         {
+        }
+
+        public override void LockPick(Mobile from)
+        {
+            int exp = 50;
+            base.LockPick(from);
+            from.SendMessage("Ganhou " + exp + " exp");
+            PointsSystem.Exp.AwardPoints(from, exp);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -358,6 +375,14 @@ namespace Server.Items
 
         public TreasureLevel2(Serial serial) : base(serial)
         {
+        }
+
+        public override void LockPick(Mobile from)
+        {
+            int exp = 100;
+            base.LockPick(from);
+            from.SendMessage("Ganhou " + exp + " exp");
+            PointsSystem.Exp.AwardPoints(from, exp);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -501,6 +526,14 @@ namespace Server.Items
             // Magic jewelry (not implemented)
         }
 
+        public override void LockPick(Mobile from)
+        {
+            int exp = 300;
+            base.LockPick(from);
+            from.SendMessage("Ganhou " + exp + " exp");
+            PointsSystem.Exp.AwardPoints(from, exp);
+        }
+
         public TreasureLevel3(Serial serial) : base(serial)
         {
         }
@@ -528,6 +561,14 @@ namespace Server.Items
         public override int GetLevel()
         {
             return 4;
+        }
+
+        public override void LockPick(Mobile from)
+        {
+            int exp = 500;
+            base.LockPick(from);
+            from.SendMessage("Ganhou " + exp + " exp");
+            PointsSystem.Exp.AwardPoints(from, exp);
         }
 
 

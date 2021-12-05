@@ -12,6 +12,12 @@ namespace Server.Items
             this.Stackable = false;
         }
 
+        public override void AddNameProperties(ObjectPropertyList list)
+        {
+            base.AddNameProperties(list);
+            list.Add("Decoracao");
+        }
+
         public DecoGoldIngots2(Serial serial)
             : base(serial)
         {

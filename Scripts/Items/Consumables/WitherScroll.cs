@@ -14,6 +14,13 @@ namespace Server.Items
         public WitherScroll(int amount)
             : base(114, 0x226E, amount)
         {
+            if (!Shard.NECRO)
+            {
+                Timer.DelayCall(TimeSpan.FromMilliseconds(10), () =>
+                {
+                    this.Delete();
+                });
+            }
         }
 
         public WitherScroll(Serial serial)

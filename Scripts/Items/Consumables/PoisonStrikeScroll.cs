@@ -14,6 +14,13 @@ namespace Server.Items
         public PoisonStrikeScroll(int amount)
             : base(109, 0x2269, amount)
         {
+            if (!Shard.NECRO)
+            {
+                Timer.DelayCall(TimeSpan.FromMilliseconds(10), () =>
+                {
+                    this.Delete();
+                });
+            }
         }
 
         public PoisonStrikeScroll(Serial serial)

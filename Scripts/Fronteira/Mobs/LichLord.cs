@@ -8,6 +8,17 @@ namespace Server.Mobiles
     {
         public override double DisturbChance { get { return 0; } }
 
+
+        public override bool UseSmartAI
+        {
+            get { return !this.Summoned; }
+        }
+
+        public override bool IsSmart
+        {
+            get { return !this.Summoned; }
+        }
+
         [Constructable]
         public LichLord()
             : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -101,6 +112,82 @@ namespace Server.Mobiles
                 return Poison.Lethal;
             }
         }
+
+        public class SkelTimer : Timer
+        {
+            private Mobile mob;
+            private int ct = 0;
+            private Mobile from;
+
+            int dMin = 0;
+            int dMax = 0;
+            int hue = 0;
+
+            public SkelTimer(Mobile defender, Mobile from)
+                : base(TimeSpan.FromSeconds(2))
+            {
+                mob = defender;
+                this.from = from;
+            }
+
+            protected override void OnTick()
+            {
+                var skeleton = new Skeleton();
+                skeleton.MoveToWorld(mob.Location, mob.Map);
+                var skeleton2 = new Skeleton();
+                skeleton2.MoveToWorld(mob.Location, mob.Map);
+                skeleton.PublicOverheadMessage(Network.MessageType.Emote, 0, false, "* levanta de baixo da terra *");
+                skeleton.Combatant = from;
+                skeleton.FocusMob = from;
+                skeleton2.Combatant = from;
+                skeleton2.FocusMob = from;
+                mob.MovingParticles(skeleton, 0x376A, 9, 0, false, false, 9502, 0x376A, 0x204);
+            }
+        }
+
+        public override void OnDamage(int amount, Mobile from, bool willKill)
+        {
+            if (this.Summoned)
+                return;
+
+            if (from is BaseSummoned)
+            {
+                PublicOverheadMessage(Network.MessageType.Emote, 0, false, "An Kal Ort");
+                ((BaseSummoned)from).Dispel(this);
+            }
+            else if (from is BaseCreature)
+            {
+                var creature = (BaseCreature)from;
+                if (creature.Controlled)
+                {
+                    PublicOverheadMessage(Network.MessageType.Emote, 0, false, "An Vas Ex Por");
+                    this.MovingParticles(creature, 0x376A, 7, 0, false, false, 9502, 0x376A, 0x204);
+                    creature.FocusMob = null;
+                    creature.Warmode = false;
+                    creature.Combatant = null;
+                    creature.Freeze(TimeSpan.FromSeconds(10));
+                }
+            }
+        }
+
+        public override void OnThink()
+        {
+            if (this.Summoned)
+                return;
+
+            base.OnThink();
+            var rnd = Utility.Random(10);
+            if (Combatant != null)
+            {
+                if (!IsCooldown("skeleton") && rnd == 5)
+                {
+                    SetCooldown("skeleton", TimeSpan.FromSeconds(40));
+                    PublicOverheadMessage(Network.MessageType.Emote, 0, false, "Kal Vas Corp");
+                    new SkelTimer(this, (Mobile)Combatant).Start();
+                }
+            }
+        }
+
         public override int TreasureMapLevel
         {
             get

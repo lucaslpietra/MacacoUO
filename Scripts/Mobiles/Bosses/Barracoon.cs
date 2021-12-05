@@ -177,7 +177,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.OldUltraRich, 2);
+            AddLoot(LootPack.Rich, 1);
             //AddItem(new WindrunnerStatue());
             //Carnage.GetRandomPS(110);
         }

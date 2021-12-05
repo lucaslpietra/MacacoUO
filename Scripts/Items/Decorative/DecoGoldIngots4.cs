@@ -17,6 +17,12 @@ namespace Server.Items
         {
         }
 
+        public override void AddNameProperties(ObjectPropertyList list)
+        {
+            base.AddNameProperties(list);
+            list.Add("Decoracao");
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

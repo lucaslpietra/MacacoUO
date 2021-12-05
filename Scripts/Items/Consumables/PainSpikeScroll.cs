@@ -14,6 +14,13 @@ namespace Server.Items
         public PainSpikeScroll(int amount)
             : base(108, 0x2268, amount)
         {
+            if (!Shard.NECRO)
+            {
+                Timer.DelayCall(TimeSpan.FromMilliseconds(10), () =>
+                {
+                    this.Delete();
+                });
+            }
         }
 
         public PainSpikeScroll(Serial serial)

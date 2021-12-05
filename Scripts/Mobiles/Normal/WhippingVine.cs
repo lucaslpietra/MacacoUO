@@ -11,7 +11,7 @@ namespace Server.Mobiles
         public WhippingVine()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a whipping vine";
+            this.Name = "vinhas assassinas";
             this.Body = 8;
             this.Hue = 0x851;
             this.BaseSoundID = 352;
@@ -19,10 +19,10 @@ namespace Server.Mobiles
             this.SetStr(251, 300);
             this.SetDex(76, 100);
             this.SetInt(26, 40);
-
+            this.SetHits(300);
             this.SetMana(0);
 
-            this.SetDamage(7, 25);
+            this.SetDamage(10, 25);
 
             this.SetDamageType(ResistanceType.Physical, 70);
             this.SetDamageType(ResistanceType.Poison, 30);
@@ -60,7 +60,7 @@ namespace Server.Mobiles
 
         public override void OnThink()
         {
-            if (this.Combatant != null && this.Combatant.InRange2D(this.Location, 9))
+            if (this.Combatant != null && this.Combatant.InRange2D(this.Location, 14))
             {
                 if (this.Combatant.GetDistance(this.Location) <= 2)
                     return;

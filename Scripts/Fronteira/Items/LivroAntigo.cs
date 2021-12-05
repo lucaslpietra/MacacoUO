@@ -16,7 +16,7 @@ namespace Server.Ziden.Items
         public override void OnDoubleClick(Mobile from)
         {
             from.AddToBackpack(LootPackItem.RandomScroll(5, 8));
-            if(Utility.RandomBool())
+            if(Shard.NECRO && Utility.RandomBool())
                 from.AddToBackpack(LootPackItem.RandomNecroScroll(4, 8));
             else
                 from.AddToBackpack(LootPackItem.RandomScroll(5, 7));

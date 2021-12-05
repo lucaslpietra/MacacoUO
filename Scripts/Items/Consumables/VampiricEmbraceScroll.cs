@@ -14,6 +14,13 @@ namespace Server.Items
         public VampiricEmbraceScroll(int amount)
             : base(112, 0x226C, amount)
         {
+            if (!Shard.NECRO)
+            {
+                Timer.DelayCall(TimeSpan.FromMilliseconds(10), () =>
+                {
+                    this.Delete();
+                });
+            }
         }
 
         public VampiricEmbraceScroll(Serial serial)

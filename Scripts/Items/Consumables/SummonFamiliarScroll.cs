@@ -14,6 +14,13 @@ namespace Server.Items
         public SummonFamiliarScroll(int amount)
             : base(111, 0x226B, amount)
         {
+            if (!Shard.NECRO)
+            {
+                Timer.DelayCall(TimeSpan.FromMilliseconds(10), () =>
+                {
+                    this.Delete();
+                });
+            }
         }
 
         public SummonFamiliarScroll(Serial serial)
