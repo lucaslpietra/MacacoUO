@@ -94,16 +94,17 @@ namespace Felladrin.Engines
                 pm.SendMessage(78, "Voce pode usar o comando .c sem nenhuma msg para abrir o historico do chat");
             }
 
-
-            if(!Banker.Withdraw(pm, 10))
+            /*
+            if(!Banker.Withdraw(pm, 1))
             {
-                if(!pm.Backpack.ConsumeTotal(typeof(Gold), 10))
+                if(!pm.Backpack.ConsumeTotal(typeof(Gold), 1))
                 {
                     pm.SendMessage("Voce nao tem dinheiro suficiente");
                     return;
                 }
             }
-            pm.SendMessage("Voce pagou 10 moedas para falar no chat global");
+            pm.SendMessage("Voce pagou 1 moedas para falar no chat global");
+            */
 
             if (DisabledPlayers.Contains(pm.Serial.Value))
             {
@@ -193,7 +194,7 @@ namespace Felladrin.Engines
                 AddBackground(184, 286, 570, 245, 9200);
                 AddHtml(195, 330, 547, 166, GenerateHistoryHTML(), true, true);
                 AddHtml(423, 297, 96, 22, "Chat Global", false, false);
-                AddHtml(568, 502, 164, 20, "Custo: 10 Moedas", false, false);
+               // AddHtml(568, 502, 164, 20, "Custo: 1 Moeda", false, false);
                 AddHtml(202, 502, 247, 20, "Use .c (msg) para falar", false, false);
             }
 
