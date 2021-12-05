@@ -4365,6 +4365,13 @@ namespace Server.Mobiles
             }
         }
 
+        DateTime lastRes = DateTime.MinValue;
+
+        public bool IsResProtected()
+        {
+            return DateTime.Now < lastRes + TimeSpan.FromSeconds(5); 
+        }
+
         public override void Resurrect()
         {
 
@@ -4388,6 +4395,8 @@ namespace Server.Mobiles
             bool wasAlive = Alive;
 
             base.Resurrect();
+
+            lastRes = DateTime.Now;
 
             Elemento = ElementoPvM.None;
 
@@ -6187,6 +6196,7 @@ namespace Server.Mobiles
             }
         }
 
+     
         public void ResetKillTime()
         {
             m_ShortTermElapse = GameTime + TimeSpan.FromHours(8);

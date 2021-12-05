@@ -122,38 +122,41 @@ namespace Server.Misc
             return from != null && from.RP;
         }
 
-        public static bool Mobile_AllowHarmful(Mobile from, IDamageable damageable)
+        public static bool Mobile_AllowHarmful(Mobile attacker, IDamageable damageable)
         {
-            var target = damageable as Mobile;
+            var defender = damageable as Mobile;
 
-            if (target is WispGuia)
+            if (defender is WispGuia)
                 return false;
 
-            if (from == null || target == null || from.IsStaff() || target.IsStaff())
+            if (attacker == null || defender == null || attacker.IsStaff() || defender.IsStaff())
                 return true;
 
-            if (target.Player && from.Player && target.Region is GuardedRegion)
+            if (defender.Player && attacker.Player && defender.Region is GuardedRegion)
                 return false;
 
-            var map = from.Map;
+            var map = attacker.Map;
 
-            var bc = from as BaseCreature;
+            var bc = attacker as BaseCreature;
             var targPlayer = damageable as PlayerMobile;
 
-            if (from != null && !from.Player && !(bc != null && bc.GetMaster() != null && bc.GetMaster().IsPlayer()))
+            if (attacker != null && !attacker.Player && !(bc != null && bc.GetMaster() != null && bc.GetMaster().IsPlayer()))
             {
                 if (targPlayer != null && ProtecaoRP(targPlayer) && bc!=null && bc.GetMaster() != null && !bc.GetMaster().RP)
                     return false;
 
-                /*
-                if (!CheckAggressor(from.Aggressors, target) && !CheckAggressed(from.Aggressed, target) && target is PlayerMobile &&
-                    ((PlayerMobile)target).CheckYoungProtection(from))
+
+                if (!CheckAggressor(attacker.Aggressors, defender) && !CheckAggressed(attacker.Aggressed, defender) && defender is PlayerMobile &&
+                    ((PlayerMobile)defender).IsResProtected())
+                {
                     return false;
-                    */
+                }
+                    
+                   
             }
 
             // PVPs
-            if (from.Player && targPlayer != null)
+            if (attacker.Player && targPlayer != null)
             {
                 var targ = targPlayer;
                 if(targ.Young)
@@ -161,17 +164,17 @@ namespace Server.Misc
                     return false;
                 }
 
-                if (targ.RP != from.RP && ProtecaoRP(targ))
+                if (targ.RP != attacker.RP && ProtecaoRP(targ))
                 {
-                    from.SendMessage("Voce nao pode atacar um jogador com o modo de jogo RP difetente do seu.");
+                    attacker.SendMessage("Voce nao pode atacar um jogador com o modo de jogo RP difetente do seu.");
                     return false;
                 } 
             }
 
-            if(from.Player && target is BaseCreature)
+            if(attacker.Player && defender is BaseCreature)
             {
-                var master = ((BaseCreature)target).ControlMaster;
-                if (!from.RP && master != null && master.RP && ProtecaoRP(master as PlayerMobile))
+                var master = ((BaseCreature)defender).ControlMaster;
+                if (!attacker.RP && master != null && master.RP && ProtecaoRP(master as PlayerMobile))
                     return false;
             }
 
@@ -179,13 +182,13 @@ namespace Server.Misc
                 return true; // In felucca, anything goes
 
             // Summons should follow the same rules as their masters
-            if (from is BaseCreature && ((BaseCreature)from).Summoned && ((BaseCreature)from).SummonMaster != null)
-                from = ((BaseCreature)from).SummonMaster;
+            if (attacker is BaseCreature && ((BaseCreature)attacker).Summoned && ((BaseCreature)attacker).SummonMaster != null)
+                attacker = ((BaseCreature)attacker).SummonMaster;
 
-            if (target is BaseCreature && ((BaseCreature)target).Summoned && ((BaseCreature)target).SummonMaster != null)
-                target = ((BaseCreature)target).SummonMaster;
+            if (defender is BaseCreature && ((BaseCreature)defender).Summoned && ((BaseCreature)defender).SummonMaster != null)
+                defender = ((BaseCreature)defender).SummonMaster;
 
-            if (!from.Player && !(bc != null && bc.GetMaster() != null && bc.GetMaster().IsPlayer()))
+            if (!attacker.Player && !(bc != null && bc.GetMaster() != null && bc.GetMaster().IsPlayer()))
             {                              /*
                 if (!CheckAggressor(from.Aggressors, target) && !CheckAggressed(from.Aggressed, target) && target is PlayerMobile &&
                     ((PlayerMobile)target).CheckYoungProtection(from))
@@ -194,8 +197,8 @@ namespace Server.Misc
                 return true; // Uncontrolled NPCs are only restricted by the young system
             }
 
-            var fromGuild = GetGuildFor(from.Guild as Guild, from);
-            var targetGuild = GetGuildFor(target.Guild as Guild, target);
+            var fromGuild = GetGuildFor(attacker.Guild as Guild, attacker);
+            var targetGuild = GetGuildFor(defender.Guild as Guild, defender);
 
             if (fromGuild != null && targetGuild != null)
             {
@@ -203,24 +206,24 @@ namespace Server.Misc
                     return true; // Guild allies or enemies can be harmful
             }
 
-            if (ViceVsVirtueSystem.Enabled && ViceVsVirtueSystem.EnhancedRules && ViceVsVirtueSystem.IsEnemy(from, damageable))
+            if (ViceVsVirtueSystem.Enabled && ViceVsVirtueSystem.EnhancedRules && ViceVsVirtueSystem.IsEnemy(attacker, damageable))
                 return true;
 
-            if (target is BaseCreature)
+            if (defender is BaseCreature)
             {
-                if (((BaseCreature)target).Controlled)
+                if (((BaseCreature)defender).Controlled)
                     return false; // Cannot harm other controlled mobiles
 
-                if (((BaseCreature)target).Summoned && from != ((BaseCreature)target).SummonMaster)
+                if (((BaseCreature)defender).Summoned && attacker != ((BaseCreature)defender).SummonMaster)
                     return false; // Cannot harm other controlled mobiles
             }
 
-            if (target.Player)
+            if (defender.Player)
                 return false; // Cannot harm other players
 
-            if (!(target is BaseCreature && ((BaseCreature)target).InitialInnocent))
+            if (!(defender is BaseCreature && ((BaseCreature)defender).InitialInnocent))
             {
-                if (Notoriety.Compute(from, target) == Notoriety.Innocent)
+                if (Notoriety.Compute(attacker, defender) == Notoriety.Innocent)
                     return false; // Cannot harm innocent mobiles
             }
 
