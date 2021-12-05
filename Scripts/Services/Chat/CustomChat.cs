@@ -89,6 +89,17 @@ namespace Felladrin.Engines
 
         public static void MsgChatGlobal(Mobile pm, string msg)
         {
+
+            if(!Banker.Withdraw(pm, 10))
+            {
+                if(!pm.Backpack.ConsumeTotal(typeof(Gold), 10))
+                {
+                    pm.SendMessage("Voce nao tem dinheiro suficiente");
+                    return;
+                }
+            }
+            pm.SendMessage("Voce pagou 10 moedas para falar no chat global");
+
             if (DisabledPlayers.Contains(pm.Serial.Value))
             {
                 pm.SendMessage(38, "Chat desabilitado. Use .ignorarchat pra habilitar.");
