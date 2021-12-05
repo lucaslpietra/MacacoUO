@@ -192,6 +192,8 @@ namespace Server
             var c = 0;
             foreach(var i in m.GetEquipment())
             {
+                if (i is BaseShield)
+                    continue;
                 if (i.Layer != Layer.Arms &&i.Layer != Layer.Neck && i is BaseArmor && ((BaseArmor)i).Elemento == e)
                     c++;
             }

@@ -1797,6 +1797,7 @@ namespace Server
             return Region.GetLogoutDelay(this);
         }
 
+
         private StatLockType m_StrLock, m_DexLock, m_IntLock;
 
         private Item m_Holding;

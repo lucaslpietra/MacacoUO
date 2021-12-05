@@ -28,7 +28,6 @@ namespace Felladrin.Engines
                 CommandSystem.Register("ignorarchat", AccessLevel.Player, new CommandEventHandler(OnCommandToggle));
                 CommandSystem.Register("C", AccessLevel.Player, new CommandEventHandler(OnCommandChat));
                 CommandSystem.Register("Chat", AccessLevel.Player, new CommandEventHandler(OnCommandChat));
-                EventSink.Login += OnLogin;
             }
         }
 
@@ -89,6 +88,12 @@ namespace Felladrin.Engines
 
         public static void MsgChatGlobal(Mobile pm, string msg)
         {
+            if(!pm.IsCooldown("dicachat"))
+            {
+                pm.SetCooldown("dicachat");
+                pm.SendMessage(78, "Voce pode usar o comando .c sem nenhuma msg para abrir o historico do chat");
+            }
+
 
             if(!Banker.Withdraw(pm, 10))
             {
