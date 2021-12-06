@@ -827,6 +827,23 @@ namespace Server.Network
             return x;
         }
 
+        public static List<Mobile> GetOnlinePlayerMobiles()
+        {
+            List<Mobile> l = new List<Mobile>();
+            List<NetState> states = NetState.Instances;
+            int x = 0;
+            for (int i = 0; i < states.Count; ++i)
+            {
+                Mobile m = states[i].Mobile;
+
+                if (m != null)
+                {
+                    l.Add(m);
+                }
+            }
+            return l;
+        }
+
         private void OnReceive(IAsyncResult asyncResult)
         {
             try

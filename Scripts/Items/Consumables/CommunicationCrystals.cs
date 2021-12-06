@@ -61,6 +61,7 @@ namespace Server.Items
         public BroadcastCrystal()
             : this(2000)
         {
+
         }
 
         [Constructable]
@@ -68,7 +69,7 @@ namespace Server.Items
             : base(0x1ED0)
         {
             this.Light = LightType.Circle150;
-
+            Name = "Cristalfone de Envio";
             this.m_Charges = charges;
 
             this.m_Receivers = new List<ReceiverCrystal>();
@@ -188,6 +189,7 @@ namespace Server.Items
                 return;
             }
 
+            from.SendMessage("Selecione um cristal de recebimento ou este mesmo cristal para liga-lo");
             from.Target = new InternalTarget(this);
         }
 
@@ -330,6 +332,7 @@ namespace Server.Items
             : base(0x1ED0)
         {
             this.Light = LightType.Circle150;
+            Name = "Cristalfone de Recebimento";
         }
 
         public ReceiverCrystal(Serial serial)

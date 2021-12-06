@@ -30,7 +30,7 @@ namespace Server.Gumps
             AddHtml(340, 190, 562, 18, @"Voce eh apenas um fraco, ainda nao descobriu seu poder.", (bool)false, (bool)false);
             AddHtml(340, 213, 562, 24, @"Va a caverna de Shame e descubra...Mas esteja muito bem preparado.", (bool)false, (bool)false);
             AddItem(756, 494, 16395, 2611);
-            AddHtml(772, 357, 50, 22, @"100K", (bool)false, (bool)false);
+            AddHtml(772, 357, 50, 22, @"20K", (bool)false, (bool)false);
             AddHtml(761, 468, 47, 22, @"100", (bool)false, (bool)false);
             AddImage(341, 249, 1550);
             AddHtml(705, 571, 153, 19, @"Destravar Potencial", (bool)false, (bool)false);
@@ -63,9 +63,9 @@ namespace Server.Gumps
                             return;
                         }
                           
-                        if (!Banker.Withdraw(from, 100000))
+                        if (!Banker.Withdraw(from, 20000))
                         {
-                            from.SendMessage("Voce precisa de 100000 Moedas de Ouro no banco.");
+                            from.SendMessage("Voce precisa de 20000 Moedas de Ouro no banco.");
                             return;
                         }
                         from.Backpack.ConsumeTotal(new System.Type[] { typeof(CristalElemental), typeof(Gold) }, new int[] { 100, 100000 });

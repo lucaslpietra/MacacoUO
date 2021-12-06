@@ -1502,6 +1502,14 @@ namespace Server
             switch (msg)
             {
                 // GUMP TEXTS
+                case 1011429:
+                    return "Liderado por";
+                case 1011457:
+                    return "Impostos";
+                case 1011428:
+                    return "Eleicoes";
+                case 1011430:
+                    return "Estado da Cidade";
                 case 1005561:
                     return "Voce eh um criminoso e nao pode fazer isto";
                 case 1011447:

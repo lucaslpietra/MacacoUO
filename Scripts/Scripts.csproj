@@ -218,6 +218,7 @@
     <Compile Include="Fronteira\Factions\Mobiles\Vendors\FactionHorseVendor.cs" />
     <Compile Include="Fronteira\Factions\Mobiles\Vendors\FactionOreVendor.cs" />
     <Compile Include="Fronteira\Factions\Mobiles\Vendors\FactionReagentVendor.cs" />
+    <Compile Include="Fronteira\Guia\AcampamentosGump.cs" />
     <Compile Include="Fronteira\Guia\DungeonsGump.cs" />
     <Compile Include="Fronteira\Mobs\VendorWS.cs" />
     <Compile Include="Fronteira\PaidBankChest.cs" />

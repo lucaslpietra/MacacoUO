@@ -7381,7 +7381,7 @@ namespace Server
         #region Say/SayTo/Emote/Whisper/Yell
         public void SayTo(Mobile to, bool ascii, string text)
         {
-            PrivateOverheadMessage(MessageType.Regular, m_SpeechHue, ascii, text, to.NetState);
+            PrivateOverheadMessage( text, to.NetState.Mobile, m_SpeechHue);
         }
 
         public void SayTo(Mobile to, string text)

@@ -345,7 +345,7 @@ namespace Server.Items
             new HousePlacementEntry(typeof(SmallOldHouse),  1011303,	425,	212,	489,	244,	10,	36750, 0,	4,	0,	0x0064),
             new HousePlacementEntry(typeof(SmallOldHouse),  1011304,	425,	212,	489,	244,	10,	36750, 0,	4,	0,	0x0066),
             new HousePlacementEntry(typeof(SmallOldHouse),  1011305,	425,	212,	489,	244,	10,	36500, 0,	4,	0,	0x0068),
-            new HousePlacementEntry(typeof(SmallOldHouse),  1011306,	425,	212,	489,	244,	10,	35000, 0,	4,	0,	0x006A),
+            new HousePlacementEntry(typeof(SmallOldHouse),  1011306,	425,	212,	489,	244,	10,	30000, 0,	4,	0,	0x006A),
             new HousePlacementEntry(typeof(SmallOldHouse),  1011307,	425,	212,	489,	244,	10,	36500, 0,	4,	0,	0x006C),
             new HousePlacementEntry(typeof(SmallOldHouse),  1011308,	425,	212,	489,	244,	10,	36500, 0,	4,	0,	0x006E),
             new HousePlacementEntry(typeof(SmallShop),      1011321,	425,	212,	489,	244,	10,	60250*2, -1,	4,	0,	0x00A0),

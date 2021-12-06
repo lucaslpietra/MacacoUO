@@ -19,6 +19,12 @@ namespace Server.Mobiles
         { 
         }
 
+        public override void VendorBuy(Mobile from)
+        {
+            base.VendorBuy(from);
+            this.PrivateOverheadMessage("Bons barcos hoje em dia apenas podem ser feitos por carpinteiros", from);
+        }
+
         protected override List<SBInfo> SBInfos
         {
             get
