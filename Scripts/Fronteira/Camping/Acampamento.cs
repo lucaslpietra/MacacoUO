@@ -44,13 +44,31 @@ namespace Server.Multis
             if(camp != null)
             {
                 var discobertas = m.CampfireLocations.Split(';').ToList();
+                foreach(var invalida in discobertas.Where(c => !Points.ContainsKey(c))) {
+                    discobertas.Remove(invalida);
+                }
+
+                var qtd = discobertas.Count + 1;
                 if (discobertas.Contains(nomeCamp))
                 {
                     return;
                 }
-                m.CampfireLocations += nomeCamp + ";";
+                discobertas.Add(nomeCamp);
+                m.CampfireLocations += string.Join(":", discobertas);
                 m.Emote("Local de Camping Descoberto: " + nomeCamp);
                 m.SendMessage(78, "Clique duas vezes em uma fogueira segura para se teleportar a este acampamento");
+                m.SendMessage("Acampamentos Descobertos: " +qtd+"/" + Points.Count);
+                if(qtd == Points.Count)
+                {
+                    var k = new Kasa(1161);
+                    k.Name = "Chapeu do Campista Lendario";
+                    k.LootType = LootType.Newbied;
+                    k.EngravedText = "Campista: " + m.Name;
+                    k.Owner = m;
+                    k.BoundTo = m.Name;
+                    m.PlaceInBackpack(k);
+                    m.SendMessage("Voce ganhou um chapeu do campista lendario");
+                }
             } else
             {
                 m.SendMessage("Nao existe um local de camping proximo deste local. Procure por locais de camping (troncos ao redor, e uma terrinha no meio)");

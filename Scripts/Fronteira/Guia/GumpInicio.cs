@@ -60,6 +60,9 @@ namespace Server.Gumps
             AddHtml(483, 343+100, 152, 23, @"<CENTER>FACTIONS</CENTER>", (bool)true, (bool)false);
             AddButton(541, 373+100, 2151, 2151, (int)Buttons.Factions, GumpButtonType.Reply, 0);
 
+            AddHtml(700, 343 + 100, 152, 23, @"<CENTER>ACAMPAMENTOS</CENTER>", (bool)true, (bool)false);
+            AddButton(763, 373 + 100, 2151, 2151, (int)Buttons.Acampamentos, GumpButtonType.Reply, 0);
+
             AddHtml(700, 343, 152, 23, @"<CENTER>PARAR BUSCA</CENTER>", (bool)true, (bool)false);
             AddButton(763, 369, 2151, 2151, (int)Buttons.Parar, GumpButtonType.Reply, 0);
 
@@ -72,7 +75,8 @@ namespace Server.Gumps
             Aventuras = 2,
             Dungeons = 3,
             Factions = 4,
-            Parar = 5
+            Parar = 5,
+            Acampamentos = 6
         }
 
 
@@ -92,6 +96,12 @@ namespace Server.Gumps
                     {
                         from.CloseAllGumps();
                         from.SendGump(new MissoesGump(from));
+                        break;
+                    }
+                case (int)Buttons.Acampamentos:
+                    {
+                        from.CloseAllGumps();
+                        from.SendGump(new AcampamentosGump(from));
                         break;
                     }
                 case (int)Buttons.Factions:
