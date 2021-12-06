@@ -1,5 +1,7 @@
 
 using System;
+using Server.Gumps;
+using Server.Mobiles;
 using Server.Regions;
 
 namespace Server.Items
@@ -10,7 +12,7 @@ namespace Server.Items
         private DateTime i_lastused;
         private Point3D i_home;
         private Map i_homemap;
-        private static readonly TimeSpan delay = TimeSpan.FromMinutes(30);
+        private static readonly TimeSpan delay = TimeSpan.FromMinutes(20);
         private Timer hearth;
         private Mobile m;
         private Item i;
@@ -39,10 +41,10 @@ namespace Server.Items
 
         // starting the item itself
         [Constructable]
-        public Hearthstone() : base(0x2AAA)
+        public Hearthstone() : base(0x3197)
         {
             Weight = 1.0;
-            Name = "pedra da lareira";
+            Name = "hearthstone";
         }
 
         // this controls the list you see when you mouse-over the stone
@@ -54,6 +56,15 @@ namespace Server.Items
             // initial variables for use only inside the property list
             TimeSpan timetouse = ((this.lastused + Server.Items.Hearthstone.delay) - DateTime.Now);
             string lisths;
+
+            if(this.map != null && this.i_home != Point3D.Zero)
+            {
+                var region = Region.Find(this.i_home, this.map);
+                if(region != null && region.Name != null)
+                {
+                    list.Add("Salva em " + region.Name);
+                }
+            }
 
             // determine the info the next-use display shows
             if (timetouse.Minutes > 0)
@@ -89,31 +100,46 @@ namespace Server.Items
                 from.SendMessage("Precisa estar em sua mochila.");
                 return;
             }
-            else if (!CheckHearth(m, i)) // execute common method for failure checks
+            from.SendGump(new GumpOpcoes("Hearthstone", (opt) =>
             {
-                return;
-            }
-            else if (from.Region.GetLogoutDelay(from) == TimeSpan.Zero && !(from.Region is HouseRegion))  // see if they are in an "inn" zone and mark if they are
-            {
-                this.home = from.Location;
-                this.lastused = DateTime.Now;
-                from.SendMessage("Voce salvou sua pedra aqui.");
-                return;
-            }
-            else // or else teleport the person to their hearth
-            {
-                m.CantWalk = true;
-                hearth = Timer.DelayCall(TimeSpan.FromSeconds(10.0), new TimerCallback(HearthTeleport));
-                m.SendMessage("Use sua pedra para retornar para casa.");
-            }
+                if(opt==0)
+                {
+                    if (!CheckHearth(m, i)) // execute common method for failure checks
+                    {
+                        return;
+                    }
+                    m.Freeze(TimeSpan.FromSeconds(10));
+                    hearth = Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerCallback(HearthTeleport));
+                    m.SendMessage("Voce esta retornando para casa em 10 segundos.");
+                    m.FixedEffect(0x375A, 10, 15);
+                    m.PlaySound(0x1E7);
+                } else
+                {
+                    if (from.Region is GuardedRegion)  // see if they are in an "inn" zone and mark if they are
+                    {
+                        from.FixedEffect(0x375A, 10, 15);
+                        from.PlaySound(0x1E7);
+                        this.home = from.Location;
+                        this.map = from.Map;
+                        from.OverheadMessage("* salvou *");
+                        this.lastused = DateTime.Now - TimeSpan.FromMinutes(19);
+                        return;
+                    } else
+                    {
+                        from.SendMessage("Voce precisa estar em algum local seguro para salvar sua pedra");
+                    }
+                }
+            }, 0x3197, 0, "Retornar", "Salvar"));
         }
 
         private void HearthTeleport()  // the teleporting method
         {
             if (CheckHearth(m, i))  // double check after "casting time" that its legal still
             {
-                m.Map = map;
-                m.Location = new Point3D(home);
+                m.MoveToWorld(home, map);
+                BaseCreature.TeleportPets(m, home, map);
+                m.FixedEffect(0x375A, 10, 15);
+                m.PlaySound(0x1E7);
                 this.lastused = DateTime.Now;
                 m.CantWalk = false;
             }
@@ -134,7 +160,8 @@ namespace Server.Items
             }
             else if ((this.lastused + Server.Items.Hearthstone.delay) > DateTime.Now) // make sure its not too soon since last use
             {
-                m.SendMessage("Aguarde a pedra carregar!");
+                var diff = (this.lastused + Server.Items.Hearthstone.delay) - DateTime.Now;
+                m.SendMessage("Aguarde "+diff.TotalSeconds+" segundos");
                 return false;
             }
             else if (Server.Spells.SpellHelper.CheckCombat(m)) // use a spell system check to make sure they are not in combat

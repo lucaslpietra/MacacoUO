@@ -31,9 +31,9 @@ namespace Server.Engines.Harvest
             }
         }
 
-        public static Dificuldade CARVALHO = new Dificuldade(65, 90);
-        public static Dificuldade PINHO = new Dificuldade(80, 110);
-        public static Dificuldade MOGNO = new Dificuldade(90, 120);
+        public static Dificuldade CARVALHO = new Dificuldade(60, 80);
+        public static Dificuldade PINHO = new Dificuldade(65, 80);
+        public static Dificuldade MOGNO = new Dificuldade(90, 100);
         public static Dificuldade EUCALIPTO = new Dificuldade(100, 120);
         public static Dificuldade CARMESIN = new Dificuldade(110, 130);
         public static Dificuldade GELO = new Dificuldade(120, 140);

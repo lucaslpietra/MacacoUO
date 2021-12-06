@@ -42,8 +42,8 @@ namespace Server.Engines.Harvest
             }
         }
 
-        public static Dificuldade COBRE = new Dificuldade(65, 80);
-        public static Dificuldade BRONZE = new Dificuldade(70, 85);
+        public static Dificuldade COBRE = new Dificuldade(60, 80);
+        public static Dificuldade BRONZE = new Dificuldade(65, 85);
         public static Dificuldade DOURADO = new Dificuldade(75, 90);
         public static Dificuldade NIOBIO = new Dificuldade(80, 95);
         public static Dificuldade LAZURITA = new Dificuldade(85, 100);

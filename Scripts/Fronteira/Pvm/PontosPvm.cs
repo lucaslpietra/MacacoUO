@@ -153,10 +153,12 @@ namespace Server.Ziden.Kills
                                 //pl.SendMessage(78, "Bonus de XP: Semana FULL EXP");
                                 c.PrivateOverheadMessage(Network.MessageType.Regular, 66, false, string.Format("+{0} EXP", exp), pl.NetState);
                                 PointsSystem.Exp.AwardPoints(pl, exp, false, false);
-                                if (!pl.IsCooldown("xpp"))
+                                if (!pl.IsCooldown("xpp") && pl.IsYoung())
                                 {
-                                    pl.SetCooldown("xpp", TimeSpan.FromHours(1));
+                                    pl.SetCooldown("xpp", TimeSpan.FromMinutes(10));
                                     pl.SendMessage(78, "Digite .xp para usar sua EXP para subir skills");
+                                    if(pl.Young)
+                                        pl.PrivateOverheadMessage("Usarei o .xp", 1152);
                                 }
                             } else
                             {

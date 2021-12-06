@@ -2841,7 +2841,6 @@ namespace Server.Items
                         nome += " de baixa qualidade";
                     if (m_Resource != CraftResource.Ferro && m_Resource != CraftResource.RegularLeather && m_Resource != CraftResource.Cedro)
                         nome += " de " + m_Resource;
-
                 }
 
                 if (Name == null)
@@ -2886,13 +2885,18 @@ namespace Server.Items
         {
         }
 
+        public bool Magico()
+        {
+            return m_Durability != ArmorDurabilityLevel.Regular || m_Protection != ArmorProtectionLevel.Regular;
+        }
+
         public override void AddNameProperties(ObjectPropertyList list)
         {
             base.AddNameProperties(list);
 
             if (!Identified)
             {
-                if (m_Durability != ArmorDurabilityLevel.Regular || (m_Protection > ArmorProtectionLevel.Regular && m_Protection <= ArmorProtectionLevel.Invulnerability))
+                if (Magico())
                     list.Add("[ Nao Identificado ]");
             }
             else

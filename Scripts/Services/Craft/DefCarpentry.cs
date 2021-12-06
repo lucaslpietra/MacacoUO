@@ -170,8 +170,8 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(AxleGears), "Engrenagens de Eixo", 40, "Voce precisa de engrenagens de eixo");
 
             // Other
-            AddCraft(typeof(BarrelStaves), 1044294, 1027857, 00.0, 25.0, typeof(AshBoard), 1044041, 5, 1044351);
-            AddCraft(typeof(BarrelLid), 1044294, 1027608, 11.0, 36.0, typeof(AshBoard), 1044041, 4, 1044351);
+            AddCraft(typeof(BarrelStaves), 1044294, 1027857, 00.0, 25.0, typeof(OakBoard), 1044041, 5, 1044351);
+            AddCraft(typeof(BarrelLid), 1044294, 1027608, 11.0, 36.0, typeof(OakBoard), 1044041, 4, 1044351);
             AddCraft(typeof(ShortMusicStandLeft), 1044294, 1044313, 78.9, 103.9, typeof(Board), 1044041, 15, 1044351);
             AddCraft(typeof(ShortMusicStandRight), 1044294, 1044314, 78.9, 103.9, typeof(Board), 1044041, 15, 1044351);
             AddCraft(typeof(TallMusicStandLeft), 1044294, 1044315, 81.5, 106.5, typeof(Board), 1044041, 20, 1044351);
