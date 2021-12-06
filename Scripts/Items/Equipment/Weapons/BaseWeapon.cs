@@ -952,6 +952,11 @@ namespace Server.Items
                     bonus += 90;
                     break;
                 case CraftResource.Gelo:
+                    if (this is BaseStaff)
+                        bonus += 100;
+                    else
+                        bonus += 50;
+                    break;
                 case CraftResource.Adamantium:
 
                     bonus += 100;
@@ -4043,9 +4048,17 @@ namespace Server.Items
                     break;
                 case CraftResource.Berilo:
                 case CraftResource.Carmesim:
-                    bonusOre += 7;
+                    if (this is BaseStaff)
+                        bonusOre += 4;
+                    else
+                        bonusOre += 9;
                     break;
                 case CraftResource.Gelo:
+                    if(this is BaseStaff)
+                        bonusOre += 9;
+                    else
+                        bonusOre += 4;
+                    break;
                 case CraftResource.Adamantium:
                     bonusOre += 9;
                     break;

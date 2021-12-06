@@ -335,7 +335,7 @@ namespace Server.Gumps
                     return;
                 }
 
-                from.RawStr += 1;
+                SkillCheck.GainStat(from, SkillCheck.Stat.Str);
                 PointsSystem.Exp.DeductPoints(from, custo, false);
                 from.FixedParticles(0x375A, 9, 20, 5016, EffectLayer.Waist);
                 from.PlaySound(0x1FD);
@@ -355,7 +355,7 @@ namespace Server.Gumps
                     return;
                 }
 
-                from.RawDex += 1;
+                SkillCheck.GainStat(from, SkillCheck.Stat.Dex);
                 PointsSystem.Exp.DeductPoints(from, custo, false);
                 from.FixedParticles(0x375A, 9, 20, 5016, EffectLayer.Waist);
                 from.PlaySound(0x1FD);
@@ -376,7 +376,7 @@ namespace Server.Gumps
                     return;
                 }
 
-                from.RawInt += 1;
+                SkillCheck.GainStat(from, SkillCheck.Stat.Int);
                 PointsSystem.Exp.DeductPoints(from, custo, false);
                 from.FixedParticles(0x375A, 9, 20, 5016, EffectLayer.Waist);
                 from.PlaySound(0x1FD);
@@ -402,12 +402,12 @@ namespace Server.Gumps
 
             var old = from.Skills[skill].Value;
             var gain = 10;
-            if (from.Skills[skill].Value > 70)
-                gain = 5;
-            if (from.Skills[skill].Value > 80)
-                gain = 3;
+            
             if (from.Skills[skill].Value > 90)
+                gain = 5;
+            if (from.Skills[skill].Value > 99)
                 gain = 1;
+            
             SkillCheck.Gain(from, from.Skills[skill], gain);
             var nw = from.Skills[skill].Value;
 

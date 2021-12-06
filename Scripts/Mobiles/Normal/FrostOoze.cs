@@ -39,6 +39,7 @@ namespace Server.Mobiles
             this.VirtualArmor = 38;
             this.PackItem(new Diamond());
             this.SetWeaponAbility(WeaponAbility.ParalyzingBlow);
+            SetMagicalAbility(MagicalAbility.Poisoning);
         }
 
 

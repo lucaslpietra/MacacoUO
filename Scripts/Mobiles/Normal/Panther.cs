@@ -42,6 +42,8 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 1;
             MinTameSkill = 53.1;
+
+            SetSpecialAbility(SpecialAbility.AngryFire);
         }
 
         public Panther(Serial serial)

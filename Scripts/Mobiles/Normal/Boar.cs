@@ -40,6 +40,8 @@ namespace Server.Mobiles
             this.Tamable = true;
             this.ControlSlots = 1;
             this.MinTameSkill = 29.1;
+
+            SetSpecialAbility(SpecialAbility.BloodDisease);
         }
 
         public Boar(Serial serial)

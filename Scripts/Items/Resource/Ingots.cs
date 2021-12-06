@@ -175,6 +175,12 @@ namespace Server.Items
         {
         }
 
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            from.SendMessage("Bom e velho ferro. Recurso primordial para ferreiros e inventores.");
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -199,6 +205,12 @@ namespace Server.Items
         public BeriloIngot()
             : this(1)
         {
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            from.SendMessage("Minerio com a cor de sangue. Normalmente usado para armas.");
         }
 
         [Constructable]
@@ -256,6 +268,12 @@ namespace Server.Items
             writer.Write((int)0); // version
         }
 
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            from.SendMessage("Minerio claro brilhante, muito raro. Otimo para armas.");
+        }
+
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
@@ -288,10 +306,15 @@ namespace Server.Items
         {
         }
 
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            from.SendMessage("Minerio de cor unica. Muito bom para armaduras.");
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
@@ -323,6 +346,12 @@ namespace Server.Items
         public CopperIngot(Serial serial)
             : base(serial)
         {
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            from.SendMessage("Minerio conhecido de tempos antigos. Muito usado para criar barcos.");
         }
 
         public override void Serialize(GenericWriter writer)
@@ -362,6 +391,12 @@ namespace Server.Items
         {
         }
 
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            from.SendMessage("Minerio conhecido de tempos antigos. Decente para equipamentos.");
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -392,6 +427,12 @@ namespace Server.Items
         public SilverIngot(int amount)
             : base(CraftResource.Dourado, amount)
         {
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            from.SendMessage("Minerio com alto valor devido a diversas utilidades.");
         }
 
         public SilverIngot(Serial serial)
@@ -436,6 +477,12 @@ namespace Server.Items
         {
         }
 
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            from.SendMessage("Minerio negro, nao eh muito bom para armas.");
+        }
+
         public NiobioIngot(Serial serial)
             : base(serial)
         {
@@ -465,6 +512,12 @@ namespace Server.Items
         public LazuritaIngot()
             : this(1)
         {
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            from.SendMessage("Um elegante minerio azul. Util para tudo.");
         }
 
         [Constructable]
@@ -513,6 +566,12 @@ namespace Server.Items
         public QuartzoIngot(Serial serial)
             : base(serial)
         {
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            from.SendMessage("Este bonito minerio diz ser muito eficiente para criar ferramentas");
         }
 
         public override void Serialize(GenericWriter writer)

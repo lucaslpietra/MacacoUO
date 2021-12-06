@@ -161,6 +161,12 @@ namespace Server.Items
         {
         }
 
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            from.SendMessage("Madeira muito boa para construir barcos");
+        }
+
         public HeartwoodBoard(Serial serial)
             : base(serial)
         {
@@ -193,6 +199,12 @@ namespace Server.Items
         public BloodwoodBoard(int amount)
             : base(CraftResource.Carmesim, amount)
         {
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            from.SendMessage("Madeira muito boa para instrumentos e arcos");
         }
 
         public BloodwoodBoard(Serial serial)
@@ -234,6 +246,12 @@ namespace Server.Items
         {
         }
 
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            from.SendMessage("Madeira clara, conhecida por fabricar cajados de qualidade magnifica.");
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -263,6 +281,12 @@ namespace Server.Items
         {
         }
 
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            from.SendMessage("Madeira boa pra tudo.");
+        }
+
         public OakBoard(Serial serial)
             : base(serial)
         {
@@ -289,6 +313,12 @@ namespace Server.Items
         public AshBoard()
             : this(1)
         {
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            from.SendMessage("Madeira boa pra tudo.");
         }
 
         [Constructable]
@@ -323,6 +353,12 @@ namespace Server.Items
         public YewBoard()
             : this(1)
         {
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            from.SendMessage("Madeira muito boa para instrumentos e moveis");
         }
 
         [Constructable]

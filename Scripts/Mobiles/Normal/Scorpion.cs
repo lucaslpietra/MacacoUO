@@ -37,8 +37,8 @@ namespace Server.Mobiles
             SetSkill(SkillName.Tactics, 60.3, 75.0);
             SetSkill(SkillName.Wrestling, 50.3, 65.0);
 
-            Fame = 2000;
-            Karma = -2000;
+            Fame = 1600;
+            Karma = -1600;
 
             VirtualArmor = 28;
 
@@ -86,7 +86,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return (0.8 >= Utility.RandomDouble() ? Poison.Greater : Poison.Deadly);
+                return (0.8 >= Utility.RandomDouble() ? Poison.Lesser : Poison.Greater);
             }
         }
         public override void GenerateLoot()

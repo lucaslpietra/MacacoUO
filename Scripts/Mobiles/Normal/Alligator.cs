@@ -41,6 +41,8 @@ namespace Server.Mobiles
             this.Tamable = true;
             this.ControlSlots = 1;
             this.MinTameSkill = 47.1;
+
+            SetSpecialAbility(SpecialAbility.LifeLeech);
         }
 
         public Alligator(Serial serial)

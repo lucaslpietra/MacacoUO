@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Server.Gumps;
 using Server.Items;
+using Server.Leilaum;
 using Server.Network;
 
 namespace Server.Engines.Craft
@@ -71,8 +72,7 @@ namespace Server.Engines.Craft
             AddBackground(10, 342, 510, 145, 9350);
             AddBackground(10, 37, 200, 250, 9350);
             AddBackground(215, 37, 305, 250, 9350);
-            
-            //AddAlphaRegion(10, 10, 510, 477);
+
             AddBackground(10, 10, 510, 477, 9350);
             if (craftSystem.GumpTitleNumber > 0)
                 AddHtmlLocalized(10, 12, 510, 20, craftSystem.GumpTitleNumber, LabelColor, false, false);
@@ -172,16 +172,17 @@ namespace Server.Engines.Craft
             // Resmelt option
             if (m_CraftSystem.Resmelt)
             {
-                if(m_CraftSystem.MainSkill==SkillName.Carpentry || m_CraftSystem.MainSkill == SkillName.Fletching)
+                if (m_CraftSystem.MainSkill == SkillName.Carpentry || m_CraftSystem.MainSkill == SkillName.Fletching)
                 {
                     AddButton(15, 342, 4005, 4007, GetButtonID(6, 1), GumpButtonType.Reply, 0);
                     AddHtml(50, 345, 150, 18, "Desmontar", false, false); // SMELT ITEM
-                } else
+                }
+                else
                 {
                     AddButton(15, 342, 4005, 4007, GetButtonID(6, 1), GumpButtonType.Reply, 0);
                     AddHtml(50, 345, 150, 18, "Derreter", false, false); // SMELT ITEM
                 }
-               
+
             }
             // ****************************************
 
@@ -205,6 +206,8 @@ namespace Server.Engines.Craft
                 string nameString = craftSystem.CraftSubRes.NameString;
                 int nameNumber = craftSystem.CraftSubRes.NameNumber;
                 int resIndex = (context == null ? -1 : context.LastResourceIndex);
+                int icone = 7152; // ingots
+                int hue = 0;
                 Type resourceType = craftSystem.CraftSubRes.ResType;
                 if (resIndex > -1)
                 {
@@ -214,6 +217,17 @@ namespace Server.Engines.Craft
 
                     nameNumber = subResource.NameNumber;
                     resourceType = subResource.ItemType;
+
+                    var craft = CraftResources.GetFromType(resourceType);
+                    var tipo = CraftResources.GetType(craft);
+                    if (tipo == CraftResourceType.Wood)
+                        icone = 7127;
+                    else if (tipo == CraftResourceType.Leather)
+                    {
+                        icone = 4225;
+                    }
+                    hue = CraftResources.GetHue(craft);
+
                 }
 
                 Type resourceType2 = GetAltType(resourceType);
@@ -235,6 +249,10 @@ namespace Server.Engines.Craft
                     }
                 }
 
+
+                AddBackground(15, 385, 50, 50, 3000);
+                NewAuctionGump.AddItemCentered(15, 385, 50, 50, icone, hue, this);
+
                 AddButton(15, 362, 4005, 4007, GetButtonID(6, 0), GumpButtonType.Reply, 0);
                 AddLabel(50, 362, 0, (context.DoNotColor ? "*" : "") + String.Format("{0} ({1} Disponivel)", nameString, resourceCount));
             }
@@ -245,7 +263,8 @@ namespace Server.Engines.Craft
             {
                 string nameString = craftSystem.CraftSubRes2.NameString;
                 int nameNumber = craftSystem.CraftSubRes2.NameNumber;
-
+                int icone = 9908; // scales
+                int hue = 0;
                 int resIndex = (context == null ? -1 : context.LastResourceIndex2);
 
                 Type resourceType = craftSystem.CraftSubRes2.ResType;
@@ -253,10 +272,12 @@ namespace Server.Engines.Craft
                 if (resIndex > -1)
                 {
                     CraftSubRes subResource = craftSystem.CraftSubRes2.GetAt(resIndex);
-
                     nameString = subResource.NameString;
                     nameNumber = subResource.NameNumber;
+                    resourceType = subResource.ItemType; nameNumber = subResource.NameNumber;
                     resourceType = subResource.ItemType;
+                    var craft = CraftResources.GetFromType(resourceType);
+                    hue = CraftResources.GetHue(craft);
                 }
 
                 int resourceCount = 0;
@@ -269,8 +290,11 @@ namespace Server.Engines.Craft
                         resourceCount += items[i].Amount;
                 }
 
-                AddButton(15, 382, 4005, 4007, GetButtonID(6, 7), GumpButtonType.Reply, 0);
-                AddLabel(50, 385, LabelHue, String.Format("{0} ({1} Disponivel)", nameString, resourceCount));
+                AddBackground(270, 385, 50, 50, 3000);
+                NewAuctionGump.AddItemCentered(270, 385, 50, 50, icone, hue, this);
+
+                AddButton(270, 362, 4005, 4007, GetButtonID(6, 7), GumpButtonType.Reply, 0);
+                AddLabel(305, 362, LabelHue, String.Format("{0} ({1} Disponivel)", nameString, resourceCount));
             }
             // ****************************************
 

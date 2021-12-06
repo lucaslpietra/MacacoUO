@@ -1,3 +1,4 @@
+using Server.Items;
 using System;
 
 namespace Server.Mobiles
@@ -39,6 +40,7 @@ namespace Server.Mobiles
             this.Karma = -4500;
 
             this.VirtualArmor = 48;
+            SetWeaponAbility(WeaponAbility.CrushingBlow);
         }
 
         public Cyclops(Serial serial)

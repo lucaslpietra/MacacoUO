@@ -22,7 +22,7 @@ namespace Server.Mobiles
         public override void VendorBuy(Mobile from)
         {
             base.VendorBuy(from);
-            this.PrivateOverheadMessage("Bons barcos hoje em dia apenas podem ser feitos por carpinteiros", from);
+            this.PrivateOverheadMessage("Os negocios vao mal, estou tendo que vender caro... Carpinteiros podem craftar barcos melhores que este.", from);
         }
 
         protected override List<SBInfo> SBInfos
@@ -32,6 +32,7 @@ namespace Server.Mobiles
                 return this.m_SBInfos;
             }
         }
+
         public override void InitSBInfo() 
         { 
             this.m_SBInfos.Add(new SBShipwright()); 
