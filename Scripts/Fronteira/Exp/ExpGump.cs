@@ -245,23 +245,23 @@ namespace Server.Gumps
             AddButton(714, 441, 55, 248, (int)Buttons.Chivalry, GumpButtonType.Reply, 0);
 
             // Stats
-            var modX = 160;
-            var modY = 20;
+            var modX = 250;
+            var modY = 35;
             //AddBackground(763+modX, 84+modY, 195, 139, 1579);
             AddHtml(784 + modX, 186 + modY-20, 61, 21, caller.RawInt + " Int", false, false);
             AddButton(851 + modX, 187 + modY-20, 55, 55, (int)Buttons.Int, GumpButtonType.Reply, 0);
-            AddHtml(871 + modX, 187 + modY-20, 61, 21, formulaCusto(caller.RawInt).ToString(), false, false);
+            AddHtml(871 + modX, 187 + modY-20, 61, 21, (formulaCusto(caller.RawInt)*2).ToString(), false, false);
 
-            AddHtml(784 + modX, 158 + modY, 61-10, 21, caller.RawDex + " Dex", false, false);
+            AddHtml(784 + modX, 158 + modY - 10, 61, 21, caller.RawDex + " Dex", false, false);
             AddButton(851 + modX, 159 + modY-10, 55, 55, (int)Buttons.Dex, GumpButtonType.Reply, 0);
-            AddHtml(871 + modX, 159 + modY-10, 61, 21, formulaCusto(caller.RawDex).ToString(), false, false);
+            AddHtml(871 + modX, 159 + modY-10, 61, 21, (formulaCusto(caller.RawDex)*2).ToString(), false, false);
 
             AddHtml(783 + modX, 130 + modY, 61, 21, caller.RawStr + " Str", false, false);
             AddButton(850 + modX, 131 + modY, 55, 55, (int)Buttons.Str, GumpButtonType.Reply, 0);
-            AddHtml(870 + modX, 131 + modY, 61, 21, formulaCusto(caller.RawStr).ToString(), false, false);
-            AddItem(911 + modX, 93 + modY, 6225);
-            AddItem(759 + modX, 93 + modY, 6226);
-            AddHtml(837 + modX, 100 + modY, 61, 21, "Stats", false, false);
+            AddHtml(870 + modX, 131 + modY, 61, 21, (formulaCusto(caller.RawStr)*2).ToString(), false, false);
+            //AddItem(911 + modX, 93 + modY, 6225);
+            //AddItem(759 + modX, 93 + modY, 6226);
+            //AddHtml(837 + modX, 100 + modY, 61, 21, "Stats", false, false);
         }
 
 
@@ -321,6 +321,69 @@ namespace Server.Gumps
                 Shard.Debug("Clicou no help");
                 return;
             }
+            if(info.ButtonID == (int)Buttons.Str)
+            {
+                if (from.RawStr > 100)
+                    return;
+
+                var custo = formulaCusto(from.RawStr) * 2;
+                var tem = PointsSystem.Exp.GetPoints(from);
+
+                if (custo > tem)
+                {
+                    from.SendMessage(string.Format("Voce precisa de {0} EXP para upar", custo));
+                    return;
+                }
+
+                from.RawStr += 1;
+                PointsSystem.Exp.DeductPoints(from, custo, false);
+                from.FixedParticles(0x375A, 9, 20, 5016, EffectLayer.Waist);
+                from.PlaySound(0x1FD);
+                from.SendGump(new SkillExpGump(from));
+                return;
+            } else if (info.ButtonID == (int)Buttons.Dex)
+            {
+                if (from.RawDex > 100)
+                    return;
+
+                var custo = formulaCusto(from.RawDex) * 2;
+                var tem = PointsSystem.Exp.GetPoints(from);
+
+                if (custo > tem)
+                {
+                    from.SendMessage(string.Format("Voce precisa de {0} EXP para upar", custo));
+                    return;
+                }
+
+                from.RawDex += 1;
+                PointsSystem.Exp.DeductPoints(from, custo, false);
+                from.FixedParticles(0x375A, 9, 20, 5016, EffectLayer.Waist);
+                from.PlaySound(0x1FD);
+                from.SendGump(new SkillExpGump(from));
+                return;
+            }
+            else if (info.ButtonID == (int)Buttons.Int)
+            {
+                if (from.RawInt > 100)
+                    return;
+
+                var custo = formulaCusto(from.RawInt) * 2;
+                var tem = PointsSystem.Exp.GetPoints(from);
+
+                if (custo > tem)
+                {
+                    from.SendMessage(string.Format("Voce precisa de {0} EXP para upar", custo));
+                    return;
+                }
+
+                from.RawInt += 1;
+                PointsSystem.Exp.DeductPoints(from, custo, false);
+                from.FixedParticles(0x375A, 9, 20, 5016, EffectLayer.Waist);
+                from.PlaySound(0x1FD);
+                from.SendGump(new SkillExpGump(from));
+                return;
+            }
+
             if (info.ButtonID <= 0)
             {
                 return;

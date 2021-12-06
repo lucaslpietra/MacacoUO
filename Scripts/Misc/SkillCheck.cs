@@ -505,6 +505,9 @@ namespace Server.Misc
                 QuestHelper.CheckSkill((PlayerMobile)from, skill);
             #endregion
 
+            if (Shard.EXP)
+                return;
+
             if (skill.Lock == SkillLock.Up &&
                 (!Siege.SiegeShard || !(from is PlayerMobile) || Siege.CanGainStat((PlayerMobile)from)))
             {
