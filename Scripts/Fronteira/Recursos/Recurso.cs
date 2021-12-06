@@ -34,6 +34,8 @@ namespace Server.Fronteira.Recursos
 
         public static void Registra(Recurso r)
         {
+            if (r.Map == null || r.Deleted)
+                return;
 
             var s = r.Map.GetSector(r);
             RecursosNoSector(r.Map, s).Add(r);
