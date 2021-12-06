@@ -97,7 +97,12 @@ namespace Server.Gumps
 
         public static int GetPontos(Mobile m, SkillName s)
         {
-            V = (int)Math.Pow(m.Skills[s].Base / 10, 4.2) / 17;
+            return formulaCusto(m.Skills[s].Base);
+        }
+
+        public static int formulaCusto(double skill)
+        {
+            V = (int)Math.Pow(skill / 10, 4.2) / 17;
             if (V <= 0)
                 V = 1;
 
@@ -238,6 +243,25 @@ namespace Server.Gumps
             AddItem(1081, 226, 3763);
 
             AddButton(714, 441, 55, 248, (int)Buttons.Chivalry, GumpButtonType.Reply, 0);
+
+            // Stats
+            var modX = 160;
+            var modY = 20;
+            //AddBackground(763+modX, 84+modY, 195, 139, 1579);
+            AddHtml(784 + modX, 186 + modY-20, 61, 21, caller.RawInt + " Int", false, false);
+            AddButton(851 + modX, 187 + modY-20, 55, 55, (int)Buttons.Int, GumpButtonType.Reply, 0);
+            AddHtml(871 + modX, 187 + modY-20, 61, 21, formulaCusto(caller.RawInt).ToString(), false, false);
+
+            AddHtml(784 + modX, 158 + modY, 61-10, 21, caller.RawDex + " Dex", false, false);
+            AddButton(851 + modX, 159 + modY-10, 55, 55, (int)Buttons.Dex, GumpButtonType.Reply, 0);
+            AddHtml(871 + modX, 159 + modY-10, 61, 21, formulaCusto(caller.RawDex).ToString(), false, false);
+
+            AddHtml(783 + modX, 130 + modY, 61, 21, caller.RawStr + " Str", false, false);
+            AddButton(850 + modX, 131 + modY, 55, 55, (int)Buttons.Str, GumpButtonType.Reply, 0);
+            AddHtml(870 + modX, 131 + modY, 61, 21, formulaCusto(caller.RawStr).ToString(), false, false);
+            AddItem(911 + modX, 93 + modY, 6225);
+            AddItem(759 + modX, 93 + modY, 6226);
+            AddHtml(837 + modX, 100 + modY, 61, 21, "Stats", false, false);
         }
 
 
@@ -275,6 +299,7 @@ namespace Server.Gumps
             Provocation,
             Discordance,
             Chivalry,
+            Str, Dex, Int
         }
 
         public SkillName GetSkill(int button)

@@ -270,7 +270,14 @@ namespace Server.Misc
 
             var gcBonus = 0.0;
 
-            var gc = GetExp(skill.Value, skill.Info.GainFactor, work, craft, false, gcBonus) * mult;
+            var dificuldade = skill.Info.GainFactor;
+            if (!from.Player)
+            {
+                if (dificuldade < 0.5)
+                    dificuldade = 0.5;
+            }
+
+            var gc = GetExp(skill.Value, dificuldade, work, craft, false, gcBonus) * mult;
 
             if(BONUS_GERAL > 0)
             {
