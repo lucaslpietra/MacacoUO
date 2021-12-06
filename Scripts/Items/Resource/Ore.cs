@@ -272,23 +272,23 @@ namespace Server.Items
                     difficulty = 85.0;
                     break;
                 case CraftResource.Quartzo:
-                    difficulty = 90.0;
+                    difficulty = 95;
                     break;
                 case CraftResource.Berilo:
-                    difficulty = 92.0;
+                    difficulty = 95;
                     break;
                 case CraftResource.Vibranium:
-                    difficulty = 95.0;
+                    difficulty = 100;
                     break;
                 case CraftResource.Adamantium:
-                    difficulty = 99.0;
+                    difficulty = 100;
                     break;
             }
 
             /*double minSkill = difficulty - 25.0;
             double maxSkill = difficulty + 25.0;*/
 
-            double minSkill = difficulty - 25.0;
+            double minSkill = difficulty - 10.0;
             double maxSkill = difficulty + 25.0;
 
             if (difficulty > 50.0 && difficulty > from.Skills[SkillName.Mining].Value && !talisman)
@@ -299,7 +299,7 @@ namespace Server.Items
 
             if (ore.ItemID == 0x19B7 && ore.Amount < 2)
             {
-                from.SendMessage("Preciso de mais ferro para fazer barras");// There is not enough metal-bearing ore in this pile to make an ingot.
+                from.SendMessage("Preciso de mais minerio para fazer barras");// There is not enough metal-bearing ore in this pile to make an ingot.
                 return;
             }
 
@@ -315,54 +315,62 @@ namespace Server.Items
             var upa = true;
 
             double mult = 1;
-            if(ore.Amount < 10)
+            if (ore.Amount < 10)
             {
                 mult = ore.Amount / 10;
+            }
+            int toConsume = ore.Amount;
+            if (toConsume <= 0)
+            {
+                from.SendMessage("Preciso de mais ferro para fazer barras"); // There is not enough metal-bearing ore in this pile to make an ingot.
+                return;
+            }
+
+            if (toConsume > 10)
+            {
+                toConsume = 10;
+            }
+
+            if (ore is SilverOre)
+            {
+                if (!from.Backpack.ConsumeTotal(typeof(BronzeIngot), toConsume))
+                {
+                    from.SendMessage("Voce precisa ter lingotes de bronze para conseguir fazer a liga de dourado");
+                    return;
+                }
             }
 
             if (talisman || from.CheckTargetSkillMinMax(SkillName.Mining, forge, minSkill, maxSkill, mult))
             {
-                int toConsume = ore.Amount;
 
-                if (toConsume <= 0)
+                int ingotAmount;
+
+                ingotAmount = toConsume;
+
+                BaseIngot ingot = ore.GetIngot();
+                ingot.Amount = ingotAmount;
+
+                if (ore.HasSocket<Caddellite>())
                 {
-                    from.SendMessage("Preciso de mais ferro para fazer barras"); // There is not enough metal-bearing ore in this pile to make an ingot.
+                    ingot.AttachSocket(new Caddellite());
+                }
+
+                //forge.FixedParticles(0x3709, 10, 30, 5052, EffectLayer.LeftFoot);
+                ore.Consume(toConsume);
+                from.AddToBackpack(ingot);
+                //from.PlaySound( 0x57 );
+
+
+
+                //from.PlaySound(0x240);
+                if (talisman && t != null)
+                {
+                    t.UsesRemaining--;
+                    from.SendMessage("A magia do talisman faz voce fundir os minerios perfeitamente"); // The magic of your talisman guides your hands as you purify the metal. Success is ensured!
                 }
                 else
-                {
-                    if (toConsume > 10)
-                    {
-                        toConsume = 10;
-                    }
+                    from.SendMessage("Você funde o minério removendo as impurezas"); // You smelt the ore removing the impurities and put the metal in your backpack.
 
-                    int ingotAmount;
-
-                    ingotAmount = toConsume;
-
-                    BaseIngot ingot = ore.GetIngot();
-                    ingot.Amount = ingotAmount;
-
-                    if (ore.HasSocket<Caddellite>())
-                    {
-                        ingot.AttachSocket(new Caddellite());
-                    }
-
-                    //forge.FixedParticles(0x3709, 10, 30, 5052, EffectLayer.LeftFoot);
-                    ore.Consume(toConsume);
-                    from.AddToBackpack(ingot);
-                    //from.PlaySound( 0x57 );
-
-             
-
-                    //from.PlaySound(0x240);
-                    if (talisman && t != null)
-                    {
-                        t.UsesRemaining--;
-                        from.SendMessage("A magia do talisman faz voce fundir os minerios perfeitamente"); // The magic of your talisman guides your hands as you purify the metal. Success is ensured!
-                    }
-                    else
-                        from.SendMessage("Você funde o minério removendo as impurezas"); // You smelt the ore removing the impurities and put the metal in your backpack.
-                }
             }
             else
             {

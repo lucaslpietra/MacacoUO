@@ -432,7 +432,7 @@ namespace Server.Items
                         ar += 4;
                         break;
                     case CraftResource.Dourado:
-                        ar += 8;
+                        ar += 11;
                         break;
                     case CraftResource.Adamantium:
                     case CraftResource.Niobio:

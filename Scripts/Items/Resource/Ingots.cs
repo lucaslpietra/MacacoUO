@@ -432,7 +432,7 @@ namespace Server.Items
         public override void OnDoubleClick(Mobile from)
         {
             base.OnDoubleClick(from);
-            from.SendMessage("Minerio com alto valor devido a diversas utilidades.");
+            from.SendMessage("Minerio com alto valor devido a diversas utilidades. Muito bom para armaduras.");
         }
 
         public SilverIngot(Serial serial)
