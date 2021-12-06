@@ -20,7 +20,7 @@ namespace Server.Mobiles
         public static double SpeedBuff = 1.20;
         public static double FameBuff = 1.40;
         public static double KarmaBuff = 1.40;
-        public static int DamageBuff = 5;
+        public static int DamageBuff = 10;
 
         public static bool ValidParagon(BaseCreature bc)
         {
