@@ -62,9 +62,9 @@ namespace Server.Gumps
 					TextRelay skillVal = info.GetTextEntry(System.Int32.Parse(skills[i]));
 					if (int.TryParse(skillVal.Text, out j))
 					{
-						if (System.Int32.Parse(skillVal.Text) > 100)
+						if (System.Int32.Parse(skillVal.Text) > 120)
 						{
-							sender.Mobile.SendMessage(0x00FE, "Valor individual das skills não pode ultrapassar 100.");
+							sender.Mobile.SendMessage(0x00FE, "Valor individual das skills não pode ultrapassar 120.");
 							return;
 						}
 

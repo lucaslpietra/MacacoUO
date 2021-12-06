@@ -7,8 +7,8 @@ namespace Server.Commands
     {
         public static void Initialize()
         {
-            CommandSystem.Register("SetSkill", AccessLevel.GameMaster, new CommandEventHandler(SetSkillCap_OnCommand));
-            CommandSystem.Register("SetSkillCap", AccessLevel.GameMaster, new CommandEventHandler(SetSkill_OnCommand));
+            CommandSystem.Register("SetSkill", AccessLevel.GameMaster, new CommandEventHandler(SetSkill_OnCommand));
+            CommandSystem.Register("SetSkillCap", AccessLevel.GameMaster, new CommandEventHandler(SetSkillCap_OnCommand));
             CommandSystem.Register("GetSkill", AccessLevel.GameMaster, new CommandEventHandler(GetSkill_OnCommand));
             CommandSystem.Register("SetAllSkills", AccessLevel.GameMaster, new CommandEventHandler(SetAllSkills_OnCommand));
         }
