@@ -181,7 +181,7 @@ namespace Server.Items
                 this.Status = CampfireStatus.Off;
             else if (age >= TimeSpan.FromSeconds(60.0))
             {
-                if(this.Map == null)
+                if (this.Map == null)
                 {
                     return;
                 }
@@ -218,11 +218,7 @@ namespace Server.Items
                     this.Safe = true;
                     entry.Player.SendMessage("O Acampamento esta seguro");
 
-                    if (entry.Player.Skills[SkillName.Camping].Value > 50)
-                    {
-                        //GoGump.DiscoverLocation(entry.Player);
-                        Acampamento.Acampa(entry.Player);
-                    }
+                    Acampamento.Acampa(entry.Player);
                 }
             }
 
@@ -239,12 +235,13 @@ namespace Server.Items
                         var distZ = Math.Abs(pm.Location.Z - Location.Z);
                         if (distZ < 2)
                         {
-                            if(pm.Hits > 5)
+                            if (pm.Hits > 5)
                             {
                                 DamageNumbers.ShowDamage(2, pm, pm, 38);
                                 pm.Damage(2);
                                 pm.PlayHurtSound();
-                            } else
+                            }
+                            else
                             {
                                 pm.PrivateOverheadMessage(MessageType.Regular, 0, true, "* pulando para nao se queimar *", pm.NetState);
                             }
@@ -258,7 +255,7 @@ namespace Server.Items
                     if (!pm.Warmode && pm.GetMillisSinceLastDamage() >= 1000 * 10) // 10 segundos
                     {
                         pm.FixedParticles(0x376A, 9, 32, 5005, EffectLayer.Waist);
-                        pm.Hits += 1;
+                        pm.Hits += 3;
                         pm.Stam += 5;
                     }
                 }

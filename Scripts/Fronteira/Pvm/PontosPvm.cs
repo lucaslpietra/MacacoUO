@@ -95,6 +95,9 @@ namespace Server.Ziden.Kills
 
             var exp = pontos;
 
+            if (bc.IsParagon)
+                exp *= 3;
+
             if (exp == 0)
                 return;
 

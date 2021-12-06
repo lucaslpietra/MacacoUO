@@ -15,12 +15,12 @@ namespace Server.Mobiles
         public static double HitsBuff = 10;
         public static double StrBuff = 1.05;
         public static double IntBuff = 1.20;
-        public static double DexBuff = 1.20;
+        public static double DexBuff = 1.30;
         public static double SkillsBuff = 1.20;
         public static double SpeedBuff = 1.20;
         public static double FameBuff = 1.40;
         public static double KarmaBuff = 1.40;
-        public static int DamageBuff = 10;
+        public static int DamageBuff = 5;
 
         public static bool ValidParagon(BaseCreature bc)
         {
