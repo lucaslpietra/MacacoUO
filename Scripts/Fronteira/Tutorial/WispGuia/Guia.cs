@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 namespace Server.Fronteira.Tutorial.WispGuia
 {
 
-    // revamp aqui na parte final
+    // ensinar kd minerio tem props diferentes
+    // up de stats via xp
 
     public class ObjetivoGuia
     {

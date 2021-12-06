@@ -237,7 +237,7 @@ namespace Server.Engines.BulkOrders
                 from.SendMessage("A ordem ja esta completa"); // The maximum amount of requested items have already been combined to this deed.
         }
 
-        public void EndCombine(Mobile from, object o, bool initial = true)
+        public void EndCombine(Mobile from, object o, bool initial = false)
         {
             if (o is Item && ((Item)o).IsChildOf(from.Backpack))
             {

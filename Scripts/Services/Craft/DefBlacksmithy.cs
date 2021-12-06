@@ -989,10 +989,10 @@ namespace Server.Engines.Craft
             AddSubRes(typeof(SilverIngot), "Dourado", 70.0, 1044268);
             AddSubRes(typeof(NiobioIngot), "Niobio", 80.0, 1044268);
             AddSubRes(typeof(LazuritaIngot), "Lazurita", 90.0, 1044268);
-            AddSubRes(typeof(QuartzoIngot), "Quartzo", 95.0, 1044268);
-            AddSubRes(typeof(BeriloIngot), "Berilo", 99.0, 1044268);
-            AddSubRes(typeof(VibraniumIngot), "Vibranium", 101, 1044268);
-            AddSubRes(typeof(AdamantiumIngot), "Adamantium", 106, 1044268);
+            AddSubRes(typeof(QuartzoIngot), "Quartzo", 100, 1044268);
+            AddSubRes(typeof(BeriloIngot), "Berilo", 100, 1044268);
+            AddSubRes(typeof(VibraniumIngot), "Vibranium", 110, 1044268);
+            AddSubRes(typeof(AdamantiumIngot), "Adamantium", 120, 1044268);
 
             SetSubRes2(typeof(RedScales), "Escamas Vermelhas");
 

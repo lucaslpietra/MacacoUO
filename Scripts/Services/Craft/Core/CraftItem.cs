@@ -1489,7 +1489,7 @@ namespace Server.Engines.Craft
                         res = CraftResources.GetFromType(typeRes);
 
                     bool lowGain = false;
-                    var skillNovosResuorces = 80;
+                    var skillNovosResuorces = 90;
                     if (craftSystem.MainSkill == SkillName.Tailoring)
                     {
                         skillNovosResuorces = 90;
@@ -1502,7 +1502,7 @@ namespace Server.Engines.Craft
                     {
                         if (res == CraftResource.None)
                         {
-                            from.SendMessage("Voce poderia trabalhar com outros materiais para subir sua skill mais rapidamente");
+                            from.SendMessage("Voce poderia trabalhar com outros materiais ou pedir 'trabalho' para npcs para aprender mais conhecimentos.");
                             lowGain = true;
                         }
                     }
@@ -1553,15 +1553,15 @@ namespace Server.Engines.Craft
                         {
                             if (res >= CraftResource.Berilo)
                             {
-                                n += 8;
+                                n += 9;
                             }
                             else if (res > CraftResource.Niobio)
                             {
-                                n += 4;
+                                n += 5;
                             }
                             else if (res >= CraftResource.Bronze)
                             {
-                                n += 2;
+                                n += 3;
                             }
                             else
                             {
@@ -1592,9 +1592,15 @@ namespace Server.Engines.Craft
                         if (typeof(BaseWeapon).IsAssignableFrom(ItemType) || typeof(BaseArmor).IsAssignableFrom(ItemType))
                             from.CheckSkillMult(SkillName.ArmsLore, minSkill, maxSkill, 4);
 
+                        if(!from.IsCooldown("dicacraft"))
+                        {
+                            from.SetCooldown("dicacraft");
+                            from.SendMessage(78, "Para upar skills de criar items mais rapidamente, diga 'trabalho' ao NPC daquela profissao");
+                        }
+
                         if (lowGain)
                         {
-                            from.CheckSkillMult(craftSkill.SkillToMake, minSkill, maxSkill, 0.2);
+                            //from.CheckSkillMult(craftSkill.SkillToMake, minSkill, maxSkill, 0.1);
                         }
                         else
                         {
@@ -1644,19 +1650,19 @@ namespace Server.Engines.Craft
                 }
                 else if (res == CraftResource.Quartzo)
                 {
-                    chance -= 0.3;
+                    chance -= 0.4;
                 }
                 else if (res == CraftResource.Berilo)
                 {
-                    chance -= 0.4;
+                    chance -= 0.5;
                 }
                 else if (res == CraftResource.Vibranium)
                 {
-                    chance -= 0.5;
+                    chance -= 0.6;
                 }
                 else if (res == CraftResource.Adamantium)
                 {
-                    chance -= 0.6;
+                    chance -= 0.7;
                 }
 
                 else if (res == CraftResource.Pinho)
@@ -1665,23 +1671,23 @@ namespace Server.Engines.Craft
                 }
                 else if (res == CraftResource.Carvalho)
                 {
-                    chance -= 0.15;
+                    chance -= 0.2;
                 }
                 else if (res == CraftResource.Mogno)
                 {
-                    chance -= 2;
+                    chance -= 0.3;
                 }
                 else if (res == CraftResource.Eucalipto)
                 {
-                    chance -= 0.3;
+                    chance -= 0.5;
                 }
                 else if (res == CraftResource.Carmesim)
                 {
-                    chance -= 0.4;
+                    chance -= 0.6;
                 }
                 else if (res == CraftResource.Gelo)
                 {
-                    chance -= 0.5;
+                    chance -= 0.7;
                 }
                 else if (res == CraftResource.CouroBarbed)
                 {

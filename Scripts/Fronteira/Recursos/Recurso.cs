@@ -164,13 +164,16 @@ namespace Server.Fronteira.Recursos
 
                 if (from.Skills[skill].Value < diff.Required)
                 {
-                    from.SendMessage("Voce nao tem ideia de como pode coletar isto");
+                    from.SendMessage("Voce precisaria de "+ diff.Required+" "+skill.GetName()+ " para coletar isto");
                     return false;
                 }
-                if (!from.CheckSkillMult(skill, diff.Min, diff.Max, 0))
+                if (!from.CheckSkillMult(skill, diff.Min, diff.Min+10, 0))
                 {
                     from.SendMessage("Voce nao conseguiu extrair o recurso");
-                    new ColetaTimer(this, from).Start();
+                    if(Utility.RandomDouble() < 0.25)
+                    {
+                        this.Consume();
+                    }
                     return false;
                 }
             }

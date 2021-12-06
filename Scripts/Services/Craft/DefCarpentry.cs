@@ -996,12 +996,12 @@ namespace Server.Engines.Craft
             // Add every material you want the player to be able to choose from
             // This will override the overridable material	TODO: Verify the required skill amount
             AddSubRes(typeof(Board), "Cedro", 00.0, "Voce nao sabe usar esta madeira");
-            AddSubRes(typeof(OakBoard), "Carvalho", 60.0, "Voce nao sabe usar esta madeira");
-            AddSubRes(typeof(AshBoard), "Pinho", 70.0, "Voce nao sabe usar esta madeira");
-            AddSubRes(typeof(YewBoard), "Mogno", 80.0, "Voce nao sabe usar esta madeira");
-            AddSubRes(typeof(HeartwoodBoard), "Eucalipto", 90.0, "Voce nao sabe usar esta madeira");
-            AddSubRes(typeof(BloodwoodBoard), "Carmesim", 101.0, "Voce nao sabe usar esta madeira");
-            AddSubRes(typeof(FrostwoodBoard), "Gelo", 106.0, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(OakBoard), "Carvalho", 70.0, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(AshBoard), "Pinho", 80.0, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(YewBoard), "Mogno", 90, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(HeartwoodBoard), "Eucalipto", 100, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(BloodwoodBoard), "Carmesim", 110, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(FrostwoodBoard), "Gelo", 120, "Voce nao sabe usar esta madeira");
         }
     }
 }

@@ -188,12 +188,18 @@ namespace Server.Misc
             SkillName.Alchemy, SkillName.Blacksmith, SkillName.Fletching,
             SkillName.Mining, SkillName.Tinkering, SkillName.Carpentry,
             SkillName.TasteID, SkillName.Cooking, SkillName.Tailoring,
-            SkillName.AnimalTaming
+            SkillName.AnimalTaming, SkillName.Fishing
+        };
+
+        public static SkillName[] Craft = new SkillName[] {
+            SkillName.Alchemy, SkillName.Blacksmith, SkillName.Fletching,
+            SkillName.Tinkering, SkillName.Carpentry,
+            SkillName.Cooking, SkillName.Tailoring,
         };
 
         public static double BONUS_GERAL = 0;
 
-        public static double GetExp(double skill, double skillDifficulty, bool work, bool pvm, double gcBonus = 0)
+        public static double GetExp(double skill, double skillDifficulty, bool work, bool pvm, bool craft, double gcBonus = 0)
         {
             // Formuleta simplona de up
             var gc = GC_INICIAL + (gcBonus * 4);
@@ -214,8 +220,11 @@ namespace Server.Misc
                     gc = 0.05;
             } else
             {
-                if (gc < 0.005)
-                    gc = 0.005;
+                if (craft)
+                    gc /= 2;
+
+                if (gc < 0.0025)
+                    gc = 0.0025;
 
                 if (skillDifficulty == SkillInfo.EASY)
                 {
@@ -257,10 +266,11 @@ namespace Server.Misc
                 return success;
 
             work = Work.Any(s => s == skill.SkillName);
-            
+            var craft = Craft.Any(s => s == skill.SkillName);
+
             var gcBonus = 0.0;
 
-            var gc = GetExp(skill.Value, skill.Info.GainFactor, work, false, gcBonus) * mult;
+            var gc = GetExp(skill.Value, skill.Info.GainFactor, work, craft, false, gcBonus) * mult;
 
             if(BONUS_GERAL > 0)
             {

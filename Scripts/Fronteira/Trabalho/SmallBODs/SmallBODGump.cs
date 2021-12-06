@@ -102,11 +102,11 @@ namespace Server.Engines.BulkOrders
                 */
 
                 AddButton(125, y, 4005, 4007, 2, GumpButtonType.Reply, 0);
-                AddHtml(160, y, 300, 20, "Combine com o item pedido", 1, false, false); // Combine this deed with the item requested.
+                AddHtml(160, y, 300, 20, "Combine com 1 item pedido", 1, false, false); // Combine this deed with the item requested.
                 y += 24;
 
                 this.AddButton(125, y, 4005, 4007, 4, GumpButtonType.Reply, 0);
-                this.AddHtml(160, y, 300, 20, "Combine com items contidos", 1, false, false); // Combine this deed with contained items.
+                this.AddHtml(160, y, 300, 20, "Combine com items em containers", 1, false, false); // Combine this deed with contained items.
                 y += 24;
             }
             else
@@ -173,6 +173,7 @@ namespace Server.Engines.BulkOrders
                     }
                 case 4: // combine from container
                     {
+                        m_From.SendMessage("Selecione um container ou mochila para pegar os items");
                         m_From.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, (m, targeted) =>
                             {
                                 if (!m_Deed.Deleted && targeted is Container)
