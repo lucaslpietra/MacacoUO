@@ -267,12 +267,37 @@ namespace Server.Engines.Craft
                 }
                 // ******************
 
-                var trad = Trads.GetNome(type);
-                if(trad != null)
+                if (Shard.DebugEnabled)
+                    Shard.Debug("Lendo type de " + type.GetTypeName(true));
+
+                var resres = CraftResources.GetFromType(type);
+                if (resres != CraftResource.None)
                 {
-                    nameString = trad;
+                    var tipo = CraftResources.GetType(resres);
+                    string nome = "Couro ";
+                    if (tipo == CraftResourceType.Wood)
+                        nome = "Tabuas de ";
+                    else if (tipo == CraftResourceType.Metal)
+                        nome = "Lingotes de ";
+                    else if (tipo == CraftResourceType.Scales)
+                        nome = "Escamas ";
+
+                    nameString = nome + resres.ToString();
                     nameNumber = 0;
+
+                } else
+                {
+                    var trad = Trads.GetNome(type);
+                    if (trad != null)
+                    {
+                        if (Shard.DebugEnabled)
+                            Shard.Debug("Traduzindo " + nameString + " para " + trad);
+                        nameString = trad;
+                        nameNumber = 0;
+                    }
                 }
+
+               
 
                 if (!retainedColor && this.m_CraftItem.RetainsColorFrom(this.m_CraftSystem, type))
                 {

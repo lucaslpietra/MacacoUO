@@ -34,6 +34,7 @@ namespace Server.Fronteira.Recursos
 
         public static void Registra(Recurso r)
         {
+
             var s = r.Map.GetSector(r);
             RecursosNoSector(r.Map, s).Add(r);
             if (Shard.DebugEnabled)
@@ -69,7 +70,7 @@ namespace Server.Fronteira.Recursos
                 Resource = MadeiraRandom();
             Movable = false;
 
-            Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+            Timer.DelayCall(TimeSpan.FromSeconds(2), () =>
             {
                 Registra(this);
             });

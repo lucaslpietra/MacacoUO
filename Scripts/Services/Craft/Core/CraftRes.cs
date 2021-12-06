@@ -26,6 +26,38 @@ namespace Server.Engines.Craft
             this.m_NameString = name;
             this.m_MessageString = message;
 
+            this.m_NameString = Trads.GetNome(type);
+            if(this.m_NameString != null)
+            {
+                return;
+            }
+            try
+            {
+                // Gambiarra porca... mas eh oq tem pra hj
+                Item.BypassInitialization = true;
+                var i = (Item)Activator.CreateInstance(type, true);
+                Item.BypassInitialization = false;
+                if (i.Name != null)
+                {
+                    m_NameNumber = 0;
+                    m_NameString = i.Name;
+                }
+                else if (i.DefaultName != null)
+                {
+                    m_NameNumber = 0;
+                    m_NameString = i.DefaultName;
+                }
+                i = null;
+            }
+            catch (Exception e)
+            {
+                Item.BypassInitialization = false;
+                Console.WriteLine("[Erro] Instanciando craft item " + type.Name);
+            }
+
+            if (m_NameString != null)
+                return;
+
             var trans = Lang.Trans(m_NameNumber);
 
             if (trans != null)
@@ -46,32 +78,6 @@ namespace Server.Engines.Craft
                 {
                     m_NameNumber = 0;
                     m_NameString = trans2;
-                }
-                else
-                {
-                    try
-                    {
-                        // Gambiarra porca... mas eh oq tem pra hj
-                        Item.BypassInitialization = true;
-                        var i = (Item)Activator.CreateInstance(type, true);
-                        Item.BypassInitialization = false;
-                        if (i.Name != null)
-                        {
-                            m_NameNumber = 0;
-                            m_NameString = i.Name;
-                        }
-                        else if (i.DefaultName != null)
-                        {
-                            m_NameNumber = 0;
-                            m_NameString = i.DefaultName;
-                        }
-                        i = null;
-                    }
-                    catch (Exception e)
-                    {
-                        Item.BypassInitialization = false;
-                        Console.WriteLine("[Erro] Instanciando craft item " + type.Name);
-                    }
                 }
             }
         }

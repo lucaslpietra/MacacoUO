@@ -149,11 +149,11 @@ namespace Server.Engines.Harvest
 
         private static HashSet<Type> MineriosFodas = new HashSet<Type>(new Type[] {
             typeof(AdamantiumOre), typeof(VibraniumOre), typeof(BeriloOre), typeof(QuartzoOre),
-            typeof(LazuritaOre)//, typeof(NiobioOre), typeof(SilverOre)
+            typeof(LazuritaOre)
         });
 
         private static HashSet<Type> MadeirasFodas = new HashSet<Type>(new Type[] {
-           typeof(FrostwoodLog), typeof(BloodwoodLog), typeof(HeartwoodLog)
+           typeof(FrostwoodLog), typeof(BloodwoodLog), typeof(HeartwoodLog), typeof(YewLog)
         });
 
         public virtual void FinishHarvesting(Mobile from, Item tool, HarvestDefinition def, object toHarvest, object locked)
