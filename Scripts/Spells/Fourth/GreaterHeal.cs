@@ -92,7 +92,7 @@ namespace Server.Spells.Fourth
                 if (Caster is BaseCreature)
                     toHeal = (int)(toHeal * 1.2);
 
-                if(Shard.SPHERE_STYLE)
+                if(Shard.SPHERE_STYLE && m.Poisoned)
                 {
                     toHeal = 0;
                 } else

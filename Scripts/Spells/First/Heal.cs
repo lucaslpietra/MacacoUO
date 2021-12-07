@@ -73,7 +73,7 @@ namespace Server.Spells.First
                     toHeal += inscriptBonus;
                 }
                 toHeal += Utility.Random(1, 5);
-                if(Shard.SPHERE_STYLE)
+                if(Shard.SPHERE_STYLE && m.Poisoned)
                 {
                     toHeal = 0;
                 } else
