@@ -32,9 +32,6 @@ namespace Server.Misc
 
         public static double GetArmorOffset(Mobile from)
         {
-            if (Shard.SPHERE_STYLE)
-                return 0; // casta com plate
-
             if (from.RP && from.Player)
             {
                 if(((PlayerMobile)from).Talentos.Tem(Talento.ArmaduraMagica))
