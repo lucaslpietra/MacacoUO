@@ -150,7 +150,7 @@ namespace Server.Spells
 
         public static TimeSpan GetDamageDelayForSpell(Spell sp)
         {
-            if (!sp.DelayedDamage)
+            if (Shard.POL_SPHERE || !sp.DelayedDamage)
                 return TimeSpan.Zero;
 
             return (Core.AOS ? AosDamageDelay : OldDamageDelay);
