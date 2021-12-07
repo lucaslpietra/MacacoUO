@@ -54,7 +54,7 @@ namespace Server.Spells.Fourth
         public override TimeSpan GetCastDelay()
         {
             if (Shard.SPHERE_STYLE)
-                return TimeSpan.FromSeconds(4);
+                return TimeSpan.FromSeconds(3);
             else
                 return base.GetCastDelay();
 

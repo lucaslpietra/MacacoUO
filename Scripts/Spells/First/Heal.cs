@@ -31,7 +31,7 @@ namespace Server.Spells.First
         public override TimeSpan GetCastDelay()
         {
             if (Shard.SPHERE_STYLE)
-                return TimeSpan.FromSeconds(2);
+                return TimeSpan.FromSeconds(1.2);
             else
                 return base.GetCastDelay();
         }
