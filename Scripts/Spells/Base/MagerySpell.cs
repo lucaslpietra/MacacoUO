@@ -242,14 +242,21 @@ namespace Server.Spells
                     return TimeSpan.FromSeconds(0.7 + 0.40 * (int)Circle);
 
                 var pl = Caster as PlayerMobile;
-                if (!Shard.POL_STYLE || pl == null || (pl.Talentos.Tem(Talento.Cajados) && Caster.Weapon is BaseStaff))
-                    // Delay T2A
-                    return TimeSpan.FromSeconds(0.5 + (0.25 * (int)(1+Circle)));
-                else
+
+                if(pl.RP)
                 {
-                    // delay POL/Mystic
+                    if(pl.Talentos.Tem(Talento.Cajados) && Caster.Weapon is BaseStaff)
+                        return TimeSpan.FromSeconds(0.5 + (0.25 * (int)(1 + Circle)));
                     return TimeSpan.FromSeconds(0.5 + (0.5 * (int)Circle));
                 }
+
+                if(Shard.POL_STYLE)
+                    return TimeSpan.FromSeconds(0.5 + (0.5 * (int)Circle));
+                else if(Shard.SPHERE_STYLE)
+                    return TimeSpan.FromSeconds(0.5 + (0.35 * (int)Circle));
+                else
+                    return TimeSpan.FromSeconds(0.5 + (0.25 * (int)(1+Circle)));
+               
             }
             return base.GetCastDelay();
         }
