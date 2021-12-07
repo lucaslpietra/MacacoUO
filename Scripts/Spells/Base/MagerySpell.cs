@@ -164,9 +164,6 @@ namespace Server.Spells
 
         public virtual double GetResistPercentForCircle(Mobile target, SpellCircle circle)
         {
-            if (Shard.SPHERE_STYLE && target is PlayerMobile)
-                return 0; // sphere tem resist n
-
             if (!Shard.POL_STYLE)
             {
                 double value = GetResistSkill(target);
@@ -253,7 +250,7 @@ namespace Server.Spells
                 if(Shard.POL_STYLE)
                     return TimeSpan.FromSeconds(0.5 + (0.5 * (int)Circle));
                 else if(Shard.SPHERE_STYLE)
-                    return TimeSpan.FromSeconds(0.5 + (0.35 * (int)Circle));
+                    return TimeSpan.FromSeconds(1 + (0.5 * (int)Circle));
                 else
                     return TimeSpan.FromSeconds(0.5 + (0.25 * (int)(1+Circle)));
                

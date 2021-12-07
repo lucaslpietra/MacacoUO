@@ -25,7 +25,7 @@ using Server.Engines.VoidPool;
             SetDex(901, 948);
             SetInt(903, 947);
 
-            SetHits(35000);
+            SetHits(25000);
 
             SetDamage(17, 25);
 
@@ -45,8 +45,8 @@ using Server.Engines.VoidPool;
             SetSkill(SkillName.Magery, 100.1, 117.5);
             SetSkill(SkillName.EvalInt, 100.1, 117.5);
 
-            Fame = 32000;
-            Karma = -32000;
+            Fame = 22000;
+            Karma = -22000;
 
             AddAndEquip(new WildStaff(), 1971);
             AddAndEquip(new ThighBoots(), 1910);
@@ -55,7 +55,7 @@ using Server.Engines.VoidPool;
             AddAndEquip(new LeatherBustierArms(), 1947);
         }
 
-        public override int BreathChaosDamage { get { return 100; } }
+        public override int BreathChaosDamage { get { return 20; } }
         public override bool HasBreath { get { return true; } }
         public override bool AlwaysMurderer { get { return true; } }
         public override bool ClickTitle { get { return false; } }
@@ -70,8 +70,8 @@ using Server.Engines.VoidPool;
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.UltraRich, 3);
-            AddLoot(LootPack.SuperBoss, 3);
+            AddLoot(LootPack.UltraRich, 1);
+            AddLoot(LootPack.SuperBoss, 1);
         }
 
         private void AddAndEquip(Item item, int hue = 0)

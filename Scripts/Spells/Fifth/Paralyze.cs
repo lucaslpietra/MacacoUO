@@ -32,6 +32,14 @@ namespace Server.Spells.Fifth
             this.Caster.Target = new InternalTarget(this);
         }
 
+        public override TimeSpan GetCastDelay()
+        {
+            if (Shard.SPHERE_STYLE && Caster.Player)
+                return TimeSpan.FromSeconds(2.5);
+            else
+                return base.GetCastDelay();
+        }
+
         public void Target(Mobile m)
         {
             if (!this.Caster.CanSee(m))

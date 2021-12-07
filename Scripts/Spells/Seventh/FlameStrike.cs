@@ -36,6 +36,14 @@ namespace Server.Spells.Seventh
             this.Caster.Target = new InternalTarget(this);
         }
 
+        public override TimeSpan GetCastDelay()
+        {
+            if (Shard.SPHERE_STYLE && Caster.Player)
+                return TimeSpan.FromSeconds(3);
+            else
+                return base.GetCastDelay();
+        }
+
         public void Target(IDamageable m)
         {
             if (!this.Caster.CanSee(m))
