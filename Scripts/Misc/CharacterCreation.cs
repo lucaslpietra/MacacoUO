@@ -65,9 +65,26 @@ namespace Server.Misc
                 pack.DropItem(new RedBook("a vida de "+ m.Name, m.Name, 20, true));
                 pack.DropItem(new Gold(500)); // Starting gold can be customized here
                 pack.DropItem(new Candle());
-                var book = new Spellbook((ulong)0x382A8C38);
-                book.LootType = LootType.Blessed;
-                pack.DropItem(book);
+                if(Shard.SPHERE_STYLE)
+                {
+                    var book = new Spellbook();
+                    if (book.BookCount == 64)
+                    {
+                        book.Content = ulong.MaxValue;
+                    }
+                    else
+                    {
+                        book.Content = (1ul << book.BookCount) - 1;
+                    }
+                    book.LootType = LootType.Blessed;
+                    pack.DropItem(book);
+                } else
+                {
+                    var book = new Spellbook((ulong)0x382A8C38);
+                    book.LootType = LootType.Blessed;
+                    pack.DropItem(book);
+                }
+             
                 var stone = new Hearthstone();
                 stone.LootType = LootType.Blessed;
                 stone.BoundTo = m.Name;

@@ -140,9 +140,18 @@ namespace Server.Gumps
                     }
                     else
                     {
-                        from.Str = k.Str;
-                        from.Dex = k.Dex;
-                        from.Int = k.Int;
+                        if(Shard.SPHERE_STYLE)
+                        {
+                            from.Str = 100;
+                            from.Dex = 100;
+                            from.Int = 100;
+                        } else
+                        {
+                            from.Str = k.Str;
+                            from.Dex = k.Dex;
+                            from.Int = k.Int;
+                        }
+                       
                         from.Stam = from.StamMax;
                         from.Mana = from.ManaMax;
                         from.Hits = from.HitsMax;
