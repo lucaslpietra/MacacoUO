@@ -27,6 +27,8 @@ namespace VitaNex.Web
 	{
 		static WebAPI()
 		{
+            return;
+
 			CSOptions = new WebAPIOptions();
 
 			Clients = new List<WebAPIClient>();
@@ -53,6 +55,7 @@ namespace VitaNex.Web
 
 		private static void CSConfig()
 		{
+            return;
 			if (_ServerStarted)
 			{
 				ListenerUtility.ListenAsync();
@@ -76,17 +79,19 @@ namespace VitaNex.Web
 		}
 
 		private static void CSInvoke()
-		{
-			_ActivityTimer.Start();
+        {
+            return;
+            _ActivityTimer.Start();
 
-			Register("/", HandleRoot);
-            Register("/registrarmanolo", WebStats.HandleRegistro);
-            Register("/online", WebStats.HandleOnline);
+			//Register("/", HandleRoot);
+            //Register("/registrarmanolo", WebStats.HandleRegistro);
+            //Register("/online", WebStats.HandleOnline);
         }
 
 		private static void CSDisposed()
-		{
-			Clients.ForEachReverse(c => c.Close());
+        {
+            return;
+            Clients.ForEachReverse(c => c.Close());
 
 			_ActivityTimer.Stop();
 			_ActivityTimer = null;

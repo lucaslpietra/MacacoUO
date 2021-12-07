@@ -1230,7 +1230,6 @@ namespace Server.Items
                         from.SendMessage(78, "Por ter muita forca e conhecimento em armas, voce equipou a arma rapidamente, podendo atacar com elas sem precisar esperar seu delay completo.");
                     }
                     delay = (long)(GetDelay(from).TotalMilliseconds / (this is BaseRanged ? 1.5d : 10));
-
                 }
                 else // a arma ainda ta em cooldown, entao d
                 {

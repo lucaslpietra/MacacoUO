@@ -164,6 +164,9 @@ namespace Server.Spells
 
         public virtual double GetResistPercentForCircle(Mobile target, SpellCircle circle)
         {
+            if (Shard.SPHERE_STYLE && target is PlayerMobile)
+                return 0; // sphere tem resist n
+
             if (!Shard.POL_STYLE)
             {
                 double value = GetResistSkill(target);

@@ -26,11 +26,14 @@ namespace Server
 
         public static bool CAST_CLASSICO { get { return Config.Get("General.CAST_CLASSICO", false); } }
 
-        public static bool SPHERE_STYLE { get { return Config.Get("General.TARGET_SPHERE", false); } }
+        public static bool SPHERE_STYLE { get { return Config.Get("General.SPHERE", false); } }
+
+        public static bool POL_SPHERE { get { return SPHERE_STYLE || POL_STYLE; } }
 
         public static bool AVENTURA { get { return Config.Get("General.AVENTURA", false); } }
 
-        public static bool EXP = true;
+        public static bool EXP = !Shard.SPHERE_STYLE;
+
         public static bool NECRO = false;
 
         public static void Erro(string str, Mobile from = null)

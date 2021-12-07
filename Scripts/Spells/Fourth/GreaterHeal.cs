@@ -92,14 +92,20 @@ namespace Server.Spells.Fourth
                 if (Caster is BaseCreature)
                     toHeal = (int)(toHeal * 1.2);
 
-                var scalar = GetPoisonScalar(m.Poison);
-                if(scalar < 1 && !m.IsCooldown("poisonmsg"))
+                if(Shard.SPHERE_STYLE)
                 {
-                    m.SetCooldown("poisonmsg");
-                    m.SendMessage(78, "Voce curou menos vida por estar envenenado. Quanto mais forte o veneno, mais dificil se curar.");
+                    toHeal = 0;
+                } else
+                {
+                    var scalar = GetPoisonScalar(m.Poison);
+                    if (scalar < 1 && !m.IsCooldown("poisonmsg"))
+                    {
+                        m.SetCooldown("poisonmsg");
+                        m.SendMessage(78, "Voce curou menos vida por estar envenenado. Quanto mais forte o veneno, mais dificil se curar.");
+                    }
+                    toHeal = (int)(toHeal * scalar);
                 }
-                toHeal = (int)(toHeal * scalar);
-
+                
                 SpellHelper.Heal(toHeal, m, this.Caster);
 
                 Caster.MovingParticles(m, 0x376A, 7, 0, false, false, 9502, 0x376A, 0x1F2);

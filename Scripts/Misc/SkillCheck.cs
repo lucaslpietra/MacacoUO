@@ -251,6 +251,12 @@ namespace Server.Misc
             if (from.Skills.Cap == 0)
                 return false;
 
+            if(Shard.SPHERE_STYLE)
+            {
+                Gain(from, skill);
+                return Utility.RandomDouble() <= chance;
+            }
+
             var success = Utility.RandomDouble() <= chance;
 
             if (mult == 0)

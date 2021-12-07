@@ -73,13 +73,19 @@ namespace Server.Spells.First
                     toHeal += inscriptBonus;
                 }
                 toHeal += Utility.Random(1, 5);
-                var scalar = GreaterHealSpell.GetPoisonScalar(m.Poison);
-                if (scalar < 1 && !m.IsCooldown("poisonmsg"))
+                if(Shard.SPHERE_STYLE)
                 {
-                    m.SetCooldown("poisonmsg");
-                    m.SendMessage(78, "Voce curou menos vida por estar envenenado. Quanto mais forte o veneno, mais dificil se curar.");
-                }
-                toHeal = (int)(toHeal * scalar);
+                    toHeal = 0;
+                } else
+                {
+                    var scalar = GreaterHealSpell.GetPoisonScalar(m.Poison);
+                    if (scalar < 1 && !m.IsCooldown("poisonmsg"))
+                    {
+                        m.SetCooldown("poisonmsg");
+                        m.SendMessage(78, "Voce curou menos vida por estar envenenado. Quanto mais forte o veneno, mais dificil se curar.");
+                    }
+                    toHeal = (int)(toHeal * scalar);
+                }        
 
                 //m.Heal( toHeal, Caster );
                 SpellHelper.Heal(toHeal, m, this.Caster);

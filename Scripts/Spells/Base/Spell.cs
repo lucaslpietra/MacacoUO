@@ -37,7 +37,7 @@ namespace Server.Spells
         private readonly SpellInfo m_Info;
         private SpellState m_State;
         private long m_StartCastTime;
-        private IDamageable m_InstantTarget;
+        private object m_InstantTarget;
 
         public int ID { get { return SpellRegistry.GetRegistryNumber(this); } }
 
@@ -51,10 +51,9 @@ namespace Server.Spells
         public Item Scroll { get { return m_Scroll; } }
         public long StartCastTime { get { return m_StartCastTime; } }
 
-
         public virtual int SkillNeeded { get { return 0; } }
 
-        public IDamageable InstantTarget { get { return m_InstantTarget; } set { m_InstantTarget = value; } }
+        public object InstantTarget { get { return m_InstantTarget; } set { m_InstantTarget = value; } }
 
         private static readonly TimeSpan NextSpellDelay = TimeSpan.FromSeconds(0.0);
         private static TimeSpan AnimateDelay = TimeSpan.FromSeconds(1.5);
@@ -267,7 +266,7 @@ namespace Server.Spells
                         return true;
                     return false;
                 }
-                return Shard.POL_STYLE;
+                return Shard.POL_SPHERE;
             }
             return true;
 
@@ -380,6 +379,8 @@ namespace Server.Spells
 
         public virtual bool DoStep(Mobile caster)
         {
+            if (!Shard.POL_STYLE)
+                return true;
 
             if (caster.SpellSteps > 1 && this is MarkSpell)
             {
@@ -460,7 +461,7 @@ namespace Server.Spells
 
         public virtual bool ConsumeReagents()
         {
-            if (Shard.WARSHARD)
+            if (Shard.WARSHARD || Shard.SPHERE_STYLE)
                 return true;
 
             if ((m_Scroll != null && !(m_Scroll is SpellStone)) || !m_Caster.Player)
@@ -599,7 +600,7 @@ namespace Server.Spells
                 scalar = 0;
             }
 
-            if(!target.Player)
+            if (!target.Player)
             {
                 if (target.Elemento != ElementoPvM.None && elemento.ForteContra(target.Elemento))
                 {
@@ -617,7 +618,7 @@ namespace Server.Spells
             if (elemento != ElementoPvM.None && !target.Player)
             {
                 var bonus = (m_Caster.GetBonusElemento(elemento) * 2);
-                if(bonus > 0)
+                if (bonus > 0)
                     EfeitosElementos.Effect(target, elemento);
                 Shard.Debug("Bonus elemento PvM: " + bonus, m_Caster);
                 scalar += bonus;
@@ -877,22 +878,14 @@ namespace Server.Spells
         {
             private Spell m_Spell;
 
-            public TargetMagiaSphere(Spell s) : base(17, true, TargetFlags.None)
+            public TargetMagiaSphere(Spell s) : base(Spell.RANGE, true, TargetFlags.None)
             {
                 this.m_Spell = s;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is IDamageable)
-                {
-                    m_Spell.InstantTarget = (IDamageable)targeted;
-                }
-                else
-                {
-                    m_Spell.alvoSphere = targeted;
-                }
-
+                m_Spell.InstantTarget = targeted;
                 m_Spell.CastMagiaPadrao();
 
                 /*
@@ -1103,7 +1096,7 @@ namespace Server.Spells
             {
                 m_Caster.SendLocalizedMessage(1072060); // You cannot cast a spell while calmed.
             }
-            else if (m_Scroll is BaseWand && m_Caster.Spell != null && m_Caster.Spell.IsCasting)
+            else if (!Shard.SPHERE_STYLE && m_Scroll is BaseWand && m_Caster.Spell != null && m_Caster.Spell.IsCasting)
             {
                 m_Caster.SendMessage("Você não pode conjurar magias paralizado"); // You can not cast a spell while frozen.
             }
@@ -1116,7 +1109,7 @@ namespace Server.Spells
             {
                 m_Caster.SendLocalizedMessage(1061091); // You cannot cast that spell in this form.
             }
-            else if (!(m_Scroll is BaseWand) && !(this is DispelSpell) && (m_Caster.Paralyzed || m_Caster.Frozen))
+            else if (!(m_Scroll is BaseWand) && !(this is DispelSpell) && !Shard.SPHERE_STYLE && (m_Caster.Paralyzed || m_Caster.Frozen))
             {
                 m_Caster.SendMessage("Você não pode conjurar magias paralizado"); // You can not cast a spell while frozen.
             }
@@ -1473,12 +1466,12 @@ namespace Server.Spells
             {
                 m_Caster.SendMessage(0x22, "Para esta magia você precisa de " + mana.ToString() + " de mana"); // Insufficient mana for this spell.
             }
-            else if ((m_Caster.Frozen || m_Caster.Paralyzed))
+            else if (!Shard.SPHERE_STYLE && (m_Caster.Frozen || m_Caster.Paralyzed))
             {
                 m_Caster.SendMessage("Você não pode conjurar congelado"); // You cannot cast a spell while frozen.
                 DoFizzle();
             }
-            else if (m_Caster is PlayerMobile && ((PlayerMobile)m_Caster).PeacedUntil > DateTime.UtcNow)
+            else if (!Shard.SPHERE_STYLE && m_Caster is PlayerMobile && ((PlayerMobile)m_Caster).PeacedUntil > DateTime.UtcNow)
             {
                 m_Caster.SendMessage("Você não pode usar magias pacificado"); // You cannot cast a spell while calmed.
                 DoFizzle();

@@ -100,6 +100,7 @@ namespace Server.Items
                 from.SendMessage("Precisa estar em sua mochila.");
                 return;
             }
+            from.RevealingAction();
             from.SendGump(new GumpOpcoes("Hearthstone", (opt) =>
             {
                 if(opt==0)

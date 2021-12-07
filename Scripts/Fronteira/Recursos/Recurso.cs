@@ -158,8 +158,7 @@ namespace Server.Fronteira.Recursos
 
         public bool Coleta(Mobile from)
         {
-            if(!from.IsStealthing)
-                from.RevealingAction();
+            from.RevealingAction();
             var diff = Dificuldade.GetDificuldade(_resource);
             var skill = GetSkill();
             if (diff != null)

@@ -72,6 +72,8 @@ namespace Server.Misc
                 stone.LootType = LootType.Blessed;
                 stone.BoundTo = m.Name;
                 pack.DropItem(stone);
+
+               
             } else
             {
                 m.EquipItem(new Shoes(color));
@@ -222,6 +224,14 @@ namespace Server.Misc
 
         private static void FixStats(ref int str, ref int dex, ref int intel, int max)
         {
+            if (Shard.SPHERE_STYLE)
+            {
+                str = 100;
+                dex = 100;
+                intel = 100;
+                return;
+            }
+
             var vMax = max - 30;
 
             var vStr = str - 10;
@@ -269,6 +279,13 @@ namespace Server.Misc
 
         private static void SetStats(Mobile m, NetState state, int str, int dex, int intel)
         {
+            if(Shard.SPHERE_STYLE)
+            {
+                m.InitStats(100, 100, 100);
+                m.Skills.Magery.Base = 50;
+                m.Skills.Meditation.Base = 50;
+                return;
+            }
             var max = state.NewCharacterCreation ? 90 : 80;
 
             FixStats(ref str, ref dex, ref intel, max);
