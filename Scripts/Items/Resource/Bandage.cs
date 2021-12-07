@@ -454,7 +454,7 @@ namespace Server.Items
         {
             if(Shard.SPHERE_STYLE)
             {
-                var heal = Utility.Random(20, 15);
+                var heal = Utility.Random(21, 9);
                 heal -= m_Slips * SLIP_MULT;
                 return heal;
             }

@@ -5277,7 +5277,6 @@ namespace Server.Mobiles
                 poison = PoisonImpl.IncreaseLevel(poison);
             }
 
-            /*
             if(Shard.SPHERE_STYLE)
             {
                 var ctx = BandageContext.GetContext(this);
@@ -5286,7 +5285,6 @@ namespace Server.Mobiles
                     ctx.StopHeal();
                 }
             }
-            */
 
             //Skill Masteries
             if ((this.Poison == null || this.Poison.Level < poison.Level) && ToleranceSpell.OnPoisonApplied(this))
