@@ -1660,7 +1660,7 @@ namespace Server.Spells
                 }
                 else if (m_Spell.Caster.Mounted)
                 {
-                    m_Spell.Caster.Animate(24, 6, 5, true, false, 1);
+                    m_Spell.Caster.Animate(24, 6, 1, true, false, 1);
                 }
 
                 if (!Running)

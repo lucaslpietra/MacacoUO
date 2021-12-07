@@ -4251,7 +4251,7 @@ namespace Server.Mobiles
 
                 if (c != null)
                 {
-                    c.Slip();
+                    c.Slip(!from.Player);
                 }
             }
 
@@ -5256,6 +5256,8 @@ namespace Server.Mobiles
         public override ApplyPoisonResult ApplyPoison(Mobile from, Poison poison)
         {
 
+
+
             if (poison == null)
                 return ApplyPoisonResult.Immune;
 
@@ -5274,6 +5276,17 @@ namespace Server.Mobiles
             {
                 poison = PoisonImpl.IncreaseLevel(poison);
             }
+
+            /*
+            if(Shard.SPHERE_STYLE)
+            {
+                var ctx = BandageContext.GetContext(this);
+                if(ctx != null)
+                {
+                    ctx.StopHeal();
+                }
+            }
+            */
 
             //Skill Masteries
             if ((this.Poison == null || this.Poison.Level < poison.Level) && ToleranceSpell.OnPoisonApplied(this))

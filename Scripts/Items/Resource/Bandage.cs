@@ -254,9 +254,11 @@ namespace Server.Items
         public TimeSpan delay;
         public Corpse corpse;
 
-        public void Slip()
+        public void Slip(bool pvm = false)
         {
             ++m_Slips;
+            if (Shard.SPHERE_STYLE && pvm)
+                ++m_Slips;
             m_Healer.SendMessage("Seus dedos escorregam [- "+m_Slips*SLIP_MULT+" cura]"); // Your fingers slip!
         }
 
@@ -450,6 +452,12 @@ namespace Server.Items
 
         public double GetToHeal()
         {
+            if(Shard.SPHERE_STYLE)
+            {
+                var heal = Utility.Random(20, 15);
+                heal -= m_Slips * SLIP_MULT;
+                return heal;
+            }
             double healing = m_Healer.Skills[SkillName.Healing].Value;
             double anatomy = m_Healer.Skills[SkillName.Anatomy].Value;
 
@@ -477,7 +485,7 @@ namespace Server.Items
             return toHeal;
         }
 
-        public static int SLIP_MULT = 3;
+        public static int SLIP_MULT = 4;
 
         public void EndHeal()
         {
@@ -881,6 +889,15 @@ namespace Server.Items
 
         public static TimeSpan GetDelay(Mobile healer, Mobile patient, bool dead, SkillName skill)
         {
+
+            if(Shard.SPHERE_STYLE)
+            {
+                if (dead)
+                    return TimeSpan.FromSeconds(10);
+                else
+                    return TimeSpan.FromSeconds(4.5);
+                    
+            }
             var resDelay = dead ? 5.0 : 0.0;
 
             var dex = healer.Dex < 35 ? 35 : healer.Dex * 1.5;
@@ -901,6 +918,7 @@ namespace Server.Items
                 {
                     seconds = 9.4 + (0.6 * ((double)(120 - dex) / 10));
                 }
+
             }
             else if (Core.AOS && skill == SkillName.Veterinary)
             {
@@ -920,6 +938,7 @@ namespace Server.Items
                 if(((PlayerMobile)healer).Talentos.Tem(Fronteira.Talentos.Talento.Curandeiro))
                     seconds -= 5;
             }
+
             return TimeSpan.FromSeconds(seconds);
         }
     }

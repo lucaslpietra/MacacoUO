@@ -115,7 +115,7 @@ namespace Server.Spells.Third
                             level = 0;
                             */
                         level = 0;
-                        if(Caster.Skills[SkillName.Poisoning].Value > 80)
+                        if(!Shard.SPHERE_STYLE && Caster.Skills[SkillName.Poisoning].Value > 80)
                         {
                             if(!m.IsCooldown("poisonop"))
                             {
