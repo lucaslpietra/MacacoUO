@@ -45,10 +45,19 @@ namespace Server.Spells.Fourth
                 return SpellCircle.Fourth;
             }
         }
-        
+
         public override void OnCast()
         {
             this.Caster.Target = new InternalTarget(this);
+        }
+
+        public override TimeSpan GetCastDelay()
+        {
+            if (Shard.SPHERE_STYLE)
+                return TimeSpan.FromSeconds(4);
+            else
+                return base.GetCastDelay();
+
         }
 
         public void Target(Mobile m)
@@ -92,10 +101,11 @@ namespace Server.Spells.Fourth
                 if (Caster is BaseCreature)
                     toHeal = (int)(toHeal * 1.2);
 
-                if(Shard.SPHERE_STYLE && m.Poisoned)
+                if (Shard.SPHERE_STYLE && m.Poisoned)
                 {
                     toHeal = 0;
-                } else
+                }
+                else
                 {
                     var scalar = GetPoisonScalar(m.Poison);
                     if (scalar < 1 && !m.IsCooldown("poisonmsg"))
@@ -105,7 +115,7 @@ namespace Server.Spells.Fourth
                     }
                     toHeal = (int)(toHeal * scalar);
                 }
-                
+
                 SpellHelper.Heal(toHeal, m, this.Caster);
 
                 Caster.MovingParticles(m, 0x376A, 7, 0, false, false, 9502, 0x376A, 0x1F2);

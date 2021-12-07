@@ -28,6 +28,14 @@ namespace Server.Spells.First
             }
         }
 
+        public override TimeSpan GetCastDelay()
+        {
+            if (Shard.SPHERE_STYLE)
+                return TimeSpan.FromSeconds(2);
+            else
+                return base.GetCastDelay();
+        }
+
         public override void OnCast()
         {
             this.Caster.Target = new InternalTarget(this);

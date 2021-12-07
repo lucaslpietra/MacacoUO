@@ -220,7 +220,7 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(Nightshade), 1044358, 3, 1044366);
             AddRecipe(index, (int)TinkerRecipes.InvisibilityPotion);
 
-            if(Shard.POL_STYLE)
+            if(Shard.POL_SPHERE)
             {
                 index = AddCraft(typeof(LesserManaPotion), 1116348, new TextDefinition("Poção de Mana Menor"), 30, 50, typeof(DaemonBlood), 1044529, 1, "Voce precisa de sangue de demonio");
                 AddRes(index, typeof(Bottle), 1044529, 1, 500315);

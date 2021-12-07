@@ -194,7 +194,7 @@ namespace Server.Items
                         return;
                     }
 
-                    var tipoCooldown = Shard.POL_STYLE ? typeof(BasePotion) : this.GetType();
+                    var tipoCooldown = Shard.POL_SPHERE ? typeof(BasePotion) : this.GetType();
 
                     if (!reusingExploPot && !from.BeginAction(tipoCooldown))
                     {
