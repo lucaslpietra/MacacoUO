@@ -92,8 +92,9 @@ namespace Server.Misc
 					}
 				}
 
-				e.AddServer(ServerName, new IPEndPoint(localAddress, localPort));
-			}
+				e.AddServer("Dragonic Age Oficial [WS Test]", new IPEndPoint(localAddress, 2593));
+                e.AddServer("Dragonic Sphere", new IPEndPoint(localAddress, 1234));
+            }
 			catch
 			{
 				e.Rejected = true;
