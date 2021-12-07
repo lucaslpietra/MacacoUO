@@ -3568,7 +3568,8 @@ namespace Server
                     return false;
                 }
 
-                DisruptiveAction();
+                if(!Shard.SPHERE_STYLE)
+                    DisruptiveAction();
             }
 
             if (m_NetState != null)
@@ -4604,7 +4605,8 @@ namespace Server
                 return;
             }
 
-            DisruptiveAction();
+            if(!Shard.SPHERE_STYLE)
+                DisruptiveAction();
 
             if (m_Spell != null && !m_Spell.OnCasterUsingObject(item))
             {
