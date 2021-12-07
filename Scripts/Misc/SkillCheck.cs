@@ -253,6 +253,7 @@ namespace Server.Misc
 
             if(Shard.SPHERE_STYLE)
             {
+                Shard.Debug("Gain Sphere");
                 Gain(from, skill);
                 return Utility.RandomDouble() <= chance;
             }

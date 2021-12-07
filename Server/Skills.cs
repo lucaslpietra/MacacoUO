@@ -620,10 +620,10 @@ namespace Server
 
         public int Localization { get { return 1044060 + SkillID; } }
 
-        public static double HARD = 0.1f;
-        public static double MEDIUM = 0.5f;
-        public static double EASY = 0.9f;
-        public static double COMBAT = 0.00;
+        public static double HARD = Shard.SPHERE_STYLE ? 10 : 0.1f;
+        public static double MEDIUM = Shard.SPHERE_STYLE ? 10 : 0.5f;
+        public static double EASY = Shard.SPHERE_STYLE ? 10 : 0.9f;
+        public static double COMBAT = Shard.SPHERE_STYLE ? 10 : 0.00;
 
         private static SkillInfo[] m_Table = new SkillInfo[58]
         {
