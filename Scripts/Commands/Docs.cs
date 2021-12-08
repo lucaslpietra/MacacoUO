@@ -2559,7 +2559,7 @@ namespace Server.Commands
 				indexHtml.WriteLine("<!DOCTYPE html>");
 				indexHtml.WriteLine("<html>");
 				indexHtml.WriteLine("   <head>");
-				indexHtml.WriteLine("      <title>RunUO Documentation - Class Overview</title>");
+				indexHtml.WriteLine("      <title>Documentacao MacacoUO - Class Overview</title>");
 				indexHtml.WriteLine("      <style type=\"text/css\">");
 				indexHtml.WriteLine("      body { background-color: white; font-family: Tahoma; color: #000000; }");
 				indexHtml.WriteLine("      a, a:visited { color: #000000; }");

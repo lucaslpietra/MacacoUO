@@ -296,6 +296,13 @@ namespace Server.Engines.Craft
 
         public void AddRes(Type type, TextDefinition name, int amount, TextDefinition message)
         {
+            if(!CraftResources.IsTierZero(type))
+            {
+                var trad = Trads.GetNome(type);
+                if (trad != null)
+                    message = "Voce nao tem " + trad + " suficiente para isto. Este item precisa deste recurso especifico para ser feito.";
+            }
+          
             CraftRes craftRes = new CraftRes(type, name, amount, message);
             m_arCraftRes.Add(craftRes);
         }
@@ -595,7 +602,29 @@ namespace Server.Engines.Craft
         {
             if (system.RetainsColorFrom(this, type))
             {
+                if (Shard.DebugEnabled)
+                    Shard.Debug("Craft system colorindo");
                 return true;
+            }
+
+
+
+            // se usar algum recurso color nao pega a cor color
+            foreach (CraftRes craft in this.m_arCraftRes)
+            {
+                var resource = CraftResources.GetFromType(craft.ItemType);
+                if (Shard.DebugEnabled)
+                    Shard.Debug("Verificando se colore pra resource " + resource.ToString());
+
+                if (resource != CraftResource.None)
+                {
+                    if (!CraftResources.IsTierZero(resource))
+                    {
+                        if (Shard.DebugEnabled)
+                            Shard.Debug("Nao colore pra esse resource");
+                        return false;
+                    }
+                }
             }
 
             bool inItemTable = false, inResourceTable = false;
@@ -1592,7 +1621,7 @@ namespace Server.Engines.Craft
                         if (typeof(BaseWeapon).IsAssignableFrom(ItemType) || typeof(BaseArmor).IsAssignableFrom(ItemType))
                             from.CheckSkillMult(SkillName.ArmsLore, minSkill, maxSkill, 4);
 
-                        if(!from.IsCooldown("dicacraft"))
+                        if (!from.IsCooldown("dicacraft"))
                         {
                             from.SetCooldown("dicacraft");
                             from.SendMessage(78, "Para upar skills de criar items mais rapidamente, diga 'trabalho' ao NPC daquela profissao");
@@ -2087,7 +2116,12 @@ namespace Server.Engines.Craft
 
                     if (item is ICraftable)
                     {
-                        endquality = ((ICraftable)item).OnCraft(quality, makersMark, from, craftSystem, typeRes, tool, this, resHue);
+                        if (CraftResources.IsTierZero(typeRes))
+                            endquality = ((ICraftable)item).OnCraft(quality, makersMark, from, craftSystem, typeRes, tool, this, resHue);
+                        else
+                        {
+                            endquality = ((ICraftable)item).OnCraft(quality, makersMark, from, craftSystem, Resources.GetAt(0).ItemType, tool, this, 0);
+                        }  
                     }
                     else if (item is Food)
                     {
@@ -2221,7 +2255,7 @@ namespace Server.Engines.Craft
                     num = craftSystem.PlayEndingEffect(from, false, true, toolBroken, endquality, makersMark, this);
                 }
 
-           
+
 
                 bool queryFactionImbue = false;
                 int availableSilver = 0;

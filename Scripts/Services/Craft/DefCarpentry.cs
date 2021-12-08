@@ -136,6 +136,12 @@ namespace Server.Engines.Craft
             }
         }
 
+        public override bool RetainsColorFrom(CraftItem item, Type type)
+        {
+            return false;
+        }
+
+
         private System.Collections.Generic.List<Type> _NoConsumeOfFailure = new System.Collections.Generic.List<Type>
         {
             typeof(StaffOfTheMagi), typeof(BlackrockMoonstone)
@@ -998,7 +1004,7 @@ namespace Server.Engines.Craft
             AddSubRes(typeof(Board), "Cedro", 00.0, "Voce nao sabe usar esta madeira");
             AddSubRes(typeof(OakBoard), "Carvalho", 70.0, "Voce nao sabe usar esta madeira");
             AddSubRes(typeof(AshBoard), "Pinho", 80.0, "Voce nao sabe usar esta madeira");
-            AddSubRes(typeof(AshBoard), "Mogno", 90, "Voce nao sabe usar esta madeira");
+            AddSubRes(typeof(YewBoard), "Mogno", 90, "Voce nao sabe usar esta madeira");
             AddSubRes(typeof(HeartwoodBoard), "Eucalipto", 100, "Voce nao sabe usar esta madeira");
             AddSubRes(typeof(BloodwoodBoard), "Carmesim", 110, "Voce nao sabe usar esta madeira");
             AddSubRes(typeof(FrostwoodBoard), "Gelo", 120, "Voce nao sabe usar esta madeira");

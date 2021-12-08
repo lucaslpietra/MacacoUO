@@ -663,8 +663,26 @@ namespace Server.Items
         }
     }
 
+    
+
     public class CraftResources
     {
+
+        public static bool IsTierZero(CraftResource res)
+        {
+            if (CraftResources.GetType(res) == CraftResourceType.Scales)
+                return true;
+            return res == CraftResource.Ferro || res == CraftResource.Cedro || res == CraftResource.RegularLeather;
+        }
+
+        public static bool IsTierZero(Type t)
+        {
+            var res = CraftResources.GetFromType(t);
+            if (CraftResources.GetType(res) == CraftResourceType.Scales)
+                return true;
+            return res == CraftResource.None || res == CraftResource.Ferro || res == CraftResource.Cedro || res == CraftResource.RegularLeather;
+        }
+
         private static readonly CraftResourceInfo[] m_MetalInfo = new CraftResourceInfo[]
         {
             new CraftResourceInfo(0x000, 1053109, "Ferro", CraftAttributeInfo.Blank, CraftResource.Ferro, typeof(IronIngot), typeof(IronOre), typeof(Granite)),
