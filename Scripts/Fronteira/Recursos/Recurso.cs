@@ -364,9 +364,10 @@ namespace Server.Fronteira.Recursos
                 var caule = 0;
                 switch (_resource)
                 {
-                    case CraftResource.Cedro: caule = 3286; folha = 3287; break;
+                    case CraftResource.Cedro: caule = 3293; folha = 3294; break;
                     case CraftResource.Carvalho: caule = 3290; folha = 3292; break;
                     case CraftResource.Pinho: caule = 3286; folha = 3287; break;
+                    case CraftResource.Eucalipto: caule = 3293; folha = 3294; break;
                     case CraftResource.Mogno: caule = 3492; folha = 3495; break;
                     case CraftResource.Carmesim: caule = 3480; folha = 3481; break;
                     case CraftResource.Gelo: caule = 3286; folha = 9969; break;
