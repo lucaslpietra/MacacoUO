@@ -95,6 +95,7 @@ namespace Server.Mobiles
                     if(!from.Backpack.ConsumeTotal(typeof(Gold), 500))
                     {
                         from.SendMessage("Voce precisa de 500 moedas para isto");
+                        return;
                     }
                 }
                 var selecionado = ensina[opt];
