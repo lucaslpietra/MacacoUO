@@ -148,21 +148,21 @@ namespace Server.Gumps
             AddHtml(573, 376, 158, 21, string.Format(@"{0} Healing", caller.Skills.Healing.Value), (bool)false, (bool)false);
             AddHtml(573, 398, 158, 21, string.Format(@"{0} ArmsLore", caller.Skills.ArmsLore.Value), (bool)false, (bool)false);
             AddHtml(345, 356, 158, 21, string.Format(@"{0} Spirit Speak", caller.Skills.SpiritSpeak.Value), (bool)false, (bool)false);
-            AddHtml(345, 378, 158, 21, string.Format(@"{0} Necromancy", caller.Skills.Necromancy.Value), (bool)false, (bool)false);
+            AddHtml(345, 418, 158, 21, string.Format(@"{0} Necromancy", caller.Skills.Necromancy.Value), 3333, (bool)false, (bool)false);
             AddHtml(345, 398, 158, 21, string.Format(@"{0} Inscription", caller.Skills.Inscribe.Value), (bool)false, (bool)false);
 
-            AddHtml(345, 418, 158, 21, string.Format(@"{0} Wrestling", caller.Skills.Wrestling.Value), (bool)false, (bool)false);
+            AddHtml(345, 378, 158, 21, string.Format(@"{0} Wrestling", caller.Skills.Wrestling.Value), (bool)false, (bool)false);
             AddHtml(794, 268, 158, 21, string.Format(@"{0} Archery", caller.Skills.Archery.Value), (bool)false, (bool)false);
             AddHtml(794, 289, 158, 21, string.Format(@"{0} Tracking", caller.Skills.Tracking.Value), (bool)false, (bool)false);
             AddHtml(794, 310, 158, 21, string.Format(@"{0} Hiding", caller.Skills.Hiding.Value), (bool)false, (bool)false);
             AddHtml(794, 331, 158, 21, string.Format(@"{0} Stealth", caller.Skills.Stealth.Value), (bool)false, (bool)false);
-            AddHtml(794, 352, 158, 21, string.Format(@"{0} Ninjutsu", caller.Skills.Ninjitsu.Value), (bool)false, (bool)false);
+            AddHtml(794, 396 + 42 , 158, 21, string.Format(@"{0} Ninjutsu", caller.Skills.Ninjitsu.Value), 3333, (bool)false, (bool)false);
             AddHtml(794, 374, 158, 21, string.Format(@"{0} Focus", caller.Skills.Focus.Value), (bool)false, (bool)false);
             AddHtml(573, 419, 158, 21, string.Format(@"{0} Parrying", caller.Skills.Parry.Value), (bool)false, (bool)false);
             //AddHtml(794, 396, 158, 21, string.Format(@"{0} Detect Hidden", caller.Skills.DetectHidden.Value), (bool)false, (bool)false);
-            AddHtml(794, 396, 158, 21, string.Format(@"{0} Poisoning", caller.Skills.Poisoning.Value), (bool)false, (bool)false);
+            AddHtml(794, 352 , 158, 21, string.Format(@"{0} Poisoning", caller.Skills.Poisoning.Value), (bool)false, (bool)false);
             AddHtml(794, 396+21, 158, 21, string.Format(@"{0} Lockpicking", caller.Skills.Lockpicking.Value), (bool)false, (bool)false);
-            AddHtml(794, 396+42, 158, 21, string.Format(@"{0} Rm Trap", caller.Skills.RemoveTrap.Value), (bool)false, (bool)false);
+            AddHtml(794, 396, 158, 21, string.Format(@"{0} Remove Trap", caller.Skills.RemoveTrap.Value), (bool)false, (bool)false);
 
             AddHtml(1025, 267, 158, 21, string.Format(@"{0} Musicanship", caller.Skills.Musicianship.Value), (bool)false, (bool)false);
             AddHtml(1025, 288, 158, 21, string.Format(@"{0} Peacemaking", caller.Skills.Peacemaking.Value), (bool)false, (bool)false);
@@ -185,21 +185,22 @@ namespace Server.Gumps
             AddHtml(573 + 158, 376, 158, 21, GetCustoUp(caller, SkillName.Healing), (bool)false, (bool)false);
             AddHtml(573 + 158, 398, 158, 21, GetCustoUp(caller, SkillName.ArmsLore), (bool)false, (bool)false);
             AddHtml(345 + 158, 356, 158, 21, GetCustoUp(caller, SkillName.SpiritSpeak), (bool)false, (bool)false);
-            AddHtml(345 + 158, 378, 158, 21, GetCustoUp(caller, SkillName.Necromancy), (bool)false, (bool)false);
+            //AddHtml(345 + 158, 418 , 158, 21, GetCustoUp(caller, SkillName.Necromancy), (bool)false, (bool)false);
             AddHtml(345 + 158, 398, 158, 21, GetCustoUp(caller, SkillName.Inscribe), (bool)false, (bool)false);
 
-            AddHtml(345 + 158, 418, 158, 21, GetCustoUp(caller, SkillName.Wrestling), (bool)false, (bool)false);
+            AddHtml(345 + 158, 378, 158, 21, GetCustoUp(caller, SkillName.Wrestling), (bool)false, (bool)false);
             AddHtml(794 + 158, 268, 158, 21, GetCustoUp(caller, SkillName.Archery), (bool)false, (bool)false);
             AddHtml(794 + 158, 289, 158, 21, GetCustoUp(caller, SkillName.Tracking), (bool)false, (bool)false);
             AddHtml(794 + 158, 310, 158, 21, GetCustoUp(caller, SkillName.Hiding), (bool)false, (bool)false);
             AddHtml(794 + 158, 331, 158, 21, GetCustoUp(caller, SkillName.Stealth), (bool)false, (bool)false);
-            AddHtml(794 + 158, 352, 158, 21, GetCustoUp(caller, SkillName.Ninjitsu), (bool)false, (bool)false);
+            // AddHtml(794 + 158, 417+21 , 158, 21, GetCustoUp(caller, SkillName.Ninjitsu), (bool)false, (bool)false);
             AddHtml(794 + 158, 374, 158, 21, GetCustoUp(caller, SkillName.Focus), (bool)false, (bool)false);
             AddHtml(573 + 158, 419, 158, 21, GetCustoUp(caller, SkillName.Parry), (bool)false, (bool)false);
+           // AddHtml(573 + 158, 430, 158, 21, GetCustoUp(caller, SkillName.Chivalry), (bool)false, (bool)false);
             //AddHtml(794 + 158, 396, 158, 21, GetCustoUp(caller, SkillName.DetectHidden), (bool)false, (bool)false);
-            AddHtml(794 + 158, 396, 158, 21, GetCustoUp(caller, SkillName.Poisoning), (bool)false, (bool)false);
+            AddHtml(794 + 158, 352 , 158, 21, GetCustoUp(caller, SkillName.Poisoning), (bool)false, (bool)false);
             AddHtml(794 + 158, 417, 158, 21, GetCustoUp(caller, SkillName.Lockpicking), (bool)false, (bool)false);
-            AddHtml(794 + 158, 417+21, 158, 21, GetCustoUp(caller, SkillName.RemoveTrap), (bool)false, (bool)false);
+            AddHtml(794 + 158, 396, 158, 21, GetCustoUp(caller, SkillName.RemoveTrap), (bool)false, (bool)false);
 
             AddHtml(1025 + 158, 267, 158, 21, GetCustoUp(caller, SkillName.Musicianship), (bool)false, (bool)false);
             AddHtml(1025 + 158, 288, 158, 21, GetCustoUp(caller, SkillName.Peacemaking), (bool)false, (bool)false);
@@ -221,9 +222,9 @@ namespace Server.Gumps
             AddButton(486, 314, 55, 248, (int)Buttons.EvalInt, GumpButtonType.Reply, 0);
             AddButton(486, 336, 55, 248, (int)Buttons.Meditation, GumpButtonType.Reply, 0);
             AddButton(485, 358, 55, 248, (int)Buttons.SpiritSpeak, GumpButtonType.Reply, 0);
-            AddButton(485, 380, 55, 248, (int)Buttons.Necromancy, GumpButtonType.Reply, 0);
+            //AddButton(485, 420 , 55, 248, (int)Buttons.Necromancy, GumpButtonType.Reply, 0);
             AddButton(485, 400, 55, 248, (int)Buttons.Inscribe, GumpButtonType.Reply, 0);
-            AddButton(485, 420, 55, 248, (int)Buttons.Wrestling, GumpButtonType.Reply, 0);
+            AddButton(485, 380, 55, 248, (int)Buttons.Wrestling, GumpButtonType.Reply, 0);
             AddButton(714, 268, 55, 248, (int)Buttons.Swords, GumpButtonType.Reply, 0);
             AddButton(714, 290, 55, 248, (int)Buttons.Fencing, GumpButtonType.Reply, 0);
             AddButton(714, 312, 55, 248, (int)Buttons.Macing, GumpButtonType.Reply, 0);
@@ -236,12 +237,12 @@ namespace Server.Gumps
             AddButton(935, 289, 55, 248, (int)Buttons.Tracking, GumpButtonType.Reply, 0);
             AddButton(935, 312, 55, 248, (int)Buttons.Hiding, GumpButtonType.Reply, 0);
             AddButton(935, 333, 55, 248, (int)Buttons.Stealth, GumpButtonType.Reply, 0);
-            AddButton(935, 354, 55, 248, (int)Buttons.Ninjitsu, GumpButtonType.Reply, 0);
+            //AddButton(935,375 + 63 , 55, 248, (int)Buttons.Ninjitsu, GumpButtonType.Reply, 0);
             AddButton(935, 375, 55, 248, (int)Buttons.Focus, GumpButtonType.Reply, 0);
         
-            AddButton(935, 375+21, 55, 248, (int)Buttons.Poisoning, GumpButtonType.Reply, 0);
+            AddButton(935, 354, 55, 248, (int)Buttons.Poisoning, GumpButtonType.Reply, 0);
             AddButton(935, 375 + 42, 55, 248, (int)Buttons.Lockpicking, GumpButtonType.Reply, 0);
-            AddButton(935, 375 + 63, 55, 248, (int)Buttons.RemoveTrap, GumpButtonType.Reply, 0);
+            AddButton(935, 375 + 21 , 55, 248, (int)Buttons.RemoveTrap, GumpButtonType.Reply, 0);
             //AddButton(1119, 166, 1491, 1491, (int)Buttons.Help, GumpButtonType.Reply, 0);
             AddImage(1026, 251, 50);
 
@@ -251,7 +252,7 @@ namespace Server.Gumps
             AddImage(1229, 460, 10460);
 
 
-            AddHtml(573, 439, 158, 21, string.Format("{0} Chivalry", caller.Skills.Chivalry.Value), (bool)false, (bool)false);
+            AddHtml(573, 439, 158, 21, string.Format("{0} Chivalry", caller.Skills.Chivalry.Value), 3333, (bool)false, (bool)false);
             AddButton(1168, 268, 55, 248, (int)Buttons.Musicianship, GumpButtonType.Reply, 0);
             AddButton(1168, 288, 55, 248, (int)Buttons.Peacemaking, GumpButtonType.Reply, 0);
             AddButton(1168, 309, 55, 248, (int)Buttons.Provocation, GumpButtonType.Reply, 0);
@@ -262,7 +263,7 @@ namespace Server.Gumps
 
             AddItem(1081, 226, 3763);
 
-            AddButton(714, 441, 55, 248, (int)Buttons.Chivalry, GumpButtonType.Reply, 0);
+            //AddButton(714, 441, 55, 248, (int)Buttons.Chivalry, GumpButtonType.Reply, 0);
 
             // Stats
             var modX = 250;
