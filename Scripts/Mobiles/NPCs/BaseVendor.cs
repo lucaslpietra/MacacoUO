@@ -10,6 +10,7 @@ using Server.Engines.BulkOrders;
 using Server.Engines.Points;
 using Server.Engines.Quests;
 using Server.Factions;
+using Server.Gumps;
 using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
@@ -58,6 +59,49 @@ namespace Server.Mobiles
                     from.SendGump(new RewardsGump(vendor, (PlayerMobile)from, vendor.BODType));
                 }
             }
+        }
+
+        public void Treinar(Mobile from)
+        {
+            from.SendMessage("Custo de treino: 500 moedas");
+            List<SkillName> ensina = new List<SkillName>();
+            if (CanTeach && from.Alive)
+            {
+                Skills ourSkills = Skills;
+                Skills theirSkills = from.Skills;
+
+                for (int i = 0; i < ourSkills.Length && i < theirSkills.Length; ++i)
+                {
+                    Skill skill = ourSkills[i];
+                    Skill theirSkill = theirSkills[i];
+
+                    if (skill != null && theirSkill != null && skill.Base >= 60.0 && CheckTeach(skill.SkillName, from))
+                    {
+                        int toTeach = skill.BaseFixedPoint / 3;
+
+                        if (toTeach > 420)
+                        {
+                            toTeach = 420;
+                        }
+                        ensina.Add((SkillName)i);
+                    }
+                }
+            }
+
+            from.SendGump(new GumpOpcoes("Custo: 500", (opt) =>
+            {
+                if(!Banker.Withdraw(from, 500))
+                {
+                    if(!from.Backpack.ConsumeTotal(typeof(Gold), 500))
+                    {
+                        from.SendMessage("Voce precisa de 500 moedas para isto");
+                    }
+                }
+                var selecionado = ensina[opt];
+                from.Skills[selecionado].Base = 50;
+                this.SayTo(from, "Deixe-me lhe ensinar como se faz");
+
+            }, 3708, 0, ensina.Select(e => e.ToString()).ToArray()));
         }
 
         public static void OfereceBulkOrder(Mobile from, BaseVendor vendor)

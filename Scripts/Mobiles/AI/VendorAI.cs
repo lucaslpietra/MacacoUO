@@ -150,6 +150,14 @@ namespace Server.Mobiles
                     }
                   
                 }
+                else if(e.Speech.Contains("treinar"))
+                {
+                    if (vendor != null)
+                    {
+                        vendor.Treinar(e.Mobile);
+                        return;
+                    }
+                }
                 else if (e.HasKeyword(0x3C) || e.Speech.Contains("comprar")) // *vendor buy*
                 {
 

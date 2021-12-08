@@ -74,7 +74,7 @@ namespace Server.Gumps
 
                 foreach (var skillname in kit.Skills.Keys)
                 {
-                    var value = kit.Skills[skillname];
+                    var value = Shard.SPHERE_STYLE ? 100 : kit.Skills[skillname];
                     AddHtml(110 + x, 370 + y, 441, 83, skillname + ": " + value, false, false);
                     x += 120;
                     if (x > 330)

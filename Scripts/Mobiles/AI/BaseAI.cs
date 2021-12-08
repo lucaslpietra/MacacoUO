@@ -459,7 +459,12 @@ namespace Server.Mobiles
                 }
                 else if (e.Speech.Contains("treinar"))
                 {
-                    m_Mobile.Say("Para treinar, clique 1x em mim e selecione a skill no menu");
+                    var vendor = m_Mobile as BaseVendor;
+                    if (vendor != null)
+                    {
+                        vendor.Treinar(e.Mobile);
+                        return;
+                    }
                 }
                 else if (e.Speech.Contains("aventura") || e.Speech.Contains("missao") || e.Speech.Contains("quest"))
                 {
@@ -490,6 +495,13 @@ namespace Server.Mobiles
                 }
                 else if (e.HasKeyword(0x6C) && WasNamed(e.Speech)) // *train
                 {
+                    var vendor = m_Mobile as BaseVendor;
+                    if(vendor != null)
+                    {
+                        vendor.Treinar(e.Mobile);
+                        return;
+                    }
+
                     if (m_Mobile.Combatant != null)
                     {
                         // I am too busy fighting to deal with thee!
