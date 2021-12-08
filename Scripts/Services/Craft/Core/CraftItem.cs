@@ -296,13 +296,13 @@ namespace Server.Engines.Craft
 
         public void AddRes(Type type, TextDefinition name, int amount, TextDefinition message)
         {
-            if(!CraftResources.IsTierZero(type))
+            if (!CraftResources.IsTierZero(type))
             {
                 var trad = Trads.GetNome(type);
                 if (trad != null)
                     message = "Voce nao tem " + trad + " suficiente para isto. Este item precisa deste recurso especifico para ser feito.";
             }
-          
+
             CraftRes craftRes = new CraftRes(type, name, amount, message);
             m_arCraftRes.Add(craftRes);
         }
@@ -2116,12 +2116,7 @@ namespace Server.Engines.Craft
 
                     if (item is ICraftable)
                     {
-                        if (CraftResources.IsTierZero(typeRes))
-                            endquality = ((ICraftable)item).OnCraft(quality, makersMark, from, craftSystem, typeRes, tool, this, resHue);
-                        else
-                        {
-                            endquality = ((ICraftable)item).OnCraft(quality, makersMark, from, craftSystem, Resources.GetAt(0).ItemType, tool, this, 0);
-                        }  
+                        endquality = ((ICraftable)item).OnCraft(quality, makersMark, from, craftSystem, typeRes, tool, this, resHue);
                     }
                     else if (item is Food)
                     {
