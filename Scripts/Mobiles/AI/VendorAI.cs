@@ -148,7 +148,6 @@ namespace Server.Mobiles
                         e.Handled = true;
                         BaseVendor.PegaRecompensa(from, vendor);
                     }
-                  
                 }
                 else if(e.Speech.Contains("treinar"))
                 {
