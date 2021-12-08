@@ -188,7 +188,7 @@ namespace Server.Misc
             SkillName.Alchemy, SkillName.Blacksmith, SkillName.Fletching,
             SkillName.Mining, SkillName.Tinkering, SkillName.Carpentry,
             SkillName.TasteID, SkillName.Cooking, SkillName.Tailoring,
-            SkillName.AnimalTaming, SkillName.Fishing
+            SkillName.AnimalTaming, SkillName.Fishing, SkillName.Lumberjacking
         };
 
         public static SkillName[] Craft = new SkillName[] {
@@ -251,9 +251,9 @@ namespace Server.Misc
             if (from.Skills.Cap == 0)
                 return false;
 
-            if(Shard.SPHERE_STYLE)
+            if(Shard.SPHERE_STYLE && !Work.Contains(skill.SkillName))
             {
-                Shard.Debug("Gain Sphere");
+                Shard.Debug("Gain easy");
                 Gain(from, skill);
                 return Utility.RandomDouble() <= chance;
             }
