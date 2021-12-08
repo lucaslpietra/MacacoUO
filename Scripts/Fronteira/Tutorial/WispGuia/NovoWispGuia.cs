@@ -113,6 +113,8 @@ namespace Server.Mobiles
             }
         }
 
+        private int falaAtual = 0;
+
         public void FazAlgo()
         {
             if(Jogador.Combatant != null && this.Combatant == null)
@@ -133,22 +135,24 @@ namespace Server.Mobiles
 
             if (objetivoAtual == PassoTutorial.FIM)
             {
-                if (!IsCooldown("fala"))
+                if (!IsCooldown("fala") && falaAtual != -1)
                 {
-                    SetCooldown("fala", TimeSpan.FromSeconds(20));
-                    switch (Utility.Random(10))
+                    SetCooldown("fala", TimeSpan.FromSeconds(30));
+                    switch (falaAtual)
                     {
                         case 0: Fala("Upe sempre em dungeons, voce aprende as skills mais rapido matando monstros !"); break;
                         case 1: Fala("Quando tiver 70 nas skills das armas, voce pode usar as habilidades de arma clicando no seu paperdoll (ALT + P) e depois no livro lilas no seu pe. !"); break;
                         case 2: Fala("Sabia que as moedas de ouro , quando usando .grupo, sao mais faceis de conseguir ?"); break;
-                        case 3: Fala("Voce pode formar grupos usando o comando .grupo, o ouro de dungeons sera dividido entre o grupo !"); break;
-                        case 4: Fala("Se voce quiser trabalhar, voce pode fazer Ordens de Compra nos npcs se tiver skills de trabalho !"); break;
-                        case 5: Fala("Sabia que voce pode ter sua casa e sua fazenda ? Mas vai precisar juntar dinheiro..."); break;
-                        case 6: Fala("Ganhei dinheiro trabalhando ou matando monstros, voce que sabe..."); break;
-                        case 7: Fala("Voce pode minerar na mina dos orcs, mas vai precisar fazer com que eles nao te ataquem..."); break;
-                        case 8: Fala("Uma boa maneira de se juntar um dinheiro inicial e a skill BEGGING..."); break;
-                        case 9: Fala("Fale com a NPC JILL no centro da cidade para pegar uma quest epica!"); break;
+                        case 3: Fala("Fazendo grupos no pergaminho no pe do paperdoll o gold divide automatico !"); break;
+                        case 4: Fala("Se voce quiser upar skills worker, voce pode fazer Ordens de Compra nos npcs se tiver skills de trabalho !"); break;
+                        case 5: Fala("Voce pode upar elementos PvM e ficar 10000x mais forte em PvM !"); break;
+                        case 6: Fala("Voce precisa de um bom dinheiro e equipamento pra conseguir destravar seus Elementos PvM"); break;
+                        case 7: Fala("Use o moongate publico em Haven para se locomover facilmente"); break;
+                        case 8: Fala("No seu paperdoll, em Help, voce pode encontrar onde pode ir como dungeons e missoes"); break;
+                        case 9: Fala("Se tiver alguma duvida, mande page a staff clicando em Help no seu paperdoll"); break;
+                        case 10: falaAtual = -2; break;
                     }
+                    falaAtual++;
                 }
                 return;
             }
