@@ -1079,6 +1079,7 @@ namespace Server.Engines.BulkOrders
             RewardCollection.Add(new BODCollectionItem(0x14F0, 1157189, 0, 225, RewardTitle, 8));
             RewardCollection.Add(new BODCollectionItem(0x2831, "Receita para automacao KOTL", 0, 350, Recipe, 2));
             RewardCollection.Add(new BODCollectionItem(0x9E2B, "Talisman +10 Tinker<br>Dura um tempo", 0, 400, CraftsmanTalisman, 10));
+            RewardCollection.Add(new BODCollectionItem(0x14F5, "Luneta", 0, 450, Luneta, 10));
             RewardCollection.Add(new BODCollectionItem(0x2F5B, 1152674, CraftResources.GetHue(CraftResource.Dourado), 450, SmeltersTalisman, (int)CraftResource.Dourado));
             //RewardCollection.Add(new BODCollectionItem(0x14EC, 1152665, CraftResources.GetHue(CraftResource.Dourado), 500, HarvestMap, (int)CraftResource.Dourado));
             RewardCollection.Add(new BODCollectionItem(0x9E2B, "Talisman +15 Tinker<br>Dura um tempo", 0, 550, CraftsmanTalisman, 15)); // todo: Get id
@@ -1133,6 +1134,11 @@ namespace Server.Engines.BulkOrders
             }
 
             return null;
+        }
+
+        private static Item Luneta(int type)
+        {
+            return new Spyglass();
         }
 
         private static Item CraftsmanTalisman(int type)

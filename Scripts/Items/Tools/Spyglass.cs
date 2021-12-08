@@ -39,6 +39,13 @@ namespace Server.Items
         {
         }
 
+        public override void AddNameProperties(ObjectPropertyList list)
+        {
+            base.AddNameProperties(list);
+            list.Add("Encontra Recursos");
+        }
+
+
         public override void OnDoubleClick(Mobile from)
         {
             if(from.Skills.Forensics.Value < 80)
