@@ -605,12 +605,12 @@ namespace Server.Spells
                 if (target.Elemento != ElementoPvM.None && elemento.ForteContra(target.Elemento))
                 {
                     EfeitosElementos.Effect(target, elemento);
-                    scalar += 0.15;
+                    scalar += 0.25;
                     Shard.Debug("Alvo forte contra elemento", m_Caster);
                 }
                 else if (target.Elemento != ElementoPvM.None && target.Elemento.ForteContra(elemento))
                 {
-                    scalar -= 0.15;
+                    scalar -= 0.25;
                     Shard.Debug("Alvo fraco contra elemento", m_Caster);
                 }
             }

@@ -2574,12 +2574,12 @@ namespace Server.Mobiles
                 if (from.Elemento.ForteContra(this.Elemento))
                 {
                     Shard.Debug("Forte contra elemento", from);
-                    damage = (int)(damage * 1.15);
+                    damage = (int)(damage * 1.2);
                 }
                 else if (from.Elemento.FracoContra(this.Elemento))
                 {
                     Shard.Debug("Fraco contra elemento", from);
-                    damage = (int)(damage * 0.85);
+                    damage = (int)(damage * 0.7);
                 }
 
             }
@@ -2601,7 +2601,7 @@ namespace Server.Mobiles
                         to.SendMessage(78, "Este monstro causa mais dano a voce pois o elemento dele eh forte contra o seu");
                     }
                     EfeitosElementos.Effect(to, this.Elemento);
-                    damage = (int)(damage * 1.2);
+                    damage = (int)(damage * 1.3);
                 }
             }
         }
