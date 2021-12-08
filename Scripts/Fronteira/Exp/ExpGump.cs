@@ -49,6 +49,8 @@ namespace Server.Gumps
             Combate.Add(SkillName.Peacemaking);
             Combate.Add(SkillName.Lockpicking);
             Combate.Add(SkillName.RemoveTrap);
+            Combate.Add(SkillName.Begging);
+            Combate.Add(SkillName.Forensics);
             CommandSystem.Register("xp", AccessLevel.Player, new CommandEventHandler(SkillsGump_OnCommand));
         }
 
@@ -167,6 +169,8 @@ namespace Server.Gumps
             AddHtml(1025, 309, 158, 21, string.Format(@"{0} Provocation", caller.Skills.Provocation.Value), (bool)false, (bool)false);
             AddHtml(1025, 330, 158, 21, string.Format(@"{0} Discordance", caller.Skills.Discordance.Value), (bool)false, (bool)false);
             AddHtml(1025, 351, 158, 21, string.Format(@"{0} Detect Hidden", caller.Skills.DetectHidden.Value), (bool)false, (bool)false);
+            AddHtml(1025, 351+21, 158, 21, string.Format(@"{0} Begging", caller.Skills.Begging.Value), (bool)false, (bool)false);
+            AddHtml(1025, 351+42, 158, 21, string.Format(@"{0} Forensics", caller.Skills.Forensics.Value), (bool)false, (bool)false);
 
             AddHtml(345 + 158, 290, 158, 21, GetCustoUp(caller, SkillName.MagicResist), (bool)false, (bool)false);
             AddHtml(345 + 158, 269, 158, 21, GetCustoUp(caller, SkillName.Magery), (bool)false, (bool)false);
@@ -202,6 +206,8 @@ namespace Server.Gumps
             AddHtml(1025 + 158, 309, 158, 21, GetCustoUp(caller, SkillName.Provocation), (bool)false, (bool)false);
             AddHtml(1025 + 158, 330, 158, 21, GetCustoUp(caller, SkillName.Discordance), (bool)false, (bool)false);
             AddHtml(1025 + 158, 351, 158, 21, GetCustoUp(caller, SkillName.DetectHidden), (bool)false, (bool)false);
+            AddHtml(1025 + 158, 351+21, 158, 21, GetCustoUp(caller, SkillName.Begging), (bool)false, (bool)false);
+            AddHtml(1025 + 158, 351+42, 158, 21, GetCustoUp(caller, SkillName.Forensics), (bool)false, (bool)false);
 
             AddButton(486, 271, 55, 248, (int)Buttons.Magery, GumpButtonType.Reply, 0);
             AddImage(351, 252, 50);
@@ -251,6 +257,8 @@ namespace Server.Gumps
             AddButton(1168, 309, 55, 248, (int)Buttons.Provocation, GumpButtonType.Reply, 0);
             AddButton(1168, 332, 55, 248, (int)Buttons.Discordance, GumpButtonType.Reply, 0);
             AddButton(1168, 332+21, 55, 248, (int)Buttons.DetectHidden, GumpButtonType.Reply, 0);
+            AddButton(1168, 353 + 21, 55, 248, (int)Buttons.Begging, GumpButtonType.Reply, 0);
+            AddButton(1168, 353 + 42, 55, 248, (int)Buttons.Forensics, GumpButtonType.Reply, 0);
 
             AddItem(1081, 226, 3763);
 
@@ -313,6 +321,8 @@ namespace Server.Gumps
             Chivalry,
             Lockpicking,
             RemoveTrap,
+            Begging,
+            Forensics,
             Str, Dex, Int
         }
 

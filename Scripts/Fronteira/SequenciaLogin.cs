@@ -1,5 +1,6 @@
 using Server.Fronteira.Tutorial.WispGuia;
 using Server.Gumps;
+using Server.Misc;
 using Server.Mobiles;
 using Server.Scripts.New.Adam.NewGuild;
 using System;
@@ -30,17 +31,17 @@ namespace Server.Fronteira
                 return;
             }
 
-            if (pm.RP)
+            if (CharacterCreation.Novos.Contains(e.Mobile))
             {
-                if (pm.Profession == 0)
+                CharacterCreation.Novos.Remove(e.Mobile);
+                if(pm.RP && pm.Profession == 0)
                 {
-                    pm.SendMessage("Escolha sua classe");
                     GumpClasse.Mostra(pm);
                 }
-            }
-            else
-            {
-              
+                else if (pm.Profession == 0)
+                {
+                    pm.SendGump(new GumpLore(pm));
+                }
             }
         }
     }

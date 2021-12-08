@@ -77,7 +77,7 @@ namespace Server.Fronteira.Recursos
                 Registra(this);
             });
 
-            Timer.DelayCall(TimeSpan.FromHours(4), () =>
+            Timer.DelayCall(TimeSpan.FromHours(Utility.Random(3, 3)), () =>
             {
                 if (!this.Deleted && this.Coletando == null)
                 {
@@ -100,13 +100,15 @@ namespace Server.Fronteira.Recursos
         public static CraftResource MadeiraRandom()
         {
             var rnd = Utility.Random(100);
-            if (rnd < 5)
+            if (rnd < 2)
                 return CraftResource.Gelo;
-            else if (rnd < 2)
+            else if (rnd < 5)
                 return CraftResource.Carmesim;
-            else if (rnd < 25)
+            else if (rnd < 20)
                 return CraftResource.Mogno;
-            else if (rnd < 50)
+            else if (rnd < 40)
+                return CraftResource.Eucalipto;
+            else if (rnd < 65)
                 return CraftResource.Pinho;
             else
                 return CraftResource.Carvalho;

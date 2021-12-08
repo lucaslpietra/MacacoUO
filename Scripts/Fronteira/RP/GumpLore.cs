@@ -1,9 +1,6 @@
 
-using System;
-using Server;
-using Server.Gumps;
+
 using Server.Network;
-using Server.Commands;
 using Server.Ziden.Tutorial;
 using Server.Mobiles;
 
@@ -26,7 +23,7 @@ namespace Server.Gumps
             AddHtml(497, 382, 311, 114, @"Sua alma foi teleportada para ca. Voce e o Avatar.", (bool)false, (bool)false);
             AddHtml(498, 499, 310, 48, @"Seu corpo ainda e fraco. Voce ficara forte e ira lutar pelo seus ideais.", (bool)false, (bool)false);
             AddHtml(498, 550, 309, 44, @"Voce eh a esperanca. Voce, trara a terceira era.", (bool)false, (bool)false);
-            AddHtml(635, 612, 175, 18, @"Fada dos Noobs", (bool)false, (bool)false);
+            AddHtml(635, 612, 175, 18, @"Fada Nooba", (bool)false, (bool)false);
             AddButton(627, 649, 247, 248, (int)Buttons.Button1, GumpButtonType.Reply, 0);
             AddItem(607, 610, 4031);
         }
@@ -45,7 +42,6 @@ namespace Server.Gumps
                 case (int)Buttons.Button1:
                     {
                         TutorialNoob.InicializaWisp(from);
-                        //from.SendGump(new NonRPClassGump());
                         break;
                     }
             }

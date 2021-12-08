@@ -1,5 +1,6 @@
 #region References
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Server.Accounting;
 using Server.Gumps.Newbie;
@@ -46,6 +47,8 @@ namespace Server.Misc
             return true;
         }
 
+        public static List<Mobile> Novos = new List<Mobile>();
+
         private static void AddBackpack(Mobile m)
         {
             var pack = m.Backpack;
@@ -56,7 +59,7 @@ namespace Server.Misc
                 pack.Movable = false;
                 m.AddItem(pack);
             }
-
+            Novos.Add(m);
             var color = StarterKits.GetNoobColor();
             m.EquipItem(new Robe(color));
 

@@ -33,7 +33,8 @@ namespace Server.Gumps
             this.AddLabel(125, 310, 1153, @"Imbuing");
 			this.AddLabel(125, 330, 1153, @"Tailoring");
             this.AddLabel(125, 350, 1153, @"Tinkering");
-			this.AddTextEntry(285, 91, 50, 20, 1153, 0, @from.Skills[0].Base.ToString(), 3);
+            this.AddLabel(125, 370, 1153, @"Lumber");
+            this.AddTextEntry(285, 91, 50, 20, 1153, 0, @from.Skills[0].Base.ToString(), 3);
 			this.AddTextEntry(285, 111, 50, 20, 1153, 4, @from.Skills[4].Base.ToString(), 3);
 			this.AddTextEntry(285, 131, 50, 20, 1153, 7, @from.Skills[7].Base.ToString(), 3);
 			this.AddTextEntry(285, 151, 50, 20, 1153, 8, @from.Skills[8].Base.ToString(), 3);
@@ -47,6 +48,7 @@ namespace Server.Gumps
 			this.AddTextEntry(285, 311, 50, 20, 1153, 56, @from.Skills[56].Base.ToString(), 3);
 			this.AddTextEntry(285, 331, 50, 20, 1153, 34, @from.Skills[34].Base.ToString(), 3);
 			this.AddTextEntry(285, 351, 50, 20, 1153, 37, @from.Skills[37].Base.ToString(), 3);
+            this.AddTextEntry(285, 371, 50, 20, 1153, 44, @from.Skills[44].Base.ToString(), 3);
             this.AddButton(185, 400, 247, 248, 10, GumpButtonType.Reply, 0);
         }
 
@@ -54,7 +56,7 @@ namespace Server.Gumps
         {
             if (info.ButtonID == 10)
             {
-                string[] skills = new string[14] {"0", "4", "7", "8", "11", "13", "18", "19", "20", "45", "30", "56", "34", "37"};
+                string[] skills = new string[15] {"0", "4", "7", "8", "11", "13", "18", "19", "20", "45", "30", "56", "34", "37", "44"};
 				int j = 0, skillCapAtual = 0, skillCapNew = 0;
 
 				for (int i = 0; i < skills.Length; i++)
