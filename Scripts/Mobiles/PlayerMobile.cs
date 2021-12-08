@@ -4251,7 +4251,7 @@ namespace Server.Mobiles
 
                 if (c != null)
                 {
-                    c.Slip(!from.Player);
+                    c.Slip(from == null || !from.Player);
                 }
             }
 
