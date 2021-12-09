@@ -431,10 +431,13 @@ namespace Server.Items
             var toHeal = GetToHeal();
 
 
-            pct *= pct; // Qto menos ele se curou, mais nerfa a cura
-   
-            toHeal *= pct;
+            if (Shard.RP)
+            {
+                pct *= pct; // Qto menos ele se curou, mais nerfa a cura
 
+                toHeal *= pct;
+            }
+        
             toHeal = Math.Floor(toHeal);
 
             if (toHeal <= 0 || BleedAttack.IsBleeding(m_Patient) || MortalStrike.IsWounded(m_Patient) || m_Patient.Poisoned)

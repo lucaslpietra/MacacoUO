@@ -83,7 +83,8 @@ namespace Server.Gumps
                         y += 30;
                     }
                 }
-            } else
+            }
+            else
             {
                 AddHtml(103, 258, 445, 233, @"<br>Escolha seu kit de skills iniciais. <br><br>Voce podera ter quaisquer skills que quiser, isto e apenas um inicio.", (bool)true, (bool)false);
             }
@@ -140,18 +141,19 @@ namespace Server.Gumps
                     }
                     else
                     {
-                        if(Shard.SPHERE_STYLE)
+                        if (Shard.SPHERE_STYLE)
                         {
                             from.Str = 100;
                             from.Dex = 100;
                             from.Int = 100;
-                        } else
+                        }
+                        else
                         {
                             from.Str = k.Str;
                             from.Dex = k.Dex;
                             from.Int = k.Int;
                         }
-                       
+
                         from.Stam = from.StamMax;
                         from.Mana = from.ManaMax;
                         from.Hits = from.HitsMax;
@@ -195,7 +197,10 @@ namespace Server.Gumps
                             }
                             if (dupe is IQuality)
                             {
-                                ((IQuality)dupe).Quality = ItemQuality.Low;
+                                if (dupe is BaseWeapon)
+                                    ((IQuality)dupe).Quality = ItemQuality.Exceptional;
+                                else
+                                    ((IQuality)dupe).Quality = ItemQuality.Low;
                             }
                             PackItem(from, dupe);
                         }
@@ -207,7 +212,7 @@ namespace Server.Gumps
                             {
                                 dupe.Hue = hue;
                             }
-                            if(dupe is IQuality)
+                            if (dupe is IQuality)
                             {
                                 ((IQuality)dupe).Quality = ItemQuality.Low;
                             }
@@ -220,7 +225,7 @@ namespace Server.Gumps
                     }
                     else
                     {
-                        
+
                         var player = (PlayerMobile)from;
                         player.SendMessage("Nova template criada");
                         var template = new Template();
@@ -228,7 +233,7 @@ namespace Server.Gumps
                         template.FromPlayer(player);
                         player.Templates.Templates.Add(template);
                         player.CurrentTemplate = template.Name;
-                        if(player.Wisp != null)
+                        if (player.Wisp != null)
                         {
                             player.Wisp.TrocaTemplate(k.Code);
                         }
