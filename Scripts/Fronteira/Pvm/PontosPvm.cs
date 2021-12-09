@@ -134,7 +134,7 @@ namespace Server.Ziden.Kills
                                 if(pl.Elemento != ElementoPvM.None)
                                 {
                                     var expElem = pl.Elementos.GetExp(pl.Elemento);
-                                    expElem += exp;
+                                    expElem += (int)exp;
                                     var lvl = pl.Elementos.GetNivel(pl.Elemento);
                                     var maxExp = CustosUPElementos.CustoUpExp(lvl);
                                     if (expElem > maxExp)
