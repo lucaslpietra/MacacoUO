@@ -81,10 +81,10 @@ namespace Server.Network
 
     public sealed class DamagePacket : Packet
     {
-        public DamagePacket(IDamageable damageable, int amount)
+        public DamagePacket(IEntity entity, int amount)
             : base(0x0B, 7)
         {
-            m_Stream.Write(damageable.Serial);
+            m_Stream.Write(entity.Serial);
 
             if (amount > 0xFFFF)
             {
@@ -1173,9 +1173,6 @@ namespace Server.Network
             }
 
             m_Stream.Write(item.Serial);
-            //if (item is TransmogItem)
-            //    m_Stream.Write((short)((TransmogItem)item).GetTransmogItemId());
-            //else
             m_Stream.Write((short)item.ItemID);
             m_Stream.Write((byte)0);
             m_Stream.Write((byte)item.Layer);
@@ -2534,9 +2531,21 @@ m_Stream.Write( (int) renderMode );
             {
                 Skill s = skills[i];
 
+                double v = s.NonRacialValue;
+                int uv = (int)(v * 10);
+
+                if (uv < 0)
+                {
+                    uv = 0;
+                }
+                else if (uv >= 0x10000)
+                {
+                    uv = 0xFFFF;
+                }
+
                 m_Stream.Write((ushort)(s.Info.SkillID + 1));
-                m_Stream.Write((ushort)(s.Value * 10));
-                m_Stream.Write((ushort)s.GetExp());
+                m_Stream.Write((ushort)uv);
+                m_Stream.Write((ushort)s.BaseFixedPoint);
                 m_Stream.Write((byte)s.Lock);
                 m_Stream.Write((ushort)s.CapFixedPoint);
             }
@@ -2560,27 +2569,30 @@ m_Stream.Write( (int) renderMode );
             : base(0x3A)
         {
             EnsureCapacity(13);
+
+            double v = skill.NonRacialValue;
+            int uv = (int)(v * 10);
+
+            if (uv < 0)
+            {
+                uv = 0;
+            }
+            else if (uv >= 0x10000)
+            {
+                uv = 0xFFFF;
+            }
+
             m_Stream.Write((byte)0xDF); // type: delta, capped
             m_Stream.Write((ushort)skill.Info.SkillID);
-            m_Stream.Write((ushort)(skill.Value * 10));
-            m_Stream.Write((ushort)skill.GetExp());
+            m_Stream.Write((ushort)uv);
+            m_Stream.Write((ushort)skill.BaseFixedPoint);
             m_Stream.Write((byte)skill.Lock);
             m_Stream.Write((ushort)skill.CapFixedPoint);
-
-        }
-    }
-
-    public sealed class ExpChange : Packet
-    {
-        public ExpChange(Skill skill, double exp)
-            : base(0x01)
-        {
-            EnsureCapacity(5);
-            exp = Math.Round(exp, 1) * 10;
-            Shard.Debug("Enviando exp " + exp);
-
-            m_Stream.Write((short)skill.Info.SkillID);
-            m_Stream.Write((ushort)exp);
+            /*m_Stream.Write( (short) skill.Info.SkillID );
+	m_Stream.Write( (short) (skill.Value * 10.0) );
+	m_Stream.Write( (short) (skill.Base * 10.0) );
+	m_Stream.Write( (byte) skill.Lock );
+	m_Stream.Write( (short) skill.CapFixedPoint );*/
         }
     }
 
@@ -2635,13 +2647,13 @@ m_Stream.Write( (int) renderMode );
 
                 if (p == null)
                 {
-                    cache[index] = p = new MessageLocalized(Serial.MinusOne, -1, MessageType.Regular, Mobile.MSG_HUE, 3, number, "System", "");
+                    cache[index] = p = new MessageLocalized(Serial.MinusOne, -1, MessageType.Regular, 0x3B2, 3, number, "System", "");
                     p.SetStatic();
                 }
             }
             else
             {
-                p = new MessageLocalized(Serial.MinusOne, -1, MessageType.Regular, 0x488, 3, number, "System", "");
+                p = new MessageLocalized(Serial.MinusOne, -1, MessageType.Regular, 0x3B2, 3, number, "System", "");
             }
 
             return p;
@@ -2662,7 +2674,7 @@ m_Stream.Write( (int) renderMode );
 
             if (hue == 0)
             {
-                hue = 0xB7;
+                hue = 0x3B2;
             }
 
             EnsureCapacity(50 + (args.Length * 2));
@@ -3190,6 +3202,7 @@ m_Stream.Write( (int) renderMode );
             {
                 p = new PlayMusic(name);
             }
+
             return p;
         }
 
@@ -3559,7 +3572,7 @@ m_Stream.Write( (int) renderMode );
 
             int type;
 
-            if (Core.ML && ns != null && ns.ExtendedStatus)
+            if (ns.IsEnhancedClient && ns != null && ns.ExtendedStatus)
             {
                 type = 6;
                 EnsureCapacity(ns.IsEnhancedClient ? 151 : 121);
@@ -3571,8 +3584,7 @@ m_Stream.Write( (int) renderMode );
             }
             else
             {
-                //type = Core.AOS ? 4 : 3;
-                type = 5;
+                type = Core.AOS ? 4 : 3;
                 EnsureCapacity(88);
             }
 
@@ -3615,10 +3627,10 @@ m_Stream.Write( (int) renderMode );
 
             if (type >= 4)
             {
-                m_Stream.Write((short)0); // Fire
-                m_Stream.Write((short)0); // Cold
-                m_Stream.Write((short)0); // Poison
-                m_Stream.Write((short)0); // Energy
+                m_Stream.Write((short)m.FireResistance); // Fire
+                m_Stream.Write((short)m.ColdResistance); // Cold
+                m_Stream.Write((short)m.PoisonResistance); // Poison
+                m_Stream.Write((short)m.EnergyResistance); // Energy
                 m_Stream.Write((short)m.Luck); // Luck
 
                 IWeapon weapon = m.Weapon;
@@ -3671,7 +3683,7 @@ m_Stream.Write( (int) renderMode );
                 type = 0;
                 EnsureCapacity(43);
             }
-            else if (Core.ML && ns != null && ns.ExtendedStatus)
+            else if (ns.IsEnhancedClient && ns != null && ns.ExtendedStatus)
             {
                 type = 6;
                 EnsureCapacity(isEnhancedClient ? 151 : 121);
@@ -3683,8 +3695,7 @@ m_Stream.Write( (int) renderMode );
             }
             else
             {
-                // type = Core.AOS ? 4 : 3;
-                type = 5;
+                type = Core.AOS ? 4 : 3;
                 EnsureCapacity(88);
             }
 
@@ -5358,7 +5369,6 @@ m_Stream.Write( (int) renderMode );
                         if ((m_State & PacketState.Warned) == 0)
                         {
                             m_State |= PacketState.Warned;
-
                             try
                             {
                                 using (StreamWriter op = new StreamWriter("net_opt.log", true))

@@ -247,42 +247,7 @@ namespace Server
 
 		public static FeatureFlags GetFeatures(Expansion ex)
 		{
-			var info = GetInfo(ex);
-
-			if (info != null)
-			{
-				return info.SupportedFeatures;
-			}
-
-			switch (ex)
-			{
-				case Expansion.None:
-					return FeatureFlags.ExpansionNone;
-				case Expansion.T2A:
-					return FeatureFlags.ExpansionT2A;
-				case Expansion.UOR:
-					return FeatureFlags.ExpansionUOR;
-				case Expansion.UOTD:
-					return FeatureFlags.ExpansionUOTD;
-				case Expansion.LBR:
-					return FeatureFlags.ExpansionLBR;
-				case Expansion.AOS:
-					return FeatureFlags.ExpansionAOS;
-				case Expansion.SE:
-					return FeatureFlags.ExpansionSE;
-				case Expansion.ML:
-					return FeatureFlags.ExpansionML;
-				case Expansion.SA:
-					return FeatureFlags.ExpansionSA;
-				case Expansion.HS:
-					return FeatureFlags.ExpansionHS;
-				case Expansion.TOL:
-					return FeatureFlags.ExpansionTOL;
-				case Expansion.EJ:
-					return FeatureFlags.ExpansionEJ;
-			}
-
-			return FeatureFlags.ExpansionNone;
+		    return FeatureFlags.ExpansionEJ;
 		}
 
 		public static ExpansionInfo GetInfo(Expansion ex)

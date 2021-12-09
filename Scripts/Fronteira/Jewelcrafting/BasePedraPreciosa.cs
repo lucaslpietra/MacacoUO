@@ -77,6 +77,13 @@ namespace Server.Items
                     return;
                 }
 
+                if(!item.IsChildOf(from.Backpack))
+                {
+                    from.SendMessage("O item precisa estar em sua mochila.");
+                    return;
+                }
+
+                /*
                 if(arma != null)
                 {
                     if(arma.Elemento != ElementoPvM.None)
@@ -93,6 +100,7 @@ namespace Server.Items
                         return;
                     }
                 }
+                */
 
                 if (from.Skills.Imbuing.Value < 30)
                 {
