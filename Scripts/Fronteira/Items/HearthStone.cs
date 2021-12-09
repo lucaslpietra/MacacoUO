@@ -1,6 +1,7 @@
 
 using System;
 using Server.Gumps;
+using Server.Misc;
 using Server.Mobiles;
 using Server.Regions;
 
@@ -10,8 +11,8 @@ namespace Server.Items
     {
         // Initiate the starting variables to be used
         private DateTime i_lastused;
-        private Point3D i_home;
-        private Map i_homemap;
+        private Point3D i_home = CharacterCreation.HAVEN;
+        private Map i_homemap = Map.Trammel;
         private static readonly TimeSpan delay = TimeSpan.FromMinutes(20);
         private Timer hearth;
         private Mobile m;

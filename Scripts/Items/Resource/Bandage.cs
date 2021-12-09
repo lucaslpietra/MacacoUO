@@ -458,8 +458,8 @@ namespace Server.Items
                 heal -= m_Slips * SLIP_MULT;
                 return heal;
             }
-            double healing = m_Healer.Skills[SkillName.Healing].Value;
-            double anatomy = m_Healer.Skills[SkillName.Anatomy].Value;
+            double healing = m_Healer.Skills[SkillName.Healing].Value / 2 + 50;
+            double anatomy = m_Healer.Skills[SkillName.Anatomy].Value/ 2 + 50;
 
             if(m_Patient is BaseCreature && !(m_Patient is BaseHire))
             {
@@ -469,8 +469,8 @@ namespace Server.Items
 
             double min, max;
 
-            min = (anatomy / 5.0) + (healing / 5.0) + 3.0;
-            max = (anatomy / 5.0) + (healing / 2.0) + 10.0;
+            min = (anatomy / 6.0) + (healing / 6.0) + 3.0;
+            max = (anatomy / 6.0) + (healing / 3.0) + 10.0;
 
             double toHeal = (min + (Utility.RandomDouble() * (max - min))) * 0.8;
 
@@ -480,12 +480,14 @@ namespace Server.Items
             }
 
             toHeal -= m_Slips * SLIP_MULT;
+            if (toHeal < 5)
+                toHeal = 5;
             if(Shard.DebugEnabled)
                 Shard.Debug("To Heal: " + toHeal + " Escorregadas: " + m_Slips, m_Healer);
             return toHeal;
         }
 
-        public static int SLIP_MULT = 4;
+        public static int SLIP_MULT = 3;
 
         public void EndHeal()
         {

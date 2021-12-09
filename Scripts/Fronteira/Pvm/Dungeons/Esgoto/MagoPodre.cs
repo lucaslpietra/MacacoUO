@@ -17,8 +17,8 @@ namespace Server.Mobiles
             Body = 0x191;
 
             SetStr(81, 105);
-            SetDex(91, 115);
-            SetInt(96, 120);
+            SetDex(15, 50);
+            SetInt(20, 30);
 
             SetHits(80, 80);
 
@@ -36,7 +36,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 75.0, 97.5);
             SetSkill(SkillName.Tactics, 65.0, 87.5);
             SetSkill(SkillName.Macing, 35.2,35.0);
-
+            SetSkill(SkillName.Meditation, 80, 100);
             Fame = 2500;
             Karma = -2500;
 

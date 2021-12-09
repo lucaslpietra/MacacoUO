@@ -248,6 +248,9 @@ namespace Server.Misc
 
         public static bool CheckSkill(Mobile from, Skill skill, object amObj, double chance, double mult)
         {
+            if (Shard.DebugEnabled)
+                Shard.Debug("Check skill " + skill.SkillName+" mult=" +mult, from);
+
             if (from.Skills.Cap == 0)
                 return false;
 
@@ -269,7 +272,7 @@ namespace Server.Misc
                 return success;
             }
 
-            if (ExpGumpRP.UpComXP.Contains(skill.SkillName))
+            if (Shard.RP && ExpGumpRP.UpComXP.Contains(skill.SkillName))
                 return success;
 
             work = Work.Any(s => s == skill.SkillName);

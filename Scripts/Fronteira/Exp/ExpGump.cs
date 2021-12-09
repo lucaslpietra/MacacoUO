@@ -18,6 +18,17 @@ namespace Server.Gumps
 
         public static void Initialize()
         {
+
+            NaoMostra.Add(SkillName.Meditation);
+
+            NaoMostra.Add(SkillName.Tactics);
+            NaoMostra.Add(SkillName.Anatomy);
+           
+            NaoMostra.Add(SkillName.ArmsLore);
+            NaoMostra.Add(SkillName.SpiritSpeak);
+          
+
+
             Combate.Add(SkillName.MagicResist);
             Combate.Add(SkillName.Magery);
             Combate.Add(SkillName.EvalInt);
@@ -54,7 +65,7 @@ namespace Server.Gumps
             CommandSystem.Register("xp", AccessLevel.Player, new CommandEventHandler(SkillsGump_OnCommand));
         }
 
-        public static bool IsCombate(SkillName s)
+        public static bool UpaComXP(SkillName s)
         {
             return Combate.Contains(s);
         }
@@ -96,6 +107,7 @@ namespace Server.Gumps
         }
 
         public static HashSet<SkillName> Combate = new HashSet<SkillName>();
+        public static HashSet<SkillName> NaoMostra = new HashSet<SkillName>();
 
         public static int V = 0;
 

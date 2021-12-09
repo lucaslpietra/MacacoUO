@@ -7007,8 +7007,11 @@ namespace Server.Mobiles
         {
             if(this.Skills[skill].Value < this.Skills[skill].Cap && this.SkillsTotal < this.SkillsCap)
             {
-                this.CloseGump(typeof(SkillExperienceGump));
-                this.SendGump(new SkillExperienceGump(this, skill, exp));
+                if(!SkillExpGump.NaoMostra.Contains(skill))
+                {
+                    this.CloseGump(typeof(SkillExperienceGump));
+                    this.SendGump(new SkillExperienceGump(this, skill, exp));
+                }
             }
         }
 
