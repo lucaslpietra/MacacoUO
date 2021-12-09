@@ -26,7 +26,7 @@ namespace Server.Gumps
            
             NaoMostra.Add(SkillName.ArmsLore);
             NaoMostra.Add(SkillName.SpiritSpeak);
-          
+            NaoMostra.Add(SkillName.Focus);
 
 
             Combate.Add(SkillName.MagicResist);

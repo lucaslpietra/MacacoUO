@@ -178,16 +178,29 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
         }
 
+        public Bogling bog;
+
         public void SpawnBogling(Mobile m)
         {
+            if (bog != null && (bog.Alive || !bog.Deleted))
+            {
+                if(bog != null && bog.GetDistance(this) > 10)
+                {
+                    bog.MoveToWorld(this.Location, this.Map);
+                    bog.Combatant = m;
+                }
+                return;
+            }
+
+
             Map map = this.Map;
 
             if (map == null)
                 return;
 
-            Bogling spawned = new Bogling();
+            bog = new Bogling();
 
-            spawned.Team = this.Team;
+            bog.Team = this.Team;
 
             bool validLocation = false;
             Point3D loc = this.Location;
@@ -204,8 +217,8 @@ namespace Server.Mobiles
                     loc = new Point3D(x, y, z);
             }
 
-            spawned.MoveToWorld(loc, map);
-            spawned.Combatant = m;
+            bog.MoveToWorld(loc, map);
+            bog.Combatant = m;
         }
 
         public void EatBoglings()
