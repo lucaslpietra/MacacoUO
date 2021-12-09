@@ -2339,6 +2339,8 @@ namespace Server.Mobiles
             return base.CanBeHarmful(damageable, message, ignoreOurBlessedness);
         }
 
+        public bool HitPronto = false;
+
         public override bool CanBeBeneficial(Mobile target, bool message, bool allowDead)
         {
             if (m_DesignContext != null || (target is PlayerMobile && ((PlayerMobile)target).m_DesignContext != null))

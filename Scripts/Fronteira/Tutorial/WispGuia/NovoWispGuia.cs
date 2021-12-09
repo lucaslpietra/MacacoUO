@@ -137,7 +137,7 @@ namespace Server.Mobiles
             {
                 if (!IsCooldown("fala") && falaAtual != -1)
                 {
-                    SetCooldown("fala", TimeSpan.FromSeconds(30));
+                    SetCooldown("fala", TimeSpan.FromSeconds(100));
                     switch (falaAtual)
                     {
                         case 0: Fala("Upe sempre em dungeons, voce aprende as skills mais rapido matando monstros !"); break;
@@ -185,7 +185,7 @@ namespace Server.Mobiles
 
             if (!IsCooldown("fala") && obj.FraseProgresso != null)
             {
-                SetCooldown("fala", TimeSpan.FromSeconds(20));
+                SetCooldown("fala", TimeSpan.FromSeconds(60));
                 Fala(obj.FraseProgresso);
             }
         }

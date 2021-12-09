@@ -1772,10 +1772,11 @@ namespace Server.Items
                 }
             }
 
-            BandageContext c = BandageContext.GetContext(attacker);
-            if (attacker.RP && c != null && !attacker.TemTalento(Talento.Curandeiro) && Utility.RandomDouble() < 0.5)
+            if (attacker.RP && !attacker.TemTalento(Talento.Curandeiro) && Utility.RandomDouble() < 0.5)
             {
-                c.Slip();
+                BandageContext c = BandageContext.GetContext(attacker);
+                if(c != null)
+                    c.Slip();
             }
 
             if (Core.AOS)
@@ -1825,18 +1826,60 @@ namespace Server.Items
                         }
                     }
                 }
-
-                if (CheckHit(attacker, damageable))
-                {
-                    OnHit(attacker, damageable, damageBonus);
-                }
+                if(Shard.SPHERE_STYLE)
+                    SphereSwing(attacker, damageable, damageBonus);
                 else
-                {
-                    OnMiss(attacker, damageable);
-                }
+                    DoHit(attacker, damageable, damageBonus);
             }
 
             return GetDelay(attacker, damageable as Mobile);
+        }
+
+        public void DoHit(Mobile attacker, IDamageable damageable, double damageBonus)
+        {
+            attacker.HitPronto = false;
+            if (CheckHit(attacker, damageable))
+            {
+                OnHit(attacker, damageable, damageBonus);
+            }
+            else
+            {
+                OnMiss(attacker, damageable);
+            }
+        }
+
+        public void SphereSwing(Mobile attacker, IDamageable damageable, double damageBonus)
+        {
+            attacker.OverheadMessage("!");
+            if(attacker.HitPronto)
+            {
+                DoHit(attacker, damageable, damageBonus);
+                return;
+            }
+            if(attacker.hitTimer != null)
+            {
+                return;
+            }
+
+            var delay = GetDelay(attacker) - TimeSpan.FromMilliseconds(2);
+            var frames = delay.TotalSeconds * 3;
+            PlaySwingAnimation(attacker, (int)Math.Round(frames));
+            attacker.hitTimer = Timer.DelayCall(delay, () =>
+            {
+                if (!attacker.Alive || attacker.Deleted || attacker.hitTimer == null)
+                {
+                    attacker.HitPronto = false;
+                    attacker.hitTimer = null;
+                    return;
+                }     
+
+                attacker.HitPronto = true;
+                attacker.hitTimer = null;
+                if (attacker.GetDistance(damageable) <= 2)
+                {
+                    DoHit(attacker, damageable, damageBonus);
+                }
+            });
         }
 
         #region Sounds
@@ -2522,6 +2565,11 @@ namespace Server.Items
             OnHit(attacker, damageable, 1.0);
         }
 
+        public void OnPrehit(Mobile attacker, IDamageable damageable)
+        {
+            OnHit(attacker, damageable, 1.0);
+        }
+
         public virtual void OnHit(Mobile attacker, IDamageable damageable, double damageBonus)
         {
             if (EndDualWield)
@@ -2543,7 +2591,8 @@ namespace Server.Items
                 defender = clone;
             }
 
-            PlaySwingAnimation(attacker);
+            if(!Shard.SPHERE_STYLE)
+                PlaySwingAnimation(attacker);
 
             if (defender != null)
                 PlayHurtAnimation(defender);
@@ -3945,7 +3994,9 @@ namespace Server.Items
         {
             Mobile defender = damageable as Mobile;
 
-            PlaySwingAnimation(attacker);
+            if(!Shard.SPHERE_STYLE)
+                PlaySwingAnimation(attacker);
+
             attacker.PlaySound(GetMissAttackSound(attacker, defender));
 
             if (defender != null)
@@ -4429,21 +4480,27 @@ namespace Server.Items
             }
         }
 
-        public virtual void PlaySwingAnimation(Mobile from)
+        public virtual void PlaySwingAnimation(Mobile from, int frames=0)
         {
             int action;
 
-            if (true)
+            if (!Shard.SPHERE_STYLE)
             {
                 action = GetNewAnimationAction(from);
 
                 if (!from.Mounted)
                     from.Animate(AnimationType.Attack, action);
                 else
-                    from.Animate(action, 5, 1, true, false, 0);
+                    from.Animate(action, frames, 1, true, false, 0);
             }
             else
             {
+                if(from.Mounted)
+                {
+                    action = GetNewAnimationAction(from);
+                    from.Animate(action, 5, 1, true, false, frames);
+                    return;
+                }
                 switch (from.Body.Type)
                 {
                     case BodyType.Sea:
@@ -4511,7 +4568,7 @@ namespace Server.Items
                         return;
                 }
 
-                from.Animate(action, 7, 1, true, false, 0);
+                from.Animate(action, 5, 1, true, false, frames);
             }
         }
 

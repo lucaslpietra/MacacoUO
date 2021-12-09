@@ -539,6 +539,9 @@ namespace Server
     public class Mobile : IEntity, IHued, IComparable<Mobile>, ISerializable, ISpawnable, IDamageable
     {
 
+        public bool HitPronto = false;
+        public Timer hitTimer;
+
         public virtual ElementoPvM Elemento { get; set; }
 
         public virtual double GetBonusElemento(ElementoPvM elemento) { return 0; }

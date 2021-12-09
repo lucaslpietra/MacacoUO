@@ -34,7 +34,7 @@ namespace Server.Mobiles
             Fame = 600;
             Karma = -600;
 
-            VirtualArmor = 40;
+            VirtualArmor = 0;
 
             PackBodyPartOrBones();
             var reag = Utility.Random(1, 3);

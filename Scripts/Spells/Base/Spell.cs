@@ -887,6 +887,8 @@ namespace Server.Spells
             {
                 m_Spell.InstantTarget = targeted;
                 m_Spell.CastMagiaPadrao();
+                if (Shard.SPHERE_STYLE)
+                    m_Spell.Caster.ClearHands();
 
                 /*
                 if(targeted is Mobile)
@@ -1063,7 +1065,8 @@ namespace Server.Spells
                         return false;
                     }
 
-                    m_Caster.ClearHand(item);
+                    if (!Shard.SPHERE_STYLE)
+                        m_Caster.ClearHand(item);
                     //Caster.SendMessage("Você não pode conjurar magias com arma nas mãos");
                     //return false;
                 }
@@ -1079,7 +1082,8 @@ namespace Server.Spells
                         this.Caster.SendMessage("Você não pode conjurar magias com arma nas mãos");
                         return false;
                     }
-                    m_Caster.ClearHand(item2);
+                    if(!Shard.SPHERE_STYLE)
+                        m_Caster.ClearHand(item2);
                     //Caster.SendMessage("Você não pode conjurar magias com arma nas mãos");
                     //return false;
                 }

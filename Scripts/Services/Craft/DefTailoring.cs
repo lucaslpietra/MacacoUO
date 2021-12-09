@@ -727,23 +727,29 @@ namespace Server.Engines.Craft
             #endregion
 
             #region Bone Armor
-            index = AddCraft(typeof(BoneHelm), 1049149, 1025206, 35, 60.0, typeof(Leather), 1044462, 4, 1044463);
+            index = AddCraft(typeof(BoneHelm), 1049149, 1025206, 80, 120, typeof(Leather), 1044462, 4, 1044463);
             AddRes(index, typeof(Bone), 1049064, 4, 1049063);
+            AddRes(index, typeof(CopperIngot), "Lingote de Cobre", 2, "Voce precisa de lingotes de cobre");
 
-            index = AddCraft(typeof(BoneGloves), 1049149, 1025205, 25, 64.0, typeof(Leather), 1044462, 6, 1044463);
+            index = AddCraft(typeof(BoneGloves), 1049149, 1025205, 25, 120, typeof(Leather), 1044462, 6, 1044463);
             AddRes(index, typeof(Bone), 1049064, 4, 1049063);
+            AddRes(index, typeof(CopperIngot), "Lingote de Cobre", 2, "Voce precisa de lingotes de cobre");
 
-            index = AddCraft(typeof(BoneArms), 1049149, 1025203, 25, 67.0, typeof(Leather), 1044462, 8, 1044463);
+            index = AddCraft(typeof(BoneArms), 1049149, 1025203, 80, 120, typeof(Leather), 1044462, 8, 1044463);
             AddRes(index, typeof(Bone), 1049064, 10, 1049063);
+            AddRes(index, typeof(CopperIngot), "Lingote de Cobre", 2, "Voce precisa de lingotes de cobre");
 
-            index = AddCraft(typeof(BoneLegs), 1049149, 1025202, 35, 60.0, typeof(Leather), 1044462, 10, 1044463);
+            index = AddCraft(typeof(BoneLegs), 1049149, 1025202, 80, 120, typeof(Leather), 1044462, 10, 1044463);
             AddRes(index, typeof(Bone), 1049064, 20, 1049063);
+            AddRes(index, typeof(CopperIngot), "Lingote de Cobre", 2, "Voce precisa de lingotes de cobre");
 
-            index = AddCraft(typeof(BoneChest), 1049149, 1025199, 35, 61.0, typeof(Leather), 1044462, 12, 1044463);
+            index = AddCraft(typeof(BoneChest), 1049149, 1025199, 80, 120, typeof(Leather), 1044462, 12, 1044463);
             AddRes(index, typeof(Bone), 1049064, 25, 1049063);
+            AddRes(index, typeof(CopperIngot), "Lingote de Cobre", 2, "Voce precisa de lingotes de cobre");
 
-            index = AddCraft(typeof(OrcHelm), 1049149, 1027947, 90.0, 115.0, typeof(Leather), 1044462, 6, 1044463);
+            index = AddCraft(typeof(OrcHelm), 1049149, 1027947, 90.0, 120, typeof(Leather), 1044462, 6, 1044463);
             AddRes(index, typeof(Bone), 1049064, 20, 1049063);
+            AddRes(index, typeof(CopperIngot), "Lingote de Cobre", 2, "Voce precisa de lingotes de cobre");
 
             if (Core.SA)
             {

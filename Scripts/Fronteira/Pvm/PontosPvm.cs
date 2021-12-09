@@ -74,14 +74,14 @@ namespace Server.Ziden.Kills
         public static void CreatureDeath(CreatureDeathEventArgs e)
         {
             BaseCreature bc = e.Creature as BaseCreature;
-
             var gold = e.Corpse.TotalGold;
             var dg = true;
             var pontos = bc.PontosPvm;
+            var exp = Math.Ceiling(pontos * 1.5);
             if (!(bc.Region is DungeonRegion))
             {
                 dg = false;
-                pontos /= 2;
+                pontos = (int)Math.Ceiling(pontos / 2d);
             }
    
             if (pontos <= 0)
@@ -92,9 +92,6 @@ namespace Server.Ziden.Kills
 
             var c = e.Corpse;
             var killer = e.Killer;
-
-            var exp = pontos;
-
             if (bc.IsParagon)
                 exp *= 3;
 
