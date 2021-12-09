@@ -22,7 +22,7 @@ namespace Server.Mobiles
             this.SetHits(80, 120);
             this.SetMana(0);
 
-            this.SetDamage(6, 20);
+            this.SetDamage(5, 15);
 
             this.SetDamageType(ResistanceType.Physical, 60);
             this.SetDamageType(ResistanceType.Poison, 40);
@@ -40,7 +40,7 @@ namespace Server.Mobiles
             this.Fame = 8000;
             this.Karma = -8000;
 
-            this.VirtualArmor = 28;
+            this.VirtualArmor = 0;
 
             var c = new SmallCrate();
             c.Resource = CraftResource.Pinho;

@@ -734,9 +734,9 @@ namespace Server.Items
                 }
                 else
                 {
-                    m_Patient.Heal(0, m_Healer, false);
-                    healerNumber = "Voce aplicou as bandagens, mas nao conseguiu curar nada"; // You apply the bandages, but they barely help.
-                    playSound = false;
+                    m_Patient.Heal(5, m_Healer, false);
+                    healerNumber = "Voce aplicou as bandagens, mas nao conseguiu curar quase nada"; // You apply the bandages, but they barely help.
+                    playSound = true;
                 }
             }
 

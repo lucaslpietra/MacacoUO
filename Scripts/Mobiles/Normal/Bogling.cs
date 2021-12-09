@@ -32,12 +32,12 @@ namespace Server.Mobiles
 
             SetSkill(SkillName.MagicResist, 75.1, 100.0);
             SetSkill(SkillName.Tactics, 55.1, 80.0);
-            SetSkill(SkillName.Wrestling, 55.1, 75.0);
+            SetSkill(SkillName.Wrestling, 35.1, 55.0);
 
             Fame = 450;
             Karma = -450;
 
-            VirtualArmor = 28;
+            VirtualArmor = 0;
 
             PackReg(5);
             PackItem(new Log(4));
