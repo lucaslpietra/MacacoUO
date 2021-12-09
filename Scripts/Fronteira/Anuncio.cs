@@ -7,6 +7,14 @@ namespace Server.Gumps
 {
     public class AnuncioGump : Gump
     {
+        public static void Texto(string msg)
+        {
+            foreach (Mobile pl in NetState.GetOnlinePlayerMobiles())
+            {
+                pl.SendMessage(2, msg);
+            }
+        }
+
         public AnuncioGump(PlayerMobile from, string texto) : base(0, 20)
         {
             if (!from.HasGump(typeof(AnuncioGump)))

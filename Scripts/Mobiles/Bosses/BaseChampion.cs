@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Server.Engines.CannedEvil;
+using Server.Gumps;
 using Server.Items;
 using Server.Services.Virtues;
 
@@ -267,6 +268,8 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
+            AnuncioGump.Texto("O champion " + Name + " foi derrotado");
+
             if (this.Map == Map.Felucca)
             {
                 //TODO: Confirm SE change or AoS one too?
