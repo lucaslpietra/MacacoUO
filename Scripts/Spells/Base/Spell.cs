@@ -1005,7 +1005,7 @@ namespace Server.Spells
 
                 if (ClearHandsOnCast)
                 {
-                    m_Caster.ClearHands();
+                    m_Caster.ClearHands(); // botar dps do target
                 }
 
                 WeaponAbility.ClearCurrentAbility(m_Caster);
