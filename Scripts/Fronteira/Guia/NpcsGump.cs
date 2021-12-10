@@ -36,7 +36,7 @@ namespace Server.Items
 
         public bool CheckFilter(BaseVendor vendor)
         {
-            if (recipe != null && recipe.Map != Map.Trammel)
+            if (vendor != null && vendor.Map != Map.Trammel)
                 return false;
 
             if (filtro == null || filtro == "")
