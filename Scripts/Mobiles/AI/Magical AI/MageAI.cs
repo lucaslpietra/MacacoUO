@@ -262,7 +262,7 @@ namespace Server.Mobiles
 					spell.Cast();
 
 				NextCastTime = GetCastDelay(spell);
-                if (!SmartAI && m_Combo <= 0)
+                if (!SmartAI && m_Combo <= 0 && m_Mobile != null && m_Mobile.Skills != null && spell != null)
                 {
                     if(this.m_Mobile.Skills[spell.SkillNeeded].Base < 50)
                         NextCastTime += TimeSpan.FromSeconds(3);
