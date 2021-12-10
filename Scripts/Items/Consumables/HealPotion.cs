@@ -21,14 +21,14 @@ namespace Server.Items
         {
             get
             {
-                return 5;
+                return 10;
             }
         }
         public override int MaxHeal
         {
             get
             {
-                return 20;
+                return 25;
             }
         }
         public override double Delay

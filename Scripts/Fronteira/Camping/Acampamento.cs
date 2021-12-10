@@ -44,10 +44,14 @@ namespace Server.Multis
             if(camp != null)
             {
                 var discobertas = m.CampfireLocations.Split(';').ToList();
-                foreach(var invalida in discobertas.Where(c => !Points.ContainsKey(c))) {
-                    discobertas.Remove(invalida);
+                if(discobertas.Count > 0)
+                {
+                    foreach (var invalida in discobertas.Where(c => !Points.ContainsKey(c)))
+                    {
+                        discobertas.Remove(invalida);
+                    }
                 }
-
+             
                 var qtd = discobertas.Count + 1;
                 if (discobertas.Contains(nomeCamp))
                 {

@@ -4,15 +4,9 @@ using Server.Items;
 using Server.Mobiles;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Fronteira.Tutorial.WispGuia
 {
-
-    // melhorar gump crafting escolher recurso
-
     public class ObjetivoGuia
     {
         public Point3D LocalDungeon;
@@ -57,6 +51,8 @@ namespace Server.Fronteira.Tutorial.WispGuia
         TAILOR,
 
         FIM,
+
+        ALCHEMIST,
 
         // NOVOS
 
@@ -128,6 +124,26 @@ namespace Server.Fronteira.Tutorial.WispGuia
                 },
                 GetProximo = (pl) =>
                 {
+                    return PassoTutorial.ALCHEMIST;
+                }
+            });
+
+            Objetivos.Add(PassoTutorial.ALCHEMIST, new ObjetivoGuia()
+            {
+                Local = new Point3D(3461, 2566, 35),
+                FraseIniciar = "Agora vamos ao alquimista para comprar pocoes de vida.",
+                FraseProgresso = "Va ao alquimista para comprar pocoes de vida.",
+                FraseCompletar = "Perfeito. Agora vamos ter um pouco de combate!.",
+                Completar = (pl) =>
+                {
+                    pl.Backpack.DropItem(new HealPotion());
+                    pl.Backpack.DropItem(new HealPotion());
+                    pl.Backpack.DropItem(new HealPotion());
+                    pl.Backpack.DropItem(new CurePotion());
+                    pl.Backpack.DropItem(new CurePotion());
+                },
+                GetProximo = (pl) =>
+                {
                     if (pl.Profession == StarterKits.TAMER)
                         return PassoTutorial.QUEST_TAMER;
                     if (pl.Profession == StarterKits.MERC)
@@ -135,6 +151,7 @@ namespace Server.Fronteira.Tutorial.WispGuia
                     return PassoTutorial.PEGAR_QUEST;
                 }
             });
+
             //
 
             Objetivos.Add(PassoTutorial.QUEST_TAMER, new ObjetivoGuia()

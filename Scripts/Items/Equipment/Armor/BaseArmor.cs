@@ -909,7 +909,7 @@ namespace Server.Items
         {
             get
             {
-                return true;
+                return m_Identified;
             }
             set
             {
