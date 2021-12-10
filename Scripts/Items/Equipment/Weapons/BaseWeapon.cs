@@ -1850,7 +1850,6 @@ namespace Server.Items
 
         public void SphereSwing(Mobile attacker, IDamageable damageable, double damageBonus)
         {
-            attacker.OverheadMessage("!");
             if(attacker.HitPronto)
             {
                 DoHit(attacker, damageable, damageBonus);
@@ -1861,10 +1860,11 @@ namespace Server.Items
                 return;
             }
 
-            var delay = GetDelay(attacker) - TimeSpan.FromMilliseconds(2);
-            var frames = delay.TotalSeconds * 3;
+            var delay = GetDelay(attacker);
+            var frames = delay.TotalSeconds * 1.5;
+            var half = delay.TotalMilliseconds / 2;
             PlaySwingAnimation(attacker, (int)Math.Round(frames));
-            attacker.hitTimer = Timer.DelayCall(delay, () =>
+            attacker.hitTimer = Timer.DelayCall(TimeSpan.FromMilliseconds(half), () =>
             {
                 if (!attacker.Alive || attacker.Deleted || attacker.hitTimer == null)
                 {
@@ -4480,7 +4480,7 @@ namespace Server.Items
             }
         }
 
-        public virtual void PlaySwingAnimation(Mobile from, int frames=0)
+        public virtual void PlaySwingAnimation(Mobile from, int delay=0, int frameCount=5)
         {
             int action;
 
@@ -4491,14 +4491,14 @@ namespace Server.Items
                 if (!from.Mounted)
                     from.Animate(AnimationType.Attack, action);
                 else
-                    from.Animate(action, frames, 1, true, false, 0);
+                    from.Animate(action, frameCount, 1, true, false, 0);
             }
             else
             {
                 if(from.Mounted)
                 {
                     action = GetNewAnimationAction(from);
-                    from.Animate(action, 5, 1, true, false, frames);
+                    from.Animate(action, frameCount, 1, true, false, delay);
                     return;
                 }
                 switch (from.Body.Type)
@@ -4568,7 +4568,7 @@ namespace Server.Items
                         return;
                 }
 
-                from.Animate(action, 5, 1, true, false, frames);
+                from.Animate(action, frameCount, 1, true, false, delay);
             }
         }
 
