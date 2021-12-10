@@ -37,7 +37,7 @@ namespace Server.Engines.BulkOrders
             AddLabel(250, 72, 1152, deed.AmountMax.ToString());
 
             AddHtmlLocalized(40, 96, 120, 20, 1045136, 1, false, false); // Item requested:
-            AddItem(385, 96, deed.Graphic, deed.GraphicHue);
+            AddItem(355, 96, deed.Graphic, deed.GraphicHue);
             var nome = Trads.GetNome(deed.Type);
             if(nome!=null) 
                 AddHtml(40, 120, 210, 20, nome, 1, false, false);

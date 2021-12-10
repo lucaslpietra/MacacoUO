@@ -1104,10 +1104,6 @@ namespace Server.Spells
             {
                 m_Caster.SendMessage("Você não pode conjurar magias paralizado"); // You can not cast a spell while frozen.
             }
-            else if (SkillHandlers.SpiritSpeak.IsInSpiritSpeak(m_Caster) || (m_Caster.Spell != null))
-            {
-                m_Caster.SendMessage("Voce já está conjurando uma magia"); // You are already casting a spell.
-            }
             else if (BlockedByHorrificBeast && TransformationSpellHelper.UnderTransformation(m_Caster, typeof(HorrificBeastSpell)) ||
                      (BlockedByAnimalForm && AnimalForm.UnderTransformation(m_Caster)))
             {
@@ -1146,6 +1142,12 @@ namespace Server.Spells
                     m_Caster.SendMessage(0x22, "Faltam reagentes para a magia. Voce pode comprar reagentes no npc Mago ou planta-los."); // More reagents are needed for this spell.
                     return false;
                 }
+
+                if (SkillHandlers.SpiritSpeak.IsInSpiritSpeak(m_Caster) || (m_Caster.Spell != null))
+                {
+                    Disturb(DisturbType.Hurt, false, false);
+                }
+
                 if (Shard.SPHERE_STYLE && this.Caster is PlayerMobile)
                     return CastaMagiaSphere();
                 return CastMagiaPadrao();

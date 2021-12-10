@@ -123,7 +123,7 @@ namespace Server.Items
             Stackable = true;
             Amount = amount;
             Hue = CraftResources.GetHue(resource);
-            Weight = 8;
+            Weight = Shard.SPHERE_STYLE ? 0.8 : 8;
             Name = "Minerio de " + resource.ToString();
             m_Resource = resource;
         }
