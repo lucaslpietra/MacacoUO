@@ -730,13 +730,16 @@ namespace Server.Spells
         {
             if (!CheckDisturb(type, firstCircle, resistable))
             {
+                Shard.Debug("Sem check disturb");
                 return;
             }
 
             if (m_State == SpellState.Casting)
             {
+                Shard.Debug("Disturb em casting", m_Caster);
                 if (!firstCircle && !Core.AOS && this is MagerySpell && ((MagerySpell)this).Circle == SpellCircle.First)
                 {
+                    Shard.Debug("First");
                     return;
                 }
 
@@ -760,12 +763,11 @@ namespace Server.Spells
             }
             else if (m_State == SpellState.Sequencing)
             {
+                Shard.Debug("Disturb em sequencing", m_Caster);
                 if (!firstCircle && !Core.AOS && this is MagerySpell && ((MagerySpell)this).Circle == SpellCircle.First)
                 {
                     return;
                 }
-
-                Shard.Debug("SEQUENCING DISTURB TYPE " + type);
 
                 m_State = SpellState.None;
                 m_Caster.Spell = null;
@@ -773,6 +775,9 @@ namespace Server.Spells
                 OnDisturb(type, false);
                 Target.Cancel(m_Caster);
                 DoHurtFizzle();
+            } else
+            {
+                Shard.Debug("Disturb e magia tava no estado " + m_State);
             }
         }
 
@@ -939,9 +944,23 @@ namespace Server.Spells
             }
             #endregion
 
+            if (m_Caster.Spell != null)
+            {
+                Shard.Debug("Disturbando magia existente");
+                if (m_Caster.Spell is Spell)
+                {
+                    Shard.Debug("Foi");
+                    ((Spell)m_Caster.Spell).Disturb(DisturbType.NewCast, false, false);
+                }
+            }
+
             if (m_Caster.Spell == null && m_Caster.CheckSpellCast(this) && CheckCast() &&
                 m_Caster.Region.OnBeginSpellCast(m_Caster, this))
             {
+
+               
+
+
                 m_State = SpellState.Casting;
                 m_Caster.Spell = this;
                 m_Caster.SpellSteps = 0;
@@ -1005,6 +1024,7 @@ namespace Server.Spells
                     m_CastTimer.Tick();
                 }
 
+
                 return true;
             }
             else
@@ -1016,16 +1036,17 @@ namespace Server.Spells
         public virtual bool Cast()
         {
             /*
-            var bdg = BandageContext.GetContext(m_Caster);
-            if (bdg != null)
+            if(Shard.POL_STYLE)
             {
-                bdg.StopHeal();
-                m_Caster.PrivateOverheadMessage("* parou de se curar *");
-                m_Caster.SendMessage("Voce parou de se curar por usar suas maos.");
+                var bdg = BandageContext.GetContext(m_Caster);
+                if (bdg != null)
+                {
+                    bdg.StopHeal();
+                    m_Caster.PrivateOverheadMessage("* parou de se curar *");
+                    m_Caster.SendMessage("Voce parou de se curar por usar suas maos.");
+                }
             }
             */
-
-
 
             if (this.Caster.Meditating)
             {
@@ -1049,7 +1070,7 @@ namespace Server.Spells
                 }
             }
 
-            if (Core.AOS && m_Caster.Spell is Spell && ((Spell)m_Caster.Spell).State == SpellState.Sequencing)
+            if (m_Caster.Spell is Spell && ((Spell)m_Caster.Spell).State == SpellState.Sequencing)
             {
                 ((Spell)m_Caster.Spell).Disturb(DisturbType.NewCast);
             }
@@ -1112,6 +1133,9 @@ namespace Server.Spells
             else if (!(m_Scroll is BaseWand) && !(this is DispelSpell) && !Shard.SPHERE_STYLE && (m_Caster.Paralyzed || m_Caster.Frozen))
             {
                 m_Caster.SendMessage("Você não pode conjurar magias paralizado"); // You can not cast a spell while frozen.
+            } else if (SkillHandlers.SpiritSpeak.IsInSpiritSpeak(m_Caster))
+            {
+                m_Caster.SendMessage("Voce nao pode fazer isto agora");
             }
             /*
             else if (BandageContext.GetContext(m_Caster) != null)
@@ -1141,11 +1165,6 @@ namespace Server.Spells
                 {
                     m_Caster.SendMessage(0x22, "Faltam reagentes para a magia. Voce pode comprar reagentes no npc Mago ou planta-los."); // More reagents are needed for this spell.
                     return false;
-                }
-
-                if (SkillHandlers.SpiritSpeak.IsInSpiritSpeak(m_Caster) || (m_Caster.Spell != null))
-                {
-                    Disturb(DisturbType.Hurt, false, false);
                 }
 
                 if (Shard.SPHERE_STYLE && this.Caster is PlayerMobile)
