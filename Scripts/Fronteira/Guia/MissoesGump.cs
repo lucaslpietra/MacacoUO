@@ -37,6 +37,9 @@ namespace Server.Items
 
         public bool CheckFilter(MondainQuester recipe)
         {
+            if (recipe != null && recipe.Map != Map.Trammel)
+                return false;
+
             if (filtro == null || filtro == "")
                 return true;
 
@@ -248,6 +251,8 @@ namespace Server.Items
             for (int i = index; i < (index + count) && i >= 0 && i < list.Count; ++i)
             {
                 var element = list[i];
+
+
 
                 if (!CheckFilter(element))
                     continue;

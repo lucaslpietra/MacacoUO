@@ -1028,7 +1028,7 @@ namespace Server
         public Skills(Mobile owner)
         {
             m_Owner = owner;
-            m_Cap = Shard.SPHERE_STYLE ? int.MaxValue : 7000;
+            m_Cap = Shard.SPHERE_STYLE ? int.MaxValue : Shard.POL_STYLE ? 7500 : 7000;
 
             var info = SkillInfo.Table;
 

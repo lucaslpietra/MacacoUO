@@ -233,7 +233,7 @@ namespace Server.Spells.Third
             this.FinishSequence();
         }
 
-        // public override bool PunishSpellMovementIfRepeated { get { return true; } }
+        public override bool PunishSpellMovementIfRepeated { get { return Shard.POL_STYLE; } }
 
         public class InternalTarget : Target
         {

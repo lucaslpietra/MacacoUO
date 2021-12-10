@@ -264,12 +264,15 @@ namespace Server.Mobiles
 				NextCastTime = GetCastDelay(spell);
                 if (!SmartAI && m_Combo <= 0 && m_Mobile != null && m_Mobile.Skills != null && spell != null)
                 {
-                    if(this.m_Mobile.Skills[spell.SkillNeeded].Base < 50)
-                        NextCastTime += TimeSpan.FromSeconds(3);
-                    else if (this.m_Mobile.Skills[spell.SkillNeeded].Base < 80)
-                        NextCastTime += TimeSpan.FromSeconds(2);
-                    else
-                        NextCastTime += TimeSpan.FromSeconds(1);
+                    var skill = this.m_Mobile.Skills[spell.SkillNeeded];
+                    if(skill != null)
+                    {
+                        if (skill.Base < 50)
+                            NextCastTime += TimeSpan.FromSeconds(2);
+                        else if (skill.Base < 80)
+                            NextCastTime += TimeSpan.FromSeconds(1);
+                    }
+                   
                 }
                     
 			}
