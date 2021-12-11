@@ -135,11 +135,11 @@ namespace Server.Fronteira.Elementos
 
         // Formula magica q permite noiz escalar ao infinito
         // a ideia eh da formula de armor do dota2 escalada pra cima
-        public double BonusPorNivel(double nivel)
+        public static double BonusPorNivel(double nivel)
         {
             if (nivel == 0)
                 return 0;
-            return (0.09 * nivel) / (0.9 + 0.040 * nivel);
+            return (0.05 * nivel) / (0.9 + 0.015 * nivel);
         }
 
     }
