@@ -30,6 +30,13 @@ namespace Server.Items
                 return this.m_Timer != null;
             }
         }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            from.SendMessage("Talvez voce possa usar algodao nessa roda para produzir tecido");
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

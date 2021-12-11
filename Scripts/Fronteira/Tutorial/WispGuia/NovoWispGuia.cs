@@ -54,7 +54,6 @@ namespace Server.Mobiles
             this.Karma = 0;
 
             this.VirtualArmor = 40;
-            this.Passo = (int)PassoTutorial.PEGAR_CAVALO;
             SetCooldown("pensa", TimeSpan.FromSeconds(10));
 
         }
@@ -192,6 +191,10 @@ namespace Server.Mobiles
 
         public override void OnThink()
         {
+            if(Passo == (int)PassoTutorial.NADA)
+            {
+                this.Passo = (int)PassoTutorial.PEGAR_CAVALO;
+            }
             if (Jogador == null)
             {
                 if (ControlMaster != null && ControlMaster is PlayerMobile)

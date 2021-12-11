@@ -552,6 +552,7 @@ namespace Server.Mobiles
 
         public void Planta()
         {
+            return;
             if (Passo != PLANT)
                 return;
             Fala("Otimo ! Isso pode demorar entre 1 e 2 horas para crescer...");
@@ -564,6 +565,7 @@ namespace Server.Mobiles
 
         public void Vende()
         {
+            return;
             if (Passo != SELL)
                 return;
 
@@ -582,6 +584,7 @@ namespace Server.Mobiles
 
         public void CraftaBS()
         {
+            return;
             if (Passo != MACE)
                 return;
 
@@ -593,6 +596,7 @@ namespace Server.Mobiles
 
         public void Minera()
         {
+            return;
             if (Passo != GETORE)
                 return;
             Passo = SMELT;
@@ -605,6 +609,7 @@ namespace Server.Mobiles
 
         public void Tailora()
         {
+            return;
             if (Passo != TAILOR)
                 return;
             Fala("Muito bom ! Voce ja sabe as bases de como trabalhar ! Agora so focar em ganhar dinheiro !!");
@@ -618,6 +623,7 @@ namespace Server.Mobiles
 
         public void Smelta()
         {
+            return;
             if (Passo != SMELT)
                 return;
             Fala("Ui, que fogaum, hi hi");
@@ -632,6 +638,7 @@ namespace Server.Mobiles
 
         public virtual void FalaJill()
         {
+            return;
             if (Passo != PEGAR_QUEST_EXODO)
                 return;
             Passo = FALANDO;
@@ -645,6 +652,7 @@ namespace Server.Mobiles
 
         public virtual void AbreBanco()
         {
+            return;
             if (Passo == BANCO)
             {
                 Fala("muito bem ! Voce pode transformar seu dinheiro em cheques falando 'cheque <valor>' e voltar o cheque a dinheiro depois.");
@@ -662,6 +670,7 @@ namespace Server.Mobiles
 
         public virtual void MataMerda()
         {
+            return;
             if (Passo == TESOURO)
             {
                 Fala("Muito bom !!!! Voce eh muito bom !!!!");
@@ -672,6 +681,7 @@ namespace Server.Mobiles
 
         public virtual void MataOrc()
         {
+            return;
             if (Passo == MATAR_ORC)
             {
                 Fala("Uau voce conseguiu matar um ! Se treinar podera ficar muito forte !");
@@ -686,6 +696,7 @@ namespace Server.Mobiles
 
         public virtual void EntregaSapato()
         {
+            return;
             if (Passo == QUEST_FIM)
             {
                 Fala("Voce e muito bom ! Tome mais algumas moedas de ouro, talvez va precisar. Lembre-se de coloca-las no Banco !!");
@@ -698,6 +709,7 @@ namespace Server.Mobiles
 
         public virtual void MataMago()
         {
+            return;
             if (Passo == QUEST_MATOU)
             {
                 Fala("Muito bom ! Parece que os sapatos do ze estavam com esse mago !");
@@ -708,6 +720,7 @@ namespace Server.Mobiles
 
         public virtual void QuestNoob()
         {
+            return;
             if (Passo == QUEST)
             {
                 Fala("Muito bom, vamos a dungeon agora, a entrada e logo na caverna acima !!! ");
@@ -722,6 +735,7 @@ namespace Server.Mobiles
 
         public void TrocaTemplate(int template)
         {
+            return;
             if (Passo == TEMPLATE)
             {
                 if (template == 1)

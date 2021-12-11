@@ -19,6 +19,12 @@ namespace Server.Items
             this.AddComponent(new AddonComponent(0x1019), 0, 0, 0);
         }
 
+        public override void OnDoubleClick(Mobile from)
+        {
+            base.OnDoubleClick(from);
+            from.SendMessage("Talvez voce possa usar algodao nessa roda para produzir tecido");
+        }
+
         public SpinningwheelEastAddon(Serial serial)
             : base(serial)
         {
