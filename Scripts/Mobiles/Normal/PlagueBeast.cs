@@ -90,7 +90,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.OldUltraRich);
+            this.AddLoot(LootPack.UltraRich);
             this.AddLoot(LootPack.Gems, Utility.Random(1, 3));
         }
 

@@ -27,9 +27,9 @@ namespace Server.Items
 		{
 			if(IsChildOf(from.Backpack))
 			{
-                from.SendMessage("Voce consumiu os cristais...");
-				PointsSystem.ShameCrystals.AwardPoints(from, this.Amount, true, true);
-				Delete();
+                from.SendMessage("Voce consumiu um cristal");
+				PointsSystem.ShameCrystals.AwardPoints(from, 1, true, true);
+                Consume(1);
 			}
 		}
 		

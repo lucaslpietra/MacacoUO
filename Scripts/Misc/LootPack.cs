@@ -444,101 +444,42 @@ namespace Server
         #endregion
 
         #region AOS definitions
-        public static readonly LootPack AosPoor =
-            new LootPack(
-                new[]
-                {
-                    new LootPackEntry(true, Gold, 100.00, "1d10+10"), new LootPackEntry(false, AosMagicItemsPoor, 0.02, 1, 5, 0, 90),
-                    new LootPackEntry(false, Instruments, 0.02, 1)
-                });
+        public static readonly LootPack AosPoor = OldPoor;
 
-        public static readonly LootPack AosMeager =
-            new LootPack(
-                new[]
-                {
-                    new LootPackEntry(true, Gold, 100.00, "3d10+20"),
-                    new LootPackEntry(false, AosMagicItemsMeagerType1, 1.00, 1, 2, 0, 10),
-                    new LootPackEntry(false, AosMagicItemsMeagerType2, 0.20, 1, 5, 0, 90),
-                    new LootPackEntry(false, Instruments, 0.10, 1)
-                });
+        public static readonly LootPack AosMeager = OldMeager;
 
-        public static readonly LootPack AosAverage =
-            new LootPack(
-                new[]
-                {
-                    new LootPackEntry(true, Gold, 100.00, "5d10+50"),
-                    new LootPackEntry(false, AosMagicItemsAverageType1, 5.00, 1, 4, 0, 20),
-                    new LootPackEntry(false, AosMagicItemsAverageType1, 2.00, 1, 3, 0, 50),
-                    new LootPackEntry(false, AosMagicItemsAverageType2, 0.50, 1, 5, 0, 90),
-                    new LootPackEntry(false, Instruments, 0.40, 1)
-                });
+        public static readonly LootPack AosAverage = OldAverage;
 
-        public static readonly LootPack AosRich =
-            new LootPack(
-                new[]
-                {
-                    new LootPackEntry(true, Gold, 100.00, "10d10+150"),
-                    new LootPackEntry(false, AosMagicItemsRichType1, 20.00, 1, 4, 0, 40),
-                    new LootPackEntry(false, AosMagicItemsRichType1, 10.00, 1, 5, 0, 60),
-                    new LootPackEntry(false, AosMagicItemsRichType2, 1.00, 1, 5, 0, 90), new LootPackEntry(false, Instruments, 1.00, 1)
-                });
 
-        public static readonly LootPack AosFilthyRich =
-            new LootPack(
-                new[]
-                {
-                    new LootPackEntry(true, Gold, 100.00, "2d100+200"),
-                    new LootPackEntry(false, AosMagicItemsFilthyRichType1, 33.00, 1, 4, 0, 50),
-                    new LootPackEntry(false, AosMagicItemsFilthyRichType1, 33.00, 1, 4, 0, 60),
-                    new LootPackEntry(false, AosMagicItemsFilthyRichType2, 20.00, 1, 5, 0, 75),
-                    new LootPackEntry(false, AosMagicItemsFilthyRichType2, 5.00, 1, 5, 0, 100),
-                    new LootPackEntry(false, Instruments, 2.00, 1)
-                });
+        public static readonly LootPack AosRich = OldRich;
 
-        public static readonly LootPack AosUltraRich =
-            new LootPack(
-                new[]
-                {
-                    new LootPackEntry(true, Gold, 100.00, "5d100+500"),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 35, 100),
-                    new LootPackEntry(false, Instruments, 2.00, 1)
-                });
 
-        public static readonly LootPack AosSuperBoss =
-            new LootPack(
-                new[]
-                {
-                    new LootPackEntry(true, Gold, 100.00, "5d100+500"),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 33, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 33, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 33, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 33, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 50, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 50, 100),
-                    new LootPackEntry(false, Instruments, 2.00, 1)
-                });
+        public static readonly LootPack AosFilthyRich = OldFilthyRich;
+
+
+        public static readonly LootPack AosUltraRich = OldUltraRich;
+
+
+        public static readonly LootPack AosSuperBoss = OldSuperBoss;
+
         #endregion
 
         #region Pre-AOS definitions
         public static readonly LootPack OldPoor =
-            new LootPack(new[] { new LootPackEntry(true, Gold, 100.00, "4d10+6"), new LootPackEntry(false, Instruments, 0.02, 1) });
+            new LootPack(new[] {
+                new LootPackEntry(true, Gold, 100.00, "4d10+6"),
+                new LootPackEntry(false, Instruments, 0.02, 1),
+                new LootPackEntry(false, GemItems, 0.02, 1, 1, 1, 100)
+            });
 
         public static readonly LootPack OldMeager =
             new LootPack(
                 new[]
                 {
                     new LootPackEntry(true, Gold, 100.00, "5d10+25"), new LootPackEntry(false, Instruments, 0.10, 1),
-                    new LootPackEntry(false, OldMagicItems, 1.00, 1, 1, 0, 60),
-                    new LootPackEntry(false, OldMagicItems, 0.20, 1, 1, 10, 70)
+                    new LootPackEntry(false, OldMagicItems, 5.00, 1, 1, 0, 60),
+                    new LootPackEntry(false, OldMagicItems, 1.20, 1, 1, 10, 70),
+                    new LootPackEntry(false, GemItems, 5, 1, 1, 1, 100),
                 });
 
         public static readonly LootPack OldAverage =
@@ -548,7 +489,8 @@ namespace Server
                     new LootPackEntry(true, Gold, 100.00, "10d10+50"), new LootPackEntry(false, Instruments, 0.40, 1),
                     new LootPackEntry(false, OldMagicItems, 5.00, 1, 1, 20, 80),
                     new LootPackEntry(false, OldMagicItems, 2.00, 1, 1, 30, 90),
-                    new LootPackEntry(false, OldMagicItems, 0.50, 1, 1, 40, 100)
+                    new LootPackEntry(false, OldMagicItems, 0.50, 1, 1, 40, 100),
+                    new LootPackEntry(false, GemItems, 5, 1, 1, 1, 100),
                 });
 
         public static readonly LootPack OldMagicItem =
@@ -557,7 +499,8 @@ namespace Server
                 {
                     new LootPackEntry(false, OldMagicItems, 20.00, 1, 1, 10, 20),
                     new LootPackEntry(false, OldMagicItems, 2.00, 1, 1, 30, 90),
-                    new LootPackEntry(false, OldMagicItems, 0.50, 1, 1, 40, 100)
+                    new LootPackEntry(false, OldMagicItems, 0.50, 1, 1, 40, 100),
+                    new LootPackEntry(false, GemItems, 20.00, 1, 1, 1, 100),
                 });
 
         public static readonly LootPack OldRich =
@@ -565,9 +508,11 @@ namespace Server
                 new[]
                 {
                     new LootPackEntry(true, Gold, 100.00, "10d10+250"), new LootPackEntry(false, Instruments, 1.00, 1),
-                    new LootPackEntry(false, OldMagicItems, 20.00, 1, 1, 60, 100),
+                    new LootPackEntry(false, OldMagicItems, 50.00, 1, 1, 60, 100),
                     new LootPackEntry(false, OldMagicItems, 10.00, 1, 1, 65, 100),
                     new LootPackEntry(false, OldMagicItems, 1.00, 1, 1, 70, 100),
+                     new LootPackEntry(false, GemItems, 100.00, 1, 1, 1, 100),
+                      new LootPackEntry(false, GemItems, 50.00, 1, 1, 1, 100),
                     new LootPackEntry(false, TintaPreta, 0.01, 1,1,60,100),
                     new LootPackEntry(false, TintaBranca, 0.01, 1,1,60,100),
                     new LootPackEntry(false, TintaBranca, 0.01, 1,1,60,100),
@@ -582,6 +527,7 @@ namespace Server
                     new LootPackEntry(false, OldMagicItems, 33.00, 1, 1, 60, 100),
                     new LootPackEntry(false, OldMagicItems, 20.00, 1, 1, 70, 100),
                     new LootPackEntry(false, OldMagicItems, 5.00, 1, 1, 80, 100),
+                    new LootPackEntry(false, GemItems, 100.00, 3, 1, 1, 100),
                     new LootPackEntry(false, TintaPreta, 0.1, 1,1,60,100),
                     new LootPackEntry(false, TintaBranca, 0.1, 1,1,60,100),
                 });
@@ -597,6 +543,7 @@ namespace Server
                     new LootPackEntry(false, OldMagicItems, 100.00, 1, 1, 50, 100),
                     new LootPackEntry(false, OldMagicItems, 100.00, 1, 1, 60, 100),
                     new LootPackEntry(false, OldMagicItems, 100.00, 1, 1, 60, 100),
+                     new LootPackEntry(false, GemItems, 100.00, 10, 1, 1, 100),
                     new LootPackEntry(false, TintaPreta, 0.5, 1,1,60,100),
                     new LootPackEntry(false, TintaBranca, 0.5, 1,1,60,100),
                 });
@@ -616,6 +563,7 @@ namespace Server
                     new LootPackEntry(false, OldMagicItems, 100.00, 1, 1, 60, 100),
                     new LootPackEntry(false, OldMagicItems, 100.00, 1, 1, 60, 100),
                     new LootPackEntry(false, OldMagicItems, 100.00, 1, 1, 70, 100),
+                    new LootPackEntry(false, GemItems, 100.00, 20, 1, 1, 100),
                     new LootPackEntry(false, TintaPreta, 1, 1,1,60,100),
                     new LootPackEntry(false, TintaBranca, 1, 1,1,60,100),
                 });
