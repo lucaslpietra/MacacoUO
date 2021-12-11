@@ -435,6 +435,10 @@ namespace Server.Mobiles
 			if (c == null || !c.Alive)
 				return null;
 
+            var over = m_Mobile.ChooseSpell();
+            if (over != null)
+                return over;
+
             if(!jaleu)
             {
                 jaleu = true;

@@ -74,7 +74,7 @@ namespace Server.Mobiles
 
                 if (!this.IsCooldown("omnoma"))
                 {
-                    this.SetCooldown("omnoma", TimeSpan.FromSeconds(1.5));
+                    this.SetCooldown("omnoma", TimeSpan.FromSeconds(2));
                 }
                 else
                 {
@@ -257,7 +257,7 @@ namespace Server.Mobiles
 
                 if (!this.IsCooldown("omnoma"))
                 {
-                    this.SetCooldown("omnoma", TimeSpan.FromSeconds(1.5));
+                    this.SetCooldown("omnoma", TimeSpan.FromSeconds(2));
                 }
                 else
                 {

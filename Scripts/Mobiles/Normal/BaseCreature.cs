@@ -368,6 +368,11 @@ namespace Server.Mobiles
         }
         #endregion
 
+        public virtual Spell ChooseSpell()
+        {
+            return null;
+        }
+
         public virtual InhumanSpeech SpeechType { get { return null; } }
 
         public virtual bool ForceStayHome { get { return false; } }

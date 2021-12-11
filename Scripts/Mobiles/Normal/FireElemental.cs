@@ -1,11 +1,23 @@
 using System;
 using Server.Items;
+using Server.Spells;
+using Server.Spells.Seventh;
+using Server.Spells.Sixth;
 
 namespace Server.Mobiles
 {
     [CorpseName("a fire elemental corpse")]
     public class FireElemental : BaseCreature
     {
+        public override Spell ChooseSpell()
+        {
+            if (Utility.RandomBool())
+            {
+                return new FlameStrikeSpell(this, null);
+            }
+            return null;
+        }
+
         [Constructable]
         public FireElemental()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)

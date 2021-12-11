@@ -1,11 +1,36 @@
 using System;
 using Server.Items;
+using Server.Spells;
+using Server.Spells.First;
+using Server.Spells.Fourth;
+using Server.Spells.Third;
 
 namespace Server.Mobiles
 {
     [CorpseName("a ghostly corpse")]
     public class Shade : BaseCreature
     {
+        public override Spell ChooseSpell()
+        {
+            if(this.Combatant is Mobile && !WeakenSpell.IsUnderEffects(this.Combatant as Mobile))
+            {
+                return new WeakenSpell(this, null);
+            }
+            var l = Utility.Random(0, 20);
+            if(l < 10)
+            {
+                return new MagicArrowSpell(this, null);
+            }
+            else if (l < 13)
+            {
+                return new LightningSpell(this, null);
+            }
+            else
+            {
+                return new FireballSpell(this, null);
+            }
+        }
+
         [Constructable]
         public Shade()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
